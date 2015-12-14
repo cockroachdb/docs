@@ -1,0 +1,15 @@
+/tasks/multilingual/ /i18n/internationalisation/
+/tasks/multilingual/index.html /i18n/internationalisation/
+/sharing/share-with-content-writers/ /sharing/non-developers/
+/sharing/share-with-developers/ /sharing/developers/
+/tasks/custom-domains/ /domains/custom-domains/
+/tasks/custom-404-page/ /hosting/custom-404-page/
+/tasks/highlighting-active-links/ /hosting/active-links/
+/tasks/pretty-urls/ /hosting/pretty-urls/
+/tasks/301-redirects/ /hosting/301-redirects/
+/tasks/form-submissions/ /hosting/form-submissions/
+/extra/website-optimizations/ /hosting/optimisations/
+/extra/ssl-support/ /hosting/ssl/
+/hosting/custom-domains/ /domains/custom-domains/
+/hosting/highlighting-active-links/ /hosting/active-links/
+/sharing/password-sharing/ /sharing/client-sharing/

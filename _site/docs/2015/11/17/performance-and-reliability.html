@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Performance and Reliability | CockroachDB Documentation</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="generator" content="Jekyll v2.4.0">
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400italic,400,300italic,300,700,700italic|Open+Sans:400italic,600italic,700italic,700,600,400|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/screen.css">
+		<link rel="alternate" type="application/atom+xml" title="CockroachDB Docs - Change Log" href="/atom/" />
+		<link rel="alternate" type="application/rss+xml" title="CockroachDB Docs - Change Log" href="/rss/" />
+		<link rel="icon" type="image/png" href="/img/favicon.png">
+
+		<!--[if lt IE 9]>
+		<script src="/js/html5shiv.min.js"></script>
+		<script src="/js/respond.min.js"></script>
+		<![endif]-->
+		
+
+		<script>
+			if (window.location.hostname === "docs.cloudcannon.com") {
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-37472773-15', 'auto');
+			  ga('send', 'pageview');
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="mobile-nav">
+	<button type="button" class="open-nav" id="open-nav"></button>
+	<img src="http://cloudcannon.com/img/logo.png" alt="CloudCannon">
+</div>
+
+		<header>
+<h1><a href="http://cockroachlabs.com"><img src="/img/CL_Logo_Large.png" alt="CockroachDB"></a></h1>
+<!-- <h1><a href="http://cloudcannon.com"><img src="/img/logo.svg" width="100" height="69" alt="CloudCannon"></a><br> Documentation</h1> -->	
+
+	<nav>
+		<ul>
+			
+			
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/">Overview</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/">Welcome</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/overview/contributing/">Contributing</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/get_started/quick-start/">Get Started</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/quick-start/">Quick Start</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/start-a-cluster/">Start a Cluster</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/build-a-test-app/">Build a Test App</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/build_applications/connect-to-cockroachdb/">Build Applications</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/connect-to-cockroachdb/">Connect to CockroachDB</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/create-a-database-schema/">Create a Database Schema</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/use-sql/">Use SQL</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/sql-reference/">SQL Reference</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/deploy/recommended-environments/">Deploy</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/recommended-environments/">Recommended Environments</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/choose-a-deployment-profile/">Choose a Deployment Profile</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/ruby-driver/">Ruby Driver</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/manage/explore-the-admin-ui/">Manage</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/explore-the-admin-ui/">Explore the Admin UI</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/add-remove-servers/">Add/Remove Servers</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/troubleshoot/">Troubleshoot</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/configure-replication-zones/">Configure Replication Zones</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/strong-consistency/">Strong Consistency</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/distributed-transactions/">Distributed Transactions</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+		</ul>
+		<ul>
+			<li class="nav-item top-level ">
+				<a href="/changelog/">Change Log</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+
+		
+
+
+
+
+
+	
+	
+		
+	
+
+	
+	
+		
+	
+
+	
+	
+		
+	
+
+	
+	
+		
+	
+
+	
+	
+		
+	
+
+	
+	
+		
+	
+
+
+<section class="main">
+	<div class="page-header">
+		<h2>Performance and Reliability</h2>
+		<h3></h3>
+
+		
+	</div>
+	<article class="content">
+		
+		<p>This release includes performance and reliability improvements to our back end processing.</p>
+
+<p>Other features include:</p>
+
+<ul>
+  <li><code>@import</code> in plain <code>.css</code> files now supported</li>
+  <li>Disconnect storage provider when given a not found from GitHub/Bitbucket</li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+  <li>Create site visual flicker removed</li>
+  <li>Markdown conversion maximum run time</li>
+</ul>
+
+	</article>
+</section>
+
+
+		<script>
+			document.getElementById("open-nav").onclick = function () {
+				document.body.classList.toggle("nav-open");
+			};
+		</script>
+	</body>
+</html>

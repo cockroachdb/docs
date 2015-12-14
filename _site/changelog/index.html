@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Change Log | CockroachDB Documentation</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="generator" content="Jekyll v2.4.0">
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400italic,400,300italic,300,700,700italic|Open+Sans:400italic,600italic,700italic,700,600,400|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/screen.css">
+		<link rel="alternate" type="application/atom+xml" title="CockroachDB Docs - Change Log" href="/atom/" />
+		<link rel="alternate" type="application/rss+xml" title="CockroachDB Docs - Change Log" href="/rss/" />
+		<link rel="icon" type="image/png" href="/img/favicon.png">
+
+		<!--[if lt IE 9]>
+		<script src="/js/html5shiv.min.js"></script>
+		<script src="/js/respond.min.js"></script>
+		<![endif]-->
+		
+
+		<script>
+			if (window.location.hostname === "docs.cloudcannon.com") {
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-37472773-15', 'auto');
+			  ga('send', 'pageview');
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="mobile-nav">
+	<button type="button" class="open-nav" id="open-nav"></button>
+	<img src="http://cloudcannon.com/img/logo.png" alt="CloudCannon">
+</div>
+
+		<header>
+<h1><a href="http://cockroachlabs.com"><img src="/img/CL_Logo_Large.png" alt="CockroachDB"></a></h1>
+<!-- <h1><a href="http://cloudcannon.com"><img src="/img/logo.svg" width="100" height="69" alt="CloudCannon"></a><br> Documentation</h1> -->	
+
+	<nav>
+		<ul>
+			
+			
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/">Overview</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/">Welcome</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/overview/contributing/">Contributing</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/get_started/quick-start/">Get Started</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/quick-start/">Quick Start</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/start-a-cluster/">Start a Cluster</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/get_started/build-a-test-app/">Build a Test App</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/build_applications/connect-to-cockroachdb/">Build Applications</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/connect-to-cockroachdb/">Connect to CockroachDB</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/create-a-database-schema/">Create a Database Schema</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/use-sql/">Use SQL</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/build_applications/sql-reference/">SQL Reference</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/deploy/recommended-environments/">Deploy</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/recommended-environments/">Recommended Environments</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/choose-a-deployment-profile/">Choose a Deployment Profile</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/deploy/ruby-driver/">Ruby Driver</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/manage/explore-the-admin-ui/">Manage</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/explore-the-admin-ui/">Explore the Admin UI</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/add-remove-servers/">Add/Remove Servers</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/troubleshoot/">Troubleshoot</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/manage/configure-replication-zones/">Configure Replication Zones</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+				
+				
+					
+					<li class="nav-item top-level ">
+						
+						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<ul>
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/strong-consistency/">Strong Consistency</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/distributed-transactions/">Distributed Transactions</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+
+	
+</ul>
+
+					</li>
+				
+			
+		</ul>
+		<ul>
+			<li class="nav-item top-level current">
+				<a href="/changelog/">Change Log</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+
+		<section class="main">
+	<div class="page-header">
+		<h2>Change Log</h2>
+	</div>
+	<article class="content">
+		
+		<div class="changelog">
+	
+		<div class="changelog-item">
+			<h3>Performance and Reliability</h3>
+			<p><span class="date">November 17, 2015</span> <span class="badge minor">minor</span></p>
+
+			<p>This release includes performance and reliability improvements to our back end processing.</p>
+
+<p>Other features include:</p>
+
+<ul>
+  <li><code>@import</code> in plain <code>.css</code> files now supported</li>
+  <li>Disconnect storage provider when given a not found from GitHub/Bitbucket</li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+  <li>Create site visual flicker removed</li>
+  <li>Markdown conversion maximum run time</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Compiler Overhaul</h3>
+			<p><span class="date">November 03, 2015</span> <span class="badge major">major</span></p>
+
+			<p>Since the last release, we’ve focused on back end performance and infrastructure. Performance and stability has increased across most of our services, including an improved system for processing sites. Sites are now processed, compiled and compressed faster and more reliably.</p>
+
+<p>Other features include:</p>
+
+<ul>
+  <li>Native browser spellcheck support</li>
+  <li>Improved style on payment detail emails</li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+  <li>Issue with repeatables on non Jekyll sites</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Link editor improvements</h3>
+			<p><span class="date">September 28, 2015</span> <span class="badge major">major</span></p>
+
+			<p>This release includes a redesign of the link pop out in the Visual Editor.
+The design is more consistent and streamlined for users. The preview mode is no longer required.</p>
+
+<p>Other features include:</p>
+
+<ul>
+  <li>Client interface preview, support and documentation URL options</li>
+  <li>Button for adding new array item improved</li>
+  <li>Kramdown for Markdown parsing to match Jekyll</li>
+  <li>Support for <code>.ejs</code> files</li>
+  <li>Move up a folder action for files in browser</li>
+  <li>Date support in CSV editor</li>
+  <li>Improved actions in <em>Pages</em> view in <em>Collections</em> tab</li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+  <li>Disable output and permalink editing for a collection on the <em>Collections</em> tab</li>
+  <li>Prevent browser find overscrolling editor content</li>
+  <li>Start with template option removed</li>
+  <li>Ensure Jekyll indicator hidden in some cases for static sites</li>
+  <li>Prevent multiple applications of a coupon</li>
+  <li>Login screen users update correctly when email changed</li>
+  <li>New collection items with dates now formatted with ISO8601 format</li>
+  <li>Markdown pages displayed in <em>Pages</em> view in <em>Collections</em> tab</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Site Speed, Highlight tags in markdown editor and pages list</h3>
+			<p><span class="date">September 21, 2015</span> <span class="badge major">major</span></p>
+
+			<p>A DOS attack early last week forced us to review page performance. The improvements made are:</p>
+
+<ul>
+  <li>Improved caching of the sites to get a ~5 times improvement in load speeds.</li>
+  <li>Applied rate limiting to a site to prevent malicious attacks on all sites.</li>
+  <li>Blocked common attack vectors for a Wordpress/php site to reduce load on servers.</li>
+  <li>Blocked pinging services that clog your google analytics. These flooded referrer stats to gain backlinks.</li>
+  <li>Compression on sites are now performed immediately after a Jekyll compile.</li>
+</ul>
+
+<p>Additionally we added new features:</p>
+
+<ul>
+  <li>Added support for highlight tag in markdown editor. This retains the content like a pre tag.</li>
+  <li>Users will need to downgrade before deleting their account to stop accidental deletions</li>
+  <li>New pages list in the collections tab. This allows clients to navigate and clone pages</li>
+  <li>Added support for category posts folders. Each category will get their own section in the collections tab. For example, posts in <code>/cats/_posts</code> are separated from those inside <code>/_posts</code>. All drafts remain in <code>/_drafts/</code>, upon publishing the category decides where they should go. No change will occur if you have all posts in <code>/_posts</code>.</li>
+</ul>
+
+<p>As always, bug fixes include:</p>
+
+<ul>
+  <li>Safari client editor failed to login on first use</li>
+  <li>Client editor move/delete files were not working for some users</li>
+  <li>WebSocket connection fixed for firefox windows</li>
+  <li>Auth routes broke in some cases</li>
+  <li>General bug fixes and tweeks</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Performance Improvements and Bug Fixes</h3>
+			<p><span class="date">September 11, 2015</span> <span class="badge minor">minor</span></p>
+
+			<ul>
+  <li>(Feature) base_path is reset to “” on every site so that it does not break interface</li>
+  <li>(Improvement) Better icons on git repository lists</li>
+  <li>(Bug) Paste as plain text fixed if pasting from Microsoft Office</li>
+  <li>(Bug) Browser list icon will now show when in a grid view rather than showing current state</li>
+  <li>(Bug) Improved parsing with mixed liquid and html. This will ensure a closer mapping to native Jekyll</li>
+  <li>(Bug) Ctrl/Cmd + S will trigger a save in all editors</li>
+  <li>(Bug) Unbolding broke in some cases</li>
+  <li>General bug fixes and UI tweaks</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Minor UI and Bug Fixes</h3>
+			<p><span class="date">September 04, 2015</span> <span class="badge minor">minor</span></p>
+
+			<ul>
+  <li>Editor navigation menu now splits Posts, Pages and collection items into their own category</li>
+  <li>Bitbucket syncing fixed for branches including a slash (/)</li>
+  <li>A new calming blue login background</li>
+  <li>Background images removed from client login screen</li>
+  <li>Removed sidebar background flicker when changing between views</li>
+  <li>Less scripts loaded to improve performance</li>
+  <li>Client uploads to the /upload directory get spaces stripped from filename</li>
+  <li>Extra spacing to improve input boxes</li>
+  <li>(Bug) Markdown editor produced data uri for loading images when saved</li>
+  <li>(Bug) Browser icons overflowing onto file list when in a dialog</li>
+  <li>(Bug) CSV editor fixes</li>
+  <li>Minor bug fixes</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Extra credit card details</h3>
+			<p><span class="date">September 01, 2015</span> <span class="badge minor">minor</span></p>
+
+			<p>This release contains a fix preventing some users from making payments.</p>
+
+<ul>
+  <li>Added extra credit card fields that some banks require</li>
+  <li>Disabled linter for unsupported file types</li>
+  <li>Fixed issue cancelling while creating collection item</li>
+  <li>Fixed Safari 9 issues on El Capitan preview</li>
+  <li>Fixed an issue with plan migration</li>
+  <li>Fixed spacing on sidebar header</li>
+  <li>General bug fixes</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Improved UI and Better Team Pricing</h3>
+			<p><span class="date">August 28, 2015</span> <span class="badge major">major</span></p>
+
+			<p>Today we introduce a new pricing model. This creates a better agency flow with less upgrade steps and whitelabelling. You can read more about it in our <a href="http://cloudcannon.com/blog/">pricing change announcement</a>.</p>
+
+<p>CloudCannon will look very different. Everything from the login screens to the app layout has changed. Here is a complete list of the UI Changes</p>
+
+<ul>
+  <li>User navigation has its own routes and is available in a single sidebar. This gives you access to all settings in a single place and frees up the header for contextual controls.</li>
+  <li>Site navigations merged into a single sidebar. Labels are always visible which removes the need to remember which icon is which.</li>
+  <li>New icons site wide from Google Material Design.</li>
+  <li>New UI added to allow easier navigation to other pages within the visual editor.</li>
+  <li>Uploads have a new encoding without spaces or brackets. This solves some encoding issues when outputting to a page.</li>
+  <li>A new plans page within account settings which gives better visibility to your payment details</li>
+  <li>Currently shared to users show up in site sharing for easy resharing</li>
+  <li>Sharing interface tidied to allow faster updates to existing shares</li>
+  <li>Background images added to login and sidebar header</li>
+  <li>Better mobile styles in all sections of the app</li>
+  <li>Markdown editor handles files starting with an hr or an empty yaml header</li>
+  <li>Font changed from Roboto to Open Sans</li>
+  <li>General bug fixes</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Bitbucket Improvements and Liquid in Markdown</h3>
+			<p><span class="date">August 19, 2015</span> <span class="badge minor">minor</span></p>
+
+			<ul>
+  <li><strong>Liquid is no longer mangled by the markdown editor.</strong></li>
+  <li>Seamless Bitbucket Connect login process.</li>
+  <li>Better Bitbucket disconnect behaviour.</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Markdown Improvements</h3>
+			<p><span class="date">August 14, 2015</span> <span class="badge minor">minor</span></p>
+
+			<ul>
+  <li>Improved markdown output</li>
+  <li>Posts now sorted by dates correctly</li>
+  <li>Table output support in markdown editor</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Internationalisation and Performance improvements</h3>
+			<p><span class="date">July 30, 2015</span> <span class="badge major">major</span></p>
+
+			<p>Internationalisation needed an overhaul. The new Internationalisation uses 302 redirects instead of the transparent internal redirect that occured. The new implementation uses redirects and different paths for each language. If <a href="https://example.com/">https://example.com/</a> is requested in NZ a 302 redirect will occur to <a href="https://example.com/en_nz/">https://example.com/en_nz/</a> and it will served the NZ locale. If <a href="https://example.com/es/">https://example.com/es/</a> is requested the ES version will be served with no redirect as the locale is already defined in the path. Due to this change a default locale setting has been added which is available once a locale has been added to the <strong>_locale</strong> folder.</p>
+
+<p>On top of Internationalisation are the following fixes:</p>
+
+<ul>
+  <li>Link selector in the visual editor got a slight tidy up</li>
+  <li>Better mobile response for context buttons</li>
+  <li>Bug preventing share permissions changes when at full shares</li>
+  <li>The file browser retains your current folder allowing better use of the back button</li>
+  <li>Additional cache headers on optimised CDN assets</li>
+  <li>Better permalink detection for HTML visual editing</li>
+  <li>General bug fixes</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Build Settings</h3>
+			<p><span class="date">July 24, 2015</span> <span class="badge minor">minor</span></p>
+
+			<p>This release provides options to control your site build:</p>
+
+<ul>
+  <li>Jekyll <a href="/hosting/environments/">Environments</a></li>
+  <li>Option to toggle site <a href="/hosting/optimisations/">Optimisations</a></li>
+  <li>Authentication <a href="/authentication/custom-interfaces/">Custom Interfaces</a></li>
+  <li>Speed improvements to <a href="/hosting/301-redirects/">301 Redirects</a> and authentication <a href="/authentication/custom-routes/">Custom Routes</a></li>
+  <li>General bug fixes</li>
+</ul>
+
+		</div>
+	
+		<div class="changelog-item">
+			<h3>Authentication Overhaul</h3>
+			<p><span class="date">July 20, 2015</span> <span class="badge major">major</span></p>
+
+			<p>This release has a complete overhaul of the site authentication. This includes:</p>
+
+<ul>
+  <li><a href="/authentication/user-accounts/">User accounts</a> allowing you to limit access to your site based on an email address</li>
+  <li><a href="/authentication/custom-routes/">Authenticated routes</a> allows you to have private sections of a site</li>
+  <li><a href="/editing/front-matter/">Date/time front matter interfaces</a></li>
+  <li><a href="authentication/none/">Prototyping sites</a> no longer require a password. Instead viewers will be presented with a splash screen before viewing the site.</li>
+  <li>Internationalisation language detection incorporates the country more effectively.</li>
+  <li>Disabled HTTP access on app.cloudcannon.com</li>
+  <li>Better date handling on draft posts. If a date is already defined when published it will maintain that date</li>
+  <li>Syncing with GitHub handles force pushes</li>
+  <li>General bug fixes</li>
+</ul>
+
+		</div>
+	
+</div>
+
+	</article>
+</section>
+
+
+		<script>
+			document.getElementById("open-nav").onclick = function () {
+				document.body.classList.toggle("nav-open");
+			};
+		</script>
+	</body>
+</html>

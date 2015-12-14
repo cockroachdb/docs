@@ -1,0 +1,33 @@
+<div class="article-nav">
+	{% for item in include.items %}
+		{% if item.title == page.title %}
+			{% assign current_index = forloop.index0 %}
+
+			{% if forloop.first %}
+				{% if include.previous_collection.docs %}
+					{% assign items = include.previous_collection.docs | sort: 'order' %}
+					<a href="{{ items.last.url }}" class="prev">Back</a>
+				{% else %}
+					<span class="prev disabled"></span>
+				{% endif %}
+			{% else %}
+				{% assign prev_index = forloop.index0 | minus: 1 %}
+				<a href="{{ include.items[prev_index].url }}" class="prev">Back</a>
+			{% endif %}
+
+			{% if forloop.last %}
+				{% if include.next_collection.docs %}
+					{% assign items = include.next_collection.docs | sort: 'order' %}
+					<a href="{{ items.first.url }}" class="next">Next</a>
+				{% else %}
+					<span class="next disabled"></span>
+				{% endif %}
+			{% else %}
+				{% assign next_index = forloop.index0 | plus: 1 %}
+				<a href="{{ include.items[next_index].url }}" class="next">Next</a>
+			{% endif %}
+
+			{% break %}
+		{% endif %}
+	{% endfor %}
+</div>

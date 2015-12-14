@@ -1,0 +1,501 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"php",
+				"php"
+			],
+			[
+				"s",
+				"disc"
+			],
+			[
+				"tr",
+				"transparent"
+			],
+			[
+				"ba",
+				"background-color"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"install package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/jseldess/cloudcannon/_getting_started/1_running_cockroachdb_locally.md",
+		"/Users/jseldess/cockroach/_includes/sidebar.html",
+		"/Users/jseldess/cockroach/basic_sql_statements.md",
+		"/Users/jseldess/cockroach/indexes.md",
+		"/Users/jseldess/cockroach/install_on_linux.md",
+		"/Users/jseldess/cockroach/running_cockroachdb_on_google_cloud.md",
+		"/Users/jseldess/cockroach/install_on_os_x.md",
+		"/Users/jseldess/cockroach/php_driver.md",
+		"/Users/jseldess/cockroach/pyton_driver.md",
+		"/Users/jseldess/cockroach/quick_start.md",
+		"/Users/jseldess/cockroach/ruby_driver.md",
+		"/Users/jseldess/cockroach/_config.yml",
+		"/Users/jseldess/cockroach/index.html",
+		"/Users/jseldess/cockroach/running_locally.md",
+		"/Users/jseldess/cockroach/public/css/poole.css",
+		"/Users/jseldess/cockroach/public/css/style.momonokai.css",
+		"/Users/jseldess/cockroach_green/_config.yml",
+		"/Users/jseldess/cockroach/public/css/syntax_original.css",
+		"/Users/jseldess/cockroach/public/css/syntax.css",
+		"/Users/jseldess/PycharmProjects/Learning/pig_latin_translator.py",
+		"/Users/jseldess/cockroach/about.md",
+		"/Users/jseldess/cockroach/cockroachdb_drivers.md",
+		"/Users/jseldess/cockroach/sql_reference",
+		"/Users/jseldess/cockroach/cockroachdb_drivers.mk",
+		"/Users/jseldess/cockroach/cockroachdb_drivers",
+		"/Users/jseldess/cockroach/experiment.md",
+		"/Users/jseldess/docs/css/customstyles.css",
+		"/Users/jseldess/docs/working-with-campaigns.md",
+		"/Users/jseldess/docs/delete-advertisers.md",
+		"/Users/jseldess/docs/create-a-web-campaign.md",
+		"/Users/jseldess/docs/404.md",
+		"/Users/jseldess/hugo/content/about.md",
+		"/Users/jseldess/Desktop/Coding/python/compute_bill.py",
+		"/Users/jseldess/docs/working-with-advertisers.md",
+		"/Users/jseldess/Desktop/new_bonsai.txt",
+		"/Users/jseldess/json/deal_example.json",
+		"/Users/jseldess/Desktop/Coding/python/\"\"Access string by index\"\".txt",
+		"/Users/jseldess/Desktop/deal_sample.json",
+		"/Users/jseldess/Desktop/mysql_notes.txt",
+		"/Users/jseldess/Desktop/Report2.php",
+		"/Users/jseldess/Desktop/php_notes.php",
+		"/Users/jseldess/Desktop/vimeo.ga.js",
+		"/Users/jseldess/Desktop/mysql_notes.md",
+		"/Users/jseldess/docs/create-an-advertiser.md",
+		"/Users/jseldess/docs/custom-model-service.md",
+		"/Users/jseldess/docs/appnexus-programmable-bidder.md",
+		"/Users/jseldess/docs/booking-orders.md",
+		"/Users/jseldess/docs/_data/sidebar_doc.yml",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/The Offers cont_10615.txt",
+		"/Users/jseldess/docs/the-bonsai-language.md",
+		"/Users/jseldess/docs/decision-tree-features.md",
+		"/Users/jseldess/docs/configs/config_ymp.yml",
+		"/Users/jseldess/docs/configs/config_console.yml",
+		"/Users/jseldess/docs/_includes/custom/doc/doc_homepage.md",
+		"/Users/jseldess/docs/index.md",
+		"/Users/jseldess/Desktop/python_help.py",
+		"/Users/jseldess/Desktop/Coding/python/pig_latin_translator.py",
+		"/Users/jseldess/Desktop/Coding/python/string_looping.py",
+		"/Users/jseldess/Desktop/Coding/python/supermarket.py",
+		"/Users/jseldess/Desktop/Coding/python/vacation_cost.py",
+		"/Users/jseldess/Desktop/Coding/python/print_student_data.py",
+		"/Users/jseldess/Desktop/Coding/python/vacation_input.py",
+		"/Users/jseldess/Desktop/Coding/python/squaring_function.py",
+		"/Users/jseldess/Desktop/Coding/python/raise_base_to_power_of_exponent.py",
+		"/Users/jseldess/Desktop/Coding/python/cube_function.py",
+		"/Users/jseldess/Desktop/Coding/python/import_module.py",
+		"/Users/jseldess/Desktop/Coding/python/conditions_and_flow.py",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/The Offers Cont 1.txt",
+		"/Users/jseldess/docs/create-a-line-item.md",
+		"/Users/jseldess/Desktop/website.css",
+		"/Users/jseldess/Desktop/Hello_World.py",
+		"/Users/jseldess/docs/_data/topnav_doc.yml",
+		"/Users/jseldess/docs/_data/strings.yml",
+		"/Users/jseldess/docs/delete-campaigns.md",
+		"/Users/jseldess/docs/_includes/sidebar.html",
+		"/Users/jseldess/docs/_layouts/default.html",
+		"/Users/jseldess/docs/css/theme-green.css",
+		"/Users/jseldess/docs/_includes/footer.html",
+		"/Users/jseldess/docs/css/theme-blue.css",
+		"/Users/jseldess/docs/_includes/topnav.html",
+		"/Users/jseldess/docs/_layouts/page.html",
+		"/Users/jseldess/jekyll-bootstrap-doc/_layouts/default.html",
+		"/Users/jseldess/Library/Caches/TemporaryItems/Outlook Temp/working_tree.txt",
+		"/Users/jseldess/json/custom-model2.json",
+		"/Users/jseldess/docs/_includes/toc.html",
+		"/Users/jseldess/docs/css/theme-blue_ORIGINAL.css",
+		"/Users/jseldess/docs/css/lavish-bootstrap.css",
+		"/Users/jseldess/docs/css/font-awesome.min.css",
+		"/Users/jseldess/docs/css/lavish-bootstrap_ORIGINAL.css",
+		"/Users/jseldess/docs/css/font-awesome.min_ORIGINAL.css",
+		"/Users/jseldess/docs/_data/alerts.yml",
+		"/Users/jseldess/docs/create-a-deal-campaign.md",
+		"/Users/jseldess/docs/view-campaign-details.md",
+		"/Users/jseldess/docs/_layouts/default_dan.html",
+		"/Users/jseldess/docs/_includes/custom/conditions.html",
+		"/Users/jseldess/docs/_config.yml",
+		"/Users/jseldess/docs/jekyll-prototype/pages/working-with-campaigns.md",
+		"/Users/jseldess/console/public/js/modules/docs/console/advertiser.json",
+		"/Users/jseldess/console/public/js/modules/docs/console/report.json",
+		"/Users/jseldess/documentation-theme-jekyll-gh-pages/css/lavish-bootstrap.css",
+		"/Users/jseldess/Desktop/html/AppNexus-Programmable-Bidder_72843838.html",
+		"/Users/jseldess/Library/Caches/TemporaryItems/Outlook Temp/test_2.json",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing y.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing ume.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing ich.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing g.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing ext.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing el.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing dre.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing ail.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing ah.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing on.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing b.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing v.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing w.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/The Offers - words not containing er.txt",
+		"/Users/jseldess/Desktop/Coding/JS/c02/js/string-with-quotes.js",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/The Offers - to remove space.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Experiments/remove_duplicate_lines.py",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/Remove empty lines.py",
+		"/Users/jseldess/Desktop/PTRY/The Offers/The Offers - remove all but words with certain sounds.txt",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/remove_duplicate_lines_2.py",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/remove_duplicats.py",
+		"/Users/jseldess/Desktop/PTRY/The_Offers/The Offers - ble - without any duplicate lines.txt",
+		"/Users/jseldess/Desktop/PTRY/The Offers/The Offers - as ay.txt",
+		"/Users/jseldess/Desktop/PTRY/The Offers/The Offers - ble no duplicates.txt",
+		"/Users/jseldess/Library/Caches/TemporaryItems/Outlook Temp/line_item.json",
+		"/Users/jseldess/Desktop/Coding/JS/c01/css/c01.css"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"<open files>,<open folders>",
+			"<open files>",
+			"",
+			"<open files>,/Users/jseldess/docs",
+			"<open files>",
+			"/Users/jseldess/docs",
+			"/Users/jseldess/console",
+			"console"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"page-head",
+			".nav-item > a",
+			"a",
+			".nav-item > a",
+			"brand",
+			"nav",
+			"page-header",
+			"header",
+			".nav-item > a",
+			"brand",
+			"mixins",
+			"h1",
+			"font-weight",
+			"h1",
+			"page-title",
+			"font-family",
+			"back",
+			"sidebar",
+			"highlight",
+			"highligh",
+			"_sytnax-highlighting.scss",
+			"introducing-hyde",
+			"Introducing Hyde",
+			"Introducting Hyde",
+			"=!",
+			"i ",
+			"Sorry, but the page you were trying to view does not exist -",
+			"ASC",
+			"GROUP BY",
+			"avg",
+			"LIMIT",
+			"UTC",
+			"array",
+			"timezone",
+			"daily",
+			"navgoco",
+			"jquery",
+			"Looking for something?",
+			"search",
+			"Docs",
+			"data-toggle",
+			"data-toggle=\"dropdown\"",
+			"Feedback",
+			"Docs",
+			"li class=",
+			"AppNexus Documentation",
+			"  ",
+			"</span>",
+			"<span>",
+			"**",
+			"li  ",
+			"li**",
+			"p  ",
+			"p**",
+			" class=\"p1\"",
+			"</strong>",
+			"<strong>",
+			"AppNexus Documentation",
+			"Table of Contents",
+			"Feedback",
+			"Resources",
+			"font-family",
+			"a {",
+			"border-lef",
+			"line",
+			".nav li.thirdlevel > a ",
+			".nav li.thirdlevel > a {",
+			"third",
+			"hover",
+			"span",
+			"background-color",
+			"nav ul",
+			"nav li a",
+			"link",
+			"a",
+			"p",
+			"body",
+			"font-family",
+			"font",
+			"@font",
+			"font",
+			" \n",
+			"item",
+			"img",
+			"##",
+			"</h3>",
+			"<h3>",
+			"body",
+			"col-md-3",
+			"body",
+			"col-md-9",
+			"body",
+			"ul#mysidebar",
+			"col-md-3",
+			"background-image",
+			"image",
+			"col-lg-12",
+			"55acee",
+			"designers",
+			"writers",
+			"designers",
+			"writers",
+			"designers",
+			"- ",
+			"<td>PMC</td>",
+			"h2",
+			" ",
+			"h4",
+			"<p>Example tree:</p>",
+			"<ac:structured-macro ac:name=\"code\">",
+			"^((?!ee).)*$",
+			"^((?!phone).)*$",
+			"I assumed it was visible\nAnd make myself a visible",
+			"g/^\\(.*\\)$\\n\\1$/d",
+			"^(.*)(\\r?\\n\\n\\1)+$",
+			"^(.*)(\\r?\\1)+$",
+			"^(.*)(\\r?\\n\\1)+$",
+			"^/ee/",
+			"Emacs",
+			"<ac:parameter ac:name=\"theme\">Emacs</ac:parameter>",
+			"\\n",
+			"Õ",
+			"^\\s*$",
+			"^((?!ble).)*$",
+			"^((?!visible).)*$",
+			"^((?!ible).)*$",
+			"^\\s*$",
+			"^((?!as|ay).)*$"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"I ",
+			" ",
+			"",
+			"li",
+			"p",
+			"**",
+			"## ",
+			" ",
+			"##",
+			"ymp",
+			"console",
+			"ymp",
+			"console",
+			"* ",
+			" ",
+			"",
+			",",
+			"h3",
+			"",
+			"<ac:structured-macro ac:name=\"code\">\n  <ac:parameter ac:name=\"title\">Example tree</ac:parameter>",
+			"",
+			"\\n",
+			"",
+			"\\1",
+			"",
+			"default",
+			"",
+			"\\n\\n",
+			"'",
+			"",
+			"\\n\\n",
+			"",
+			"'",
+			"\\n\\n",
+			"",
+			"\\n",
+			"",
+			"'",
+			"\\n\\n",
+			"",
+			"\\1\\4\\3\\6",
+			"",
+			"|carrier",
+			" ",
+			",",
+			"",
+			",",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"side",
+				"_includes/sidebar.html"
+			],
+			[
+				"advertiser.json",
+				"public/js/modules/docs/console/advertiser.json"
+			],
+			[
+				"help.php",
+				"application/models/Help.php"
+			],
+			[
+				"",
+				"Find Results"
+			],
+			[
+				"pleasenote",
+				"public/v2/md/Ui/Dashboard/DataSetProvider/SellerMonetization/SellerMonetizationTestData.js"
+			],
+			[
+				"help.js",
+				"public/v2/shared/Help/Help.js"
+			],
+			[
+				"bulkstin",
+				"public/v2/tango/Discovery/BulkEditBox/i18n/strings.json"
+			],
+			[
+				"bulked",
+				"public/v2/tango/Discovery/BulkEditBox/BulkEditBox.js"
+			],
+			[
+				"bulkstrin",
+				"public/v2/tango/Discovery/BulkEditBox/i18n/strings.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 271.0,
+	"status_bar_visible": true
+}

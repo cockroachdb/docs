@@ -1,0 +1,126 @@
+$input-border-color: #ddd;
+$input-border-color-hover: #b7b7b7;
+
+input[type=submit] {
+	@extend .btn;
+	@extend .btn-primary;
+	@extend .btn-block;
+	-webkit-appearance: none;
+	font-size: 1em;
+	padding: 8px;
+	line-height: 1.8;
+}
+
+input[type=text],
+input[type=tel],
+input[type=date],
+input[type=url],
+input[type=number],
+input[type=password],
+input[type=email],
+textarea {
+	-webkit-appearance: none;
+}
+
+input[type=text],
+input[type=tel],
+input[type=date],
+input[type=url],
+input[type=number],
+input[type=password],
+select,
+input[type=email],
+form textarea {
+	@include box-sizing(border-box);
+	display: block;
+	width: 100%;
+	margin: 5px 0 20px 0;
+}
+
+input[type=text],
+input[type=tel],
+input[type=date],
+input[type=url],
+input[type=number],
+input[type=password],
+select,
+input[type=email],
+form textarea {
+	@include box-sizing(border-box);
+	border-radius: 2px;
+	border: 1px solid $input-border-color;
+	font-size: 1em;
+	padding: 8px;
+	line-height: 1.8;
+	margin: 0.3em 0 1.5em;
+
+	&.error {
+		border-color: #c65151 !important;
+		margin: 5px 0 0 0;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus,
+	.no-touch &:hover {
+		border-color: $input-border-color-hover;
+	}
+}
+
+input[type=tel] {
+	font-family: Consolas, monaco, monospace;
+	font-size: 20px;
+	line-height: 38px;
+	padding: 0 8px;
+}
+
+select {
+	border-radius: 2px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+	background: white url("/img/brand/select-arrow.svg") calc(100% - 15px) center no-repeat;
+}
+
+select::-ms-expand {
+	display: none;
+}
+
+input::-ms-clear,
+input::-ms-reveal {
+	display: none !important;
+}
+
+form textarea {
+	max-width: 100%;
+	min-width: 100%;
+	min-height: 120px;
+}
+
+input[disabled],
+select[disabled],
+form textarea[disabled],
+input[readonly],
+select[readonly],
+form textarea[readonly] {
+	@include user-select(none);
+	cursor: not-allowed;
+	background-color: whiteSmoke;
+	color: #888;
+}
+
+label {
+	display: block;
+	margin: 0;
+	font-weight: 600;
+	color: #444;
+}
+
+form.formatted {
+	background-color: #F8F8F8;
+	padding: 20px;
+	border-radius: 2px;
+	margin: 0 0 1em;
+}

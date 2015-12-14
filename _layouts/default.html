@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>{{ page.title }} | CockroachDB Documentation</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="generator" content="Jekyll v{{ jekyll.version }}">
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400italic,400,300italic,300,700,700italic|Open+Sans:400italic,600italic,700italic,700,600,400|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/screen.css">
+		<link rel="alternate" type="application/atom+xml" title="CockroachDB Docs - Change Log" href="/atom/" />
+		<link rel="alternate" type="application/rss+xml" title="CockroachDB Docs - Change Log" href="/rss/" />
+		<link rel="icon" type="image/png" href="/img/favicon.png">
+
+		<!--[if lt IE 9]>
+		<script src="/js/html5shiv.min.js"></script>
+		<script src="/js/respond.min.js"></script>
+		<![endif]-->
+		{% if page.duplicate_content %}
+			<link rel="canonical" href="{{ page.duplicate_content }}" />
+		{% endif %}
+
+		<script>
+			if (window.location.hostname === "docs.cloudcannon.com") {
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-37472773-15', 'auto');
+			  ga('send', 'pageview');
+			}
+		</script>
+	</head>
+
+	<body>
+		{% include mobile-nav.html %}
+		{% include primary-nav.html %}
+
+		{{ content }}
+
+		<script>
+			document.getElementById("open-nav").onclick = function () {
+				document.body.classList.toggle("nav-open");
+			};
+		</script>
+	</body>
+</html>

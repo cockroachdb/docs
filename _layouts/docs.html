@@ -1,0 +1,42 @@
+---
+layout: default
+---
+
+{% assign previous = '' %}
+{% assign next = '' %}
+
+{% assign url = page.url %}
+{% if url == "/" %}
+	{% assign url = "/guide/setup/" %}
+{% endif %}
+{% for item in site.collections %}
+	{% assign collection = item[1] %}
+	{% if section %}
+		{% if collection.output %}
+			{% assign next = collection %}
+			{% break %}
+		{% endif %}
+	{% elsif url contains collection.active_prefix %}
+		{% assign section = collection.title %}
+		{% assign items = collection.docs | sort: 'order' %}
+	{% elsif collection.output %}
+		{% assign previous = collection %}
+	{% endif %}
+{% endfor %}
+
+<section class="main">
+	<div class="page-header">
+		<h2>{% if page.heading %}{{ page.heading }}{% else %}{{ page.title }}{% endif %}</h2>
+		<h3>{{ section }}</h3>
+
+		{% if items %}
+			{% include section-nav.html items=items previous_collection=previous next_collection=next %}
+		{% endif %}
+	</div>
+	<article class="content">
+		{% if page.warning %}
+			<p class="warning">{{ page.warning }}</p>
+		{% endif %}
+		{{ content }}
+	</article>
+</section>

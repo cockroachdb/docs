@@ -1,0 +1,43 @@
+collections:
+  overview:
+    title: Overview
+    permalink: /overview/:title/
+    active_prefix: overview
+    output: true
+  get_started:
+    title: Get Started
+    permalink: /get_started/:title/
+    active_prefix: get_started
+    output: true
+  build_applications:
+    title: Build Applications
+    permalink: /build_applications/:title/
+    active_prefix: build_applications
+    output: true
+  deploy:
+    title: Deploy
+    permalink: /deploy/:title/
+    active_prefix: deploy
+    output: true
+  manage:
+    title: Manage
+    permalink: /manage/:title/
+    active_prefix: manage
+    output: true
+  learn_how_it_works:
+    title: Learn How It Works
+    permalink: /learn_how_it_works/:title/
+    active_prefix: learn_how_it_works
+    output: true
+
+defaults:
+- scope:
+    path: ""
+  values:
+    layout: docs
+name: CockroachDB Docs
+url: http://docs.cockroachlabs.com
+author:
+  name: Jesse
+  email: 
+port: 4003

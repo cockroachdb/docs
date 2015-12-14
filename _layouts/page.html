@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<section class="main">
+	<div class="page-header">
+		<h2>{% if page.heading %}{{ page.heading }}{% else %}{{ page.title }}{% endif %}</h2>
+	</div>
+	<article class="content">
+		{% if page.warning %}
+			<p class="warning">{{ page.warning }}</p>
+		{% endif %}
+		{{ content }}
+	</article>
+</section>
