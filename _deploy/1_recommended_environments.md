@@ -2,7 +2,9 @@
 title: Recommended Environments
 ---
 
-TBD.
+### A heading that's also an anchor
+
+### Another heading that's also an anchor
 
 {% highlight python %}
 print('Welcome to the Pig Latin Translator!')
