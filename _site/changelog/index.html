@@ -243,21 +243,14 @@
 					
 					<li class="nav-item top-level ">
 						
-						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<a href="/learn_how_it_works/automated-scaling-repair/">Learn How It Works</a>
 						<ul>
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
-
-	
-		
-			
-		
-
-		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-repair/">Automated Scaling/Repair</a></li>
 
 	
 		
@@ -278,14 +271,21 @@
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/simplified-deployment/">Simplified Deployment</a></li>
 
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/open-source/">Open Source</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/go-implementation/">Go Implementation</a></li>
 
 	
 </ul>
@@ -320,15 +320,15 @@
 <p>Other features include:</p>
 
 <ul>
-  <li><code>@import</code> in plain <code>.css</code> files now supported</li>
-  <li>Disconnect storage provider when given a not found from GitHub/Bitbucket</li>
+<li><code>@import</code> in plain <code>.css</code> files now supported</li>
+<li>Disconnect storage provider when given a not found from GitHub/Bitbucket</li>
 </ul>
 
 <p>Bug fixes:</p>
 
 <ul>
-  <li>Create site visual flicker removed</li>
-  <li>Markdown conversion maximum run time</li>
+<li>Create site visual flicker removed</li>
+<li>Markdown conversion maximum run time</li>
 </ul>
 
 		</div>
@@ -337,19 +337,19 @@
 			<h3>Compiler Overhaul</h3>
 			<p><span class="date">November 03, 2015</span> <span class="badge major">major</span></p>
 
-			<p>Since the last release, we’ve focused on back end performance and infrastructure. Performance and stability has increased across most of our services, including an improved system for processing sites. Sites are now processed, compiled and compressed faster and more reliably.</p>
+			<p>Since the last release, we&#39;ve focused on back end performance and infrastructure. Performance and stability has increased across most of our services, including an improved system for processing sites. Sites are now processed, compiled and compressed faster and more reliably.</p>
 
 <p>Other features include:</p>
 
 <ul>
-  <li>Native browser spellcheck support</li>
-  <li>Improved style on payment detail emails</li>
+<li>Native browser spellcheck support</li>
+<li>Improved style on payment detail emails</li>
 </ul>
 
 <p>Bug fixes:</p>
 
 <ul>
-  <li>Issue with repeatables on non Jekyll sites</li>
+<li>Issue with repeatables on non Jekyll sites</li>
 </ul>
 
 		</div>
@@ -364,26 +364,26 @@ The design is more consistent and streamlined for users. The preview mode is no 
 <p>Other features include:</p>
 
 <ul>
-  <li>Client interface preview, support and documentation URL options</li>
-  <li>Button for adding new array item improved</li>
-  <li>Kramdown for Markdown parsing to match Jekyll</li>
-  <li>Support for <code>.ejs</code> files</li>
-  <li>Move up a folder action for files in browser</li>
-  <li>Date support in CSV editor</li>
-  <li>Improved actions in <em>Pages</em> view in <em>Collections</em> tab</li>
+<li>Client interface preview, support and documentation URL options</li>
+<li>Button for adding new array item improved</li>
+<li>Kramdown for Markdown parsing to match Jekyll</li>
+<li>Support for <code>.ejs</code> files</li>
+<li>Move up a folder action for files in browser</li>
+<li>Date support in CSV editor</li>
+<li>Improved actions in <em>Pages</em> view in <em>Collections</em> tab</li>
 </ul>
 
 <p>Bug fixes:</p>
 
 <ul>
-  <li>Disable output and permalink editing for a collection on the <em>Collections</em> tab</li>
-  <li>Prevent browser find overscrolling editor content</li>
-  <li>Start with template option removed</li>
-  <li>Ensure Jekyll indicator hidden in some cases for static sites</li>
-  <li>Prevent multiple applications of a coupon</li>
-  <li>Login screen users update correctly when email changed</li>
-  <li>New collection items with dates now formatted with ISO8601 format</li>
-  <li>Markdown pages displayed in <em>Pages</em> view in <em>Collections</em> tab</li>
+<li>Disable output and permalink editing for a collection on the <em>Collections</em> tab</li>
+<li>Prevent browser find overscrolling editor content</li>
+<li>Start with template option removed</li>
+<li>Ensure Jekyll indicator hidden in some cases for static sites</li>
+<li>Prevent multiple applications of a coupon</li>
+<li>Login screen users update correctly when email changed</li>
+<li>New collection items with dates now formatted with ISO8601 format</li>
+<li>Markdown pages displayed in <em>Pages</em> view in <em>Collections</em> tab</li>
 </ul>
 
 		</div>
@@ -395,30 +395,30 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p>A DOS attack early last week forced us to review page performance. The improvements made are:</p>
 
 <ul>
-  <li>Improved caching of the sites to get a ~5 times improvement in load speeds.</li>
-  <li>Applied rate limiting to a site to prevent malicious attacks on all sites.</li>
-  <li>Blocked common attack vectors for a Wordpress/php site to reduce load on servers.</li>
-  <li>Blocked pinging services that clog your google analytics. These flooded referrer stats to gain backlinks.</li>
-  <li>Compression on sites are now performed immediately after a Jekyll compile.</li>
+<li>Improved caching of the sites to get a ~5 times improvement in load speeds.</li>
+<li>Applied rate limiting to a site to prevent malicious attacks on all sites.</li>
+<li>Blocked common attack vectors for a Wordpress/php site to reduce load on servers.</li>
+<li>Blocked pinging services that clog your google analytics. These flooded referrer stats to gain backlinks.</li>
+<li>Compression on sites are now performed immediately after a Jekyll compile.</li>
 </ul>
 
 <p>Additionally we added new features:</p>
 
 <ul>
-  <li>Added support for highlight tag in markdown editor. This retains the content like a pre tag.</li>
-  <li>Users will need to downgrade before deleting their account to stop accidental deletions</li>
-  <li>New pages list in the collections tab. This allows clients to navigate and clone pages</li>
-  <li>Added support for category posts folders. Each category will get their own section in the collections tab. For example, posts in <code>/cats/_posts</code> are separated from those inside <code>/_posts</code>. All drafts remain in <code>/_drafts/</code>, upon publishing the category decides where they should go. No change will occur if you have all posts in <code>/_posts</code>.</li>
+<li>Added support for highlight tag in markdown editor. This retains the content like a pre tag.</li>
+<li>Users will need to downgrade before deleting their account to stop accidental deletions</li>
+<li>New pages list in the collections tab. This allows clients to navigate and clone pages</li>
+<li>Added support for category posts folders. Each category will get their own section in the collections tab. For example, posts in <code>/cats/_posts</code> are separated from those inside <code>/_posts</code>. All drafts remain in <code>/_drafts/</code>, upon publishing the category decides where they should go. No change will occur if you have all posts in <code>/_posts</code>.</li>
 </ul>
 
 <p>As always, bug fixes include:</p>
 
 <ul>
-  <li>Safari client editor failed to login on first use</li>
-  <li>Client editor move/delete files were not working for some users</li>
-  <li>WebSocket connection fixed for firefox windows</li>
-  <li>Auth routes broke in some cases</li>
-  <li>General bug fixes and tweeks</li>
+<li>Safari client editor failed to login on first use</li>
+<li>Client editor move/delete files were not working for some users</li>
+<li>WebSocket connection fixed for firefox windows</li>
+<li>Auth routes broke in some cases</li>
+<li>General bug fixes and tweeks</li>
 </ul>
 
 		</div>
@@ -428,14 +428,14 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p><span class="date">September 11, 2015</span> <span class="badge minor">minor</span></p>
 
 			<ul>
-  <li>(Feature) base_path is reset to “” on every site so that it does not break interface</li>
-  <li>(Improvement) Better icons on git repository lists</li>
-  <li>(Bug) Paste as plain text fixed if pasting from Microsoft Office</li>
-  <li>(Bug) Browser list icon will now show when in a grid view rather than showing current state</li>
-  <li>(Bug) Improved parsing with mixed liquid and html. This will ensure a closer mapping to native Jekyll</li>
-  <li>(Bug) Ctrl/Cmd + S will trigger a save in all editors</li>
-  <li>(Bug) Unbolding broke in some cases</li>
-  <li>General bug fixes and UI tweaks</li>
+<li>(Feature) base_path is reset to &quot;&quot; on every site so that it does not break interface</li>
+<li>(Improvement) Better icons on git repository lists</li>
+<li>(Bug) Paste as plain text fixed if pasting from Microsoft Office</li>
+<li>(Bug) Browser list icon will now show when in a grid view rather than showing current state</li>
+<li>(Bug) Improved parsing with mixed liquid and html. This will ensure a closer mapping to native Jekyll</li>
+<li>(Bug) Ctrl/Cmd + S will trigger a save in all editors</li>
+<li>(Bug) Unbolding broke in some cases</li>
+<li>General bug fixes and UI tweaks</li>
 </ul>
 
 		</div>
@@ -445,18 +445,18 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p><span class="date">September 04, 2015</span> <span class="badge minor">minor</span></p>
 
 			<ul>
-  <li>Editor navigation menu now splits Posts, Pages and collection items into their own category</li>
-  <li>Bitbucket syncing fixed for branches including a slash (/)</li>
-  <li>A new calming blue login background</li>
-  <li>Background images removed from client login screen</li>
-  <li>Removed sidebar background flicker when changing between views</li>
-  <li>Less scripts loaded to improve performance</li>
-  <li>Client uploads to the /upload directory get spaces stripped from filename</li>
-  <li>Extra spacing to improve input boxes</li>
-  <li>(Bug) Markdown editor produced data uri for loading images when saved</li>
-  <li>(Bug) Browser icons overflowing onto file list when in a dialog</li>
-  <li>(Bug) CSV editor fixes</li>
-  <li>Minor bug fixes</li>
+<li>Editor navigation menu now splits Posts, Pages and collection items into their own category</li>
+<li>Bitbucket syncing fixed for branches including a slash (/)</li>
+<li>A new calming blue login background</li>
+<li>Background images removed from client login screen</li>
+<li>Removed sidebar background flicker when changing between views</li>
+<li>Less scripts loaded to improve performance</li>
+<li>Client uploads to the /upload directory get spaces stripped from filename</li>
+<li>Extra spacing to improve input boxes</li>
+<li>(Bug) Markdown editor produced data uri for loading images when saved</li>
+<li>(Bug) Browser icons overflowing onto file list when in a dialog</li>
+<li>(Bug) CSV editor fixes</li>
+<li>Minor bug fixes</li>
 </ul>
 
 		</div>
@@ -468,13 +468,13 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p>This release contains a fix preventing some users from making payments.</p>
 
 <ul>
-  <li>Added extra credit card fields that some banks require</li>
-  <li>Disabled linter for unsupported file types</li>
-  <li>Fixed issue cancelling while creating collection item</li>
-  <li>Fixed Safari 9 issues on El Capitan preview</li>
-  <li>Fixed an issue with plan migration</li>
-  <li>Fixed spacing on sidebar header</li>
-  <li>General bug fixes</li>
+<li>Added extra credit card fields that some banks require</li>
+<li>Disabled linter for unsupported file types</li>
+<li>Fixed issue cancelling while creating collection item</li>
+<li>Fixed Safari 9 issues on El Capitan preview</li>
+<li>Fixed an issue with plan migration</li>
+<li>Fixed spacing on sidebar header</li>
+<li>General bug fixes</li>
 </ul>
 
 		</div>
@@ -488,19 +488,19 @@ The design is more consistent and streamlined for users. The preview mode is no 
 <p>CloudCannon will look very different. Everything from the login screens to the app layout has changed. Here is a complete list of the UI Changes</p>
 
 <ul>
-  <li>User navigation has its own routes and is available in a single sidebar. This gives you access to all settings in a single place and frees up the header for contextual controls.</li>
-  <li>Site navigations merged into a single sidebar. Labels are always visible which removes the need to remember which icon is which.</li>
-  <li>New icons site wide from Google Material Design.</li>
-  <li>New UI added to allow easier navigation to other pages within the visual editor.</li>
-  <li>Uploads have a new encoding without spaces or brackets. This solves some encoding issues when outputting to a page.</li>
-  <li>A new plans page within account settings which gives better visibility to your payment details</li>
-  <li>Currently shared to users show up in site sharing for easy resharing</li>
-  <li>Sharing interface tidied to allow faster updates to existing shares</li>
-  <li>Background images added to login and sidebar header</li>
-  <li>Better mobile styles in all sections of the app</li>
-  <li>Markdown editor handles files starting with an hr or an empty yaml header</li>
-  <li>Font changed from Roboto to Open Sans</li>
-  <li>General bug fixes</li>
+<li>User navigation has its own routes and is available in a single sidebar. This gives you access to all settings in a single place and frees up the header for contextual controls.</li>
+<li>Site navigations merged into a single sidebar. Labels are always visible which removes the need to remember which icon is which.</li>
+<li>New icons site wide from Google Material Design.</li>
+<li>New UI added to allow easier navigation to other pages within the visual editor.</li>
+<li>Uploads have a new encoding without spaces or brackets. This solves some encoding issues when outputting to a page.</li>
+<li>A new plans page within account settings which gives better visibility to your payment details</li>
+<li>Currently shared to users show up in site sharing for easy resharing</li>
+<li>Sharing interface tidied to allow faster updates to existing shares</li>
+<li>Background images added to login and sidebar header</li>
+<li>Better mobile styles in all sections of the app</li>
+<li>Markdown editor handles files starting with an hr or an empty yaml header</li>
+<li>Font changed from Roboto to Open Sans</li>
+<li>General bug fixes</li>
 </ul>
 
 		</div>
@@ -510,9 +510,9 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p><span class="date">August 19, 2015</span> <span class="badge minor">minor</span></p>
 
 			<ul>
-  <li><strong>Liquid is no longer mangled by the markdown editor.</strong></li>
-  <li>Seamless Bitbucket Connect login process.</li>
-  <li>Better Bitbucket disconnect behaviour.</li>
+<li><strong>Liquid is no longer mangled by the markdown editor.</strong></li>
+<li>Seamless Bitbucket Connect login process.</li>
+<li>Better Bitbucket disconnect behaviour.</li>
 </ul>
 
 		</div>
@@ -522,9 +522,9 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p><span class="date">August 14, 2015</span> <span class="badge minor">minor</span></p>
 
 			<ul>
-  <li>Improved markdown output</li>
-  <li>Posts now sorted by dates correctly</li>
-  <li>Table output support in markdown editor</li>
+<li>  Improved markdown output</li>
+<li>  Posts now sorted by dates correctly</li>
+<li>  Table output support in markdown editor</li>
 </ul>
 
 		</div>
@@ -538,13 +538,13 @@ The design is more consistent and streamlined for users. The preview mode is no 
 <p>On top of Internationalisation are the following fixes:</p>
 
 <ul>
-  <li>Link selector in the visual editor got a slight tidy up</li>
-  <li>Better mobile response for context buttons</li>
-  <li>Bug preventing share permissions changes when at full shares</li>
-  <li>The file browser retains your current folder allowing better use of the back button</li>
-  <li>Additional cache headers on optimised CDN assets</li>
-  <li>Better permalink detection for HTML visual editing</li>
-  <li>General bug fixes</li>
+<li>  Link selector in the visual editor got a slight tidy up</li>
+<li>  Better mobile response for context buttons</li>
+<li>  Bug preventing share permissions changes when at full shares</li>
+<li>  The file browser retains your current folder allowing better use of the back button</li>
+<li>  Additional cache headers on optimised CDN assets</li>
+<li>  Better permalink detection for HTML visual editing</li>
+<li>  General bug fixes</li>
 </ul>
 
 		</div>
@@ -556,11 +556,11 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p>This release provides options to control your site build:</p>
 
 <ul>
-  <li>Jekyll <a href="/hosting/environments/">Environments</a></li>
-  <li>Option to toggle site <a href="/hosting/optimisations/">Optimisations</a></li>
-  <li>Authentication <a href="/authentication/custom-interfaces/">Custom Interfaces</a></li>
-  <li>Speed improvements to <a href="/hosting/301-redirects/">301 Redirects</a> and authentication <a href="/authentication/custom-routes/">Custom Routes</a></li>
-  <li>General bug fixes</li>
+<li>Jekyll <a href="/hosting/environments/">Environments</a></li>
+<li>Option to toggle site <a href="/hosting/optimisations/">Optimisations</a></li>
+<li>Authentication <a href="/authentication/custom-interfaces/">Custom Interfaces</a></li>
+<li>Speed improvements to <a href="/hosting/301-redirects/">301 Redirects</a> and authentication <a href="/authentication/custom-routes/">Custom Routes</a></li>
+<li>General bug fixes</li>
 </ul>
 
 		</div>
@@ -572,15 +572,15 @@ The design is more consistent and streamlined for users. The preview mode is no 
 			<p>This release has a complete overhaul of the site authentication. This includes:</p>
 
 <ul>
-  <li><a href="/authentication/user-accounts/">User accounts</a> allowing you to limit access to your site based on an email address</li>
-  <li><a href="/authentication/custom-routes/">Authenticated routes</a> allows you to have private sections of a site</li>
-  <li><a href="/editing/front-matter/">Date/time front matter interfaces</a></li>
-  <li><a href="authentication/none/">Prototyping sites</a> no longer require a password. Instead viewers will be presented with a splash screen before viewing the site.</li>
-  <li>Internationalisation language detection incorporates the country more effectively.</li>
-  <li>Disabled HTTP access on app.cloudcannon.com</li>
-  <li>Better date handling on draft posts. If a date is already defined when published it will maintain that date</li>
-  <li>Syncing with GitHub handles force pushes</li>
-  <li>General bug fixes</li>
+<li><a href="/authentication/user-accounts/">User accounts</a> allowing you to limit access to your site based on an email address</li>
+<li><a href="/authentication/custom-routes/">Authenticated routes</a> allows you to have private sections of a site</li>
+<li><a href="/editing/front-matter/">Date/time front matter interfaces</a></li>
+<li><a href="authentication/none/">Prototyping sites</a> no longer require a password. Instead viewers will be presented with a splash screen before viewing the site.</li>
+<li>Internationalisation language detection incorporates the country more effectively.</li>
+<li>Disabled HTTP access on app.cloudcannon.com</li>
+<li>Better date handling on draft posts. If a date is already defined when published it will maintain that date</li>
+<li>Syncing with GitHub handles force pushes</li>
+<li>General bug fixes</li>
 </ul>
 
 		</div>

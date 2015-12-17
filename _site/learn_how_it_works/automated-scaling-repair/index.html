@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>CockroachDB Architecture | CockroachDB Documentation</title>
+		<title>Automated Scaling/Repair | CockroachDB Documentation</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<meta name="generator" content="Jekyll v2.4.0">
 
@@ -243,21 +243,14 @@
 					
 					<li class="nav-item top-level current">
 						
-						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<a href="/learn_how_it_works/automated-scaling-repair/">Learn How It Works</a>
 						<ul>
 	
 		
 			
 		
 
-		<li class="nav-item current"><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
-
-	
-		
-			
-		
-
-		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+		<li class="nav-item current"><a href="/learn_how_it_works/automated-scaling-repair/">Automated Scaling/Repair</a></li>
 
 	
 		
@@ -278,14 +271,21 @@
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/simplified-deployment/">Simplified Deployment</a></li>
 
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/open-source/">Open Source</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/go-implementation/">Go Implementation</a></li>
 
 	
 </ul>
@@ -343,7 +343,7 @@
 
 <section class="main">
 	<div class="page-header">
-		<h2>CockroachDB Architecture</h2>
+		<h2>Automated Scaling/Repair</h2>
 		<h3>Learn How It Works</h3>
 
 		
@@ -361,7 +361,7 @@
 
 			
 				
-				<a href="/learn_how_it_works/automated-scaling-and-repair/" class="next"></a>
+				<a href="/learn_how_it_works/strong-consistency/" class="next"></a>
 			
 
 			
@@ -371,7 +371,13 @@
 	</div>
 	<article class="content">
 		
-		
+		<p>CockroachDB transparently manages scale with an upgrade path from a single node to hundreds. Easily add capacity to the cluster by starting new storage containers and CockroachDB automatically rebalances existing data. Kill a container and CockroachDB re-replicates its data from available sources. With a simple configuration change you can even scale between cloud service providers or migrate your entire service without downtime.</p>
+
+<ul>
+<li>  Add resources to scale horizontally, with zero hassle and no downtime</li>
+<li>  Self-organizes, self-heals, and automatically rebalances</li>
+<li>  Migrate data seamlessly between clouds</li>
+</ul>
 
 	</article>
 </section>

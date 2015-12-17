@@ -243,21 +243,14 @@
 					
 					<li class="nav-item top-level current">
 						
-						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<a href="/learn_how_it_works/automated-scaling-repair/">Learn How It Works</a>
 						<ul>
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
-
-	
-		
-			
-		
-
-		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-repair/">Automated Scaling/Repair</a></li>
 
 	
 		
@@ -278,14 +271,21 @@
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/simplified-deployment/">Simplified Deployment</a></li>
 
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/open-source/">Open Source</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/go-implementation/">Go Implementation</a></li>
 
 	
 </ul>
@@ -354,8 +354,6 @@
 		
 	
 		
-	
-		
 			
 
 			
@@ -365,7 +363,7 @@
 
 			
 				
-				<a href="/learn_how_it_works/deployment-model/" class="next"></a>
+				<a href="/learn_how_it_works/simplified-deployment/" class="next"></a>
 			
 
 			
@@ -375,7 +373,14 @@
 	</div>
 	<article class="content">
 		
-		
+		<p>CockroachDB implements efficient, fully-serializable distributed transactions. What exactly is the difference between “repeatable read” and “serializable”? With CockroachDB, it’s a moot point. Stop using external locking mechanisms or half measures like CAS or “lightweight” transactions. CockroachDB transactions are integral and high performance, freeing developers to build applications.</p>
+
+<ul>
+<li>  Easily build consistent applications</li>
+<li>  Optimistic concurrency without locking</li>
+<li>  Efficient two phase commit</li>
+<li>  Serializable default isolation level</li>
+</ul>
 
 	</article>
 </section>

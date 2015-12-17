@@ -243,21 +243,14 @@
 					
 					<li class="nav-item top-level ">
 						
-						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<a href="/learn_how_it_works/automated-scaling-repair/">Learn How It Works</a>
 						<ul>
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
-
-	
-		
-			
-		
-
-		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-repair/">Automated Scaling/Repair</a></li>
 
 	
 		
@@ -278,14 +271,21 @@
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/simplified-deployment/">Simplified Deployment</a></li>
 
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/open-source/">Open Source</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/go-implementation/">Go Implementation</a></li>
 
 	
 </ul>
@@ -356,42 +356,72 @@
 	</div>
 	<article class="content">
 		
-		<p>To install and run CockroachDB on OSX, you can download and install the binary directly, use the popular OS X package manager <a href="/http://brew.sh/">Homebrew</a> to install the binary, pull the CockroachDB image into a <a href="/https://docs.docker.com/engine/installation/mac/#from-your-shell">Docker</a> container, or build CockroachDB from source. This page walks you through all options.</p>
+		<p>There are four ways to install and run CockroachDB on OS X for local development and testing:</p>
+
+<ul>
+<li>  <a href="#download-the-binary">Download the Binary</a></li>
+<li>  <a href="#use-docker">Use Docker</a></li>
+<li>  <a href="#use-homebrew">Use Homebrew</a></li>
+<li>  <a href="#build-from-source">Build from Source</a></li>
+</ul>
+
+<h2 id="download-the-binary">Download the Binary</h2>
+
+<h2 id="use-docker">Use Docker</h2>
+
+<p>Docker provides an official CockroachDB image. </p>
+
+<ol>
+<li><p><strong>Install Docker</strong><br>
+For a quick Docker install, run the following commands in your system shell. See <a href="https://docs.docker.com/engine/installation/mac/">Docker&#39;s official documentation</a> for full installation instructions. </p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Install docker and docker-machine: </span>
+<span class="nv">$ </span>brew install docker docker-machine
+
+<span class="c"># Install VirtualBox: </span>
+<span class="nv">$ </span>brew cask install virtualbox
+
+<span class="c"># Create and start the virtual machine: </span>
+<span class="nv">$ </span>docker-machine create --driver virtualbox default
+
+<span class="c"># Set up the environment for the docker client: </span>
+<span class="nv">$ </span><span class="nb">eval</span> <span class="k">$(</span>docker-machine env default<span class="k">)</span>
+</code></pre></div></li>
+<li><p><strong>Pull the CockroachDB image</strong>  </p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker pull cockroachdb/cockroach
+</code></pre></div></li>
+<li><p><strong>Start up the Cockroach shell</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker run -t -i cockroachdb/cockroach shell
+<span class="c"># root@82cb657cdc42:/cockroach#</span>
+</code></pre></div></li>
+</ol>
+
+<h2 id="build-from-source">Build from Source</h2>
+
+<p>Random code sample:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Welcome to the Pig Latin Translator!&#39;</span><span class="p">)</span>
+<span class="n">pyg</span> <span class="o">=</span> <span class="s">&#39;ay&#39;</span>
+
+<span class="c"># Ask user to enter a word.</span>
+<span class="n">original</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Enter a word:&#39;</span><span class="p">)</span>
+
+<span class="c"># Check if user entered something, and check if entry is just letters.</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">original</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">original</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+    <span class="c"># Store entry in lowercase.</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c"># Store just first letter of entry.</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c"># Store concatenation of word and first and pyg variables.</span>
+    <span class="n">new_word</span> <span class="o">=</span> <span class="n">word</span> <span class="o">+</span> <span class="n">first</span> <span class="o">+</span> <span class="n">pyg</span>
+    <span class="c"># Store new_word with first letter removed.</span>
+    <span class="n">new_word</span> <span class="o">=</span> <span class="n">new_word</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">new_word</span><span class="p">)]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">new_word</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;empty&#39;</span><span class="p">)</span></code></pre></div>
 
 <h2 id="download-binary">Download Binary</h2>
 
-<h2 id="homebrew">Homebrew</h2>
-
-<h2 id="docker">Docker</h2>
-
-<ol>
-    <li>
-        Install docker and docker-machine: 
-        
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install docker docker-machine</code></pre></div>
-
-    </li>
-    <li>
-        Install VirtualBox: 
-        
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew cask install virtualbox</code></pre></div>
-
-    </li>
-    <li>
-        Create and start the virtual machine: 
-        
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker-machine create --driver virtualbox default</code></pre></div>
-
-    </li>
-    <li>
-        Set up the environment for the docker client: 
-        
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">eval</span> <span class="k">$(</span>docker-machine env default<span class="k">)</span></code></pre></div>
-
-    </li>
-</ol>
-
-<h2 id="from-source">From Source</h2>
+<h2 id="use-homebrew">Use Homebrew</h2>
 
 	</article>
 </section>

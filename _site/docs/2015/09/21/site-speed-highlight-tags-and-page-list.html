@@ -243,21 +243,14 @@
 					
 					<li class="nav-item top-level ">
 						
-						<a href="/learn_how_it_works/cockroachdb-architecture/">Learn How It Works</a>
+						<a href="/learn_how_it_works/automated-scaling-repair/">Learn How It Works</a>
 						<ul>
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/cockroachdb-architecture/">CockroachDB Architecture</a></li>
-
-	
-		
-			
-		
-
-		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-and-repair/">Automated Scaling and Repair</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/automated-scaling-repair/">Automated Scaling/Repair</a></li>
 
 	
 		
@@ -278,14 +271,21 @@
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/deployment-model/">Deployment Model</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/simplified-deployment/">Simplified Deployment</a></li>
 
 	
 		
 			
 		
 
-		<li class="nav-item "><a href="/learn_how_it_works/open-source-and-go/">Open Source and Go</a></li>
+		<li class="nav-item "><a href="/learn_how_it_works/open-source/">Open Source</a></li>
+
+	
+		
+			
+		
+
+		<li class="nav-item "><a href="/learn_how_it_works/go-implementation/">Go Implementation</a></li>
 
 	
 </ul>
@@ -352,30 +352,30 @@
 		<p>A DOS attack early last week forced us to review page performance. The improvements made are:</p>
 
 <ul>
-  <li>Improved caching of the sites to get a ~5 times improvement in load speeds.</li>
-  <li>Applied rate limiting to a site to prevent malicious attacks on all sites.</li>
-  <li>Blocked common attack vectors for a Wordpress/php site to reduce load on servers.</li>
-  <li>Blocked pinging services that clog your google analytics. These flooded referrer stats to gain backlinks.</li>
-  <li>Compression on sites are now performed immediately after a Jekyll compile.</li>
+<li>Improved caching of the sites to get a ~5 times improvement in load speeds.</li>
+<li>Applied rate limiting to a site to prevent malicious attacks on all sites.</li>
+<li>Blocked common attack vectors for a Wordpress/php site to reduce load on servers.</li>
+<li>Blocked pinging services that clog your google analytics. These flooded referrer stats to gain backlinks.</li>
+<li>Compression on sites are now performed immediately after a Jekyll compile.</li>
 </ul>
 
 <p>Additionally we added new features:</p>
 
 <ul>
-  <li>Added support for highlight tag in markdown editor. This retains the content like a pre tag.</li>
-  <li>Users will need to downgrade before deleting their account to stop accidental deletions</li>
-  <li>New pages list in the collections tab. This allows clients to navigate and clone pages</li>
-  <li>Added support for category posts folders. Each category will get their own section in the collections tab. For example, posts in <code>/cats/_posts</code> are separated from those inside <code>/_posts</code>. All drafts remain in <code>/_drafts/</code>, upon publishing the category decides where they should go. No change will occur if you have all posts in <code>/_posts</code>.</li>
+<li>Added support for highlight tag in markdown editor. This retains the content like a pre tag.</li>
+<li>Users will need to downgrade before deleting their account to stop accidental deletions</li>
+<li>New pages list in the collections tab. This allows clients to navigate and clone pages</li>
+<li>Added support for category posts folders. Each category will get their own section in the collections tab. For example, posts in <code>/cats/_posts</code> are separated from those inside <code>/_posts</code>. All drafts remain in <code>/_drafts/</code>, upon publishing the category decides where they should go. No change will occur if you have all posts in <code>/_posts</code>.</li>
 </ul>
 
 <p>As always, bug fixes include:</p>
 
 <ul>
-  <li>Safari client editor failed to login on first use</li>
-  <li>Client editor move/delete files were not working for some users</li>
-  <li>WebSocket connection fixed for firefox windows</li>
-  <li>Auth routes broke in some cases</li>
-  <li>General bug fixes and tweeks</li>
+<li>Safari client editor failed to login on first use</li>
+<li>Client editor move/delete files were not working for some users</li>
+<li>WebSocket connection fixed for firefox windows</li>
+<li>Auth routes broke in some cases</li>
+<li>General bug fixes and tweeks</li>
 </ul>
 
 	</article>

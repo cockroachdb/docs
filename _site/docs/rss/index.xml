@@ -11,7 +11,6 @@
         <title>Performance and Reliability</title>
         
           <description>This release includes performance and reliability improvements to our back end processing.
-
 </description>
         
         <pubDate>Tue, 17 Nov 2015 00:00:00 -0500</pubDate>
@@ -24,8 +23,7 @@
       <item>
         <title>Compiler Overhaul</title>
         
-          <description>Since the last release, we’ve focused on back end performance and infrastructure. Performance and stability has increased across most of our services, including an improved system for processing sites. Sites are now processed, compiled and compressed faster and more reliably.
-
+          <description>Since the last release, we&#39;ve focused on back end performance and infrastructure. Performance and stability has increased across most of our services, including an improved system for processing sites. Sites are now processed, compiled and compressed faster and more reliably.
 </description>
         
         <pubDate>Tue, 03 Nov 2015 00:00:00 -0500</pubDate>
@@ -40,7 +38,6 @@
         
           <description>This release includes a redesign of the link pop out in the Visual Editor.
 The design is more consistent and streamlined for users. The preview mode is no longer required.
-
 </description>
         
         <pubDate>Mon, 28 Sep 2015 00:00:00 -0400</pubDate>
@@ -54,7 +51,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Site Speed, Highlight tags in markdown editor and pages list</title>
         
           <description>A DOS attack early last week forced us to review page performance. The improvements made are:
-
 </description>
         
         <pubDate>Mon, 21 Sep 2015 00:00:00 -0400</pubDate>
@@ -68,15 +64,14 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Performance Improvements and Bug Fixes</title>
         
           <description>
-  (Feature) base_path is reset to “” on every site so that it does not break interface
-  (Improvement) Better icons on git repository lists
-  (Bug) Paste as plain text fixed if pasting from Microsoft Office
-  (Bug) Browser list icon will now show when in a grid view rather than showing current state
-  (Bug) Improved parsing with mixed liquid and html. This will ensure a closer mapping to native Jekyll
-  (Bug) Ctrl/Cmd + S will trigger a save in all editors
-  (Bug) Unbolding broke in some cases
-  General bug fixes and UI tweaks
-
+(Feature) base_path is reset to &quot;&quot; on every site so that it does not break interface
+(Improvement) Better icons on git repository lists
+(Bug) Paste as plain text fixed if pasting from Microsoft Office
+(Bug) Browser list icon will now show when in a grid view rather than showing current state
+(Bug) Improved parsing with mixed liquid and html. This will ensure a closer mapping to native Jekyll
+(Bug) Ctrl/Cmd + S will trigger a save in all editors
+(Bug) Unbolding broke in some cases
+General bug fixes and UI tweaks
 
 </description>
         
@@ -91,19 +86,18 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Minor UI and Bug Fixes</title>
         
           <description>
-  Editor navigation menu now splits Posts, Pages and collection items into their own category
-  Bitbucket syncing fixed for branches including a slash (/)
-  A new calming blue login background
-  Background images removed from client login screen
-  Removed sidebar background flicker when changing between views
-  Less scripts loaded to improve performance
-  Client uploads to the /upload directory get spaces stripped from filename
-  Extra spacing to improve input boxes
-  (Bug) Markdown editor produced data uri for loading images when saved
-  (Bug) Browser icons overflowing onto file list when in a dialog
-  (Bug) CSV editor fixes
-  Minor bug fixes
-
+Editor navigation menu now splits Posts, Pages and collection items into their own category
+Bitbucket syncing fixed for branches including a slash (/)
+A new calming blue login background
+Background images removed from client login screen
+Removed sidebar background flicker when changing between views
+Less scripts loaded to improve performance
+Client uploads to the /upload directory get spaces stripped from filename
+Extra spacing to improve input boxes
+(Bug) Markdown editor produced data uri for loading images when saved
+(Bug) Browser icons overflowing onto file list when in a dialog
+(Bug) CSV editor fixes
+Minor bug fixes
 
 </description>
         
@@ -118,7 +112,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Extra credit card details</title>
         
           <description>This release contains a fix preventing some users from making payments.
-
 </description>
         
         <pubDate>Tue, 01 Sep 2015 00:00:00 -0400</pubDate>
@@ -132,7 +125,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Improved UI and Better Team Pricing</title>
         
           <description>Today we introduce a new pricing model. This creates a better agency flow with less upgrade steps and whitelabelling. You can read more about it in our pricing change announcement.
-
 </description>
         
         <pubDate>Fri, 28 Aug 2015 00:00:00 -0400</pubDate>
@@ -146,10 +138,9 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Bitbucket Improvements and Liquid in Markdown</title>
         
           <description>
-  Liquid is no longer mangled by the markdown editor.
-  Seamless Bitbucket Connect login process.
-  Better Bitbucket disconnect behaviour.
-
+Liquid is no longer mangled by the markdown editor.
+Seamless Bitbucket Connect login process.
+Better Bitbucket disconnect behaviour.
 
 </description>
         
@@ -168,7 +159,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
   Posts now sorted by dates correctly
   Table output support in markdown editor
 
-
 </description>
         
         <pubDate>Fri, 14 Aug 2015 00:00:00 -0400</pubDate>
@@ -182,7 +172,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Internationalisation and Performance improvements</title>
         
           <description>Internationalisation needed an overhaul. The new Internationalisation uses 302 redirects instead of the transparent internal redirect that occured. The new implementation uses redirects and different paths for each language. If https://example.com/ is requested in NZ a 302 redirect will occur to https://example.com/en_nz/ and it will served the NZ locale. If https://example.com/es/ is requested the ES version will be served with no redirect as the locale is already defined in the path. Due to this change a default locale setting has been added which is available once a locale has been added to the _locale folder.
-
 </description>
         
         <pubDate>Thu, 30 Jul 2015 00:00:00 -0400</pubDate>
@@ -196,7 +185,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Build Settings</title>
         
           <description>This release provides options to control your site build:
-
 </description>
         
         <pubDate>Fri, 24 Jul 2015 00:00:00 -0400</pubDate>
@@ -210,7 +198,6 @@ The design is more consistent and streamlined for users. The preview mode is no 
         <title>Authentication Overhaul</title>
         
           <description>This release has a complete overhaul of the site authentication. This includes:
-
 </description>
         
         <pubDate>Mon, 20 Jul 2015 00:00:00 -0400</pubDate>
