@@ -356,46 +356,55 @@
 	</div>
 	<article class="content">
 		
-		<p>There are four ways to install and run CockroachDB on OS X for local development and testing:</p>
+		<p>There are currently two ways to deploy CockroachDB locally on OSX:</p>
 
 <ul>
 <li>  <a href="#download-the-binary">Download the Binary</a></li>
-<li>  <a href="#use-docker">Use Docker</a></li>
-<li>  <a href="#use-homebrew">Use Homebrew</a></li>
 <li>  <a href="#build-from-source">Build from Source</a></li>
 </ul>
 
 <h2 id="download-the-binary">Download the Binary</h2>
 
-<h2 id="use-docker">Use Docker</h2>
-
-<p>Docker provides an official CockroachDB image. </p>
+<h2 id="build-from-source">Build from Source</h2>
 
 <ol>
-<li><p><strong>Install Docker</strong><br>
-For a quick Docker install, run the following commands in your system shell. See <a href="https://docs.docker.com/engine/installation/mac/">Docker&#39;s official documentation</a> for full installation instructions. </p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Install docker and docker-machine: </span>
-<span class="nv">$ </span>brew install docker docker-machine
+<li><p>Install the following prerequisites, as necessary:</p>
 
-<span class="c"># Install VirtualBox: </span>
-<span class="nv">$ </span>brew cask install virtualbox
-
-<span class="c"># Create and start the virtual machine: </span>
-<span class="nv">$ </span>docker-machine create --driver virtualbox default
-
-<span class="c"># Set up the environment for the docker client: </span>
-<span class="nv">$ </span><span class="nb">eval</span> <span class="k">$(</span>docker-machine env default<span class="k">)</span>
+<ul>
+<li>  A working C++ compiler that supports C++11</li>
+<li>  A 64-bit version of Go (download from https://golang.org/dl/ or run brew install go --cross-compile-common)</li>
+<li>  Git 1.8+ and Mercurial</li>
+</ul></li>
+<li><p>Get the CockroachDB code from your Go workspace (directory specified in your <code>GOPATH</code> environment variable):</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>go get -d github.com/cockroachdb/cockroach
 </code></pre></div></li>
-<li><p><strong>Pull the CockroachDB image</strong>  </p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker pull cockroachdb/cockroach
-</code></pre></div></li>
-<li><p><strong>Start up the Cockroach shell</strong></p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker run -t -i cockroachdb/cockroach shell
-<span class="c"># root@82cb657cdc42:/cockroach#</span>
+<li><p>Compile the CockroachDB binary:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd </span>cockroach
+<span class="nv">$ </span>make build
+</code></pre></div>
+<p>The first time you run <code>make</code>, it can take some time to download and install various dependent libraries and tools.</p></li>
+<li><p>Start up a cluster:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>./cockroach start --dev <span class="p">&amp;</span>
 </code></pre></div></li>
 </ol>
 
-<h2 id="build-from-source">Build from Source</h2>
+<h2 id="use-docker">Use Docker</h2>
+
+<p>Deploying CockroachDB in Docker is quick and easy. Once you&#39;ve installed Docker, just run Cockroach in the default Docker container.  </p>
+
+<ol>
+<li><p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>, as described in Docker&#39;s installation instructions for OS X.   </p></li>
+<li><p>To start CockroachDB, run this command in your terminal:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker run -t -i cockroachdb/cockroach shell
+</code></pre></div>
+<p>The first time you do this, Docker pulls the official CockroachDB image from Docker Hub. From that point on, the image remains on your local system. You can run <code>docker images</code> to list all of your local images.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>docker images
+
+REPOSITORY              TAG         IMAGE ID            CREATED             VIRTUAL SIZE
+cockroachdb/cockroach   latest      e707dfaf8703        <span class="m">2</span> days ago          278.2 MB
+hello-world             latest      0a6ba66e537a        <span class="m">9</span> weeks ago         <span class="m">960</span> B
+</code></pre></div></li>
+</ol>
 
 <p>Random code sample:</p>
 
