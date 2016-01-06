@@ -1,2 +1,0 @@
-# docs
-CockroachDB tech docs

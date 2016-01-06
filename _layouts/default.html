@@ -1,49 +1,86 @@
 <!DOCTYPE html>
-
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>{{ page.title }} | CockroachDB Documentation</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<meta name="generator" content="Jekyll v{{ jekyll.version }}">
+<html>
+  <head>
 
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400italic,400,300italic,300,700,700italic|Open+Sans:400italic,600italic,700italic,700,600,400|Inconsolata:400,700">
-		<link rel="stylesheet" href="/css/screen.css">
-		<link rel="alternate" type="application/atom+xml" title="CockroachDB Docs - Change Log" href="/atom/" />
-		<link rel="alternate" type="application/rss+xml" title="CockroachDB Docs - Change Log" href="/rss/" />
-		<link rel="icon" type="image/png" href="/img/favicon.png">
+ {% include head.html %}
 
-		<!--[if lt IE 9]>
-		<script src="/js/html5shiv.min.js"></script>
-		<script src="/js/respond.min.js"></script>
-		<![endif]-->
-		{% if page.duplicate_content %}
-			<link rel="canonical" href="{{ page.duplicate_content }}" />
-		{% endif %}
+<script>
+  $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+{% unless site.print == true %}
+{% if page.video == true %}
+<link href="https://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/4.12/video.js"></script>
+{% endif %}
+{% endunless %}
 
-		<script>
-			if (window.location.hostname === "docs.cloudcannon.com") {
-			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+{% unless site.print == true %}
+{% if page.datatable == true %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.5/js/jquery.dataTables.js"></script>
+<script>
+  $(document).ready(function(){
 
-			  ga('create', 'UA-37472773-15', 'auto');
-			  ga('send', 'pageview');
-			}
-		</script>
-	</head>
+      $('table.datatable').DataTable( {
+                  paging: false,
+                  stateSave: true
+              }
+      );
+</script>
+{% endif %}
+{% endunless %}
 
-	<body>
-		{% include mobile-nav.html %}
-		{% include primary-nav.html %}
+  </head>
 
-		{{ content }}
+<body>
 
-		<script>
-			document.getElementById("open-nav").onclick = function () {
-				document.body.classList.toggle("nav-open");
-			};
-		</script>
-	</body>
+{% include topnav.html %}
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="col-lg-12">&nbsp;</div>
+
+{% include sidebar.html %}
+
+            <!-- Content Column -->
+            <div class="col-md-9">
+
+                {{content}}
+            </div><!-- /.row -->
+
+    </div>    <!-- /.container -->
+
+<!-- <script>
+$(function() {
+    $('div.highlight').accordion(); 
+});
+</script> -->
+
+<!-- <script>
+$(function() {
+    $('div.highlight').addClass('expandcollapse');
+});
+</script>
+<script>
+$(function() {
+    $('div.expandcollapse').on("click",function() {
+      $(this).toggle(); 
+    });
+});
+</script> -->
+<script>
+$('.expandcollapse').on('click', function () {
+  $(this).next().toggle();
+});
+</script>
+
+</body>
+{% if site.google_analytics %}
+{% include google_analytics.html %}
+{% endif %}
+
 </html>
+
