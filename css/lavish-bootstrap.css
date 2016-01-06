@@ -649,7 +649,8 @@ pre {
   word-wrap: break-word;
   color: #77777a;
   background-color: #f5f5f5;
-  border: 1px solid #cccccc;
+  border: none;
+  /*border: 1px solid #cccccc;*/
   border-radius: 4px;
 }
 pre.prettyprint {
