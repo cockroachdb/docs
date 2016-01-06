@@ -358,7 +358,8 @@ hr {
   border: 0;
 }
 p {
-  margin: 0 0 10px;
+  /*margin: 0 0 10px;*/
+  margin: 2rem 0;
 }
 .lead {
   margin-bottom: 20px;
