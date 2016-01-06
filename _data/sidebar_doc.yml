@@ -153,8 +153,8 @@ entries:
           product: all
           version: all
 
-        - title: Troubleshooting
-          url: /troubleshooting.html
+        - title: Troubleshoot
+          url: /troubleshoot.html
           audience: all
           platform: all
           product: all
@@ -167,13 +167,20 @@ entries:
       version: all
       print: true
       items:
-        - title: Compare CockroachDB to Other Databases
-          url: /compare-cockroachdb-to-other-databases.html
+        - title: CockroachDB in Comparison
+          url: /cockroachdb-in-comparison.html
           audience: all
           platform: all
           product: all
           version: all
 
+        - title: Frequently Asked Questions
+          url: /frequently-asked-questions.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+          
         - title: Automated Scaling and Repair
           url: /automated-scaling-and-repair.html
           audience: all

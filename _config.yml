@@ -5,9 +5,9 @@ audience: all
 product: all
 platform: all
 version: all
-destination: ../cockroachhtml
+destination: ../cockroach_site
 topnav_title: CockroachDB
-homepage_title: CockroachDB
+homepage_title: CockroachDB Documentation
 site_title: Cockroach Labs
 google_analytics: 
 
