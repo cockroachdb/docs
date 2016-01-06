@@ -18,6 +18,11 @@ h4 {color: #808080; }
     color: #46a417;
 }
 
+.nav > li > a {
+    background-color: transparent;
+    color: #142848;    
+}
+
 a[data-toggle="tooltip"] {
     color: #649345;
     font-style: italic;
@@ -35,8 +40,9 @@ a[data-toggle="tooltip"] {
 }
 
 .navbar-header-items {
+    /*font-family: Avernir-Black, sans-serif;*/
     font-size: 14px;
-    font-weight: normal;
+    font-weight: bold;
     -webkit-font-smoothing: antialiased;
     text-transform: uppercase;
     float: right;
