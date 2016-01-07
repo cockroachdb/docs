@@ -167,13 +167,6 @@ entries:
       version: all
       print: true
       items:
-        - title: CockroachDB in Comparison
-          url: /cockroachdb-in-comparison.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
         - title: Frequently Asked Questions
           url: /frequently-asked-questions.html
           audience: all
@@ -181,6 +174,13 @@ entries:
           product: all
           version: all
           
+        - title: CockroachDB in Comparison
+          url: /cockroachdb-in-comparison.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
         - title: Automated Scaling and Repair
           url: /automated-scaling-and-repair.html
           audience: all

@@ -435,12 +435,6 @@ dl.dl-horizontal dd {
     /*font-weight: bold;*/
 }
 
-.nav > li.active > a  {
-    /*background-color: #347DBE;*/
-    background-color: transparent;
-    color: #f80;
-}
-
 .nav li a {
     font-size: 14px;
     line-height: 18px;

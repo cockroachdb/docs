@@ -13,9 +13,12 @@ h4 {color: #808080; }
 }
 
 .nav > li.active > a {
-    /*background-color: #347DBE;*/
     background-color: transparent;
     color: #46a417;
+}
+
+.nav > li.active > ul > li.active > a {
+    color: #46a417;    
 }
 
 .nav > li > a {
