@@ -49,7 +49,7 @@ entries:
           version: all
 
         - title: Basic SQL Commands
-          url: /build-a-test-app.html
+          url: /basic-sql-commands.html
           audience: all
           platform: all
           product: all
