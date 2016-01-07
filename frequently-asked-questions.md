@@ -27,7 +27,7 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 CockroachDB is designed to survive failures of any size, from transaction to server restart to datacenter outage. This is accomplished through strongly-consistent replication as well as automated repair after failures.
 
-**Replication** 
+**Replication**
 
 In CockroachDB, each range of key-value data is replicated multiple times (3 by default). Whenever you write to the database, CockroachDB uses the [Raft consensus algorithm](https://raft.github.io/), a popular successor to Paxos, to guarantee that a majority of the affected range replicas remain consistent. If any part of a transaction fails to meet this requirement, the transaction does not happen, and the database is left unchanged.  
 
@@ -44,7 +44,9 @@ When failures do occur, CockroachDB ensures the continued existence and consiste
 
 ## How is CockroachDB strongly-consistent?
 
-TBD Is CockroachDB CP or AP? 
+As mentioned [above](#how-does-cockroachdb-survive-failures), CockroachDB keeps multiple copies of your data and guarantees consistency between copies using the Raft consensus algorithm. Clients always see a consistent view (i.e., no stale reads).
+
+Raft elects a relatively long-lived leader which must be involved to propose commands. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections. Cockroach weights random timeouts such that the replicas with shorter round trip times to peers are more likely to hold elections first (not implemented yet). Only the Raft leader may propose commands; followers will simply relay commands to the last known leader.  
 
 ## Why is CockroachDB SQL?
 
@@ -62,8 +64,8 @@ Yes. Using [multi-version concurrency control (MVCC)](https://en.wikipedia.org/w
 
 Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
-- **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of the transaction fails, the entire transaction is aborted, and the database is left unchanged.   
-- **Consistency:** CockroachDB ensures consistency between a majority of replicas using the [Raft consensus algorithm](https://raft.github.io/). See How does CockroachDB survive failures? for more on replication.
+- **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.   
+- **Consistency:** CockroachDB ensures consistency between a majority of replicas using the Raft consensus algorithm. See [how CockroachDB survives failures](#how-does-cockroachdb-survive-failures) for more on replication.
 - **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that concurrent transactions on the same data, whether reads or writes, will never result in anomalies. In cases where anomalies are low risk, you can choose the slightly more lenient snapshot isolation level (SI) to trade correctness for performance.
 - **Durability:** In CockroachDB, once a transaction has been committed, the results are stored on-disk permanently.
 
