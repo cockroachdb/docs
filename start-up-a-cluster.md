@@ -1,9 +1,9 @@
 ---
-title: Run a Cluster
+title: Start Up a Cluster
 toc: false
 ---
 
-Once you've [installed CockroachDB locally](/install-cockroachdb), the quickest way to learn and test out the database is to start a single-node cluster and talk to the node via the built-in SQL client. You can start the database either in development mode, where data is stored in-memory and certificates aren't required, or in standard mode, where data is store on-disk.
+Once you've [installed CockroachDB locally](/install-cockroachdb), the quickest way to test out the database is to start a single-node cluster and talk to the node via the built-in SQL client. You can start the database either in development mode, where data is stored in-memory and certificates aren't required, or in standard mode, where data is store on-disk.
 
 {{site.data.alerts.callout_success}} To run a multi-node cluster, see <a href="http://cockroachlabs.com/docs/deploy-to-a-cloud-provider.html">Deploy to a Cloud Provider</a>.{{site.data.alerts.end}}
 
@@ -43,4 +43,4 @@ Once you've [installed CockroachDB locally](/install-cockroachdb), the quickest 
 4. Run some queries:
 
 ## What's Next?
-Learn more about **CockroachDB SQL** (link to come) and start **building a test app**.
+Learn more about **CockroachDB SQL** and start **building a test app**.
