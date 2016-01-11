@@ -5,15 +5,15 @@ toc: false
 
 There are currently two ways to deploy CockroachDB locally on OSX:
 
--	[Download the Binary](#download-the-binary)
--	[Build from Source](#build-from-source)
+- [Download the Binary](#download-the-binary)
+- [Build from Source](#build-from-source)
 
 ## Download the Binary
 
 
 ## Build from Source
 
-1.  Install the following prerequisites, as necessary:
+1.  Make sure you have the following prerequisites:
     - A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work). On Mac OS X, Xcode should suffice. 
     - A [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.5. You can download the [Go binary](https://golang.org/dl/) directly from the official site. On OS X, you can also use [homebrew](http://brew.sh): `brew install go`. 
     - Git 1.8+ 
@@ -33,11 +33,7 @@ There are currently two ways to deploy CockroachDB locally on OSX:
 
 	The first time you run `make`, it can take awhile to download and install various dependencies.
 
-4. Start up a cluster:
-
-	```bash
-	$ ./cockroach start --dev &
-	```
+4. [Start Up a Cluster](/start-up-a-cluster.html). 
 
 ## Use Docker
 

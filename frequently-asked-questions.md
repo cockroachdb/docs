@@ -5,7 +5,7 @@ toc: false
 
 ## What is CockroachDB?
 
-CockroachDB is a distributed SQL database built on a transactional and consistent key-value store. It **scales** massively (up to 4 exabytes of logical data), **survives** failures with minimal latency disruption and no manual intervention (from disk to machine to rack to datacenter), supports **strongly-consistent** ACID transactions, and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
+CockroachDB is a distributed SQL database built on a transactional and consistent key-value store. It **scales** massively (up to 4 exabytes of logical data); **survives** disk, machine, rack, and even datacenter failure with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
 
 CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely open source. 
 
@@ -103,7 +103,7 @@ TBD.
 
 ## When is CockroachDB not a good choice?
 
-CockroachDB is not yet suitable for real-time analytics, though support for analytics processing is on our long-term roadmap. 
+CockroachDB is not yet suitable for real-time analytics, although support for analytics processing is on our long-term roadmap. 
 
 ## What is CockroachDB’s security model?
 
@@ -115,6 +115,6 @@ TBD. Opt-in only.
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Not yet, and there are no known third-party vendors offering it as a service either at this time.
+Not yet, and there are no known third-party vendors offering it as a service at this time.
 
 **Have a question that wasn’t answered here? Visit our Github page or ask on our Google-Group, and someone will get back to you.** 
