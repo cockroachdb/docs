@@ -1,5 +1,5 @@
 ---
-title: Start Up a Local Cluster
+title: Start a Local Cluster
 toc: false
 ---
 
@@ -11,24 +11,16 @@ Data is stored in-memory and client/server communication is completely insecure.
 - [Standard Mode (Secure)](#standard-mode)  
 Data is stored on-disk and client/server communication is secure. Setup involves creating certificates and passing certain command line options, but it's still simple. This mode is safest for actual development. 
 
-{{site.data.alerts.callout_success}} For production deployments, see <a href="http://cockroachlabs.com/docs/deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
-
-If using Docker, all command should be run inside the Docker container.
+{{site.data.alerts.callout_info}} For production deployments, see <a href="http://cockroachlabs.com/docs/deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
 
 ## Development Mode
 
-1. Start the database:
+1. From the directory containing the `cockroach` binary, start the database:
     
     ```bash
     $ ./cockroach start --dev
     ```
     The `--dev` flag sets the storage to in-memory and client/server communication to insecure. 
-
-    If your `PATH` does not include the location of the `cockroach` binary, enter the full path in your shell, for example:
-
-    ```bash
-    $ src/github.com/cockroachdb/cockroach/cockroach start --dev
-    ```
 
 2. In a new shell, start the built-in SQL client in development mode:
 
@@ -43,18 +35,12 @@ If using Docker, all command should be run inside the Docker container.
 
 ## Standard Mode
 
-1. Initialize the cluster:
+1. From the directory containing the `cockroach` binary, initialize the cluster:
 
     ```bash
     $ ./cockroach init --stores=ssd=data
     ```
     The `--stores` flag sets the path for local storage.
-
-    If your `PATH` does not include the location of the `cockroach` binary, enter the full path in your shell, for example:
-
-    ```bash
-    $ src/github.com/cockroachdb/cockroach/cockroach init --stores=ssd=data
-    ```
 
 2. Create certificates for the database:
 

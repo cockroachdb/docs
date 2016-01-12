@@ -41,8 +41,8 @@ entries:
           product: all
           version: all
 
-        - title: Start Up a Cluster
-          url: /start-up-a-cluster.html
+        - title: Start a Local Cluster
+          url: /start-a-local-cluster.html
           audience: all
           platform: all
           product: all
