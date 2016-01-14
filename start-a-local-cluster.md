@@ -32,7 +32,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     ```
 
 3. [Run some queries](/basic-sql-commands.html).
-4. Check out the Admin UI by pointing your browser to `<your local host>:26257`. You can find your local host by running `hostname` in your shell.    
+4. Check out the Admin UI by pointing your browser to `http://<your local host>:26257`. You can find your local host by running `hostname` in your shell.    
 
 ## Standard Mode
 
@@ -50,7 +50,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     $ ./cockroach cert create-node localhost $(hostname) 
     $ ./cockroach cert create-client root
     ```
-    These commands create security certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, and `node.server.key` files. The last command creates the files for the SQL client: `root.client.crt`, `root.client.key`, `node.client.crt`, and `node.client.key`.  
+    These commands create security certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, and `node.server.key`. The last command creates the files for the SQL client: `root.client.crt`, `root.client.key`, `node.client.crt`, and `node.client.key`.  
 
 3. Start the cluster:
 
@@ -70,7 +70,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 
 5. [Run some queries](/basic-sql-commands.html).
 
-6. Check out the Admin UI by pointing your browser to `<your local host>:26257`. You can find your local host by running `hostname` in your shell.    
+6. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
 
 ## What's Next?
 Learn more about [CockroachDB SQL](/basic-sql-commands.html) and start [building a test app](/build-a-test-app.html).
