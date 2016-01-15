@@ -45,7 +45,7 @@ When failures occur, replication ensures the continued availability of replicas 
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (e.g., 2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
+CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
 
 ## Why is CockroachDB SQL?
 
@@ -62,13 +62,15 @@ Yes. CockroachDB distributes transactions across your cluster, whether it’s a 
 Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
 - **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. If a transaction succeeds, all mutations are applied together with virtual simultaneity.   
-- **Consistency:** In CockroachDB, non-distributed transactions use Raft to ensure the most recent data is read. Distributed transactions achieve consistency by relying on a limited degree of clock synchronization in conjunction with transaction restarts in the event of contention. 
-- **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that concurrent transactions on the same data, whether reads or writes, will never result in anomalies. In cases where anomalies are low risk, you can choose the slightly more lenient snapshot isolation level (SI) to trade correctness for performance.
-- **Durability:** In CockroachDB, once a transaction has been committed, the results are stored on-disk permanently.
+- **Consistency:** In CockroachDB, non-distributed transactions use the [Raft consensus algorithm](https://raft.github.io/) to ensure the most recent data is read. Distributed transactions achieve consistency by relying on a limited degree of clock synchronization in conjunction with transaction restarts in the event of contention. For more on clock synchronization, see this [blog post]() **need to link to Spencer's forthcoming post "Life Without TrueTime"**
+- **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that concurrent transactions on the same data, whether reads or writes, will never result in anomalies. We also provide snapshot isolation (SI), which is more performant with high-contention workloads, although it exhibits rare classes of anomalies not present in SSI.
+- **Durability:** In CockroachDB, once a transaction has been committed, the results are stored on-disk permanently. Replication provides availability and the [Raft consensus algorithm](https://raft.github.io/) guarantees consistency between the replicas.
 
 ## How are transactions in CockroachDB lock-free? 
 
-Transactions in CockroachDB do not lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB assumes that transactions do not contend and thus can proceed in parallel. In cases without contention, this results in significantly better performance than locking would allow. When there is contention, one of the conflicting transactions is restarted or aborted.  
+Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, one of the conflicting transactions must be restarted or aborted. 
+
+In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) may significantly improve performance.
 
 ## How performant is CockroachDB?
 
@@ -76,7 +78,18 @@ TBD
 
 ## What languages can I use to work with CockroachDB?
 
-Cockroach supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers.
+Cockroach supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We've tested it from the following languages:
+
+- Go
+- Python
+- Ruby
+- Java
+- JavaScript (node.js)
+- C++/C
+- Closure
+- PHP
+
+See [Install Client Drivers](/install-client-drivers.html) for more details.
 
 ## How does CockroachDB differ from MySQL or PostgreSQL?
 
@@ -84,11 +97,11 @@ While all of these databases support SQL syntax, CockroachDB is the only one tha
 
 ## How does CockroachDB differ from Cassandra, HBase, MongoDB, or Riak?
 
-While all of these databases support distributed transactions, Cockroach is the only one that provides strongly-consistent, ACID-compliant transactions and the convenience and familiarity of a SQL API. 
+While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions. 
 
 ## Can a MySQL or Postgres application be migrated to CockroachDB?
 
-The Alpha (soon Beta) version of CockroachDB is intended for use with new applications. The subset of SQL we currently support makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality. 
+The Alpha (soon Beta) version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.
 
 ## How easy is it to install CockroachDB?
 
