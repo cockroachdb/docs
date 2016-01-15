@@ -39,9 +39,9 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 1. From the directory containing the `cockroach` binary, initialize the cluster:
 
     ```
-    $ ./cockroach init --stores=ssd=temp/data
+    $ ./cockroach init --stores=ssd=dev/data
     ```
-    where `ssd` can be any arbitrary string describing the store (e.g., `ssd` for flash, `hdd` for spinny disk) and `temp/data` is the filepath to the storage location. For the filepath, the parent directory must exist and the store directory, if it already exists, must not contain any CockroachDB data.
+    where `ssd` can be any arbitrary string describing the store (e.g., `ssd` for flash, `hdd` for spinny disk) and `dev/data` is the filepath to the storage location. For the filepath, the parent directory must exist and the store directory, if it already exists, must not contain any CockroachDB data.
 
 2. Create security certificates:
 
@@ -50,12 +50,12 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     $ ./cockroach cert create-node localhost $(hostname) 
     $ ./cockroach cert create-client root
     ```
-    These commands create security certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, and `node.server.key`. The last command creates the files for the SQL client: `root.client.crt`, `root.client.key`, `node.client.crt`, and `node.client.key`.  
+    These commands create security certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. The last command creates the files for the SQL client: `root.client.crt` and `root.client.key`.  
 
 3. Start the cluster:
 
     ```
-    $ ./cockroach start --stores=ssd=/temp/data --gossip=localhost:26257
+    $ ./cockroach start --stores=ssd=dev/data --gossip=localhost:26257
     ```
     In the `--gossip` flag, `localhost:26257` is the default host and port for CockroachDB. 
 
