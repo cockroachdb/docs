@@ -13,10 +13,10 @@ CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive
 
 CockroachDB is especially well suited for applications that require:
 
+- Horizontal scalability
 - Business continuity (survivability) 
 - High levels of consistency 
 - Support for distributed ACID transactions 
-- The ability to scale horizontally with minimal operator overhead   
 
 ## How does CockroachDB scale?
 

@@ -20,7 +20,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     ```bash
     $ ./cockroach start --dev
     ```
-    The `--dev` flag defaults storage to in-memory and client/server communication to insecure. If you'd rather set these attributes manually, you can use the `--insecure` and `--stores=mem=<integer>` flags, where `<integer>` is the maximum in-memory store size in bytes. 
+    The `--dev` flag defaults storage to in-memory and client/server communication to insecure. 
 
 2. In a new shell, start the built-in SQL client in development mode:
 
@@ -55,9 +55,9 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 3. Start the cluster:
 
     ```
-    $ ./cockroach start --stores=ssd=dev/data --gossip=localhost:26257
+    $ ./cockroach start --stores=ssd=dev/data --gossip=self
     ```
-    In the `--gossip` flag, `localhost:26257` is the default host and port for CockroachDB. 
+    In the `--gossip` flag, `self` is equivalent to `localhost:26257`, the default host and port for CockroachDB. 
 
 4. In a new shell, start the built-in SQL client:
 

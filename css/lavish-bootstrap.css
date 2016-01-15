@@ -652,7 +652,7 @@ pre {
   border: none;
   border-radius: 2px;
   /*border-left: 5px solid #142848;*/
-  border-left: 5px solid #cccccc;
+  /*border-left: 5px solid #cccccc;*/
 }
 
 pre.prettyprint {
