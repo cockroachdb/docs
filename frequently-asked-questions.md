@@ -5,29 +5,34 @@ toc: false
 
 ## What is CockroachDB?
 
-CockroachDB is a distributed SQL database built on a transactional and consistent key-value store. It **scales** massively; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
 
-CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely open source. 
+CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely [open source](https://github.com/cockroachdb/cockroach). 
 
 ## When is CockroachDB a good choice?
 
-CockroachDB is well suited for applications that require high levels of consistency, support for distributed ACID transactions, and the ability to scale massively.  
+CockroachDB is especially well suited for applications that require:
+
+- Business continuity (survivability) 
+- High levels of consistency 
+- Support for distributed ACID transactions 
+- The ability to scale horizontally with minimal operator overhead   
 
 ## How does CockroachDB scale?
 
-CockroachDB scales massively and easily. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. 
+CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. Adding capacity is as easy as pointing a new node at the running cluster. 
 
 At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (64MB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
  
-When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB accomplishes this using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
+When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
 ## How does CockroachDB survive failures?
 
-CockroachDB is designed to survive failures of any size, from transaction to server restart to datacenter outage. This is accomplished through strongly-consistent replication as well as automated repair after failures.
+CockroachDB is designed to survive software and hardware failures, from server restarts to datacenter outages. This is accomplished without confusing artifacts typical of other distributed systems (e.g., stale reads) using strongly-consistent replication as well as automated repair after failures.
 
 **Replication**
 
-CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to Paxos. You can define the location of replicas in various ways, depending on the types of failure you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different disks within a server to tolerate disk failures
 - Different servers within a rack to tolerate server failures
@@ -36,28 +41,28 @@ CockroachDB replicates your data multiple times and guarantees consistency betwe
 
 **Automated Repair**
 
-When failures occur, CockroachDB ensures the continued existence and consistency of replicas. For short-term failures, such as a server restart, CockroachDB makes sure that there’s an available “leader” for each group of replicas so that subsequent transactions can continue seamlessly and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances any lost replicas to other locations in your cluster, breaking up and distributing the data quickly.
+When failures occur, replication ensures the continued availability of replicas and Raft ensures the consistency of replicas. For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that subsequent transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to Paxos. If any part of a transaction fails to reach a majority of affected replicas (3 by default), the entire transaction is aborted, and the database is left unchanged. This means that clients always see a consistent view of your data (i.e., no stale reads).  
+CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (e.g., 2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
 
 ## Why is CockroachDB SQL?
 
-At the lowest level, CockroachDB is a distributed, transactionally consistent, key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data in well-established and effective ways. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your PostgreSQL language-specific driver and start building.  
+At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your PostgreSQL language-specific driver and start building.  
 
 For insight into how CockroachDB maps SQL table data to key-value storage, see this [blog post](http://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
 ## Does CockroachDB support distributed transactions?
 
-Yes. CockroachDB distributes transactions across your cluster, whether it’s a few servers in a single location or many servers across multiple datacenters. Unlike with sharded setups, you don’t need to know the precise location of data; you just talk to any node in your cluster and CockroachDB gets your transaction to the right place seamlessly.
+Yes. CockroachDB distributes transactions across your cluster, whether it’s a few servers in a single location or many servers across multiple datacenters. Unlike with sharded setups, you don’t need to know the precise location of data; you just talk to any node in your cluster and CockroachDB gets your transaction to the right place seamlessly. Distributed transactions proceed without downtime or additional latency while rebalancing is underway. You can even move tables – or entire databases – between data centers or cloud infrastructure providers while the cluster is under load.
 
 ## Does CockroachDB have ACID semantics?
 
 Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
-- **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.   
-- **Consistency:** CockroachDB ensures consistency between a majority of replicas using the Raft consensus algorithm. See [how CockroachDB survives failures](#how-does-cockroachdb-survive-failures) for more on replication.
+- **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. If a transaction succeeds, all mutations are applied together with virtual simultaneity.   
+- **Consistency:** In CockroachDB, non-distributed transactions use Raft to ensure the most recent data is read. Distributed transactions achieve consistency by relying on a limited degree of clock synchronization in conjunction with transaction restarts in the event of contention. 
 - **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that concurrent transactions on the same data, whether reads or writes, will never result in anomalies. In cases where anomalies are low risk, you can choose the slightly more lenient snapshot isolation level (SI) to trade correctness for performance.
 - **Durability:** In CockroachDB, once a transaction has been committed, the results are stored on-disk permanently.
 
