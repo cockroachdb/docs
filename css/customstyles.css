@@ -803,6 +803,7 @@ ol.series li {
 
     ul#mysidebar {
         width: 225px;
+        position: fixed;
     }
 }
 

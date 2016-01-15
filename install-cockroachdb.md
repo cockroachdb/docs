@@ -33,7 +33,7 @@ There are currently two ways to deploy CockroachDB locally on OSX:
 
 	The first time you run `make`, it can take awhile to download and install various dependencies.
 
-4. [Start Up a Cluster](/start-up-a-cluster.html). 
+4. [Start a local cluster](/start-a-local-cluster.html). 
 
 ## Use Docker
 
