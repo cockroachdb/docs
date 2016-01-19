@@ -84,6 +84,10 @@ $ make build
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &amp;
 </code></pre></div></li>
 </ol>
+
+<h2 id="what-39-s-next">What&#39;s Next?</h2>
+
+<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <!-- Install instructions for Linux -->
@@ -158,6 +162,10 @@ $ make build
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &amp;
 </code></pre></div></li>
 </ol>
+
+<h2 id="what-39-s-next">What&#39;s Next?</h2>
+
+<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <!-- Install instructions for Windows -->
@@ -179,6 +187,10 @@ $ make build
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &amp;
 </code></pre></div></li>
 </ol>
+
+<h2 id="what-39-s-next">What&#39;s Next?</h2>
+
+<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <!-- Below is some of the page's content in Markdown. To get correct html, it's easiest to let Jeyll translate the Markdown and then use that html above.
