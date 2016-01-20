@@ -70,7 +70,7 @@ Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
 Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, one of the conflicting transactions must be restarted or aborted. 
 
-In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) may significantly improve performance.
+In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) can significantly improve performance.
 
 ## How performant is CockroachDB?
 
@@ -93,7 +93,7 @@ See [Install Client Drivers](/install-client-drivers.html) for more details.
 
 ## How does CockroachDB differ from MySQL or PostgreSQL?
 
-While all of these databases support SQL syntax, CockroachDB is the only one that scales simply (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
+While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
 
 ## How does CockroachDB differ from Cassandra, HBase, MongoDB, or Riak?
 

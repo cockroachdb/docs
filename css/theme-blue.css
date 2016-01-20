@@ -43,8 +43,8 @@ a[data-toggle="tooltip"] {
 }
 
 .navbar-header-items {
-    /*font-family: Avernir-Black, sans-serif;*/
-    font-size: 16px;
+    font-family: Avernir-Black, sans-serif;
+    font-size: 15px;
     font-weight: bold;
     -webkit-font-smoothing: antialiased;
     text-transform: uppercase;
@@ -53,6 +53,24 @@ a[data-toggle="tooltip"] {
     padding: 0;
     line-height: 45px;
     text-decoration: none;
+}
+
+.btn {
+    background: #46a417;
+    border: 2px solid #46a417;
+    font-family: Avernir-Black, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 0 29px;
+    line-height: 40px;
+    color: #fff;
+    border-radius: 35px;
+    margin-bottom: 5px;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #46a417;
 }
 
 .navbar-header-items > ul > li {
