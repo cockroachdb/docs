@@ -108,7 +108,7 @@
 body {
   color: #142848;
   font-family: 'AvenirLTStd-Light', serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -167,10 +167,6 @@ h4 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-a {
-  outline: none;
-  color: #46a417; }
-
 #content {
   background: #fff;
   position: relative;
@@ -179,9 +175,7 @@ a {
   z-index: 1000;
   -webkit-transition: margin 0.4s;
   transition: margin 0.4s;
-  -webkit-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
-  -moz-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
-  box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35); }
+  overflow: auto; }
 
 /** intermediate between mobile/tablet **/
 @media (min-width: 600px) {

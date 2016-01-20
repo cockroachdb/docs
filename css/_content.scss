@@ -6,9 +6,7 @@
 	z-index: 1000;
 	-webkit-transition: margin 0.4s;
 			transition: margin 0.4s;
-	-webkit-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
-	   -moz-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
-			box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35); 
+	overflow: auto; 
 }
 
 /** intermediate between mobile/tablet **/

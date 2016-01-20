@@ -3,7 +3,7 @@
 
 body {
   color: $cl_blue;
-  @include avenir_l(12px);
+  @include avenir_l(14px);
 }
 
 p {
@@ -39,11 +39,6 @@ h3 {
 
 h4 {
   @include avenir_bl(12px);
-}
-
-a {
-  outline:none;
-  color: $cl_green;
 }
 
 @import "content";
