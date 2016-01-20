@@ -1,0 +1,40 @@
+#content {
+	background: #fff;
+	position: relative;
+	padding-top: 50px;
+	width: 100%;
+	z-index: 1000;
+	-webkit-transition: margin 0.4s;
+			transition: margin 0.4s;
+	-webkit-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
+	   -moz-box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35);
+			box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.35); 
+}
+
+/** intermediate between mobile/tablet **/
+@media (min-width: 600px) {
+	#content {
+		padding-top:60px;
+	}
+}
+
+/** small desktop **/
+@media (min-width: 768px) {
+	#content {
+		padding-top:75px;
+	}
+}
+
+/** medium desktop **/
+@media (min-width: 992px) {
+	#content {
+		padding-top:100px;
+	}
+}
+
+/** large desktop **/
+@media (min-width: 1200px) {
+	#content {
+		padding-top:150px;
+	}
+}

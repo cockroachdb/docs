@@ -41,10 +41,6 @@
         {% include custom/conditions.html %}
 
         <ul id="mysidebar" class="nav">
-
-            <div class="siteTagline">{{site.sidebar_tagline}}</div>
-            <div class="versionTagline">{{site.sidebar_version}}</div>
-
             {% for entry in sidebar %}
             {% for subcategory in entry.subcategories %}
             {% if subcategory.audience contains audience and subcategory.product contains product and subcategory.platform contains platform and subcategory.version contains version and subcategory.web != false %}
