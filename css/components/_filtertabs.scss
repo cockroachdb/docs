@@ -1,0 +1,57 @@
+#os-tabs {
+	margin-top: 30px;
+	border-bottom: 2px solid $cl_green;
+
+	button {
+		border: none;
+		border-top: 2px solid #eaeaea;
+		border-bottom: 2px solid $cl_green;
+		background-color: #eaeaea;
+		color: $cl_blue;
+		@include avenir_m(16px);
+		outline: 0;
+		padding: 3px 15px 2px 33px;
+		position: relative;
+		bottom: -2px;
+		margin: 0 6px 0 0;
+		
+
+		&:hover {
+			border-top: 2px solid $cl_green;
+		}
+
+		&.current {
+			border-top: 2px solid $cl_green;
+			background-color: #FFFFFF;
+			color: $cl_blue;
+			border-bottom: 2px solid #FFFFFF;
+		}
+
+		&:after {
+			position: absolute;
+			font-family: 'FontAwesome';
+			content: "\f078";
+			top: 2px;
+			left: 10px;
+			z-index: 5;
+		}
+
+		&#mac {
+			&:after {	
+				content: "\f179";
+         	}
+		}
+
+		&#linux {
+			&:after {	
+				content: "\f17c";
+         	}
+		}
+
+		&#windows {
+			&:after {	
+				content: "\f17a";
+         	}
+		}
+	}
+}

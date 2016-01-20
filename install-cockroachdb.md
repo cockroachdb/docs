@@ -5,16 +5,22 @@ toc: false
 <script>
 $(document).ready(function(){
     $("#mac").click(function(){
+        $('#os-tabs').find('button').removeClass('current');
+        $(this).addClass('current');
         $("#macinstall").show();
         $("#linuxinstall").hide();
         $("#windowsinstall").hide();
     });
     $("#linux").click(function(){
+        $('#os-tabs').find('button').removeClass('current');
+        $(this).addClass('current');
         $("#linuxinstall").show();
         $("#macinstall").hide();
         $("#windowsinstall").hide();
     });
     $("#windows").click(function(){
+        $('#os-tabs').find('button').removeClass('current');
+        $(this).addClass('current');
         $("#windowsinstall").show();
         $("#macinstall").hide();
         $("#linuxinstall").hide();    
@@ -22,24 +28,11 @@ $(document).ready(function(){
 });
 </script>
 
-<!--<script>
-$(document).ready(function(){
-$(".osbutton").click(function(){ $(".install").hide();});
-    $("#mac").click(function(){
-        $("#macinstall").show();
-    });
-    $("#linux").click(function(){
-        $("#linuxinstall").show();
-    });
-    $("#windows").click(function(){
-        $("#windowsinstall").show();
-    });
-});
-</script>-->
-
-<button id="mac">Mac</button>
-<button id="linux">Linux</button>
-<button id="windows">Windows</button>
+<div id="os-tabs">
+    <button id="mac" class="current">Mac</button>
+    <button id="linux">Linux</button>
+    <button id="windows">Windows</button>
+</div>
 
 <div id=macinstall>
 <p>There are currently two ways to install CockroachDB locally on OSX:</p>

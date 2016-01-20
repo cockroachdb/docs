@@ -376,6 +376,46 @@ header {
       header nav.desktop a.github {
         padding: 2px 45px 0;
         line-height: 56px; } }
+#os-tabs {
+  margin-top: 30px;
+  border-bottom: 2px solid #46a417; }
+  #os-tabs button {
+    border: none;
+    border-top: 2px solid #eaeaea;
+    border-bottom: 2px solid #46a417;
+    background-color: #eaeaea;
+    color: #142848;
+    font-family: 'AvenirLTStd-Medium', serif;
+    font-size: 16px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    outline: 0;
+    padding: 3px 15px 2px 33px;
+    position: relative;
+    bottom: -2px;
+    margin: 0 6px 0 0; }
+    #os-tabs button:hover {
+      border-top: 2px solid #46a417; }
+    #os-tabs button.current {
+      border-top: 2px solid #46a417;
+      background-color: #FFFFFF;
+      color: #142848;
+      border-bottom: 2px solid #FFFFFF; }
+    #os-tabs button:after {
+      position: absolute;
+      font-family: 'FontAwesome';
+      content: "\f078";
+      top: 2px;
+      left: 10px;
+      z-index: 5; }
+    #os-tabs button#mac:after {
+      content: "\f179"; }
+    #os-tabs button#linux:after {
+      content: "\f17c"; }
+    #os-tabs button#windows:after {
+      content: "\f17a"; }
+
 .bs-callout {
   padding: 20px;
   margin: 20px 0;
