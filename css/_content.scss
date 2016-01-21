@@ -27,6 +27,10 @@
 @media (min-width: 992px) {
 	#content {
 		padding-top:100px;
+
+		#main-content {
+			min-height: 500px;
+		}
 	}
 }
 

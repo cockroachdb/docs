@@ -189,7 +189,9 @@ h4 {
 /** medium desktop **/
 @media (min-width: 992px) {
   #content {
-    padding-top: 100px; } }
+    padding-top: 100px; }
+    #content #main-content {
+      min-height: 500px; } }
 /** large desktop **/
 @media (min-width: 1200px) {
   #content {
