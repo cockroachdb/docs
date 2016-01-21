@@ -3,7 +3,9 @@
         
         var _viewport_width = $(window).width(),
             $mobile_menu = $('nav.mobile_expanded'),
-            $sidebar = $('#mysidebar');
+            $sidebar = $('#mysidebar'),
+            $footer = $('#footer'),
+            footertotop, scrolltop, difference;
 
 
         $mobile_menu.css('visibility', 'visible');
@@ -50,6 +52,21 @@
                 $('header').removeClass('scrolled').addClass('default'); 
                 $sidebar.css({'top': 'auto'});   
             }
+
+
+            //prevent sidebar from overlapping footer
+            footertotop = $footer.position().top;
+            scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 130;
+            difference = scrolltop-footertotop;
+
+            if (scrolltop > footertotop) {
+                $sidebar.css('margin-top',  40-difference);
+            }
+            else  {
+                $sidebar.css('margin-top', 40);
+            }
+
+
         });
 
 

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 /*Colors*/
+/*Mixins*/
 @import url("//hello.myfonts.net/count/2e0219");
 @font-face {
   font-family: 'Adelle-Bold';
@@ -416,6 +417,267 @@ header {
     #os-tabs button#windows:after {
       content: "\f17a"; }
 
+#footer {
+  background: #e6e6e6;
+  padding-top: 65px;
+  padding-bottom: 90px;
+  float: left;
+  width: 100%; }
+  #footer .hbspt-form {
+    width: 86%;
+    background: #eaeaea;
+    border: 2px solid #eeeeee;
+    padding: 33px 0;
+    margin-left: 7%;
+    margin-bottom: 85px;
+    text-align: center; }
+    #footer .hbspt-form form {
+      overflow: auto; }
+    #footer .hbspt-form label {
+      width: 100%;
+      font-family: 'Adelle-Regular', serif;
+      font-size: 28px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #142848;
+      float: left;
+      margin-top: 5px; }
+    #footer .hbspt-form .hs-input {
+      width: 80%;
+      font-size: 20px;
+      padding: 0px 30px;
+      line-height: 50px;
+      border: none;
+      outline: none;
+      margin: 10px auto 0;
+      min-height: 50px; }
+    #footer .hbspt-form .hs-button {
+      background: #142848;
+      border-color: #142848;
+      max-width: 180px;
+      width: 100%;
+      margin-top: 20px;
+      color: #fff;
+      padding: 3px 17px 0;
+      line-height: 28px;
+      -webkit-border-radius: 36px;
+      -moz-border-radius: 36px;
+      border-radius: 36px;
+      text-transform: uppercase;
+      font-family: 'AvenirLTStd-Black', serif;
+      font-size: 11px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; }
+    #footer .hbspt-form .hs-button:hover {
+      background: none;
+      border-color: #142848;
+      color: #142848; }
+    #footer .hbspt-form .hs-error-msgs, #footer .hbspt-form .hs-form-required {
+      display: none !important; }
+    #footer .hbspt-form .submitted-message {
+      clear: left;
+      display: inline-block;
+      width: 80%;
+      margin: 0 auto;
+      font-family: 'AvenirLTStd-Medium', serif;
+      font-size: 17px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #46a417; }
+  #footer .footer_nav_row {
+    margin: 0;
+    width: 100%; }
+    #footer .footer_nav_row .footer_logo {
+      width: 100%;
+      margin: 0 auto 40px;
+      text-align: center; }
+      #footer .footer_nav_row .footer_logo img {
+        max-width: 150px; }
+    #footer .footer_nav_row .footer_nav_col, #footer .footer_nav_row .footer_social_col {
+      float: right; }
+    #footer .footer_nav_row .footer_nav, #footer .footer_nav_row .footer_social {
+      list-style: none;
+      width: 100%;
+      margin: 0;
+      padding: 0; }
+      #footer .footer_nav_row .footer_nav li, #footer .footer_nav_row .footer_social li {
+        color: #353435;
+        font-family: 'AvenirLTStd-Book', serif;
+        font-size: 14px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-transform: uppercase;
+        width: 100%;
+        list-style: none;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        text-indent: 0;
+        line-height: 14px; }
+        #footer .footer_nav_row .footer_nav li a, #footer .footer_nav_row .footer_social li a {
+          color: #353435;
+          font-family: 'AvenirLTStd-Book', serif;
+          font-size: 17px;
+          font-weight: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-transform: none;
+          line-height: 40px; }
+      #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header {
+        width: 100%;
+        margin-bottom: 10px;
+        font-family: 'AvenirLTStd-Black', serif;
+        font-size: 14px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; }
+      #footer .footer_nav_row .footer_nav li:before, #footer .footer_nav_row .footer_social li:before {
+        content: "";
+        display: none;
+        left: auto;
+        top: auto; }
+  #footer .copyright {
+    text-align: center;
+    margin: 45px 0 0;
+    color: #353435; }
+
+/** intermediate between mobile/tablet **/
+@media (min-width: 600px) {
+  #footer .footer_nav_row {
+    margin: 0;
+    width: 100%; }
+    #footer .footer_nav_row .footer_logo {
+      float: left;
+      width: 33%;
+      max-width: 30%;
+      margin: 0 0 0 15px; }
+      #footer .footer_nav_row .footer_logo img {
+        max-width: 200px; }
+    #footer .footer_nav_row .footer_nav_col, #footer .footer_nav_row .footer_social_col {
+      float: right;
+      width: 30%; }
+    #footer .footer_nav_row .footer_nav li, #footer .footer_nav_row .footer_social li {
+      text-align: left; } }
+/** mobile-only **/
+@media (min-width: 768px) {
+  #footer {
+    padding-top: 55px;
+    padding-bottom: 70px; }
+    #footer .hbspt-form {
+      padding: 22px 0;
+      margin: 0 15px 65px;
+      width: calc(100% - 30px); }
+      #footer .hbspt-form label {
+        width: auto;
+        font-family: 'Adelle-Regular', serif;
+        font-size: 24px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin-top: 5px;
+        margin-left: 15px; }
+      #footer .hbspt-form .hs-input {
+        width: calc(100% - 420px);
+        float: left;
+        font-size: 18px;
+        padding: 0px 15px;
+        line-height: 40px;
+        margin-left: 20px;
+        margin-top: 0;
+        min-height: 40px; }
+      #footer .hbspt-form .hs-button {
+        max-width: 180px;
+        width: auto;
+        float: right;
+        margin-right: 15px;
+        margin-top: 0;
+        text-align: center;
+        line-height: 40px;
+        -webkit-border-radius: 35px;
+        -moz-border-radius: 35px;
+        border-radius: 35px;
+        font-family: 'AvenirLTStd-Black', serif;
+        font-size: 14px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; }
+    #footer .footer_nav_row .footer_nav_col, #footer .footer_nav_row .footer_social_col {
+      width: 25%; }
+    #footer .copyright {
+      width: 100%;
+      float: left;
+      margin-top: 45px;
+      text-align: left; } }
+/** medium desktop **/
+@media (min-width: 992px) {
+  #footer {
+    padding-top: 60px;
+    padding-bottom: 80px; }
+    #footer .hbspt-form {
+      padding: 28px 0; }
+      #footer .hbspt-form label {
+        width: auto;
+        font-family: 'Adelle-Regular', serif;
+        font-size: 28px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin-top: 5px;
+        margin-left: 30px; }
+      #footer .hbspt-form .hs-input {
+        width: calc(100% - 500px);
+        padding: 0px 20px;
+        line-height: 45px;
+        margin-left: 30px;
+        min-height: 45px; }
+      #footer .hbspt-form .hs-button {
+        margin-right: 30px;
+        line-height: 45px; }
+    #footer .footer_nav_row .footer_logo {
+      text-align: left;
+      width: 25%; }
+    #footer .footer_nav_row .footer_nav_col, #footer .footer_nav_row .footer_social_col {
+      width: 25%; }
+    #footer .footer_nav_row .footer_nav, #footer .footer_nav_row .footer_social {
+      float: right; }
+      #footer .footer_nav_row .footer_nav li, #footer .footer_nav_row .footer_social li {
+        width: 100%; }
+      #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header {
+        width: 100%; }
+    #footer .footer_nav_row .footer_social li {
+      width: 50%;
+      float: left; } }
+/** large desktop **/
+@media (min-width: 1200px) {
+  #footer {
+    padding-top: 65px;
+    padding-bottom: 90px; }
+    #footer .hbspt-form {
+      width: 100%;
+      padding: 33px 0;
+      margin-bottom: 85px; }
+      #footer .hbspt-form label {
+        font-family: 'Adelle-Regular', serif;
+        font-size: 31px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin-top: 5px;
+        margin-left: 40px; }
+      #footer .hbspt-form .hs-input {
+        width: 500px;
+        font-size: 20px;
+        padding: 0px 30px;
+        line-height: 50px;
+        min-height: 50px; }
+      #footer .hbspt-form .hs-button {
+        width: 170px;
+        margin-right: 40px;
+        padding: 0 45px; } }
 .bs-callout {
   padding: 20px;
   margin: 20px 0;
