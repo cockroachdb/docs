@@ -28,10 +28,11 @@ $(document).ready(function(){
 
 <!-- Install instructions for Mac OS X -->
 <div id=macinstall>
-<p>There are three ways to install CockroachDB locally on Mac OS X:</p>
+<p>There are four ways to install CockroachDB locally on Mac OS X:</p>
 
 <ul>
 <li><a href="#download-the-binary">Download the Binary</a></li>
+<li><a href="#use-homebrew">Use Homebrew</a></li>
 <li><a href="#build-from-source">Build from Source</a></li>
 <li><a href="#use-docker">Use Docker</a></li>
 </ul>
@@ -44,6 +45,16 @@ $(document).ready(function(){
 <div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;
 </code></pre></div></li>
 <li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
+</ol>
+
+<h2 id="use-homebrew">Use Homebrew</h2>
+
+<ol>
+<li><p><a href="http://brew.sh/">Install Homebrew</a>.</p></li>
+<li><p>Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o">)</span>
+</code></pre></div></li>
+<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p></li>
 </ol>
 
 <h2 id="build-from-source">Build from Source</h2>
@@ -70,7 +81,7 @@ $ make build
 <h2 id="use-docker">Use Docker</h2>
 
 <ol>
-<li><p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>, as described in Docker&#39;s installation instructions for OS X.   </p></li>
+<li><p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>.   </p></li>
 <li><p>Open <strong>Launchpad</strong> and start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p></li>
 <li><p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>docker pull cockroachdb/cockroach
@@ -145,7 +156,7 @@ $ make build
 >>>>>>> draft of install instructions for osx, linux, and windows
 
 <ol>
-<li><p><a href="https://docs.docker.com/engine/installation/ubuntulinux/">Install Docker</a>, as described in Docker&#39;s installation instructions for Linux.   </p></li>
+<li><p><a href="https://docs.docker.com/engine/installation/ubuntulinux/">Install Docker</a>.   </p></li>
 <li><p>If you don&#39;t already have the Docker daemon running in the background, run:  </p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo docker -d &amp;
 </code></pre></div>
@@ -173,7 +184,7 @@ $ make build
 <p>At this time, it's possible to run CockroachDB on Windows only from within a Docker container, which is a stripped-to-basics version of a Linux operating system. 
 
 <ol>
-<li><p><a href="https://docs.docker.com/engine/installation/windows/">Install Docker</a>, as described in Docker&#39;s installation instructions for Windows.   </p></li>
+<li><p><a href="https://docs.docker.com/engine/installation/windows/">Install Docker</a>.   </p></li>
 <li><p>Start the <strong>Docker Quickstart Terminal</strong> application. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM. </p></li>
 <li><p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>docker pull cockroachdb/cockroach
@@ -191,14 +202,9 @@ $ make build
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
 <p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
-</div>
+</div>  
 
 <!-- Below is some of the page's content in Markdown. To get correct html, it's easiest to let Jeyll translate the Markdown and then use that html above.
-
-There are currently two ways to install CockroachDB locally on OSX:
-
-- [Download the Binary](#download-the-binary)
-- [Build from Source](#build-from-source)
 
 ## Download the Binary
 
@@ -211,6 +217,18 @@ There are currently two ways to install CockroachDB locally on OSX:
     ```
 
 3. [Start a local cluster](/start-a-local-cluster.html). 
+
+## Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+
+2. Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:
+
+    ```bash
+    $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb)
+    ``` 
+
+3. [Start a local cluster](/start-a-local-cluster.html).
 
 ## Build from Source
 
@@ -238,7 +256,7 @@ There are currently two ways to install CockroachDB locally on OSX:
 
 ## Use Docker (Mac)
 
-1. 	[Install Docker](https://docs.docker.com/mac/step_one/), as described in Docker's installation instructions for OS X.   
+1. 	[Install Docker](https://docs.docker.com/mac/step_one/).   
 
 2.	Open **Launchpad** and start the **Docker Quickstart Terminal**. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM. 
 
@@ -264,7 +282,7 @@ There are currently two ways to install CockroachDB locally on OSX:
 
 ## Use Docker (Linux)
 
-1.  [Install Docker](https://docs.docker.com/engine/installation/ubuntulinux/), as described in Docker's installation instructions for Linux.   
+1.  [Install Docker](https://docs.docker.com/engine/installation/ubuntulinux/).   
 
 2.  If you don't already have the Docker daemon running in the background, run:  
     
