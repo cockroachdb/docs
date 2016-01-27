@@ -105,17 +105,10 @@ $ make build
 <div id=linuxinstall style="display: none;">
 <p>There are three ways to install CockroachDB locally on Linux:</p>
 
-<<<<<<< 45e9905fde39ac92302be7264bcffd41ce75b059
 <ul>    
 <li><a href="#download-the-binary-linux">Download the Binary</a></li>
 <li><a href="#build-from-source-linux">Build from Source</a></li>
 <li><a href="#use-docker-linux">Use Docker</a></li>
-=======
-<ul>
-<li><a href="#download-the-binary">Download the Binary</a></li>
-<li><a href="#build-from-source">Build from Source</a></li>
-<li><a href="use-docker">Use Docker</a></li>
->>>>>>> draft of install instructions for osx, linux, and windows
 </ul>
 
 <h2 id="download-the-binary-linux">Download the Binary</h2>
@@ -149,11 +142,7 @@ $ make build
 <li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
 
-<<<<<<< 45e9905fde39ac92302be7264bcffd41ce75b059
 <h2 id="use-docker-linux">Use Docker</h2>
-=======
-<h2 id="use-docker">Use Docker</h2>
->>>>>>> draft of install instructions for osx, linux, and windows
 
 <ol>
 <li><p><a href="https://docs.docker.com/engine/installation/ubuntulinux/">Install Docker</a>.   </p></li>
