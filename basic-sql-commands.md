@@ -70,10 +70,9 @@ To create a table, use the [`CREATE TABLE`](/create-table.html) command followed
 
 ```postgres
 CREATE TABLE accounts (
-    account_num     int,
-    balance         decimal,
-    created_on      date,
-    last_modified   timestamp
+    account_num     INT,
+    balance         DECIMAL,
+    created_on      DATE,
 );
 ```
 
@@ -83,10 +82,9 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 
 ```postgres
 CREATE TABLE IF NOT EXISTS accounts (
-    account_num     int,
-    balance         decimal,
-    created_on      date,
-    last_modified   timestamp
+    account_num     INT,
+    balance         DECIMAL,
+    created_on      DATE,
 );
 ```
 
@@ -102,7 +100,6 @@ SHOW COLUMNS FROM accounts;
 | account_num   | INT       | true  | NULL                      |
 | balance       | DECIMAL   | true  | NULL                      |
 | created_on    | DATE      | true  | NULL                      |
-| last_modified | TIMESTAMP | true  | NULL                      |
 | rowid         | INT       | false | experimental_unique_int() |
 +---------------+-----------+-------+---------------------------+
 ```
@@ -110,7 +107,7 @@ SHOW COLUMNS FROM accounts;
 You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` command above. If you don't specify a `PRIMARY KEY` when creating a table, CockroachDB automatically adds the `rowid` column as the primary key. To see the primary index for a table, use the [`SHOW INDEX FROM`](/show-index.html) command followed by the name of the table:
 
 ```postgres
-SHOW INDEX FROM poetry;
+SHOW INDEX FROM accounts;
 ```
 ```
 +----------+---------+--------+-----+--------+-----------+---------+
@@ -123,7 +120,7 @@ SHOW INDEX FROM poetry;
 When you no longer need a table, use the [`DROP TABLE`](/drop-table.html) command followed by the table name to remove the table and all its data:
 
 ```postgres
-DROP TABLE poetry;
+DROP TABLE accounts;
 ```
 
 ## Show Available Tables
@@ -137,9 +134,8 @@ SHOW TABLES;
 +-----------+
 |  Table    |
 +-----------+
-| poetry    |
-| fiction   |
-| biography |
+| accounts  |
+| history   |
 +-----------+
 ```
 
@@ -152,12 +148,12 @@ SHOW TABLES FROM animals;
 +------------+
 |   Table    |
 +------------+
-| elephants  |
-| turtles    |
-| pandas     |
-| frogs      |
 | aardvarks  |
+| elephants  |
+| frogs      |
 | moles      |
+| pandas     |
+| turtles    |
 +------------+
 ```
 
@@ -166,36 +162,36 @@ SHOW TABLES FROM animals;
 To insert a row into a table, use the [`INSERT INTO`](/insert.html) command followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ```postgres
-INSERT INTO poetry VALUES ('Way', 'Leslie Scalapino', DATE '1988-04-01', 'North Point Press', 9780865473201, 148);
+INSERT INTO accounts VALUES (12345, 6000.00, DATE '2016-01-05');
 ```
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the same order:
 
 ```postgres
-INSERT INTO poetry (author, isbn, title, publisher, pub_date, pages) VALUES ('Leslie Scalapino', 9780865473201, 'Way', 'North Point Press', DATE '1988-04-01', 148);
+INSERT INTO accounts (balance, account_num, created_on) VALUES (6000.00, 12345, DATE '2016-01-05');
 ```
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ```postgres
-INSERT INTO poetry (author, isbn, title, publisher, pub_date, pages) VALUES 
-    ('Leslie Scalapino', 9780865473201, 'Way', 'North Point Press', DATE '1988-04-01', 148),
-    ('Laura Sims', 1934200239, 'Stranger', 'Fence Books', DATE '2009-03-01', 77);
+INSERT INTO accounts (balance, account_num, created_on) VALUES 
+    (6000.00, 12345, DATE '2016-01-05'),
+    (4000.00, 23456, DATE '2016-01-05');
 ```
 
 [Defaults values](/default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with the `isbn` column filled with its default value, in this case `NULL`:
 
 ```postgres
-INSERT INTO poetry (author, title, publisher, pub_date, pages) VALUES ('Leslie Scalapino', 'Way', 'North Point Press', DATE '1988-04-01', 148);
+INSERT INTO accounts (account_num, created_on, balance) VALUES (12345, DATE '2016-01-05');
 
-INSERT INTO poetry (author, isbn, title, publisher, pub_date, pages) VALUES ('Leslie Scalapino', DEFAULT, 'Way', 'North Point Press', DATE '1988-04-01', 148);
+INSERT INTO accounts (account_num, created_on, balance) VALUES (12345, DATE '2016-01-05', DEFAULT);
 ```
 ```
-+-------+------------------+------------+-------------------+---------------+-------+
-| title |      author      |  pub_date  |     publisher     |     isbn      | pages |
-+-------+------------------+------------+-------------------+---------------+-------+
-| Way   | Leslie Scalapino | 1988-04-01 | North Point Press | NULL          |   148 |
-+-------+------------------+------------+-------------------+---------------+-------+
++-------------+---------+------------+
+| account_num | balance | created_on |
++-------------+---------+------------+
+|       12345 | NULL    | 2016-01-05 |
++-------------+---------+------------+
 
 ```
 
