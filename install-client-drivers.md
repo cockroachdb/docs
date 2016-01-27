@@ -5,6 +5,7 @@ toc: false
 
 Language | Recommended Driver
 ---------|--------
+Go | xxx
 Python | [psycopg2](http://initd.org/psycopg/)
 Ruby | [pg](https://rubygems.org/gems/pg)
 Java | [jdbc](https://jdbc.postgresql.org)

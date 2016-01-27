@@ -472,7 +472,7 @@ ul#mysidebar {
 
 .nav li.thirdlevel > a {
 background-color: transparent;
-color: #a5a099;
+/*color: #a5a099;*/
 /*color: #248EC2;*/
 /*font-weight:bold;*/
 }

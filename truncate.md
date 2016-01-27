@@ -1,0 +1,4 @@
+---
+title: TRUNCATE
+toc: false
+---
