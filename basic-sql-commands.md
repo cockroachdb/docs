@@ -49,7 +49,7 @@ SHOW DATABASES;
 To set a database as active, use the [`SET DATABASE`](/set-database.html) command:
 
 ```postgres
-SET DATABASE = books;
+SET DATABASE = bank;
 ```
 
 When a database is active, you don't need to reference it explicitly in subsequent statements. To see which database is currently active, use the `SHOW DATABASE` command (note the singular form):
@@ -61,7 +61,7 @@ SHOW DATABASE;
 +----------+
 | DATABASE |
 +----------+
-| books    |
+| bank     |
 +----------+
 ```
 
@@ -70,13 +70,11 @@ SHOW DATABASE;
 To create a table, use the [`CREATE TABLE`](/create-table.html) command followed by a table name, the columns in the table, and the [data type](/data-types.html) for each column:
 
 ```postgres
-CREATE TABLE poetry (
-    title       string,
-    author      string, 
-    pub_date    date, 
-    publisher   string, 
-    isbn        int,
-    pages       int
+CREATE TABLE accounts (
+    account_num     int,
+    balance         decimal,
+    created_on      date,
+    last_modified   timestamp
 );
 ```
 
@@ -85,33 +83,29 @@ Table and column names must follow [these rules](/identifiers.html). Also, white
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
 ```postgres
-CREATE TABLE IF NOT EXISTS poetry (
-    title       string,
-    author      string, 
-    pub_date    date, 
-    publisher   string, 
-    isbn        int,
-    pages       int
+CREATE TABLE IF NOT EXISTS accounts (
+    account_num     int,
+    balance         decimal,
+    created_on      date,
+    last_modified   timestamp
 );
 ```
 
 To verify that all columns were created correctly, use the [`SHOW COLUMNS FROM`](/show-columns.html) command followed by the table name:
 
 ```postgres
-SHOW COLUMNS FROM poetry;
+SHOW COLUMNS FROM accounts;
 ```
 ```
-+-----------+--------+-------+---------------------------+
-|   Field   |  Type  | Null  |          Default          |
-+-----------+--------+-------+---------------------------+
-| title     | STRING | true  | NULL                      |
-| author    | STRING | true  | NULL                      |
-| pub_date  | DATE   | true  | NULL                      |
-| publisher | STRING | true  | NULL                      |
-| isbn      | INT    | true  | NULL                      |
-| pages     | INT    | true  | NULL                      |
-| rowid     | INT    | false | experimental_unique_int() |
-+-----------+--------+-------+---------------------------+
++---------------+-----------+-------+---------------------------+
+|     Field     |   Type    | Null  |          Default          |
++---------------+-----------+-------+---------------------------+
+| account_num   | INT       | true  | NULL                      |
+| balance       | DECIMAL   | true  | NULL                      |
+| created_on    | DATE      | true  | NULL                      |
+| last_modified | TIMESTAMP | true  | NULL                      |
+| rowid         | INT       | false | experimental_unique_int() |
++---------------+-----------+-------+---------------------------+
 ```
 
 You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` command above. If you don't specify a `PRIMARY KEY` when creating a table, CockroachDB automatically adds the `rowid` column as the primary key. To see the primary index for a table, use the [`SHOW INDEX FROM`](/show-index.html) command followed by the name of the table:
