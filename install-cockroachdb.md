@@ -52,7 +52,7 @@ $(document).ready(function(){
 <ol>
 <li><p><a href="http://brew.sh/">Install Homebrew</a>.</p></li>
 <li><p>Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o">)</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o"></span>
 </code></pre></div></li>
 <li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p></li>
 </ol>
