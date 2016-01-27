@@ -12,19 +12,19 @@ This page walks you through some of the most essential CockroachDB SQL commands.
 CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the [`CREATE DATABASE`](/create-database.html) command followed by a database name:
 
 ```postgres
-CREATE DATABASE books;
+CREATE DATABASE bank;
 ```
 
 Database names must follow [these rules](/identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ```postgres
-CREATE DATABASE IF NOT EXISTS books;
+CREATE DATABASE IF NOT EXISTS bank;
 ```
 
 When you no longer need a database, use the [`DROP DATABASE`](/drop-database.html) command followed by the database name to remove the database and all its objects:
 
 ```postgres
-DROP DATABASE books;
+DROP DATABASE bank;
 ```
 
 ## Show Available Databases
@@ -39,8 +39,7 @@ SHOW DATABASES;
 | Database |
 +----------+
 | system   |
-| books    |
-| animals  |
+| bank     |
 +----------+
 ```
 
@@ -114,11 +113,11 @@ You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` com
 SHOW INDEX FROM poetry;
 ```
 ```
-+-------+---------+--------+-----+--------+-----------+---------+
-| Table |  Name   | Unique | Seq | Column | Direction | Storing |
-+-------+---------+--------+-----+--------+-----------+---------+
-| books | primary | true   |   1 | rowid  | ASC       | false   |
-+-------+---------+--------+-----+--------+-----------+---------+
++----------+---------+--------+-----+--------+-----------+---------+
+|  Table   |  Name   | Unique | Seq | Column | Direction | Storing |
++----------+---------+--------+-----+--------+-----------+---------+
+| accounts | primary | true   |   1 | rowid  | ASC       | false   |
++----------+---------+--------+-----+--------+-----------+---------+
 ```
 
 When you no longer need a table, use the [`DROP TABLE`](/drop-table.html) command followed by the table name to remove the table and all its data:
