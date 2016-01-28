@@ -109,7 +109,7 @@
 body {
   color: #142848;
   font-family: 'AvenirLTStd-Light', serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -130,32 +130,20 @@ p {
     -moz-osx-font-smoothing: grayscale; }
 
 h1 {
-  font-family: 'Adelle-Regular', serif;
-  font-size: 52px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 40px;
   color: #46a417;
   line-height: 1.1;
   margin-bottom: 10px; }
 
 h2 {
-  font-family: 'Adelle-Regular', serif;
   font-size: 25px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   line-height: 30px; }
 
 h3 {
-  font-family: 'Adelle-Regular', serif;
   font-size: 19px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   line-height: 29px; }
   h3 strong, h3 b {
-    font-family: 'Adelle-Bold', serif;
+    font-family: 'AvenirLTStd-Black', serif;
     font-size: 19px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -191,7 +179,8 @@ h4 {
   #content {
     padding-top: 100px; }
     #content #main-content {
-      min-height: 575px; } }
+      min-height: 575px;
+      padding-top: 50px; } }
 /** large desktop **/
 @media (min-width: 1200px) {
   #content {
@@ -328,7 +317,8 @@ header {
         color: #46a417; }
       header nav.desktop a.github, header.scrolled nav.desktop a.github {
         padding: 0 29px;
-        line-height: 40px; }
+        line-height: 40px;
+        margin-right: 0; }
     header nav.mobile, header.scrolled nav.mobile {
       display: none; } }
 /** medium desktop **/
@@ -424,7 +414,9 @@ header {
   padding-top: 65px;
   padding-bottom: 90px;
   float: left;
-  width: 100%; }
+  width: 100%;
+  position: relative;
+  z-index: 905; }
   #footer .hbspt-form {
     width: 86%;
     background: #eaeaea;

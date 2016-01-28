@@ -11,26 +11,27 @@
 <!-- Desktop / Tablet Navigation -->
 <header class="navbar-fixed-top">
     <div class="container">
-        <a class="logo" href="/" title="Cockroach Labs">
-            <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
-            <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
-        </a>
-
-        <nav class="desktop" role="navigation">
-            <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item">FAQ</a>
-            <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
-            <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
-            <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
-            <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
-            <a href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="btn cl-btn github menu-item">Install</a>
-        </nav>
-        <nav class="mobile" role="navigation">
-            <a href="#" title="Expand Menu" class="hamburger">
-                <div class="hamburger_inner"></div>
+        <div class="row">
+            <a class="logo" href="/" title="Cockroach Labs">
+                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
             </a>
-            <a target="_blank" href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="btn cl-btn github menu-item">Install</a>
-        </nav>
 
+            <nav class="desktop" role="navigation">
+                <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item">FAQ</a>
+                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
+                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+            <nav class="mobile" role="navigation">
+                <a href="#" title="Expand Menu" class="hamburger">
+                    <div class="hamburger_inner"></div>
+                </a>
+                <a target="_blank" href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+        </div>
         {% include frameescape.html %}
     </div>
 </header>

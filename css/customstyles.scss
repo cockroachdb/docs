@@ -3,7 +3,7 @@
 
 body {
   color: $cl_blue;
-  @include avenir_l(14px);
+  @include avenir_l(16px);
 }
 
 p {
@@ -17,23 +17,23 @@ p {
 }
 
 h1 {
-  @include adelle(52px);
+  font-size: 40px;
   color: $cl_green;
   line-height: 1.1;
   margin-bottom: 10px; 
 }
 
 h2 {
-  @include adelle(25px);
+  font-size: 25px;
   line-height:30px;
 }
 
 h3 {
-  @include adelle(19px);
+  font-size: 19px;
   line-height:29px;
 
   strong, b {
-    @include adelle_b(19px);
+    @include avenir_bl(19px);
   }
 }
 

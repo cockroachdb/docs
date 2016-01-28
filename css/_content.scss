@@ -2,11 +2,12 @@
 	background: #fff;
 	position: relative;
 	padding-top: 50px;
+	
 	width: 100%;
 	z-index: 1000;
 	-webkit-transition: margin 0.4s;
 			transition: margin 0.4s;
-	overflow: auto; 
+	overflow: auto;
 }
 
 /** intermediate between mobile/tablet **/
@@ -30,6 +31,7 @@
 
 		#main-content {
 			min-height: 575px;
+			padding-top: 50px;
 		}
 	}
 }

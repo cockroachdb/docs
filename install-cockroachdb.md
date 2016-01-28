@@ -4,27 +4,51 @@ toc: false
 ---
 <script>
 $(document).ready(function(){
-    $("#mac").click(function(){
+    
+    //detect os and display corresponding tab by default
+    if (navigator.appVersion.indexOf("Mac")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#mac').addClass('current');
+        toggleMac(); 
+    }
+    if (navigator.appVersion.indexOf("Linux")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#linux').addClass('current');
+        toggleLinux(); 
+    }
+    if (navigator.appVersion.indexOf("Win")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#windows').addClass('current');
+        toggleWindows(); 
+    }
+
+    //handle click event for os-tab buttons
+    $('#os-tabs').on('click', 'button', function(){
         $('#os-tabs').find('button').removeClass('current');
         $(this).addClass('current');
+
+        if($(this).is('#mac')){ toggleMac(); }
+        if($(this).is('#linux')){ toggleLinux(); }
+        if($(this).is('#windows')){ toggleWindows(); }
+    });
+
+    function toggleMac(){
         $("#macinstall").show();
         $("#linuxinstall").hide();
         $("#windowsinstall").hide();
-    });
-    $("#linux").click(function(){
-        $('#os-tabs').find('button').removeClass('current');
-        $(this).addClass('current');
+    }
+
+    function toggleLinux(){
         $("#linuxinstall").show();
         $("#macinstall").hide();
         $("#windowsinstall").hide();
-    });
-    $("#windows").click(function(){
-        $('#os-tabs').find('button').removeClass('current');
-        $(this).addClass('current');
+    }
+
+    function toggleWindows(){
         $("#windowsinstall").show();
         $("#macinstall").hide();
-        $("#linuxinstall").hide();    
-    });
+        $("#linuxinstall").hide(); 
+    }
 });
 </script>
 
@@ -34,7 +58,7 @@ $(document).ready(function(){
     <button id="windows">Windows</button>
 </div>
 
-<div id=macinstall>
+<div id="macinstall">
 <p>There are currently two ways to install CockroachDB locally on OSX:</p>
 
 <ul>
@@ -74,7 +98,7 @@ $ make build
 </ol>
 </div>
 
-<div id=linuxinstall style="display: none;">
+<div id="linuxinstall" style="display: none;">
 <p>There are currently two ways to install CockroachDB locally on Linux:</p>
 
 <ul>    
@@ -136,7 +160,7 @@ $ make build
 </ol>
 </div>
 
-<div id=windowsinstall style="display: none;">
+<div id="windowsinstall" style="display: none;">
 <p>At this time, the only way to run CockroachDB on Windows is to use Docker. 
 
 <ol>
