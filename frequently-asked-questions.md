@@ -72,10 +72,6 @@ Transactions in CockroachDB do not explicitly lock their data resources. Instead
 
 In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) can significantly improve performance.
 
-## How performant is CockroachDB?
-
-TBD
-
 ## What languages can I use to work with CockroachDB?
 
 Cockroach supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We've tested it from the following languages:
@@ -127,12 +123,8 @@ CockroachDB is not yet suitable for real-time analytics, although support for an
 
 TBD. We support client and internode SSL. Everything within CockroachDB requires that you speak to it with encryption. 
 
-## What is CockroachDB’s privacy model?
-
-TBD. Opt-in only. 
-
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Not yet, and there are no known third-party vendors offering it as a service at this time.
+Not yet, but this is on our long-term roadmap. 
 
 **Have a question that wasn’t answered here? Visit our Github page or ask on our Google-Group, and someone will get back to you.** 

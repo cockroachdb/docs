@@ -3,6 +3,10 @@ title: Start a Local Cluster
 toc: false
 ---
 
+<script>
+anchors.add('h2');
+</script>
+
 Once you've [installed CockroachDB locally](/install-cockroachdb), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
 
 - [Development Mode (Insecure)](#development-mode)  
@@ -38,7 +42,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 
 1. From the directory containing the `cockroach` binary, initialize the cluster:
 
-    ```
+    ```bash
     $ ./cockroach init --stores=ssd=dev/data
     ```
     where `ssd` can be any arbitrary string describing the store (e.g., `ssd` for flash, `hdd` for spinny disk) and `dev/data` is the filepath to the storage location. For the filepath, the parent directory must exist and the store directory, if it already exists, must not contain any CockroachDB data.
@@ -54,7 +58,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 
 3. Start the cluster:
 
-    ```
+    ```bash
     $ ./cockroach start --stores=ssd=dev/data --gossip=self
     ```
     In the `--gossip` flag, `self` is equivalent to `localhost:26257`, the default host and port for CockroachDB. 

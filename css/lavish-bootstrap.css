@@ -639,6 +639,10 @@ code {
   border-radius: 4px;
 }
 
+a code {
+  color: #46a417;
+}
+
 pre {
   display: block;
   padding: 9.5px;

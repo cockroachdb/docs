@@ -9,7 +9,7 @@ destination: ../cockroach_site
 topnav_title: CockroachDB
 homepage_title: CockroachDB Documentation
 site_title: Cockroach Labs
-google_analytics: 
+google_analytics: UA-63775601-1
 
 # variables
 sidebar_tagline: 
@@ -37,7 +37,7 @@ theme_file: theme-blue.css
 redcarpet:
   extensions: ["no_intra_emphasis", "fenced_code_blocks", "tables", "with_toc_data"]
 
-highlighter: rouge
+highlighter: pygments
 
 collections:
   tooltips:
