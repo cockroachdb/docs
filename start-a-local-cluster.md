@@ -3,10 +3,6 @@ title: Start a Local Cluster
 toc: false
 ---
 
-<script>
-anchors.add('h2');
-</script>
-
 Once you've [installed CockroachDB locally](install-cockroachdb), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
 
 - [Development Mode (Insecure)](#development-mode)  
@@ -77,4 +73,5 @@ Data is stored on-disk and client/server communication is secure. Setup involves
 6. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
 
 ## What's Next?
+
 Learn more about [CockroachDB SQL](basic-sql-commands.html) and start [building a test app](build-a-test-app.html).

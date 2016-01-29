@@ -5,7 +5,9 @@ toc: false
 
 This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](/sql-reference.html).
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is yet not available in our Beta version. Joins and interleaved tables, for example, will be built into v 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}    
+{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is yet not available in our Beta version. Joins and interleaved tables, for example, will be built into v 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
+
+<img src="images/catrina_ramen.png" style="max-width: 200px;" />
 
 ## Create a Database
 
@@ -171,7 +173,8 @@ INSERT INTO table1 VALUES (12345, 1.1, DATE '2016-01-05', 'hello');
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the same order:
 
 ```postgres
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES ('hello', DATE '2016-01-05', 1.1, 12345);
+INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
+    ('hello', DATE '2016-01-05', 1.1, 12345);
 ```
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
@@ -185,9 +188,11 @@ INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES
 [Defaults values](/default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with the `column_a` column filled with its default value, in this case `NULL`:
 
 ```postgres
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES ('hello', DATE '2016-01-05', 1.1);
+INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
+    ('hello', DATE '2016-01-05', 1.1);
 
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES ('hello', DATE '2016-01-05', 1.1, DEFAULT);
+INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
+    ('hello', DATE '2016-01-05', 1.1, DEFAULT);
 ```
 ```
 +----------+----------+------------+----------+
