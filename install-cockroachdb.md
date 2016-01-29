@@ -70,7 +70,7 @@ $(document).ready(function(){
 
 <h2 id="download-the-binary">Download the Binary</h2>
 
-<<ol>
+<ol>
 <li><p>Download the <a href="http://cockroachlabs.com/download/osx">CockroachDB binary for OS X</a>.</p></li>
 <li><p>Make the binary executible:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;

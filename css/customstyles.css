@@ -179,7 +179,7 @@ h4 {
   #content {
     padding-top: 100px; }
     #content #main-content {
-      min-height: 575px;
+      min-height: 625px;
       padding-top: 50px; } }
 /** large desktop **/
 @media (min-width: 1200px) {
