@@ -521,6 +521,8 @@ header {
           -moz-osx-font-smoothing: grayscale;
           text-transform: none;
           line-height: 40px; }
+          #footer .footer_nav_row .footer_nav li a:hover, #footer .footer_nav_row .footer_social li a:hover {
+            text-decoration: underline; }
       #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header {
         width: 100%;
         margin-bottom: 10px;

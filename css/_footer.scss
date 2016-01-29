@@ -116,6 +116,10 @@
 					@include avenir_bk(17px);
 					text-transform: none;
 					line-height:40px;
+
+					&:hover {
+						text-decoration: underline;
+					}
 				}
 			}
 			li.header {

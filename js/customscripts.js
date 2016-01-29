@@ -43,7 +43,7 @@
             if(scroll_top > header_resize_y){
                 $('header').removeClass('default').addClass('scrolled');
                 if(_viewport_width > 991) {
-                    $sidebar.css({'top': '55px'});
+                    $sidebar.css({'top': '95px'});
                 }else{
                     $sidebar.css({'top': 'auto'});  
                 }
@@ -56,7 +56,7 @@
 
             //prevent sidebar from overlapping footer
             footertotop = $footer.position().top;
-            scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 130;
+            scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 170;
             difference = scrolltop-footertotop;
 
             if (scrolltop > footertotop) {
