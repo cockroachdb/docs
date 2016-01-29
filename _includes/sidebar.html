@@ -23,16 +23,22 @@
                         easing: 'swing'
                     },
                     onToggleAfter: function(){
-                        setTimeout(function(){
-                            var height = $sidebar.outerHeight();
-                            if(height > 475){
-                                $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
-                            }else{
-                                $maincontent.animate({ 'min-height' : 625 }, 200);
-                            }
-                        }, 400);
+                        adjustMinHeight();
                     }
                 });
+
+                adjustMinHeight();
+
+                function adjustMinHeight(){
+                    setTimeout(function(){
+                        var height = $sidebar.outerHeight();
+                        if(height > 475){
+                            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+                        }else{
+                            $maincontent.animate({ 'min-height' : 625 }, 200);
+                        }
+                    }, 400);
+                }
 
                 $("#collapseAll").click(function(e) {
                     e.preventDefault();
