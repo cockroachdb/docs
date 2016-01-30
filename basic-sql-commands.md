@@ -3,7 +3,7 @@ title: Basic SQL Commands
 toc: false
 ---
 
-This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](/sql-reference.html).
+This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
 
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is yet not available in our Beta version. Joins and interleaved tables, for example, will be built into v 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
 
@@ -11,19 +11,19 @@ This page walks you through some of the most essential CockroachDB SQL commands.
 
 ## Create a Database
 
-CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the [`CREATE DATABASE`](/create-database.html) command followed by a database name:
+CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the [`CREATE DATABASE`](create-database.html) command followed by a database name:
 
 ```postgres
 CREATE DATABASE db1;
 ```
 
-Database names must follow [these rules](/identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ```postgres
 CREATE DATABASE IF NOT EXISTS db1;
 ```
 
-When you no longer need a database, use the [`DROP DATABASE`](/drop-database.html) command followed by the database name to remove the database and all its objects:
+When you no longer need a database, use the [`DROP DATABASE`](drop-database.html) command followed by the database name to remove the database and all its objects:
 
 ```postgres
 DROP DATABASE db1;
@@ -47,7 +47,7 @@ SHOW DATABASES;
 
 ## Set a Database
 
-To set a database as active, use the [`SET DATABASE`](/set-database.html) command:
+To set a database as active, use the [`SET DATABASE`](set-database.html) command:
 
 ```postgres
 SET DATABASE = db1;
@@ -68,7 +68,7 @@ SHOW DATABASE;
 
 ## Create a Table
 
-To create a table, use the [`CREATE TABLE`](/create-table.html) command followed by a table name, the columns in the table, and the [data type](/data-types.html) for each column:
+To create a table, use the [`CREATE TABLE`](create-table.html) command followed by a table name, the columns in the table, and the [data type](data-types.html) for each column:
 
 ```postgres
 CREATE TABLE table1 (
@@ -79,7 +79,7 @@ CREATE TABLE table1 (
 );
 ```
 
-Table and column names must follow [these rules](/identifiers.html). Also, white space is not semantically meaningful, so you can format the command differently than above (e.g., all on one line).
+Table and column names must follow [these rules](identifiers.html). Also, white space is not semantically meaningful, so you can format the command differently than above (e.g., all on one line).
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS table1 (
 );
 ```
 
-To verify that all columns were created correctly, use the [`SHOW COLUMNS FROM`](/show-columns.html) command followed by the table name:
+To verify that all columns were created correctly, use the [`SHOW COLUMNS FROM`](show-columns.html) command followed by the table name:
 
 ```postgres
 SHOW COLUMNS FROM accounts;
@@ -109,7 +109,7 @@ SHOW COLUMNS FROM accounts;
 +----------+--------+-------+---------------------------+
 ```
 
-You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` command above. If you don't specify a `PRIMARY KEY` when creating a table, CockroachDB automatically adds the `rowid` column as the primary key. To see the primary index for a table, use the [`SHOW INDEX FROM`](/show-index.html) command followed by the name of the table:
+You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` command above. If you don't specify a `PRIMARY KEY` when creating a table, CockroachDB automatically adds the `rowid` column as the primary key. To see the primary index for a table, use the [`SHOW INDEX FROM`](show-index.html) command followed by the name of the table:
 
 ```postgres
 SHOW INDEX FROM accounts;
@@ -122,7 +122,7 @@ SHOW INDEX FROM accounts;
 +--------+---------+--------+-----+--------+-----------+---------+
 ```
 
-When you no longer need a table, use the [`DROP TABLE`](/drop-table.html) command followed by the table name to remove the table and all its data:
+When you no longer need a table, use the [`DROP TABLE`](drop-table.html) command followed by the table name to remove the table and all its data:
 
 ```postgres
 DROP TABLE table1;
@@ -130,7 +130,7 @@ DROP TABLE table1;
 
 ## Show Available Tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](/show-tables.html) command:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) command:
 
 ```postgres
 SHOW TABLES;
@@ -164,7 +164,7 @@ SHOW TABLES FROM db2;
 
 ## Insert Rows into a Table
 
-To insert a row into a table, use the [`INSERT INTO`](/insert.html) command followed by the table name and then the column values listed in the order in which the columns appear in the table:
+To insert a row into a table, use the [`INSERT INTO`](insert.html) command followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ```postgres
 INSERT INTO table1 VALUES (12345, 1.1, DATE '2016-01-05', 'hello');
@@ -185,7 +185,7 @@ INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES
     ('goodbye', DATE '2016-01-05', 1.2, 54321);
 ```
 
-[Defaults values](/default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with the `column_a` column filled with its default value, in this case `NULL`:
+[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with the `column_a` column filled with its default value, in this case `NULL`:
 
 ```postgres
 INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
@@ -208,7 +208,7 @@ xxx
 
 ## Update Existing Rows
 
-To update existing rows in a table, use the [`UPDATE`](/update.html) command followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update existing rows in a table, use the [`UPDATE`](update.html) command followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ```postgres
 UPDATE table1 SET column_a = column_a + 1, column_d = 'good night' WHERE column_b > 0;
@@ -218,7 +218,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete Existing Rows
 
-To delete existing rows in a table, use the [`DELETE FROM`](/delete.md) command followed by the table name and a `WHERE` clause identifying the rows to delete: 
+To delete existing rows in a table, use the [`DELETE FROM`](delete.md) command followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ```postgres
 DELETE FROM table1 WHERE column_b = 2.5;
