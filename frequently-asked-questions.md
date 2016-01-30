@@ -62,7 +62,7 @@ Yes. CockroachDB distributes transactions across your cluster, whether it’s a 
 Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
 - **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. If a transaction succeeds, all mutations are applied together with virtual simultaneity.   
-- **Consistency:** In CockroachDB, non-distributed transactions use the [Raft consensus algorithm](https://raft.github.io/) to ensure the most recent data is read. Distributed transactions achieve consistency by relying on a limited degree of clock synchronization in conjunction with transaction restarts in the event of contention. For more on clock synchronization, see this [blog post]() **need to link to Spencer's forthcoming post "Life Without TrueTime"**
+- **Consistency:** In CockroachDB, non-distributed transactions use the [Raft consensus algorithm](https://raft.github.io/) to ensure the most recent data is read. Distributed transactions achieve consistency by relying on a limited degree of clock synchronization in conjunction with transaction restarts in the event of contention. 
 - **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that concurrent transactions on the same data, whether reads or writes, will never result in anomalies. We also provide snapshot isolation (SI), which is more performant with high-contention workloads, although it exhibits rare classes of anomalies not present in SSI.
 - **Durability:** In CockroachDB, once a transaction has been committed, the results are stored on-disk permanently. Replication provides availability and the [Raft consensus algorithm](https://raft.github.io/) guarantees consistency between the replicas.
 
@@ -85,7 +85,7 @@ Cockroach supports the PostgreSQL wire protocol, so you can use any available Po
 - Closure
 - PHP
 
-See [Install Client Drivers](/install-client-drivers.html) for more details.
+See [Install Client Drivers](install-client-drivers.html) for more details.
 
 ## How does CockroachDB differ from MySQL or PostgreSQL?
 
@@ -101,7 +101,7 @@ The Alpha (soon Beta) version of CockroachDB is intended for use with new applic
 
 ## How easy is it to install CockroachDB?
 
-Very. See [Install CockroachDB](/install-cockroachdb.html).
+Very. See [Install CockroachDB](install-cockroachdb.html).
 
 ## How easy is it to deploy CockroachDB?
 

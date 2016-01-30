@@ -17,7 +17,7 @@ sidebar_version:
 project_file_name: doc
 
 port: 4001
-
+baseurl: "/docs"
 exclude:
   - doc_ymp*
   - configs/
