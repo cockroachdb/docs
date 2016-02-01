@@ -21,4 +21,4 @@ When you see a bug or have improvements to suggest, please [open an issue](https
 For development-related question, there are two easy ways to get in touch:
 
 - [Post to our Developer mailing list](https://groups.google.com/forum/#!forum/cockroach-db). Please join first or your messages may be held back for moderation.
-- [Chat us on Gitter](https://gitter.im/cockroachdb/cockroach)
+- [Chat with us on Gitter](https://gitter.im/cockroachdb/cockroach)
