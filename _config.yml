@@ -7,7 +7,7 @@ platform: all
 version: all
 destination: ../cockroach_site
 topnav_title: CockroachDB
-homepage_title: CockroachDB Documentation
+homepage_title: CockroachDB Docs
 site_title: Cockroach Labs
 google_analytics: UA-63775601-1
 
