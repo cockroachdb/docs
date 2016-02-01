@@ -114,6 +114,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.col-xs-4 {
+  text-align: center;
+}
+
+.col-xs-4 img {
+  max-width: 100px;
+}
+
 p {
   color: #142848;
   font-family: 'AvenirLTStd-Light', serif;
@@ -121,7 +129,7 @@ p {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px; }
+  line-height: 28px; }
   p strong, p b {
     font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 17px;
