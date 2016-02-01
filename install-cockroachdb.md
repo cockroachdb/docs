@@ -75,7 +75,7 @@ $(document).ready(function(){
 <li><p>Make the binary executible:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
 
 <h2 id="use-homebrew">Use Homebrew</h2>
@@ -85,7 +85,7 @@ $(document).ready(function(){
 <li><p>Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o"></span>
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p></li>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>.  </p></li>
 </ol>
 
 <h2 id="build-from-source">Build from Source</h2>
@@ -106,7 +106,7 @@ $(document).ready(function(){
 $ make build
 </code></pre></div>
 <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
 
 <h2 id="use-docker">Use Docker</h2>
@@ -120,9 +120,9 @@ $ make build
 <li><p>Start a new Docker container and load the CockroachDB image into it:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>.  </p>
 
-<p>When following the <a href="/start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
+<p>When following the <a href="start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &gt; /dev/null 2&gt;&amp;1  &amp;
 <span class="gp">$ </span>./cockroach sql --dev
 </code></pre></div></li>
@@ -130,7 +130,7 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="linuxinstall" style="display: none;">
@@ -149,7 +149,7 @@ $ make build
 <li><p>Make the binary executible:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
 
 <h2 id="build-from-source-linux">Build from Source</h2>
@@ -170,7 +170,7 @@ $ make build
 $ make build
 </code></pre></div>
 <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>. </p></li>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
 
 <h2 id="use-docker-linux">Use Docker</h2>
@@ -187,9 +187,9 @@ $ make build
 <li><p>Start a new Docker container and load the CockroachDB image into it:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo docker run -t -i cockroachdb/cockroach shell
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>.  </p>
 
-<p>When following the <a href="/start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
+<p>When following the <a href="start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &gt; /dev/null 2&gt;&amp;1  &amp;
 <span class="gp">$ </span>./cockroach sql --dev
 </code></pre></div></li>
@@ -197,7 +197,7 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="windowsinstall" style="display: none;">
@@ -212,9 +212,9 @@ $ make build
 <li><p>Start a new Docker container and load the CockroachDB image into it:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
 </code></pre></div></li>
-<li><p><a href="/start-a-local-cluster.html">Start a local cluster</a>.  </p>
+<li><p><a href="start-a-local-cluster.html">Start a local cluster</a>.  </p>
 
-<p>When following the <a href="/start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
+<p>When following the <a href="start-a-local-cluster.html">start a local cluster</a> instructions, be sure to run the commands from within your Docker container. Also, it&#39;s simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you&#39;ll have to start the cluster in the background and quiet the logs by adding <code>&gt; /dev/null 2&gt;&amp;1  &amp;</code> to the end of the command:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>./cockroach start --dev &gt; /dev/null 2&gt;&amp;1  &amp;
 <span class="gp">$ </span>./cockroach sql --dev
 </code></pre></div></li>
@@ -222,7 +222,7 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="/start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <!-- Below is some of the page's content in Markdown. To get correct html, it's easiest to let Jeyll translate the Markdown and then use that html above.
@@ -237,7 +237,7 @@ $ make build
     $ chmod +x <binary file name>
     ```
 
-3. [Start a local cluster](/start-a-local-cluster.html). 
+3. [Start a local cluster](start-a-local-cluster.html). 
 
 ## Use Homebrew
 
@@ -249,7 +249,7 @@ $ make build
     $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb)
     ``` 
 
-3. [Start a local cluster](/start-a-local-cluster.html).
+3. [Start a local cluster](start-a-local-cluster.html).
 
 ## Build from Source
 
@@ -273,7 +273,7 @@ $ make build
 
     The first time you run `make`, it can take awhile to download and install various dependencies.
 
-4. [Start a local cluster](/start-a-local-cluster.html). 
+4. [Start a local cluster](start-a-local-cluster.html). 
 
 ## Use Docker (Mac)
 
@@ -293,9 +293,9 @@ $ make build
     $ docker run -t -i cockroachdb/cockroach shell
     ```
 
-5. [Start a local cluster](/start-a-local-cluster.html).  
+5. [Start a local cluster](start-a-local-cluster.html).  
 
-    When following the [start a local cluster](/start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logsby adding `> /dev/null 2>&1  &` to the end of the command:
+    When following the [start a local cluster](start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logsby adding `> /dev/null 2>&1  &` to the end of the command:
 
     ```bash
     $ ./cockroach start --dev > /dev/null 2>&1  &
@@ -325,9 +325,9 @@ $ make build
     $ sudo docker run -t -i cockroachdb/cockroach shell
     ```
 
-5. [Start a local cluster](/start-a-local-cluster.html).  
+5. [Start a local cluster](start-a-local-cluster.html).  
 
-    When following the [start a local cluster](/start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logs by adding `> /dev/null 2>&1  &` to the end of the command:
+    When following the [start a local cluster](start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logs by adding `> /dev/null 2>&1  &` to the end of the command:
 
     ```bash
     $ ./cockroach start --dev > /dev/null 2>&1  &

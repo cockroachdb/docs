@@ -111,8 +111,8 @@ entries:
           product: all
           version: all
 
-        - title: Deploy to a Cloud Provider
-          url: /deploy-to-a-cloud-provider.html
+        - title: Deploy a Multi-Node Cluster
+          url: /deploy-a-multinode-cluster.html
           audience: all
           platform: all
           product: all
@@ -140,7 +140,7 @@ entries:
           version: all
 
         - title: Add or Remove Servers
-          url: /add or remove servers.html
+          url: /add-or-remove-servers.html
           audience: all
           platform: all
           product: all

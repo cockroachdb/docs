@@ -3,11 +3,7 @@ title: Start a Local Cluster
 toc: false
 ---
 
-<script>
-anchors.add('h2');
-</script>
-
-Once you've [installed CockroachDB locally](/install-cockroachdb), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
+Once you've [installed CockroachDB locally](install-cockroachdb), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
 
 - [Development Mode (Insecure)](#development-mode)  
 Data is stored in-memory and client/server communication is completely insecure. This mode is great for learning CockroachDB, but since there's no authentication or encryption and nothing is stored persistently, it's suitable only for limited testing and development.  
@@ -35,7 +31,7 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     # To exit: CTRL + D.
     ```
 
-3. [Run some queries](/basic-sql-commands.html).
+3. [Run some queries](basic-sql-commands.html).
 4. Check out the Admin UI by pointing your browser to `http://<your local host>:26257`. You can find your local host by running `hostname` in your shell.    
 
 ## Standard Mode
@@ -72,9 +68,10 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     # To exit: CTRL + D.
     ```
 
-5. [Run some queries](/basic-sql-commands.html).
+5. [Run some queries](basic-sql-commands.html).
 
 6. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
 
 ## What's Next?
-Learn more about [CockroachDB SQL](/basic-sql-commands.html) and start [building a test app](/build-a-test-app.html).
+
+Learn more about [CockroachDB SQL](basic-sql-commands.html) and start [building a test app](build-a-test-app.html).
