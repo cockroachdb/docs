@@ -4,30 +4,61 @@ toc: false
 ---
 <script>
 $(document).ready(function(){
-    $("#mac").click(function(){
+    
+    //detect os and display corresponding tab by default
+    if (navigator.appVersion.indexOf("Mac")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#mac').addClass('current');
+        toggleMac(); 
+    }
+    if (navigator.appVersion.indexOf("Linux")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#linux').addClass('current');
+        toggleLinux(); 
+    }
+    if (navigator.appVersion.indexOf("Win")!=-1) { 
+        $('#os-tabs').find('button').removeClass('current');
+        $('#windows').addClass('current');
+        toggleWindows(); 
+    }
+
+    //handle click event for os-tab buttons
+    $('#os-tabs').on('click', 'button', function(){
+        $('#os-tabs').find('button').removeClass('current');
+        $(this).addClass('current');
+
+        if($(this).is('#mac')){ toggleMac(); }
+        if($(this).is('#linux')){ toggleLinux(); }
+        if($(this).is('#windows')){ toggleWindows(); }
+    });
+
+    function toggleMac(){
         $("#macinstall").show();
         $("#linuxinstall").hide();
         $("#windowsinstall").hide();
-    });
-    $("#linux").click(function(){
+    }
+
+    function toggleLinux(){
         $("#linuxinstall").show();
         $("#macinstall").hide();
         $("#windowsinstall").hide();
-    });
-    $("#windows").click(function(){
+    }
+
+    function toggleWindows(){
         $("#windowsinstall").show();
         $("#macinstall").hide();
-        $("#linuxinstall").hide();    
-    });
+        $("#linuxinstall").hide(); 
+    }
 });
 </script>
 
-<button id="mac">Mac OS X</button>
-<button id="linux">Linux</button>
-<button id="windows">Windows</button>
+<div id="os-tabs">
+    <button id="mac" class="current">Mac</button>
+    <button id="linux">Linux</button>
+    <button id="windows">Windows</button>
+</div>
 
-<!-- Install instructions for Mac OS X -->
-<div id=macinstall>
+<div id="macinstall">
 <p>There are four ways to install CockroachDB locally on Mac OS X:</p>
 
 <ul>
@@ -102,8 +133,7 @@ $ make build
 <p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
-<!-- Install instructions for Linux -->
-<div id=linuxinstall style="display: none;">
+<div id="linuxinstall" style="display: none;">
 <p>There are three ways to install CockroachDB locally on Linux:</p>
 
 <ul>    
@@ -170,8 +200,7 @@ $ make build
 <p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
-<!-- Install instructions for Windows -->
-<div id=windowsinstall style="display: none;">
+<div id="windowsinstall" style="display: none;">
 <p>At this time, it's possible to run CockroachDB on Windows only from within a Docker container, which is a stripped-to-basics version of a Linux operating system. 
 
 <ol>
@@ -194,8 +223,7 @@ $ make build
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
 <p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
-</div>  
-
+</div>
 
 <!-- Below is some of the page's content in Markdown. To get correct html, it's easiest to let Jeyll translate the Markdown and then use that html above.
 
@@ -238,20 +266,20 @@ $ make build
 
 3. Compile the CockroachDB binary:
 
-	```
+    ```
     $ cd $GOPATH/src/github.com/cockroachdb/cockroach
-	$ make build
-	```
+    $ make build
+    ```
 
-	The first time you run `make`, it can take awhile to download and install various dependencies.
+    The first time you run `make`, it can take awhile to download and install various dependencies.
 
 4. [Start a local cluster](start-a-local-cluster.html). 
 
 ## Use Docker (Mac)
 
-1. 	[Install Docker](https://docs.docker.com/mac/step_one/).   
+1.  [Install Docker](https://docs.docker.com/mac/step_one/).   
 
-2.	Open **Launchpad** and start the **Docker Quickstart Terminal**. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM. 
+2.  Open **Launchpad** and start the **Docker Quickstart Terminal**. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM. 
 
 3.  In the shell, pull the official CockroachDB image from [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/):
 

@@ -40,20 +40,19 @@
 {% include topnav.html %}
 
     <!-- Page Content -->
-    <div class="container">
-        <div class="col-lg-12">&nbsp;</div>
-
-{% include sidebar.html %}
-
-            <!-- Content Column -->
-            <div class="col-md-9">
-
-                {{content}}
-
-            </div><!-- /.row -->
-
+    <div id="content">
+      <div id="main-content" class="container">
+        <div class="row">
+          {% include sidebar.html %}
+          <!-- Content Column -->
+          <div class="col-md-9">
+              {{content}}
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
     </div>    <!-- /.container -->
-
+     {% include footer.html %}
 <!-- <script>
 $(function() {
     $('div.highlight').accordion(); 
