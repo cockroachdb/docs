@@ -230,8 +230,15 @@ entries:
       version: all
       print: true
       items:
-        - title: TBD
-          url: 
+        - title: Contribute to CockroachDB
+          url: /contribute-to-cockroachdb.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
+        - title: Improve the Docs
+          url: /improve-the-docs.html
           audience: all
           platform: all
           product: all

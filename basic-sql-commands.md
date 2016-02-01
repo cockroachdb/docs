@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS table1 (
 To verify that all columns were created correctly, use the [`SHOW COLUMNS FROM`](show-columns.html) command followed by the table name:
 
 ```postgres
-SHOW COLUMNS FROM accounts;
+SHOW COLUMNS FROM table1;
 ```
 ```
 +----------+--------+-------+---------------------------+
@@ -167,38 +167,38 @@ SHOW TABLES FROM db2;
 To insert a row into a table, use the [`INSERT INTO`](insert.html) command followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ```postgres
-INSERT INTO table1 VALUES (12345, 1.1, DATE '2016-01-05', 'hello');
+INSERT INTO table1 VALUES (12345, 1.1, DATE '2016-01-01', 'aaaa');
 ```
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the same order:
 
 ```postgres
 INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('hello', DATE '2016-01-05', 1.1, 12345);
+    ('aaaa', DATE '2016-01-01', 1.1, 12345);
 ```
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ```postgres
 INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('hello', DATE '2016-01-05', 1.1, 12345),
-    ('goodbye', DATE '2016-01-05', 1.2, 54321);
+    ('aaaa', DATE '2016-01-01', 1.1, 12345),
+    ('bbbb', DATE '2016-01-01', 1.2, 54321);
 ```
 
-[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with the `column_a` column filled with its default value, in this case `NULL`:
+[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `column_a` filled with its default value, in this case `NULL`:
 
 ```postgres
 INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('hello', DATE '2016-01-05', 1.1);
+    ('aaaa', DATE '2016-01-01', 1.1);
 
 INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('hello', DATE '2016-01-05', 1.1, DEFAULT);
+    ('aaaa', DATE '2016-01-01', 1.1, DEFAULT);
 ```
 ```
 +----------+----------+------------+----------+
 | column_a | column_b |  column_c  | column_d |
 +----------+----------+------------+----------+
-| NULL     |      1.1 | 2016-01-05 | hello    |
+| NULL     |      1.1 | 2016-01-01 | aaaa     |
 +----------+----------+------------+----------+
 ```
 
@@ -211,7 +211,7 @@ xxx
 To update existing rows in a table, use the [`UPDATE`](update.html) command followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ```postgres
-UPDATE table1 SET column_a = column_a + 1, column_d = 'good night' WHERE column_b > 0;
+UPDATE table1 SET column_a = column_a + 1, column_d = 'cccc' WHERE column_b > 0;
 ```
 
 If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated. 
