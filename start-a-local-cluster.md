@@ -11,7 +11,7 @@ Data is stored in-memory and client/server communication is completely insecure.
 - [Standard Mode (Secure)](#standard-mode)  
 Data is stored on-disk and client/server communication is secure. Setup involves creating certificates and passing certain command line options, but it's still simple. This mode is suitable for standing up a persistent test cluster to develop an application or test CockroachDB.
 
-{{site.data.alerts.callout_info}} For production deployments, see <a href="http://cockroachlabs.com/docs/deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} For production deployments, see <a href="deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
 
 ## Development Mode
 
