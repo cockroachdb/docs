@@ -3,7 +3,7 @@ title: Improve the Docs
 toc: false
 ---
 
-The CockroachDB docs are a work in progress, and we very much welcome your help! 
+The CockroachDB docs are a work in progress, and we very much welcome your help. 
 
 ## Suggest Improvements
 
