@@ -114,16 +114,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.docs-intro {
-  background: #f1f5f5;
-}
-
-/*.col-xs-4 h2 {
-  text-align: center;
-}*/
-
 .col-xs-4 > a > img {
   max-width: 150px;
+}
+
+.post-content .col-xs-4 {
+  background: #F2F7E5;
+  text-align: center;
 }
 
 p {

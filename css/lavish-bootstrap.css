@@ -315,10 +315,10 @@ a:focus {
   text-decoration: underline;
 }
 
-.docs-intro a:hover h2 {
+/*.col-xs-4 a:hover {
   text-decoration: none;
   color: #46a417;
-}
+}*/
 
 img {
   vertical-align: middle;

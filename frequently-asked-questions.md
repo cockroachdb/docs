@@ -32,7 +32,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different disks within a server to tolerate disk failures
 - Different servers within a rack to tolerate server failures
@@ -45,7 +45,7 @@ When failures occur, replication ensures the continued availability of replicas 
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB replicates your data multiple times and guarantees consistency between replicas using the the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
+CockroachDB replicates your data multiple times and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
 
 ## Why is CockroachDB SQL?
 
@@ -127,4 +127,4 @@ TBD. We support client and internode SSL. Everything within CockroachDB requires
 
 Not yet, but this is on our long-term roadmap. 
 
-**Have a question that wasn’t answered here? Visit our Github page or ask on our Google-Group, and someone will get back to you.** 
+**Have questions that weren’t answered? Post to our [Developer mailing list](https://groups.google.com/forum/#!forum/cockroach-db), or chat with us on [Gitter](https://gitter.im/cockroachdb/cockroach).** 
