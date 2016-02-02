@@ -118,8 +118,11 @@ body {
   max-width: 150px;
 }
 
+.post-content .row {
+  background: #F2F7E5;  
+}
+
 .post-content .col-md-4 {
-  background: #F2F7E5;
   text-align: center;
 }
 

@@ -1,6 +1,6 @@
 ---
 title: Basic SQL Commands
-toc: true
+toc: false
 ---
 
 This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
