@@ -1,6 +1,6 @@
 ---
 title: Basic SQL Commands
-toc: false
+toc: true
 ---
 
 This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
@@ -45,15 +45,15 @@ SHOW DATABASES;
 +----------+
 ```
 
-## Set a Database
+## Set the Default Database
 
-To set a database as active, use the [`SET DATABASE`](set-database.html) command:
+To set a database as the default database, use the [`SET DATABASE`](set-database.html) command:
 
 ```postgres
 SET DATABASE = db1;
 ```
 
-When a database is active, you don't need to reference it explicitly in subsequent statements. To see which database is currently active, use the `SHOW DATABASE` command (note the singular form):
+When working with the default database, you don't need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` command (note the singular form):
 
 ```postgres
 SHOW DATABASE;
@@ -206,9 +206,9 @@ INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES
 
 xxx
 
-## Update Existing Rows
+## Update Rows in a Table
 
-To update existing rows in a table, use the [`UPDATE`](update.html) command followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use the [`UPDATE`](update.html) command followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ```postgres
 UPDATE table1 SET column_a = column_a + 1, column_d = 'cccc' WHERE column_b > 0;
@@ -216,9 +216,9 @@ UPDATE table1 SET column_a = column_a + 1, column_d = 'cccc' WHERE column_b > 0;
 
 If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated. 
 
-## Delete Existing Rows
+## Delete Rows in a Table
 
-To delete existing rows in a table, use the [`DELETE FROM`](delete.md) command followed by the table name and a `WHERE` clause identifying the rows to delete: 
+To delete rows in a table, use the [`DELETE FROM`](delete.md) command followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ```postgres
 DELETE FROM table1 WHERE column_b = 2.5;
