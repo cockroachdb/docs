@@ -47,7 +47,7 @@ SHOW DATABASES;
 
 ## Set the Default Database
 
-To set a database as the default database, use the [`SET DATABASE`](set-database.html) command:
+To set the default database, use the [`SET DATABASE`](set-database.html) command:
 
 ```postgres
 SET DATABASE = db1;
@@ -112,7 +112,7 @@ SHOW COLUMNS FROM table1;
 You'll notice the `rowid` column, which wasn't present in the `CREATE TABLE` command above. If you don't specify a `PRIMARY KEY` when creating a table, CockroachDB automatically adds the `rowid` column as the primary key. To see the primary index for a table, use the [`SHOW INDEX FROM`](show-index.html) command followed by the name of the table:
 
 ```postgres
-SHOW INDEX FROM accounts;
+SHOW INDEX FROM table1;
 ```
 ```
 +--------+---------+--------+-----+--------+-----------+---------+
