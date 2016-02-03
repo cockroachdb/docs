@@ -72,11 +72,11 @@ Data is stored on-disk and client/server communication is secure. Setup involves
     # To exit: CTRL + D.
     ```
 
-5. [Run some queries](basic-sql-commands.html).
+4. [Run some queries](basic-sql-commands.html).
 
-6. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
+5. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
 
-7. To simulate a multi-node cluster, add each new node as follows:
+6. To simulate a multi-node cluster, add each new node as follows:
     
     ```bash
     $ ./cockroach start --stores=ssd=data/node2 pgport=15433 --port=26258 --join=localhost:26257
