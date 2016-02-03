@@ -3,7 +3,7 @@ title: Start a Local Cluster
 toc: false
 ---
 
-Once you've [installed CockroachDB locally](install-cockroachdb), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
+Once you've [installed CockroachDB locally](install-cockroachdb.html), the quickest way to try out the database is to start a single-node cluster and talk to the node via the built-in SQL client. There are two ways to do this:
 
 - [Development Mode (Insecure)](#development-mode)  
 Data is stored in-memory and client/server communication is completely insecure. This mode is great for learning CockroachDB, but since there's no authentication or encryption and nothing is stored persistently, it's suitable only for limited testing and development.  

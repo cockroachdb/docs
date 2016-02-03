@@ -11,22 +11,22 @@ CockroachDB is an open source, scalable, survivable, strongly-consistent SQL dat
 <div class="row">
 <div class="col-md-4">
     <a href="http://www.cockroachlabs.com/docs/install-cockroachdb.html">
-        <h2>Install</h2>
         <img src="images/catrina_ramen.png"/>
+        <h2>Install</h2>
     </a>
 </div>
 
 <div class="col-md-4">
         <a href="http://www.cockroachlabs.com/docs/start-a-local-cluster.html">
-            <h2>Quickstart</h2>
             <img src="images/craig_crossfit.png"/>
+            <h2>Quickstart</h2>
         </a>
 </div>
 
 <div class="col-md-4">
     <a href="http://www.cockroachlabs.com/docs/frequently-asked-questions.html">
-        <h2>Why CockroachDB?</h2>
         <img src="images/craig_opera.png"/>
+        <h2>Why CockroachDB?</h2>
     </a>
 </div>
 </div>
