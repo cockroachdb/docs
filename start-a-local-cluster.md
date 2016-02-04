@@ -8,7 +8,7 @@ Once you've [installed CockroachDB locally](install-cockroachdb.html), the quick
 - [Dev Mode (Insecure)](#dev-mode-insecure)  
 In dev mode, you start up a single-node cluster where data is stored in-memory and client/server communication is completely insecure. This mode is great for learning CockroachDB, but since there's no authentication or encryption and nothing is stored persistently, it's suitable only for limited testing and development.  
 
-- [Standard Mode (Secure)](#secure-mode-secure)  
+- [Standard Mode (Secure)](#standard-mode-secure)  
 In standard mode, you start up a single-node or multi-node cluster where data is stored on-disk and client/server communication is secure. Setup involves creating certificates and passing additional command line options, but it's still simple. This mode is suitable for standing up a persistent test cluster to develop an application or test CockroachDB. 
 
 {{site.data.alerts.callout_info}} For production deployments, see <a href="deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
@@ -49,7 +49,7 @@ In standard mode, you start up a single-node or multi-node cluster where data is
 2. Start a single-node cluster:
 
     ```bash
-    $ ./cockroach start --stores=ssd=data/node1
+    $ ./cockroach start --stores=ssd=dev/node1
     ```
     The `--stores` flag defines the store type and the filepath to the storage location. The store type can be any arbitrary string describing the store (e.g., `ssd` for flash, `hdd` for spinny disk). For the filepath, the parent directory must exist and the store directory, if it already exists, should not contain any CockroachDB data.
     
@@ -69,14 +69,14 @@ In standard mode, you start up a single-node or multi-node cluster where data is
 6. To simulate a multi-node cluster, add each new node as follows:
     
     ```bash
-    $ ./cockroach start --stores=ssd=data/node2 --port=26258 --pgport=15433 --join=<your local host>:26257
+    $ ./cockroach start --stores=ssd=dev/node2 --port=26258 --pgport=15433 --join=<your local host>:26257
     ```
 
     Set the `--stores` flag to a storage location not in use by other nodes.
 
-    The `--port` and `--pgport` flags bind the ports for CockroachDB and SQL client traffic. Set these flags to ports not in use by other nodes. 
+    The `--port` and `--pgport` flags bind the ports for CockroachDB and SQL client traffic. Set these flags to ports not in use by other nodes (the first node uses the default ports, 26257 and 15432). 
 
-    The `--join` flag connects the new node to the cluster. Set this flag to your local host and the port of the first node, `26257`. You can find your local host by running `hostname` in your shell.
+    The `--join` flag connects the new node to the cluster. Set this flag to your local host and the port of the first node, 26257. You can find your local host by running `hostname` in your shell.
 
 ## What's Next?
 
