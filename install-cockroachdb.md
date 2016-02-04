@@ -60,7 +60,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB locally on Mac OS X:</p>
+<p>There are four ways to install CockroachDB on Mac OS X:</p>
 
 <ul>
 <li><a href="#download-the-binary">Download the Binary</a></li>
@@ -131,11 +131,11 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a local cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="linuxinstall" style="display: none;">
-<p>There are three ways to install CockroachDB locally on Linux:</p>
+<p>There are three ways to install CockroachDB on Linux:</p>
 
 <ul>    
 <li><a href="#download-the-binary-linux">Download the Binary</a></li>
@@ -198,7 +198,7 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a local cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="windowsinstall" style="display: none;">
@@ -223,7 +223,7 @@ $ make build
 
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
-<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a single-node cluster</a> and talk to it via the built-in SQL client.</p>
+<p>The quickest way to try out the database is to <a href="start-a-local-cluster.html">start a local cluster</a> and talk to it via the built-in SQL client.</p>
 </div>
 
 <!-- Below is some of the page's content in Markdown. To get correct html, it's easiest to let Jeyll translate the Markdown and then use that html above.
