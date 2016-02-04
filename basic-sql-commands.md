@@ -5,7 +5,7 @@ toc: false
 
 This page walks you through some of the most essential CockroachDB SQL commands. For a complete list of commands and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is yet not available in our Beta version. Joins and interleaved tables, for example, will be built into v 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
+{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into v 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
 
 <img src="images/catrina_ramen.png" style="max-width: 200px;" />
 
@@ -40,8 +40,8 @@ SHOW DATABASES;
 +----------+
 | Database |
 +----------+
-| db1      |
-| system   |
+| "db1"    |
+| "system" |
 +----------+
 ```
 
@@ -62,7 +62,7 @@ SHOW DATABASE;
 +----------+
 | DATABASE |
 +----------+
-| db1      |
+| "db1"    |
 +----------+
 ```
 
@@ -98,14 +98,14 @@ To verify that all columns were created correctly, use the [`SHOW COLUMNS FROM`]
 SHOW COLUMNS FROM table1;
 ```
 ```
-+----------+--------+-------+---------------------------+
-|  Field   |  Type  | Null  |          Default          |
-+----------+--------+-------+---------------------------+
-| column_a | INT    | true  | NULL                      |
-| column_b | FLOAT  | true  | NULL                      |
-| column_c | DATE   | true  | NULL                      |
-| column_d | STRING | true  | NULL                      |
-+----------+--------+-------+---------------------------+
++------------+----------+-------+---------+
+|   Field    |   Type   | Null  | Default |
++------------+----------+-------+---------+
+| "column_a" | "INT"    | false | NULL    |
+| "column_b" | "FLOAT"  | true  | NULL    |
+| "column_c" | "DATE"   | true  | NULL    |
+| "column_d" | "STRING" | true  | NULL    |
++------------+----------+-------+---------+
 ```
 
 To verify the primary index for a table, use the [`SHOW INDEX FROM`](show-index.html) command followed by the name of the table:
@@ -135,12 +135,12 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 SHOW TABLES;
 ```
 ```
-+--------+
-| Table  |
-+--------+
-| table1 |
-| table2 |
-+--------+
++----------+
+|  Table   |
++----------+
+| "table1" |
+| "table2" |
++----------+
 ```
 
 To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
@@ -194,16 +194,73 @@ INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES
     ('aaaa', DATE '2016-01-01', DEFAULT, 12345);
 ```
 ```
-+----------+----------+------------+----------+
-| column_a | column_b |  column_c  | column_d |
-+----------+----------+------------+----------+
-| 12345    |     NULL | 2016-01-01 | aaaa     |
-+----------+----------+------------+----------+
++----------+----------+---------------------------------+----------+
+| column_a | column_b |            column_c             | column_d |
++----------+----------+---------------------------------+----------+
+|    12345 |     NULL | 2016-01-01 00:00:00 +0000 +0000 | "aaaa"   |
++----------+----------+---------------------------------+----------+
 ```
 
 ## Query a Table
 
+To query a table, use the `SELECT` command followed by the columns to be returned and the table from which to retrieve the data:
 
+```postgres
+SELECT column_a, column_b FROM table1;
+```
+```
++----------+----------+
+| column_a | column_b |
++----------+----------+
+|    12345 |      1.1 |
+|    54321 |      1.2 |
+|    67890 |      1.3 |
++----------+----------+
+```
+
+To retrieve all columns, use the `*` wildcard:
+
+```postgres
+SELECT * FROM table1;
+```
+```
++----------+----------+---------------------------------+----------+
+| column_a | column_b |            column_c             | column_d |
++----------+----------+---------------------------------+----------+
+|    12345 |      1.1 | 2016-01-01 00:00:00 +0000 +0000 | "aaaa"   |
+|    54321 |      1.2 | 2016-01-01 00:00:00 +0000 +0000 | "bbbb"   |
+|    67890 |      1.3 | 2016-01-02 00:00:00 +0000 +0000 | "cccc"   |
++----------+----------+---------------------------------+----------+
+```
+
+To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
+
+```postgres
+SELECT column_a, column_b FROM table1 WHERE column_b < 1.3;
+```
+```
++----------+----------+
+| column_a | column_b |
++----------+----------+
+|    12345 |      1.1 |
+|    54321 |      1.2 |
++----------+----------+
+```
+
+To sort the results, add an `ORDER BY` clause identifying the columns to sort by and whether the sort should be ascending or descending:
+
+```postgres
+SELECT * FROM table1 ORDER BY column_a DESC;
+```
+```
++----------+----------+---------------------------------+----------+
+| column_a | column_b |            column_c             | column_d |
++----------+----------+---------------------------------+----------+
+|    67890 |      1.3 | 2016-01-02 00:00:00 +0000 +0000 | "cccc"   |
+|    54321 |      1.2 | 2016-01-01 00:00:00 +0000 +0000 | "bbbb"   |
+|    12345 |      1.1 | 2016-01-01 00:00:00 +0000 +0000 | "aaaa"   |
++----------+----------+---------------------------------+----------+
+``` 
 
 ## Update Rows in a Table
 
