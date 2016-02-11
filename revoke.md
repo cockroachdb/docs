@@ -1,4 +1,0 @@
----
-title: REVOKE
-toc: false
----

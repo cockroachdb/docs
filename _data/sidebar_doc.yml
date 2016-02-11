@@ -48,8 +48,8 @@ entries:
           product: all
           version: all
 
-        - title: Basic SQL Commands
-          url: /basic-sql-commands.html
+        - title: Basic SQL Statements
+          url: /basic-sql-statements.html
           audience: all
           platform: all
           product: all
