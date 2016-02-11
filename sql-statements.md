@@ -3,7 +3,7 @@ title: SQL Statements
 toc: false
 ---
 
-CockroachDB supports the following SQL commands:
+CockroachDB supports the following SQL statements:
 
 ## `ALTER TABLE`
 ## `BEGIN TRANSACTION`

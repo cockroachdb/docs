@@ -19,7 +19,7 @@ CREATE DATABASE db1;
 
 Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
-```postgres
+```sql
 CREATE DATABASE IF NOT EXISTS db1;
 ```
 
@@ -79,7 +79,7 @@ CREATE TABLE table1 (
 );
 ```
 
-Table and column names must follow [these rules](identifiers.html). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a `rowid` column as the primary key.
+Table and column names must follow [these rules](identifiers.html). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS table1 (
 );
 ```
 
-To verify that all columns were created correctly, use the `SHOW COLUMNS FROM` statement followed by the table name:
+To show all of the columns from a table, use the `SHOW COLUMNS FROM` statement followed by the table name:
 
 ```sql
 SHOW COLUMNS FROM table1;
@@ -118,7 +118,7 @@ DROP TABLE table1;
 
 To see all tables in the active database, use the `SHOW TABLES` statement:
 
-```postgres
+```sql
 SHOW TABLES;
 ```
 ```
@@ -132,7 +132,7 @@ SHOW TABLES;
 
 To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
 
-```postgres
+```sql
 SHOW TABLES FROM db2;
 ```
 ```
@@ -192,13 +192,13 @@ INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES
 
 Indexes are used to quickly locate data without having to look through every row of a table. They are automatically created for the primary key of a table and any columns with a unique constraint.
 
-To create an index for non-unique columns, use the `CREATE INDEX` statement followed by an index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+To create an index for non-unique columns, use the `CREATE INDEX` statement followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 ```sql
 CREATE INDEX d_idx ON table1 (column_d DESC);
 ```
 
-You can create indexes during table creation as well; just include the `INDEX` keyword followed by an index name and the column(s) to index:
+You can create indexes during table creation as well; just include the `INDEX` keyword followed by an optional index name and the column(s) to index:
 
 ```sql
 CREATE TABLE table1 (
