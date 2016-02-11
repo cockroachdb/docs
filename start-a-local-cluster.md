@@ -31,7 +31,7 @@ In standard mode, you start up a single-node or multi-node cluster where data is
     # To exit: CTRL + D.
     ```
 
-3. [Run some queries](basic-sql-commands.html).
+3. [Run some queries](basic-sql-statements.html).
 
 4. Check out the Admin UI by pointing your browser to `http://<your local host>:26257`. You can find your local host by running `hostname` in your shell.    
 
@@ -62,7 +62,7 @@ In standard mode, you start up a single-node or multi-node cluster where data is
     # To exit: CTRL + D.
     ```
 
-4. [Run some queries](basic-sql-commands.html).
+4. [Run some queries](basic-sql-statements.html).
 
 5. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI. 
 
@@ -80,4 +80,4 @@ In standard mode, you start up a single-node or multi-node cluster where data is
 
 ## What's Next?
 
-Learn more about [CockroachDB SQL](basic-sql-commands.html) and start [building a test app](build-a-test-app.html).
+Learn more about [CockroachDB SQL](basic-sql-statements.html) and start [building a test app](build-a-test-app.html).

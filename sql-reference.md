@@ -3,7 +3,7 @@ title: SQL Reference
 toc: false
 ---
 
-- [SQL Commands](sql-commands.html)
+- [SQL Statements](sql-statements.html)
 - [Identifiers](identifiers.html)
 - Default Values
 - Constraints
