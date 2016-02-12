@@ -33,7 +33,7 @@ DROP DATABASE db1;
 
 To see all databases, use the `SHOW DATABASES` statement:
 
-```mysql
+```sql
 SHOW DATABASES;
 ```
 ```
