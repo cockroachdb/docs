@@ -74,7 +74,7 @@ $(document).ready(function(){
 <ol>
 <li><p>Download the <strong>CockroachDB binary for OS X</strong> (coming soon).</p></li>
 <li><p>Make the binary executible:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
 </code></pre></div></li>
 <li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
@@ -84,7 +84,7 @@ $(document).ready(function(){
 <ol>
 <li><p><a href="http://brew.sh/">Install Homebrew</a>.</p></li>
 <li><p>Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o"></span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb<span class="o"></span>
 </code></pre></div></li>
 <li><p><a href="start-a-local-cluster.html">Start a local cluster</a>.  </p></li>
 </ol>
@@ -103,8 +103,8 @@ $(document).ready(function(){
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
 </code></pre></div></li>
 <li><p>Compile the CockroachDB binary:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$ cd $GOPATH/src/github.com/cockroachdb/cockroach
-$ make build
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>cd $GOPATH/src/github.com/cockroachdb/cockroach
+<span class="gp">$ </span>make build
 </code></pre></div>
 <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p></li>
 <li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
@@ -148,7 +148,7 @@ $ make build
 <ol>
 <li><p>Download the <strong>CockroachDB binary for Linux</strong> (coming soon).</p></li>
 <li><p>Make the binary executible:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$ chmod +x &lt;binary file name&gt;
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
 </code></pre></div></li>
 <li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
 </ol>
@@ -167,8 +167,8 @@ $ make build
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
 </code></pre></div></li>
 <li><p>Compile the CockroachDB binary:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$ cd $GOPATH/src/github.com/cockroachdb/cockroach
-$ make build
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>cd $GOPATH/src/github.com/cockroachdb/cockroach
+<span class="gp">$ </span>make build
 </code></pre></div>
 <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p></li>
 <li><p><a href="start-a-local-cluster.html">Start a local cluster</a>. </p></li>
@@ -234,9 +234,9 @@ $ make build
 
 2. Make the binary executible:
     
-    ```
-    $ chmod +x <binary file name>
-    ```
+   ~~~ shell
+   $ chmod +x <binary file name>
+   ~~~
 
 3. [Start a local cluster](start-a-local-cluster.html). 
 
@@ -246,9 +246,9 @@ $ make build
 
 2. Run this single brew command to install dependencies, get the CockroachDB code, and build the CockroachDB binary:
 
-    ```bash
-    $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb)
-    ``` 
+   ~~~ shell
+   $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb)
+   ~~~
 
 3. [Start a local cluster](start-a-local-cluster.html).
 
@@ -261,16 +261,16 @@ $ make build
 
 2.  Get the CockroachDB code:
 
-    ```bash
-    $ go get -d github.com/cockroachdb/cockroach
-    ```
+   ~~~ shell
+   $ go get -d github.com/cockroachdb/cockroach
+   ~~~
 
 3. Compile the CockroachDB binary:
 
-    ```
-    $ cd $GOPATH/src/github.com/cockroachdb/cockroach
-    $ make build
-    ```
+   ~~~ shell
+   $ cd $GOPATH/src/github.com/cockroachdb/cockroach
+   $ make build
+   ~~~
 
     The first time you run `make`, it can take awhile to download and install various dependencies.
 
@@ -284,54 +284,54 @@ $ make build
 
 3.  In the shell, pull the official CockroachDB image from [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/):
 
-    ```bash
-    $ docker pull cockroachdb/cockroach
-    ```
+   ~~~ shell
+   $ docker pull cockroachdb/cockroach
+   ~~~
 
 4.  Start a new Docker container and load the CockroachDB image into it:
 
-    ```bash
-    $ docker run -t -i cockroachdb/cockroach shell
-    ```
+   ~~~ shell
+   $ docker run -t -i cockroachdb/cockroach shell
+   ~~~
 
 5. [Start a local cluster](start-a-local-cluster.html).  
 
     When following the [start a local cluster](start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logsby adding `> /dev/null 2>&1  &` to the end of the command:
 
-    ```bash
-    $ ./cockroach start --dev > /dev/null 2>&1  &
-    $ ./cockroach sql --dev
-    ```
+   ~~~ shell
+   $ ./cockroach start --dev > /dev/null 2>&1  &
+   $ ./cockroach sql --dev
+   ~~~
 
 ## Use Docker (Linux)
 
 1.  [Install Docker](https://docs.docker.com/engine/installation/ubuntulinux/).   
-
 2.  If you don't already have the Docker daemon running in the background, run:  
     
-    ```bash
-    $ sudo docker -d &
-    ```
-    {{site.data.alerts.callout_info}} On Linux, Docker needs sudo privileges in order to work.{{site.data.alerts.end}}
+   ~~~ shell
+   $ sudo docker -d &
+   ~~~
+
+   {{site.data.alerts.callout_info}} On Linux, Docker needs sudo privileges in order to work.{{site.data.alerts.end}}
 
 3. Pull the official CockroachDB image from [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/):
 
-    ```bash
-    $ sudo docker pull cockroachdb/cockroach
-    ```
+   ~~~ shell
+   $ sudo docker pull cockroachdb/cockroach
+   ~~~
 
 4.  Start a new Docker container and load the CockroachDB image into it:
 
-    ```bash
-    $ sudo docker run -t -i cockroachdb/cockroach shell
-    ```
+   ~~~ shell
+   $ sudo docker run -t -i cockroachdb/cockroach shell
+   ~~~
 
 5. [Start a local cluster](start-a-local-cluster.html).  
 
     When following the [start a local cluster](start-a-local-cluster.html) instructions, be sure to run the commands from within your Docker container. Also, it's simplest to start the built-in SQL client from within the same container as the CockroachDB cluster, but to do so, you'll have to start the cluster in the background and quiet the logs by adding `> /dev/null 2>&1  &` to the end of the command:
 
-    ```bash
-    $ ./cockroach start --dev > /dev/null 2>&1  &
-    $ ./cockroach sql --dev
-    ```
+   ~~~ shell
+   $ ./cockroach start --dev > /dev/null 2>&1  &
+   $ ./cockroach sql --dev
+   ~~~
 -->
