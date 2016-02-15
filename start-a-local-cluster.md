@@ -5,10 +5,10 @@ toc: false
 
 Once you've [installed CockroachDB locally](install-cockroachdb.html), the quickest way to try out the database is to start a local cluster and talk to it via the built-in SQL client. There are two modes in which you can do this:
 
-- [Dev Mode (Insecure)](#dev-mode-insecure)
+- [Dev Mode (Insecure)](#dev-mode-insecure)  
 In dev mode, you start up a single-node cluster where data is stored in-memory and client/server communication is completely insecure. This mode is great for learning CockroachDB, but since there's no authentication or encryption and nothing is stored persistently, it's suitable only for limited testing and development.
 
-- [Standard Mode (Secure)](#standard-mode-secure)
+- [Standard Mode (Secure)](#standard-mode-secure)  
 In standard mode, you start up a single-node or multi-node cluster where data is stored on-disk and client/server communication is secure. Setup involves creating certificates and passing additional command line options, but it's still simple. This mode is suitable for standing up a persistent test cluster to develop an application or test CockroachDB.
 
 {{site.data.alerts.callout_info}} For production deployments, see <a href="deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
