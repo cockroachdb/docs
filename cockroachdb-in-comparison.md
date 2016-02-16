@@ -3,15 +3,14 @@ title: CockroachDB in Comparison
 toc: false
 ---
 
-| | CockroachDB | MySQL | Postgre | Cassandra | HBase | MongoDB | Riak 
+| | CockroachDB | MySQL | PostgreSQL | Cassandra | HBase | MongoDB | Riak 
 --|--|--|--|--|--|--|--
-Automated Scaling & Repair| Yes | No | No |  |  | No | Yes 
-Synchronous Replication | Yes | No | No |  |  | No |  
-Automatic Failover | Yes | No | No |  |  |  | Yes 
-Read from Any Replica | No |  |  |  |  | Yes |  
-Distributed Transactions| Yes | No | No |  |  |  |  
-ACID Semantics | Yes |  |  |  |  |  |   
-Strong Consistency | Yes | | | | | | Yes   
+Automated Scaling | Yes | No | No | Yes | Yes  | Yes | Yes 
+Automated Failover & Repair | Yes | No | No | Yes | Yes | Yes | Yes 
+Strong Consistency | Yes | N/A | N/A | No | No | No | No   
+Read from any Replica | No | N/A | N/A | Yes | Yes | Yes | Yes  
+Distributed Transactions| Yes | No | No | No | No | No | No 
+ACID Semantics | Yes | Yes | Yes | No | Row-only | Document-only | No   
 SQL| Yes | Yes | Yes | No | No* | No | No 
 Open Source| Yes | Yes | Yes | Yes | Yes | Yes | Yes 
 
