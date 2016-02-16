@@ -202,43 +202,15 @@ entries:
           product: all
           version: all
 
-        - title: Automated Scaling and Repair
-          url: /automated-scaling-and-repair.html
+        - title: CockroachDB Architecture
+          url: /cockroachdb-architecture.html
           audience: all
           platform: all
           product: all
           version: all
 
-        - title: Strong Consistency
-          url: /strong-consistency.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Distributed Transactions
-          url: /distributed-transactions.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Simplified Deployment
-          url: /simplified-deployment.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Open Source
-          url: /open-source.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Go Implementation
-          url: /go-implementation.html
+        - title: CockroachDB Features
+          url: /cockroachdb-features.html
           audience: all
           platform: all
           product: all
