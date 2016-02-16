@@ -230,7 +230,7 @@ $(document).ready(function(){
 
 ## Download the Binary
 
-1. Download the [CockroachDB binary for OS X](http://cockroachlabs.com/download/osx).
+1. Download the [CockroachDB binary for OS X]().
 
 2. Make the binary executible:
     
