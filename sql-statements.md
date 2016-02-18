@@ -62,7 +62,7 @@ CockroachDB supports the following SQL statements:
 ## `SHOW TABLES`
 
 ## `SHOW TIMEZONE`
-
+   
 ## `SHOW TRANSACTION ISOLOATION LEVEL`
 
 ## `SHOW TRANSACTION PRIORITY`
