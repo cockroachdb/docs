@@ -71,20 +71,20 @@
 
 
         //hijack clicks on links, verify if anchor link and jump to div
-        $('body').on('click', 'a', function (e) {
-            if (/#/.test(this.href)) {
-                e.preventDefault();
+        //$('body').on('click', 'a', function (e) {
+        //    if (/#/.test(this.href)) {
+        //        e.preventDefault();
 
-                var hash = this.href.substring(this.href.indexOf('#')),
-                    fixedElementHeight = 50;
+        //        var hash = this.href.substring(this.href.indexOf('#')),
+        //            fixedElementHeight = 50;
 
-                $('html, body')
-                    .stop()
-                    .animate({
-                        scrollTop: $(hash).offset().top - fixedElementHeight
-                    }, 0);
-            }
-        });
+        //        $('html, body')
+        //            .stop()
+        //            .animate({
+        //                scrollTop: $(hash).offset().top - fixedElementHeight
+        //            }, 0);
+        //    }
+        //});
     });
 })(jQuery);
 
