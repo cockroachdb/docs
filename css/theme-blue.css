@@ -51,9 +51,10 @@ h4 {color: #808080; }
     color: #142848;    
 }
 
-a[data-toggle="tooltip"] {
-    color: #649345;
-    font-style: italic;
+a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
+    color: #142848;
+    font-style: normal;
+    font-weight: bold;
     cursor: default;
 }
 
