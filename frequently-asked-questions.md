@@ -32,7 +32,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different disks within a server to tolerate disk failures
 - Different servers within a rack to tolerate server failures
@@ -41,11 +41,11 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 
 **Automated Repair**
 
-When failures occur, replication ensures the continued availability of replicas and Raft ensures the consistency of replicas. For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that subsequent transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.
+For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that subsequent transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB replicates your data multiple times and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular successor to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
+CockroachDB replicates your data multiple times and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write does not reach a majority of replicas, it will fail, not be permanent, and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).  
 
 ## Why is CockroachDB SQL?
 
@@ -103,6 +103,7 @@ The Alpha (soon Beta) version of CockroachDB is intended for use with new applic
 
 Very. See [Install CockroachDB](install-cockroachdb.html).
 
+<!--
 ## How easy is it to deploy CockroachDB?
 
 TBD. [Single binary, no external dependencies, self-organization, rebalancing, re-replication on failures]
@@ -114,6 +115,7 @@ TBD (Cloud service providers: Digital Ocean, AWS, Azure, Google Cloud; How to op
 ## How do you configure and monitor a CockroachDB cluster? 
 
 TBD.
+-->
 
 ## When is CockroachDB not a good choice?
 
@@ -121,7 +123,11 @@ CockroachDB is not yet suitable for real-time analytics, although support for an
 
 ## What is CockroachDB’s security model?
 
-TBD. We support client and internode SSL. Everything within CockroachDB requires that you speak to it with encryption. 
+You can run a secure or insecure CockroachDB cluster. When secure, client/server and internode communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
+
+Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements on the database and table levels. 
+
+For more details, see our [SQL privileges design](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/sql_privileges.md) document. Official docs are in progress.   
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
