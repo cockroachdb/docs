@@ -9,10 +9,6 @@ $(document).ready(function(){
 });
 </script>
 
-once transaction has committed, all reads are guaranteed to see it. 
-
-consensus: only need majority of replicas to be up. 
-
 This page shows you how key features of CockroachDB stack up against other databases. Hover over features for their intended meanings, and click CockroachDB answers to view related documentation.
 
 | | CockroachDB | MySQL | PostgreSQL | Oracle | Cassandra | HBase | MongoDB | DynamoDB
