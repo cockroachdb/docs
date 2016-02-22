@@ -255,7 +255,7 @@ SELECT * FROM accounts;
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
 
 ~~~ sql
-SELECT id, balance FROM accounts WHERE balance > DECIMAL '5000';
+SELECT id, balance FROM accounts WHERE balance > DECIMAL '10000';
 ~~~
 ~~~
 +----+----------+
@@ -310,18 +310,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 To delete rows in a table, use the `DELETE FROM` statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ~~~ sql
-DELETE FROM accounts WHERE id = 3;
-
-SELECT * FROM accounts;
-~~~
-~~~
-+----+----------+
-| id | balance  |
-+----+----------+
-|  1 |  9995.50 |
-|  2 | 25000.00 |
-|  4 | 82504.78 |
-+----+----------+
+DELETE FROM table1 WHERE column_b = 2.5;
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. 
