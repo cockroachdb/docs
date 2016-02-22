@@ -9,9 +9,9 @@ $(document).ready(function(){
 });
 </script>
 
-This page shows you how key characteristics of CockroachDB stack up against other databases. 
+This page shows you how key features of CockroachDB stack up against other databases. 
 
-{{site.data.alerts.callout_info}}Hover on characteristics for their intended meanings, and click answers to view related documentation.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Hover over features for their intended meanings, and click answers to view related documentation.{{site.data.alerts.end}}
 
 | | CockroachDB | MySQL | PostgreSQL | Oracle | Cassandra | HBase | MongoDB | DynamoDB
 --|--|--|--|--|--|--|--|--|--
@@ -27,3 +27,5 @@ This page shows you how key characteristics of CockroachDB stack up against othe
 <a href="#" data-toggle="tooltip" title="Source code of the database is freely available for study, change, and distribution to anyone and for any purpose.">Open Source</a> | [Yes](contribute-to-cockroachdb.html) | Yes | Yes | ? | Yes | Yes | Yes | ? 
 <a href="#" data-toggle="tooltip" title="Enterpise or expanded version of the database available to paying customers.">Commercial Version</a> | No | ? | ? | ? | ? | ? | ? | ?
 <a href="#" data-toggle="tooltip" title='Guidance on database usage and troubleshooting, either "Limited" (free, community-based) or "Full" (paid, 24/7 access to dedicated staff).'>Support</a> | [Limited](contribute-to-cockroachdb.html#get-in-touch) | ? | ? | Full | ? | ? | ? | ?
+
+\* Not available out-of-the box.
