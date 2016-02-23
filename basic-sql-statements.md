@@ -154,31 +154,34 @@ If you want to pass column values in a different order, list the column names ex
 
 ~~~ sql
 INSERT INTO accounts (balance, id) VALUES 
-    (DECIMAL '10000.50', 1);
+    (DECIMAL '25000.00', 2);
 ~~~
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ~~~ sql
 INSERT INTO accounts VALUES 
-    (1, DECIMAL '10000.50'),
-    (2, DECIMAL '25000.00');
+    (3, DECIMAL '8100.73'),
+    (4, DECIMAL '9400.10');
 ~~~
 
 [Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 INSERT INTO accounts (id, balance) VALUES 
-    (1);
+    (5);
 
 INSERT INTO accounts (id, balance) VALUES 
-    (1, DEFAULT);
+    (6, DEFAULT);
+
+SELECT * FROM accounts WHERE id in (5, 6);
 ~~~
 ~~~
 +----+---------+
 | id | balance |
 +----+---------+
-|  1 | NULL    |
+|  5 | NULL    |
+|  6 | NULL    |
 +----+---------+
 ~~~
 
@@ -231,8 +234,10 @@ SELECT balance FROM accounts;
 +----------+
 | 10000.50 |
 | 25000.00 |
+|  8100.73 |
+|  9400.10 |
 | NULL     |
-| 82504.78 |
+| NULL     |
 +----------+
 ~~~
 
@@ -247,23 +252,25 @@ SELECT * FROM accounts;
 +----+----------+
 |  1 | 10000.50 |
 |  2 | 25000.00 |
-|  3 | NULL     |
-|  4 | 82504.78 |
+|  3 |  8100.73 |
+|  4 |  9400.10 |
+|  5 | NULL     |
+|  6 | NULL     |
 +----+----------+
 ~~~
 
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
 
 ~~~ sql
-SELECT id, balance FROM accounts WHERE balance > DECIMAL '5000';
+SELECT id, balance FROM accounts WHERE balance > DECIMAL '9000';
 ~~~
 ~~~
 +----+----------+
 | id | balance  |
 +----+----------+
+|  4 |  9400.10 |
 |  1 | 10000.50 |
 |  2 |    25000 |
-|  4 | 82504.78 |
 +----+----------+
 ~~~
 
@@ -276,10 +283,12 @@ SELECT id, balance FROM accounts ORDER BY balance DESC;
 +----+----------+
 | id | balance  |
 +----+----------+
-|  4 | 82504.78 |
 |  2 |    25000 |
 |  1 | 10000.50 |
-|  3 | NULL     |
+|  4 |  9400.10 |
+|  3 |  8100.73 |
+|  6 | NULL     |
+|  5 | NULL     |
 +----+----------+
 ~~~ 
 
@@ -288,7 +297,7 @@ SELECT id, balance FROM accounts ORDER BY balance DESC;
 To update rows in a table, use the `UPDATE` statement followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ~~~ sql
-UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '25000';
+UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '10000';
 
 SELECT * FROM accounts;
 ~~~
@@ -296,10 +305,12 @@ SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  9995.00 |
+|  1 | 10000.50 |
 |  2 | 25000.00 |
-|  3 | NULL     |
-|  4 | 82504.78 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
+|  5 | NULL     |
+|  6 | NULL     |
 +----+----------+
 ~~~
 
@@ -310,7 +321,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 To delete rows in a table, use the `DELETE FROM` statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ~~~ sql
-DELETE FROM accounts WHERE id = 3;
+DELETE FROM accounts WHERE id in (5, 6);
 
 SELECT * FROM accounts;
 ~~~
@@ -318,9 +329,10 @@ SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  9995.50 |
+|  1 | 10000.50 |
 |  2 | 25000.00 |
-|  4 | 82504.78 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
 +----+----------+
 ~~~
 
