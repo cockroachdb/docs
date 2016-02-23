@@ -1,3 +1,27 @@
+table {
+    margin-top: 20px;
+    width: 100%;
+    background-color: transparent;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table thead tr {
+    border-bottom: 2px solid #46a417 !important;
+    border: none;
+    background: #ffffff;
+    color: #46a417;
+}
+
+table td {
+    border-right: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    border-left: 2px solid #FFFFFF;
+    background: #e8e7e5;
+    color: #142848;
+    padding: 8px;
+}
+
 .summary {
     color: #808080;
     border-left: 5px solid #ED1951;
@@ -26,9 +50,10 @@ h4 {color: #808080; }
     color: #142848;    
 }
 
-a[data-toggle="tooltip"] {
-    color: #649345;
-    font-style: italic;
+a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
+    color: #142848;
+    font-style: normal;
+    font-weight: bold;
     cursor: default;
 }
 

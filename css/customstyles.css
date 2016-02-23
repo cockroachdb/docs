@@ -811,12 +811,15 @@ caption {
   text-align: left; }
 
 th {
-  text-align: left; }
+  text-align: left; 
+  padding: 8px;
+  /*padding: 10px 15px 10px 5px*/
+}
 
 table {
   max-width: 90%;
   margin-bottom: 20px;
-  border: 1px solid #dedede; }
+  /*border: 1px solid #dedede;*/ }
 
 table > thead > tr > th,
 table > tbody > tr > th,
@@ -824,18 +827,18 @@ table > tfoot > tr > th,
 table > thead > tr > td,
 table > tbody > tr > td,
 table > tfoot > tr > td {
-  padding: 8px;
-  line-height: 1.42857143;
+  /*padding: 8px;*/
+  /*line-height: 1.42857143;*/
   vertical-align: top;
   border-top: 1px solid #ddd; }
 
-table > thead > tr > th {
+/*table > thead > tr > th {
   vertical-align: bottom;
   border-bottom: 2px solid #ddd;
   text-transform: uppercase;
   background-color: #444;
   color: white;
-  text-align: center; }
+  text-align: center; }*/
 
 table > caption + thead > tr:first-child > th,
 table > colgroup + thead > tr:first-child > th,
