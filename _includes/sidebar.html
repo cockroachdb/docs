@@ -10,7 +10,7 @@
 
                 $sidebar.navgoco({
                     caretHtml: '',
-                    accordion: {% if site.sidebar_accordion %}{{site.sidebar_accordion}}{% else %}true{% endif %},
+                    accordion: true,
                     openClass: 'active', // open
                     save: false, // leave false or nav highlighting doesn't work right
                     cookie: {
@@ -39,16 +39,6 @@
                         }
                     }, 400);
                 }
-
-                $("#collapseAll").click(function(e) {
-                    e.preventDefault();
-                    $("#mysidebar").navgoco('toggle', false);
-                });
-
-                $("#expandAll").click(function(e) {
-                    e.preventDefault();
-                    $("#mysidebar").navgoco('toggle', true);
-                });
 
             });
 
@@ -103,11 +93,6 @@
         {% endfor %}
         </ul>
 
-        {% if site.sidebar_accordion == false %}
-        <p class="external">
-            <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
-        </p>
-        {% endif %}
     </div>
        <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
     <script>$("li.active").parents('li').toggleClass("active");</script>
