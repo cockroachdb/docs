@@ -16,7 +16,6 @@ project_file_name: doc
 
 port: 4001
 baseurl: "/docs"
-exclude:
 
 # same for all
 host: 127.0.0.1
