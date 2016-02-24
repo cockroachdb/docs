@@ -4,6 +4,7 @@ toc: false
 ---
 
 - [SQL Statements](sql-statements.html)
+- [SQL Grammar](sql-grammar.html)
 - [Identifiers](identifiers.html)
 - Default Values
 - Constraints
