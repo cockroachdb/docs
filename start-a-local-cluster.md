@@ -3,40 +3,62 @@ title: Start a Local Cluster
 toc: false
 ---
 
-Once you've [installed CockroachDB locally](install-cockroachdb.html), the quickest way to try out the database is to start a local cluster and talk to it via the built-in SQL client. There are two modes in which you can do this:
+Once you've [installed CockroachDB](install-cockroachdb.html), it's easy to start a single- or multi-node cluster locally and talk to it via the built-in SQL client. Your cluster can be insecure or secure:
 
-- [Dev Mode (Insecure)](#dev-mode-insecure)  
-In dev mode, you start up a single-node cluster where data is stored in-memory and client/server communication is completely insecure. This mode is great for learning CockroachDB, but since there's no authentication or encryption and nothing is stored persistently, it's suitable only for limited testing and development.
+- [Insecure](#insecure)  
+This is the fastest way to start up a cluster and learn CockroachDB, but there's no client/server authentication or encryption, so it's suitable only for limited testing and development.
 
-- [Standard Mode (Secure)](#standard-mode-secure)  
-In standard mode, you start up a single-node or multi-node cluster where data is stored on-disk and client/server communication is secure. Setup involves creating certificates and passing additional command line options, but it's still simple. This mode is suitable for standing up a persistent test cluster to develop an application or test CockroachDB.
+- [Secure](#secure)  
+Starting up a cluster with authenticated, encrypted client/server communication involves creating certificates and passing a few additional command line options, but it's still simple. 
 
-{{site.data.alerts.callout_info}} For production deployments, see <a href="deploy-a-multinode-cluster.html">Deploy a Multi-Node Cluster</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} Want to deploy CockroachDB in production? See <a href="on-premise-deployment.html">On-Premise Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
 
-## Dev Mode (Insecure)
+## Insecure
 
-1. From the directory containing the `cockroach` binary, start a single-node cluster:
+1. From the directory containing the `cockroach` binary, start your first node:
 
    ~~~ shell
-   $ ./cockroach start --dev
+   $ ./cockroach start --insecure
+
+   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
+   admin:     http://ROACHs-MacBook-Pro.local:26257
+   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslmode=disable
+   logs:      cockroach-data/logs
+   store[0]:  cockroach-data
    ~~~
 
-   The `--dev` flag defaults storage to in-memory, communication to insecure, and the CockroachDB and SQL client ports to 26257 and 15432 respectively.
+   - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
 
-2. In a new shell, start the built-in SQL client in dev mode:
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`. 
+
+   - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+
+2. For each additional node, repeat step 1 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach sql --dev
+   $ ./cockroach start --insecure --stores=<filepath> --port=26258 --join=localhost:26257
+   ~~~
+
+   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
+
+   - Set the `--port` flag to a port not in use by other nodes.
+  
+   - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
+
+3. In a new shell, start the built-in SQL client:
+
+   ~~~ shell
+   $ ./cockroach sql --insecure
    # Welcome to the cockroach SQL interface.
    # All statements must be terminated by a semicolon.
    # To exit: CTRL + D.
    ~~~
 
-3. [Run some queries](basic-sql-statements.html).
+4. [Run some queries](basic-sql-statements.html).
 
-4. Check out the Admin UI by pointing your browser to `http://<your local host>:26257`. You can find your local host by running `hostname` in your shell.
+5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:26257`. You can find the complete address in the startup output as well (see step 1).
 
-## Standard Mode (Secure)
+## Secure
 
 1. From the directory containing the `cockroach` binary, create security certificates:
 
@@ -46,17 +68,41 @@ In standard mode, you start up a single-node or multi-node cluster where data is
    $ ./cockroach cert create-client root
    ~~~
 
-   These commands create certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. The last command creates the files for the SQL client: `root.client.crt` and `root.client.key`.
+   - The first two commands create a default `certs` directory and add the certificate authority files and files for the node: `ca.cert`, `ca.key`,`node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. 
+   
+   - The last command adds the files for the SQL client: `root.client.crt` and `root.client.key`.
 
-2. Start a single-node cluster:
-
+2. Start a secure node:
+ 
    ~~~ shell
-   $ ./cockroach start --stores=ssd=dev/node1
+   $ ./cockroach start
+
+   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
+   admin:     https://ROACHs-MacBook-Pro.local:26257
+   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslcert=%2FUsers%2F...
+   logs:      cockroach-data/logs
+   store[0]:  cockroach-data
    ~~~
 
-   The `--stores` flag defines the store type and the filepath to the storage location. The store type can be any arbitrary string describing the store (e.g., `ssd` for flash, `hdd` for spinny disk). For the filepath, the parent directory must exist and the store directory, if it already exists, should not contain any CockroachDB data.
+   - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
 
-3. In a new shell, start the built-in SQL client:
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`.
+
+   - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+
+3. For each additional node, repeat step 2 with a few extra flags:
+
+   ~~~ shell
+   $ ./cockroach start --stores=<filepath> --port=26258 --join=localhost:26257
+   ~~~
+
+   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
+
+   - Set the `--port` flag to a port not in use by other nodes.
+  
+   - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
+
+4. In a new shell, start the built-in SQL client:
 
    ~~~ shell
    $ ./cockroach sql
@@ -65,21 +111,9 @@ In standard mode, you start up a single-node or multi-node cluster where data is
    # To exit: CTRL + D.
    ~~~
 
-4. [Run some queries](basic-sql-statements.html).
+5. [Run some queries](basic-sql-statements.html).
 
-5. Check out the Admin UI by pointing your browser to `https://<your local host>:26257`. You can find your local host by running `hostname` in your shell. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI.
-
-6. To simulate a multi-node cluster, add each new node as follows:
-
-   ~~~ shell
-   $ ./cockroach start --stores=ssd=dev/node2 --port=26258 --pgport=15433 --join=<your local host>:26257
-   ~~~
-
-   Set the `--stores` flag to a storage location not in use by other nodes.
-
-   The `--port` and `--pgport` flags bind the ports for CockroachDB and SQL client traffic. Set these flags to ports not in use by other nodes (the first node uses the default ports, 26257 and 15432).
-
-   The `--join` flag connects the new node to the cluster. Set this flag to your local host and the port of the first node, 26257. You can find your local host by running `hostname` in your shell.
+6. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:26257`. You can find the complete address in the startup output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
 ## What's Next?
 

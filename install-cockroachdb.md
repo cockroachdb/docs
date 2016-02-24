@@ -96,7 +96,7 @@ $(document).ready(function(){
 
 <ul>
 <li>A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work). On Mac OS X, Xcode should suffice. </li>
-<li>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.5. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code>$GOPATH</code> and <code>$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</li>
+<li>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code>$GOPATH</code> and <code>$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</li>
 <li>Git 1.8+ </li>
 </ul></li>
 <li><p>Get the CockroachDB code:</p>
@@ -160,7 +160,7 @@ $(document).ready(function(){
 
 <ul>
 <li>A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work). </li>
-<li>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.5. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code>$GOPATH</code> and <code>$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</li>
+<li>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code>$GOPATH</code> and <code>$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</li>
 <li>Git 1.8+ </li>
 </ul></li>
 <li><p>Get the CockroachDB code:</p>
@@ -256,7 +256,7 @@ $(document).ready(function(){
 
 1.  Make sure you have the following prerequisites:
     - A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work). On Mac OS X, Xcode should suffice. 
-    - A [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.5. You can download the [Go binary](https://golang.org/dl/) directly from the official site. Be sure to set the `$GOPATH` and `$PATH` environment variables as described [here](https://golang.org/doc/code.html#GOPATH). 
+    - A [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.6. You can download the [Go binary](https://golang.org/dl/) directly from the official site. Be sure to set the `$GOPATH` and `$PATH` environment variables as described [here](https://golang.org/doc/code.html#GOPATH). 
     - Git 1.8+ 
 
 2.  Get the CockroachDB code:
