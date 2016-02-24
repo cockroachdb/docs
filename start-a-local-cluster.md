@@ -21,21 +21,19 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    $ ./cockroach start --insecure
    ~~~
 
-   - The `--insecure` flag sets node and client communication to insecure. 
+   - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
 
-   - Node and client traffic default to ports 26257 and 15432. To bind to different ports, set `--port=<node port>` and `--pgport=<client port>`. 
-
-   - Node storage defaults to the `cockroach-data` directory. To have CockroachDB create and store to a different directory, set `--stores=<filepath>`. 
+   - Node storage defaults to the `cockroach-data` directory. To store to a different directory, set `--stores=<filepath>`. 
 
 2. For each additional node, repeat step 1 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --insecure --stores=<filepath> --port=26258 --pgport=15433 --join=localhost:26257
+   $ ./cockroach start --insecure --stores=<filepath> --port=26258 --join=localhost:26257
    ~~~
 
-   - Set the `--stores` flag to a storage location not in use by other nodes.
+   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
 
-   - Set the `--port` and `--pgport` flags to ports not in use by other nodes.
+   - Set the `--port` flag to a port not in use by other nodes.
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
@@ -59,7 +57,9 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    $ ./cockroach cert create-client root
    ~~~
 
-   These commands create certificates in the `certs` directory. The first two commands create the files for the cluster: `ca.cert`, `ca.key`, `node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. The last command creates the files for the SQL client: `root.client.crt` and `root.client.key`.
+   - The first two commands create a default `certs` directory and add the certificate authority files and files for the node: `ca.cert`, `ca.key`,`node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. 
+   
+   - The last command adds the files for the SQL client: `root.client.crt` and `root.client.key`.
 
 2. Start a secure node:
  
@@ -67,21 +67,19 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    $ ./cockroach start
    ~~~
 
-   - Node and client communication look for certificates in the default `certs` directory. If certificates are stored elsewhere, set `--certs=<path to directory>`.
+   - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
 
-   - Node and client traffic default to ports 26257 and 15432. To bind to different ports, set `--port=<node port>` and `--pgport=<client port>`. 
-
-   - Node storage defaults to the `cockroach-data` directory. To have CockroachDB create and store to a different directory, set `--stores=<filepath>`.
+   - Node storage defaults to the `cockroach-data` directory. To store to a different directory, set `--stores=<filepath>`.
 
 3. For each additional node, repeat step 1 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --stores=<filepath> --port=26258 --pgport=15433 --join=localhost:26257
+   $ ./cockroach start --stores=<filepath> --port=26258 --join=localhost:26257
    ~~~
 
-   - Set the `--stores` flag to a storage location not in use by other nodes.
+   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
 
-   - Set the `--port` and `--pgport` flags to ports not in use by other nodes.
+   - Set the `--port` flag to a port not in use by other nodes.
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
