@@ -14,19 +14,19 @@ This page walks you through some of the most essential CockroachDB SQL statement
 CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the `CREATE DATABASE` statement followed by a database name:
 
 ~~~ sql
-CREATE DATABASE db1;
+CREATE DATABASE bank;
 ~~~
 
 Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ~~~ sql
-CREATE DATABASE IF NOT EXISTS db1;
+CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
 When you no longer need a database, use the `DROP DATABASE` statement followed by the database name to remove the database and all its objects:
 
 ~~~ sql
-DROP DATABASE db1;
+DROP DATABASE bank;
 ~~~
 
 ## Show Databases
@@ -40,7 +40,7 @@ SHOW DATABASES;
 +----------+
 | Database |
 +----------+
-| db1      |
+| bank     |
 | system   |
 +----------+
 ~~~
@@ -50,7 +50,7 @@ SHOW DATABASES;
 To set the default database, use the `SET DATABASE` statement:
 
 ~~~ sql
-SET DATABASE = db1;
+SET DATABASE = bank;
 ~~~
 
 When working with the default database, you don't need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
@@ -62,20 +62,18 @@ SHOW DATABASE;
 +----------+
 | DATABASE |
 +----------+
-| db1      |
+| bank     |
 +----------+
 ~~~
 
 ## Create a Table
 
-To create a table, use the `CREATE TABLE` statement followed by a table name, the column names, the data type for each column, and the primary key constraint:
+To create a table, use the `CREATE TABLE` statement followed by a table name, the column names, and the data type and constraint, if any, for each column:
 
 ~~~ sql
-CREATE TABLE table1 (
-    column_a INT PRIMARY KEY,
-    column_b FLOAT,
-    column_c DATE,
-    column_d STRING
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL
 );
 ~~~
 
@@ -84,34 +82,30 @@ Table and column names must follow [these rules](identifiers.html). Also, when y
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
 ~~~ sql
-CREATE TABLE IF NOT EXISTS table1 (
-    column_a INT PRIMARY KEY,
-    column_b FLOAT,
-    column_c DATE,
-    column_d STRING
+CREATE TABLE IF NOT EXISTS accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL
 );
 ~~~
 
 To show all of the columns from a table, use the `SHOW COLUMNS FROM` statement followed by the table name:
 
 ~~~ sql
-SHOW COLUMNS FROM table1;
+SHOW COLUMNS FROM accounts;
 ~~~
 ~~~
-+----------+--------+-------+---------+
-|  Field   |  Type  | Null  | Default |
-+----------+--------+-------+---------+
-| column_a | INT    | false | NULL    |
-| column_b | FLOAT  | true  | NULL    |
-| column_c | DATE   | true  | NULL    |
-| column_d | STRING | true  | NULL    |
-+----------+--------+-------+---------+
++---------+---------+-------+---------+
+|  Field  |  Type   | Null  | Default |
++---------+---------+-------+---------+
+| id      | INT     | false | NULL    |
+| balance | DECIMAL | true  | NULL    |
++---------+---------+-------+---------+
 ~~~
 
 When you no longer need a table, use the `DROP TABLE` statement followed by table name to remove the table and all its data:
 
 ~~~ sql
-DROP TABLE table1;
+DROP TABLE accounts;
 ~~~
 
 ## Show Tables
@@ -122,18 +116,18 @@ To see all tables in the active database, use the `SHOW TABLES` statement:
 SHOW TABLES;
 ~~~
 ~~~
-+--------+
-| Table  |
-+--------+
-| table1 |
-| table2 |
-+--------+
++----------+
+|  Table   |
++----------+
+| accounts |
+| users    |
++----------+
 ~~~
 
 To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
 
 ~~~ sql
-SHOW TABLES FROM db2;
+SHOW TABLES FROM animals;
 ~~~
 ~~~
 +------------+
@@ -153,39 +147,42 @@ SHOW TABLES FROM db2;
 To insert a row into a table, use the `INSERT INTO` statement followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ~~~ sql
-INSERT INTO table1 VALUES (12345, 1.1, DATE '2016-01-01', 'aaaa');
+INSERT INTO accounts VALUES (1, DECIMAL '10000.50');
 ~~~
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the same order:
 
 ~~~ sql
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('aaaa', DATE '2016-01-01', 1.1, 12345);
+INSERT INTO accounts (balance, id) VALUES 
+    (DECIMAL '25000.00', 2);
 ~~~
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ~~~ sql
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('aaaa', DATE '2016-01-01', 1.1, 12345),
-    ('bbbb', DATE '2016-01-01', 1.2, 54321);
+INSERT INTO accounts VALUES 
+    (3, DECIMAL '8100.73'),
+    (4, DECIMAL '9400.10');
 ~~~
 
-[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `column_b` filled with its default value, in this case `NULL`:
+[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
-INSERT INTO table1 (column_d, column_c, column_a) VALUES 
-    ('aaaa', DATE '2016-01-01', 12345);
+INSERT INTO accounts (id, balance) VALUES 
+    (5);
 
-INSERT INTO table1 (column_d, column_c, column_b, column_a) VALUES 
-    ('aaaa', DATE '2016-01-01', DEFAULT, 12345);
+INSERT INTO accounts (id, balance) VALUES 
+    (6, DEFAULT);
+
+SELECT * FROM accounts WHERE id in (5, 6);
 ~~~
 ~~~
-+----------+----------+---------------------------------+----------+
-| column_a | column_b |            column_c             | column_d |
-+----------+----------+---------------------------------+----------+
-|    12346 | NULL     | 2016-01-01 00:00:00 +0000 +0000 | aaaa     |
-+----------+----------+---------------------------------+----------+
++----+---------+
+| id | balance |
++----+---------+
+|  5 | NULL    |
+|  6 | NULL    |
++----+---------+
 ~~~
 
 ## Create an Index
@@ -195,18 +192,16 @@ Indexes are used to quickly locate data without having to look through every row
 To create an index for non-unique columns, use the `CREATE INDEX` statement followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 ~~~ sql
-CREATE INDEX d_idx ON table1 (column_d DESC);
+CREATE INDEX balance_idx ON accounts (balance DESC);
 ~~~
 
 You can create indexes during table creation as well; just include the `INDEX` keyword followed by an optional index name and the column(s) to index:
 
 ~~~ sql
-CREATE TABLE table1 (
-    column_a INT PRIMARY KEY,
-    column_b FLOAT,
-    column_c DATE,
-    column_d STRING,
-    INDEX d_idx (column_d)
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL,
+    INDEX balance_idx (balance)
 );
 ~~~
 
@@ -215,76 +210,86 @@ CREATE TABLE table1 (
 To show the indexes on a table, use the `SHOW INDEX FROM` statement followed by the name of the table:
 
 ~~~ sql
-SHOW INDEX FROM table1;
+SHOW INDEX FROM accounts;
 ~~~
 ~~~
-+--------+---------+--------+-----+----------+-----------+---------+
-| Table  |  Name   | Unique | Seq |  Column  | Direction | Storing |
-+--------+---------+--------+-----+----------+-----------+---------+
-| table1 | primary | true   |   1 | column_a | ASC       | false   |
-| table1 | d_idx   | false  |   1 | column_d | DESC      | false   |
-+--------+---------+--------+-----+----------+-----------+---------+
++----------+-------------+--------+-----+---------+-----------+---------+
+|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing |
++----------+-------------+--------+-----+---------+-----------+---------+
+| accounts | primary     | true   |   1 | id      | ASC       | false   |
+| accounts | balance_idx | false  |   1 | balance | DESC      | false   |
++----------+-------------+--------+-----+---------+-----------+---------+
 ~~~
 
 ## Query a Table
 
-To query a table, use the `SELECT` statement followed by the columns to be returned and the table from which to retrieve the data:
+To query a table, use the `SELECT` statement followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
 ~~~ sql
-SELECT column_a, column_b FROM table1;
+SELECT balance FROM accounts;
 ~~~
 ~~~
-+----------+----------+
-| column_a | column_b |
-+----------+----------+
-|    12345 |      1.1 |
-|    54321 |      1.2 |
-|    67890 |      1.3 |
-+----------+----------+
++----------+
+| balance  |
++----------+
+| 10000.50 |
+| 25000.00 |
+|  8100.73 |
+|  9400.10 |
+| NULL     |
+| NULL     |
++----------+
 ~~~
 
 To retrieve all columns, use the `*` wildcard:
 
 ~~~ sql
-SELECT * FROM table1;
+SELECT * FROM accounts;
 ~~~
 ~~~
-+----------+----------+---------------------------------+----------+
-| column_a | column_b |            column_c             | column_d |
-+----------+----------+---------------------------------+----------+
-|    12345 |      1.1 | 2016-01-01 00:00:00 +0000 +0000 | aaaa     |
-|    54321 |      1.2 | 2016-01-01 00:00:00 +0000 +0000 | bbbb     |
-|    67890 |      1.3 | 2016-01-01 00:00:00 +0000 +0000 | cccc     |
-+----------+----------+---------------------------------+----------+
++----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8100.73 |
+|  4 |  9400.10 |
+|  5 | NULL     |
+|  6 | NULL     |
++----+----------+
 ~~~
 
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
 
 ~~~ sql
-SELECT column_a, column_b FROM table1 WHERE column_b < 1.3;
+SELECT id, balance FROM accounts WHERE balance > DECIMAL '9000';
 ~~~
 ~~~
-+----------+----------+
-| column_a | column_b |
-+----------+----------+
-|    12345 |      1.1 |
-|    54321 |      1.2 |
-+----------+----------+
++----+----------+
+| id | balance  |
++----+----------+
+|  4 |  9400.10 |
+|  1 | 10000.50 |
+|  2 |    25000 |
++----+----------+
 ~~~
 
 To sort the results, add an `ORDER BY` clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 ~~~ sql
-SELECT * FROM table1 ORDER BY column_a DESC;
+SELECT id, balance FROM accounts ORDER BY balance DESC;
 ~~~
 ~~~
-+----------+----------+---------------------------------+----------+
-| column_a | column_b |            column_c             | column_d |
-+----------+----------+---------------------------------+----------+
-|    67890 |      1.3 | 2016-01-01 00:00:00 +0000 +0000 | cccc     |
-|    54321 |      1.2 | 2016-01-01 00:00:00 +0000 +0000 | bbbb     |
-|    12345 |      1.1 | 2016-01-01 00:00:00 +0000 +0000 | aaaa     |
-+----------+----------+---------------------------------+----------+
++----+----------+
+| id | balance  |
++----+----------+
+|  2 |    25000 |
+|  1 | 10000.50 |
+|  4 |  9400.10 |
+|  3 |  8100.73 |
+|  6 | NULL     |
+|  5 | NULL     |
++----+----------+
 ~~~ 
 
 ## Update Rows in a Table
@@ -292,7 +297,21 @@ SELECT * FROM table1 ORDER BY column_a DESC;
 To update rows in a table, use the `UPDATE` statement followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ~~~ sql
-UPDATE table1 SET column_a = column_a + 1, column_d = 'cccc' WHERE column_b > 0;
+UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '10000';
+
+SELECT * FROM accounts;
+~~~
+~~~
++----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
+|  5 | NULL     |
+|  6 | NULL     |
++----+----------+
 ~~~
 
 If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated. 
@@ -302,7 +321,19 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 To delete rows in a table, use the `DELETE FROM` statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ~~~ sql
-DELETE FROM table1 WHERE column_b = 2.5;
+DELETE FROM accounts WHERE id in (5, 6);
+
+SELECT * FROM accounts;
+~~~
+~~~
++----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
++----+----------+
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. 
