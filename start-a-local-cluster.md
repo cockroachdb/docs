@@ -3,7 +3,7 @@ title: Start a Local Cluster
 toc: false
 ---
 
-Once you've [installed CockroachDB locally](install-cockroachdb.html), it's easy to start a single- or multi-node cluster locally and talk to it via the built-in SQL client. Your cluster can be insecure or secure:
+Once you've [installed CockroachDB](install-cockroachdb.html), it's easy to start a single- or multi-node cluster locally and talk to it via the built-in SQL client. Your cluster can be insecure or secure:
 
 - [Insecure](#insecure)  
 This is the fastest way to start up a cluster and learn CockroachDB, but there's no client/server authentication or encryption, so it's suitable only for limited testing and development.
@@ -19,11 +19,19 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    ~~~ shell
    $ ./cockroach start --insecure
+
+   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
+   admin:     http://ROACHs-MacBook-Pro.local:26257
+   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslmode=disable
+   logs:      cockroach-data/logs
+   store[0]:  cockroach-data
    ~~~
 
    - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
 
-   - Node storage defaults to the `cockroach-data` directory. To store to a different directory, set `--stores=<filepath>`. 
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`. 
+
+   - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
 
 2. For each additional node, repeat step 1 with a few extra flags:
 
@@ -37,15 +45,18 @@ Starting up a cluster with authenticated, encrypted client/server communication 
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-2. In a new shell, start the built-in SQL client:
+3. In a new shell, start the built-in SQL client:
 
    ~~~ shell
    $ ./cockroach sql --insecure
+   # Welcome to the cockroach SQL interface.
+   # All statements must be terminated by a semicolon.
+   # To exit: CTRL + D.
    ~~~
 
-3. [Run some queries](basic-sql-statements.html).
+4. [Run some queries](basic-sql-statements.html).
 
-4. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<your local host>:26257`. You can find the complete address in the the `admin` field in the response after starting a node.
+5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:26257`. You can find the complete address in the startup output as well (see step 1).
 
 ## Secure
 
@@ -65,13 +76,21 @@ Starting up a cluster with authenticated, encrypted client/server communication 
  
    ~~~ shell
    $ ./cockroach start
+
+   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
+   admin:     https://ROACHs-MacBook-Pro.local:26257
+   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslcert=%2FUsers%2F...
+   logs:      cockroach-data/logs
+   store[0]:  cockroach-data
    ~~~
 
    - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
 
-   - Node storage defaults to the `cockroach-data` directory. To store to a different directory, set `--stores=<filepath>`.
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`.
 
-3. For each additional node, repeat step 1 with a few extra flags:
+   - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+
+3. For each additional node, repeat step 2 with a few extra flags:
 
    ~~~ shell
    $ ./cockroach start --stores=<filepath> --port=26258 --join=localhost:26257
@@ -87,11 +106,14 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    ~~~ shell
    $ ./cockroach sql
+   # Welcome to the cockroach SQL interface.
+   # All statements must be terminated by a semicolon.
+   # To exit: CTRL + D.
    ~~~
 
-4. [Run some queries](basic-sql-statements.html).
+5. [Run some queries](basic-sql-statements.html).
 
-5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<your local host>:26257`. You can find the complete address in the the `admin` field in the response after starting a node. Note that your browser will consider the cockroach-created certificate invalid, so you'll need to click through a warning message to get the UI.
+6. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:26257`. You can find the complete address in the startup output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
 ## What's Next?
 
