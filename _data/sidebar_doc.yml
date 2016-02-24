@@ -132,8 +132,15 @@ entries:
           product: all
           version: all
 
-        - title: Deploy a Multi-Node Cluster
-          url: /deploy-a-multinode-cluster.html
+        - title: On-Premise Deployment
+          url: /deploy-on-premises.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
+        - title: Cloud Deployment
+          url: /deploy-in-cloud.html
           audience: all
           platform: all
           product: all
