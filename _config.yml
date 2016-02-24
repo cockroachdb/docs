@@ -1,5 +1,3 @@
-## This content is duplicated here from configs/config_console.yml because I'm building this site through Github Pages, and Github Pages just looks for the _config.yml file in the root directory to create the build.
-# project definitions
 project: cockroachdb
 audience: all
 product: all
@@ -19,10 +17,6 @@ project_file_name: doc
 port: 4001
 baseurl: "/docs"
 exclude:
-  - doc_ymp*
-  - configs/
-  - _site
-  - di_multi*
 
 # same for all
 host: 127.0.0.1
