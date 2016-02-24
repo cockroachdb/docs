@@ -1,5 +1,5 @@
 ---
-title: On-Premise Deployment
+title: Privileges
 toc: false
 ---
 

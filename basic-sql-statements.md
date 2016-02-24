@@ -337,3 +337,7 @@ SELECT * FROM accounts;
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. 
+
+## What's Next?
+
+Since CockroachDB supports the PostgreSQL wire protocol, it’s simple to query CockroachDB from your application; just find your [client driver](install-client-drivers.html) and start building.
