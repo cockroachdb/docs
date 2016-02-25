@@ -20,7 +20,6 @@ baseurl: "/docs"
 # same for all
 host: 127.0.0.1
 feedback_email: jesse@cockroachlabs.com
-sidebar_accordion: true
 print: false
 theme_file: theme-blue.css
 # only use suffix if you need to force index.html to display
