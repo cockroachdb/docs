@@ -2,145 +2,49 @@
 title: SQL Statements
 toc: false
 ---
+<style>
+table td:first-child {
+  min-width: 200px;
+
+}
+</style>
 
 CockroachDB supports the following SQL statements:
 
-## `ALTER TABLE`
+| [`ALTER TABLE`](alter-table.html) | |
+| [`BEGIN TRANSACTION`](begin-transaction.html)| |
+| [`COMMIT TRANSACTION`](commit-transaction.html) | |
+| [`CREATE DATABASE`](create-database.html) | Creates a new CockroachDB database. |
+| [`CREATE INDEX`](create-index.html) | |
+| [`CREATE TABLE`](create-table.html) | |
+| [`DELETE`](delete.html) | |
+| [`DROP DATABASE`](drop-database.html) | |
+| [`DROP INDEX`](drop-index.html) | |
+| [`DROP TABLE`](drop-table.html) | |
+| [`EXPLAIN`](explain.html) | |
+| [`GRANT`](grant.html) | |
+| [`INSERT`](insert.html) | |
+| [`RENAME COLUMN`](rename-column.html) | |
+| [`RENAME DATABASE`](rename-database.html) | |
+| [`RENAME INDEX`](rename-index.html) | |
+| [`RENAME TABLE`](rename-table.html) | |
+| [`REVOKE`](revoke.html) | |
+| [`ROLLBACK TRANSACTION`](rollback-transaction.html) | |
+| [`SELECT`](select.html) | |
+| [`SET DATABASE`](set-database.html) | |
+| [`SET TIMEZONE`](set-timezone.html) | |
+| [`SET TRANSACTION`](set-transaction.html) | |
+| [`SHOW COLUMNS`](show-columns.html) | |
+| [`SHOW DATABASES`](show-databases.html) | |
+| [`SHOW GRANTS`](show-grants.html) | |
+| [`SHOW INDEX`](show-index.html) | |
+| [`SHOW TABLES`](show-tables.html) | |
+| [`SHOW TIMEZONE`](show-timezone.html) | |
+| [`SHOW TRANSACTION ISOLOATION LEVEL`](show-transaction-isolation-level.html) | |
+| [`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | |
+| [`TABLE`](table.html) | |
+| [`TRUNCATE`](truncate.html) | |
+| [`UPDATE`](update.html) | |
+| [`VALUES`](values.html) | |
 
-{% include sql/alter_table.md %}
 
-## `BEGIN TRANSACTION`
-
-{% include sql/begin_transaction.md %}
-
-## `COMMIT TRANSACTION`
-
-{% include sql/commit_transaction.md %}
-
-## `CREATE DATABASE`
-
-{% include sql/create_database.md %}
-
-## `CREATE INDEX`
-
-{% include sql/create_index.md %}
-
-## `CREATE TABLE`
-
-{% include sql/create_table.md %}
-
-## `DELETE`
-
-{% include sql/delete.md %}
-
-## `DROP DATABASE`
-
-{% include sql/drop_database.md %}
-
-## `DROP INDEX`
-
-{% include sql/drop_index.md %}
-
-## `DROP TABLE`
-
-{% include sql/drop_table.md %}
-
-## `EXPLAIN`
-
-{% include sql/explain.md %}
-
-## `GRANT`
-
-{% include sql/grant.md %}
-
-## `INSERT`
-
-{% include sql/insert.md %}
-
-## `RENAME COLUMN`
-
-{% include sql/rename_column.md %}
-
-## `RENAME DATABASE`
-
-{% include sql/rename_database.md %}
-
-## `RENAME INDEX`
-
-{% include sql/rename_index.md %}
-
-## `RENAME TABLE`
-
-{% include sql/rename_table.md %}
-
-## `REVOKE`
-
-{% include sql/revoke.md %}
-
-## `ROLLBACK TRANSACTION`
-
-{% include sql/rollback_transaction.md %}
-
-## `SELECT`
-
-{% include sql/select.md %}
-
-## `SET DATABASE`
-
-{% include sql/set_database.md %}
-
-## `SET TIMEZONE`
-
-{% include sql/set_timezone.md %}
-
-## `SET TRANSACTION`
-
-{% include sql/set_transaction.md %}
-
-## `SHOW COLUMNS`
-
-{% include sql/show_columns.md %}
-
-## `SHOW DATABASES`
-
-{% include sql/show_databases.md %}
-
-## `SHOW GRANTS`
-
-{% include sql/show_grants.md %}
-
-## `SHOW INDEX`
-
-{% include sql/show_index.md %}
-
-## `SHOW TABLES`
-
-{% include sql/show_tables.md %}
-
-## `SHOW TIMEZONE`
-
-{% include sql/show_timezone.md %}
-   
-## `SHOW TRANSACTION ISOLOATION LEVEL`
-
-{% include sql/show_transaction_isoloation_level.md %}
-
-## `SHOW TRANSACTION PRIORITY`
-
-{% include sql/show_transaction_priority.md %}
-
-## `TABLE`
-
-{% include sql/table.md %}
-
-## `TRUNCATE`
-
-{% include sql/truncate.md %}
-
-## `UPDATE`
-
-{% include sql/update.md %}
-
-## `VALUES`
-
-{% include sql/values.md %}
