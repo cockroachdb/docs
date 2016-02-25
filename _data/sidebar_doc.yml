@@ -55,6 +55,13 @@ entries:
           product: all
           version: all
 
+        - title: Install Client Drivers
+          url: /install-client-drivers.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
         - title: Build a Test App
           url: /build-a-test-app.html
           audience: all
@@ -69,47 +76,47 @@ entries:
       version: all
       print: true
       items:
-        - title: Install Client Drivers
-          url: /install-client-drivers.html
+        - title: SQL Statements
+          url: /sql-statements.html
           audience: all
           platform: all
           product: all
           version: all
 
-        - title: SQL Reference
-          url: /sql-reference.html
+        - title: SQL Grammar
+          url: /sql-grammar.html
           audience: all
           platform: all
           product: all
           version: all
 
-#          thirdlevel:
-#            - title: SQL Reference
-#              audience: all
-#              platform: all
-#              product: all
-#              version: all
-#              thirdlevelitems:
-#                - title: SQL Commands
-#                  url: /sql-commands.html
-#                  audience: all
-#                  platform: all
-#                  product: all
-#                  version: all
-#
-#                - title: Identifiers
-#                  url: /identifiers.html
-#                  audience: all
-#                  platform: all
-#                  product: all
-#                  version: all
-#
-#                - title: Date Types
-#                  url: /date-types.html
-#                  audience: all
-#                  platform: all
-#                  product: all
-#                  version: all
+        - title: Data Definition
+          url: /data-definition.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
+        - title: Data Types
+          url: /data-types.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
+        - title: Functions and Operators
+          url: /functions-and-operators.html
+          audience: all
+          platform: all
+          product: all
+          version: all
+
+        - title: Transactions
+          url: /transaction.html
+          audience: all
+          platform: all
+          product: all
+          version: all
 
     - title: Deploy
       audience: all

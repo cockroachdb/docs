@@ -3,7 +3,7 @@ title: Basic SQL Statements
 toc: false
 ---
 
-This page walks you through some of the most essential CockroachDB SQL statements. For a complete list of statements and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
+This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html) and [Data Definition](data-definition.html).
 
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
 
@@ -17,7 +17,7 @@ CockroachDB comes with a single default `system` database, which contains Cockro
 CREATE DATABASE bank;
 ~~~
 
-Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these rules](data-definition.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS bank;
@@ -77,7 +77,7 @@ CREATE TABLE accounts (
 );
 ~~~
 
-Table and column names must follow [these rules](identifiers.html). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](data-definition.html#identifiers). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -165,7 +165,7 @@ INSERT INTO accounts VALUES
     (4, DECIMAL '9400.10');
 ~~~
 
-[Defaults values](default-values.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](data-definition.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 INSERT INTO accounts (id, balance) VALUES 
@@ -337,3 +337,7 @@ SELECT * FROM accounts;
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. 
+
+## What's Next?
+
+Since CockroachDB supports the PostgreSQL wire protocol, it’s simple to query CockroachDB from your application; just find your [client driver](install-client-drivers.html) and start building.

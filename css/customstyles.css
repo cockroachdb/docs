@@ -152,25 +152,23 @@ h1 {
   margin-bottom: 10px; }
 
 h2 {
-  font-size: 25px;
-  line-height: 30px; }
+  font-size: 30px;
+  color: #142848;
+  line-height: 35px;
+}
 
 h3 {
-  font-size: 19px;
-  line-height: 29px; }
-  h3 strong, h3 b {
-    font-family: 'AvenirLTStd-Black', serif;
-    font-size: 19px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; }
+  font-size: 20px;
+  color: #142848;
+  line-height: 29px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
 h4 {
-  font-family: 'AvenirLTStd-Black', serif;
-  font-size: 12px;
   font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  font-size: 120%;
+}
 
 #content {
   background: #fff;
@@ -1264,15 +1262,6 @@ a[data-toggle] {
 a.fa.fa-envelope-o.mailto {
   font-weight: 600; }
 
-h3 {
-  font-weight: normal;
-  font-size: 130%; }
-
-h4 {
-  font-weight: normal;
-  font-size: 120%;
-  font-style: italic; }
-
 .alert, .callout {
   overflow: hidden; }
 
@@ -1328,10 +1317,6 @@ hr {
 
 button.cursorNorm {
   cursor: pointer; }
-
-h2 {
-  line-height: 29px;
-  color: #142848; }
 
 span.otherProgrammingLanguages {
   font-style: normal; }
