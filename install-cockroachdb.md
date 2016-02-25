@@ -232,7 +232,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>.</p>
+    <p><a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Install Docker</a>.</p>
   </li>
   <li>
     <p>If you don’t already have the Docker daemon running in the background, run:</p>
@@ -269,7 +269,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>.</p>
+    <p><a href="https://docs.docker.com/engine/installation/windows/">Install Docker</a>.</p>
   </li>
   <li>
     <p>Start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>

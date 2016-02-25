@@ -54,7 +54,7 @@ toc: false
 
 ## Use Docker - Mac & Windows
 
-<!-- For Windows, remove "Open Launchpad and" from step 2. -->
+<!-- For Windows, change link in step 1 to https://docs.docker.com/engine/installation/windows/ and remove "Open Launchpad and" from step 2. -->
 
 1. [Install Docker](https://docs.docker.com/mac/step_one/).   
 
@@ -74,7 +74,7 @@ toc: false
 
 ## Use Docker - Linux
 
-1. [Install Docker](https://docs.docker.com/mac/step_one/).   
+1. [Install Docker](https://docs.docker.com/engine/installation/linux/ubuntulinux/).   
 
 2. If you don't already have the Docker daemon running in the background, run:
 
