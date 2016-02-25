@@ -58,6 +58,12 @@
         {% include custom/conditions.html %}
 
         <ul id="mysidebar" class="nav">
+            <li>
+                <form action="https://google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
+                    <input type="text" name="q" id="search-input" placeholder="{{site.data.strings.search_placeholder_text}}">
+                </form>
+            </li>
             {% for entry in sidebar %}
             {% for subcategory in entry.subcategories %}
             {% if subcategory.audience contains audience and subcategory.product contains product and subcategory.platform contains platform and subcategory.version contains version and subcategory.web != false %}
