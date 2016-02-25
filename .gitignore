@@ -1,6 +1,4 @@
 *~
-
 .DS_Store
-
-# Folders
 .sass-cache
+_site
