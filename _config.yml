@@ -1,36 +1,14 @@
 project: cockroachdb
-audience: all
-product: all
-platform: all
-version: all
-destination: ../cockroach_site
 topnav_title: CockroachDB
 homepage_title: CockroachDB Docs
 site_title: Cockroach Labs
 google_analytics: UA-63775601-1
 
-# variables
-sidebar_tagline: 
-sidebar_version: 
-project_file_name: doc
-
-port: 4001
 baseurl: "/docs"
 
-# same for all
-host: 127.0.0.1
-feedback_email: jesse@cockroachlabs.com
-print: false
 theme_file: theme-blue.css
-# only use suffix if you need to force index.html to display
-# suffix: index.html
-
 highlighter: rouge
 markdown: kramdown
-
-collections:
-  tooltips:
-    output: true
 
 defaults:
   -
@@ -39,11 +17,3 @@ defaults:
       type: "pages"
     values:
       layout: "page"
-      comments: true
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-      comments: true
