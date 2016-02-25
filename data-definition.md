@@ -1,7 +1,9 @@
 ---
-title: Identifiers
-toc: false
+title: Data Definition
+toc: true
 ---
+
+## Identifiers
 
 When naming a database, table, column, or other object, the identifier you use must follow these rules:
 
@@ -11,7 +13,8 @@ When naming a database, table, column, or other object, the identifier you use m
 
 To bypass either of the first two rules, simply surround the identifier with double-quotes.
 
-## Reserved Keywords
+### Reserved Keywords
+
 - ALL
 - ANALYSE
 - ANALYZE
@@ -90,3 +93,19 @@ To bypass either of the first two rules, simply surround the identifier with dou
 - WHERE
 - WINDOW
 - WITH
+
+## Default Values
+
+Coming soon.
+
+## Constraints
+
+Coming soon.
+
+## Privileges
+
+Coming soon.
+
+## Indexes
+
+Coming soon.

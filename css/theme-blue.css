@@ -27,10 +27,6 @@ table td {
     border-left: 5px solid #ED1951;
 }
 
-
-h3 {color: #ED1951; }
-h4 {color: #808080; }
-
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
     background-color: #248ec2;
     color: white;

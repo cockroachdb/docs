@@ -90,36 +90,15 @@ entries:
           product: all
           version: all
 
-        - title: Identifiers
-          url: /identifiers.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Default Values
-          url: /default-values.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Constraints
-          url: /constraints.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Privileges
-          url: /privileges.html
+        - title: Data Definition
+          url: /data-definition.html
           audience: all
           platform: all
           product: all
           version: all
 
         - title: Data Types
-          url: /date-types.html
+          url: /data-types.html
           audience: all
           platform: all
           product: all
@@ -132,15 +111,8 @@ entries:
           product: all
           version: all
 
-        - title: Type Conversion
-          url: /type-conversion.html
-          audience: all
-          platform: all
-          product: all
-          version: all
-
-        - title: Indexes
-          url: /indexes.html
+        - title: Transactions
+          url: /transaction.html
           audience: all
           platform: all
           product: all
