@@ -26,6 +26,7 @@
                         adjustMinHeight();
                     }
                 });
+                $sidebar.show();
 
                 adjustMinHeight();
 
@@ -44,10 +45,9 @@
 
         </script>
 
-
         {% include custom/conditions.html %}
 
-        <ul id="mysidebar" class="nav">
+        <ul id="mysidebar" class="nav" style="display: none">
             <li>
                 <form action="https://google.com/search" method="GET">
                     <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
@@ -58,7 +58,7 @@
             {% for subcategory in entry.subcategories %}
             {% if subcategory.audience contains audience and subcategory.product contains product and subcategory.platform contains platform and subcategory.version contains version and subcategory.web != false %}
             <li><a href="#">{{ subcategory.title }}</a>
-                {% if subcategory.class == "series" %}<ul class="series">{% else %}<ul>{% endif %}
+                <ul>
                     {% for item in subcategory.items %}
                     {% if item.audience contains audience and item.product contains product and item.platform contains platform and item.version contains version and item.web != false %}
                     {% if item.external_url %}
