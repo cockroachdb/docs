@@ -3,7 +3,7 @@ title: Basic SQL Statements
 toc: false
 ---
 
-This page walks you through some of the most essential CockroachDB SQL statements. For a complete list of statements and their options, as well as details about data types and other concepts, see [SQL Reference](sql-reference.html).
+This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html) and [Data Definition](data-definition.html).
 
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
 
