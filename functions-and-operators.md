@@ -1,4 +1,3 @@
-
 ---
 title: Functions and Operators
 toc: false

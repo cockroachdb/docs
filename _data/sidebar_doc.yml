@@ -112,7 +112,7 @@ entries:
           version: all
 
         - title: Transactions
-          url: /transaction.html
+          url: /transactions.html
           audience: all
           platform: all
           product: all
