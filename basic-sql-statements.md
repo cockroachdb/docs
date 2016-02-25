@@ -102,7 +102,7 @@ SHOW COLUMNS FROM accounts;
 +---------+---------+-------+---------+
 ~~~
 
-When you no longer need a table, use the `DROP TABLE` statement followed by table name to remove the table and all its data:
+When you no longer need a table, use the `DROP TABLE` statement followed by the table name to remove the table and all its data:
 
 ~~~ sql
 DROP TABLE accounts;
@@ -150,7 +150,7 @@ To insert a row into a table, use the `INSERT INTO` statement followed by the ta
 INSERT INTO accounts VALUES (1, DECIMAL '10000.50');
 ~~~
 
-If you want to pass column values in a different order, list the column names explicitly and provide the column values in the same order:
+If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:
 
 ~~~ sql
 INSERT INTO accounts (balance, id) VALUES 
@@ -165,7 +165,7 @@ INSERT INTO accounts VALUES
     (4, DECIMAL '9400.10');
 ~~~
 
-[Defaults values](data-definition.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, either of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](data-definition.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 INSERT INTO accounts (id, balance) VALUES 
@@ -294,7 +294,7 @@ SELECT id, balance FROM accounts ORDER BY balance DESC;
 
 ## Update Rows in a Table
 
-To update rows in a table, use the `UPDATE` statement followed by the table name, a `SET` clause specifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use the `UPDATE` statement followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ~~~ sql
 UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '10000';
@@ -340,4 +340,4 @@ Just as with the `UPDATE` statement, if a table has a primary key, you can use t
 
 ## What's Next?
 
-Since CockroachDB supports the PostgreSQL wire protocol, it’s simple to query CockroachDB from your application; just find your [client driver](install-client-drivers.html) and start building.
+Since CockroachDB supports the PostgreSQL wire protocol, it’s easy to query CockroachDB from your application; just find your [client driver](install-client-drivers.html) and start building.
