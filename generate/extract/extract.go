@@ -8,10 +8,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os/exec"
 	"regexp"
 	"strings"
 	"unicode"
+
+	"github.com/cockroachdb/docs/generate/yacc"
 )
 
 const (
@@ -62,50 +63,27 @@ func GenerateBNF(addr string) ([]byte, error) {
 		}
 		resp.Body.Close()
 	}
-	b = TransformSQLY(b)
-
-	cmd := exec.Command("docker", "run", "--rm", "-i", "cutils", "yyextract")
-	cmd.Stdin = bytes.NewReader(b)
-	out, err := cmd.CombinedOutput()
+	t, err := yacc.Parse(addr, string(b))
 	if err != nil {
-		return nil, fmt.Errorf("%s: %s", err, out)
+		return nil, err
 	}
-	out = reRemovePct.ReplaceAll(out, nil)
-	out = bytes.Replace(out, []byte(":\n"), []byte(" ::=\n"), -1)
-	out = bytes.Replace(out, []byte(";\n"), nil, -1)
-	return out, err
-}
-
-var (
-	reAddSemis   = regexp.MustCompile(`\n\n([a-z_]+):`)
-	replaceSemis = "\n;\n\n$1:"
-	reRemovePct  = regexp.MustCompile("%token.*\n")
-)
-
-// TransformSQLY converts a cockroach sql.y file to a format usable by
-// yyextract.
-func TransformSQLY(y []byte) []byte {
-	b := new(bytes.Buffer)
-	for _, s := range strings.Split(string(y), "\n") {
-		idx := strings.Index(s, "//")
-		if idx >= 0 {
-			s = s[:idx]
+	buf := new(bytes.Buffer)
+	for ip, p := range t.Productions {
+		if ip > 0 {
+			buf.WriteString("\n")
 		}
-		b.WriteString(s)
-		b.WriteByte('\n')
+		fmt.Fprintf(buf, "%s ::=\n", p.Name)
+		for i, expr := range p.Expressions {
+			buf.WriteString("\t")
+			if i > 0 {
+				buf.WriteString("| ")
+			}
+			buf.WriteString(strings.Join(expr.Items, " "))
+			buf.WriteString("\n")
+		}
 	}
-	r := b.String()
-	r = reAddSemis.ReplaceAllString(r, replaceSemis)
-	// add semicolon at end
-	r = strings.Replace(r, "\n%%\n\n", ";\n%%", 1)
-	// remove semicolon at beginning
-	r = strings.Replace(r, "%%\n;", "%%\n", 1)
-	return []byte(r)
+	return buf.Bytes(), nil
 }
-
-var (
-	reReduceComments = regexp.MustCompile(`/\*.*\*/`)
-)
 
 // Parser the grammar from b.
 func ParseGrammar(r io.Reader) (Grammar, error) {
@@ -118,10 +96,6 @@ func ParseGrammar(r io.Reader) (Grammar, error) {
 	for scan.Scan() {
 		s := scan.Text()
 		i++
-		s = reReduceComments.ReplaceAllStringFunc(s, func(v string) string {
-			f := strings.Fields(v)
-			return strings.Join(f, "")
-		})
 		f := strings.Fields(s)
 		if len(f) == 0 {
 			if len(prods) > 0 {
