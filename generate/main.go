@@ -183,7 +183,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
-					body, err :=  extract.ExtractTag(bytes.NewReader(rr), "svg")
+					body, err := extract.ExtractTag(bytes.NewReader(rr), "svg")
 					if err != nil {
 						log.Fatal(err)
 					}
