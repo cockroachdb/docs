@@ -938,6 +938,11 @@ ul#results-container a:hover {
     float: right;
     margin-top:10px;*/ }
 
+@media (max-width: 992px) {
+  #search-input {
+    width: 100%
+  }
+
 /* end search */
 .filter-options {
   margin-bottom: 20px; }
