@@ -29,7 +29,4 @@ CockroachDB is an open source, scalable, survivable, strongly-consistent SQL dat
     </a>
 </div>
 </div>
-
-<!--CockroachDB is an open source, distributed SQL database that **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions, and offers a familiar **SQL** API for structuring, manipulating, and querying data.
-
-CockroachDB is currently in **Alpha**. Likewise, these docs are a work in progress. As we build them out, use the links below to get started, and consider [contributing](improve-the-docs.html) your feedback and ideas. -->
+<br>
