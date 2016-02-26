@@ -255,59 +255,6 @@ p.post-meta {font-size: 80%; color: #777;}
 
 .entry-date{font-size:14px;font-size:0.875rem;line-height:1.71429;margin-bottom:0;text-transform:uppercase;}
 
-/* search area */
-#search-demo-container ul#results-container {
-list-style: none;
-font-size: 14px;
-background-color: transparent;
-/*background-color: white;*/
-position: absolute;
-top: 40px; /* if you change anything about the nav, you'll prob. need to reset the top and left values here.*/
-left: 20px;
-z-index: -1;
-width:250px;
-border-left: none;
-/*border-left: 1px solid #dedede;*/
-/*box-shadow: 2px 3px 2px #dedede;*/
-}
-
-
-ul#results-container a {
-background-color: transparent;
-}
-
-ul#results-container a:hover {
-  color: black;
-}
-
-
-#search-demo-container a:hover {
-   color: black;
-}
-#search-input {
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-  color: black;
-  font-size: 13px;
-  height: 30px;
-  width: 100%;
-  outline: 0px none;
-  padding: 0px 30px 0px 10px;
-  transition: all 0.15s ease 0s;
-  margin-bottom: 22px;
-/*  padding: .5em;
-  margin-left:20px;
-  width:20em;
-  font-size: 0.8em;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  float: right;
-  margin-top:10px;*/
-  }
-/* end search */
-
 .filter-options {
 margin-bottom: 20px;
 }
