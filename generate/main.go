@@ -29,7 +29,7 @@ func main() {
 				log.Fatal(err)
 			}
 			defer f.Close()
-			b, err := ioutil.ReadAll(r)
+			b, err := ioutil.ReadAll(f)
 			if err != nil {
 				log.Fatal(err)
 			}
