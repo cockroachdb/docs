@@ -51,7 +51,7 @@ CockroachDB replicates your data multiple times and guarantees consistency betwe
 
 At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your [PostgreSQL language-specific driver](install-client-drivers.html) and start building.  
 
-For insight into how CockroachDB maps SQL table data to key-value storage, see this [blog post](http://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+For insight into how CockroachDB maps SQL table data to key-value storage, see this [blog post](//www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
 ## Does CockroachDB support distributed transactions?
 
