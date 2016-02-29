@@ -29,17 +29,17 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
 
-   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`. 
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
    - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
 
 2. For each additional node, repeat step 1 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --insecure --stores=<filepath> --port=26258 --join=localhost:26257
+   $ ./cockroach start --insecure --store=<filepath> --port=26258 --join=localhost:26257
    ~~~
 
-   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
+   - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
 
    - Set the `--port` flag to a port not in use by other nodes.
   
@@ -86,17 +86,17 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
 
-   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--stores=<filepath>`.
+   - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
    - The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
 
 3. For each additional node, repeat step 2 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --stores=<filepath> --port=26258 --join=localhost:26257
+   $ ./cockroach start --store=<filepath> --port=26258 --join=localhost:26257
    ~~~
 
-   - Set the `--stores` flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.
+   - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
 
    - Set the `--port` flag to a port not in use by other nodes.
   
