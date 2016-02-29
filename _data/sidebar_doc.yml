@@ -43,6 +43,9 @@ entries:
 
     - title: Deploy
       items:
+        - title: Cockroach CLI
+          url: /cockroach-cli.html
+
         - title: Recommended Environments
           url: /recommended-environments.html
 
@@ -54,9 +57,6 @@ entries:
 
         - title: Cloud Deployment
           url: /cloud-deployment.html
-
-        - title: CockroachDB Command Line Options
-          url: /cockroachdb-command-line-options.html
 
     - title: Manage
       items:
