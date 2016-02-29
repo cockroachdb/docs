@@ -4,11 +4,7 @@ homepage_title: CockroachDB Docs
 site_title: Cockroach Labs
 google_analytics: UA-63775601-1
 
-gems:
-  - jekyll-sitemap
-
 baseurl: "/docs"
-url: http://www.cockroachlabs.com
 
 theme_file: theme-blue.css
 highlighter: rouge
