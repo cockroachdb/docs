@@ -1273,8 +1273,10 @@ li.activeSeries {
 .alert-warning {
   color: #444; }
 
-div.alert code, h2 code {
-  background-color: transparent !important; }
+div.alert code, h2 code, h3 code {
+  background-color: transparent !important; 
+  text-transform: none;
+}
 
 /* without this, the links in these notes aren't visible.*/
 .alert a {

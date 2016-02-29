@@ -3,11 +3,19 @@ title: Cockroach CLI
 toc: false
 ---
 
-The `cockroach` Command Line Interface is a single, unified tool for configuring, deploying, and managing a CockroachDB node. This page explains the available commands with their flags and the [global flags](#global-flags) that can be set on any command. You can run `./cockroach --help` in your shell to get similar guidance.
+<style>
+table td:first-child {
+    min-width: 200px;
+}
+</style>
+
+This page lists the available `cockroach` commands for configuring, deploying, and managing a CockroachDB cluster. Click a command for command-specific flags and examples. See [global flags](#global-flags) for flags that can be set on any command. 
+
+You can run `./cockroach --help` in your shell to get similar guidance.
 
 Command | Usage
 --------|----
-[`start`](#start) | Start a node.
+[`start`](cockroach-start.html) | Start a node.
 [`cert`](#cert) | Create CA, node, and client certificates.
 [`exterminate`](#exterminate) | Destroy all data held by the node.
 [`quit`](#quit) | Drain and shutdown the node.
@@ -22,41 +30,15 @@ Command | Usage
 
 Undocumented commands (likely not to be supported in beta): `kv` and `range`. 
 
-## `start`
-
-## `cert`
-
-## `exterminate`
-
-## `quit`
-
-## `log`
-
-## `sql`
-
-## `user`
-
-## `range`
-
-## `zone`
-
-## `node`
-
-## `gen`
-
-## `version`
-
-## `debug`
-
 ## Global Flags
 
-Flag | Value |
------|-------|
-`--alsologtostderr` | Log to standard error as well as files.
-`--color` | Colorize standard error output according to severity (default "auto").
---log-backtrace-at value | When logging hits line file:N, emit a stack trace (default :0).
---log-dir value | If non-empty, write log files in this directory (default "/var/folders/5t/1rt6nzr17sjg87mz5n0fw15c0000gn/T/").
---log-threshold value | Logs at or above this threshold go to stderr (default ERROR).
---logtostderr value[=true] | Log to standard error instead of files.
---verbosity value | log level for V logs.
---vmodule value | Comma-separated list of pattern=N settings for file-filtered logging.
+Flag | Value | Description
+-----|-------| -----------
+`--alsologtostderr` | | Log to standard error as well as files.
+`--color` | | Colorize standard error output according to severity (default "auto").
+`--log-backtrace-at` | |When logging hits line file:N, emit a stack trace (default :0).
+`--log-dir` | | If non-empty, write log files in this directory (default "/var/folders/5t/1rt6nzr17sjg87mz5n0fw15c0000gn/T/").
+`--log-threshold` | | Logs at or above this threshold go to stderr (default ERROR).
+`--logtostderr` | value[=true] | Log to standard error instead of files.
+`--verbosity` | value | log level for V logs.
+`--vmodule` | value | Comma-separated list of pattern=N settings for file-filtered logging.
