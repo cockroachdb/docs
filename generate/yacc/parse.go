@@ -223,8 +223,10 @@ func (t *Tree) parseExpression(e *ExpressionNode) {
 			if peek == itemPipe || peek == itemNL {
 				return
 			}
-		case itemIdent, itemLiteral:
-			e.Items = append(e.Items, token.val)
+		case itemIdent:
+			e.Items = append(e.Items, Item{token.val, TypToken})
+		case itemLiteral:
+			e.Items = append(e.Items, Item{token.val, TypLiteral})
 		case itemExpr:
 			e.Command = token.val
 			t.expect(itemNL, context)

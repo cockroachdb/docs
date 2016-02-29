@@ -68,7 +68,7 @@ func (p *ProductionNode) String() string {
 type ExpressionNode struct {
 	NodeType
 	Pos
-	Items   []string
+	Items   []Item
 	Command string
 }
 
@@ -79,3 +79,15 @@ func newExpression(pos Pos) *ExpressionNode {
 func (e *ExpressionNode) String() string {
 	return fmt.Sprintf("expression: %q", e.Items)
 }
+
+type Item struct {
+	Value string
+	Typ   ItemTyp
+}
+
+type ItemTyp int
+
+const (
+	TypToken = iota
+	TypLiteral
+)

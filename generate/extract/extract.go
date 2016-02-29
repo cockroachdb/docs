@@ -48,9 +48,10 @@ func GenerateRR(bnf []byte) ([]byte, error) {
 	return body, nil
 }
 
-// Opens or downloads the .y file at addr, runs yyextract on it, and returns
-// the result.
-func GenerateBNF(addr string) ([]byte, error) {
+// Opens or downloads the .y file at addr and returns at as an EBNF
+// file. Unimplemented branches are removed. Resulting empty nodes and their
+// uses are further removed. Empty nodes are elided.
+func GenerateBNF(addr string) (ebnf []byte, err error) {
 	b, err := ioutil.ReadFile(addr)
 	if err != nil {
 		resp, err := http.Get(addr)
@@ -68,21 +69,83 @@ func GenerateBNF(addr string) ([]byte, error) {
 		return nil, err
 	}
 	buf := new(bytes.Buffer)
-	for ip, p := range t.Productions {
-		if ip > 0 {
+
+	// Remove unimplemented branches.
+	prods := make(map[string][][]yacc.Item)
+	for _, p := range t.Productions {
+		var impl [][]yacc.Item
+		for _, e := range p.Expressions {
+			if !strings.Contains(e.Command, "unimplemented()") {
+				impl = append(impl, e.Items)
+			}
+		}
+		prods[p.Name] = impl
+	}
+	// Cascade removal of empty nodes. That is, for any node that has no branches,
+	// remove it and anything it refers to.
+	for {
+		changed := false
+		for name, exprs := range prods {
+			var next [][]yacc.Item
+			for _, expr := range exprs {
+				add := true
+				var items []yacc.Item
+				for _, item := range expr {
+					p := prods[item.Value]
+					if item.Typ == yacc.TypToken && !isUpper(item.Value) && len(p) == 0 {
+						add = false
+						changed = true
+						break
+					}
+					// Remove items that have one branch which accepts nothing.
+					if len(p) == 1 && len(p[0]) == 0 {
+						changed = true
+						continue
+					}
+					items = append(items, item)
+				}
+				if add {
+					next = append(next, items)
+				}
+			}
+			prods[name] = next
+		}
+		if !changed {
+			break
+		}
+	}
+
+	start := true
+	for _, prod := range t.Productions {
+		p := prods[prod.Name]
+		if len(p) == 0 {
+			continue
+		}
+		if start {
+			start = false
+		} else {
 			buf.WriteString("\n")
 		}
-		fmt.Fprintf(buf, "%s ::=\n", p.Name)
-		for i, expr := range p.Expressions {
+		fmt.Fprintf(buf, "%s ::=\n", prod.Name)
+		for i, items := range p {
 			buf.WriteString("\t")
 			if i > 0 {
 				buf.WriteString("| ")
 			}
-			buf.WriteString(strings.Join(expr.Items, " "))
+			for j, item := range items {
+				if j > 0 {
+					buf.WriteString(" ")
+				}
+				buf.WriteString(item.Value)
+			}
 			buf.WriteString("\n")
 		}
 	}
 	return buf.Bytes(), nil
+}
+
+func isUpper(s string) bool {
+	return s == strings.ToUpper(s)
 }
 
 // Parser the grammar from b.
