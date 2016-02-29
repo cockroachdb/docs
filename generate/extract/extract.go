@@ -8,10 +8,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os/exec"
 	"regexp"
 	"strings"
 	"unicode"
+
+	"github.com/cockroachdb/docs/generate/yacc"
 )
 
 const (
@@ -47,9 +48,10 @@ func GenerateRR(bnf []byte) ([]byte, error) {
 	return body, nil
 }
 
-// Opens or downloads the .y file at addr, runs yyextract on it, and returns
-// the result.
-func GenerateBNF(addr string) ([]byte, error) {
+// Opens or downloads the .y file at addr and returns at as an EBNF
+// file. Unimplemented branches are removed. Resulting empty nodes and their
+// uses are further removed. Empty nodes are elided.
+func GenerateBNF(addr string) (ebnf []byte, err error) {
 	b, err := ioutil.ReadFile(addr)
 	if err != nil {
 		resp, err := http.Get(addr)
@@ -62,50 +64,89 @@ func GenerateBNF(addr string) ([]byte, error) {
 		}
 		resp.Body.Close()
 	}
-	b = TransformSQLY(b)
-
-	cmd := exec.Command("docker", "run", "--rm", "-i", "cutils", "yyextract")
-	cmd.Stdin = bytes.NewReader(b)
-	out, err := cmd.CombinedOutput()
+	t, err := yacc.Parse(addr, string(b))
 	if err != nil {
-		return nil, fmt.Errorf("%s: %s", err, out)
+		return nil, err
 	}
-	out = reRemovePct.ReplaceAll(out, nil)
-	out = bytes.Replace(out, []byte(":\n"), []byte(" ::=\n"), -1)
-	out = bytes.Replace(out, []byte(";\n"), nil, -1)
-	return out, err
-}
+	buf := new(bytes.Buffer)
 
-var (
-	reAddSemis   = regexp.MustCompile(`\n\n([a-z_]+):`)
-	replaceSemis = "\n;\n\n$1:"
-	reRemovePct  = regexp.MustCompile("%token.*\n")
-)
-
-// TransformSQLY converts a cockroach sql.y file to a format usable by
-// yyextract.
-func TransformSQLY(y []byte) []byte {
-	b := new(bytes.Buffer)
-	for _, s := range strings.Split(string(y), "\n") {
-		idx := strings.Index(s, "//")
-		if idx >= 0 {
-			s = s[:idx]
+	// Remove unimplemented branches.
+	prods := make(map[string][][]yacc.Item)
+	for _, p := range t.Productions {
+		var impl [][]yacc.Item
+		for _, e := range p.Expressions {
+			if !strings.Contains(e.Command, "unimplemented()") {
+				impl = append(impl, e.Items)
+			}
 		}
-		b.WriteString(s)
-		b.WriteByte('\n')
+		prods[p.Name] = impl
 	}
-	r := b.String()
-	r = reAddSemis.ReplaceAllString(r, replaceSemis)
-	// add semicolon at end
-	r = strings.Replace(r, "\n%%\n\n", ";\n%%", 1)
-	// remove semicolon at beginning
-	r = strings.Replace(r, "%%\n;", "%%\n", 1)
-	return []byte(r)
+	// Cascade removal of empty nodes. That is, for any node that has no branches,
+	// remove it and anything it refers to.
+	for {
+		changed := false
+		for name, exprs := range prods {
+			var next [][]yacc.Item
+			for _, expr := range exprs {
+				add := true
+				var items []yacc.Item
+				for _, item := range expr {
+					p := prods[item.Value]
+					if item.Typ == yacc.TypToken && !isUpper(item.Value) && len(p) == 0 {
+						add = false
+						changed = true
+						break
+					}
+					// Remove items that have one branch which accepts nothing.
+					if len(p) == 1 && len(p[0]) == 0 {
+						changed = true
+						continue
+					}
+					items = append(items, item)
+				}
+				if add {
+					next = append(next, items)
+				}
+			}
+			prods[name] = next
+		}
+		if !changed {
+			break
+		}
+	}
+
+	start := true
+	for _, prod := range t.Productions {
+		p := prods[prod.Name]
+		if len(p) == 0 {
+			continue
+		}
+		if start {
+			start = false
+		} else {
+			buf.WriteString("\n")
+		}
+		fmt.Fprintf(buf, "%s ::=\n", prod.Name)
+		for i, items := range p {
+			buf.WriteString("\t")
+			if i > 0 {
+				buf.WriteString("| ")
+			}
+			for j, item := range items {
+				if j > 0 {
+					buf.WriteString(" ")
+				}
+				buf.WriteString(item.Value)
+			}
+			buf.WriteString("\n")
+		}
+	}
+	return buf.Bytes(), nil
 }
 
-var (
-	reReduceComments = regexp.MustCompile(`/\*.*\*/`)
-)
+func isUpper(s string) bool {
+	return s == strings.ToUpper(s)
+}
 
 // Parser the grammar from b.
 func ParseGrammar(r io.Reader) (Grammar, error) {
@@ -118,10 +159,6 @@ func ParseGrammar(r io.Reader) (Grammar, error) {
 	for scan.Scan() {
 		s := scan.Text()
 		i++
-		s = reReduceComments.ReplaceAllStringFunc(s, func(v string) string {
-			f := strings.Fields(v)
-			return strings.Join(f, "")
-		})
 		f := strings.Fields(s)
 		if len(f) == 0 {
 			if len(prods) > 0 {

@@ -162,12 +162,12 @@ func main() {
 				"create_index_stmt":    []string{"opt_unique", "opt_name", "index_params"},
 				"create_table_stmt":    []string{"opt_table_elem_list", "table_elem_list", "table_elem"},
 				"delete_stmt":          []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"},
-				"drop_stmt":            []string{"opt_drop_behavior", "any_name_list", "any_name", "qualified_name_list", "qualified_name"},
+				"drop_stmt":            []string{"any_name_list", "any_name", "qualified_name_list", "qualified_name"},
 				"explain_stmt":         []string{"explainable_stmt", "explain_option_list"},
 				"grant_stmt":           []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"},
-				"insert_stmt":          []string{"insert_target", "insert_rest", "returning_clause", "opt_on_conflict"},
+				"insert_stmt":          []string{"insert_target", "insert_rest", "returning_clause"},
 				"revoke_stmt":          []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"},
-				"truncate_stmt":        []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"},
+				"truncate_stmt":        []string{"opt_table", "relation_expr_list", "relation_expr"},
 				"update_stmt":          []string{"relation_expr_opt_alias", "set_clause_list", "set_clause", "single_set_clause", "multiple_set_clause", "ctext_row", "ctext_expr_list", "ctext_expr", "from_clause", "from_list", "where_clause", "returning_clause"},
 			}
 
@@ -183,7 +183,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
-					body, err :=  extract.ExtractTag(bytes.NewReader(rr), "svg")
+					body, err := extract.ExtractTag(bytes.NewReader(rr), "svg")
 					if err != nil {
 						log.Fatal(err)
 					}
