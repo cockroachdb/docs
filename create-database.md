@@ -13,8 +13,10 @@ The `CREATE DATABASE` statement creates a new CockroachDB database.
 
 ## Privileges
 
+Only the `root` user can create a database.
+
 ## Parameters
 
 | Parameter | Description |
 |-----------|-------------|
-| `name` | The name of the database to create. |
+| `name` | The name of the database to create. Names must follow [these rules](data-definition.html#identifiers). |
