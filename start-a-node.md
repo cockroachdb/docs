@@ -1,9 +1,11 @@
 ---
-title: start
+title: Start a Node
 toc: false
 ---
 
-The `start` command starts a CockroachDB node. 
+To start a CockroachDB node, run the `cockroach start` command. 
+
+- When starting the first node of a cluster, This page explains the accepted flags and provides examples. 
 
 <div id="toc"></div>
 

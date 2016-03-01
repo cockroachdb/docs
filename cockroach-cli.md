@@ -9,16 +9,16 @@ table td:first-child {
 }
 </style>
 
-This page lists the available `cockroach` commands for configuring, deploying, and managing a CockroachDB cluster. Click a command for command-specific flags and examples. See [global flags](#global-flags) for flags that can be set on any command. 
+This page lists the `cockroach` CLI commands for configuring, deploying, and managing a CockroachDB cluster. Click a command for command-specific flags and examples. See [global flags](#global-flags) for flags that can be set on any command. 
 
 You can run `./cockroach --help` in your shell to get similar guidance.
 
 Command | Usage
 --------|----
-[`start`](cockroach-start.html) | Start a node.
-[`cert`](#cert) | Create CA, node, and client certificates.
-[`exterminate`](#exterminate) | Destroy all data held by the node.
-[`quit`](#quit) | Drain and shutdown the node.
+[`start`](start-a-node.html) | Start a node.
+[`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
+[`exterminate`](#exterminate) | Destroy all data held by a node.
+[`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`log`](#log) | Make log files human-readable.
 [`sql`](#sql) | Open the built-in SQL shell.
 [`user`](#user) | Get, set, list, and remove users.

@@ -43,6 +43,12 @@ entries:
 
     - title: Deploy
       items:
+        - title: Start a Node
+          url: /start-a-node.html
+
+        - title: Stop a Node
+          url: /stop-a-node.html
+
         - title: Cockroach CLI
           url: /cockroach-cli.html
 
