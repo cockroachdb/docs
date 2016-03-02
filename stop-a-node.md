@@ -3,12 +3,6 @@ title: Stop a Node
 toc: false
 ---
 
-<style>
-table td:first-child {
-    width: 200px;
-}
-</style>
-
 To stop a CockroachDB node, run the `cockroach quit` command with appropriate flags. This allows in-flight requests to complete and then shuts down the node.
 
 Once a node has been offline for approximately 5 minutes, CockroachDB automatically rebalances replicas from the missing node, using unaffected replicas on other nodes as sources. 

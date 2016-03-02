@@ -3,12 +3,6 @@ title: Cockroach Commands
 toc: false
 ---
 
-<style>
-table td:first-child {
-    width: 200px;
-}
-</style>
-
 This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster. Click a command for supported flags and examples. See [global flags](#global-flags) for flags that can be set on any command. 
 
 You can run `./cockroach --help` in your shell to get similar guidance.
@@ -17,15 +11,15 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-[`exterminate`](#exterminate) | Destroy all data held by a node.
+`exterminate` | Destroy all data held by a node.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
-[`log`](#log) | Make log files human-readable.
-[`sql`](#sql) | Open the built-in SQL shell.
-[`zone`](#zone) | Get, set, list, and remove zones.
-[`node`](#node) | List nodes and show their status.
-[`gen`](#gen) | Generate manpages and bash completion file.
-[`version`](#version) | Output CockroachDB version information.
-[`debug`](#debug) | Extract data from files of a failed process.
+`log` | Make log files human-readable.
+`sql` | Open the built-in SQL shell.
+`zone` | Get, set, list, and remove zones.
+`node` | List nodes and show their status.
+`gen` | Generate manpages and bash completion file.
+`version` | Output CockroachDB version information.
+`debug` | Extract data from files of a failed process.
 
 ## Global Flags
 
