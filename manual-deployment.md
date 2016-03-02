@@ -1,5 +1,5 @@
 ---
-title: On-Premise Deployment
+title: Manual Deployment
 toc: false
 ---
 

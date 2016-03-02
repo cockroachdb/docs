@@ -3,57 +3,60 @@ title: Start a Node
 toc: false
 ---
 
-To start a CockroachDB node, run the `cockroach start` command. 
+<style>
+table td:first-child {
+    width: 200px;
+}
+</style>
 
-- When starting the first node of a cluster, This page explains the accepted flags and provides examples. 
+To start a CockroachDB node, run the `cockroach start` command with appropriate flags. 
 
 <div id="toc"></div>
 
 ## Synopsis
 
-~~~
-$ ./cockroach start [flags]
+~~~ shell
+# Run the command:
+$ ./cockroach start <flags>
+
+# View help directly in your shell:
+$ ./cockroach start --help
 ~~~
 
 ## Standard Flags
 
-The `start` command supports the following flags. Click a flag for supported fields and other details. 
+The `start` command supports the following standard flags, as well as the [advanced flags](#advanced-flags) below and [global flags](cockroach-commands.html#global-flags) that can be set on any command.
 
 Flag | Description
 -----|-----------
-[`certs`](#certs) |
-[`insecure`](#insecure) | 
-[`join`](#join) |
-[`port`](#port) |
-[`store`](#store) |
+`--certs` | The path to the directory containing the node's [security certificates](create-security-certificates.html). When starting the node with security (i.e., without the `--insecure` flag), the `--certs` flag is required. <br><br> **Default:** certs 
+`--host` | A comma-separated list of addresses at which the node can be reached. This might include the node's internal hostname, internal ip address, external hostname, external ip address, etc. <br><br>**Default:** localhost
+`--insecure` | Whether the node runs with or without security. To start the node without security (no authentication or encryption), set this flag. To start the node with security, leave this flag out. Whether or not the node runs with authentication and encryption. If the node is secure, leave this flag out. If the node is insecure, set this flag.
+`--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list. 
+`--port` | The port over which the node communicates to the rest of the cluster and clients communicate to the node. <br><br>**Default:** 26257
+`--store` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device. <br><br>For more details, see [`store`](#store) below. 
 
 ## Advanced Flags
 
 Flag | Description
 -----|------------
-[`attrs`](#attrs) |
-[`cache-size`](#cache-size) |
-[`host`](#host) |
-[`linearizable`](#linearizable) |
-[`max-offset`](#max-offset) |
-[`memtable-budget`](#memtable-budget) |
-[`metrics-frequency`](#metrics-frequency) |
-[`scan-interval`](#scan-interval) |
-[`scan-max-idle-time`](#scan-max-idle-time) |
-[`time-until-store-dead`](#time-until-store-dead) |
+`attrs` |
+`cache-size` |
+`linearizable` |
+`max-offset` |
 
 ### `store`
 
-The `store` flag specifies the file path to a storage device. This flag must be specified separately for each storage device. 
-
-The `store` flag supports the following fields:
+The `store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values. 
 
 Field | Description
 ------|------------
-`path` | The file path to the storage device. If not xxx
+`path` | The file path to the storage device. <br> <br> When the `attr` and/or `size` field is set, the `path` field label must be used, e.g. `--store=path=/mnt/ssd01,size=20GB`. When neither of these fields are set, the `path` field label can be left out, e.g., `--store=/mnt/ssd01`. <br><br> **Default:** `cockroach-data`
 `attr` | xxx
 `size` | xxx
 
+
+Also, if you use equal signs in the file path to a store, you must use the path field label
 
 ~~~ shell
 $ ./cochraoch start --store=/mnt/ssd01 --store=/mnt/ssd02 --store=/mnt/hda1

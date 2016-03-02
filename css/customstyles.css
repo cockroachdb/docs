@@ -166,7 +166,7 @@ h3 {
 }
 
 h4 {
-  font-weight: normal;
+  font-weight: bold;
   font-size: 120%;
 }
 
@@ -799,9 +799,6 @@ body h1 {
 .breadcrumb li {
   color: gray; }
 
-table {
-  background-color: transparent; }
-
 caption {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -813,11 +810,6 @@ th {
   padding: 8px;
   /*padding: 10px 15px 10px 5px*/
 }
-
-table {
-  max-width: 90%;
-  margin-bottom: 20px;
-  /*border: 1px solid #dedede;*/ }
 
 table > thead > tr > th,
 table > tbody > tr > th,
