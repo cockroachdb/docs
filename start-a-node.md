@@ -31,10 +31,10 @@ Flag | Description
 -----|-----------
 `--certs` | The path to the directory containing the node's [security certificates](create-security-certificates.html). When starting the node with security (i.e., without the `--insecure` flag), the `--certs` flag is required. <br><br> **Default:** certs 
 `--host` | A comma-separated list of addresses at which the node can be reached. This might include the node's internal hostname, internal ip address, external hostname, external ip address, etc. <br><br>**Default:** localhost
-`--insecure` | Whether the node runs with or without security. To start the node without security (no authentication or encryption), set this flag. To start the node with security, leave this flag out. Whether or not the node runs with authentication and encryption. If the node is secure, leave this flag out. If the node is insecure, set this flag.
+`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
 `--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list. 
 `--port` | The port over which the node communicates to the rest of the cluster and clients communicate to the node. <br><br>**Default:** 26257
-`--store` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device. <br><br>For more details, see [`store`](#store) below. 
+`--store` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`$ ./cochroach start --store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
 ## Advanced Flags
 
@@ -51,48 +51,10 @@ The `store` flag supports the following fields. Note that commas are used to sep
 
 Field | Description
 ------|------------
-`path` | The file path to the storage device. <br> <br> When the `attr` and/or `size` field is set, the `path` field label must be used, e.g. `--store=path=/mnt/ssd01,size=20GB`. When neither of these fields are set, the `path` field label can be left out, e.g., `--store=/mnt/ssd01`. <br><br> **Default:** `cockroach-data`
-`attr` | xxx
-`size` | xxx
-
-
-Also, if you use equal signs in the file path to a store, you must use the path field label
-
-~~~ shell
-$ ./cochraoch start --store=/mnt/ssd01 --store=/mnt/ssd02 --store=/mnt/hda1
-~~~
-
-For each store, the `attr` and `size` fields can be used to specify device attributes and a maximum store size. When one or both of these fields are set, the `path` field label must be used for the path to the storage device, for example:
-
-~~~ shell
-$ ./cockroach start --store=path=/mnt/ssd01,attr=ssd,size=20GiB
-~~~
-
-In most cases, node-level attributes are preferable to store-level attributes. However, the "attr" field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (ssd), spinny disk (hdd), or in-memory (men), as well as speeds and other specs. Attributes can be arbitrary strings separated by colons, for example:
-
-~~~ shell
-$ ./cockroach start --store=path=/mnt/hda1,attr=hdd:7200rpm
-~~~
-
-The store size in the `size` field is not a guaranteed maximum but is used when calculating free space for rebalancing purposes. The size can be specified either in a bytes-based unit or as a percentage of hard drive space, for example:
-
-~~~ shell
---store=path=/mnt/ssd01,size=10000000000     -> 10000000000 bytes
---store-path=/mnt/ssd01,size=20GB            -> 20000000000 bytes
---store-path=/mnt/ssd01,size=20GiB           -> 21474836480 bytes
---store-path=/mnt/ssd01,size=0.02TiB         -> 21474836480 bytes
---store=path=/mnt/ssd01,size=20%             -> 20% of available space
---store=path=/mnt/ssd01,size=0.2             -> 20% of available space
---store=path=/mnt/ssd01,size=.2              -> 20% of available space
-~~~
-
-For an in-memory store, the `type` and `size` fields are required, and the `path` field is forbidden. The `type` field must be set to `mem`, and the `size` field must be set to the true maximum bytes or percentage of available memory that the store may consume, for example:
-
-~~~ shell
---store=type=mem,size=20GiB
---store=type=mem,size=90%
-~~~
-
-Commas are forbidden in all field values, since they are used to separate fields. Also, if you use equal signs in the file path to a store, you must use the `path` field label.
+`path` | The file path to the storage device. When not setting `attr` or `size`, the `path` field label can be left out: <br><br>`--store=/mnt/ssd01` <br><br>When either of those fields are set, however, the `path` field label must be used: <br><br>`--store=path=/mnt/ssd01,size=20GB` <br><br> **Default:** `cockroach-data`
+`attr` | Store-level attributes. In most cases, node-level attributes are preferable to store-level attributes, but this field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (ssd), spinny disk (hdd), or in-memory (men), as well as speeds and other specs. <br><br>Attributes can be arbitrary strings separated by colons, for example: <br><br> `$ ./cockroach start --store=path=/mnt/hda1,attr=hdd:7200rpm`
+`size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. In cases where there's no capacity elsewhere, this limit will be exceeded. Also, data may be written to the node faster than the cluster can rebalance it away; in this case, as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space, for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000  -> 10000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GB         -> 20000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GiB        -> 21474836480 bytes`<br>`--store-path=/mnt/ssd01,size=0.02TiB      -> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20%          -> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2          -> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2           -> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory. In addition, an extra `type` field must be set to `mem`, and the `path` field must be left out, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%` 
 
 ## Examples
+
+Coming soon.
