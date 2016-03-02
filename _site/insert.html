@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+
+ <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Docs | Cockroach Labs</title>
+<link rel="canonical" href="/insert.html">
+<link rel="shortcut icon" href="images/favicon.png" type="image/png">
+
+<link rel="stylesheet" type="text/css" href="css/syntax.css">
+<link rel="stylesheet" type="text/css" href="css/sql.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/customstyles.css">
+<link rel="stylesheet" type="text/css" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+<script src="js/anchor.js"></script>
+
+
+  </head>
+
+<body>
+
+<!-- Mobile Side Navigation -->
+<nav class="mobile_expanded" role="navigation">
+    <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+    <a href="http://www.cockroachlabs.com/docs/" class="menu-item">Docs</a>
+    <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
+    <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+    <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+    <a href="/docs/install-cockroachdb.html" class="menu-item">Install</a>
+</nav>
+
+<!-- Desktop / Tablet Navigation -->
+<header class="navbar-fixed-top">
+    <div class="container">
+        <div class="row">
+            <a class="logo" href="/" title="Cockroach Labs">
+                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+            </a>
+
+            <nav class="desktop" role="navigation">
+                <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
+                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+            <nav class="mobile" role="navigation">
+                <a href="#" title="Expand Menu" class="hamburger">
+                    <div class="hamburger_inner"></div>
+                </a>
+                <a target="_blank" href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+
+        </div>
+    </div>
+</header>
+
+    <!-- Page Content -->
+    <div id="content">
+      <div id="main-content" class="container">
+        <div class="row">
+              <!-- Sidebar Column -->
+    <div class="col-md-3">
+
+        <script>
+
+            $(document).ready(function() {
+                // Initialize navgoco with default options
+                var $sidebar = $('#mysidebar'),
+                    $maincontent = $('#main-content');
+
+                $sidebar.navgoco({
+                    caretHtml: '',
+                    accordion: true,
+                    openClass: 'active', // open
+                    save: false, // leave false or nav highlighting doesn't work right
+                    cookie: {
+                        name: 'navgoco',
+                        expires: false,
+                        path: '/'
+                    },
+                    slide: {
+                        duration: 400,
+                        easing: 'swing'
+                    },
+                    onToggleAfter: function(){
+                        adjustMinHeight();
+                    }
+                });
+                $sidebar.show();
+
+                adjustMinHeight();
+
+                function adjustMinHeight(){
+                    setTimeout(function(){
+                        var height = $sidebar.outerHeight();
+                        if(height > 475){
+                            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+                        }else{
+                            $maincontent.animate({ 'min-height' : 625 }, 200);
+                        }
+                    }, 400);
+                }
+
+            });
+
+        </script>
+
+        
+
+        <ul id="mysidebar" class="nav" style="display: none">
+            <li>
+                <div class="search">
+                    <form action="https://google.com/search" method="GET">
+                        <span class="fa fa-search"></span>
+                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
+                        <input type="text" name="q" id="search-input" placeholder="Search">
+                    </form>
+                </div>
+            </li>
+            
+            
+            <li><a href="#">Get Started</a>
+                <ul>
+                    
+                    
+                    <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="start-a-local-cluster.html">Start a Local Cluster</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="build-a-test-app.html">Build a Test App</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Develop</a>
+                <ul>
+                    
+                    
+                    <li><a href="sql-statements.html">SQL Statements</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="sql-grammar.html">SQL Grammar</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-definition.html">Data Definition</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-types.html">Data Types</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="functions-and-operators.html">Functions and Operators</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="transactions.html">Transactions</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Deploy</a>
+                <ul>
+                    
+                    
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cloud-deployment.html">Cloud Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="start-a-node.html">Start a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Manage</a>
+                <ul>
+                    
+                    
+                    <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="troubleshoot.html">Troubleshoot</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Learn How It Works</a>
+                <ul>
+                    
+                    
+                    <li><a href="frequently-asked-questions.html">Frequently Asked Questions</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-in-comparison.html">CockroachDB in Comparison</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-architecture.html">CockroachDB Architecture</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-features.html">CockroachDB Features</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Contribute</a>
+                <ul>
+                    
+                    
+                    <li><a href="contribute-to-cockroachdb.html">Contribute to CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="improve-the-docs.html">Improve the Docs</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+        
+        </ul>
+
+    </div>
+       <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
+    <script>$("li.active").parents('li').toggleClass("active");</script>
+
+          <!-- Content Column -->
+          <div class="col-md-9">
+              <div class="post-header">
+   <h1 class="post-title-main">INSERT</h1>
+</div>
+
+<div class="post-content">
+
+   
+
+
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2' });
+
+/*TOC that captures more than just h2*/
+/*$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });*/
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+
+  <h2 id="description">Description</h2>
+
+<h2 id="synopsis">Synopsis</h2>
+
+<svg width="702" height="234">
+         
+         <polygon points="11 17 3 13 3 21"></polygon>
+         <polygon points="19 17 11 13 11 21"></polygon>
+         <rect x="33" y="3" width="70" height="32" rx="10"></rect>
+         <rect x="31" y="1" width="70" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="41" y="21">INSERT</text>
+         <rect x="123" y="3" width="54" height="32" rx="10"></rect>
+         <rect x="121" y="1" width="54" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="131" y="21">INTO</text>
+         <a xlink:href="sql-grammar.html#qualified_name" xlink:title="qualified_name">
+            <rect x="217" y="3" width="116" height="32"></rect>
+            <rect x="215" y="1" width="116" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="225" y="21">qualified_name</text>
+         </a>
+         <a xlink:href="sql-grammar.html#qualified_name" xlink:title="qualified_name">
+            <rect x="217" y="47" width="116" height="32"></rect>
+            <rect x="215" y="45" width="116" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="225" y="65">qualified_name</text>
+         </a>
+         <rect x="353" y="47" width="38" height="32" rx="10"></rect>
+         <rect x="351" y="45" width="38" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="361" y="65">AS</text>
+         <a xlink:href="sql-grammar.html#name" xlink:title="name">
+            <rect x="411" y="47" width="54" height="32"></rect>
+            <rect x="409" y="45" width="54" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="419" y="65">name</text>
+         </a>
+         <a xlink:href="sql-grammar.html#select_stmt" xlink:title="select_stmt">
+            <rect x="45" y="113" width="92" height="32"></rect>
+            <rect x="43" y="111" width="92" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="53" y="131">select_stmt</text>
+         </a>
+         <rect x="45" y="157" width="26" height="32" rx="10"></rect>
+         <rect x="43" y="155" width="26" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="175">(</text>
+         <a xlink:href="sql-grammar.html#qualified_name_list" xlink:title="qualified_name_list">
+            <rect x="91" y="157" width="142" height="32"></rect>
+            <rect x="89" y="155" width="142" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="99" y="175">qualified_name_list</text>
+         </a>
+         <rect x="253" y="157" width="26" height="32" rx="10"></rect>
+         <rect x="251" y="155" width="26" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="261" y="175">)</text>
+         <a xlink:href="sql-grammar.html#select_stmt" xlink:title="select_stmt">
+            <rect x="299" y="157" width="92" height="32"></rect>
+            <rect x="297" y="155" width="92" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="307" y="175">select_stmt</text>
+         </a>
+         <rect x="45" y="201" width="80" height="32" rx="10"></rect>
+         <rect x="43" y="199" width="80" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="219">DEFAULT</text>
+         <rect x="145" y="201" width="72" height="32" rx="10"></rect>
+         <rect x="143" y="199" width="72" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="153" y="219">VALUES</text>
+         <rect x="451" y="145" width="100" height="32" rx="10"></rect>
+         <rect x="449" y="143" width="100" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="459" y="163">RETURNING</text>
+         <a xlink:href="sql-grammar.html#target_list" xlink:title="target_list">
+            <rect x="571" y="145" width="84" height="32"></rect>
+            <rect x="569" y="143" width="84" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="579" y="163">target_list</text>
+         </a>
+         <path class="line" d="m19 17 h2 m0 0 h10 m70 0 h10 m0 0 h10 m54 0 h10 m20 0 h10 m116 0 h10 m0 0 h132 m-288 0 h20 m268 0 h20 m-308 0 q10 0 10 10 m288 0 q0 -10 10 -10 m-298 10 v24 m288 0 v-24 m-288 24 q0 10 10 10 m268 0 q10 0 10 -10 m-278 10 h10 m116 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m54 0 h10 m22 -44 l2 0 m2 0 l2 0 m2 0 l2 0 m-504 110 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m92 0 h10 m0 0 h254 m-386 0 h20 m366 0 h20 m-406 0 q10 0 10 10 m386 0 q0 -10 10 -10 m-396 10 v24 m386 0 v-24 m-386 24 q0 10 10 10 m366 0 q10 0 10 -10 m-376 10 h10 m26 0 h10 m0 0 h10 m142 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m92 0 h10 m-376 -10 v20 m386 0 v-20 m-386 20 v24 m386 0 v-24 m-386 24 q0 10 10 10 m366 0 q10 0 10 -10 m-376 10 h10 m80 0 h10 m0 0 h10 m72 0 h10 m0 0 h174 m40 -88 h10 m0 0 h214 m-244 0 h20 m224 0 h20 m-264 0 q10 0 10 10 m244 0 q0 -10 10 -10 m-254 10 v12 m244 0 v-12 m-244 12 q0 10 10 10 m224 0 q10 0 10 -10 m-234 10 h10 m100 0 h10 m0 0 h10 m84 0 h10 m23 -32 h-3"></path>
+         <polygon points="693 127 701 123 701 131"></polygon>
+         <polygon points="693 127 685 123 685 131"></polygon>
+      </svg>
+
+<h2 id="privileges">Privileges</h2>
+
+<h2 id="parameters">Parameters</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+anchors.add();
+</script>
+
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+    </div>    <!-- /.container -->
+     <div id="footer">
+	<div class="container">
+		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+		<div id="hubspot-form">
+		<script>
+			hbspt.forms.create({ 
+				css: '',
+				portalId: '1753393',
+				formId: '3a24a2d8-c2fd-4e89-acf6-73a4e7b4b69f'
+			});
+		</script>
+		<div class="row footer_nav_row">
+			<div class="footer_logo">
+				<img src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+			</div>
+			<div class="footer_social_col col-xs-6 col-sm-3">
+			<ul class="footer_social">
+				<li class="header">Connect</li>
+				<li><a target="_blank" href="https://github.com/cockroachdb/cockroach" class="menu-item">GitHub</a></li>
+				<li><a href="https://groups.google.com/forum/#!forum/cockroach-db" class="menu-item">Google Group</a></li>
+				<li><a target="_blank" href="https://twitter.com/cockroachdb" class="menu-item">Twitter</a></li>
+				<li><a target="_blank" href="http://www.reddit.com/r/CockroachDB/" class="menu-item">Reddit</a></li>
+				<!--
+				<li><a target="_blank" href="https://www.facebook.com/cockroachlabs" class="menu-item">Facebook</a></li>
+				<li><a target="_blank" href="https://www.linkedin.com/company/cockroach-labs" class="menu-item">LinkedIn</a></li>
+				<li><a target="_blank" href="http://www.quora.com/CockroachDB" class="menu-item">Quora</a></li>
+				<li><a href="http://stackoverflow.com/questions/tagged/cockroachdb" class="menu-item">Stack Overflow</a></li>
+				<li><a target="_blank" href="http://www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
+				<li><a target="_blank" href="http://instagram.com/cockroachdb" class="menu-item">Instagram</a></li>
+				-->
+			</ul>
+		</div>
+		<div class="footer_nav_col col-xs-6 col-sm-3">
+			<ul class="footer_nav">
+				<li class="header">Company</li>
+				<li><a href="http://www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
+				<li><a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
+				<li><a href="http://www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
+				<li><a href="http://www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
+			</ul>
+			</div>
+		</div>
+		<div class="row copyright">© 2016 Cockroach Labs </div>
+	</div>
+</div>
+
+
+<script>
+$('.expandcollapse').on('click', function () {
+  $(this).next().toggle();
+});
+</script>
+
+</body>
+
+<!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63775601-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+
+
+</html>
+

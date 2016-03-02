@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+
+ <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Docs | Cockroach Labs</title>
+<link rel="canonical" href="/start-a-node.html">
+<link rel="shortcut icon" href="images/favicon.png" type="image/png">
+
+<link rel="stylesheet" type="text/css" href="css/syntax.css">
+<link rel="stylesheet" type="text/css" href="css/sql.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/customstyles.css">
+<link rel="stylesheet" type="text/css" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+<script src="js/anchor.js"></script>
+
+
+  </head>
+
+<body>
+
+<!-- Mobile Side Navigation -->
+<nav class="mobile_expanded" role="navigation">
+    <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+    <a href="http://www.cockroachlabs.com/docs/" class="menu-item">Docs</a>
+    <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
+    <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+    <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+    <a href="/docs/install-cockroachdb.html" class="menu-item">Install</a>
+</nav>
+
+<!-- Desktop / Tablet Navigation -->
+<header class="navbar-fixed-top">
+    <div class="container">
+        <div class="row">
+            <a class="logo" href="/" title="Cockroach Labs">
+                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+            </a>
+
+            <nav class="desktop" role="navigation">
+                <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
+                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+            <nav class="mobile" role="navigation">
+                <a href="#" title="Expand Menu" class="hamburger">
+                    <div class="hamburger_inner"></div>
+                </a>
+                <a target="_blank" href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+
+        </div>
+    </div>
+</header>
+
+    <!-- Page Content -->
+    <div id="content">
+      <div id="main-content" class="container">
+        <div class="row">
+              <!-- Sidebar Column -->
+    <div class="col-md-3">
+
+        <script>
+
+            $(document).ready(function() {
+                // Initialize navgoco with default options
+                var $sidebar = $('#mysidebar'),
+                    $maincontent = $('#main-content');
+
+                $sidebar.navgoco({
+                    caretHtml: '',
+                    accordion: true,
+                    openClass: 'active', // open
+                    save: false, // leave false or nav highlighting doesn't work right
+                    cookie: {
+                        name: 'navgoco',
+                        expires: false,
+                        path: '/'
+                    },
+                    slide: {
+                        duration: 400,
+                        easing: 'swing'
+                    },
+                    onToggleAfter: function(){
+                        adjustMinHeight();
+                    }
+                });
+                $sidebar.show();
+
+                adjustMinHeight();
+
+                function adjustMinHeight(){
+                    setTimeout(function(){
+                        var height = $sidebar.outerHeight();
+                        if(height > 475){
+                            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+                        }else{
+                            $maincontent.animate({ 'min-height' : 625 }, 200);
+                        }
+                    }, 400);
+                }
+
+            });
+
+        </script>
+
+        
+
+        <ul id="mysidebar" class="nav" style="display: none">
+            <li>
+                <div class="search">
+                    <form action="https://google.com/search" method="GET">
+                        <span class="fa fa-search"></span>
+                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
+                        <input type="text" name="q" id="search-input" placeholder="Search">
+                    </form>
+                </div>
+            </li>
+            
+            
+            <li><a href="#">Get Started</a>
+                <ul>
+                    
+                    
+                    <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="start-a-local-cluster.html">Start a Local Cluster</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="build-a-test-app.html">Build a Test App</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Develop</a>
+                <ul>
+                    
+                    
+                    <li><a href="sql-statements.html">SQL Statements</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="sql-grammar.html">SQL Grammar</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-definition.html">Data Definition</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-types.html">Data Types</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="functions-and-operators.html">Functions and Operators</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="transactions.html">Transactions</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Deploy</a>
+                <ul>
+                    
+                    
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cloud-deployment.html">Cloud Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li class="active"><a href="start-a-node.html">Start a Node</a></li>
+                    
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Manage</a>
+                <ul>
+                    
+                    
+                    <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="troubleshoot.html">Troubleshoot</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Learn How It Works</a>
+                <ul>
+                    
+                    
+                    <li><a href="frequently-asked-questions.html">Frequently Asked Questions</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-in-comparison.html">CockroachDB in Comparison</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-architecture.html">CockroachDB Architecture</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-features.html">CockroachDB Features</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Contribute</a>
+                <ul>
+                    
+                    
+                    <li><a href="contribute-to-cockroachdb.html">Contribute to CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="improve-the-docs.html">Improve the Docs</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+        
+        </ul>
+
+    </div>
+       <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
+    <script>$("li.active").parents('li').toggleClass("active");</script>
+
+          <!-- Content Column -->
+          <div class="col-md-9">
+              <div class="post-header">
+   <h1 class="post-title-main">Start a Node</h1>
+</div>
+
+<div class="post-content">
+
+   
+
+
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2' });
+
+/*TOC that captures more than just h2*/
+/*$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });*/
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+
+  <style>
+table td:first-child {
+    width: 200px;
+}
+</style>
+
+<p>To start a CockroachDB node, run the <code class="highlighter-rouge">cockroach start</code> command with appropriate flags.</p>
+
+<div id="toc"></div>
+
+<h2 id="synopsis">Synopsis</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># Run the command:</span>
+<span class="gp">$ </span>./cockroach start &lt;flags&gt;
+
+<span class="c"># View help directly in your shell:</span>
+<span class="gp">$ </span>./cockroach start --help
+</code></pre>
+</div>
+
+<h2 id="standard-flags">Standard Flags</h2>
+
+<p>The <code class="highlighter-rouge">start</code> command supports the following standard flags, as well as the <a href="#advanced-flags">advanced flags</a> below and <a href="cockroach-commands.html#global-flags">global flags</a> that can be set on any command.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">--certs</code></td>
+      <td>The path to the directory containing the node’s <a href="create-security-certificates.html">security certificates</a>. When starting the node with security (i.e., without the <code class="highlighter-rouge">--insecure</code> flag), the <code class="highlighter-rouge">--certs</code> flag is required. <br /><br /> <strong>Default:</strong> certs</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">--host</code></td>
+      <td>A comma-separated list of addresses at which the node can be reached. This might include the node’s internal hostname, internal ip address, external hostname, external ip address, etc. <br /><br /><strong>Default:</strong> localhost</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">--insecure</code></td>
+      <td>Whether the node runs with or without security. To start the node without security (no authentication or encryption), set this flag. To start the node with security, leave this flag out. Whether or not the node runs with authentication and encryption. If the node is secure, leave this flag out. If the node is insecure, set this flag.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">--join</code></td>
+      <td>The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">--port</code></td>
+      <td>The port over which the node communicates to the rest of the cluster and clients communicate to the node. <br /><br /><strong>Default:</strong> 26257</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">--store</code></td>
+      <td>The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device. <br /><br />For more details, see <a href="#store"><code class="highlighter-rouge">store</code></a> below.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="advanced-flags">Advanced Flags</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">attrs</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">cache-size</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">linearizable</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">max-offset</code></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="store"><code class="highlighter-rouge">store</code></h3>
+
+<p>The <code class="highlighter-rouge">store</code> flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">path</code></td>
+      <td>The file path to the storage device. <br /> <br /> When the <code class="highlighter-rouge">attr</code> and/or <code class="highlighter-rouge">size</code> field is set, the <code class="highlighter-rouge">path</code> field label must be used, e.g. <code class="highlighter-rouge">--store=path=/mnt/ssd01,size=20GB</code>. When neither of these fields are set, the <code class="highlighter-rouge">path</code> field label can be left out, e.g., <code class="highlighter-rouge">--store=/mnt/ssd01</code>. <br /><br /> <strong>Default:</strong> <code class="highlighter-rouge">cockroach-data</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">attr</code></td>
+      <td>xxx</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">size</code></td>
+      <td>xxx</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Also, if you use equal signs in the file path to a store, you must use the path field label</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cochraoch start --store<span class="o">=</span>/mnt/ssd01 --store<span class="o">=</span>/mnt/ssd02 --store<span class="o">=</span>/mnt/hda1
+</code></pre>
+</div>
+
+<p>For each store, the <code class="highlighter-rouge">attr</code> and <code class="highlighter-rouge">size</code> fields can be used to specify device attributes and a maximum store size. When one or both of these fields are set, the <code class="highlighter-rouge">path</code> field label must be used for the path to the storage device, for example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --store<span class="o">=</span><span class="nv">path</span><span class="o">=</span>/mnt/ssd01,attr<span class="o">=</span>ssd,size<span class="o">=</span>20GiB
+</code></pre>
+</div>
+
+<p>In most cases, node-level attributes are preferable to store-level attributes. However, the “attr” field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (ssd), spinny disk (hdd), or in-memory (men), as well as speeds and other specs. Attributes can be arbitrary strings separated by colons, for example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --store<span class="o">=</span><span class="nv">path</span><span class="o">=</span>/mnt/hda1,attr<span class="o">=</span>hdd:7200rpm
+</code></pre>
+</div>
+
+<p>The store size in the <code class="highlighter-rouge">size</code> field is not a guaranteed maximum but is used when calculating free space for rebalancing purposes. The size can be specified either in a bytes-based unit or as a percentage of hard drive space, for example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>--store<span class="o">=</span><span class="nv">path</span><span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>10000000000     -&gt; 10000000000 bytes
+--store-path<span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>20GB            -&gt; 20000000000 bytes
+--store-path<span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>20GiB           -&gt; 21474836480 bytes
+--store-path<span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>0.02TiB         -&gt; 21474836480 bytes
+<span class="gp">--store=path=/mnt/ssd01,size=20%             </span>-&gt; 20% of available space
+--store<span class="o">=</span><span class="nv">path</span><span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>0.2             -&gt; 20% of available space
+--store<span class="o">=</span><span class="nv">path</span><span class="o">=</span>/mnt/ssd01,size<span class="o">=</span>.2              -&gt; 20% of available space
+</code></pre>
+</div>
+
+<p>For an in-memory store, the <code class="highlighter-rouge">type</code> and <code class="highlighter-rouge">size</code> fields are required, and the <code class="highlighter-rouge">path</code> field is forbidden. The <code class="highlighter-rouge">type</code> field must be set to <code class="highlighter-rouge">mem</code>, and the <code class="highlighter-rouge">size</code> field must be set to the true maximum bytes or percentage of available memory that the store may consume, for example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>--store<span class="o">=</span><span class="nb">type</span><span class="o">=</span>mem,size<span class="o">=</span>20GiB
+--store<span class="o">=</span><span class="nb">type</span><span class="o">=</span>mem,size<span class="o">=</span>90%
+</code></pre>
+</div>
+
+<p>Commas are forbidden in all field values, since they are used to separate fields. Also, if you use equal signs in the file path to a store, you must use the <code class="highlighter-rouge">path</code> field label.</p>
+
+<h2 id="examples">Examples</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+anchors.add();
+</script>
+
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+    </div>    <!-- /.container -->
+     <div id="footer">
+	<div class="container">
+		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+		<div id="hubspot-form">
+		<script>
+			hbspt.forms.create({ 
+				css: '',
+				portalId: '1753393',
+				formId: '3a24a2d8-c2fd-4e89-acf6-73a4e7b4b69f'
+			});
+		</script>
+		<div class="row footer_nav_row">
+			<div class="footer_logo">
+				<img src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+			</div>
+			<div class="footer_social_col col-xs-6 col-sm-3">
+			<ul class="footer_social">
+				<li class="header">Connect</li>
+				<li><a target="_blank" href="https://github.com/cockroachdb/cockroach" class="menu-item">GitHub</a></li>
+				<li><a href="https://groups.google.com/forum/#!forum/cockroach-db" class="menu-item">Google Group</a></li>
+				<li><a target="_blank" href="https://twitter.com/cockroachdb" class="menu-item">Twitter</a></li>
+				<li><a target="_blank" href="http://www.reddit.com/r/CockroachDB/" class="menu-item">Reddit</a></li>
+				<!--
+				<li><a target="_blank" href="https://www.facebook.com/cockroachlabs" class="menu-item">Facebook</a></li>
+				<li><a target="_blank" href="https://www.linkedin.com/company/cockroach-labs" class="menu-item">LinkedIn</a></li>
+				<li><a target="_blank" href="http://www.quora.com/CockroachDB" class="menu-item">Quora</a></li>
+				<li><a href="http://stackoverflow.com/questions/tagged/cockroachdb" class="menu-item">Stack Overflow</a></li>
+				<li><a target="_blank" href="http://www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
+				<li><a target="_blank" href="http://instagram.com/cockroachdb" class="menu-item">Instagram</a></li>
+				-->
+			</ul>
+		</div>
+		<div class="footer_nav_col col-xs-6 col-sm-3">
+			<ul class="footer_nav">
+				<li class="header">Company</li>
+				<li><a href="http://www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
+				<li><a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
+				<li><a href="http://www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
+				<li><a href="http://www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
+			</ul>
+			</div>
+		</div>
+		<div class="row copyright">© 2016 Cockroach Labs </div>
+	</div>
+</div>
+
+
+<script>
+$('.expandcollapse').on('click', function () {
+  $(this).next().toggle();
+});
+</script>
+
+</body>
+
+<!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63775601-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+
+
+</html>
+

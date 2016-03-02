@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+
+ <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Docs | Cockroach Labs</title>
+<link rel="canonical" href="/basic-sql-statements.html">
+<link rel="shortcut icon" href="images/favicon.png" type="image/png">
+
+<link rel="stylesheet" type="text/css" href="css/syntax.css">
+<link rel="stylesheet" type="text/css" href="css/sql.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/customstyles.css">
+<link rel="stylesheet" type="text/css" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+<script src="js/anchor.js"></script>
+
+
+  </head>
+
+<body>
+
+<!-- Mobile Side Navigation -->
+<nav class="mobile_expanded" role="navigation">
+    <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+    <a href="http://www.cockroachlabs.com/docs/" class="menu-item">Docs</a>
+    <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
+    <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+    <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+    <a href="/docs/install-cockroachdb.html" class="menu-item">Install</a>
+</nav>
+
+<!-- Desktop / Tablet Navigation -->
+<header class="navbar-fixed-top">
+    <div class="container">
+        <div class="row">
+            <a class="logo" href="/" title="Cockroach Labs">
+                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+            </a>
+
+            <nav class="desktop" role="navigation">
+                <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
+                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
+                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+            <nav class="mobile" role="navigation">
+                <a href="#" title="Expand Menu" class="hamburger">
+                    <div class="hamburger_inner"></div>
+                </a>
+                <a target="_blank" href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
+            </nav>
+
+        </div>
+    </div>
+</header>
+
+    <!-- Page Content -->
+    <div id="content">
+      <div id="main-content" class="container">
+        <div class="row">
+              <!-- Sidebar Column -->
+    <div class="col-md-3">
+
+        <script>
+
+            $(document).ready(function() {
+                // Initialize navgoco with default options
+                var $sidebar = $('#mysidebar'),
+                    $maincontent = $('#main-content');
+
+                $sidebar.navgoco({
+                    caretHtml: '',
+                    accordion: true,
+                    openClass: 'active', // open
+                    save: false, // leave false or nav highlighting doesn't work right
+                    cookie: {
+                        name: 'navgoco',
+                        expires: false,
+                        path: '/'
+                    },
+                    slide: {
+                        duration: 400,
+                        easing: 'swing'
+                    },
+                    onToggleAfter: function(){
+                        adjustMinHeight();
+                    }
+                });
+                $sidebar.show();
+
+                adjustMinHeight();
+
+                function adjustMinHeight(){
+                    setTimeout(function(){
+                        var height = $sidebar.outerHeight();
+                        if(height > 475){
+                            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+                        }else{
+                            $maincontent.animate({ 'min-height' : 625 }, 200);
+                        }
+                    }, 400);
+                }
+
+            });
+
+        </script>
+
+        
+
+        <ul id="mysidebar" class="nav" style="display: none">
+            <li>
+                <div class="search">
+                    <form action="https://google.com/search" method="GET">
+                        <span class="fa fa-search"></span>
+                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
+                        <input type="text" name="q" id="search-input" placeholder="Search">
+                    </form>
+                </div>
+            </li>
+            
+            
+            <li><a href="#">Get Started</a>
+                <ul>
+                    
+                    
+                    <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="start-a-local-cluster.html">Start a Local Cluster</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li class="active"><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+                    
+            
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="build-a-test-app.html">Build a Test App</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Develop</a>
+                <ul>
+                    
+                    
+                    <li><a href="sql-statements.html">SQL Statements</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="sql-grammar.html">SQL Grammar</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-definition.html">Data Definition</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="data-types.html">Data Types</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="functions-and-operators.html">Functions and Operators</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="transactions.html">Transactions</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Deploy</a>
+                <ul>
+                    
+                    
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cloud-deployment.html">Cloud Deployment</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="start-a-node.html">Start a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Manage</a>
+                <ul>
+                    
+                    
+                    <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="troubleshoot.html">Troubleshoot</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Learn How It Works</a>
+                <ul>
+                    
+                    
+                    <li><a href="frequently-asked-questions.html">Frequently Asked Questions</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-in-comparison.html">CockroachDB in Comparison</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-architecture.html">CockroachDB Architecture</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroachdb-features.html">CockroachDB Features</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+            <li><a href="#">Contribute</a>
+                <ul>
+                    
+                    
+                    <li><a href="contribute-to-cockroachdb.html">Contribute to CockroachDB</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="improve-the-docs.html">Improve the Docs</a></li>
+
+                    
+            </li>
+            
+            
+            </ul>
+        </li>
+        
+        
+        </ul>
+
+    </div>
+       <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
+    <script>$("li.active").parents('li').toggleClass("active");</script>
+
+          <!-- Content Column -->
+          <div class="col-md-9">
+              <div class="post-header">
+   <h1 class="post-title-main">Basic SQL Statements</h1>
+</div>
+
+<div class="post-content">
+
+   
+
+
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2' });
+
+/*TOC that captures more than just h2*/
+/*$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });*/
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+
+  <p>This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see <a href="sql-statements.html">SQL Statements</a> and <a href="data-definition.html">Data Definition</a>.</p>
+
+<div class="bs-callout bs-callout-info">CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.</div>
+
+<p><img src="images/catrina_ramen.png" style="max-width: 200px;" /></p>
+
+<h2 id="create-a-database">Create a Database</h2>
+
+<p>CockroachDB comes with a single default <code class="highlighter-rouge">system</code> database, which contains CockroachDB metadata and is read-only. To create a new database, use the <code class="highlighter-rouge">CREATE DATABASE</code> statement followed by a database name:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">bank</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>Database names must follow <a href="data-definition.html#identifiers">these rules</a>. To avoid an error in case the database already exists, you can include <code class="highlighter-rouge">IF NOT EXISTS</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">bank</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>When you no longer need a database, use the <code class="highlighter-rouge">DROP DATABASE</code> statement followed by the database name to remove the database and all its objects:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">DATABASE</span> <span class="n">bank</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h2 id="show-databases">Show Databases</h2>
+
+<p>To see all databases, use the <code class="highlighter-rouge">SHOW DATABASES</code> statement:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="n">DATABASES</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----------+
+| Database |
++----------+
+| bank     |
+| system   |
++----------+
+</code></pre>
+</div>
+
+<h2 id="set-the-default-database">Set the Default Database</h2>
+
+<p>To set the default database, use the <code class="highlighter-rouge">SET DATABASE</code> statement:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SET</span> <span class="k">DATABASE</span> <span class="o">=</span> <span class="n">bank</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>When working with the default database, you don’t need to reference it explicitly in statements. To see which database is currently the default, use the <code class="highlighter-rouge">SHOW DATABASE</code> statement (note the singular form):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="k">DATABASE</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----------+
+| DATABASE |
++----------+
+| bank     |
++----------+
+</code></pre>
+</div>
+
+<h2 id="create-a-table">Create a Table</h2>
+
+<p>To create a table, use the <code class="highlighter-rouge">CREATE TABLE</code> statement followed by a table name, the column names, and the data type and constraint, if any, for each column:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">accounts</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="n">INT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">balance</span> <span class="n">DECIMAL</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<p>Table and column names must follow <a href="data-definition.html#identifiers">these rules</a>. Also, when you don’t explicitly define a <code class="highlighter-rouge">PRIMARY KEY</code>, CockroachDB will automatically add a hidden <code class="highlighter-rouge">rowid</code> column as the primary key.</p>
+
+<p>To avoid an error in case the table already exists, you can include <code class="highlighter-rouge">IF NOT EXISTS</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">accounts</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="n">INT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">balance</span> <span class="n">DECIMAL</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<p>To show all of the columns from a table, use the <code class="highlighter-rouge">SHOW COLUMNS FROM</code> statement followed by the table name:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="n">COLUMNS</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+---------+---------+-------+---------+
+|  Field  |  Type   | Null  | Default |
++---------+---------+-------+---------+
+| id      | INT     | false | NULL    |
+| balance | DECIMAL | true  | NULL    |
++---------+---------+-------+---------+
+</code></pre>
+</div>
+
+<p>When you no longer need a table, use the <code class="highlighter-rouge">DROP TABLE</code> statement followed by the table name to remove the table and all its data:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h2 id="show-tables">Show Tables</h2>
+
+<p>To see all tables in the active database, use the <code class="highlighter-rouge">SHOW TABLES</code> statement:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="n">TABLES</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----------+
+|  Table   |
++----------+
+| accounts |
+| users    |
++----------+
+</code></pre>
+</div>
+
+<p>To view tables in a database that’s not active, use <code class="highlighter-rouge">SHOW TABLES FROM</code> followed by the name of the database:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="n">TABLES</span> <span class="k">FROM</span> <span class="n">animals</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+------------+
+|   Table    |
++------------+
+| aardvarks  |
+| elephants  |
+| frogs      |
+| moles      |
+| pandas     |
+| turtles    |
++------------+
+</code></pre>
+</div>
+
+<h2 id="insert-rows-into-a-table">Insert Rows into a Table</h2>
+
+<p>To insert a row into a table, use the <code class="highlighter-rouge">INSERT INTO</code> statement followed by the table name and then the column values listed in the order in which the columns appear in the table:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">accounts</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">DECIMAL</span> <span class="s1">'10000.50'</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">accounts</span> <span class="p">(</span><span class="n">balance</span><span class="p">,</span> <span class="n">id</span><span class="p">)</span> <span class="k">VALUES</span> 
+    <span class="p">(</span><span class="n">DECIMAL</span> <span class="s1">'25000.00'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">accounts</span> <span class="k">VALUES</span> 
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">DECIMAL</span> <span class="s1">'8100.73'</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">DECIMAL</span> <span class="s1">'9400.10'</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><a href="data-definition.html#default-values">Defaults values</a> are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with <code class="highlighter-rouge">balance</code> filled with its default value, in this case <code class="highlighter-rouge">NULL</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">accounts</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">balance</span><span class="p">)</span> <span class="k">VALUES</span> 
+    <span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">accounts</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">balance</span><span class="p">)</span> <span class="k">VALUES</span> 
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="k">DEFAULT</span><span class="p">);</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">accounts</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+---------+
+| id | balance |
++----+---------+
+|  5 | NULL    |
+|  6 | NULL    |
++----+---------+
+</code></pre>
+</div>
+
+<h2 id="create-an-index">Create an Index</h2>
+
+<p>Indexes are used to quickly locate data without having to look through every row of a table. They are automatically created for the primary key of a table and any columns with a unique constraint.</p>
+
+<p>To create an index for non-unique columns, use the <code class="highlighter-rouge">CREATE INDEX</code> statement followed by an optional index name and an <code class="highlighter-rouge">ON</code> clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (<code class="highlighter-rouge">ASC</code>) or descending (<code class="highlighter-rouge">DESC</code>).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">balance_idx</span> <span class="k">ON</span> <span class="n">accounts</span> <span class="p">(</span><span class="n">balance</span> <span class="k">DESC</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>You can create indexes during table creation as well; just include the <code class="highlighter-rouge">INDEX</code> keyword followed by an optional index name and the column(s) to index:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">accounts</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="n">INT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">balance</span> <span class="n">DECIMAL</span><span class="p">,</span>
+    <span class="k">INDEX</span> <span class="n">balance_idx</span> <span class="p">(</span><span class="n">balance</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<h2 id="show-indexes-on-a-table">Show Indexes on a Table</h2>
+
+<p>To show the indexes on a table, use the <code class="highlighter-rouge">SHOW INDEX FROM</code> statement followed by the name of the table:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SHOW</span> <span class="k">INDEX</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----------+-------------+--------+-----+---------+-----------+---------+
+|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing |
++----------+-------------+--------+-----+---------+-----------+---------+
+| accounts | primary     | true   |   1 | id      | ASC       | false   |
+| accounts | balance_idx | false  |   1 | balance | DESC      | false   |
++----------+-------------+--------+-----+---------+-----------+---------+
+</code></pre>
+</div>
+
+<h2 id="query-a-table">Query a Table</h2>
+
+<p>To query a table, use the <code class="highlighter-rouge">SELECT</code> statement followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">balance</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----------+
+| balance  |
++----------+
+| 10000.50 |
+| 25000.00 |
+|  8100.73 |
+|  9400.10 |
+| NULL     |
+| NULL     |
++----------+
+</code></pre>
+</div>
+
+<p>To retrieve all columns, use the <code class="highlighter-rouge">*</code> wildcard:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8100.73 |
+|  4 |  9400.10 |
+|  5 | NULL     |
+|  6 | NULL     |
++----+----------+
+</code></pre>
+</div>
+
+<p>To filter the results, add a <code class="highlighter-rouge">WHERE</code> clause identifying the columns and values to filter on:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">balance</span> <span class="k">FROM</span> <span class="n">accounts</span> <span class="k">WHERE</span> <span class="n">balance</span> <span class="o">&gt;</span> <span class="n">DECIMAL</span> <span class="s1">'9000'</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+----------+
+| id | balance  |
++----+----------+
+|  4 |  9400.10 |
+|  1 | 10000.50 |
+|  2 |    25000 |
++----+----------+
+</code></pre>
+</div>
+
+<p>To sort the results, add an <code class="highlighter-rouge">ORDER BY</code> clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (<code class="highlighter-rouge">ASC</code>) or descending (<code class="highlighter-rouge">DESC</code>).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">balance</span> <span class="k">FROM</span> <span class="n">accounts</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">balance</span> <span class="k">DESC</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+----------+
+| id | balance  |
++----+----------+
+|  2 |    25000 |
+|  1 | 10000.50 |
+|  4 |  9400.10 |
+|  3 |  8100.73 |
+|  6 | NULL     |
+|  5 | NULL     |
++----+----------+
+</code></pre>
+</div>
+
+<h2 id="update-rows-in-a-table">Update Rows in a Table</h2>
+
+<p>To update rows in a table, use the <code class="highlighter-rouge">UPDATE</code> statement followed by the table name, a <code class="highlighter-rouge">SET</code> clause identifying the columns to update and their new values, and a <code class="highlighter-rouge">WHERE</code> clause identifying the rows to update:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">accounts</span> <span class="k">SET</span> <span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span> <span class="o">-</span> <span class="n">DECIMAL</span> <span class="s1">'5.50'</span> <span class="k">WHERE</span> <span class="n">balance</span> <span class="o">&lt;</span> <span class="n">DECIMAL</span> <span class="s1">'10000'</span><span class="p">;</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
+|  5 | NULL     |
+|  6 | NULL     |
++----+----------+
+</code></pre>
+</div>
+
+<p>If a table has a primary key, you can use that in the <code class="highlighter-rouge">WHERE</code> clause to reliably update specific rows; otherwise, each row matching the <code class="highlighter-rouge">WHERE</code> clause is updated. When there’s no <code class="highlighter-rouge">WHERE</code> clause, all rows in the table are updated.</p>
+
+<h2 id="delete-rows-in-a-table">Delete Rows in a Table</h2>
+
+<p>To delete rows in a table, use the <code class="highlighter-rouge">DELETE FROM</code> statement followed by the table name and a <code class="highlighter-rouge">WHERE</code> clause identifying the rows to delete:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">accounts</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">accounts</span><span class="p">;</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>+----+----------+
+| id | balance  |
++----+----------+
+|  1 | 10000.50 |
+|  2 | 25000.00 |
+|  3 |  8095.23 |
+|  4 |  9394.60 |
++----+----------+
+</code></pre>
+</div>
+
+<p>Just as with the <code class="highlighter-rouge">UPDATE</code> statement, if a table has a primary key, you can use that in the <code class="highlighter-rouge">WHERE</code> clause to reliably delete specific rows; otherwise, each row matching the <code class="highlighter-rouge">WHERE</code> clause is deleted. When there’s no <code class="highlighter-rouge">WHERE</code> clause, all rows in the table are deleted.</p>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>Since CockroachDB supports the PostgreSQL wire protocol, it’s easy to query CockroachDB from your application; just find your <a href="install-client-drivers.html">client driver</a> and start building.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+anchors.add();
+</script>
+
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+    </div>    <!-- /.container -->
+     <div id="footer">
+	<div class="container">
+		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+		<div id="hubspot-form">
+		<script>
+			hbspt.forms.create({ 
+				css: '',
+				portalId: '1753393',
+				formId: '3a24a2d8-c2fd-4e89-acf6-73a4e7b4b69f'
+			});
+		</script>
+		<div class="row footer_nav_row">
+			<div class="footer_logo">
+				<img src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+			</div>
+			<div class="footer_social_col col-xs-6 col-sm-3">
+			<ul class="footer_social">
+				<li class="header">Connect</li>
+				<li><a target="_blank" href="https://github.com/cockroachdb/cockroach" class="menu-item">GitHub</a></li>
+				<li><a href="https://groups.google.com/forum/#!forum/cockroach-db" class="menu-item">Google Group</a></li>
+				<li><a target="_blank" href="https://twitter.com/cockroachdb" class="menu-item">Twitter</a></li>
+				<li><a target="_blank" href="http://www.reddit.com/r/CockroachDB/" class="menu-item">Reddit</a></li>
+				<!--
+				<li><a target="_blank" href="https://www.facebook.com/cockroachlabs" class="menu-item">Facebook</a></li>
+				<li><a target="_blank" href="https://www.linkedin.com/company/cockroach-labs" class="menu-item">LinkedIn</a></li>
+				<li><a target="_blank" href="http://www.quora.com/CockroachDB" class="menu-item">Quora</a></li>
+				<li><a href="http://stackoverflow.com/questions/tagged/cockroachdb" class="menu-item">Stack Overflow</a></li>
+				<li><a target="_blank" href="http://www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
+				<li><a target="_blank" href="http://instagram.com/cockroachdb" class="menu-item">Instagram</a></li>
+				-->
+			</ul>
+		</div>
+		<div class="footer_nav_col col-xs-6 col-sm-3">
+			<ul class="footer_nav">
+				<li class="header">Company</li>
+				<li><a href="http://www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
+				<li><a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
+				<li><a href="http://www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
+				<li><a href="http://www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
+			</ul>
+			</div>
+		</div>
+		<div class="row copyright">© 2016 Cockroach Labs </div>
+	</div>
+</div>
+
+
+<script>
+$('.expandcollapse').on('click', function () {
+  $(this).next().toggle();
+});
+</script>
+
+</body>
+
+<!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63775601-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+
+
+</html>
+

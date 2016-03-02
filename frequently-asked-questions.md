@@ -123,7 +123,7 @@ CockroachDB is not yet suitable for real-time analytics, although support for an
 
 ## What is CockroachDB’s security model?
 
-You can run a secure or insecure CockroachDB cluster. When secure, client/server and internode communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
+You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
 
 Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements on the database and table levels. 
 
