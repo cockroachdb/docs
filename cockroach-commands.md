@@ -13,7 +13,6 @@ Command | Usage
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 `exterminate` | Destroy all data held by a node.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
-`log` | Make log files human-readable.
 `sql` | Open the built-in SQL shell.
 `zone` | Get, set, list, and remove zones.
 `node` | List nodes and show their status.
@@ -23,6 +22,13 @@ Command | Usage
 
 ## Logging Flags
 
+By default, CockroachDB logs all messages and errors to files (see `--log-dir`) and copies errors with a severity of `ERROR` or higher to the standard error stream (see `--stderr-threshold`). 
+
 Flag | Description
 -----|------------
- | 
+`--log-dir` | Write log files in this directory. <br><br> **Default:** `<first-store-dir>/logs` for the `start` command; `$TMPDIR` for all other commands  
+`--log-threshold` | Copy log messages at or above this level to the standard error stream in addition to log files. Possible values: `INFO`, `WARNING`, `ERROR`, and `FATAL`. <br><br>**Default:** `ERROR`
+`--logtostderr` |  Write log messages of all severity to the standard error stream and not to log files. If this flag is set, `--log-dir` and `--log-threshold` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
+`--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
+
+The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for internal debugging. 
