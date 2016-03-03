@@ -11,7 +11,7 @@ This is the fastest way to start up a cluster and learn CockroachDB, but there's
 - [Secure](#secure)  
 Starting up a cluster with authenticated, encrypted client/server communication involves creating certificates and passing a few additional command line options, but it's still simple. 
 
-{{site.data.alerts.callout_info}} Want to deploy CockroachDB in production? See <a href="on-premise-deployment.html">On-Premise Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} Want to deploy CockroachDB in production? See <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
 
 ## Insecure
 
