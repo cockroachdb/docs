@@ -7,7 +7,7 @@ toc: true
 
 ## Synopsis
 
-{% include sql/diagrams/show_transaction_isoloation_level.html %}
+{% include sql/diagrams/show_transaction_isolation_level.html %}
 
 ## Privileges
 
