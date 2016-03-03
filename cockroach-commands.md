@@ -22,7 +22,7 @@ Command | Usage
 
 ## Logging Flags
 
-By default, CockroachDB logs all messages and errors to files (see `--log-dir`) and copies errors with a severity of `ERROR` or higher to the standard error stream (see `--stderr-threshold`). 
+By default, CockroachDB logs all messages and errors to files (see `--log-dir`) and copies errors with a severity of `ERROR` or higher to the standard error stream (see `--log-threshold`). 
 
 Flag | Description
 -----|------------
