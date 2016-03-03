@@ -16,12 +16,12 @@ Once a node has been offline for approximately 5 minutes, CockroachDB automatica
 $ ./cockroach quit <flags>
 
 # View help directly in your shell:
-$ ./cockroach quit --help
+$ ./cockroach help quit
 ~~~
 
 ## Flags
 
-The `quit` command supports the following flags as well as [global flags](cockroach-commands.html#global-flags) that can be set on any command.
+The `quit` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags) that can be set on any command.
 
 
 Flag | Description 

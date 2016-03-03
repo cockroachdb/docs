@@ -14,12 +14,12 @@ To start a CockroachDB node, run the `cockroach start` command with appropriate 
 $ ./cockroach start <flags>
 
 # View help directly in your shell:
-$ ./cockroach start --help
+$ ./cockroach help start
 ~~~
 
 ## Standard Flags
 
-The `start` command supports the following standard flags, as well as the [advanced flags](#advanced-flags) below and [global flags](cockroach-commands.html#global-flags) that can be set on any command.
+The `start` command supports the following standard flags, as well as the [advanced flags](#advanced-flags) below and [logging flags](cockroach-commands.html#logging-flags) that can be set on any command.
 
 Flag | Description
 -----|-----------

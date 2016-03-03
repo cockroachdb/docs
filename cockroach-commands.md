@@ -3,9 +3,9 @@ title: Cockroach Commands
 toc: false
 ---
 
-This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster. Click a command for supported flags and examples. See [global flags](#global-flags) for flags that can be set on any command. 
+This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster. Click a command for supported flags and examples. See [logging flags](#logging-flags) for flags that can be set on any command. 
 
-You can run `./cockroach --help` in your shell to get similar guidance.
+You can run `./cockroach help` in your shell to get similar guidance.
 
 Command | Usage
 --------|----
@@ -21,15 +21,7 @@ Command | Usage
 `version` | Output CockroachDB version information.
 `debug` | Extract data from files of a failed process.
 
-## Global Flags
+## Logging Flags
 
-Flag | Value | Description
------|-------| -----------
-`--alsologtostderr` | | Log to standard error as well as files.
-`--color` | | Colorize standard error output according to severity (default "auto").
-`--log-backtrace-at` | |When logging hits line file:N, emit a stack trace (default :0).
-`--log-dir` | | If non-empty, write log files in this directory (default "/var/folders/5t/1rt6nzr17sjg87mz5n0fw15c0000gn/T/").
-`--log-threshold` | | Logs at or above this threshold go to stderr (default ERROR).
-`--logtostderr` | value[=true] | Log to standard error instead of files.
-`--verbosity` | value | log level for V logs.
-`--vmodule` | value | Comma-separated list of pattern=N settings for file-filtered logging.
+Flag | Description
+-----|------------
