@@ -807,8 +807,7 @@ caption {
 
 th {
   text-align: left; 
-  padding: 8px;
-  /*padding: 10px 15px 10px 5px*/
+  padding: 15px 8px 15px 8px;
 }
 
 table > thead > tr > th,
@@ -820,7 +819,7 @@ table > tfoot > tr > td {
   /*padding: 8px;*/
   /*line-height: 1.42857143;*/
   vertical-align: top;
-  border-top: 1px solid #ddd; }
+}
 
 /*table > thead > tr > th {
   vertical-align: bottom;
@@ -839,7 +838,7 @@ table > thead:first-child > tr:first-child > td {
   border-top: 0; }
 
 table > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9; }
+  /*background-color: #f9f9f9;*/ }
 
 table col[class*="col-"] {
   position: static;
