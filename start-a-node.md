@@ -27,7 +27,7 @@ Flag | Description
 `--host` | The address advertised to other nodes and at which the node can be reached by other nodes and clients. This may be the node's internal hostname, internal ip address, external hostname, external ip address, etc. <br><br>**Default:** Advertise node's hostname and listen on all interfaces
 `--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
 `--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list. 
-`--port` | The port over which the node communicates to other nodes in the cluster and clients communicate to the node. <br><br>**Default:** 26257
+`--port` | The port that the node listens on for internal and client communication. <br><br>**Default:** 26257
 `--store` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
 ### `store`

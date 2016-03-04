@@ -26,7 +26,7 @@ By default, CockroachDB logs all messages and errors to files (see `--log-dir`) 
 
 Flag | Description
 -----|------------
-`--alsologtostderr` | Copy log messages at or above this level to the standard error stream in addition to log files. Possible values: `INFO`, `WARNING`, `ERROR`, and `FATAL`. <br><br>**Default:** `ERROR`
+`--alsologtostderr` | Copy log messages at or above this severity level to the standard error stream in addition to log files. Possible values: `INFO`, `WARNING`, `ERROR`, and `FATAL`. <br><br>**Default:** `ERROR`
 `--log-dir` | Write log files in this directory. <br><br> **Default:** `<first-store-dir>/logs` for the `start` command; `$TMPDIR` for all other commands  
 `--logtostderr` |  Write log messages of all severities to the standard error stream and not to log files. If this flag is set, `--log-dir` and `--alsologtostderr` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
 `--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   

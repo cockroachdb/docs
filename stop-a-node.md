@@ -29,7 +29,7 @@ Flag | Description
 `--certs` | The path to the directory containing the node's [security certificates](create-security-certificates.html). If the node was started with security (i.e., without the `--insecure` flag), the `--certs` flag is required. <br><br> **Default:** certs
 `--host` | A valid address for reaching the node. <br><br>**Default:** localhost
 `--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
-`--port` | The port over which the node communicates to other nodes in the cluster and clients communicate to the node. <br><br>**Default:** 26257
+`--port` | The port that the node listens on for internal and client communication. <br><br>**Default:** 26257
 
 ## Examples
 
