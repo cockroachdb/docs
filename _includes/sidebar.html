@@ -50,11 +50,8 @@
         <ul id="mysidebar" class="nav" style="display: none">
             <li>
                 <div class="search">
-                    <form action="https://google.com/search" method="GET">
-                        <span class="fa fa-search"></span>
-                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
-                        <input type="text" name="q" id="search-input" placeholder="{{site.data.strings.search_placeholder_text}}">
-                    </form>
+                    <span class="fa fa-search"></span>
+                    <input type="text" id="search-input" placeholder="{{site.data.strings.search_placeholder_text}}">
                 </div>
             </li>
             {% for entry in sidebar %}
