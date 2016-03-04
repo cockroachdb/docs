@@ -70,7 +70,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="os-tabs">
+<div id="os-tabs" class="clearfix">
     <button id="mac" class="current">Mac</button>
     <button id="linux">Linux</button>
     <button id="windows">Windows</button>
@@ -79,7 +79,7 @@ $(document).ready(function(){
 <div id="macinstall">
 <p>There are four ways to install CockroachDB on Mac OS X:</p>
 
-<div id="mac-installs">
+<div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current">Download the <div class="c2a">Binary</div></a>
 <a href="#use-homebrew" class="install-button mac-button">Use <div class="c2a">Homebrew</div></a>
 <a href="#build-from-source" class="install-button mac-button">Build from <div class="c2a">Source</div></a>
@@ -190,7 +190,7 @@ $(document).ready(function(){
 <div id="linuxinstall" style="display: none;">
 <p>There are three ways to install CockroachDB on Linux:</p>
 
-<div id="linux-installs">    
+<div id="linux-installs" class="clearfix">    
 <a href="#download-the-binary-linux" class="install-button linux-button current">Download the <div class="c2a">Binary</div></a>
 <a href="#build-from-source-linux" class="install-button linux-button">Build from <div class="c2a">Source</div></a>
 <a href="#use-docker-linux" class="install-button linux-button">Use <div class="c2a">Docker</div></a>

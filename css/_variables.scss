@@ -11,3 +11,27 @@ $cl_blue_hover: #0e2b48;
 	   -moz-border-radius: $val;
 	        border-radius: $val;  
 }
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+
+@mixin translate($x, $y) {
+	-webkit-transform: translate($x, $y);
+	    -ms-transform: translate($x, $y);
+	     -o-transform: translate($x, $y);
+	        transform: translate($x, $y);
+}

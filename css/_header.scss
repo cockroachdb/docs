@@ -140,7 +140,7 @@ header {
 /** small desktop **/
 @media (min-width: 768px) {
 
-	header, header.scrolled {
+	header {
 		height:75px;
 	  	padding:18px 0;
 	  	
@@ -186,59 +186,16 @@ header {
 	}
 }
 
-/** medium desktop **/
-@media (min-width: 992px) {
-
-	header {
-		height:100px;
-	  	padding:24px 0;
-
-		.logo {
-			width:215px;
-
-			.default {
-				display:block;
-			}
-			.scrolled {
-				display:none;
-			}
-
-		}
-
-		nav.desktop {
-
-			a {
-				@include avenir_bl(15px);
-				margin:0 15px;
-				line-height:50px;
-			}
-		  	a.github {
-		  		padding:2px 33px 0;
-				line-height:44px;
-		  	}
-		}
-	}
-	header.scrolled {
-		.logo {
-			.default {
-				display:none;
-			}
-			.scrolled {
-				display:block;
-			}
-		}
-	}
-}
-
 /** large desktop **/
 @media (min-width: 1200px) {
 
 	header {
-		height:150px;
-	  	padding:43px 0;
+		height:75px;
+	  	padding:18px 0;
 	  	
 		.logo {
-			width:283px;
+			margin-top:5px;
+			width:209px;
 		}
 
 		nav.desktop {
@@ -246,14 +203,33 @@ header {
 			float:right;
 
 			a {
-				@include avenir_bl(16px);
-				margin:0 25px;
-				line-height:60px;
+				@include avenir_bl(14px);
+				color: $cl_blue;
+				text-transform:uppercase;
+				float:left;
+				margin:0 10px;
+				padding:0;
+				line-height:45px;
+				text-decoration: none;
 			}
-		  	a.github {
-		  		padding:2px 45px 0;
-				line-height:56px;
+			a.current-menu-item, a:hover {
+				color: $cl_green;
+				text-decoration: none;
+			}
+		  	a.cl-btn {
+		  		color:#fff;
 		  	}
+		  	a.cl-btn:hover {
+		  		color: $cl_green;
+		  	}
+		  	a.github {
+		  		padding:0 29px;
+				line-height:40px;
+		  	}
+		}
+
+		nav.mobile {
+			display:none;
 		}
 	}
 }
