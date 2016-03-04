@@ -411,7 +411,11 @@ header {
   border: 1px solid #dddddd;
   background-color: #ffffff;
   text-align: center;
-  @install avenir_l(16px);
+  font-family: 'AvenirLTStd-Light', serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   line-height: 16px;
   color: #142848 !important;
   text-decoration: none !important;
@@ -422,7 +426,11 @@ header {
     border: 1px solid #46a417;
     background-color: #F0FFE8; }
   .install-button .c2a {
-    @install avenir_h(16px); }
+    font-family: 'AvenirLTStd-Heavy', serif;
+    font-size: 16px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
 
 #footer {
   background: #e6e6e6;

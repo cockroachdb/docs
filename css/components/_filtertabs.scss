@@ -58,7 +58,7 @@
 	border: 1px solid #dddddd;
 	background-color: #ffffff;
 	text-align: center;
-	@install avenir_l(16px);
+	@include avenir_l(16px);
 	line-height: 16px;
 	color: $cl_blue !important;
 	text-decoration: none !important;
@@ -74,6 +74,6 @@
 	}
 
 	.c2a {
-		@install avenir_h(16px);
+		@include avenir_h(16px);
 	}
 }
