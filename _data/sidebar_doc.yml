@@ -43,31 +43,25 @@ entries:
 
     - title: Deploy
       items:
-        - title: Recommended Environments
-          url: /recommended-environments.html
-
-        - title: Choose a Deployment Profile
-          url: /choose-a-deployment-profile.html
-
-        - title: On-Premise Deployment
-          url: /on-premise-deployment.html
+        - title: Manual Deployment
+          url: /manual-deployment.html
 
         - title: Cloud Deployment
           url: /cloud-deployment.html
 
-        - title: CockroachDB Command Line Options
-          url: /cockroachdb-command-line-options.html
+        - title: Start a Node
+          url: /start-a-node.html
+
+        - title: Stop a Node
+          url: /stop-a-node.html
+
+        - title: Cockroach Commands
+          url: /cockroach-commands.html
 
     - title: Manage
       items:
         - title: Explore the Admin UI
           url: /explore-the-admin-ui.html
-
-        - title: Add or Remove Servers
-          url: /add-or-remove-servers.html
-
-        - title: Configure Replication Zones
-          url: /configure-replication-zones.html
 
         - title: Troubleshoot
           url: /troubleshoot.html
