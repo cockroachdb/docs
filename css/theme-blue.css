@@ -23,7 +23,7 @@ table td {
     padding: 15px 8px 15px 8px;
 }
 
-tr:hover {
+tbody tr:hover {
     background-color: #e8e7e5;
 }
 
