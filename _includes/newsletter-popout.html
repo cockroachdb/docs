@@ -1,0 +1,74 @@
+<div id="overlay-bg"></div>
+<div id="newsletter-popout">
+	<div class="news-header">Thank you for downloading CockroachDB</div>
+	<div class="news-subheader">Keep up-to-date with CockroachDB software releases and usage best practices</div>
+	<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+	<div id="hubspot-popup-form">
+		<script>
+			hbspt.forms.create({ 
+				css: '',
+				cssClass: 'popout-form',
+				portalId: '1753393',
+				formId: '3a24a2d8-c2fd-4e89-acf6-73a4e7b4b69f'
+			});
+		</script>
+	</div>
+	<div class="newsletter-close"><img src="images/close.png" style="max-width: 36px;" /></div>
+</div>
+
+<div id="newsletter-footer-popout">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="news-header">Keep up-to-date with CockroachDB software releases and usage best practices</div>
+			</div>
+			<div class="col-xs-6">
+				<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+				<div id="hubspot-footer-popup-form">
+					<script>
+						hbspt.forms.create({ 
+							css: '',
+							cssClass: 'popout-form',
+							portalId: '1753393',
+							formId: '179cc17e-1092-4aa3-be00-e01d9144d066'
+						});
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="newsletter-close"><img src="images/close.png" style="max-width: 25px;" /></div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		//*modal*//
+		var $popout = $('#newsletter-popout'),
+			$overlay = $('#overlay-bg'),
+			$close = $('#newsletter-popout .newsletter-close');
+
+		$(window).on('dblclick', function(){
+			$overlay.fadeIn();
+			$popout.fadeIn();
+		});
+
+		$close.on('click', function(){
+			$overlay.fadeOut();
+			$popout.fadeOut();
+		});
+
+		//*footer*//
+		var $footer_popout = $('#newsletter-footer-popout'),
+			$footer_close = $('#newsletter-footer-popout .newsletter-close');
+
+		$(window).scroll(function() {
+		   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+		        $footer_popout.addClass('animate');
+		   }
+		});
+
+		$footer_close.on('click', function(){
+			$footer_popout.removeClass('animate');
+		});
+	});
+</script>

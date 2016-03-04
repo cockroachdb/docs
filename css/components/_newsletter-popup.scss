@@ -1,0 +1,183 @@
+#overlay-bg {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.5);
+	z-index: 2000;
+}
+
+#newsletter-popout {
+	display: none;
+	text-align: center;
+	padding: 50px;
+	position: fixed;
+	@include translate(-50%, -50%);
+	left: 50%;
+	top: 50%;
+	z-index: 2001;
+	background-color: $cl_green;
+	width: 600px;
+
+	.news-header {
+		@include adelle(36px);
+		color: #FFFFFF;
+		line-height: 48px;
+	}
+
+	.news-subheader {
+		@include avenir_r(18px);
+		line-height: 28px;
+		margin-bottom: 20px;
+		padding: 30px 50px 0;
+	}
+
+	#hubspot-popup-form {
+		display: inline-block;
+
+		.popout-form {
+			margin: 20px auto 0;
+
+			> div {
+				float: left;
+			}
+
+			.hs_email {
+				label {
+					display: none;
+				}
+
+				input {
+					border:none;
+					outline:none;
+					height: 40px;
+					line-height: 35px;
+					-webkit-border-top-left-radius: 20px;
+					-moz-border-top-left-radius: 20px;
+					border-top-left-radius: 20px;
+					-webkit-border-bottom-left-radius: 20px;
+					-moz-border-bottom-left-radius: 20px;
+					border-bottom-left-radius: 20px;
+					padding: 0 15px 0 25px;
+					width: 250px;
+				}
+
+
+			}
+
+			.inputs-list {
+					display: none !important;
+				}
+
+			.hs-button {
+				
+				background-color: $cl_blue;
+				color: #FFFFFF;
+				border:none;
+				outline:none;
+				height: 40px;
+				line-height: 35px;
+				-webkit-border-top-right-radius: 20px;
+				-moz-border-top-right-radius: 20px;
+				border-top-right-radius: 20px;
+				-webkit-border-bottom-right-radius: 20px;
+				-moz-border-bottom-right-radius: 20px;
+				border-bottom-right-radius: 20px;
+				padding: 0 25px 0 15px;
+				
+			}
+		}
+	}
+
+	.newsletter-close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		cursor: pointer;
+	}
+}
+
+#newsletter-footer-popout {
+	//display: none;
+	padding: 20px 0;
+	background-color: $cl_green;
+	position: fixed;
+	z-index: 1999;
+	bottom: 0;
+	width: 100%;
+	@include translate(0, 100%);
+	@include groovy(all);
+
+	.news-header {
+		@include adelle(25px);
+		color: #FFFFFF;
+		line-height: 33px;
+	}
+
+	.popout-form {
+		margin-top: 15px;
+		float: right;
+
+		> div {
+			float: left;
+		}
+
+		.hs_email {
+			label {
+				display: none;
+			}
+
+			input {
+				border:none;
+				outline:none;
+				height: 40px;
+				line-height: 35px;
+				-webkit-border-top-left-radius: 20px;
+				-moz-border-top-left-radius: 20px;
+				border-top-left-radius: 20px;
+				-webkit-border-bottom-left-radius: 20px;
+				-moz-border-bottom-left-radius: 20px;
+				border-bottom-left-radius: 20px;
+				padding: 0 15px 0 25px;
+				width: 250px;
+			}
+
+
+		}
+
+		.inputs-list {
+				display: none !important;
+			}
+
+		.hs-button {
+			
+			background-color: $cl_blue;
+			color: #FFFFFF;
+			border:none;
+			outline:none;
+			height: 40px;
+			line-height: 35px;
+			-webkit-border-top-right-radius: 20px;
+			-moz-border-top-right-radius: 20px;
+			border-top-right-radius: 20px;
+			-webkit-border-bottom-right-radius: 20px;
+			-moz-border-bottom-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+			padding: 0 25px 0 15px;
+			
+		}
+	}
+
+	.newsletter-close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		cursor: pointer;
+	}
+
+	&.animate {
+		@include translate(0, 0);
+	}
+}
