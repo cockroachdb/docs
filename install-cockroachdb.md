@@ -87,6 +87,7 @@ $(document).ready(function(){
 </div>
 
 <div id="download-the-binary" class="install-option">
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
   <h2>Download the Binary</h2>
 
   <ol>
@@ -98,6 +99,19 @@ $(document).ready(function(){
 
       <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
   </code></pre>
+      </div>
+    </li>
+    <li>
+      <p>Subscribe to be the first to know about updates.</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
       </div>
     </li>
   </ol>
@@ -115,6 +129,19 @@ $(document).ready(function(){
 
       <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb
   </code></pre>
+      </div>
+    </li>
+    <li>
+      <p>Subscribe to be the first to know about updates.</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
       </div>
     </li>
   </ol>
@@ -154,6 +181,19 @@ $(document).ready(function(){
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+    <p>Subscribe to be the first to know about updates.</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
+    </div>
+  </li>
 </ol>
 </div>
 <div id="use-docker" class="install-option" style="display: none;">
@@ -178,6 +218,19 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
 </code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Subscribe to be the first to know about updates.</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
     </div>
   </li>
 </ol>
@@ -208,6 +261,19 @@ $(document).ready(function(){
 
       <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
   </code></pre>
+      </div>
+    </li>
+    <li>
+      <p>Subscribe to be the first to know about updates.</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
       </div>
     </li>
   </ol>
@@ -248,6 +314,19 @@ $(document).ready(function(){
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+      <p>Subscribe to be the first to know about updates.</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
+      </div>
+    </li>
 </ol>
 </div>
 <div id="use-docker-linux" class="install-option" style="display: none;">
@@ -280,6 +359,19 @@ $(document).ready(function(){
 </code></pre>
     </div>
   </li>
+  <li>
+    <p>Subscribe to be the first to know about updates.</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
+    </div>
+  </li>
 </ol>
 </div>
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
@@ -309,6 +401,19 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
 </code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Subscribe to be the first to know about updates.</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
     </div>
   </li>
 </ol>

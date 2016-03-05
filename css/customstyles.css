@@ -603,6 +603,17 @@ header {
       -moz-border-bottom-right-radius: 20px;
       border-bottom-right-radius: 20px;
       padding: 0 25px 0 15px; }
+    #newsletter-footer-popout .popout-form .hs-error-msgs, #newsletter-footer-popout .popout-form .hs-form-required {
+      display: none important; }
+    #newsletter-footer-popout .popout-form .submitted-message {
+      text-align: center;
+      width: 100%;
+      color: #FFFFFF;
+      font-family: 'AvenirLTStd-Book', serif;
+      font-size: 16px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; }
   #newsletter-footer-popout .newsletter-close {
     position: absolute;
     right: 10px;
@@ -613,6 +624,54 @@ header {
     -ms-transform: translate(0, 0);
     -o-transform: translate(0, 0);
     transform: translate(0, 0); }
+
+.hubspot-install-form .install-form {
+  float: left; }
+  .hubspot-install-form .install-form > div {
+    float: left; }
+  .hubspot-install-form .install-form .hs_email label {
+    display: none; }
+  .hubspot-install-form .install-form .hs_email input {
+    border: 2px solid #DDDDDD;
+    border-right: none;
+    outline: none;
+    height: 40px;
+    line-height: 35px;
+    -webkit-border-top-left-radius: 20px;
+    -moz-border-top-left-radius: 20px;
+    border-top-left-radius: 20px;
+    -webkit-border-bottom-left-radius: 20px;
+    -moz-border-bottom-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 0 15px 0 25px;
+    width: 250px; }
+  .hubspot-install-form .install-form .inputs-list {
+    display: none !important; }
+  .hubspot-install-form .install-form .hs-button {
+    background-color: #46a417;
+    color: #FFFFFF;
+    border: 2px solid #DDDDDD;
+    border-left: none;
+    outline: none;
+    height: 40px;
+    line-height: 35px;
+    -webkit-border-top-right-radius: 20px;
+    -moz-border-top-right-radius: 20px;
+    border-top-right-radius: 20px;
+    -webkit-border-bottom-right-radius: 20px;
+    -moz-border-bottom-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 0 25px 0 15px; }
+  .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
+    display: none important; }
+  .hubspot-install-form .install-form .submitted-message {
+    text-align: left;
+    width: 100%;
+    font-family: 'AvenirLTStd-Book', serif;
+    font-size: 16px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
 
 #footer {
   background: #142848;

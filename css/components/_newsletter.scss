@@ -63,8 +63,6 @@
 					padding: 0 15px 0 25px;
 					width: 250px;
 				}
-
-
 			}
 
 			.inputs-list {
@@ -168,6 +166,17 @@
 			padding: 0 25px 0 15px;
 			
 		}
+
+		.hs-error-msgs, .hs-form-required {
+			display: none important;
+		}
+
+		.submitted-message {
+			text-align: center;
+			width: 100%;
+			color: #FFFFFF;
+			@include avenir_bk(16px);
+		}
 	}
 
 	.newsletter-close {
@@ -181,3 +190,73 @@
 		@include translate(0, 0);
 	}
 }
+
+.hubspot-install-form {
+	
+
+	.install-form {
+		float: left;
+
+		> div {
+			float: left;
+		}
+
+		.hs_email {
+			label {
+				display: none;
+			}
+
+			input {
+				border: 2px solid #DDDDDD;
+				border-right: none;
+				outline:none;
+				height: 40px;
+				line-height: 35px;
+				-webkit-border-top-left-radius: 20px;
+				-moz-border-top-left-radius: 20px;
+				border-top-left-radius: 20px;
+				-webkit-border-bottom-left-radius: 20px;
+				-moz-border-bottom-left-radius: 20px;
+				border-bottom-left-radius: 20px;
+				padding: 0 15px 0 25px;
+				width: 250px;
+			}
+
+
+		}
+
+		.inputs-list {
+				display: none !important;
+			}
+
+		.hs-button {
+			
+			background-color: $cl_green;
+			color: #FFFFFF;
+			border: 2px solid #DDDDDD;
+			border-left: none;
+			outline:none;
+			height: 40px;
+			line-height: 35px;
+			-webkit-border-top-right-radius: 20px;
+			-moz-border-top-right-radius: 20px;
+			border-top-right-radius: 20px;
+			-webkit-border-bottom-right-radius: 20px;
+			-moz-border-bottom-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+			padding: 0 25px 0 15px;
+			
+		}
+
+		.hs-error-msgs, .hs-form-required {
+			display: none important;
+		}
+
+		.submitted-message {
+			text-align: left;
+			width: 100%;
+			@include avenir_bk(16px);
+		}
+	}
+}
+
