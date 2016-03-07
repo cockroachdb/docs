@@ -19,10 +19,10 @@
 <div id="newsletter-footer-popout">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-xs-12 col-sm-6">
 				<div class="news-header">Keep up-to-date with CockroachDB software releases and usage best practices</div>
 			</div>
-			<div class="col-xs-6">
+			<div class="col-xs-12 col-sm-6">
 				<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
 				<div id="hubspot-footer-popup-form">
 					<script>
@@ -47,6 +47,7 @@
 			$overlay = $('#overlay-bg'),
 			$close = $('#newsletter-popout .newsletter-close');
 
+		/*
 		$(window).on('dblclick', function(){
 			$overlay.fadeIn();
 			$popout.fadeIn();
@@ -56,19 +57,35 @@
 			$overlay.fadeOut();
 			$popout.fadeOut();
 		});
+		*/
 
 		//*footer*//
 		var $footer_popout = $('#newsletter-footer-popout'),
 			$footer_close = $('#newsletter-footer-popout .newsletter-close');
 
 		$(window).scroll(function() {
-		   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		        $footer_popout.addClass('animate');
-		   }
+			var cookie = getCookie('popout');
+			if(!cookie){
+			   	if($(window).scrollTop() + $(window).height() == $(document).height()) {
+			    	$footer_popout.addClass('animate');
+			    	setCookie('popout', 1);
+			   	}
+			}
 		});
 
 		$footer_close.on('click', function(){
 			$footer_popout.removeClass('animate');
 		});
+
+		function setCookie(key, value) {
+            var expires = new Date();
+            expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000));
+            document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+        }
+
+        function getCookie(key) {
+            var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+            return keyValue ? keyValue[2] : null;
+        }
 	});
 </script>

@@ -102,7 +102,7 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
-      <p>Subscribe to be the first to know about updates.</p>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form clearfix">
         <script>
           hbspt.forms.create({ 
@@ -132,7 +132,7 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
-      <p>Subscribe to be the first to know about updates.</p>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form clearfix">
         <script>
           hbspt.forms.create({ 
@@ -182,7 +182,7 @@ $(document).ready(function(){
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
   <li>
-    <p>Subscribe to be the first to know about updates.</p>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form clearfix">
       <script>
         hbspt.forms.create({ 
@@ -221,7 +221,7 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-    <p>Subscribe to be the first to know about updates.</p>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form clearfix">
       <script>
         hbspt.forms.create({ 
@@ -264,7 +264,7 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
-      <p>Subscribe to be the first to know about updates.</p>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form clearfix">
         <script>
           hbspt.forms.create({ 
@@ -315,7 +315,7 @@ $(document).ready(function(){
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
   <li>
-      <p>Subscribe to be the first to know about updates.</p>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form clearfix">
         <script>
           hbspt.forms.create({ 
@@ -360,7 +360,7 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-    <p>Subscribe to be the first to know about updates.</p>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form clearfix">
       <script>
         hbspt.forms.create({ 
@@ -404,7 +404,7 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-    <p>Subscribe to be the first to know about updates.</p>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form clearfix">
       <script>
         hbspt.forms.create({ 

@@ -98,8 +98,7 @@
 }
 
 #newsletter-footer-popout {
-	//display: none;
-	padding: 20px 0;
+	padding: 40px 0;
 	background-color: $cl_green;
 	position: fixed;
 	z-index: 1999;
@@ -115,8 +114,8 @@
 	}
 
 	.popout-form {
-		margin-top: 15px;
-		float: right;
+		margin-top: 20px;
+		float: left;
 
 		> div {
 			float: left;
@@ -164,11 +163,13 @@
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
+			@include avenir_bl(12px);
+			text-transform: uppercase;
 			
 		}
 
 		.hs-error-msgs, .hs-form-required {
-			display: none important;
+			display: none !important;
 		}
 
 		.submitted-message {
@@ -245,11 +246,13 @@
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
+			@include avenir_bl(12px);
+			text-transform: uppercase;
 			
 		}
 
 		.hs-error-msgs, .hs-form-required {
-			display: none important;
+			display: none !important;
 		}
 
 		.submitted-message {
@@ -260,3 +263,22 @@
 	}
 }
 
+
+/** small desktop **/
+@media (min-width: 768px) {
+	#newsletter-footer-popout {
+		padding: 20px 0;
+		
+
+		.news-header {
+			@include adelle(25px);
+			color: #FFFFFF;
+			line-height: 33px;
+		}
+
+		.popout-form {
+			margin-top: 15px;
+			float: left;
+		}
+	}
+}

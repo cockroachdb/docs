@@ -2,8 +2,8 @@
 	background: $cl_blue;
 	padding-top:65px;
 	padding-bottom: 30px;
-	margin-top: 100px;
-
+	position: relative;
+	z-index: 1000;
 
 	.form_header {
 		color: $cl_green;
@@ -43,7 +43,25 @@
 			background-color: transparent;	
 			border: 2px solid rgba(255, 255, 255, 0.2);	
 			border-right-width: 1px;
-			color: $cl_green;
+			color: #FFFFFF;
+
+			&::-webkit-input-placeholder {
+			    color:    $cl_green;
+			}
+			&:-moz-placeholder { 
+			   color:    $cl_green;
+			   opacity:  1;
+			}
+			&::-moz-placeholder { 
+			   color:    $cl_green;
+			   opacity:  1;
+			}
+			&:-ms-input-placeholder { 
+			   color:    $cl_green;
+			}
+			&:placeholder-shown {
+			  color:    $cl_green;
+			}
 		}
 
 		.hs_submit {
@@ -60,6 +78,10 @@
 				height: 20px;
 				font-size: 20px;
 				z-index: 4;
+			}
+
+			&:hover:after {
+				color: rgba(255, 255, 255, 1)
 			}
 		}
 
@@ -83,7 +105,7 @@
 		}
 
 		.hs-error-msgs, .hs-form-required {
-			display: none important;
+			display: none !important;
 		}
 
 		.submitted-message {
@@ -174,6 +196,10 @@
 		}
 	}
 
+	.footer_logo_row {
+		margin: 0;
+	}
+
 	.footer_logo {
 		width:20%;
 		margin:40px auto 10px;
@@ -200,6 +226,10 @@
 		.footer_nav_row {
 			margin:0;
 			width:100%;
+
+			.contact_email a {
+				@include avenir_bk(14px);
+			}
 		}
 	}
 }

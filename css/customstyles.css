@@ -160,6 +160,7 @@ h4 {
   background: #fff;
   position: relative;
   padding-top: 50px;
+  padding-bottom: 100px;
   width: 100%;
   z-index: 1000;
   -webkit-transition: margin 0.4s;
@@ -545,7 +546,7 @@ header {
     cursor: pointer; }
 
 #newsletter-footer-popout {
-  padding: 20px 0;
+  padding: 40px 0;
   background-color: #46a417;
   position: fixed;
   z-index: 1999;
@@ -568,8 +569,8 @@ header {
     color: #FFFFFF;
     line-height: 33px; }
   #newsletter-footer-popout .popout-form {
-    margin-top: 15px;
-    float: right; }
+    margin-top: 20px;
+    float: left; }
     #newsletter-footer-popout .popout-form > div {
       float: left; }
     #newsletter-footer-popout .popout-form .hs_email label {
@@ -602,9 +603,15 @@ header {
       -webkit-border-bottom-right-radius: 20px;
       -moz-border-bottom-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      padding: 0 25px 0 15px; }
+      padding: 0 25px 0 15px;
+      font-family: 'AvenirLTStd-Black', serif;
+      font-size: 12px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: uppercase; }
     #newsletter-footer-popout .popout-form .hs-error-msgs, #newsletter-footer-popout .popout-form .hs-form-required {
-      display: none important; }
+      display: none !important; }
     #newsletter-footer-popout .popout-form .submitted-message {
       text-align: center;
       width: 100%;
@@ -661,9 +668,15 @@ header {
     -webkit-border-bottom-right-radius: 20px;
     -moz-border-bottom-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding: 0 25px 0 15px; }
+    padding: 0 25px 0 15px;
+    font-family: 'AvenirLTStd-Black', serif;
+    font-size: 12px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-transform: uppercase; }
   .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
-    display: none important; }
+    display: none !important; }
   .hubspot-install-form .install-form .submitted-message {
     text-align: left;
     width: 100%;
@@ -673,11 +686,27 @@ header {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
 
+/** small desktop **/
+@media (min-width: 768px) {
+  #newsletter-footer-popout {
+    padding: 20px 0; }
+    #newsletter-footer-popout .news-header {
+      font-family: 'Adelle-Regular', serif;
+      font-size: 25px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #FFFFFF;
+      line-height: 33px; }
+    #newsletter-footer-popout .popout-form {
+      margin-top: 15px;
+      float: left; } }
 #footer {
   background: #142848;
   padding-top: 65px;
   padding-bottom: 30px;
-  margin-top: 100px; }
+  position: relative;
+  z-index: 1000; }
   #footer .form_header {
     color: #46a417;
     font-family: 'AvenirLTStd-Black', serif;
@@ -714,7 +743,19 @@ header {
       background-color: transparent;
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-right-width: 1px;
-      color: #46a417; }
+      color: #FFFFFF; }
+      #footer .hbspt-form .hs-input::-webkit-input-placeholder {
+        color: #46a417; }
+      #footer .hbspt-form .hs-input:-moz-placeholder {
+        color: #46a417;
+        opacity: 1; }
+      #footer .hbspt-form .hs-input::-moz-placeholder {
+        color: #46a417;
+        opacity: 1; }
+      #footer .hbspt-form .hs-input:-ms-input-placeholder {
+        color: #46a417; }
+      #footer .hbspt-form .hs-input:placeholder-shown {
+        color: #46a417; }
     #footer .hbspt-form .hs_submit {
       position: relative; }
       #footer .hbspt-form .hs_submit:after {
@@ -728,6 +769,8 @@ header {
         height: 20px;
         font-size: 20px;
         z-index: 4; }
+      #footer .hbspt-form .hs_submit:hover:after {
+        color: white; }
     #footer .hbspt-form .hs-button {
       background-color: transparent;
       border-color: #142848;
@@ -747,7 +790,7 @@ header {
       outline: 0;
       z-index: 5; }
     #footer .hbspt-form .hs-error-msgs, #footer .hbspt-form .hs-form-required {
-      display: none important; }
+      display: none !important; }
     #footer .hbspt-form .submitted-message {
       text-align: center;
       width: 100%;
@@ -830,6 +873,8 @@ header {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       line-height: 30px; }
+  #footer .footer_logo_row {
+    margin: 0; }
   #footer .footer_logo {
     width: 20%;
     margin: 40px auto 10px;
@@ -846,7 +891,13 @@ header {
 @media (min-width: 600px) {
   #footer .footer_nav_row {
     margin: 0;
-    width: 100%; } }
+    width: 100%; }
+    #footer .footer_nav_row .contact_email a {
+      font-family: 'AvenirLTStd-Book', serif;
+      font-size: 14px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; } }
 /** mobile-only **/
 @media (min-width: 768px) {
   #footer {
