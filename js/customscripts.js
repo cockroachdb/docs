@@ -74,8 +74,8 @@
             }
             var obj = {
                 q: gsearch.value,
-                cx: '',
-                key: ''
+                cx: '014222686769097698638:i_krv_mjv4w',
+                key: 'AIzaSyCMGfdDaSfjqv5zYoS0mTJnOT3e9MURWkU'
             };
             $.getJSON('https://www.googleapis.com/customsearch/v1', obj, function (data) {
                 var div = $('<div/>');
@@ -95,6 +95,4 @@
         });
     });
 })(jQuery);
-
-
 
