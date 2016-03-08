@@ -28,7 +28,7 @@ Flag | Description
 `--host` | The address of the node to connect to. This can be the address of any node in the cluster.
 `--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
 `--port` | The port to connect to. <br><br>**Default:** 26257
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client.crt>`<br>`sslkey=<path-to-cleint.key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca.crt>` 
+`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client.crt>`<br>`sslkey=<path-to-client.key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca.crt>` 
 `--user` | The user connecting to the database. The user must have privileges to access the database specified in `--database`. <br><br>**Default:** root
 
 ## Examples
