@@ -159,7 +159,7 @@ h4 {
 #content {
   background: #fff;
   position: relative;
-  padding-top: 50px;
+  padding-top: 60px;
   padding-bottom: 100px;
   width: 100%;
   z-index: 1000;
@@ -168,9 +168,6 @@ h4 {
   overflow: auto; }
 
 /** intermediate between mobile/tablet **/
-@media (min-width: 600px) {
-  #content {
-    padding-top: 60px; } }
 /** small desktop **/
 @media (min-width: 768px) {
   #content {
@@ -180,8 +177,7 @@ h4 {
   #content {
     padding-top: 100px; }
     #content #main-content {
-      min-height: 625px;
-      padding-top: 50px; } }
+      min-height: 625px; } }
 /** large desktop **/
 body.menu_open {
   overflow: hidden; }
@@ -651,7 +647,7 @@ header {
     -moz-border-bottom-left-radius: 20px;
     border-bottom-left-radius: 20px;
     padding: 0 15px 0 25px;
-    width: 250px; }
+    width: 120px; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {

@@ -5,7 +5,6 @@ site_title: Cockroach Labs
 google_analytics: UA-63775601-1
 
 baseurl: "/docs"
-destination: ../cockroach_site
 
 theme_file: theme-blue.css
 highlighter: rouge
