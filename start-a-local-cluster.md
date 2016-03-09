@@ -3,7 +3,7 @@ title: Start a Local Cluster
 toc: false
 ---
 
-Once you've [installed CockroachDB](install-cockroachdb.html), it's easy to start a single- or multi-node cluster locally and talk to it via the built-in SQL shell. Your cluster can be insecure or secure:
+Once you've [installed CockroachDB](install-cockroachdb.html), it's easy to start a single- or multi-node cluster locally and talk to it via the built-in SQL client. Your cluster can be insecure or secure:
 
 - [Insecure](#insecure)  
 This is the fastest way to start up a cluster and learn CockroachDB, but there's no client/server authentication or encryption, so it's suitable only for limited testing and development.
@@ -62,7 +62,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
    CREATE TABLE
 
-   root@26257> INSERT INTO accounts VALUES(1234, DECIMAL '10000');
+   root@26257> INSERT INTO accounts VALUES (1234, DECIMAL '10000');
    INSERT 1
 
    root@26257> SELECT * FROM accounts;
@@ -89,7 +89,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    
    - The last command adds the files for the SQL client: `root.client.crt` and `root.client.key`.
 
-2. [Start your secure first node](start-a-node.html):
+2. [Start your first secure node](start-a-node.html):
  
    ~~~ shell
    $ ./cockroach start &
@@ -136,7 +136,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
    CREATE TABLE
 
-   root@26257> INSERT INTO accounts VALUES(1234, DECIMAL '10000');
+   root@26257> INSERT INTO accounts VALUES (1234, DECIMAL '10000');
    INSERT 1
 
    root@26257> SELECT * FROM accounts;
