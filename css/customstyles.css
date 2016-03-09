@@ -1666,3 +1666,17 @@ dd {
 
 a.accordion-toggle {
   font-style: normal; }
+
+.search-item {
+	margin-top: 30px;
+}
+.search-title {
+	font-size: 20px;
+}
+.search-link {
+	color: #999988;
+	font-size: 14px;
+}
+.search-snippet {
+	font-size: 14px;
+}
