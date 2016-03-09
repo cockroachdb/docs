@@ -13,7 +13,7 @@ entries:
           url: /start-a-local-cluster.html
 
         - title: Learn CockroachDB SQL
-          url: /basic-sql-statements.html
+          url: /learn-cockroachdb-sql.html
 
         - title: Use the Built-in SQL Client
           url: /use-the-built-in-sql-client.html

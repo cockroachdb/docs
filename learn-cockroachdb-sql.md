@@ -1,5 +1,5 @@
 ---
-title: Basic SQL Statements
+title: Learn CockroachDB SQL
 toc: false
 ---
 

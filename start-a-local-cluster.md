@@ -45,7 +45,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-3. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](basic-sql-statements.html):
+3. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](learn-cockroachdb-sql.html):
 
    ~~~ shell
    $ ./cockroach sql --insecure
@@ -119,7 +119,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-4. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](basic-sql-statements.html):
+4. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](learn-cockroachdb-sql.html):
 
    ~~~ shell
    $ ./cockroach sql
@@ -151,6 +151,6 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
 ## What's Next?
 
-- Learn more about [CockroachDB SQL](basic-sql-statements.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - [Build a test app](build-a-test-app.html)
