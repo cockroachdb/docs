@@ -1,7 +1,7 @@
 #content {
 	background: #fff;
 	position: relative;
-	padding-top: 60px;
+	padding-top: 50px;
 	padding-bottom: 100px;
 	
 	width: 100%;
@@ -13,7 +13,9 @@
 
 /** intermediate between mobile/tablet **/
 @media (min-width: 600px) {
-	
+	#content {
+		padding-top:60px;
+	}
 }
 
 /** small desktop **/
