@@ -33,14 +33,12 @@ Flag | Description
 
 ## Examples
 
-####Shut down a secure node:
+####Shut down a node
 
 ~~~ shell
+# Secure:
 $ ./cockroach quit --certs=/nodecerts --host=nodehostname.com --port=26260 
-~~~
 
-####Shut down an insecure node:
-
-~~~ shell
+# Insecure:
 $ ./cockroach quit --insecure --host=nodehostname.com --port=26260 
 ~~~

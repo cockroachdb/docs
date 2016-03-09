@@ -12,17 +12,20 @@ entries:
         - title: Start a Local Cluster
           url: /start-a-local-cluster.html
 
-        - title: Basic SQL Statements
-          url: /basic-sql-statements.html
+        - title: Learn CockroachDB SQL
+          url: /learn-cockroachdb-sql.html
 
-        - title: Install Client Drivers
-          url: /install-client-drivers.html
+        - title: Use the Built-in SQL Client
+          url: /use-the-built-in-sql-client.html
 
         - title: Build a Test App
           url: /build-a-test-app.html
 
     - title: Develop
       items:
+        - title: Install Client Drivers
+          url: /install-client-drivers.html
+
         - title: SQL Statements
           url: /sql-statements.html
 
