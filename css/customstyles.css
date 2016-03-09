@@ -930,21 +930,19 @@ header {
 @media (min-width: 768px) {
   #footer {
     padding-top: 55px; }
-    #footer .footer_nav_row .footer_nav li, #footer .footer_nav_row .footer_social li, #footer .footer_nav_row .footer_documentation li {
-      text-align: left; }
-      #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header, #footer .footer_nav_row .footer_documentation li.header {
-        font-family: 'AvenirLTStd-Black', serif;
-        font-size: 14px;
-        font-weight: normal;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale; }
-      #footer .footer_nav_row .footer_nav li a, #footer .footer_nav_row .footer_social li a, #footer .footer_nav_row .footer_documentation li a {
-        font-family: 'AvenirLTStd-Book', serif;
-        font-size: 17px;
-        font-weight: normal;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        line-height: 30px; }
+    #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header, #footer .footer_nav_row .footer_documentation li.header {
+      font-family: 'AvenirLTStd-Black', serif;
+      font-size: 14px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; }
+    #footer .footer_nav_row .footer_nav li a, #footer .footer_nav_row .footer_social li a, #footer .footer_nav_row .footer_documentation li a {
+      font-family: 'AvenirLTStd-Book', serif;
+      font-size: 17px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 30px; }
     #footer .footer_nav_row .address {
       font-family: 'AvenirLTStd-Book', serif;
       font-size: 17px;
