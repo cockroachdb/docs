@@ -45,26 +45,22 @@ Field | Description
 
 For a detailed walkthrough of starting a multi-node cluster, see [Manual Deployment](manual-deployment.html) and [Cloud Deployment](cloud-deployment.html).
 
-####Start the first node of a secure cluster:
+####Start the first node of a cluster
 
 ~~~ shell
+# Secure:
 $ ./cockroach start --certs=/node1certs --store=/mnt/ssd01 --host=node1hostname.com --port=26260  
-~~~
 
-####Add a node to a secure cluster:
-
-~~~ shell
-$ ./cockroach start --certs=/node2certs --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 
-~~~
-
-####Start the first node of an insecure cluster:
-
-~~~ shell
+# Insecure:
 $ ./cockroach start --insecure --store=/mnt/ssd01 --host=node1hostname.com --port=26260
 ~~~
 
-####Add a node to an insecure cluster:
+####Add a node to a cluster
 
 ~~~ shell
-$ ./cockroach start --insecure --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 
+# Secure:
+$ ./cockroach start --certs=/node2certs --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 
+
+# Insecure:
+$ ./cockroach start --insecure --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260
 ~~~

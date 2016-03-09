@@ -1,5 +1,5 @@
 ---
-title: Basic SQL Statements
+title: Learn CockroachDB SQL
 toc: false
 ---
 
@@ -7,7 +7,7 @@ This page walks you through some of the most essential CockroachDB SQL statement
 
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/issues/2132">Product Roadmap</a> for more details.{{site.data.alerts.end}}   
 
-<img src="images/catrina_ramen.png" style="max-width: 200px;" />
+<div id="toc"></div>
 
 ## Create a Database
 
@@ -340,4 +340,6 @@ Just as with the `UPDATE` statement, if a table has a primary key, you can use t
 
 ## What's Next?
 
-Since CockroachDB supports the PostgreSQL wire protocol, it’s easy to query CockroachDB from your application; just find your [client driver](install-client-drivers.html) and start building.
+- [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
+- [Install the client driver](install-client-drivers.html) for your preferred language and [build a test app](build-a-test-app.html)
+- Explore our full [SQL grammar](sql-grammar.html)
