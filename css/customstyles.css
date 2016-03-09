@@ -156,6 +156,9 @@ h4 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'AvenirLTStd-Light', serif; }
+
 #content {
   background: #fff;
   position: relative;
@@ -583,7 +586,7 @@ header {
       -moz-border-bottom-left-radius: 20px;
       border-bottom-left-radius: 20px;
       padding: 0 15px 0 25px;
-      width: 250px; }
+      width: 180px; }
     #newsletter-footer-popout .popout-form .inputs-list {
       display: none !important; }
     #newsletter-footer-popout .popout-form .hs-button {
@@ -647,7 +650,7 @@ header {
     -moz-border-bottom-left-radius: 20px;
     border-bottom-left-radius: 20px;
     padding: 0 15px 0 25px;
-    width: 120px; }
+    width: 150px; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {
@@ -696,7 +699,12 @@ header {
       line-height: 33px; }
     #newsletter-footer-popout .popout-form {
       margin-top: 15px;
-      float: left; } }
+      float: left; }
+      #newsletter-footer-popout .popout-form .hs_email input {
+        width: 250px; }
+
+  .hubspot-install-form .install-form .hs_email input {
+    width: 250px; } }
 #footer {
   background: #142848;
   padding-top: 65px;

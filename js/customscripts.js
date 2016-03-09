@@ -29,16 +29,20 @@
         });
 
         $(window).scroll(function(e) {
-            //prevent sidebar from overlapping footer
-            footertotop = $footer.position().top;
-            scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 170;
-            difference = scrolltop-footertotop;
+            _viewport_width = $(window).width();
 
-            if (scrolltop > footertotop) {
-                $sidebar.css('margin-top',  40-difference);
-            }
-            else  {
-                $sidebar.css('margin-top', 40);
+            if(_viewport_width >= 992) {
+                //prevent sidebar from overlapping footer
+                footertotop = $footer.position().top;
+                scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 170;
+                difference = scrolltop-footertotop;
+
+                if (scrolltop > footertotop) {
+                    $sidebar.css('margin-top',  40-difference);
+                }
+                else  {
+                    $sidebar.css('margin-top', 40);
+                }
             }
         });
     });

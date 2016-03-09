@@ -138,7 +138,7 @@
 				-moz-border-bottom-left-radius: 20px;
 				border-bottom-left-radius: 20px;
 				padding: 0 15px 0 25px;
-				width: 250px;
+				width: 180px;
 			}
 
 
@@ -220,7 +220,7 @@
 				-moz-border-bottom-left-radius: 20px;
 				border-bottom-left-radius: 20px;
 				padding: 0 15px 0 25px;
-				width: 120px;
+				width: 150px;
 			}
 
 
@@ -279,6 +279,22 @@
 		.popout-form {
 			margin-top: 15px;
 			float: left;
+
+			.hs_email {
+				input {
+					width: 250px;
+				}
+			}
+		}
+	}
+
+	.hubspot-install-form {
+		.install-form {
+			.hs_email {
+				input {
+					width: 250px;
+				}
+			}
 		}
 	}
 }
