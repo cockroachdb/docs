@@ -36,10 +36,10 @@
 <!-- Mobile Side Navigation -->
 <nav class="mobile_expanded" role="navigation">
     <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
-    <a href="http://www.cockroachlabs.com/docs/" class="menu-item">Docs</a>
-    <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
-    <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
-    <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+    <a href="/docs/" class="menu-item">Docs</a>
+    <a href="//www.cockroachlabs.com/community/" class="menu-item">Community</a>
+    <a href="//www.cockroachlabs.com/about/" class="menu-item">About</a>
+    <a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
     <a href="/docs/install-cockroachdb.html" class="menu-item">Install</a>
 </nav>
 
@@ -48,16 +48,16 @@
     <div class="container">
         <div class="row">
             <a class="logo" href="/" title="Cockroach Labs">
-                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
-                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+                <img class="default" src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
             </a>
 
             <nav class="desktop" role="navigation">
                 <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
-                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="/docs/" class="menu-item current-menu-item">Docs</a>
                 <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
-                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
-                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="//www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
                 <a href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
             </nav>
             <nav class="mobile" role="navigation">
@@ -229,7 +229,21 @@
                 <ul>
                     
                     
-                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
+                    <li><a href="recommended-environments.html">Recommended Environments</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="choose-a-deployment-profile.html">Choose a Deployment Profile</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="on-premise-deployment.html">On-Premise Deployment</a></li>
 
                     
             </li>
@@ -243,21 +257,7 @@
             
             
                     
-                    <li><a href="start-a-node.html">Start a Node</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="stop-a-node.html">Stop a Node</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
+                    <li><a href="cockroachdb-command-line-options.html">CockroachDB Command Line Options</a></li>
 
                     
             </li>
@@ -271,6 +271,20 @@
                     
                     
                     <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="add-or-remove-servers.html">Add or Remove Servers</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="configure-replication-zones.html">Configure Replication Zones</a></li>
 
                     
             </li>
@@ -397,7 +411,7 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="how-does-cockroachdb-scale">How does CockroachDB scale?</h2>
 
-<p>CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. Adding capacity is as easy as pointing a new node at the running cluster.</p>
+<p>CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. Adding capacity is as easy as <a href="start-a-node.html">pointing a new node at the running cluster</a>.</p>
 
 <p>At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (64MB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.</p>
 
@@ -409,7 +423,7 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Replication</strong></p>
 
-<p>CockroachDB replicates your data for availability and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular successor to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:</p>
+<p>CockroachDB replicates your data for availability and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular alternative to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:</p>
 
 <ul>
   <li>Different disks within a server to tolerate disk failures</li>
@@ -420,17 +434,17 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Automated Repair</strong></p>
 
-<p>When failures occur, replication ensures the continued availability of replicas and Raft ensures the consistency of replicas. For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that subsequent transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.</p>
+<p>For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that subsequent transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.</p>
 
 <h2 id="how-is-cockroachdb-strongly-consistent">How is CockroachDB strongly-consistent?</h2>
 
-<p>CockroachDB replicates your data multiple times and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular successor to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write fails to reach a majority of replicas, it will not be permanent and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).</p>
+<p>CockroachDB replicates your data multiple times and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular alternative to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. A consensus algorithm guarantees that any majority of replicas together can always provide the most recently written data on reads. Writes must reach a majority of replicas (2 out of 3 by default) before they are considered committed. If a write does not reach a majority of replicas, it will fail, not be permanent, and will never be visible to readers. This means that clients always see a consistent view of your data (i.e., no stale reads).</p>
 
 <h2 id="why-is-cockroachdb-sql">Why is CockroachDB SQL?</h2>
 
 <p>At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your <a href="install-client-drivers.html">PostgreSQL language-specific driver</a> and start building.</p>
 
-<p>For insight into how CockroachDB maps SQL table data to key-value storage, see this <a href="http://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/">blog post</a>.</p>
+<p>For insight into how CockroachDB maps SQL table data to key-value storage, see this <a href="//www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/">blog post</a>.</p>
 
 <h2 id="does-cockroachdb-support-distributed-transactions">Does CockroachDB support distributed transactions?</h2>
 
@@ -484,19 +498,23 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="how-easy-is-it-to-install-cockroachdb">How easy is it to install CockroachDB?</h2>
 
-<p>Very. See <a href="install-cockroachdb.html">Install CockroachDB</a>.</p>
+<p>It’s as easy as downloading a binary on OS X and Linux, or running our official Docker image on Windows. You can use Docker on OS X and Linux as well, or just build a binary from our source files. For OS X, our Homebrew recipe is another easy option.</p>
 
-<h2 id="how-easy-is-it-to-deploy-cockroachdb">How easy is it to deploy CockroachDB?</h2>
+<p>For more details, see <a href="install-cockroachdb.html">Install CockroachDB</a>.</p>
 
-<p>TBD. [Single binary, no external dependencies, self-organization, rebalancing, re-replication on failures]</p>
+<!--
+## How easy is it to deploy CockroachDB?
 
-<h2 id="what-are-some-recommended-deployments">What are some recommended deployments?</h2>
+TBD. [Single binary, no external dependencies, self-organization, rebalancing, re-replication on failures]
 
-<p>TBD (Cloud service providers: Digital Ocean, AWS, Azure, Google Cloud; How to optimize for performance and consistency.)</p>
+## What are some recommended deployments? 
 
-<h2 id="how-do-you-configure-and-monitor-a-cockroachdb-cluster">How do you configure and monitor a CockroachDB cluster?</h2>
+TBD (Cloud service providers: Digital Ocean, AWS, Azure, Google Cloud; How to optimize for performance and consistency.)
 
-<p>TBD.</p>
+## How do you configure and monitor a CockroachDB cluster? 
+
+TBD.
+-->
 
 <h2 id="when-is-cockroachdb-not-a-good-choice">When is CockroachDB not a good choice?</h2>
 
@@ -504,7 +522,11 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="what-is-cockroachdbs-security-model">What is CockroachDB’s security model?</h2>
 
-<p>TBD. We support client and internode SSL. Everything within CockroachDB requires that you speak to it with encryption.</p>
+<p>You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there’s no encryption or authentication.</p>
+
+<p>Also, CockroachDB supports common SQL privileges on databases and tables. The <code class="highlighter-rouge">root</code> user has privileges for all databases, while unique users can be granted privileges for specific statements on the database and table levels.</p>
+
+<p>For more details, see our <a href="https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/sql_privileges.md">SQL privileges design</a> document. Official docs are in progress.</p>
 
 <h2 id="does-cockroach-labs-offer-a-cloud-database-as-a-service">Does Cockroach Labs offer a cloud database as a service?</h2>
 
@@ -663,7 +685,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <script>
-anchors.add();
+anchors.add('h2');
 </script>
 
           </div>
@@ -684,7 +706,7 @@ anchors.add();
 		</script>
 		<div class="row footer_nav_row">
 			<div class="footer_logo">
-				<img src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+				<img src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
 			</div>
 			<div class="footer_social_col col-xs-6 col-sm-3">
 			<ul class="footer_social">
@@ -698,7 +720,7 @@ anchors.add();
 				<li><a target="_blank" href="https://www.linkedin.com/company/cockroach-labs" class="menu-item">LinkedIn</a></li>
 				<li><a target="_blank" href="http://www.quora.com/CockroachDB" class="menu-item">Quora</a></li>
 				<li><a href="http://stackoverflow.com/questions/tagged/cockroachdb" class="menu-item">Stack Overflow</a></li>
-				<li><a target="_blank" href="http://www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
+				<li><a target="_blank" href="//www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
 				<li><a target="_blank" href="http://instagram.com/cockroachdb" class="menu-item">Instagram</a></li>
 				-->
 			</ul>
@@ -706,10 +728,10 @@ anchors.add();
 		<div class="footer_nav_col col-xs-6 col-sm-3">
 			<ul class="footer_nav">
 				<li class="header">Company</li>
-				<li><a href="http://www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
-				<li><a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
-				<li><a href="http://www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
-				<li><a href="http://www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
+				<li><a href="//www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
+				<li><a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
+				<li><a href="//www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
+				<li><a href="//www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
 			</ul>
 			</div>
 		</div>

@@ -1,201 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>http://www.cockroachlabs.com/docs/add-or-remove-servers.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/alter-table.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/basic-sql-statements.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/begin-transaction.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/build-a-test-app.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/choose-a-deployment-profile.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/cloud-deployment.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/cockroach-commands.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/cockroachdb-architecture.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/cockroachdb-features.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/cockroachdb-in-comparison.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/commit-transaction.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/configure-replication-zones.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/contribute-to-cockroachdb.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/create-database.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/create-index.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/create-security-certificates.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/create-table.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/data-definition.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/data-types.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/delete.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/drop-database.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/drop-index.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/drop-table.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/explain.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/explore-the-admin-ui.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/frequently-asked-questions.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/functions-and-operators.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/grant.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/improve-the-docs.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/insert.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/install-client-drivers.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/install-cockroachdb-in-md.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/install-cockroachdb.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/manual-deployment.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/recommended-environments.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/rename-column.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/rename-database.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/rename-index.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/rename-table.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/revoke.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/rollback-transaction.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/select.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/set-database.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/set-timezone.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/set-transaction.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-columns.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-databases.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-grants.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-index.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-tables.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-timezone.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-transaction-isoloation-level.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/show-transaction-priority.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/sql-grammar.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/sql-statements.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/start-a-local-cluster.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/start-a-node.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/stop-a-node.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/table.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/transactions.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/troubleshoot.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/truncate.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/update.html</loc>
-</url>
-<url>
-<loc>http://www.cockroachlabs.com/docs/values.html</loc>
-</url>
+  
+  
+  <url>
+    <loc>/docs/add-or-remove-servers.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/alter-table.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/basic-sql-statements.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/begin-transaction.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/build-a-test-app.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/choose-a-deployment-profile.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/cloud-deployment.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/cockroachdb-architecture.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/cockroachdb-command-line-options.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/cockroachdb-features.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/cockroachdb-in-comparison.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/commit-transaction.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/configure-replication-zones.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/contribute-to-cockroachdb.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/create-database.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/create-index.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/create-table.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/data-definition.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/data-types.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/delete.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/drop-database.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/drop-index.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/drop-table.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/explain.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/explore-the-admin-ui.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/frequently-asked-questions.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/functions-and-operators.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/grant.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/improve-the-docs.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/insert.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/install-client-drivers.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/install-cockroachdb-in-md.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/install-cockroachdb.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/on-premise-deployment.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/recommended-environments.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/rename-column.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/rename-database.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/rename-index.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/rename-table.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/revoke.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/rollback-transaction.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/select.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/set-database.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/set-timezone.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/set-transaction.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-columns.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-databases.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-grants.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-index.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-tables.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-timezone.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-transaction-isoloation-level.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/show-transaction-priority.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/sql-grammar.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/sql-statements.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/start-a-local-cluster.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/table.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/transactions.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/troubleshoot.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/truncate.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/update.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/values.html</loc>
+  </url>
+  
 </urlset>

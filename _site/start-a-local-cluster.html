@@ -36,10 +36,10 @@
 <!-- Mobile Side Navigation -->
 <nav class="mobile_expanded" role="navigation">
     <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
-    <a href="http://www.cockroachlabs.com/docs/" class="menu-item">Docs</a>
-    <a href="http://www.cockroachlabs.com/community/" class="menu-item">Community</a>
-    <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
-    <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+    <a href="/docs/" class="menu-item">Docs</a>
+    <a href="//www.cockroachlabs.com/community/" class="menu-item">Community</a>
+    <a href="//www.cockroachlabs.com/about/" class="menu-item">About</a>
+    <a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
     <a href="/docs/install-cockroachdb.html" class="menu-item">Install</a>
 </nav>
 
@@ -48,16 +48,16 @@
     <div class="container">
         <div class="row">
             <a class="logo" href="/" title="Cockroach Labs">
-                <img class="default" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
-                <img class="scrolled" src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+                <img class="default" src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+                <img class="scrolled" src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
             </a>
 
             <nav class="desktop" role="navigation">
                 <a href="/docs/frequently-asked-questions.html" class="menu-item">FAQ</a>
-                <a href="http://www.cockroachlabs.com/docs/" class="menu-item current-menu-item">Docs</a>
+                <a href="/docs/" class="menu-item current-menu-item">Docs</a>
                 <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
-                <a href="http://www.cockroachlabs.com/about/" class="menu-item">About</a>
-                <a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
+                <a href="//www.cockroachlabs.com/about/" class="menu-item">About</a>
+                <a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
                 <a href="/docs/install-cockroachdb.html" class="btn cl-btn github menu-item">Install</a>
             </nav>
             <nav class="mobile" role="navigation">
@@ -226,7 +226,21 @@
                 <ul>
                     
                     
-                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
+                    <li><a href="recommended-environments.html">Recommended Environments</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="choose-a-deployment-profile.html">Choose a Deployment Profile</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="on-premise-deployment.html">On-Premise Deployment</a></li>
 
                     
             </li>
@@ -240,21 +254,7 @@
             
             
                     
-                    <li><a href="start-a-node.html">Start a Node</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="stop-a-node.html">Stop a Node</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
+                    <li><a href="cockroachdb-command-line-options.html">CockroachDB Command Line Options</a></li>
 
                     
             </li>
@@ -268,6 +268,20 @@
                     
                     
                     <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="add-or-remove-servers.html">Add or Remove Servers</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="configure-replication-zones.html">Configure Replication Zones</a></li>
 
                     
             </li>
@@ -391,7 +405,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
   </li>
 </ul>
 
-<div class="bs-callout bs-callout-info"> Want to deploy CockroachDB in production? See <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.</div>
+<div class="bs-callout bs-callout-info"> Want to deploy CockroachDB in production? See <a href="on-premise-deployment.html">On-Premise Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.</div>
 
 <h2 id="insecure">Insecure</h2>
 
@@ -414,7 +428,7 @@ store[0]:  cockroach-data
         <p>The <code class="highlighter-rouge">--insecure</code> flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set <code class="highlighter-rouge">--port=&lt;port&gt;</code>.</p>
       </li>
       <li>
-        <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--stores=&lt;filepath&gt;</code>.</p>
+        <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--store=&lt;filepath&gt;</code>. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
         <p>The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
@@ -424,13 +438,13 @@ store[0]:  cockroach-data
   <li>
     <p>For each additional node, repeat step 1 with a few extra flags:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure --stores<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
 </code></pre>
     </div>
 
     <ul>
       <li>
-        <p>Set the <code class="highlighter-rouge">--stores</code> flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.</p>
+        <p>Set the <code class="highlighter-rouge">--store</code> flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
         <p>Set the <code class="highlighter-rouge">--port</code> flag to a port not in use by other nodes.</p>
@@ -497,7 +511,7 @@ store[0]:  cockroach-data
         <p>Secure communication uses the certificates in the <code class="highlighter-rouge">certs</code> directory and defaults to port 26257. To bind to a different port, set <code class="highlighter-rouge">--port=&lt;port&gt;</code>.</p>
       </li>
       <li>
-        <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--stores=&lt;filepath&gt;</code>.</p>
+        <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--store=&lt;filepath&gt;</code>. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
         <p>The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
@@ -507,13 +521,13 @@ store[0]:  cockroach-data
   <li>
     <p>For each additional node, repeat step 2 with a few extra flags:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --stores<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
 </code></pre>
     </div>
 
     <ul>
       <li>
-        <p>Set the <code class="highlighter-rouge">--stores</code> flag to a storage location not in use by other nodes. To use multiple stores for the node, comma-separate the filepaths.</p>
+        <p>Set the <code class="highlighter-rouge">--store</code> flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
         <p>Set the <code class="highlighter-rouge">--port</code> flag to a port not in use by other nodes.</p>
@@ -696,7 +710,7 @@ store[0]:  cockroach-data
 
 
 <script>
-anchors.add();
+anchors.add('h2');
 </script>
 
           </div>
@@ -717,7 +731,7 @@ anchors.add();
 		</script>
 		<div class="row footer_nav_row">
 			<div class="footer_logo">
-				<img src="http://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
+				<img src="//www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/logo.png" width="100%" alt="Cockroach Labs" />
 			</div>
 			<div class="footer_social_col col-xs-6 col-sm-3">
 			<ul class="footer_social">
@@ -731,7 +745,7 @@ anchors.add();
 				<li><a target="_blank" href="https://www.linkedin.com/company/cockroach-labs" class="menu-item">LinkedIn</a></li>
 				<li><a target="_blank" href="http://www.quora.com/CockroachDB" class="menu-item">Quora</a></li>
 				<li><a href="http://stackoverflow.com/questions/tagged/cockroachdb" class="menu-item">Stack Overflow</a></li>
-				<li><a target="_blank" href="http://www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
+				<li><a target="_blank" href="//www.cockroachlabs.com/feed/" class="menu-item">RSS</a></li>
 				<li><a target="_blank" href="http://instagram.com/cockroachdb" class="menu-item">Instagram</a></li>
 				-->
 			</ul>
@@ -739,10 +753,10 @@ anchors.add();
 		<div class="footer_nav_col col-xs-6 col-sm-3">
 			<ul class="footer_nav">
 				<li class="header">Company</li>
-				<li><a href="http://www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
-				<li><a href="http://www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
-				<li><a href="http://www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
-				<li><a href="http://www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
+				<li><a href="//www.cockroachlabs.com/careers/" class="menu-item">Careers</a></li>
+				<li><a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a></li>
+				<li><a href="//www.cockroachlabs.com/press/" class="menu-item">Press</a></li>
+				<li><a href="//www.cockroachlabs.com/contact/" class="menu-item">Contact</a></li>
 			</ul>
 			</div>
 		</div>

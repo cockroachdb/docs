@@ -166,7 +166,7 @@ h3 {
 }
 
 h4 {
-  font-weight: bold;
+  font-weight: normal;
   font-size: 120%;
 }
 
@@ -799,6 +799,9 @@ body h1 {
 .breadcrumb li {
   color: gray; }
 
+table {
+  background-color: transparent; }
+
 caption {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -810,6 +813,11 @@ th {
   padding: 8px;
   /*padding: 10px 15px 10px 5px*/
 }
+
+table {
+  max-width: 90%;
+  margin-bottom: 20px;
+  /*border: 1px solid #dedede;*/ }
 
 table > thead > tr > th,
 table > tbody > tr > th,
@@ -1265,10 +1273,8 @@ li.activeSeries {
 .alert-warning {
   color: #444; }
 
-div.alert code, h2 code, h3 code {
-  background-color: transparent !important; 
-  text-transform: none;
-}
+div.alert code, h2 code {
+  background-color: transparent !important; }
 
 /* without this, the links in these notes aren't visible.*/
 .alert a {

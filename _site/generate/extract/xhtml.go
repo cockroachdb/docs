@@ -53,6 +53,13 @@ func XHTMLtoHTML(r io.Reader) (string, error) {
 	doc.Find("svg").First().Remove()
 	doc.Find("meta[http-equiv]").Remove()
 	doc.Find("head").PrependHtml(`<meta charset="UTF-8">`)
+	doc.Find("a[name]:not([href])").Each(func(_ int, s *goquery.Selection) {
+		name, exists := s.Attr("name")
+		if !exists {
+			return
+		}
+		s.SetAttr("href", "#" + name)
+	})
 	s, err := doc.Find("html").Html()
 	s = "<!DOCTYPE html><html>" + s + "</html>"
 	return s, err
