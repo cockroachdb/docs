@@ -1,6 +1,7 @@
 table {
     margin-top: 20px;
-    width: 100%;
+    margin-bottom: 20px;
+    max-width: 100%;
     background-color: transparent;
     border-spacing: 0;
     border-collapse: collapse;
@@ -14,12 +15,16 @@ table thead tr {
 }
 
 table td {
-    border-right: 2px solid #FFFFFF;
-    border-bottom: 2px solid #FFFFFF;
-    border-left: 2px solid #FFFFFF;
-    background: #e8e7e5;
+    /*border-right: 0px solid #FFFFFF;*/
+    border-bottom: 1px solid #e8e7e5;
+    /*border-left: 0px solid #FFFFFF;*/
+    /*background: white;*/
     color: #142848;
-    padding: 8px;
+    padding: 15px 8px 15px 8px;
+}
+
+tbody tr:hover {
+    background-color: #e8e7e5;
 }
 
 .summary {

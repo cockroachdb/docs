@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content=" ">
-<title>Docs | Cockroach Labs</title>
+<title>BEGIN TRANSACTION | Cockroach Labs</title>
 <link rel="canonical" href="/begin-transaction.html">
 <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
@@ -127,11 +127,8 @@
         <ul id="mysidebar" class="nav" style="display: none">
             <li>
                 <div class="search">
-                    <form action="https://google.com/search" method="GET">
-                        <span class="fa fa-search"></span>
-                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
-                        <input type="text" name="q" id="search-input" placeholder="Search">
-                    </form>
+                    <span class="fa fa-search"></span>
+                    <input type="text" id="search-input" placeholder="Search">
                 </div>
             </li>
             
@@ -154,14 +151,14 @@
             
             
                     
-                    <li><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+                    <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
 
                     
             </li>
             
             
                     
-                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+                    <li><a href="use-the-built-in-sql-client.html">Use the Built-in SQL Client</a></li>
 
                     
             </li>
@@ -180,6 +177,13 @@
             <li><a href="#">Develop</a>
                 <ul>
                     
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
                     
                     <li><a href="sql-statements.html">SQL Statements</a></li>
 
@@ -229,21 +233,7 @@
                 <ul>
                     
                     
-                    <li><a href="recommended-environments.html">Recommended Environments</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="choose-a-deployment-profile.html">Choose a Deployment Profile</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="on-premise-deployment.html">On-Premise Deployment</a></li>
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
 
                     
             </li>
@@ -257,7 +247,21 @@
             
             
                     
-                    <li><a href="cockroachdb-command-line-options.html">CockroachDB Command Line Options</a></li>
+                    <li><a href="start-a-node.html">Start a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
 
                     
             </li>
@@ -271,20 +275,6 @@
                     
                     
                     <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="add-or-remove-servers.html">Add or Remove Servers</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="configure-replication-zones.html">Configure Replication Zones</a></li>
 
                     
             </li>
@@ -400,6 +390,84 @@ $('#toc').on('click', 'a', function() {
   <h2 id="description">Description</h2>
 
 <h2 id="synopsis">Synopsis</h2>
+
+<svg width="636" height="286">
+         
+         <polygon points="11 17 3 13 3 21"></polygon>
+         <polygon points="19 17 11 13 11 21"></polygon>
+         <rect x="33" y="3" width="62" height="32" rx="10"></rect>
+         <rect x="31" y="1" width="62" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="41" y="21">BEGIN</text>
+         <rect x="135" y="35" width="118" height="32" rx="10"></rect>
+         <rect x="133" y="33" width="118" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="143" y="53">TRANSACTION</text>
+         <rect x="45" y="121" width="98" height="32" rx="10"></rect>
+         <rect x="43" y="119" width="98" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="139">ISOLATION</text>
+         <rect x="163" y="121" width="60" height="32" rx="10"></rect>
+         <rect x="161" y="119" width="60" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="171" y="139">LEVEL</text>
+         <a xlink:href="sql-grammar.html#iso_level" xlink:title="iso_level">
+            <rect x="243" y="121" width="74" height="32"></rect>
+            <rect x="241" y="119" width="74" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="251" y="139">iso_level</text>
+         </a>
+         <rect x="45" y="165" width="88" height="32" rx="10"></rect>
+         <rect x="43" y="163" width="88" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="183">PRIORITY</text>
+         <a xlink:href="sql-grammar.html#user_priority" xlink:title="user_priority">
+            <rect x="153" y="165" width="100" height="32"></rect>
+            <rect x="151" y="163" width="100" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="161" y="183">user_priority</text>
+         </a>
+         <rect x="45" y="209" width="98" height="32" rx="10"></rect>
+         <rect x="43" y="207" width="98" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="227">ISOLATION</text>
+         <rect x="163" y="209" width="60" height="32" rx="10"></rect>
+         <rect x="161" y="207" width="60" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="171" y="227">LEVEL</text>
+         <a xlink:href="sql-grammar.html#iso_level" xlink:title="iso_level">
+            <rect x="243" y="209" width="74" height="32"></rect>
+            <rect x="241" y="207" width="74" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="251" y="227">iso_level</text>
+         </a>
+         <rect x="337" y="209" width="24" height="32" rx="10"></rect>
+         <rect x="335" y="207" width="24" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="345" y="227">,</text>
+         <rect x="381" y="209" width="88" height="32" rx="10"></rect>
+         <rect x="379" y="207" width="88" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="389" y="227">PRIORITY</text>
+         <a xlink:href="sql-grammar.html#user_priority" xlink:title="user_priority">
+            <rect x="489" y="209" width="100" height="32"></rect>
+            <rect x="487" y="207" width="100" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="497" y="227">user_priority</text>
+         </a>
+         <rect x="45" y="253" width="88" height="32" rx="10"></rect>
+         <rect x="43" y="251" width="88" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="53" y="271">PRIORITY</text>
+         <a xlink:href="sql-grammar.html#user_priority" xlink:title="user_priority">
+            <rect x="153" y="253" width="100" height="32"></rect>
+            <rect x="151" y="251" width="100" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="161" y="271">user_priority</text>
+         </a>
+         <rect x="273" y="253" width="24" height="32" rx="10"></rect>
+         <rect x="271" y="251" width="24" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="281" y="271">,</text>
+         <rect x="317" y="253" width="98" height="32" rx="10"></rect>
+         <rect x="315" y="251" width="98" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="325" y="271">ISOLATION</text>
+         <rect x="435" y="253" width="60" height="32" rx="10"></rect>
+         <rect x="433" y="251" width="60" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="443" y="271">LEVEL</text>
+         <a xlink:href="sql-grammar.html#iso_level" xlink:title="iso_level">
+            <rect x="515" y="253" width="74" height="32"></rect>
+            <rect x="513" y="251" width="74" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="523" y="271">iso_level</text>
+         </a>
+         <path class="line" d="m19 17 h2 m0 0 h10 m62 0 h10 m20 0 h10 m0 0 h128 m-158 0 h20 m138 0 h20 m-178 0 q10 0 10 10 m158 0 q0 -10 10 -10 m-168 10 v12 m158 0 v-12 m-158 12 q0 10 10 10 m138 0 q10 0 10 -10 m-148 10 h10 m118 0 h10 m22 -32 l2 0 m2 0 l2 0 m2 0 l2 0 m-292 86 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h554 m-584 0 h20 m564 0 h20 m-604 0 q10 0 10 10 m584 0 q0 -10 10 -10 m-594 10 v12 m584 0 v-12 m-584 12 q0 10 10 10 m564 0 q10 0 10 -10 m-574 10 h10 m98 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m74 0 h10 m0 0 h272 m-574 -10 v20 m584 0 v-20 m-584 20 v24 m584 0 v-24 m-584 24 q0 10 10 10 m564 0 q10 0 10 -10 m-574 10 h10 m88 0 h10 m0 0 h10 m100 0 h10 m0 0 h336 m-574 -10 v20 m584 0 v-20 m-584 20 v24 m584 0 v-24 m-584 24 q0 10 10 10 m564 0 q10 0 10 -10 m-574 10 h10 m98 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m74 0 h10 m0 0 h10 m24 0 h10 m0 0 h10 m88 0 h10 m0 0 h10 m100 0 h10 m-574 -10 v20 m584 0 v-20 m-584 20 v24 m584 0 v-24 m-584 24 q0 10 10 10 m564 0 q10 0 10 -10 m-574 10 h10 m88 0 h10 m0 0 h10 m100 0 h10 m0 0 h10 m24 0 h10 m0 0 h10 m98 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m74 0 h10 m23 -164 h-3"></path>
+         <polygon points="627 103 635 99 635 107"></polygon>
+         <polygon points="627 103 619 99 619 107"></polygon>
+      </svg>
 
 <h2 id="privileges">Privileges</h2>
 
@@ -571,7 +639,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <script>
-anchors.add('h2');
+anchors.add('h2, h3, h4, h5');
 </script>
 
           </div>

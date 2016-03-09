@@ -11,10 +11,6 @@
   </url>
   
   <url>
-    <loc>/docs/basic-sql-statements.html</loc>
-  </url>
-  
-  <url>
     <loc>/docs/begin-transaction.html</loc>
   </url>
   
@@ -31,11 +27,11 @@
   </url>
   
   <url>
-    <loc>/docs/cockroachdb-architecture.html</loc>
+    <loc>/docs/cockroach-commands.html</loc>
   </url>
   
   <url>
-    <loc>/docs/cockroachdb-command-line-options.html</loc>
+    <loc>/docs/cockroachdb-architecture.html</loc>
   </url>
   
   <url>
@@ -64,6 +60,10 @@
   
   <url>
     <loc>/docs/create-index.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/create-security-certificates.html</loc>
   </url>
   
   <url>
@@ -139,7 +139,11 @@
   </url>
   
   <url>
-    <loc>/docs/on-premise-deployment.html</loc>
+    <loc>/docs/learn-cockroachdb-sql.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/manual-deployment.html</loc>
   </url>
   
   <url>
@@ -211,7 +215,7 @@
   </url>
   
   <url>
-    <loc>/docs/show-transaction-isoloation-level.html</loc>
+    <loc>/docs/show-transaction-isolation-level.html</loc>
   </url>
   
   <url>
@@ -228,6 +232,14 @@
   
   <url>
     <loc>/docs/start-a-local-cluster.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/start-a-node.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/stop-a-node.html</loc>
   </url>
   
   <url>
@@ -248,6 +260,10 @@
   
   <url>
     <loc>/docs/update.html</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/use-the-built-in-sql-client.html</loc>
   </url>
   
   <url>

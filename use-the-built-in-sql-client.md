@@ -3,14 +3,14 @@ title: Use the Built-in SQL Client
 toc: false
 ---
 
-CockroachDB comes with a built-in client for executing SQL statements from a shell or directly from the command line. To use this client, run the `cockroach sql` command as described below.  
+CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` command as described below.  
 
 <div id="toc"></div>
 
 ## Synopsis
 
 ~~~ shell
-# Open the SQL shell:
+# Open the interactive SQL shell:
 $ ./cockroach sql <flags>
 
 # Execute SQL from the command line:
@@ -24,7 +24,7 @@ $ ./cockroach help sql
 
 The `cockroach sql` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-- To open a SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
+- To open an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
 - To execute SQL from the command line, add the `--execute` flag.
 
 Flag | Description 

@@ -166,7 +166,7 @@ h3 {
 }
 
 h4 {
-  font-weight: normal;
+  font-weight: bold;
   font-size: 120%;
 }
 
@@ -799,9 +799,6 @@ body h1 {
 .breadcrumb li {
   color: gray; }
 
-table {
-  background-color: transparent; }
-
 caption {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -810,14 +807,8 @@ caption {
 
 th {
   text-align: left; 
-  padding: 8px;
-  /*padding: 10px 15px 10px 5px*/
+  padding: 15px 8px 15px 8px;
 }
-
-table {
-  max-width: 90%;
-  margin-bottom: 20px;
-  /*border: 1px solid #dedede;*/ }
 
 table > thead > tr > th,
 table > tbody > tr > th,
@@ -828,7 +819,7 @@ table > tfoot > tr > td {
   /*padding: 8px;*/
   /*line-height: 1.42857143;*/
   vertical-align: top;
-  border-top: 1px solid #ddd; }
+}
 
 /*table > thead > tr > th {
   vertical-align: bottom;
@@ -847,7 +838,7 @@ table > thead:first-child > tr:first-child > td {
   border-top: 0; }
 
 table > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9; }
+  /*background-color: #f9f9f9;*/ }
 
 table col[class*="col-"] {
   position: static;
@@ -861,7 +852,7 @@ table th[class*="col-"] {
   float: none; }
 
 table td:first-child {
-  min-width: 150px;
+  min-width: 200px;
 }
 
 table.boldFirstColumn td:first-child {
@@ -1273,8 +1264,10 @@ li.activeSeries {
 .alert-warning {
   color: #444; }
 
-div.alert code, h2 code {
-  background-color: transparent !important; }
+div.alert code, h2 code, h3 code {
+  background-color: transparent !important; 
+  text-transform: none;
+}
 
 /* without this, the links in these notes aren't visible.*/
 .alert a {
@@ -1414,3 +1407,17 @@ dd {
 
 a.accordion-toggle {
   font-style: normal; }
+
+.search-item {
+	margin-top: 30px;
+}
+.search-title {
+	font-size: 20px;
+}
+.search-link {
+	color: #999988;
+	font-size: 14px;
+}
+.search-snippet {
+	font-size: 14px;
+}

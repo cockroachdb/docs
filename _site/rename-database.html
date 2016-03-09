@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content=" ">
-<title>Docs | Cockroach Labs</title>
+<title>RENAME DATABASE | Cockroach Labs</title>
 <link rel="canonical" href="/rename-database.html">
 <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
@@ -127,11 +127,8 @@
         <ul id="mysidebar" class="nav" style="display: none">
             <li>
                 <div class="search">
-                    <form action="https://google.com/search" method="GET">
-                        <span class="fa fa-search"></span>
-                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
-                        <input type="text" name="q" id="search-input" placeholder="Search">
-                    </form>
+                    <span class="fa fa-search"></span>
+                    <input type="text" id="search-input" placeholder="Search">
                 </div>
             </li>
             
@@ -154,14 +151,14 @@
             
             
                     
-                    <li><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+                    <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
 
                     
             </li>
             
             
                     
-                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+                    <li><a href="use-the-built-in-sql-client.html">Use the Built-in SQL Client</a></li>
 
                     
             </li>
@@ -180,6 +177,13 @@
             <li><a href="#">Develop</a>
                 <ul>
                     
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
                     
                     <li><a href="sql-statements.html">SQL Statements</a></li>
 
@@ -229,21 +233,7 @@
                 <ul>
                     
                     
-                    <li><a href="recommended-environments.html">Recommended Environments</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="choose-a-deployment-profile.html">Choose a Deployment Profile</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="on-premise-deployment.html">On-Premise Deployment</a></li>
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
 
                     
             </li>
@@ -257,7 +247,21 @@
             
             
                     
-                    <li><a href="cockroachdb-command-line-options.html">CockroachDB Command Line Options</a></li>
+                    <li><a href="start-a-node.html">Start a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
 
                     
             </li>
@@ -271,20 +275,6 @@
                     
                     
                     <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="add-or-remove-servers.html">Add or Remove Servers</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="configure-replication-zones.html">Configure Replication Zones</a></li>
 
                     
             </li>
@@ -400,6 +390,37 @@ $('#toc').on('click', 'a', function() {
   <h2 id="description">Description</h2>
 
 <h2 id="synopsis">Synopsis</h2>
+
+<svg width="530" height="36">
+         
+         <polygon points="9 17 1 13 1 21"></polygon>
+         <polygon points="17 17 9 13 9 21"></polygon>
+         <rect x="31" y="3" width="62" height="32" rx="10"></rect>
+         <rect x="29" y="1" width="62" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="39" y="21">ALTER</text>
+         <rect x="113" y="3" width="90" height="32" rx="10"></rect>
+         <rect x="111" y="1" width="90" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="121" y="21">DATABASE</text>
+         <a xlink:href="sql-grammar.html#name" xlink:title="name">
+            <rect x="223" y="3" width="54" height="32"></rect>
+            <rect x="221" y="1" width="54" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="231" y="21">name</text>
+         </a>
+         <rect x="297" y="3" width="74" height="32" rx="10"></rect>
+         <rect x="295" y="1" width="74" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="305" y="21">RENAME</text>
+         <rect x="391" y="3" width="38" height="32" rx="10"></rect>
+         <rect x="389" y="1" width="38" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="399" y="21">TO</text>
+         <a xlink:href="sql-grammar.html#name" xlink:title="name">
+            <rect x="449" y="3" width="54" height="32"></rect>
+            <rect x="447" y="1" width="54" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="457" y="21">name</text>
+         </a>
+         <path class="line" d="m17 17 h2 m0 0 h10 m62 0 h10 m0 0 h10 m90 0 h10 m0 0 h10 m54 0 h10 m0 0 h10 m74 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m54 0 h10 m3 0 h-3"></path>
+         <polygon points="521 17 529 13 529 21"></polygon>
+         <polygon points="521 17 513 13 513 21"></polygon>
+      </svg>
 
 <h2 id="privileges">Privileges</h2>
 
@@ -572,7 +593,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <script>
-anchors.add('h2');
+anchors.add('h2, h3, h4, h5');
 </script>
 
           </div>

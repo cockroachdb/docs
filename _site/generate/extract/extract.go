@@ -209,7 +209,7 @@ type Grammar map[string]Productions
 // in order, into a BNF file. If descend is false, only the named statement
 // is extracted. Inline contains a set of names to include directly where
 // they are used.
-func (g Grammar) ExtractProduction(name string, descend bool) ([]byte, error) {
+func (g Grammar) ExtractProduction(name string, descend bool, prefix *regexp.Regexp) ([]byte, error) {
 	names := []Token{Token(name)}
 	b := new(bytes.Buffer)
 	done := map[Token]bool{Token(name): true}
@@ -229,7 +229,7 @@ func (g Grammar) ExtractProduction(name string, descend bool) ([]byte, error) {
 			}
 		})
 		fmt.Fprintf(b, "%s ::=\n", n)
-		b.WriteString(prods.String())
+		b.WriteString(prods.Prefix(prefix).String())
 	}
 	return b.Bytes(), nil
 }
@@ -374,6 +374,19 @@ func WalkToken(e Expression, f func(Token)) {
 }
 
 type Productions []Expression
+
+func (p Productions) Prefix(match *regexp.Regexp) Productions {
+	if match == nil {
+		return p
+	}
+	var n []Expression
+	for _, e := range p {
+		if match.MatchString(e.String()) {
+			n = append(n, e)
+		}
+	}
+	return n
+}
 
 func (p Productions) String() string {
 	b := new(bytes.Buffer)

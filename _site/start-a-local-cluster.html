@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content=" ">
-<title>Docs | Cockroach Labs</title>
+<title>Start a Local Cluster | Cockroach Labs</title>
 <link rel="canonical" href="/start-a-local-cluster.html">
 <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
@@ -127,11 +127,8 @@
         <ul id="mysidebar" class="nav" style="display: none">
             <li>
                 <div class="search">
-                    <form action="https://google.com/search" method="GET">
-                        <span class="fa fa-search"></span>
-                        <input type="hidden" name="sitesearch" value="cockroachlabs.com/docs">
-                        <input type="text" name="q" id="search-input" placeholder="Search">
-                    </form>
+                    <span class="fa fa-search"></span>
+                    <input type="text" id="search-input" placeholder="Search">
                 </div>
             </li>
             
@@ -151,14 +148,14 @@
                     
             
                     
-                    <li><a href="basic-sql-statements.html">Basic SQL Statements</a></li>
+                    <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
 
                     
             </li>
             
             
                     
-                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+                    <li><a href="use-the-built-in-sql-client.html">Use the Built-in SQL Client</a></li>
 
                     
             </li>
@@ -177,6 +174,13 @@
             <li><a href="#">Develop</a>
                 <ul>
                     
+                    
+                    <li><a href="install-client-drivers.html">Install Client Drivers</a></li>
+
+                    
+            </li>
+            
+            
                     
                     <li><a href="sql-statements.html">SQL Statements</a></li>
 
@@ -226,21 +230,7 @@
                 <ul>
                     
                     
-                    <li><a href="recommended-environments.html">Recommended Environments</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="choose-a-deployment-profile.html">Choose a Deployment Profile</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="on-premise-deployment.html">On-Premise Deployment</a></li>
+                    <li><a href="manual-deployment.html">Manual Deployment</a></li>
 
                     
             </li>
@@ -254,7 +244,21 @@
             
             
                     
-                    <li><a href="cockroachdb-command-line-options.html">CockroachDB Command Line Options</a></li>
+                    <li><a href="start-a-node.html">Start a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="stop-a-node.html">Stop a Node</a></li>
+
+                    
+            </li>
+            
+            
+                    
+                    <li><a href="cockroach-commands.html">Cockroach Commands</a></li>
 
                     
             </li>
@@ -268,20 +272,6 @@
                     
                     
                     <li><a href="explore-the-admin-ui.html">Explore the Admin UI</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="add-or-remove-servers.html">Add or Remove Servers</a></li>
-
-                    
-            </li>
-            
-            
-                    
-                    <li><a href="configure-replication-zones.html">Configure Replication Zones</a></li>
 
                     
             </li>
@@ -405,15 +395,15 @@ Starting up a cluster with authenticated, encrypted client/server communication 
   </li>
 </ul>
 
-<div class="bs-callout bs-callout-info"> Want to deploy CockroachDB in production? See <a href="on-premise-deployment.html">On-Premise Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.</div>
+<div class="bs-callout bs-callout-info"> Want to deploy CockroachDB in production? See <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.</div>
 
 <h2 id="insecure">Insecure</h2>
 
 <ol>
   <li>
-    <p>From the directory containing the <code class="highlighter-rouge">cockroach</code> binary, start your first node:</p>
+    <p>From the directory with the <code class="highlighter-rouge">cockroach</code> binary, <a href="start-a-node.html">start your first node</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure &amp;
 
 build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 <span class="o">(</span>go1.6<span class="o">)</span>
 admin:     http://ROACHs-MacBook-Pro.local:26257
@@ -431,14 +421,14 @@ store[0]:  cockroach-data
         <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--store=&lt;filepath&gt;</code>. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
-        <p>The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
+        <p>The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
       </li>
     </ul>
   </li>
   <li>
     <p>For each additional node, repeat step 1 with a few extra flags:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --insecure --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257 &amp;
 </code></pre>
     </div>
 
@@ -455,20 +445,36 @@ store[0]:  cockroach-data
     </ul>
   </li>
   <li>
-    <p>In a new shell, start the built-in SQL client:</p>
+    <p>Use the <a href="use-the-built-in-sql-client.html">built-in SQL client</a> to <a href="learn-cockroachdb-sql.html">run some statements</a>:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach sql --insecure
 <span class="c"># Welcome to the cockroach SQL interface.</span>
 <span class="c"># All statements must be terminated by a semicolon.</span>
 <span class="c"># To exit: CTRL + D.</span>
+
+<span class="gp">root@:26257&gt; </span>CREATE DATABASE bank;
+CREATE DATABASE
+
+<span class="gp">root@:26257&gt; </span>SET DATABASE <span class="o">=</span> bank;
+SET DATABASE
+
+<span class="gp">root@:26257&gt; </span>CREATE TABLE accounts <span class="o">(</span>id INT PRIMARY KEY, balance DECIMAL<span class="o">)</span>;
+CREATE TABLE
+
+<span class="gp">root@26257&gt; </span>INSERT INTO accounts VALUES <span class="o">(</span>1234, DECIMAL <span class="s1">'10000'</span><span class="o">)</span>;
+INSERT 1
+
+<span class="gp">root@26257&gt; </span>SELECT <span class="k">*</span> FROM accounts;
++------+---------+
+|  id  | balance |
++------+---------+
+| 1234 |   10000 |
++------+---------+
 </code></pre>
     </div>
   </li>
   <li>
-    <p><a href="basic-sql-statements.html">Run some queries</a>.</p>
-  </li>
-  <li>
-    <p><a href="explore-the-admin-ui.html">Check out the Admin UI</a> by pointing your browser to <code class="highlighter-rouge">http://&lt;local host&gt;:26257</code>. You can find the complete address in the startup output as well (see step 1).</p>
+    <p><a href="explore-the-admin-ui.html">Check out the Admin UI</a> by pointing your browser to <code class="highlighter-rouge">http://&lt;local host&gt;:26257</code>. You can find the complete address in the standard output as well (see step 1).</p>
   </li>
 </ol>
 
@@ -476,7 +482,7 @@ store[0]:  cockroach-data
 
 <ol>
   <li>
-    <p>From the directory containing the <code class="highlighter-rouge">cockroach</code> binary, create security certificates:</p>
+    <p>From the directory with the <code class="highlighter-rouge">cockroach</code> binary, create security certificates:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach cert create-ca
 <span class="gp">$ </span>./cockroach cert create-node localhost <span class="k">$(</span>hostname<span class="k">)</span>
@@ -494,9 +500,9 @@ store[0]:  cockroach-data
     </ul>
   </li>
   <li>
-    <p>Start a secure node:</p>
+    <p><a href="start-a-node.html">Start your first secure node</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start &amp;
 
 build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 <span class="o">(</span>go1.6<span class="o">)</span>
 admin:     https://ROACHs-MacBook-Pro.local:26257
@@ -514,14 +520,14 @@ store[0]:  cockroach-data
         <p>Node storage defaults to the <code class="highlighter-rouge">cockroach-data</code> directory. To store to a different location, set <code class="highlighter-rouge">--store=&lt;filepath&gt;</code>. To use multiple stores, set this flag separately for each.</p>
       </li>
       <li>
-        <p>The output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
+        <p>The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs.</p>
       </li>
     </ul>
   </li>
   <li>
     <p>For each additional node, repeat step 2 with a few extra flags:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach start --store<span class="o">=</span>&lt;filepath&gt; --port<span class="o">=</span>26258 --join<span class="o">=</span>localhost:26257 &amp;
 </code></pre>
     </div>
 
@@ -538,26 +544,46 @@ store[0]:  cockroach-data
     </ul>
   </li>
   <li>
-    <p>In a new shell, start the built-in SQL client:</p>
+    <p>Use the <a href="use-the-built-in-sql-client.html">built-in SQL client</a> to <a href="learn-cockroachdb-sql.html">run some statements</a>:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./cockroach sql
 <span class="c"># Welcome to the cockroach SQL interface.</span>
 <span class="c"># All statements must be terminated by a semicolon.</span>
 <span class="c"># To exit: CTRL + D.</span>
+
+<span class="gp">root@:26257&gt; </span>CREATE DATABASE bank;
+CREATE DATABASE
+
+<span class="gp">root@:26257&gt; </span>SET DATABASE <span class="o">=</span> bank;
+SET DATABASE
+
+<span class="gp">root@:26257&gt; </span>CREATE TABLE accounts <span class="o">(</span>id INT PRIMARY KEY, balance DECIMAL<span class="o">)</span>;
+CREATE TABLE
+
+<span class="gp">root@26257&gt; </span>INSERT INTO accounts VALUES <span class="o">(</span>1234, DECIMAL <span class="s1">'10000'</span><span class="o">)</span>;
+INSERT 1
+
+<span class="gp">root@26257&gt; </span>SELECT <span class="k">*</span> FROM accounts;
++------+---------+
+|  id  | balance |
++------+---------+
+| 1234 |   10000 |
++------+---------+
 </code></pre>
     </div>
   </li>
   <li>
-    <p><a href="basic-sql-statements.html">Run some queries</a>.</p>
-  </li>
-  <li>
-    <p><a href="explore-the-admin-ui.html">Check out the Admin UI</a> by pointing your browser to <code class="highlighter-rouge">https://&lt;local host&gt;:26257</code>. You can find the complete address in the startup output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you’ll need to click through a warning message to get to the UI.</p>
+    <p><a href="explore-the-admin-ui.html">Check out the Admin UI</a> by pointing your browser to <code class="highlighter-rouge">https://&lt;local host&gt;:26257</code>. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you’ll need to click through a warning message to get to the UI.</p>
   </li>
 </ol>
 
 <h2 id="whats-next">What’s Next?</h2>
 
-<p>Learn more about <a href="basic-sql-statements.html">CockroachDB SQL</a> and start <a href="build-a-test-app.html">building a test app</a>.</p>
+<ul>
+  <li>Learn more about <a href="learn-cockroachdb-sql.html">CockroachDB SQL</a> and the <a href="use-the-built-in-sql-client.html">built-in SQL client</a></li>
+  <li><a href="install-client-drivers.html">Install the client driver</a> for your preferred language</li>
+  <li><a href="build-a-test-app.html">Build a test app</a></li>
+</ul>
 
 
 
@@ -710,7 +736,7 @@ store[0]:  cockroach-data
 
 
 <script>
-anchors.add('h2');
+anchors.add('h2, h3, h4, h5');
 </script>
 
           </div>
