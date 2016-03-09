@@ -97,8 +97,7 @@ $(document).ready(function(){
     <li>
       <p>Make the binary executible:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
-  </code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre>
       </div>
     </li>
     <li>
@@ -127,8 +126,7 @@ $(document).ready(function(){
     <li>
       <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb
-  </code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
     </li>
     <li>
@@ -167,16 +165,14 @@ $(document).ready(function(){
   <li>
     <p>Get the CockroachDB code:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Compile the CockroachDB binary:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach
-<span class="gp">$ </span>make build
-</code></pre>
+<span class="gp">$ </span>make build</code></pre>
     </div>
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
@@ -209,15 +205,13 @@ $(document).ready(function(){
   <li>
     <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
     </div>
   </li>
   <li>
@@ -259,9 +253,7 @@ $(document).ready(function(){
     <li>
       <p>Make the binary executible:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
-  </code></pre>
-      </div>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre></div>
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -300,17 +292,12 @@ $(document).ready(function(){
   <li>
     <p>Get the CockroachDB code:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
   </li>
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach
-<span class="gp">$ </span>make build
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach <span class="gp">$ </span>make build</code></pre></div>
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
@@ -339,8 +326,7 @@ $(document).ready(function(){
   <li>
     <p>If you don’t already have the Docker daemon running in the background, run:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker -d &amp;
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker -d &amp;</code></pre>
     </div>
 
     <div class="bs-callout bs-callout-info"> On Linux, Docker needs sudo privileges.</div>
@@ -348,15 +334,13 @@ $(document).ready(function(){
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker run -t -i cockroachdb/cockroach shell</code></pre>
     </div>
   </li>
   <li>
@@ -392,15 +376,13 @@ $(document).ready(function(){
   <li>
     <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
     </div>
   </li>
   <li>
