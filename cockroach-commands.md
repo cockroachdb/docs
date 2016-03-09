@@ -11,7 +11,7 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-`sql` | Open the built-in SQL shell.
+[`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 `exterminate` | Destroy all data held by a node.
 `zone` | Get, set, list, and remove zones.
