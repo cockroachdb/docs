@@ -50,7 +50,7 @@ $ ./cockroach sql --certs=certs --user=maxroach --host=roachcluster.com --port=2
 $ ./cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 ~~~
 
-####Open a SQL shell using the `--url` flag
+#### Open a SQL shell using the `--url` flag
 
 ~~~ shell
 # Secure:
@@ -60,7 +60,7 @@ $ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?s
 $ ./cockroach sql --insecure --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
 ~~~
 
-####Execute SQL statements from the command line
+#### Execute SQL statements from the command line
 
 ~~~ shell
 # Using --execute:
