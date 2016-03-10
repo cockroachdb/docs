@@ -401,7 +401,7 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="how-does-cockroachdb-scale">How does CockroachDB scale?</h2>
 
-<p>CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. Adding capacity is as easy as <a href="start-a-node.html">pointing a new node at the running cluster</a>.</p>
+<p>CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. <a href="start-a-node.html">Adding capacity</a> is as easy as pointing a new node at the running cluster.</p>
 
 <p>At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (64MB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.</p>
 
@@ -413,7 +413,7 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Replication</strong></p>
 
-<p>CockroachDB replicates your data for availability and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular alternative to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:</p>
+<p>CockroachDB replicates your data for availability and guarantees consistency between replicas using the <a href="https://raft.github.io/">Raft consensus algorithm</a>, a popular alternative to <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf">Paxos</a>. You can <a href="configure-replication-zones.html">define the location of replicas</a> in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:</p>
 
 <ul>
   <li>Different disks within a server to tolerate disk failures</li>
@@ -474,21 +474,25 @@ $('#toc').on('click', 'a', function() {
 
 <p>See <a href="install-client-drivers.html">Install Client Drivers</a> for more details.</p>
 
-<h2 id="how-does-cockroachdb-differ-from-mysql-or-postgresql">How does CockroachDB differ from MySQL or PostgreSQL?</h2>
+<h2 id="how-does-cockroachdb-compare-to-mysql-or-postgresql">How does CockroachDB compare to MySQL or PostgreSQL?</h2>
 
 <p>While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.</p>
 
-<h2 id="how-does-cockroachdb-differ-from-cassandra-hbase-mongodb-or-riak">How does CockroachDB differ from Cassandra, HBase, MongoDB, or Riak?</h2>
+<p>For more insight, see <a href="cockroachdb-in-comparison.html">CockroachDB in Comparison</a>.</p>
+
+<h2 id="how-does-cockroachdb-compare-to-cassandra-hbase-mongodb-or-riak">How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?</h2>
 
 <p>While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions.</p>
 
+<p>For more insight, see <a href="cockroachdb-in-comparison.html">CockroachDB in Comparison</a>.</p>
+
 <h2 id="can-a-mysql-or-postgres-application-be-migrated-to-cockroachdb">Can a MySQL or Postgres application be migrated to CockroachDB?</h2>
 
-<p>The Alpha (soon Beta) version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.</p>
+<p>The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.</p>
 
 <h2 id="how-easy-is-it-to-install-cockroachdb">How easy is it to install CockroachDB?</h2>
 
-<p>It’s as easy as downloading a binary on OS X and Linux, or running our official Docker image on Windows. You can use Docker on OS X and Linux as well, or just build a binary from our source files. For OS X, our Homebrew recipe is another easy option.</p>
+<p>It’s as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.</p>
 
 <p>For more details, see <a href="install-cockroachdb.html">Install CockroachDB</a>.</p>
 
@@ -522,7 +526,12 @@ TBD.
 
 <p>Not yet, but this is on our long-term roadmap.</p>
 
-<p><strong>Have questions that weren’t answered? Post to our <a href="https://groups.google.com/forum/#!forum/cockroach-db">Developer mailing list</a>, or chat with us on <a href="https://gitter.im/cockroachdb/cockroach">Gitter</a>.</strong></p>
+<h2 id="have-questions-that-werent-answered">Have questions that weren’t answered?</h2>
+
+<ul>
+  <li><a href="https://gitter.im/cockroachdb/cockroach">Join us on Gitter</a>. This is the best, most immedate way to connect with CockroachDB engineers.</li>
+  <li><a href="https://groups.google.com/forum/#!forum/cockroach-db">Post to our Developer mailing list</a>. Please join first or your messages may be held back for moderation.</li>
+</ul>
 
 
 

@@ -20,7 +20,7 @@ CockroachDB is especially well suited for applications that require:
 
 ## How does CockroachDB scale?
 
-CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. Adding capacity is as easy as [pointing a new node at the running cluster](start-a-node.html). 
+CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or the private or public cloud. [Adding capacity](start-a-node.html) is as easy as pointing a new node at the running cluster. 
 
 At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (64MB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
  
@@ -32,7 +32,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can define the location of replicas in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different disks within a server to tolerate disk failures
 - Different servers within a rack to tolerate server failures
@@ -87,21 +87,25 @@ Cockroach supports the PostgreSQL wire protocol, so you can use any available Po
 
 See [Install Client Drivers](install-client-drivers.html) for more details.
 
-## How does CockroachDB differ from MySQL or PostgreSQL?
+## How does CockroachDB compare to MySQL or PostgreSQL?
 
 While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
 
-## How does CockroachDB differ from Cassandra, HBase, MongoDB, or Riak?
+For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
+
+## How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?
 
 While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions. 
 
+For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
+
 ## Can a MySQL or Postgres application be migrated to CockroachDB?
 
-The Alpha (soon Beta) version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.
+The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.
 
 ## How easy is it to install CockroachDB?
 
-It's as easy as downloading a binary on OS X and Linux, or running our official Docker image on Windows. You can use Docker on OS X and Linux as well, or just build a binary from our source files. For OS X, our Homebrew recipe is another easy option.
+It's as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
 
 For more details, see [Install CockroachDB](install-cockroachdb.html).
 
@@ -135,4 +139,7 @@ For more details, see our [SQL privileges design](https://github.com/cockroachdb
 
 Not yet, but this is on our long-term roadmap. 
 
-**Have questions that weren’t answered? Post to our [Developer mailing list](https://groups.google.com/forum/#!forum/cockroach-db), or chat with us on [Gitter](https://gitter.im/cockroachdb/cockroach).** 
+## Have questions that weren’t answered? 
+
+- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach). This is the best, most immedate way to connect with CockroachDB engineers. 
+- [Post to our Developer mailing list](https://groups.google.com/forum/#!forum/cockroach-db). Please join first or your messages may be held back for moderation.
