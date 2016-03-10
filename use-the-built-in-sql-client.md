@@ -40,7 +40,7 @@ Flag | Description
 
 ## Examples
 
-####Open a SQL shell using standard connection flags
+#### Open a SQL shell using standard connection flags
 
 ~~~ shell
 # Secure:
