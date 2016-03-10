@@ -54,13 +54,6 @@ header {
 		float:left;
 		margin-left:8px;
 		margin-top:5px;
-
-		.default {
-			display:none;
-		}
-		.scrolled {
-			display:block;
-		}
 	}
 
 	.container {
@@ -143,11 +136,7 @@ header {
 	header {
 		height:75px;
 	  	padding:18px 0;
-	  	
-		.logo {
-			margin-top:5px;
-			width:209px;
-		}
+
 
 		nav.desktop {
 			display:inline-block;
@@ -176,7 +165,6 @@ header {
 		  	a.github {
 		  		padding:0 29px;
 				line-height:40px;
-				margin-right: 0;
 		  	}
 		}
 
