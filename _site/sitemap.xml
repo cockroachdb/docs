@@ -131,10 +131,6 @@
   </url>
   
   <url>
-    <loc>/docs/install-cockroachdb-in-md.html</loc>
-  </url>
-  
-  <url>
     <loc>/docs/install-cockroachdb.html</loc>
   </url>
   

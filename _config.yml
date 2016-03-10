@@ -10,6 +10,8 @@ theme_file: theme-blue.css
 highlighter: rouge
 markdown: kramdown
 
+exclude: ["install-cockroachdb-in-md.md"]
+
 defaults:
   -
     scope:
