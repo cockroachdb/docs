@@ -235,10 +235,6 @@ header {
     float: left;
     margin-left: 8px;
     margin-top: 5px; }
-    header .logo .default {
-      display: none; }
-    header .logo .scrolled {
-      display: block; }
   header .container {
     position: relative; }
   header nav.desktop {
@@ -290,9 +286,6 @@ header {
   header {
     height: 75px;
     padding: 18px 0; }
-    header .logo {
-      margin-top: 5px;
-      width: 209px; }
     header nav.desktop {
       display: inline-block;
       float: right; }
@@ -318,8 +311,7 @@ header {
         color: #46a417; }
       header nav.desktop a.github {
         padding: 0 29px;
-        line-height: 40px;
-        margin-right: 0; }
+        line-height: 40px; }
     header nav.mobile {
       display: none; } }
 /** large desktop **/
@@ -1079,15 +1071,12 @@ body h1 {
   margin-top: 40px;
   color: #46a417; }
 
+.post-content img {
+  margin: 12px 0px 3px 0px; }
 .post-content .row .roach {
-  text-align: center; 
-}
-
-.post-content .row .roach img {
-  margin: 12px 0px 3px 0px;
-  max-height: 210px;
-  padding: 40px;
-}
+  text-align: center; }
+  .post-content .row .roach a img {
+    max-height: 210px; }
 
 .post-content ol li, .post-content ul li {
   margin: 10px 0px; }
