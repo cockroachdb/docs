@@ -301,7 +301,6 @@
 		.footer_nav_row {
 
 			.footer_logo {
-				text-align:left;
 				width:25%;
 			}
 
@@ -313,6 +312,7 @@
 				float:right;
 
 				li {
+					text-align:left;
 					width:100%;
 				}
 				li.header {

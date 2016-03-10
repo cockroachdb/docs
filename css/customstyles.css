@@ -979,11 +979,11 @@ header {
     #footer .hbspt-form .hs_submit:after {
       right: 13px; }
     #footer .footer_nav_row .footer_logo {
-      text-align: left;
       width: 25%; }
     #footer .footer_nav_row .footer_nav, #footer .footer_nav_row .footer_social, #footer .footer_nav_row .footer_documentation {
       float: right; }
       #footer .footer_nav_row .footer_nav li, #footer .footer_nav_row .footer_social li, #footer .footer_nav_row .footer_documentation li {
+        text-align: left;
         width: 100%; }
       #footer .footer_nav_row .footer_nav li.header, #footer .footer_nav_row .footer_social li.header, #footer .footer_nav_row .footer_documentation li.header {
         width: 100%; } }
