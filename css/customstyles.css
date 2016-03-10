@@ -1076,8 +1076,7 @@ body h1 {
 .post-content .row .roach {
   text-align: center; }
   .post-content .row .roach a img {
-    max-height: 210px;
-    padding: 40px; }
+    height: 150px; }
 
 .post-content ol li, .post-content ul li {
   margin: 10px 0px; }
