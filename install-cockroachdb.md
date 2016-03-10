@@ -97,7 +97,7 @@ $(document).ready(function(){
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz &lt;tarball file name&gt;</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach.darwin-10.9-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
@@ -253,7 +253,7 @@ $(document).ready(function(){
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz &lt;tarball file name&gt;</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach.linux-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
