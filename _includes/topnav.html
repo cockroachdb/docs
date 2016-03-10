@@ -18,9 +18,9 @@
             </a>
 
             <nav class="desktop" role="navigation">
-                <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item">FAQ</a>
-                <a href="/docs/" class="menu-item current-menu-item">Docs</a>
-                <a href="https://github.com/cockroachdb/cockroach/" class="menu-item">Community</a>
+                <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item {% if page.url == "/frequently-asked-questions.html" %}current-menu-item{% endif %}">FAQ</a>
+                <a href="/docs/" class="menu-item {% if page.url != "/frequently-asked-questions.html" %}current-menu-item{% endif %}">Docs</a>
+                <a href="//www.cockroachlabs.com/community/" class="menu-item">Community</a>
                 <a href="//www.cockroachlabs.com/about/" class="menu-item">About</a>
                 <a href="//www.cockroachlabs.com/blog/" class="menu-item">Blog</a>
                 <a href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="btn cl-btn github menu-item">Install</a>

@@ -9,7 +9,7 @@ body {
 p {
   color: $cl_blue;
   @include avenir_l(17px);
-  line-height:25px;
+  line-height:28px;
 
   strong, b {
     @include avenir_h(17px);
@@ -24,26 +24,37 @@ h1 {
 }
 
 h2 {
-  font-size: 25px;
-  line-height:30px;
+  font-size: 30px;
+  line-height:35px;
+  color: $cl_blue;
 }
 
 h3 {
-  font-size: 19px;
+  font-size: 20px;
   line-height:29px;
+  color: $cl_blue;
+  font-weight: bold;
+  text-transform: uppercase;
 
   strong, b {
-    @include avenir_bl(19px);
+    @include avenir_bl(20px);
   }
 }
 
 h4 {
-  @include avenir_bl(12px);
+  font-weight: bold;
+  font-size: 120%;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'AvenirLTStd-Light', serif;
 }
 
 @import "content";
 @import "header";
+@import "components/search";
 @import "components/filtertabs";
+@import "components/newsletter";
 @import "footer";
 
 
@@ -133,12 +144,28 @@ body h1 {
   color: #46a417;
 }
 
-.post-content img {
+.post-content {
+  img {
     margin: 12px 0px 3px 0px;
     width: auto;
     height: auto;
     max-width: 100%;
     max-height: 100%;
+  }
+
+  .row {
+    background: $cl_light_green;
+    
+    .roach {
+      text-align: center; 
+      
+      a {
+        img {
+          max-width: 150px;
+        }
+      }
+    }
+  }
 }
 
 .post-content ol li, .post-content ul li {
@@ -164,9 +191,6 @@ margin-bottom:12px;
 color: gray;
 }
 
-table {
-  background-color: transparent;
-}
 caption {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -175,11 +199,7 @@ caption {
 }
 th {
   text-align: left;
-}
-table {
-  max-width: 90%;
-  margin-bottom: 20px;
-  border: 1px solid #dedede;
+  padding: 15px 8px 15px 8px;
 }
 
 table > thead > tr > th,
@@ -188,19 +208,19 @@ table > tfoot > tr > th,
 table > thead > tr > td,
 table > tbody > tr > td,
 table > tfoot > tr > td {
-  padding: 8px;
-  line-height: 1.42857143;
+  /*padding: 8px;*/
+  /*line-height: 1.42857143;*/
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
-table > thead > tr > th {
+/*table > thead > tr > th {
   vertical-align: bottom;
   border-bottom: 2px solid #ddd;
   text-transform: uppercase;
   background-color: #444;
   color: white;
-  text-align: center;
-}
+  text-align: center; }*/
+
 table > caption + thead > tr:first-child > th,
 table > colgroup + thead > tr:first-child > th,
 table > thead:first-child > tr:first-child > th,
@@ -211,7 +231,7 @@ table > thead:first-child > tr:first-child > td {
 }
 
 table > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
+  /*background-color: #f9f9f9;*/
 }
 
 table col[class*="col-"] {
@@ -228,8 +248,7 @@ table th[class*="col-"] {
 
 
 table td:first-child {
-  width: 150px;
-  /*font-weight:bold;*/
+  min-width: 200px;
 }
 
 table.boldFirstColumn td:first-child {
@@ -654,9 +673,6 @@ a.fa.fa-envelope-o.mailto {
   font-weight: 600;
 }
 
-h3 { font-weight:normal; font-size:130%;}
-h4 {font-weight:normal; font-size:120%; font-style:italic;}
-
 .alert, .callout {
     overflow: hidden;
 }
@@ -691,8 +707,9 @@ li.activeSeries {
     color: #444;
 }
 
-div.alert code, h2 code {
+div.alert code, h2 code, h3 code {
     background-color: transparent !important;
+    text-transform: none;
 }
     /* without this, the links in these notes aren't visible.*/
 .alert a {
@@ -719,10 +736,6 @@ button.cursorNorm {
     cursor: pointer;
 }
 
-h2  {
-    line-height:29px;
-    color: #142848;
-}
 span.otherProgrammingLanguages {
 font-style: normal;
 }

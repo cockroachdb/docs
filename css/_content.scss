@@ -2,6 +2,7 @@
 	background: #fff;
 	position: relative;
 	padding-top: 50px;
+	padding-bottom: 100px;
 	
 	width: 100%;
 	z-index: 1000;
@@ -31,14 +32,11 @@
 
 		#main-content {
 			min-height: 625px;
-			padding-top: 50px;
 		}
 	}
 }
 
 /** large desktop **/
 @media (min-width: 1200px) {
-	#content {
-		padding-top:150px;
-	}
+
 }

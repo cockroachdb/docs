@@ -45,7 +45,7 @@ Field | Description
 
 For a detailed walkthrough of starting a multi-node cluster, see [Manual Deployment](manual-deployment.html) and [Cloud Deployment](cloud-deployment.html).
 
-####Start the first node of a cluster
+#### Start the first node of a cluster
 
 ~~~ shell
 # Secure:
@@ -55,7 +55,7 @@ $ ./cockroach start --certs=/node1certs --store=/mnt/ssd01 --host=node1hostname.
 $ ./cockroach start --insecure --store=/mnt/ssd01 --host=node1hostname.com --port=26260
 ~~~
 
-####Add a node to a cluster
+#### Add a node to a cluster
 
 ~~~ shell
 # Secure:

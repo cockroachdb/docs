@@ -3,11 +3,42 @@ $cl_green: #46a417;
 $cl_blue: #142848;
 $cl_green_hover: #37880f;
 $cl_blue_hover: #0e2b48;
-
+$cl_light_green: #F2F7E5;
 
 /*Mixins*/
 @mixin rounded($val){ 
 	-webkit-border-radius: $val;
 	   -moz-border-radius: $val;
 	        border-radius: $val;  
+}
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+
+@mixin translate($x, $y) {
+	-webkit-transform: translate($x, $y);
+	    -ms-transform: translate($x, $y);
+	     -o-transform: translate($x, $y);
+	        transform: translate($x, $y);
+}
+
+@mixin groovy($opt){
+  -webkit-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+     -moz-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+       -o-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+          transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
 }

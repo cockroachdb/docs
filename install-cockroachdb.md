@@ -24,6 +24,20 @@ $(document).ready(function(){
         toggleWindows(); 
     }
 
+    var install_option = $('.install-option'), 
+        install_button = $('.install-button');
+
+    install_button.on('click', function(e){
+      e.preventDefault();
+      var hash = $(this).prop("hash");
+
+      install_button.removeClass('current');
+      $(this).addClass('current');
+      install_option.hide();
+      $(hash).show();
+
+    });
+
     //handle click event for os-tab buttons
     $('#os-tabs').on('click', 'button', function(){
         $('#os-tabs').find('button').removeClass('current');
@@ -35,12 +49,14 @@ $(document).ready(function(){
     });
 
     function toggleMac(){
+        $(".mac-button:first").trigger('click');
         $("#macinstall").show();
         $("#linuxinstall").hide();
         $("#windowsinstall").hide();
     }
 
     function toggleLinux(){
+        $(".linux-button:first").trigger('click');
         $("#linuxinstall").show();
         $("#macinstall").hide();
         $("#windowsinstall").hide();
@@ -54,54 +70,82 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="os-tabs">
-    <button id="mac" class="current">Mac</button>
-    <button id="linux">Linux</button>
-    <button id="windows">Windows</button>
+<div id="os-tabs" class="clearfix">
+    <button id="mac" class="current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac">Mac</button>
+    <button id="linux" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux">Linux</button>
+    <button id="windows" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="windows">Windows</button>
 </div>
 
 <div id="macinstall">
 <p>There are four ways to install CockroachDB on Mac OS X:</p>
 
-<ul>
-<li><a href="#download-the-binary">Download the Binary</a></li>
-<li><a href="#use-homebrew">Use Homebrew</a></li>
-<li><a href="#build-from-source">Build from Source</a></li>
-<li><a href="#use-docker">Use Docker</a></li>
-</ul>
+<div id="mac-installs" class="clearfix">
+<a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-binary">Download the <div class="c2a">Binary</div></a>
+<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
+<a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-docker">Use <div class="c2a">Docker</div></a>
+</div>
 
-<h2 id="download-the-binary">Download the Binary</h2>
+<div id="download-the-binary" class="install-option">
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+  <h2>Download the Binary</h2>
 
-<ol>
-  <li>
-    <p>Download the <strong>CockroachDB binary for OS X</strong> (coming soon).</p>
-  </li>
-  <li>
-    <p>Make the binary executible:</p>
+  <ol>
+    <li>
+      <p>Download the <strong>CockroachDB binary for OS X</strong> (coming soon).</p>
+    </li>
+    <li>
+      <p>Make the binary executible:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
-</code></pre>
-    </div>
-  </li>
-</ol>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre>
+      </div>
+    </li>
+    <li>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
+      </div>
+    </li>
+  </ol>
+</div>
 
-<h2 id="use-homebrew">Use Homebrew</h2>
+<div id="use-homebrew" class="install-option" style="display: none;">
+  <h2>Use Homebrew</h2>
 
-<ol>
-  <li>
-    <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
-  </li>
-  <li>
-    <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
+  <ol>
+    <li>
+      <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
+    </li>
+    <li>
+      <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<h2 id="build-from-source">Build from Source</h2>
-
+      <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
+      </div>
+    </li>
+    <li>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
+      </div>
+    </li>
+  </ol>
+</div>
+<div id="build-from-source" class="install-option" style="display: none;">
+<h2>Build from Source</h2>
 <ol>
   <li>
     <p>Make sure you have the following prerequisites:</p>
@@ -121,23 +165,35 @@ $(document).ready(function(){
   <li>
     <p>Get the CockroachDB code:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Compile the CockroachDB binary:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach
-<span class="gp">$ </span>make build
-</code></pre>
+<span class="gp">$ </span>make build</code></pre>
     </div>
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
+    </div>
+  </li>
 </ol>
-
-<h2 id="use-docker">Use Docker</h2>
+</div>
+<div id="use-docker" class="install-option" style="display: none;">
+<h2>Use Docker</h2>
 
 <ol>
   <li>
@@ -149,19 +205,30 @@ $(document).ready(function(){
   <li>
     <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
     </div>
   </li>
 </ol>
-
+</div>
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
@@ -170,28 +237,41 @@ $(document).ready(function(){
 <div id="linuxinstall" style="display: none;">
 <p>There are three ways to install CockroachDB on Linux:</p>
 
-<ul>    
-<li><a href="#download-the-binary-linux">Download the Binary</a></li>
-<li><a href="#build-from-source-linux">Build from Source</a></li>
-<li><a href="#use-docker-linux">Use Docker</a></li>
-</ul>
+<div id="linux-installs" class="clearfix">    
+<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-binary">Download the <div class="c2a">Binary</div></a>
+<a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-docker">Use <div class="c2a">Docker</div></a>
+</div>
 
-<h2 id="download-the-binary-linux">Download the Binary</h2>
+<div id="download-the-binary-linux" class="install-option"> 
+  <h2>Download the Binary</h2>
 
-<ol>
-  <li>
-    <p>Download the <strong>CockroachDB binary for Linux</strong> (coming soon).</p>
-  </li>
-  <li>
-    <p>Make the binary executible:</p>
+  <ol>
+    <li>
+      <p>Download the <strong>CockroachDB binary for Linux</strong> (coming soon).</p>
+    </li>
+    <li>
+      <p>Make the binary executible:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<h2 id="build-from-source-linux">Build from Source</h2>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre></div>
+    </li>
+    <li>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
+      </div>
+    </li>
+  </ol>
+</div>
+<div id="build-from-source-linux" class="install-option" style="display: none;">
+<h2>Build from Source</h2>
 
 <ol>
   <li>
@@ -212,23 +292,32 @@ $(document).ready(function(){
   <li>
     <p>Get the CockroachDB code:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
   </li>
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach
-<span class="gp">$ </span>make build
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach <span class="gp">$ </span>make build</code></pre></div>
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <div class="hubspot-install-form clearfix">
+        <script>
+          hbspt.forms.create({ 
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          });
+        </script>
+      </div>
+    </li>
 </ol>
-
-<h2 id="use-docker-linux">Use Docker</h2>
+</div>
+<div id="use-docker-linux" class="install-option" style="display: none;">
+<h2>Use Docker</h2>
 
 <ol>
   <li>
@@ -237,8 +326,7 @@ $(document).ready(function(){
   <li>
     <p>If you don’t already have the Docker daemon running in the background, run:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker -d &amp;
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker -d &amp;</code></pre>
     </div>
 
     <div class="bs-callout bs-callout-info"> On Linux, Docker needs sudo privileges.</div>
@@ -246,19 +334,30 @@ $(document).ready(function(){
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sudo docker run -t -i cockroachdb/cockroach shell</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
     </div>
   </li>
 </ol>
-
+</div>
 <h2 id="what-39-s-next">What&#39;s Next?</h2>
 
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
@@ -277,15 +376,26 @@ $(document).ready(function(){
   <li>
     <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker pull cockroachdb/cockroach</code></pre>
     </div>
   </li>
   <li>
     <p>Start a new Docker container and load the CockroachDB image into it:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell
-</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <div class="hubspot-install-form clearfix">
+      <script>
+        hbspt.forms.create({ 
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+        });
+      </script>
     </div>
   </li>
 </ol>

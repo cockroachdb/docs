@@ -1,48 +1,49 @@
 #os-tabs {
-	margin-top: 30px;
-	border-bottom: 2px solid $cl_green;
+	margin: 30px 0;
 
 	button {
-		border: none;
-		border-top: 2px solid #eaeaea;
-		border-bottom: 2px solid $cl_green;
-		background-color: #eaeaea;
+		border: 1px solid #dddddd;
+		background-color: #ffffff;
 		color: $cl_blue;
 		@include avenir_m(16px);
 		outline: 0;
-		padding: 3px 15px 2px 33px;
+		width: 32%;
+		padding: 75px 0 5px;
 		position: relative;
 		bottom: -2px;
-		margin: 0 6px 0 0;
+		float: left;
 		
 
 		&:hover {
-			border-top: 2px solid $cl_green;
+			border: 1px solid $cl_green;
 		}
 
 		&.current {
-			border-top: 2px solid $cl_green;
-			background-color: #FFFFFF;
-			color: $cl_blue;
-			border-bottom: 2px solid #FFFFFF;
+			border: 1px solid $cl_green;
+			background-color: #F0FFE8;
 		}
 
 		&:after {
 			position: absolute;
 			font-family: 'FontAwesome';
 			content: "\f078";
-			top: 2px;
-			left: 10px;
+			top: 25px;
+			left: 50%;
+			@include translate(-50%, 0);
 			z-index: 5;
+			font-size: 55px;
 		}
 
 		&#mac {
+			margin: 0 2% 0 0;
 			&:after {	
 				content: "\f179";
          	}
 		}
 
 		&#linux {
+			margin: 0 2% 0 0;
+
 			&:after {	
 				content: "\f17c";
          	}
@@ -52,6 +53,81 @@
 			&:after {	
 				content: "\f17a";
          	}
+		}
+	}
+}
+
+.install-button {
+	display: inline-block;
+	border: 1px solid #dddddd;
+	background-color: #ffffff;
+	text-align: center;
+	@include avenir_l(12px);
+	line-height: 12px;
+	color: $cl_blue !important;
+	text-decoration: none !important;
+	padding: 15px 0;
+	float: left;
+
+	&:hover {
+		border: 1px solid $cl_green;
+	}
+
+	&.current {
+		border: 1px solid $cl_green;
+		background-color: #F0FFE8;
+	}
+
+	.c2a {
+		@include avenir_h(12px);
+	}
+}
+
+#mac-installs {
+	.install-button {
+		width: 24.25%;
+		
+		&:nth-child(-n+3){ 
+			margin-right: 1%;
+		}
+	}
+}
+
+#linux-installs {
+	.install-button {
+		width: 32%;
+
+		&:nth-child(-n+2){ 
+			margin-right: 2%;
+		}
+	}
+}
+
+
+@media (min-width: 700px) {
+	#os-tabs {
+		button {
+			width: 150px;
+		}
+	}
+
+	.install-button {
+		width: auto;
+		padding: 15px 40px;
+		float: none;
+
+		@include avenir_l(16px);
+		line-height: 16px;
+
+		.c2a {
+			@include avenir_h(16px);
+		}
+	}
+
+	#mac-installs, #linux-installs {
+		.install-button {
+			width: auto;
+			margin-right: 0;
 		}
 	}
 }
