@@ -95,8 +95,8 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    $ ./cockroach start &
 
    build:     alpha.v1-903-g51388a2 @ 2016/03/11 14:15:26 (go1.6)
-   admin:     https://ROACHs-MacBook-Pro.local:26257
-   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslcert=%2FUsers%2F...
+   admin:     https://ROACHs-MBP:8080
+   sql:       postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
    logs:      cockroach-data/logs
    store[0]:  path=cockroach-data
    ~~~
