@@ -31,8 +31,8 @@ Flag | Description
 `--host` | The address to listen on for internal and client communication. The node also advertises itself to other nodes using this address. This may be the node's internal hostname, internal ip address, external hostname, external ip address, etc. <br><br>**Default:** Advertise node's hostname and listen on all interfaces
 `--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
 `--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list. 
-`--port` | The port that the node listens on for internal and client communication. <br><br>**Default:** 26257
-`--store` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
+`--port`<br>`-p` | The port that the node listens on for internal and client communication. <br><br>**Default:** 26257
+`--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
 ### `store`
 
@@ -43,6 +43,26 @@ Field | Description
 `path` | The file path to the storage device. When not setting `attr` or `size`, the `path` field label can be left out: <br><br>`--store=/mnt/ssd01` <br><br>When either of those fields are set, however, the `path` field label must be used: <br><br>`--store=path=/mnt/ssd01,size=20GB` <br><br> **Default:** `cockroach-data`
 `attrs` | Store-level attributes. In most cases, node-level attributes are preferable to store-level attributes), but this field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (`ssd`), spinny disk (`hdd`), or in-memory (`mem`), as well as speeds and other specs. <br><br>Attributes can be arbitrary strings separated by colons, for example: <br><br> `--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 `size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When there's no capacity elsewhere, this limit will be exceeded. Also, data may be written to the node faster than the cluster can rebalance it away; in this case, as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space, for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000  -> 10000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GB         -> 20000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GiB        -> 21474836480 bytes`<br>`--store-path=/mnt/ssd01,size=0.02TiB      -> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20%          -> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2          -> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2           -> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory. In addition, an extra `type` field must be set to `mem`, and the `path` field must be left out, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%` 
+
+## Standard Output
+
+When you run `cockroach start`, some helpful details are printed to the standard output:
+
+~~~ shell
+build:     alpha.v1-903-g51388a2 @ 2016/03/11 14:15:26 (go1.6)
+admin:     http://ROACHs-MBP:8080
+sql:       postgresql://root@ROACHs-MBP:26257?sslmode=disable
+logs:      cockroach-data/logs
+store[0]:  path=cockroach-data
+~~~
+
+Field | Description
+------|------------
+`build` | The version of CockroachDB you are running.
+`admin` | The URL for accessing the Admin UI.
+`sql` | The connection URL for your client.
+`logs` | The directory containing log data.
+`store[n]` | The directory containing store data, where `[n]` is the number of stores.
 
 ## Examples
 
