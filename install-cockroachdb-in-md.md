@@ -5,15 +5,15 @@ toc: false
 
 ## Get the Binary - Mac and Linux
 
-<!-- For Linux, just change the download link in step 1. -->
+<!-- For Linux, just change the download link in step 1 to  https://binaries.cockroachdb.com/cockroach.linux-amd64.tgz -->
 
-1. Download the **CockroachDB binary for OS X** (coming soon).  
+1. Download the latest [CockroachDB tarball for OS X](https://binaries.cockroachdb.com/cockroach.darwin-10.9-amd64.tgz).  
 
-2. Make the binary executible:
+2. Extract the binary:
    
    ~~~ shell
-   $ chmod +x <binary file name>
-   ~~~
+   $ tar xfz <tarball file name>
+   ~~~ 
 
 ## Use Homebrew - Mac
 

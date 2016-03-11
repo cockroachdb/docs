@@ -92,12 +92,12 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the <strong>CockroachDB binary for OS X</strong> (coming soon).</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach.darwin-10.9-amd64.tgz">CockroachDB tarball for OS X</a>.</p>
     </li>
     <li>
-      <p>Make the binary executible:</p>
+      <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach.darwin-10.9-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
@@ -248,12 +248,13 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the <strong>CockroachDB binary for Linux</strong> (coming soon).</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach.linux-amd64.tgz">CockroachDB tarball for Linux</a>.</p>
     </li>
     <li>
-      <p>Make the binary executible:</p>
+      <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>chmod +x &lt;binary file name&gt;</code></pre></div>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach.linux-amd64.tgz</code></pre>
+      </div>
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
