@@ -3,23 +3,26 @@ title: Start a Node
 toc: false
 ---
 
-To start a CockroachDB node, run the `cockroach start` command with appropriate flags. 
+To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` command with appropriate flags. 
 
 <div id="toc"></div>
 
 ## Synopsis
 
 ~~~ shell
-# Run the command:
-$ ./cockroach start <flags>
+# Start the first node of a cluster:
+$ ./cockroach start <flags, excluding --join>
 
-# View help directly in your shell:
+# Add a node to a cluster:
+$ ./cockroach start <flags, including --join>
+
+# View help:
 $ ./cockroach help start
 ~~~
 
 ## Flags
 
-The `start` command supports the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `start` command supports the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). When adding a node to an existing cluster, include the `--join` flag.
 
 Flag | Description
 -----|-----------

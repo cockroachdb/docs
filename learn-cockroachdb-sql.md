@@ -11,7 +11,7 @@ This page walks you through some of the most essential CockroachDB SQL statement
 
 ## Create a Database
 
-CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the `CREATE DATABASE` statement followed by a database name:
+CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use the [`CREATE DATABASE`](create-database.html) statement followed by a database name:
 
 ~~~ sql
 CREATE DATABASE bank;
@@ -23,7 +23,7 @@ Database names must follow [these rules](data-definition.html#identifiers). To a
 CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
-When you no longer need a database, use the `DROP DATABASE` statement followed by the database name to remove the database and all its objects:
+When you no longer need a database, use the [`DROP DATABASE`](drop-database.html) statement followed by the database name to remove the database and all its objects:
 
 ~~~ sql
 DROP DATABASE bank;
@@ -31,7 +31,7 @@ DROP DATABASE bank;
 
 ## Show Databases
 
-To see all databases, use the `SHOW DATABASES` statement:
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 
 ~~~ sql
 SHOW DATABASES;
@@ -47,7 +47,7 @@ SHOW DATABASES;
 
 ## Set the Default Database
 
-To set the default database, use the `SET DATABASE` statement:
+To set the default database, use the [`SET DATABASE`](set-database.html) statement:
 
 ~~~ sql
 SET DATABASE = bank;
@@ -68,7 +68,7 @@ SHOW DATABASE;
 
 ## Create a Table
 
-To create a table, use the `CREATE TABLE` statement followed by a table name, the column names, and the data type and constraint, if any, for each column:
+To create a table, use the [`CREATE TABLE`](create-table.html) statement followed by a table name, the column names, and the data type and constraint, if any, for each column:
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 );
 ~~~
 
-To show all of the columns from a table, use the `SHOW COLUMNS FROM` statement followed by the table name:
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM`](show-columns.html) statement followed by the table name:
 
 ~~~ sql
 SHOW COLUMNS FROM accounts;
@@ -102,7 +102,7 @@ SHOW COLUMNS FROM accounts;
 +---------+---------+-------+---------+
 ~~~
 
-When you no longer need a table, use the `DROP TABLE` statement followed by the table name to remove the table and all its data:
+When you no longer need a table, use the [`DROP TABLE`](drop-table.html) statement followed by the table name to remove the table and all its data:
 
 ~~~ sql
 DROP TABLE accounts;
@@ -110,7 +110,7 @@ DROP TABLE accounts;
 
 ## Show Tables
 
-To see all tables in the active database, use the `SHOW TABLES` statement:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
 
 ~~~ sql
 SHOW TABLES;
@@ -144,7 +144,7 @@ SHOW TABLES FROM animals;
 
 ## Insert Rows into a Table
 
-To insert a row into a table, use the `INSERT INTO` statement followed by the table name and then the column values listed in the order in which the columns appear in the table:
+To insert a row into a table, use the [`INSERT INTO`](insert.html) statement followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ~~~ sql
 INSERT INTO accounts VALUES (1, DECIMAL '10000.50');
@@ -189,7 +189,7 @@ SELECT * FROM accounts WHERE id in (5, 6);
 
 Indexes are used to quickly locate data without having to look through every row of a table. They are automatically created for the primary key of a table and any columns with a unique constraint.
 
-To create an index for non-unique columns, use the `CREATE INDEX` statement followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+To create an index for non-unique columns, use the [`CREATE INDEX`](create-index.html) statement followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 ~~~ sql
 CREATE INDEX balance_idx ON accounts (balance DESC);
@@ -207,7 +207,7 @@ CREATE TABLE accounts (
 
 ## Show Indexes on a Table
 
-To show the indexes on a table, use the `SHOW INDEX FROM` statement followed by the name of the table:
+To show the indexes on a table, use the [`SHOW INDEX FROM`](show-index.html) statement followed by the name of the table:
 
 ~~~ sql
 SHOW INDEX FROM accounts;
@@ -223,7 +223,7 @@ SHOW INDEX FROM accounts;
 
 ## Query a Table
 
-To query a table, use the `SELECT` statement followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+To query a table, use the [`SELECT`](select.html) statement followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
 ~~~ sql
 SELECT balance FROM accounts;
@@ -294,7 +294,7 @@ SELECT id, balance FROM accounts ORDER BY balance DESC;
 
 ## Update Rows in a Table
 
-To update rows in a table, use the `UPDATE` statement followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use the [`UPDATE`](update.html) statement followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ~~~ sql
 UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '10000';
@@ -318,7 +318,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete Rows in a Table
 
-To delete rows in a table, use the `DELETE FROM` statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
+To delete rows in a table, use the [`DELETE FROM`](delete.html) statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ~~~ sql
 DELETE FROM accounts WHERE id in (5, 6);

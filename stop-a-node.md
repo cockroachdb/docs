@@ -12,10 +12,10 @@ The `quit` command allows in-flight requests to complete and then shuts down the
 ## Synopsis
 
 ~~~ shell
-# Run the command:
+# Stop a node:
 $ ./cockroach quit <flags>
 
-# View help directly in your shell:
+# View help:
 $ ./cockroach help quit
 ~~~
 
