@@ -3,6 +3,14 @@ title: Frequently Asked Questions
 toc: false
 ---
 
+<style>
+div#toc ul {
+    max-width: 80%;
+}
+</style>
+
+<div id="toc"></div>
+
 ## What is CockroachDB?
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
@@ -17,6 +25,15 @@ CockroachDB is especially well suited for applications that require:
 - Business continuity (survivability) 
 - High levels of consistency 
 - Support for distributed ACID transactions 
+
+## When is CockroachDB not a good choice?
+
+CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
+
+Also, CockroachDB is not yet suitable for: 
+
+- Use cases requiring SQL joins (slated for the first major release post-beta)
+- Real-time analytics (on our long-term roadmap)
 
 ## How does CockroachDB scale?
 
@@ -51,7 +68,7 @@ CockroachDB replicates your data multiple times and guarantees consistency betwe
 
 At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your [PostgreSQL language-specific driver](install-client-drivers.html) and start building.  
 
-For more details, learn our [basic Cockroach SQL statements](learn-cockroachdb-sql.html), explore the [full SQL grammar](sql-grammar.html), and try it out via our [built-in SQL client](use-the-built-in-sql-client.html). Also see this [blog post](//www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/) for insight into how CockroachDB maps SQL table data to key-value storage.
+For more details, learn our [basic CockroachDB SQL statements](learn-cockroachdb-sql.html), explore the [full SQL grammar](sql-grammar.html), and try it out via our [built-in SQL client](use-the-built-in-sql-client.html). Also see this [blog post](//www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/) for insight into how CockroachDB maps SQL table data to key-value storage.
 
 ## Does CockroachDB support distributed transactions?
 
@@ -74,7 +91,7 @@ In practice, most applications experience low contention. However, with signific
 
 ## What languages can I use to work with CockroachDB?
 
-Cockroach supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We've tested it from the following languages:
+CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We've tested it from the following languages:
 
 - Go
 - Python
@@ -99,9 +116,9 @@ While all of these are distributed databases, only CockroachDB supports distribu
 
 For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
 
-## Can a MySQL or Postgres application be migrated to CockroachDB?
+## Can a MySQL or PostgreSQL application be migrated to CockroachDB?
 
-The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application impractical unless it is only a very lightweight consumer of SQL functionality.
+The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
 
 ## How easy is it to install CockroachDB?
 
@@ -122,10 +139,6 @@ TBD (Cloud service providers: Digital Ocean, AWS, Azure, Google Cloud; How to op
 
 TBD.
 -->
-
-## When is CockroachDB not a good choice?
-
-CockroachDB is not yet suitable for real-time analytics, although support for analytics processing is on our long-term roadmap. 
 
 ## What is CockroachDB’s security model?
 
