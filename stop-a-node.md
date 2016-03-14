@@ -26,10 +26,12 @@ The `quit` command supports the following flags as well as [logging flags](cockr
 
 Flag | Description 
 -----|------------
-`--certs` | The path to the directory containing the node's [security certificates](create-security-certificates.html). If the node was started with security (i.e., without the `--insecure` flag), this flag is required. <br><br> **Default:** certs
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). If the cluster was started without the `--insecure` flag, this flag is required. 
+`--cert` | The path to the [node certificate](create-security-certificates.html). If the cluster was started without the `--insecure` flag, this flag is required.
 `--host` | A valid address for reaching the node. <br><br>**Default:** localhost
 `--http-port` | The port that the node listens on for HTTP requests. <br><br>**Default:** 8080
-`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
+`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--ca-cert`, `--cert`, and `--key` flags but leave this flag out. If the cluster is insecure, set this flag.
+`--key` | The path to [node key](create-security-certificates.html) protecting the node certificate. If the cluster was started without the `--insecure` flag, this flag is required. 
 
 ## Examples
 
@@ -37,7 +39,7 @@ Flag | Description
 
 ~~~ shell
 # Secure:
-$ ./cockroach quit --certs=/nodecerts --host=nodehostname.com --http-port=8081
+$ ./cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --http-port=8081
 
 # Insecure:
 $ ./cockroach quit --insecure --host=nodehostname.com --http-port=8081
