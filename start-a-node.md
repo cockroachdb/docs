@@ -63,7 +63,7 @@ Field | Description
 `build` | The version of CockroachDB you are running.
 `admin` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
-`logs` | The directory containing log data.
+`logs` | The directory containing debug log data.
 `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
 
 ## Examples

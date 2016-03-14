@@ -31,7 +31,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
-   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data. 
 
 2. For each additional node, repeat step 1 with a few extra flags:
 
@@ -105,7 +105,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
-   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data. 
 
 3. For each additional node, repeat step 2 with a few extra flags:
 
