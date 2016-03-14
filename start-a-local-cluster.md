@@ -27,7 +27,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    store[0]:  path=cockroach-data
    ~~~
 
-   - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
+   - The `--insecure` flag defaults the port for internal and client communication to 26257 and the port for HTTP requests from the Admin UI to 8080. To bind to different ports, set `--port=<port>` and `--http-port=<port>`.
 
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
@@ -36,23 +36,27 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 2. For each additional node, repeat step 1 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --insecure --store=<filepath> --port=26258 --join=localhost:26257 &
+   $ ./cockroach start --insecure --store=node2-data --port=26258 --http-port=8081 --join=localhost:26257 &
    ~~~
 
    - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
 
-   - Set the `--port` flag to a port not in use by other nodes.
+   - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-3. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](learn-cockroachdb-sql.html):
+3. Start the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
    ~~~ shell
    $ ./cockroach sql --insecure
    # Welcome to the cockroach SQL interface.
    # All statements must be terminated by a semicolon.
    # To exit: CTRL + D.
+   ~~~
 
+4. Run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+
+   ~~~ shell
    root@:26257> CREATE DATABASE bank;
    CREATE DATABASE
 
@@ -73,26 +77,31 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    +------+---------+
    ~~~
  
-4. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:8080`. You can find the complete address in the standard output as well (see step 1).
+5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:8080`. You can find the complete address in the standard output as well (see step 1).
 
 ## Secure
 
 1. From the directory with the `cockroach` binary, create security certificates:
 
    ~~~ shell
-   $ ./cockroach cert create-ca
-   $ ./cockroach cert create-node localhost $(hostname)
-   $ ./cockroach cert create-client root
+   $ mkdir certs
+   $ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key
+   $ ./cockroach cert create-node localhost $(hostname) --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
+   $ ./cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/root.cert --key=certs/root.key
    ~~~
 
-   - The first two commands create a default `certs` directory and add the certificate authority files and files for the node: `ca.cert`, `ca.key`,`node.server.crt`, `node.server.key`, `node.client.crt`, and `node.client.key`. 
-   
-   - The last command adds the files for the SQL client: `root.client.crt` and `root.client.key`.
+   - The first command makes a new directory for the certificates.  
+  
+   - The second command creates the Certificate Authority (CA) certificate and key: `ca.cert` and `ca.key`. 
 
-2. [Start your first secure node](start-a-node.html):
+   - The third command creates the node certificate and key: `node.cert` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key. 
+
+   - The fourth command creates the client certificate and key, in this case for the `root` user: `root.cert` and `root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 4).  
+
+2. [Start your first node](start-a-node.html):
  
    ~~~ shell
-   $ ./cockroach start &
+   $ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key &
 
    build:     alpha.v1-903-g51388a2 @ 2016/03/11 14:15:26 (go1.6)
    admin:     https://ROACHs-MBP:8080
@@ -101,8 +110,10 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    store[0]:  path=cockroach-data
    ~~~
 
-   - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
+   - The `--ca-cert`, `--cert`, and `--key` flags point to the CA certificate and the node certificate and key created in step 1. 
 
+   - Secure internal and client communicate defaults to port 26257, and secure HTTP requests from the Admin UI default to port 8080. To bind to different ports, set `--port=<port>` and `--http-port=<port>`.
+  
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
    - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data. 
@@ -110,23 +121,31 @@ Starting up a cluster with authenticated, encrypted client/server communication 
 3. For each additional node, repeat step 2 with a few extra flags:
 
    ~~~ shell
-   $ ./cockroach start --store=<filepath> --port=26258 --join=localhost:26257 &
+   $ ./cockroach start --store=node2-data --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key &
    ~~~
 
    - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
 
-   - Set the `--port` flag to a port not in use by other nodes.
+   - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
   
    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-4. Use the [built-in SQL client](use-the-built-in-sql-client.html) to [run some statements](learn-cockroachdb-sql.html):
+4. Start the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
    ~~~ shell
-   $ ./cockroach sql
+   $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
    # Welcome to the cockroach SQL interface.
    # All statements must be terminated by a semicolon.
    # To exit: CTRL + D.
+   ~~~
 
+   - The `--ca-cert`, `--cert`, and `--key` flags point to the CA certificate and the certificate and key for the `root` user created in step 1. 
+   
+   - Secure communicate defaults to port 26257. To bind to a different port, set `--port=<port>`.
+
+5. Run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+
+   ~~~ shell
    root@:26257> CREATE DATABASE bank;
    CREATE DATABASE
 
@@ -146,8 +165,8 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    | 1234 |   10000 |
    +------+---------+
    ~~~
-
-5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:8080`. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
+ 
+6. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:8080`. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
 ## What's Next?
 
