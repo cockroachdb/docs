@@ -20,18 +20,18 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    ~~~ shell
    $ ./cockroach start --insecure &
 
-   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
-   admin:     http://ROACHs-MacBook-Pro.local:26257
-   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslmode=disable
+   build:     alpha.v1-903-g51388a2 @ 2016/03/11 14:15:26 (go1.6)
+   admin:     http://ROACHs-MBP:8080
+   sql:       postgresql://root@ROACHs-MBP:26257?sslmode=disable
    logs:      cockroach-data/logs
-   store[0]:  cockroach-data
+   store[0]:  path=cockroach-data
    ~~~
 
    - The `--insecure` flag sets client/server communication to insecure on the default port, 26257. To bind to different port, set `--port=<port>`.
 
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
-   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data. 
 
 2. For each additional node, repeat step 1 with a few extra flags:
 
@@ -73,7 +73,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    +------+---------+
    ~~~
  
-4. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:26257`. You can find the complete address in the standard output as well (see step 1).
+4. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<local host>:8080`. You can find the complete address in the standard output as well (see step 1).
 
 ## Secure
 
@@ -94,18 +94,18 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    ~~~ shell
    $ ./cockroach start &
 
-   build:     alpha.v1-362-g723805f @ 2016/02/24 16:03:23 (go1.6)
-   admin:     https://ROACHs-MacBook-Pro.local:26257
-   sql:       postgresql://root@ROACHs-MacBook-Pro.local:26257?sslcert=%2FUsers%2F...
+   build:     alpha.v1-903-g51388a2 @ 2016/03/11 14:15:26 (go1.6)
+   admin:     https://ROACHs-MBP:8080
+   sql:       postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
    logs:      cockroach-data/logs
-   store[0]:  cockroach-data
+   store[0]:  path=cockroach-data
    ~~~
 
    - Secure communication uses the certificates in the `certs` directory and defaults to port 26257. To bind to a different port, set `--port=<port>`.
 
    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
-   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node data and logs. 
+   - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data. 
 
 3. For each additional node, repeat step 2 with a few extra flags:
 
@@ -147,7 +147,7 @@ Starting up a cluster with authenticated, encrypted client/server communication 
    +------+---------+
    ~~~
 
-5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:26257`. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
+5. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:8080`. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
 ## What's Next?
 

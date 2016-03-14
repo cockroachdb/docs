@@ -29,7 +29,7 @@ The `cockroach sql` command supports the following flags as well as [logging fla
 
 Flag | Description 
 -----|------------
-`--certs` | The path to the directory containing the client's [security certificates](create-security-certificates.html). If the cluster was started with security (i.e., without the `--insecure` flag), the `--certs` flag is required. <br><br> **Default:** certs
+`--certs` | The path to the directory containing the client's [security certificates](create-security-certificates.html). If the cluster was started with security (i.e., without the `--insecure` flag), this flag is required. <br><br> **Default:** certs
 `--database`<br>`-d` | The database to connect to. The user specified in `--user` must have privileges to access the database. 
 `--execute`<br>`-e` | Execute one or more SQL statements directly from the command line, without opening a shell. When using `--execute`, each statement must be separated by semicolons, and the entire sequence must be in quotes. When using `-e`, you can use the same formatting as for `--execute`, or you can wrap each multi-word statement in quotes and leave out the semicolons between statements; single word statements such as `begin` don't need to be in quotes. See the [examples](#execute-sql-statements-from-the-command-line) below. <br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each SQL statement are printed to the standard output.
 `--host` | The address of the node to connect to. This can be the address of any node in the cluster.
