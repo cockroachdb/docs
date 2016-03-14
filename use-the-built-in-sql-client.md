@@ -69,5 +69,5 @@ $ ./cockroach sql --insecure --url=postgresql://maxroach@roachnode1.com:26257/cr
 $ ./cockroach sql --execute='CREATE DATABASE roaches;CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Multiple statements in separate `--execute` flags:
-$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
+$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT);INSERT INTO roaches.countries VALUES ('United States', 'US', 20000000000000)'  --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
 ~~~
