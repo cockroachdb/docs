@@ -3,9 +3,9 @@ title: Create Security Certificates
 toc: false
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` command with the appropriate subcommand and flags. 
+A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` command with the appropriate subcommands and flags. 
 
-{{site.data.alerts.callout_info}}When you create node and client certificates, you need access to a local copy of the CA certificate and key. Therefore, it's recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately and store the CA key in a safe place. For a walkthrough of this process, see <a href="https://www.cockroachlabs.com/docs/manual-deployment.html">Manual Deployment</a>.{{site.data.alerts.end}}
+When using <code>cockroach cert</code> to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you loose it, you will not be able to add new nodes to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
 <div id="toc"></div>
 
