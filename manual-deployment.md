@@ -94,33 +94,36 @@ On a machine that won't be part of the cluster, create the CA, node, and client 
 # Create the CA certificate and key.
 $ ./cockroach cert create-ca --ca-cert=ca.cert --ca-key=ca.key
    
-# Create the certificate and key for nodes.
-# Be sure to include the hostnames of each machine in the cluster.
-$ ./cockroach cert create-node node1.example.com node2.example.com node3.example.com --ca-cert=ca.cert --cert=node.cert --key=node.cert
+# Create the node certificates and keys.
+# For each node, specify any addresses at which the node can be reached.
+$ ./cockroach cert create-node <node1-hostname> <node1-other-hostname> <node1-yet-another-hostname> --ca-cert=ca.cert --cert=node1.cert --key=node1.key
+$ ./cockroach cert create-node <node2-hostname> <node2-other-hostname> <node2-yet-another-hostname> --ca-cert=ca.cert --cert=node2.cert --key=node2.key
+$ ./cockroach cert create-node <node3-hostname> <node3-other-hostname> <node3-yet-another-hostname> --ca-cert=ca.cert --cert=node3.cert --key=node3.key
 
-# Create a certificate and key for each client user. 
+# Create a certificate and key for each client user, including root. 
 $ ./cockroach cert create-client root --ca-cert=ca.cert --ca-key=ca.key --cert=root.cert --key=root.key
-$ ./cockroach cert create-client maxroach --ca-cert=ca.cert --ca-key=ca.key --cert=maxroach.cert --key=maxroach.key
+$ ./cockroach cert create-client <username1> --ca-cert=ca.cert --ca-key=ca.key --cert=username1.cert --key=username1.key
+$ ./cockroach cert create-client <username2> --ca-cert=ca.cert --ca-key=ca.key --cert=username2.cert --key=usename2.key
 ~~~
 
 Store the CA key somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
 
 ### 2. Set up the first node
 
-Copy the `cockroach` binary, CA certificate, node certificate, and node key to the first machine and then start the node:
+Copy the `cockroach` binary, CA certificate, and node 1 certificate and key to the first machine and then start the node:
 
 ~~~ shell
-$ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=node.key --host=node1.example.com
+$ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node1.cert --key=node1.key --host=<node1-hostname>
 ~~~
 
 This command specifies the location of certificates and the address at which other nodes can reach it. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html). 
 
 ### 3. Set up the second node
 
-Copy the `cockroach` binary, CA certificate, node certificate, and node key to the second machine and then start the node:
+Copy the `cockroach` binary, CA certificate, and node 2 certificate and key to the second machine and then start the node:
 
 ~~~ shell
-./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=node.key --host=node2.example.com --join=node1.example.com:26257
+./cockroach start --ca-cert=certs/ca.cert --cert=certs/node2.cert --key=node2.key --host=<node2-hostname> --join=<node1-hostname>:26257
 ~~~
 
 The only difference when starting the second node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
@@ -134,7 +137,7 @@ Repeat step 3 for each additional node.
 You can run the built-in SQL client from any machine with the `cockroach` binary, CA cert, client certificate, and client key. Make sure the machine you want to use has these files and then start the client:  
 
 ~~~ shell
-$ ./cockroach sql --url=postgresql://root@node1.example.com.com:26257?sslcert=certs/root.client.crt&sslkey=certs/root.client.key&sslmode=verify-full&sslrootcert=certs/ca.crt
+$ ./cockroach sql --url=postgresql://root@<node1-hostname>:26257?sslcert=certs/root.crt&sslkey=certs/root.key&sslmode=verify-full&sslrootcert=certs/ca.crt
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
