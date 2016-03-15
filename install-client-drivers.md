@@ -3,9 +3,11 @@ title: Install Client Drivers
 toc: false
 ---
 
+CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We’ve tested and can recommend the following drivers. If you have issues with these, or want to share feedback on other drivers, please [get in touch](contribute-to-cockroachdb.html).
+
 Language | Recommended Driver
 ---------|--------
-Go | xxx
+Go | [pg](https://godoc.org/github.com/lib/pq)
 Python | [psycopg2](http://initd.org/psycopg/)
 Ruby | [pg](https://rubygems.org/gems/pg)
 Java | [jdbc](https://jdbc.postgresql.org)
