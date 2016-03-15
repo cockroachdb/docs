@@ -29,7 +29,7 @@ This process assumes the following:
 Copy the `cockroach` binary to the first machine and then start the node:
 
 ~~~ shell
-$ ./cockroach start --insecure --host=node1.example.com
+$ ./cockroach start --insecure --host=<node1-hostname>
 ~~~
 
 This command sets the node to insecure and identifies the address at which other nodes can reach it. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html). 
@@ -39,7 +39,7 @@ This command sets the node to insecure and identifies the address at which other
 Copy the `cockroach` binary to the second machine and then start the node:
     
 ~~~ shell
-$ ./cockroach start --insecure --join=node1.example.com:26257
+$ ./cockroach start --insecure --join=<node1-hostname>:26257
 ~~~
 
 The only difference when starting the second node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
@@ -53,7 +53,7 @@ Repeat step 2 for each additional node.
 Start the built-in SQL client from any machine with the `cockroach` binary. This could be one of the node machines or a different machine. 
 
 ~~~ shell
-$ ./cockroach sql --insecure --url=postgresql://root@node1.example.com:26257?sslmode=disable
+$ ./cockroach sql --insecure --url=postgresql://root@<node-hostname>:26257?sslmode=disable
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
