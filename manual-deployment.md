@@ -48,6 +48,42 @@ The only difference when starting the second node is that you connect it to the 
 
 Repeat step 2 for each additional node.
 
+### 4. Use the Built-in SQL Client
+
+Start the built-in SQL client from any machine with the `cockroach` binary. This could be one of the node machines or a different machine. 
+
+~~~ shell
+$ ./cockroach sql --insecure --url=postgresql://root@node1.example.com:26257?sslmode=disable
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+~~~
+
+This command uses the `--url` flag to identify the client user and the hostname and port of the node to connect to. You can also specify these details with distinct flags. For more information, see [Use the Built-In SQL Client](use-the-built-in-sql-client.html).
+
+Once you're connected, run some [SQL statements](learn-cockroachdb-sql.html): 
+
+~~~ shell
+root@:26257> CREATE DATABASE bank;
+CREATE DATABASE
+
+root@:26257> SET DATABASE = bank;
+SET DATABASE
+
+root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
+CREATE TABLE
+
+root@26257> INSERT INTO accounts VALUES (1234, DECIMAL '10000');
+INSERT 1
+
+root@26257> SELECT * FROM accounts;
++------+---------+
+|  id  | balance |
++------+---------+
+| 1234 |   10000 |
++------+---------+
+~~~
+
 ## Secure Cluster
 
 ### 1. Create security certificates
@@ -63,8 +99,8 @@ $ ./cockroach cert create-ca --ca-cert=ca.cert --ca-key=ca.key
 $ ./cockroach cert create-node node1.example.com node2.example.com node3.example.com --ca-cert=ca.cert --cert=node.cert --key=node.cert
 
 # Create a certificate and key for each client user. 
-$ ./cockroach cert create-client username1 --ca-cert=ca.cert --ca-key=ca.key --cert=username1.cert --key=username1.key
-$ ./cockroach cert create-client username2 --ca-cert=ca.cert --ca-key=ca.key --cert=username2.cert --key=username2.key
+$ ./cockroach cert create-client root --ca-cert=ca.cert --ca-key=ca.key --cert=root.cert --key=root.key
+$ ./cockroach cert create-client maxroach --ca-cert=ca.cert --ca-key=ca.key --cert=maxroach.cert --key=maxroach.key
 ~~~
 
 Store the CA key somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
@@ -93,6 +129,38 @@ The only difference when starting the second node is that you connect it to the 
 
 Repeat step 3 for each additional node. 
 
-### 5. Connect a client to the cluster
+### 5. Use the built-in SQL client
 
-Copy the CA certificate and client certificates and keys to the machine with the client.  
+You can run the built-in SQL client from any machine with the `cockroach` binary, CA cert, client certificate, and client key. Make sure the machine you want to use has these files and then start the client:  
+
+~~~ shell
+$ ./cockroach sql --url=postgresql://root@node1.example.com.com:26257?sslcert=certs/root.client.crt&sslkey=certs/root.client.key&sslmode=verify-full&sslrootcert=certs/ca.crt
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+~~~
+
+This command uses the `--url` flag to identify the client user, the hostname and port of the node to connect to, and the location of the CA certificate and client certificate and key. You can also specify these details with distinct flags. For more information, see [Use the Built-In SQL Client](use-the-built-in-sql-client.html).
+
+Once you're connected, run some [SQL statements](learn-cockroachdb-sql.html): 
+
+~~~ shell
+root@:26257> CREATE DATABASE bank;
+CREATE DATABASE
+
+root@:26257> SET DATABASE = bank;
+SET DATABASE
+
+root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
+CREATE TABLE
+
+root@26257> INSERT INTO accounts VALUES (1234, DECIMAL '10000');
+INSERT 1
+
+root@26257> SELECT * FROM accounts;
++------+---------+
+|  id  | balance |
++------+---------+
+| 1234 |   10000 |
++------+---------+
+~~~
