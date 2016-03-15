@@ -24,7 +24,7 @@ Subcommand | Usage
 $ ./cockroach cert create-ca --ca-cert=<path-to-ca-cert> --ca-key=<path-to-ca-key> 
 
 # Create a node certificate and key:
-$ ./cockroach cert create-node <nodehost1> ... <nodehostN> --ca-cert=<path-to-ca-cert> --ca-key=<path-to-ca-key> --cert=<path-to-node-cert> --key=<path-to-node-key> 
+$ ./cockroach cert create-node <node-hostname> --ca-cert=<path-to-ca-cert> --ca-key=<path-to-ca-key> --cert=<path-to-node-cert> --key=<path-to-node-key> 
 
 # Create a client certificate and key:
 $ ./cockroach cert create-client <username> --ca-cert=<path-to-ca-cert> --ca-key=<path-to-ca-key> --cert=<path-to-client-cert> --key=<path-to-client-key>
@@ -53,17 +53,17 @@ Flag | Description
 #### Create the CA certificate and key
 
 ~~~ shell
-$ ./cockroach cert create-ca --ca-cert=/certs/ca.cert --ca-key=/certs/ca.key 
+$ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key 
 ~~~
 
 #### Create the certificate and key for a node
 
 ~~~ shell
-$ ./cockroach cert create-node nodehostname1.com nodehostname2.com --ca-cert=/certs/ca.cert --ca-key=/certs/ca.key --cert=/certs/node.cert --key=/certs/node.key
+$ ./cockroach cert create-node node1.example.com --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
 ~~~
 
 #### Create the certificate and key for a client
 
 ~~~ shell
-$ ./cockroach cert create-client maxroach --ca-cert=/certs/ca.cert --ca-key=/certs/ca.key --cert=/certs/client.cert --key=/certs/client.key
+$ ./cockroach cert create-client maxroach --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/client.cert --key=certs/client.key
 ~~~
