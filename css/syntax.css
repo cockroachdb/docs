@@ -1,10 +1,10 @@
 .highlight  { background: #f5f5f5; }
 .highlight pre { padding: 2rem; }
-.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .c { color: #999988 } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
-.highlight .k { color: #006699; font-weight: bold } /* Keyword */
+.highlight .k { color: #a71d5d } /* Keyword */
 /*.highlight .k { font-weight: bold } /* Keyword */
-.highlight .o { font-weight: bold } /* Operator */
+/*.highlight .o { font-weight: bold } /* Operator */
 .highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
 .highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
@@ -23,11 +23,12 @@
 .highlight .gt { color: #aa0000 } /* Generic.Traceback */
 .highlight .kc { font-weight: bold } /* Keyword.Constant */
 .highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #a71d5d }
 .highlight .kp { font-weight: bold } /* Keyword.Pseudo */
 .highlight .kr { font-weight: bold } /* Keyword.Reserved */
 .highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
 .highlight .m { color: #009999 } /* Literal.Number */
-.highlight .s { color: #d14 } /* Literal.String */
+.highlight .s { color: #183691 } /* Literal.String */
 .highlight .na { color: #008080 } /* Name.Attribute */
 .highlight .nb { color: #0086B3 } /* Name.Builtin */
 .highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
@@ -38,7 +39,7 @@
 .highlight .nn { color: #555555 } /* Name.Namespace */
 .highlight .nt { color: #000080 } /* Name.Tag */
 .highlight .nv { color: #008080 } /* Name.Variable */
-.highlight .ow { font-weight: bold } /* Operator.Word */
+/*.highlight .ow { font-weight: bold } /* Operator.Word */
 .highlight .w { color: #bbbbbb } /* Text.Whitespace */
 .highlight .mf { color: #009999 } /* Literal.Number.Float */
 .highlight .mh { color: #009999 } /* Literal.Number.Hex */
@@ -53,9 +54,9 @@
 .highlight .si { color: #d14 } /* Literal.String.Interpol */
 .highlight .sx { color: #d14 } /* Literal.String.Other */
 .highlight .sr { color: #009926 } /* Literal.String.Regex */
-.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .s1 { color: #183691 } /* Literal.String.Single */
 .highlight .ss { color: #990073 } /* Literal.String.Symbol */
-.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .bp { color: #0086b3 } /* Name.Builtin.Pseudo */
 .highlight .vc { color: #008080 } /* Name.Variable.Class */
 .highlight .vg { color: #008080 } /* Name.Variable.Global */
 .highlight .vi { color: #008080 } /* Name.Variable.Instance */
