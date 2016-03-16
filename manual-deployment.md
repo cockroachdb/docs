@@ -22,7 +22,7 @@ This process assumes the following:
 - Put each node on a different machine. Since CockroachDB replicates across nodes, placing more than one node on a single machine increases the risk of data unavailability when a machine fails.  
 - Run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. CockroachDB needs moderately accurate time; if the machines' clocks drift too far apart, transactions will never succeed and the cluster will crash. 
 
-## Insecure Cluster
+## Deploy an Insecure Cluster
 
 ### 1. Set up the first node
 
@@ -84,7 +84,28 @@ root@26257> SELECT * FROM accounts;
 +------+---------+
 ~~~
 
-## Secure Cluster
+### 5. Connect an app to the cluster
+
+CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
+
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+
+### 6. Monitor your cluster
+
+The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
+
+~~~ shell
+$ ./cockroach start --insecure --host=node1.example.com
+build:     alpha.v1-1090-g7caed85 @ 2016/03/16 15:35:14 (go1.6)
+admin:     http://node1.example.com:8080 <-------------------------- USE THIS URL
+sql:       postgresql://root@node1.example.com:26257?sslmode=disable
+logs:      cockroach-data/logs
+store[0]:  path=cockroach-data
+~~~
+
+<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+
+## Deploy a Secure Cluster
 
 ### 1. Create security certificates
 
@@ -167,3 +188,24 @@ root@26257> SELECT * FROM accounts;
 | 1234 |   10000 |
 +------+---------+
 ~~~
+
+### 6. Connect an app to the cluster
+
+CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
+
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+
+### 7. Monitor your cluster
+
+The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
+
+~~~ shell
+$ ./cockroach start --insecure --host=node1.example.com
+build:     alpha.v1-1090-g7caed85 @ 2016/03/16 15:35:14 (go1.6)
+admin:     https://node1.example.com:8080 <-------------------------------- USE THIS URL
+sql:       postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...
+logs:      cockroach-data/logs
+store[0]:  path=cockroach-data
+~~~
+
+<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
