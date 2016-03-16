@@ -3,7 +3,9 @@ title: Build a Test App
 toc: false
 ---
 
-This page demonstrates connecting to CockroachDB and executing a basic SQL scenario from various languages. It assumes that you have already [installed CockroachDB](install-cockroachdb.html), [started an insecure local cluster](start-a-local-cluster.html#insecure), and [installed the appropriate client driver](install-client-drivers.html).
+This page demonstrates connecting to CockroachDB from a simple app that creates a "bank" database, creates two accounts, and executes a transaction to transfer funds from one to the other. 
+
+We assume that you have already [installed CockroachDB](install-cockroachdb.html), [started an insecure local cluster](start-a-local-cluster.html#insecure), and [installed the appropriate client driver](install-client-drivers.html).
 
 ## Go
 
@@ -15,23 +17,55 @@ This page demonstrates connecting to CockroachDB and executing a basic SQL scena
 # Import the driver.
 import psycopg2
 
-# Assuming a "bank" database already exists, connect to it.
-conn = psycopg2.connect(database='bank', user='root', host='localhost', port=26257)
+# Connect to the cluster.
+conn = psycopg2.connect(user='root', host='localhost', port=26257)
 
 # Open a cursor to perform database operations.
 cur = conn.cursor()
 
-# Make every statement have immediate effect.
+# Make each statement commit immediately, except where autocommit=False.
 conn.set_session(autocommit=True)
 
-# Create an "accounts" table.
+# Create a "bank" database and set it as default.
+cur.execute("CREATE DATABASE bank;")
+cur.execute("SET DATABASE = bank;")
+
+# Create an "accounts" table in the "bank" database.
 cur.execute("CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);")
 
 # Insert two rows into the table.
-cur.execute("INSERT INTO accounts (id, balance) VALUES (1, DECIMAL '1000'),(2, DECIMAL '230.50');")
+cur.execute("INSERT INTO accounts (id, balance) VALUES (1, DECIMAL '1000'), (2, DECIMAL '230.50');")
 
-# Update one row.
-cur.execute("UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE id = 1;")
+# Check account balances.
+cur.execute("SELECT id, balance FROM accounts;")
+rows = cur.fetchall()
+print('Account balances before transaction:')
+for row in rows:
+    print([str(cell) for cell in row])
+
+# Start a transaction.
+conn.set_session(autocommit=False)
+
+# Transfer $100 from account 1 to account 2.
+cur.execute("SELECT balance FROM accounts WHERE id = 1;")
+rows = cur.fetchall()
+for row in rows:
+    if row[0] > 100:
+        # Subtract $100 from account 1.
+        cur.execute("UPDATE accounts SET balance = balance - DECIMAL '100' WHERE id = 1;")
+        # Add $100 to account 2.
+        cur.execute("Update accounts SET balance = balance + DECIMAL '100' WHERE id = 2;")
+
+# Finish the transaction.
+conn.commit()
+
+# Check account balances after the transaction.
+conn.set_session(autocommit=True)
+cur.execute("SELECT id, balance FROM accounts")
+rows = cur.fetchall()
+print('Account balances after transaction:')
+for row in rows:
+    print([str(cell) for cell in row])
 
 # Close communication with the database.
 cur.close()
