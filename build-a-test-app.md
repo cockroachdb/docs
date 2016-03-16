@@ -78,7 +78,7 @@ conn.close()
 
 ## JavaScript (Node.js)
 
-## Closure
+## Clojure
 
 ~~~ clojure
 ;; Import the driver.
