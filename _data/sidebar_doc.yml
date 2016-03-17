@@ -9,8 +9,11 @@ entries:
         - title: Install CockroachDB
           url: /install-cockroachdb.html
 
-        - title: Start a Local Cluster
-          url: /start-a-local-cluster.html
+        - title: Start a Cluster
+          url: /start-a-cluster.html
+
+        - title: Secure a Cluster
+          url: /secure-a-cluster.html
 
         - title: Learn CockroachDB SQL
           url: /learn-cockroachdb-sql.html

@@ -1,5 +1,5 @@
 ---
-title: Start a Local Cluster
+title: Start a Cluster
 toc: false
 ---
 

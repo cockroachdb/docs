@@ -5,7 +5,7 @@ toc: false
 
 This page shows you how to manually deploy a multi-node CockroachDB cluster on multiple machines. 
 
-{{site.data.alerts.callout_info}} For deployment on AWS and other cloud providers, see <a href="cloud-deployment.html">Cloud Deployment</a>. For local testing and development, see <a href="start-a-local-cluster.html">Start a Local Cluster</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} For deployment on AWS and other cloud providers, see <a href="cloud-deployment.html">Cloud Deployment</a>. For local testing and development, see <a href="start-a-cluster.html">Start a Local Cluster</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

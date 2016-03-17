@@ -5,7 +5,7 @@ toc: false
 
 This page demonstrates how to connect a simple test app to CockroachDB from various languages. The app creates a "bank" database, creates two accounts, and executes a transaction to transfer funds from one account to the other. 
 
-We assume that you have already [installed CockroachDB](install-cockroachdb.html), [started an insecure local cluster](start-a-local-cluster.html#insecure), and [installed the relevant client driver](install-client-drivers.html).
+We assume that you have already [installed CockroachDB](install-cockroachdb.html), [started a local cluster](start-a-cluster.html#insecure), and [installed the relevant client driver](install-client-drivers.html).
 
 ## Go
 
