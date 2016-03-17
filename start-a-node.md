@@ -28,11 +28,13 @@ Flag | Description
 -----|-----------
 `--attrs` | Node-level attributes specifying topography or machine capabilities. Topography might include datacenter designation (e.g., `us-west-1a`, `us-west-1b`, `us-east-1c`). Machine capabilities might include specialized hardware or number of cores (e.g., `gpu`, `x16c`). <br><br>Attributes can be arbitrary strings separated by colons. The relative geographic proximity of two nodes is inferred from the common prefix of the attributes list, so topographic attributes should be specified first and in the same order for all nodes, for example: <br><br> `--attrs=us-west-1b:gpu`
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be in any bytes-based unit, for example: <br><br>`--cache=1000000000  -> 1000000000 bytes`<br>`--cache=1GB         -> 1000000000 bytes`<br>`--cache=1GiB        -> 1073741824 bytes`
-`--certs` | The path to the directory containing the node's [security certificates](create-security-certificates.html). When starting the node with security (i.e., without the `--insecure` flag), this flag is required. <br><br> **Default:** certs 
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). If the cluster was started without the `--insecure` flag, this flag is required. 
+`--cert` | The path to the [node certificate](create-security-certificates.html). If the cluster was started without the `--insecure` flag, this flag is required.
 `--host` | The address to listen on for internal and client communication. The node also advertises itself to other nodes using this address. This may be the node's internal hostname, internal ip address, external hostname, external ip address, etc. <br><br>**Default:** Advertise node's hostname and listen on all interfaces
 `--http-port` | The port to listen on for HTTP requests from the Admin UI. <br><br>**Default:** 8080
-`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--certs` flag but leave this flag out. If the cluster is insecure, set this flag.
-`--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list. 
+`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--ca-cert`, `--cert`, and `-key` flags but leave this flag out. If the cluster is insecure, set this flag.
+`--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list.
+`--key` | The path to [node key](create-security-certificates.html) protecting the node certificate. If the cluster was started without the `--insecure` flag, this flag is required. 
 `--port`<br>`-p` | The port to listen on for internal and client communication. <br><br>**Default:** 26257
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
@@ -74,7 +76,7 @@ For a detailed walkthrough of starting a multi-node cluster, see [Manual Deploym
 
 ~~~ shell
 # Secure:
-$ ./cockroach start --certs=/node1certs --store=/mnt/ssd01 --host=node1hostname.com --port=26260 --http-port=8081  
+$ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node1.cert --key=certs/node1.key --store=/mnt/ssd01 --host=node1hostname.com --port=26260 --http-port=8081  
 
 # Insecure:
 $ ./cockroach start --insecure --store=/mnt/ssd01 --host=node1hostname.com --port=26260 --http-port=8081
@@ -84,7 +86,7 @@ $ ./cockroach start --insecure --store=/mnt/ssd01 --host=node1hostname.com --por
 
 ~~~ shell
 # Secure:
-$ ./cockroach start --certs=/node2certs --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 --http-port=8082
+$ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node2.cert --key=certs/node2.key --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 --http-port=8082
 
 # Insecure:
 $ ./cockroach start --insecure --store=/mnt/hda1 --host=node2hostname.com --port=26270 --join=node1hostname:26260 --http-port=8082
