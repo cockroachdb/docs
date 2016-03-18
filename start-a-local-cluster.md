@@ -1,6 +1,7 @@
 ---
 title: Start a Cluster
 toc: false
+expand: true
 ---
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a few minutes to start a single- or multi-node cluster locally for testing and development. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.
@@ -85,35 +86,3 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a f
 ## What's Next?
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption.
-
-<style>
-/* Button for expanding/collapsing content */
-.btn.details, .btn.details:active {
-    background: #fff;
-    border: none;
-    font-family: Avernir-Black, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 0px;
-    line-height: 20px;
-    color: #142848;
-    border-radius: 35px;
-    margin-bottom: 0px;
-    outline: none;
-    box-shadow:none;
-}
-/* Icon when the content is shown */
-.btn.details:after {
-   font-family: "Glyphicons Halflings";
-   content: "\e114";
-   float: right;
-   margin-left: 10px;
-}
-/* Icon when the content is hidden */
-.btn.details.collapsed:after {
-   font-family: "Glyphicons Halflings";
-   float: right;
-   margin-left: 10px;
-   content: "\e080";
-}
-</style>

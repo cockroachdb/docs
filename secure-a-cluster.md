@@ -1,6 +1,7 @@
 ---
 title: Secure a Cluster
 toc: false
+expand: true
 ---
 
 Now that you have a [local cluster](start-a-local-cluster.html) up and running, let's secure it with authentication and encryption. This involves stopping the cluster, creating certificates, and restarting nodes with a few additional flags.
@@ -78,8 +79,8 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     # To exit: CTRL + D.
     ~~~
 
-    <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
-    <div id="details-secure4" class="collapse">
+    <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure5">Details</button>
+    <div id="details-secure5" class="collapse">
       <ul>
         <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 1.</li>
         <li>Secure communicate defaults to port 26257. To bind to a different port, set <code>--port=&#60;port&#62;</code>.</li>
@@ -121,35 +122,3 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - [Build a test app](build-a-test-app.html)
-
-<style>
-/* Button for expanding/collapsing content */
-.btn.details, .btn.details:active {
-    background: #fff;
-    border: none;
-    font-family: Avernir-Black, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 0px;
-    line-height: 20px;
-    color: #142848;
-    border-radius: 35px;
-    margin-bottom: 0px;
-    outline: none;
-    box-shadow:none;
-}
-/* Icon when the content is shown */
-.btn.details:after {
-   font-family: "Glyphicons Halflings";
-   content: "\e114";
-   float: right;
-   margin-left: 10px;
-}
-/* Icon when the content is hidden */
-.btn.details.collapsed:after {
-   font-family: "Glyphicons Halflings";
-   float: right;
-   margin-left: 10px;
-   content: "\e080";
-}
-</style>

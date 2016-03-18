@@ -16,6 +16,10 @@ layout: default
 
   {{content}}
 
+{% if page.expand == true %}
+	{% include expand.html %}
+{% endif %}
+
 {% include linkrefs.html %}
 
 </div>
