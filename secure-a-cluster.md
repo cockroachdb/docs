@@ -82,7 +82,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure5">Details</button>
     <div id="details-secure5" class="collapse">
       <ul>
-        <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 1.</li>
+        <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 2.</li>
         <li>Secure communicate defaults to port 26257. To bind to a different port, set <code>--port=&#60;port&#62;</code>.</li>
     </div>
 
