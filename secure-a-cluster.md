@@ -3,9 +3,9 @@ title: Secure a Cluster
 toc: false
 ---
 
-Now that you have a [local cluster](start-a-cluster.html) up and running, let's secure it with authentication and encryption. This involves creating certificates and passing a few additional command line options, but it's still simple.
+Now that you have a [local cluster](start-a-cluster.html) up and running, let's secure it with authentication and encryption. This involves stopping the cluster, creating certificates, and restarting nodes with a few additional flags.
 
-1.  Stop your cluster:
+1.  Stop the cluster:
 
     ~~~ shell
     $ ./cockroach quit --insecure
@@ -69,48 +69,54 @@ Now that you have a [local cluster](start-a-cluster.html) up and running, let's 
         <p>These commands restart additional nodes with their existing data, but securely. The commands are the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the node certificate and key created in step 2.
     </div>
 
-4. Start the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
+4.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
-   ~~~ shell
-   $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
-   # Welcome to the cockroach SQL interface.
-   # All statements must be terminated by a semicolon.
-   # To exit: CTRL + D.
-   ~~~
+    ~~~ shell
+    $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+    # Welcome to the cockroach SQL interface.
+    # All statements must be terminated by a semicolon.
+    # To exit: CTRL + D.
+    ~~~
 
-   <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
-   <div id="details-secure4" class="collapse">
+    <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
+    <div id="details-secure4" class="collapse">
       <ul>
-         <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 1.</li>
-         <li>Secure communicate defaults to port 26257. To bind to a different port, set <code>--port=&#60;port&#62;</code>.</li>
-   </div>
+        <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 1.</li>
+        <li>Secure communicate defaults to port 26257. To bind to a different port, set <code>--port=&#60;port&#62;</code>.</li>
+    </div>
 
-5. Run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+5.  Run more [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-   ~~~ shell
-   root@:26257> CREATE DATABASE bank;
-   CREATE DATABASE
+    ~~~ shell
+    root@:26257> SET DATABASE = bank;
+    SET DATABASE
 
-   root@:26257> SET DATABASE = bank;
-   SET DATABASE
+    root@26257> SELECT * FROM accounts;
+    +------+----------+
+    |  id  | balance  |
+    +------+----------+
+    | 1234 | 10000.50 |
+    +------+----------+
 
-   root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-   CREATE TABLE
+    root@26257> INSERT INTO accounts VALUES (5678, DECIMAL '250.75');
+    INSERT 1
 
-   root@26257> INSERT INTO accounts VALUES (1234, DECIMAL '10000');
-   INSERT 1
+    root@26257> SELECT * FROM accounts;
+    +------+----------+
+    |  id  | balance  |
+    +------+----------+
+    | 1234 | 10000.50 |
+    | 5678 | 250.75   |
+    +------+----------+
+    ~~~
 
-   root@26257> SELECT * FROM accounts;
-   +------+---------+
-   |  id  | balance |
-   +------+---------+
-   | 1234 |   10000 |
-   +------+---------+
-   ~~~
+    When you're done using the SQL shell, press **CTRL + D** to exit.
  
-6. [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://<local host>:8080`. You can find the complete address in the standard output as well (see step 2). Note that your browser will consider the cockroach-created certificate invalid; you'll need to click through a warning message to get to the UI.
+6.  Continue monitoring your cluster with the [Admin UI](explore-the-admin-ui.html).
 
-## Next Steps
+    If you already have it open, you'll need to change `http` to `https`. If you don't have it open, point your browser to the complete address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+
+## What's Next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
