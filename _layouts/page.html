@@ -9,19 +9,23 @@ layout: default
 <div class="post-content">
 
    {% if page.summary %}
-    <div class="summary">{{page.summary}}</div>
+      <div class="summary">{{page.summary}}</div>
    {% endif %}
 
-{% include toc.html %}
+   {% include toc.html %}
 
-  {{content}}
+   {% if page.expand == true %}
+      {% include expand.html %}
+   {% endif %}
 
-{% include linkrefs.html %}
+   {{content}}
+
+   {% include linkrefs.html %}
 
 </div>
 
 {% if page.homepage != true %}
-<script>
-anchors.add('h2, h3, h4, h5');
-</script>
+   <script>
+       anchors.add('h2, h3, h4, h5');
+   </script>
 {% endif %}
