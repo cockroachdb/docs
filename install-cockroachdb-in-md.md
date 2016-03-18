@@ -98,4 +98,4 @@ toc: false
 
 ## What's Next? - Mac, Linux, Windows
 
-[Quick start](start-a-cluster.html) a single- or multi-node cluster locally and talk to it via the built-in SQL client.
+[Quick start](start-a-local-cluster.html) a single- or multi-node cluster locally and talk to it via the built-in SQL client.

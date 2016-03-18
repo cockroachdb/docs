@@ -16,7 +16,7 @@ CockroachDB is an open source, scalable, survivable, strongly-consistent SQL dat
 </div>
 
 <div class="col-md-4 roach">
-        <a href="start-a-cluster.html">
+        <a href="start-a-local-cluster.html">
             <img src="images/SCENE_superhero_profile_craig.png"/>
             <h3>Quickstart</h3>
         </a>

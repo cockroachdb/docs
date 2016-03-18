@@ -10,7 +10,7 @@ entries:
           url: /install-cockroachdb.html
 
         - title: Start a Cluster
-          url: /start-a-cluster.html
+          url: /start-a-local-cluster.html
 
         - title: Secure a Cluster
           url: /secure-a-cluster.html

@@ -231,7 +231,7 @@ $(document).ready(function(){
 </div>
 <h2 id="whats-next">What's Next</h2>
 
-<p><a href="start-a-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="linuxinstall" style="display: none;">
@@ -361,7 +361,7 @@ $(document).ready(function(){
 </div>
 <h2 id="whats-next">What's Next</h2>
 
-<p><a href="start-a-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="windowsinstall" style="display: none;">
@@ -403,5 +403,5 @@ $(document).ready(function(){
 
 <h2 id="whats-next">What's Next</h2>
 
-<p><a href="start-a-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
