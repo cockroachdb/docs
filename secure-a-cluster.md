@@ -22,7 +22,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
         </ul>
     </div>
 
-2.  From the directory with the `cockroach` binary, create security certificates:
+2.  Create security certificates:
 
     ~~~ shell
     $ mkdir certs
@@ -55,7 +55,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure3">Details</button>
     <div id="details-secure3" class="collapse">
-        <p>This command restarts your first node with its existing data, but securely. The command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the node certificate and key created in step 2.
+        <p>This command restarts your first node with its existing data, but securely. The command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags to point to the CA certificate and the node certificate and key created in step 2.</p>
     </div>
 
 3.  Restart additional nodes::
@@ -67,7 +67,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
     <div id="details-secure4" class="collapse">
-        <p>These commands restart additional nodes with their existing data, but securely. The commands are the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the node certificate and key created in step 2.
+        <p>These commands restart additional nodes with their existing data, but securely. The commands are the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags to point to the CA certificate and the node certificate and key created in step 2.</p>
     </div>
 
 4.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
@@ -81,9 +81,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure5">Details</button>
     <div id="details-secure5" class="collapse">
-      <ul>
-        <li>The <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 2.</li>
-        <li>Secure communicate defaults to port 26257. To bind to a different port, set <code>--port=&#60;port&#62;</code>.</li>
+      <p>This command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 2.</p>
     </div>
 
 5.  Run more [CockroachDB SQL statements](learn-cockroachdb-sql.html):
