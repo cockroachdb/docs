@@ -113,7 +113,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
  
 6.  Continue monitoring your cluster with the [Admin UI](explore-the-admin-ui.html).
 
-    If you already have it open, you'll need to change `http` to `https`. If you don't have it open, point your browser to the complete address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+    If you already have it open, you'll need to change `http` to `https`. If you don't have it open, point your browser to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
 ## What's Next?
 
