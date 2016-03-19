@@ -79,7 +79,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a f
 
     When you're done using the SQL shell, press **CTRL + D** to exit.
  
-5.  [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to the complete address in the `admin` field in the standard output of any node on startup.
+5.  [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to the address in the `admin` field in the standard output of any node on startup.
 
     <img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
 

@@ -22,7 +22,7 @@ toc: false
 2. Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:
 
    ~~~ shell
-   brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb
+   $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb
    ~~~
 
 ## Build from Source - Mac and Linux

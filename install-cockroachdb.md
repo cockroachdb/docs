@@ -126,7 +126,7 @@ $(document).ready(function(){
     <li>
       <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
     </li>
     <li>
