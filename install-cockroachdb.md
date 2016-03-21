@@ -102,14 +102,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-1 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
             formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 1
+            formInstanceId: 1,
+            target: '.install-form-1'
           });
         </script>
       </div>
@@ -132,14 +133,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-2 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
             formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 2
+            formInstanceId: 2,
+            target: '.install-form-2'
           });
         </script>
       </div>
@@ -181,14 +183,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-3 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
           formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-          formInstanceId: 3
+          formInstanceId: 3,
+          target: '.install-form-3'
         });
       </script>
     </div>
@@ -219,14 +222,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-4 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
           formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-          formInstanceId: 4
+          formInstanceId: 4,
+          target: '.install-form-4'
         });
       </script>
     </div>
@@ -262,14 +266,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-5 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
             formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 5
+            formInstanceId: 5,
+            target: '.install-form-5'
           });
         </script>
       </div>
@@ -309,14 +314,15 @@ $(document).ready(function(){
   </li>
   <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-6 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
             formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 6
+            formInstanceId: 6,
+            target: '.install-form-6'
           });
         </script>
       </div>
@@ -352,14 +358,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-7 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
           formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-          formInstanceId: 7
+          formInstanceId: 7,
+          target: '.install-form-7'
         });
       </script>
     </div>
@@ -395,14 +402,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-8 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
           formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-          formInstanceId: 8
+          formInstanceId: 8,
+          target: '.install-form-8'
         });
       </script>
     </div>
