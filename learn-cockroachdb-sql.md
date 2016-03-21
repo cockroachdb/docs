@@ -68,7 +68,7 @@ SHOW DATABASE;
 
 ## Create a Table
 
-To create a table, use the [`CREATE TABLE`](create-table.html) statement followed by a table name, the column names, and the data type and constraint, if any, for each column:
+To create a table, use the [`CREATE TABLE`](create-table.html) statement followed by a table name, the column names, and the [data type](data-types.html) and constraint, if any, for each column:
 
 ~~~ sql
 CREATE TABLE accounts (

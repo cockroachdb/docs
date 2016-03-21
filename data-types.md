@@ -337,5 +337,6 @@ SELECT * FROM strings;
 
 ## `BYTES`
 
+bytes, bytea, blog
 
 escape text as bytes: b'text' 
