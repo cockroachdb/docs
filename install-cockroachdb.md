@@ -108,7 +108,8 @@ $(document).ready(function(){
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 1
           });
         </script>
       </div>
@@ -137,7 +138,8 @@ $(document).ready(function(){
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 2
           });
         </script>
       </div>
@@ -185,7 +187,8 @@ $(document).ready(function(){
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 3
         });
       </script>
     </div>
@@ -222,7 +225,8 @@ $(document).ready(function(){
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 4
         });
       </script>
     </div>
@@ -264,7 +268,8 @@ $(document).ready(function(){
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 5
           });
         </script>
       </div>
@@ -310,7 +315,8 @@ $(document).ready(function(){
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 6
           });
         </script>
       </div>
@@ -352,7 +358,8 @@ $(document).ready(function(){
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 7
         });
       </script>
     </div>
@@ -394,7 +401,8 @@ $(document).ready(function(){
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 8
         });
       </script>
     </div>
