@@ -3,42 +3,75 @@ title: Data Types
 toc: false
 ---
 
-CockroachDB provides the following datatypes for use in SQL statements.
+CockroachDB provides the following data types for use in SQL statements. 
 
-<div class="toc"></div>
+<div id="toc"></div>
 
-## Numeric Types
+## Overview 
 
 Type | Storage (Bytes) | Description
 -----|-----------------|------------
-[`INTEGER`](#integer) | 8 | A 64-bit signed integer.<br><br>**Range:** -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807<br><br>**Synonyms:** `SMALLINT`, `INT`, `INT64`, `BIGINT` 
-[`DECIMAL`](#decimal) | 8 | An exact fixed-point number.<br><br>**Range:** Up to 131072 digits before the decimal point; up to 16383 digits after the decimal point<br><br>**Synonyms:** `DEC`, `NUMERIC`  
-[`FLOAT`](#float) | 8 | `REAL`<br>`DOUBLE PRECISION` 
+[`INTEGER`](#integer) | 8 | A 64-bit signed integer. 
+[`DECIMAL`](#decimal) | 8 | An exact, fixed-point number.  
+[`FLOAT`](#float) | 8 | An inexact, floating-point number.
+[`DATE`](#date) |  |  
+[`TIMESTAMP`](#timestamp) | |  
+[`INTERVAL`](#interval) | |
 
-
+## Numeric Data Types
 
 ### `INTEGER`
 
-The `INTEGER` type 
+The `INTEGER` type stores 64-bit signed integers, that is, whole numbers ranging from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
+
+In CockroachDB, the following types are synonyms of `INTEGER` and are implemented identically: 
+
+- `SMALLINT` 
+- `INT` 
+- `INT64` 
+- `BIGINT`
+
+#### Examples
+
+~~~ sql
+CREATE TABLE ints (a INTEGER PRIMARY KEY, b INT, c BIGINT);
+~~~
 
 ### `DECIMAL`
 
-The `DECIMAL` and `NUMERIC` types store exact numeric data values. These types are used when it is important to preserve exact precision, for example, with monetary data. 
+The `DECIMAL` type stores exact numeric values, up to 131072 digits before and 16383 digits after the decimal point. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+
+In CockroachDB, `DEC` and `NUMERIC` are synonyms of `DECIMAL` and are implemented identically.
+
+#### Precision and Scale
+
+When declaring a `DECIMAL` column in a table, you can specify precision and scale. 
+
+- **Precision** is the maximum count of digits in a whole number, both to the left and right of the decimal point. This must be positive.
+- **Scale** is the maximum count of digits to the right of the decimal point. This must be zero or positive.
+
+The syntax is `DECIMAL(precision, scale)`, where precision defaults to 10 when not specified, and scale defaults to 0.
+
+#### Examples
+
+~~~ sql
+xxx
+~~~
 
 ### `FLOAT`
 
-The `FLOAT`, `REAL` and `DOUBLE PRECISION` types are inexact, variable-precision numeric types. This means that some values cannot be converted exactly to the internal format and are stored as approximations, so that storing and retrieving a value might show slight discrepancies. 
+The `FLOAT` type stores an inexact, floating-point numeric value. A `FLOAT` is accurate to 15 decimal places. Beyond that, some values may be stored as approximations.
 
-### `FLOAT`
-
-### `REAL`
-
-### `DOUBLE PRECISION`
-
-all synonyms
-
+In CockroachDB, `REAL` and `DOUBLE PRECISION` are synonyms of `FLOAT` and are implemented identically. 
 
 ## Data and Time Types
+
+### `DATE`
+
+### `TIMESTAMP`
+
+### `INTERVAL`
+
 
 ## String Types
 
