@@ -3,9 +3,19 @@ title: Data Types
 toc: false
 ---
 
-This page explains the data types supported by CockroachDB.
+CockroachDB supports the followinig data types. Click a type for more details.
 
-<div id="toc"></div>
+Type | Description | Example
+-----|-------------|--------
+[`INT`](#int) | A 64-bit signed integer. | `12345`
+[`DECIMAL`](#decimal) | An exact, fixed-point number. | `DECIMAL '1.2345'`
+[`FLOAT`](#float) | An inexact, floating-point number. | `1.2345`
+[`BOOL`](#bool) | A Boolean value. | `true` 
+[`DATE`](#date) | Year, month, day. | `DATE '2016-01-25'`
+[`TIMESTAMP`](#timestamp) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
+[`INTERVAL`](#interval) | A span of time. | `INTERVAL '2h30m30s'`
+[`STRING`](#string) | A string of characters. | `'a1b2c3'`
+[`BYTES`](#bytes) | A string of binary characters. | `'a1b2c3'`
 
 ## `INT`
 
@@ -188,7 +198,7 @@ The `DATE` type stores a date.
 
 #### Format
 
-When declaring a `DATE`, format it as `DATE 'YYYY-MM-DD'`. 
+When declaring a `DATE`, format it as `DATE '2016-01-25'`. 
 
 Alternately, you can format a date as follows:
 
