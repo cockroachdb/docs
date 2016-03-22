@@ -47,7 +47,7 @@ SELECT * FROM ints;
 
 ## `DECIMAL`
 
-The `DECIMAL` type exact, fixed-point numbers with no limit on digits to the left and right of the decimal point. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+The `DECIMAL` type stores exact, fixed-point numbers with no limit on digits to the left and right of the decimal point. This type is used when it is important to preserve exact precision, for example, with monetary data. 
 
 #### Synonyms
 
@@ -153,8 +153,10 @@ When declaring a `BOOL`, format it as `false` or `true`.
 
 Alternately, you can cast `0` or `1` as a `BOOL`:
 
-- `0::bool` (false) 
-- `1::bool` (true)
+- `0::BOOL` (false) 
+- `CAST (0 AS BOOL)` (false)
+- `1::BOOL` (true)
+- `CAST (1 AS BOOL)` (true)
 
 #### Examples
 
@@ -186,14 +188,21 @@ The `DATE` type stores a date.
 
 #### Format
 
-When declaring a `DATE`, format it as `DATE 'YYYY-MM-DD'`. Note that the date is stored with hour, minute, and second set to 0.
+When declaring a `DATE`, format it as `DATE 'YYYY-MM-DD'`. 
+
+Alternately, you can format a date as follows:
+
+- `'2016-01-25'::DATE`
+- `CAST ('2016-01-25' AS DATE)` 
+
+Note that a date is stored with hour, minute, second, and timezone set to 0.
 
 #### Examples
 
 ~~~
-CREATE TABLE date (a DATE PRIMARY KEY, b INT);
+CREATE TABLE dates (a DATE PRIMARY KEY, b INT);
 
-SHOW COLUMNS FROM date;
+SHOW COLUMNS FROM dates;
 +-------+------+-------+---------+
 | Field | Type | Null  | Default |
 +-------+------+-------+---------+
@@ -201,16 +210,15 @@ SHOW COLUMNS FROM date;
 | b     | INT  | true  | NULL    |
 +-------+------+-------+---------+
 
-INSERT INTO date VALUES (DATE '2016-03-26', 12345);
+INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
 
-SELECT * FROM date;
+SELECT * FROM dates;
 +---------------------------------+-------+
 |                a                |   b   |
 +---------------------------------+-------+
 | 2016-03-26 00:00:00 +0000 +0000 | 12345 |
 +---------------------------------+-------+
 ~~~
-
 
 ## `TIMESTAMP`
 
@@ -225,14 +233,17 @@ When declaring a `TIMESTAMP`, use one of the following formats:
 - With Timezone Offset from UTC: `TIMESTAMP '2016-01-25 10:10:10.999999999-5:00'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.999999999`
 
-At least the year, month, and day must be provided. 
+Alternately, you can format a timestamp as follows:
+
+- `'2016-01-25 10:10:10.999999999'::TIMESTAMP`
+- `CAST ('2016-01-25' AS TIMESTAMP)` 
 
 #### Examples
 
 ~~~
-CREATE TABLE timestamp (a INT PRIMARY KEY, b TIMESTAMP);
+CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP);
 
-SHOW COLUMNS FROM date;
+SHOW COLUMNS FROM timestamps;
 +-------+-----------+-------+---------+
 | Field |   Type    | Null  | Default |
 +-------+-----------+-------+---------+
@@ -240,14 +251,14 @@ SHOW COLUMNS FROM date;
 | b     | TIMESTAMP | true  | NULL    |
 +-------+-----------+-------+---------+
 
-INSERT INTO timestamp VALUES (1111, TIMESTAMP '2016-03-26 10:10:10-05:00'), (2222, TIMESTAMP '2016-03-26');
+INSERT INTO timestamps VALUES (1, TIMESTAMP '2016-03-26 10:10:10-05:00'), (2, TIMESTAMP '2016-03-26');
 
-SELECT * FROM timestamp;
+SELECT * FROM timestamps;
 +------+---------------------------------+
 |  a   |                b                |
 +------+---------------------------------+
-| 1111 | 2016-03-26 15:10:10 +0000 +0000 |
-| 2222 | 2016-03-26 00:00:00 +0000 +0000 |
+|  1   | 2016-03-26 15:10:10 +0000 +0000 |
+|  2   | 2016-03-26 00:00:00 +0000 +0000 |
 +------+---------------------------------+
 # Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
 ~~~
@@ -267,7 +278,12 @@ When declaring an `INTERVAL`, format it as `INTERVAL '2h30m30s'`, where the foll
 - `us` (microsecond)
 - `ns` (nanosecond)
 
-Regardless of the units used, the interval is stored as hour, minute, and second. 
+Alternately, you can format an interval as follows:
+
+- `'12h2m1s23ms'::INTERVAL`
+- `CAST ('12h2m1s23ms' AS INTERVAL)`
+
+Regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
 
 #### Examples
 
@@ -282,7 +298,7 @@ SHOW COLUMNS FROM intervals;
 | b     | INTERVAL | true  | NULL    |
 +-------+----------+-------+---------+
 
-INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, INTERVAL '-2h30m50ns');
+INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, '-2h30m50ns':INTERVAL);
 
 SELECT * FROM intervals;
 +------+-------------------+
@@ -309,7 +325,11 @@ In CockroachDB, the following are synonyms of `STRING` and are implemented ident
 
 #### Length
 
-Length is always variable and unlimited for a `STRING` value. If you specify a fixed-length by declaring `CHAR(n)` or `VARCHAR(n)` on a column, it will not be enforced.
+Length is always variable and unlimited for a `STRING` value. If you specify a fixed length by declaring `CHAR(n)` or `VARCHAR(n)` on a column, it will not be enforced.
+
+#### Format
+
+When declaring a `STRING`, format it as `'a1b2c3'`.
 
 #### Examples
 
@@ -337,6 +357,44 @@ SELECT * FROM strings;
 
 ## `BYTES`
 
-bytes, bytea, blog
+The `BYTES` type stores binary strings of variable, unlimited length.
 
-escape text as bytes: b'text' 
+#### Synonyms
+
+In CockroachDB, the following are synonyms of `BYTES` and are implemented identically: 
+
+- `BYTEA` 
+- `BLOB` 
+
+#### Format
+
+When declaring a `BYTES` string, format it as `'a1b2c3'`.
+
+Alternately, you can format a bytes string as follows:
+
+- `'a1b2c3'::BYTES`
+- `CAST ('a1b2c3' AS BYTES)`
+
+#### Examples
+
+~~~
+CREATE TABLE bytes (a INT PRIMARY KEY, b BYTES, c BLOB);
+
+SHOW COLUMNS FROM bytes;
++-------+-------+-------+---------+
+| Field | Type  | Null  | Default |
++-------+-------+-------+---------+
+| a     | INT   | false | NULL    |
+| b     | BYTES | true  | NULL    |
+| c     | BYTES | true  | NULL    |
++-------+-------+-------+---------+
+
+INSERT INTO bytes VALUES (12345, 'a1b2c3', 'd4e5f6'::BYTES);
+
+SELECT * FROM bytes;
++-------+--------+--------+
+|   a   |   b    |   c    |
++-------+--------+--------+
+| 12345 | a1b2c3 | d4e5f6 |
++-------+--------+--------+
+~~~
