@@ -19,7 +19,7 @@ Type | Description | Example
 
 ## `INT`
 
-The `INT` type stores 64-bit signed integers, that is, whole numbers from 9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
+The `INT` type stores 64-bit signed integers, that is, whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
 
 #### Synonyms 
 
@@ -29,7 +29,7 @@ In CockroachDB, the following are synonyms of `INT` and are implemented identica
 - `INTEGER` 
 - `INT64` 
 - `BIGINT`
-- `BITS`
+- `BIT`
 
 #### Examples
 
@@ -74,10 +74,7 @@ Precision (the maximum count of digits in a whole number, both to the left and r
 
 When declaring a decimal, format it as `DECIMAL '1.2345'`. This casts the value as a string, which preserves the number's exact precision.
 
-Alternately, you can cast a `FLOAT` as a `DECIMAL`, but note that precision will be limited to 17 digits in total (both to the left and right of the decimal point):
-
-- `1.2345::DECIMAL`
-- `CAST (1.2345 AS DECIMAL)`
+Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
 
 #### Examples
 
@@ -92,7 +89,7 @@ SHOW COLUMNS FROM decimals;
 | b     | DECIMAL | true  | NULL    |
 +-------+---------+-------+---------+
 
-INSERT INTO decimals VALUES (DECIMAL '1.01234567890123456789', 2.01234567890123456789::DECIMAL);
+INSERT INTO decimals VALUES (DECIMAL '1.01234567890123456789', CAST('2.01234567890123456789' AS DECIMAL));
 
 SELECT * FROM decimals;
 +------------------------+--------------------+
@@ -118,7 +115,7 @@ In CockroachDB, the following are synonyms of `FLOAT` and are implemented identi
 
 When declaring a float, format it as `1.2345`. 
 
-Alternately, you can declare a float as `+Inf` (positive infinity), `-Inf` (negative infinity), or `NaN` (not a number) as follows:
+Alternately, you can use the `CAST()` function to declare a float as `+Inf` (positive infinity), `-Inf` (negative infinity), or `NaN` (not a number):
 
 - `CAST('+Inf' AS FLOAT)`
 - `CAST('-Inf' AS FLOAT)`
@@ -159,14 +156,12 @@ In CockroachDB, `BOOLEAN` is a synonym of `BOOL` and is implemented identically.
 
 #### Format
 
-When declaring a `BOOL`, format it as `false` or `true`. 
+When declaring a `BOOL`, format it as `false` or `true` (case-insensitive).
 
 Alternately, you can cast `0` or `1` as a `BOOL`:
 
-- `0::BOOL` (false) 
-- `CAST (0 AS BOOL)` (false)
-- `1::BOOL` (true)
-- `CAST (1 AS BOOL)` (true)
+- `CAST(0 AS BOOL)` (false)
+- `CAST(1 AS BOOL)` (true)
 
 #### Examples
 
@@ -182,7 +177,7 @@ SHOW COLUMNS FROM bool;
 | c     | BOOL | true  | NULL    |
 +-------+------+-------+---------+
 
-INSERT INTO bool VALUES (12345, true, 0::bool);
+INSERT INTO bool VALUES (12345, true, CAST(0 AS BOOL));
 
 SELECT * FROM bool;
 +-------+------+-------+
@@ -194,18 +189,15 @@ SELECT * FROM bool;
 
 ## `DATE`
 
-The `DATE` type stores a date.
+The `DATE` type stores a year, month, and day.
 
 #### Format
 
 When declaring a `DATE`, format it as `DATE '2016-01-25'`. 
 
-Alternately, you can format a date as follows:
+Alternately, you can cast a string as a date: `CAST('2016-01-25' AS DATE)`. 
 
-- `'2016-01-25'::DATE`
-- `CAST ('2016-01-25' AS DATE)` 
-
-Note that a date is stored with hour, minute, second, and timezone set to 0.
+In some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
 
 #### Examples
 
@@ -243,10 +235,7 @@ When declaring a `TIMESTAMP`, use one of the following formats:
 - With Timezone Offset from UTC: `TIMESTAMP '2016-01-25 10:10:10.999999999-5:00'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.999999999`
 
-Alternately, you can format a timestamp as follows:
-
-- `'2016-01-25 10:10:10.999999999'::TIMESTAMP`
-- `CAST ('2016-01-25' AS TIMESTAMP)` 
+Alternately, you can cast a string as a timestamp: `CAST('2016-01-25' AS TIMESTAMP)`. 
 
 #### Examples
 
@@ -288,10 +277,7 @@ When declaring an `INTERVAL`, format it as `INTERVAL '2h30m30s'`, where the foll
 - `us` (microsecond)
 - `ns` (nanosecond)
 
-Alternately, you can format an interval as follows:
-
-- `'12h2m1s23ms'::INTERVAL`
-- `CAST ('12h2m1s23ms' AS INTERVAL)`
+Alternately, you can cast a string as an interval:`CAST('12h2m1s23ms' AS INTERVAL)`.
 
 Regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
 
@@ -308,7 +294,7 @@ SHOW COLUMNS FROM intervals;
 | b     | INTERVAL | true  | NULL    |
 +-------+----------+-------+---------+
 
-INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, '-2h30m50ns':INTERVAL);
+INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, CAST('-2h30m50ns' AS INTERVAL));
 
 SELECT * FROM intervals;
 +------+-------------------+
@@ -378,12 +364,9 @@ In CockroachDB, the following are synonyms of `BYTES` and are implemented identi
 
 #### Format
 
-When declaring a `BYTES` string, format it as `'a1b2c3'`.
+When declaring a `BYTES` string, format it as `b'a1b2c3'`.
 
-Alternately, you can format a bytes string as follows:
-
-- `'a1b2c3'::BYTES`
-- `CAST ('a1b2c3' AS BYTES)`
+Alternately, you can cast a string to bytes: `CAST('a1b2c3' AS BYTES)`.
 
 #### Examples
 
@@ -399,7 +382,7 @@ SHOW COLUMNS FROM bytes;
 | c     | BYTES | true  | NULL    |
 +-------+-------+-------+---------+
 
-INSERT INTO bytes VALUES (12345, 'a1b2c3', 'd4e5f6'::BYTES);
+INSERT INTO bytes VALUES (12345, b'a1b2c3', CAST('d4e5f6' AS BYTES));
 
 SELECT * FROM bytes;
 +-------+--------+--------+
