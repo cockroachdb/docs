@@ -17,6 +17,10 @@ In CockroachDB, the following are synonyms of `INT` and are implemented identica
 - `BIGINT`
 - `BIT`
 
+## Format
+
+When declaring an `INT`, format it as `12345`.
+
 ## Examples
 
 ~~~

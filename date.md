@@ -11,8 +11,6 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 When declaring a `DATE`, format it as `DATE '2016-01-25'`. 
 
-Alternately, you can cast a string as a date: `CAST('2016-01-25' AS DATE)`. 
-
 In some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
 
 ## Examples

@@ -18,8 +18,6 @@ When declaring an `INTERVAL`, format it as `INTERVAL '2h30m30s'`, where the foll
 - `us` (microsecond)
 - `ns` (nanosecond)
 
-Alternately, you can cast a string as an interval:`CAST('12h2m1s23ms' AS INTERVAL)`.
-
 Regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
 
 ## Examples

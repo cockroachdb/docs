@@ -16,8 +16,6 @@ When declaring a `TIMESTAMP`, use one of the following formats:
 - With Timezone Offset from UTC: `TIMESTAMP '2016-01-25 10:10:10.999999999-5:00'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.999999999`
 
-Alternately, you can cast a string as a timestamp: `CAST('2016-01-25' AS TIMESTAMP)`. 
-
 Note that the fractional seconds portion is optional.
  
 ## Examples
