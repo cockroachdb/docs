@@ -99,7 +99,7 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 - Java
 - JavaScript (node.js)
 - C++/C
-- Closure
+- Clojure
 - PHP
 
 See [Install Client Drivers](install-client-drivers.html) for more details.

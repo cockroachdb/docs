@@ -33,7 +33,7 @@ SHOW COLUMNS FROM intervals;
 | b     | INTERVAL | true  | NULL    |
 +-------+----------+-------+---------+
 
-INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, CAST('-2h30m50ns' AS INTERVAL));
+INSERT INTO intervals VALUES (1111, INTERVAL '2h30m50ns'), (2222, INTERVAL '-2h30m50ns');
 
 SELECT * FROM intervals;
 +------+-------------------+
