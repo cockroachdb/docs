@@ -71,19 +71,19 @@ $(document).ready(function(){
 </script>
 
 <div id="os-tabs" class="clearfix">
-    <button id="mac" class="current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac">Mac</button>
-    <button id="linux" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux">Linux</button>
-    <button id="windows" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="windows">Windows</button>
+    <button id="mac" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button>
+    <button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button>
+    <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
 <div id="macinstall">
 <p>There are four ways to install CockroachDB on Mac OS X:</p>
 
 <div id="mac-installs" class="clearfix">
-<a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-binary">Download the <div class="c2a">Binary</div></a>
-<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
-<a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-source">Build from <div class="c2a">Source</div></a>
-<a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-docker">Use <div class="c2a">Docker</div></a>
+<a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
+<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
+<a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
 <div id="download-the-binary" class="install-option">
@@ -246,9 +246,9 @@ $(document).ready(function(){
 <p>There are three ways to install CockroachDB on Linux:</p>
 
 <div id="linux-installs" class="clearfix">    
-<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-binary">Download the <div class="c2a">Binary</div></a>
-<a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-source">Build from <div class="c2a">Source</div></a>
-<a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-docker">Use <div class="c2a">Docker</div></a>
+<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
+<a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
 <div id="download-the-binary-linux" class="install-option"> 
