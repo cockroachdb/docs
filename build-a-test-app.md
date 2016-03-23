@@ -27,8 +27,8 @@ We assume that you have already [installed CockroachDB](install-cockroachdb.html
 
 ## Java
 
-~~~ ruby
-{% include app/basic-sample.java %}
+~~~ java
+{% include app/BasicSample.java %}
 ~~~
 
 ## JavaScript (Node.js)
