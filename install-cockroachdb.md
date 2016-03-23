@@ -71,19 +71,19 @@ $(document).ready(function(){
 </script>
 
 <div id="os-tabs" class="clearfix">
-    <button id="mac" class="current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac">Mac</button>
-    <button id="linux" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux">Linux</button>
-    <button id="windows" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="windows">Windows</button>
+    <button id="mac" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button>
+    <button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button>
+    <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
 <div id="macinstall">
 <p>There are four ways to install CockroachDB on Mac OS X:</p>
 
 <div id="mac-installs" class="clearfix">
-<a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-binary">Download the <div class="c2a">Binary</div></a>
-<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
-<a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-source">Build from <div class="c2a">Source</div></a>
-<a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="mac-docker">Use <div class="c2a">Docker</div></a>
+<a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
+<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
+<a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
 <div id="download-the-binary" class="install-option">
@@ -102,13 +102,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-1 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 1,
+            target: '.install-form-1'
           });
         </script>
       </div>
@@ -131,13 +133,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-2 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 2,
+            target: '.install-form-2'
           });
         </script>
       </div>
@@ -179,13 +183,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-3 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 3,
+          target: '.install-form-3'
         });
       </script>
     </div>
@@ -216,13 +222,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-4 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 4,
+          target: '.install-form-4'
         });
       </script>
     </div>
@@ -238,9 +246,9 @@ $(document).ready(function(){
 <p>There are three ways to install CockroachDB on Linux:</p>
 
 <div id="linux-installs" class="clearfix">    
-<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-binary">Download the <div class="c2a">Binary</div></a>
-<a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-source">Build from <div class="c2a">Source</div></a>
-<a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick" data-eventaction="doc" data-eventlabel="linux-docker">Use <div class="c2a">Docker</div></a>
+<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
+<a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-source">Build from <div class="c2a">Source</div></a>
+<a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
 <div id="download-the-binary-linux" class="install-option"> 
@@ -258,13 +266,15 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-5 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 5,
+            target: '.install-form-5'
           });
         </script>
       </div>
@@ -304,13 +314,15 @@ $(document).ready(function(){
   </li>
   <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
-      <div class="hubspot-install-form clearfix">
+      <div class="hubspot-install-form install-form-6 clearfix">
         <script>
           hbspt.forms.create({ 
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 6,
+            target: '.install-form-6'
           });
         </script>
       </div>
@@ -346,13 +358,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-7 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 7,
+          target: '.install-form-7'
         });
       </script>
     </div>
@@ -388,13 +402,15 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
-    <div class="hubspot-install-form clearfix">
+    <div class="hubspot-install-form install-form-8 clearfix">
       <script>
         hbspt.forms.create({ 
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
-          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff'
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 8,
+          target: '.install-form-8'
         });
       </script>
     </div>
