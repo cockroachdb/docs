@@ -15,7 +15,6 @@ In CockroachDB, the following are synonyms of `INT` and are implemented identica
 - `INTEGER` 
 - `INT64` 
 - `BIGINT`
-- `BIT`
 
 ## Format
 
