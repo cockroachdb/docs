@@ -7,7 +7,7 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 
 Language | Recommended Driver
 ---------|--------
-Go | [pg](https://godoc.org/github.com/lib/pq)
+Go | [pq](https://godoc.org/github.com/lib/pq)
 Python | [psycopg2](http://initd.org/psycopg/)
 Ruby | [pg](https://rubygems.org/gems/pg)
 Java | [jdbc](https://jdbc.postgresql.org)
