@@ -10,47 +10,47 @@ We assume that you have already [installed CockroachDB](install-cockroachdb.html
 ## Go
 
 ~~~ go
-{% include app/test-app1.go %}
+{% include app/basic-sample.go %}
 ~~~
 
 ## Python
 
 ~~~ py
-{% include app/test-app1.py %}
+{% include app/basic-sample.py %}
 ~~~
 
 ## Ruby
 
 ~~~ ruby
-{% include app/test-app1.rb %}
+{% include app/basic-sample.rb %}
 ~~~
 
 ## Java
 
 ~~~ ruby
-{% include app/test-app1.java %}
+{% include app/basic-sample.java %}
 ~~~
 
 ## JavaScript (Node.js)
 
 ~~~ js
-{% include app/test-app1.js %}
+{% include app/basic-sample.js %}
 ~~~
 
-## C/C++
+## C++
 
 ~~~ c
-{% include app/test-app1.c %}
+{% include app/basic-sample.c %}
 ~~~
 
 ## Clojure
 
 ~~~ clojure
-{% include app/test-app1.clj %}
+{% include app/basic-sample.clj %}
 ~~~
 
 ## PHP
 
 ~~~ php
-{% include app/test-app1.php %}
+{% include app/basic-sample.php %}
 ~~~
