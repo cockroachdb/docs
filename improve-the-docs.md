@@ -13,8 +13,8 @@ Want a topic added to the docs? Need additional details or clarification? See an
 
 We're still working out our overall docs plan, so these instructions are a bit premature. Once we've established a comfortable baseline, here's how you'll be able to help:
 
-1. Review the [README.md](https://github.com/cockroachdb/docs/blob/master/README.md) to understand how the docs are put together and how to get yourself set up.
+1. Review [CONTRIBUTING.md](https://github.com/cockroachdb/docs/blob/gh-pages/CONTRIBUTING.md) to understand how the docs are put together and to get yourself set up.
 2. Fork the [docs repository](https://github.com/cockroachdb/docs).
-3. [Create a clone of your fork](https://github.com/jseldess/docs-2.git) locally on your computer.
-4. Make your changes and push them to your fork.
+3. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+4. Make your changes and [push to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
 5. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls).
