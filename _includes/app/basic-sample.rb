@@ -1,23 +1,24 @@
 # Import the driver.
 require 'pg'
 
-# Assuming a 'bank' database already exists, connect to it.
-conn = PG.connect(dbname: 'bank', user: 'root', host: 'localhost', port: 26257)
+# Connect to the cluster.
+conn = PG.connect(user: 'root', host: 'localhost', port: 26257)
 
-# Make every statement have immediate effect.
+# Make each statement commit immediately.
 conn.exec('SET AUTOCOMMIT = ON')
 
-# Create an 'accounts' table.
-conn.exec("CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL)")
+# Create a "bank" database and set it as default.
+conn.exec("CREATE DATABASE bank")
+conn.exec("SET DATABASE = bank")
+
+# Create an "accounts" table.
+conn.exec("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)")
 
 # Insert two rows into the table.
-conn.exec("INSERT INTO accounts (id, balance) VALUES (1, DECIMAL '1000'),(2, DECIMAL '230.50')")
+conn.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000),(2, 230)")
 
-# Update one row.
-conn.exec("UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE id = 1")
-
-# Select rows that match a condition.
-conn.exec('SELECT id FROM accounts WHERE balance < 500') do |res|
+# Check account balances.
+conn.exec('SELECT id, balance FROM accounts') do |res|
         res.each do |row|
                 puts row[0]
         end
