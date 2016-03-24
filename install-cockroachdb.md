@@ -237,7 +237,7 @@ $(document).ready(function(){
   </li>
 </ol>
 </div>
-<h2 id="whats-next">What's Next</h2>
+<h2 id="whats-next">What's Next?</h2>
 
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
@@ -373,7 +373,7 @@ $(document).ready(function(){
   </li>
 </ol>
 </div>
-<h2 id="whats-next">What's Next</h2>
+<h2 id="whats-next">What's Next?</h2>
 
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
@@ -417,7 +417,7 @@ $(document).ready(function(){
   </li>
 </ol>
 
-<h2 id="whats-next">What's Next</h2>
+<h2 id="whats-next">What's Next?</h2>
 
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>

@@ -4,7 +4,7 @@ toc: false
 expand: true
 ---
 
-Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a few minutes to start a single- or multi-node cluster locally for testing and development. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.
+Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly start a local single- or multi-node cluster with each node listening on a different port. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.
 
 1.  From the directory with the `cockroach` binary, start your first node:
 
@@ -31,8 +31,8 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a f
 2.  For each additional node, repeat step 1 with a few extra flags:
    
     ~~~ shell
-    $ ./cockroach start --insecure --store=node2-data --port=26258 --http-port=8081 --join=localhost:26257 &
-    $ ./cockroach start --insecure --store=node3-data --port=26259 --http-port=8082 --join=localhost:26257 &
+    $ ./cockroach start --insecure --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 &
+    $ ./cockroach start --insecure --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 &
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details2">Details</button>
@@ -79,7 +79,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it takes only a f
 
     When you're done using the SQL shell, press **CTRL + D** to exit.
  
-5.  [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to the address in the `admin` field in the standard output of any node on startup.
+5.  [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://<localhost>:8080`. You can find the complete address in the `admin` field in the standard output of any node on startup.
 
     <img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
 
