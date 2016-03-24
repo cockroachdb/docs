@@ -58,7 +58,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
         <p>This command restarts your first node with its existing data, but securely. The command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags to point to the CA certificate and the node certificate and key created in step 2.</p>
     </div>
 
-3.  Restart additional nodes::
+3.  Restart additional nodes:
 
     ~~~ shell
     $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key &
