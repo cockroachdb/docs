@@ -12,7 +12,7 @@ conn.exec("SET DATABASE = bank")
 conn.exec("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)")
 
 # Insert two rows into the table.
-conn.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)")
+conn.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
 
 # Check account balances.
 puts "Account balances:"
