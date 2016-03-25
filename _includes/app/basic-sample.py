@@ -18,7 +18,7 @@ cur.execute("SET DATABASE = bank")
 cur.execute("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)")
 
 # Insert two rows into the table.
-cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)")
+cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
 
 # Check account balances.
 cur.execute("SELECT id, balance FROM accounts")

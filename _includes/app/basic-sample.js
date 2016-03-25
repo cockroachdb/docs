@@ -23,11 +23,11 @@ pg.connect(config, function (err, client, done) {
     async.waterfall([
       function (next) {
         // Create an "accounts" table in the "bank" database.
-        client.query('CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);', next);
+        client.query('CREATE TABLE accounts (id INT PRIMARY KEY, balance INT);', next);
       },
       function (results, next) {
         // Insert two rows into the table.
-        client.query("INSERT INTO accounts (id, balance) VALUES (1, DECIMAL '1000'), (2, DECIMAL '230.50');", next);
+        client.query("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);", next);
       },
       function (results, next) {
         // Check account balances.
@@ -50,7 +50,7 @@ pg.connect(config, function (err, client, done) {
           client.query('BEGIN;', next);
         },
         function (results, next) {
-          // Transfer $100 from account 1 to account 2.
+          // Transfer 100 from account 1 to account 2.
           client.query('SELECT balance FROM accounts WHERE id = 1;', function (err, results) {
             if (err) {
               return next(err);
