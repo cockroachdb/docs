@@ -2,20 +2,13 @@
 import psycopg2
 
 # Connect to the cluster.
-conn = psycopg2.connect(user='root', host='localhost', port=26257)
-
-# Open a cursor to perform database operations.
-cur = conn.cursor()
+conn = psycopg2.connect(database='bank', user='root', host='localhost', port=26257)
 
 # Make each statement commit immediately.
 conn.set_session(autocommit=True)
 
-# Create a "bank" database and set it as default.
-cur.execute("CREATE DATABASE bank")
-cur.execute("SET DATABASE = bank")
-
-# Create an "accounts" table.
-cur.execute("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)")
+# Open a cursor to perform database operations.
+cur = conn.cursor()
 
 # Insert two rows into the table.
 cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
