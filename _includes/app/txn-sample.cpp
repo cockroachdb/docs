@@ -1,4 +1,4 @@
-// Build with g++ -std=c++11 txn_sample.cpp -lpq -lpqxx
+// Build with g++ -std=c++11 txn-sample.cpp -lpq -lpqxx
 
 #include <cassert>
 #include <functional>
@@ -10,12 +10,12 @@
 using namespace std;
 
 void transferFunds(
-    pqxx::dbtransaction *tx, int from, int to, float amount) {
+    pqxx::dbtransaction *tx, int from, int to, int amount) {
   // Read the balance.
   pqxx::result r = tx->exec(
       "SELECT balance FROM accounts WHERE id = " + to_string(from));
   assert(r.size() == 1);
-  float fromBalance = r[0][0].as<float>();
+  int fromBalance = r[0][0].as<int>();
 
   if (fromBalance < amount) {
     throw domain_error("insufficient funds");
@@ -23,9 +23,9 @@ void transferFunds(
 
   // Perform the transfer.
   tx->exec("UPDATE accounts SET balance = balance - " 
-      + to_string(amount) + "::DECIMAL WHERE id = " + to_string(from));
+      + to_string(amount) + " WHERE id = " + to_string(from));
   tx->exec("UPDATE accounts SET balance = balance + " 
-      + to_string(amount) + "::DECIMAL WHERE id = " + to_string(to));
+      + to_string(amount) + " WHERE id = " + to_string(to));
 }
 
 // txnWrapper runs fn inside a transaction and retries it as needed.
@@ -52,15 +52,11 @@ void txnWrapper(
 
 int main() {
   try {
-    pqxx::connection c("postgresql://root@localhost:26257");
-    string create_stmts(R"(
-      CREATE DATABASE bank;
-      SET DATABASE = bank;
-      CREATE TABLE IF NOT EXISTS bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-      INSERT INTO bank.accounts (id, balance) VALUES (1, DECIMAL '1000'), (2, DECIMAL '230.50');)");
+    pqxx::connection c("postgresql://root@localhost:26257/bank");
+
     pqxx::nontransaction w(c);
-    pqxx::result r = w.exec(create_stmts);
-    w.commit();  // Note this doesn't doesn't do anything
+    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)");
+    w.commit();  // Note that this doesn't do anything
                  // for a nontransaction, but is still required.
 
     txnWrapper(&c, [](pqxx::dbtransaction *tx) {
