@@ -34,7 +34,7 @@ $ ./cockroach sql --insecure -e='CREATE DATABASE bank;CREATE TABLE bank.accounts
 Again as the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to grant privileges on the `accounts` table to the `maxroach` user. This will enable the user to execute statements from a client in the next steps.
 
 ~~~ shell
-$ ./cockroach sql --insecure -e='GRANT create ON bank.accounts TO maxroach' 
+$ ./cockroach sql --insecure -e='GRANT ALL ON bank.accounts TO maxroach' 
 ~~~
 
 ## Step 3. Execute basic statements from a client
