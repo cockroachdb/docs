@@ -1,18 +1,56 @@
-  ;; Start a transaction. 
-  (with-db-transaction [t conn]
+;; Import the driver.
+(use 'clojure.java.jdbc)
 
-    ;; Transfer 100 from account 1 to account 2.
-    (let [balance (->> (query t ["SELECT balance FROM accounts WHERE id = 1"] :row-fn :balance)
-                       (first))]
-      (when (> balance 100)
-        ;; Subtract 100 from account 1.
-        (execute! t ["UPDATE accounts SET balance = balance - DECIMAL '100' WHERE id = 1"])
-        ;; Add 100 to account 2.
-        (execute! t ["UPDATE accounts SET balance = balance + DECIMAL '100' WHERE id = 2"])
-        )))
+;; Connect to the cluster.
+(def db-spec {:subprotocol "postgresql"
+              :subname "//localhost:26257/bank"
+              :user "maxroach"
+              :password ""})
 
-  ;; Check account balances after the transaction.
+
+;; Wrapper for a transaction.
+;; This automatically invokes the body again
+;; as long as the database server asks the transaction to be retried.
+(defmacro with-txn-retry
+  [c conn & body]
+  `(with-db-transaction [c conn]
+     (loop []
+       (let [res# (try (let [r# ~@body]
+                         {:ok r#})
+                       (catch org.postgresql.util.PSQLException e#
+                         (if (re-find #"restart transaction" (.getMessage e#))
+                           {:retry true}
+                           (throw e#))))]
+         (if (:retry res#) (recur) (:ok res#))
+         ))))
+
+;; The transaction we want to run.
+(defn transferFunds
+  [txn from to amount]
+
+  ;; Check the current balance.
+  (let [fromBalance (->> (query txn ["SELECT balance FROM accounts WHERE id = ?" from])
+                         (mapv :balance)
+                         (first))]
+    (when (< fromBalance amount)
+      (throw (Exception. "Insufficient funds"))))
+
+  ;; Perform the transfer.
+  (execute! txn [(str "UPDATE accounts SET balance = balance - " amount " WHERE id = " from)])
+  (execute! txn [(str "UPDATE accounts SET balance = balance + " amount " WHERE id = " to)])
+  )
+      
+
+(with-db-connection [conn db-spec]
+  ;; Execute the transaction.
+  (with-txn-retry [c conn]
+     (transferFunds c 1 2 100))
+
+  (println "Balances after transfer:")
   (->> (query conn ["SELECT id, balance FROM accounts"])
        (map println)
-       doall)
+       (doall))
+  )
+  
+  
 
