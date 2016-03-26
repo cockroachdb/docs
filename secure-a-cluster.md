@@ -17,7 +17,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure1">Details</button>
     <div id="details-secure1" class="collapse">
         <ul>
-            <li>If you used the <code>cockcroach start</code> commands on <a href="start-a-local-cluster.html">Start a Cluster</a> verbatim, the commands above will work as well. Otherwise, just set the <code>--http-port</code> flag to the ports you used.</li>
+            <li>If you used the <code>cockroach start</code> commands on <a href="start-a-local-cluster.html">Start a Cluster</a> verbatim, the commands above will work as well. Otherwise, just set the <code>--http-port</code> flag to the ports you used.</li>
             <li>For more details about the <code>cockroach quit</code> command, see <a href="stop-a-node.html">Stop a Node</a>.</li>
         </ul>
     </div>
