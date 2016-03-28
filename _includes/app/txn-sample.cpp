@@ -28,8 +28,17 @@ void transferFunds(
       + to_string(amount) + " WHERE id = " + to_string(to));
 }
 
-// txnWrapper runs fn inside a transaction and retries it as needed.
-void txnWrapper(
+
+// ExecuteTx runs fn inside a transaction and retries it as needed.
+// On non-retryable failures, the transaction is aborted and rolled
+// back; on success, the transaction is committed.
+//
+// For more information about CockroachDB's transaction model see
+// https://cockroachlabs.com/docs/transactions.html.
+//
+// NOTE: the supplied exec closure should not have external side
+// effects beyond changes to the database.
+void executeTx(
     pqxx::connection *c, function<void (pqxx::dbtransaction *tx)> fn) {
   pqxx::work tx(*c);
   while (true) {
@@ -54,12 +63,7 @@ int main() {
   try {
     pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
 
-    pqxx::nontransaction w(c);
-    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)");
-    w.commit();  // Note that this doesn't do anything
-                 // for a nontransaction, but is still required.
-
-    txnWrapper(&c, [](pqxx::dbtransaction *tx) {
+    executeTx(&c, [](pqxx::dbtransaction *tx) {
           transferFunds(tx, 1, 2, 100);
       });
   }
