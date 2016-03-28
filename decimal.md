@@ -9,7 +9,7 @@ The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers wit
 
 ## Synonyms
 
-In CockroachDB, the following are synonyms of `DECIMAL` and are implemented identically:
+In CockroachDB, the following are synonyms of `DECIMAL`:
 
 - `DEC` 
 - `NUMERIC` 
@@ -23,6 +23,8 @@ Precision (the maximum count of digits in a whole number, both to the left and r
 When declaring a decimal, format it as `DECIMAL '1.2345'`. This casts the value as a string, which preserves the number's exact precision.
 
 Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
+
+{{site.data.alerts.callout_info}}A future version of CockroachDB will support declaring a decimal as a literal instead of needing to cast from a string or float.{{site.data.alerts.end}}
 
 ## Examples
 

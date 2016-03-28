@@ -9,7 +9,7 @@ The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers 
 
 ## Synonyms
 
-In CockroachDB, the following are synonyms of `FLOAT` and are implemented identically:
+In CockroachDB, the following are synonyms of `FLOAT`:
 
 - `REAL` 
 - `DOUBLE PRECISION` 

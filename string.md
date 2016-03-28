@@ -5,11 +5,11 @@ toc: true
 
 ## Description
 
-The `STRING` [data type](data-types.html) stores strings of variable, unlimited length. 
+The `STRING` [data type](data-types.html) stores strings of variable length. 
 
 ## Synonyms 
 
-In CockroachDB, the following are synonyms of `STRING` and are implemented identically: 
+In CockroachDB, the following are synonyms of `STRING`: 
 
 - `CHAR` 
 - `CHAR(n)` 
@@ -19,7 +19,9 @@ In CockroachDB, the following are synonyms of `STRING` and are implemented ident
 
 ## Length
 
-Length is always variable and unlimited for a `STRING` value. If you specify a fixed length by declaring `CHAR(n)` or `VARCHAR(n)` on a column, it will not be enforced.
+At this time, length is always variable for a `STRING` value. If you specify a fixed length by declaring `CHAR(n)` or `VARCHAR(n)` on a column, it will not be enforced.
+
+{{site.data.alerts.callout_info}}A future version of CockroachDB will support enforcing length limits on strings.{{site.data.alerts.end}}
 
 ## Format
 

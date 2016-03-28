@@ -9,7 +9,7 @@ The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `tr
 
 ## Synonyms
 
-In CockroachDB, `BOOLEAN` is a synonym of `BOOL` and is implemented identically. 
+In CockroachDB, `BOOLEAN` is a synonym of `BOOL`. 
 
 ## Format
 
