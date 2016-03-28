@@ -43,13 +43,13 @@ As the `maxroach` user, connect from your preferred language, insert a few rows 
 
 TODO: will later style this so you only see on language at a time (tabs or something similar)
 
-**Go**
+#### Go
 
 ~~~ go
 {% include app/basic-sample.go %}
 ~~~
 
-**Python**
+#### Python
 
 ~~~ py
 {% include app/basic-sample.py %}
@@ -63,43 +63,44 @@ Initial balances:
 ['2', '250']
 
 ~~~
-**Ruby**
+
+####Ruby
 
 ~~~ ruby
 {% include app/basic-sample.rb %}
 ~~~
 
-**Java**
+#### Java
 
 ~~~ java
 {% include app/BasicSample.java %}
 ~~~
 
-**JavaScript (Node.js)**
+####JavaScript (Node.js)
 
 ~~~ js
 {% include app/basic-sample.js %}
 ~~~
 
-**C++**
+####C++
 
 ~~~ c
 {% include app/basic-sample.c %}
 ~~~
 
-**Clojure**
+####Clojure
 
 ~~~ clojure
 {% include app/basic-sample.clj %}
 ~~~
 
-**PHP**
+####PHP
 
 ~~~ php
 {% include app/basic-sample.php %}
 ~~~
 
-## Step 4. Perform transactions from a client
+## Step 4. Execute transactions from a client
 
 In addition to executing single statements, you'll want to batch statements together as atomic transactions, where all included statements are either commited or aborted together. 
 
