@@ -26,7 +26,8 @@ We assume that you have already:
 As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create a `bank` database and an `accounts` table.
 
 ~~~ shell
-$ ./cockroach sql --insecure -e='CREATE DATABASE bank;CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance INT)' 
+$ ./cockroach sql --insecure -e 'CREATE DATABASE bank'
+$ ./cockroach sql --insecure -e 'CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance INT)' 
 ~~~
 
 ## Step 2. Grant privileges to a user
@@ -34,16 +35,12 @@ $ ./cockroach sql --insecure -e='CREATE DATABASE bank;CREATE TABLE bank.accounts
 Again as the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to grant privileges on the `accounts` table to the `maxroach` user. This will enable the user to execute statements from a client in the next steps.
 
 ~~~ shell
-$ ./cockroach sql --insecure -e='GRANT ALL ON bank.accounts TO maxroach' 
+$ ./cockroach sql --insecure -e 'GRANT ALL ON bank.accounts TO maxroach' 
 ~~~
 
 ## Step 3. Execute basic statements from a client
 
 As the `maxroach` user, connect from your preferred language, insert a few rows into the `accounts` table, and read and print the rows.
-
-**Go**
-
-Coming soon
 
 **Python**
 
@@ -80,7 +77,9 @@ Initial balances:
 
 **C++**
 
-Coming soon.
+~~~ c++
+{% include app/basic-sample.cpp %}
+~~~
 
 **Clojure**
 
@@ -91,6 +90,10 @@ Coming soon.
 **PHP**
 
 Coming soon.
+
+**Go**
+
+Coming soon
 
 ## Step 4. Execute transactions from a client
 
