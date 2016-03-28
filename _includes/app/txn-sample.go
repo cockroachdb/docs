@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/lib/pq"
+	"github.com/cockroachdb/cockroach-go/crdb"
 )
 
 func transferFunds(tx *sql.Tx, from int, to int, amount int) error {
@@ -32,61 +32,14 @@ func transferFunds(tx *sql.Tx, from int, to int, amount int) error {
 	return nil
 }
 
-// txnWrapper runs fn inside a transaction and retries it as needed.
-func txnWrapper(db *sql.DB, database string, fn func(*sql.Tx) error) error {
-	// Start a transaction.
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-	// Specify that we intend to retry this txn in case of CockroachDB retryable
-	// errors.
-	if _, err := tx.Exec("SAVEPOINT cockroach_restart"); err != nil {
-		return err
-	}
-	if _, err := tx.Exec("SET DATABASE = " + database); err != nil {
-		return err
-	}
-
-	for {
-		err = fn(tx)
-		if err == nil {
-			// RELEASE acts like COMMIT in CockroachDB. We use it since it gives us an
-			// opportunity to react to retryable errors, whereas txn.Commit() doesn't.
-			if _, err = tx.Exec("RELEASE SAVEPOINT cockroach_restart"); err == nil {
-				err = tx.Commit()
-				return err
-			}
-		}
-		// We got an error; let's see if it's a retryable one and, if so, restart.
-		pqErr, ok := err.(*pq.Error)
-		retryable := ok && string(pqErr.Code) == "CR000"
-		if !retryable {
-			return err
-		}
-		if _, err := tx.Exec("ROLLBACK TO SAVEPOINT cockroach_restart"); err != nil {
-			return err
-		}
-	}
-}
-
 func main() {
-	db, err := sql.Open("postgres", "postgresql://root@localhost:26257?sslmode=disable")
+	db, err := sql.Open("postgres", "postgresql://root@localhost:26257/bank?sslmode=disable")
 	if err != nil {
 		log.Fatal("error connection to the database: ", err)
 	}
 
-	// Create the database and the initial state of the accounts.
-	if _, err := db.Exec(`
-		CREATE DATABASE bank;
-		CREATE TABLE IF NOT EXISTS bank.accounts (id INT PRIMARY KEY, balance INT);
-		INSERT INTO bank.accounts (id, balance) VALUES (1, 1000), (2, 230);
-	`); err != nil {
-		log.Fatalf("error initializing database: %s", err)
-	}
-
 	// Run a transfer in a transaction.
-	err = txnWrapper(db, "bank", func(tx *sql.Tx) error {
+	err = crdb.ExecuteTx(db, func(tx *sql.Tx) error {
 		return transferFunds(tx, 1 /* from acct# */, 2 /* to acct# */, 100 /* amount */)
 	})
 	if err == nil {
