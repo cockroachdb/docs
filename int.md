@@ -9,7 +9,7 @@ The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, w
 
 ## Synonyms 
 
-In CockroachDB, the following are synonyms of `INT` and are implemented identically: 
+In CockroachDB, the following are synonyms of `INT`: 
 
 - `SMALLINT` 
 - `INTEGER` 
