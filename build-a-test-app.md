@@ -41,15 +41,11 @@ $ ./cockroach sql --insecure -e='GRANT ALL ON bank.accounts TO maxroach'
 
 As the `maxroach` user, connect from your preferred language, insert a few rows into the `accounts` table, and read and print the rows.
 
-TODO: will later style this so you only see on language at a time (tabs or something similar)
+**Go**
 
-#### Go
+Coming soon
 
-~~~ go
-{% include app/basic-sample.go %}
-~~~
-
-#### Python
+**Python**
 
 ~~~ py
 {% include app/basic-sample.py %}
@@ -64,47 +60,45 @@ Initial balances:
 
 ~~~
 
-####Ruby
+**Ruby**
 
 ~~~ ruby
 {% include app/basic-sample.rb %}
 ~~~
 
-#### Java
+**Java**
 
 ~~~ java
 {% include app/BasicSample.java %}
 ~~~
 
-####JavaScript (Node.js)
+**JavaScript (Node.js)**
 
 ~~~ js
 {% include app/basic-sample.js %}
 ~~~
 
-####C++
+**C++**
 
-~~~ c
-{% include app/basic-sample.c %}
-~~~
+Coming soon.
 
-####Clojure
+**Clojure**
 
 ~~~ clojure
 {% include app/basic-sample.clj %}
 ~~~
 
-####PHP
+**PHP**
 
-~~~ php
-{% include app/basic-sample.php %}
-~~~
+Coming soon.
 
 ## Step 4. Execute transactions from a client
 
 In addition to executing single statements, you'll want to batch statements together as atomic transactions, where all included statements are either commited or aborted together. 
 
-TODO: Explain necessity for retry and show our reusable function
+More coming soon.
+
+<!-- TODO: Explain necessity for retry and show our reusable function
 
 TODO: Show retry function in context of a transaction (transfer funds from one account to the other)
 
@@ -115,3 +109,4 @@ Balances after transfer:
 ['1', '1000']
 ['2', '250']
 ~~~
+-->
