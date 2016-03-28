@@ -52,7 +52,7 @@ void txnWrapper(
 
 int main() {
   try {
-    pqxx::connection c("postgresql://root@localhost:26257/bank");
+    pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
 
     pqxx::nontransaction w(c);
     w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)");
