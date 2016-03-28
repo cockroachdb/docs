@@ -13,7 +13,7 @@ var config = {
 
 pg.connect(config, function (err, client, done) {
     if (err) {
-	return console.error('could not connect to cockroachdb', err);
+        return console.error('could not connect to cockroachdb', err);
     }
     async.waterfall([
         function (next) {
@@ -23,25 +23,25 @@ pg.connect(config, function (err, client, done) {
         function (results, next) {
             // Transfer 100 from account 1 to account 2.
             client.query('SELECT balance FROM accounts WHERE id = 1;', function (err, results) {
-		if (err) {
-		    return next(err);
-		}
+                if (err) {
+                    return next(err);
+                }
 
-		var acctOneBal = results.rows[0].balance;
-		if (acctOneBal > 100) {
-		    async.series([
-			function (next) {
-			    // Subtract $100 from account 1.
-			    client.query("UPDATE accounts SET balance = balance - DECIMAL '100' WHERE id = 1;", next);
-			},
-			function (next) {
-			    // Add $100 to account 2.
-			    client.query("Update accounts SET balance = balance + DECIMAL '100' WHERE id = 2;", next);
-			},
-		    ], next);
-		} else {
-		    next();
-		}
+                var acctOneBal = results.rows[0].balance;
+                if (acctOneBal > 100) {
+                    async.series([
+                        function (next) {
+                            // Subtract $100 from account 1.
+                            client.query("UPDATE accounts SET balance = balance - DECIMAL '100' WHERE id = 1;", next);
+                        },
+                        function (next) {
+                            // Add $100 to account 2.
+                            client.query("UPDATE accounts SET balance = balance + DECIMAL '100' WHERE id = 2;", next);
+                        },
+                    ], next);
+                } else {
+                    next();
+                }
             });
         },
         function (results, next) {
@@ -50,24 +50,24 @@ pg.connect(config, function (err, client, done) {
         },
     ],
     function (err, results) {
-	if (err) {
-	    return console.error('error performing transaction', err);
-	}
+        if (err) {
+            return console.error('error performing transaction', err);
+        }
 
-	// Check account balances after the transaction.
-	client.query('SELECT id, balance FROM accounts', function (err, results) {
-	    if (err) {
-		return console.error('error querying accounts', err);
-	    }
+        // Check account balances after the transaction.
+        client.query('SELECT id, balance FROM accounts', function (err, results) {
+            if (err) {
+                return console.error('error querying accounts', err);
+            }
 
-	    console.log('Account balances after transaction:');
-	    results.rows.forEach(function (row) {
-		console.log(row);
-	    });
+            console.log('Account balances after transaction:');
+            results.rows.forEach(function (row) {
+                console.log(row);
+            });
 
-	    // Close communication with the database and exit.
-	    done();
-	    process.exit();
-	});
+            // Close communication with the database and exit.
+            done();
+            process.exit();
+        });
     });
 });
