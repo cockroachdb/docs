@@ -24,7 +24,7 @@ When declaring a decimal, format it as `DECIMAL '1.2345'`. This casts the value 
 
 Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
 
-{{site.data.alerts.callout_info}}In an upcoming version, CockroachDB will support declaring a decimal as a literal instead needing to cast from a string or float.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}A future version of CockroachDB will support declaring a decimal as a literal instead of needing to cast from a string or float.{{site.data.alerts.end}}
 
 ## Examples
 
