@@ -3,114 +3,64 @@ title: Transactions
 toc: false
 ---
 
-CockroachDB fully supports SQL transactions. One of the headline features of the
-database is our support for [ACID semantics](https://en.wikipedia.org/wiki/ACID)
-for transactions spanning arbitrary SQL rows and tables, even when data is
-distributed across machines. In particular, CockroachDB support serializable
-transactions.
+CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed across machines. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
+
+<div id="toc"></div>
 
 ## Syntax
 
-The syntax is the standard `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`.
+In CockroachDB, a transaction is set up by surrounding SQL statements with the `BEGIN TRANSACTION` and `COMMIT` statements:
 
-```
+~~~ sql
 BEGIN TRANSACTION
-... do work ...
-COMMIT/ROLLBACK TRANSACTION
-```
+<other statements>
+COMMIT
+~~~
 
-## Retries
+If at any point in the transaction you decide to abort all updates, you can issue the `ROLLBACK` statement instead of the `COMMIT` statement.
 
-A particuliarity of running transaction in CockroachDB is that they sometimes
-have to be retried. This stems from our internal use of an 
-[optimistic concurrency control
-model](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), which
-means that transactions don't take locks to protect from concurrent accesses by
-others. Instead, we detect when such accesses would result in a violation of the
-transaction contract and force one of the transactions involved to retry. Note
-that various conditions force transactions in traditional databases to be
-retried too (e.g. transactions can generally deadlock under certain access
-patters, forcing one of them to fail), but we expect this to be far more common
-in Cockroach. This is why we have particular facilities for dealing with
-restarts.
+## Transaction Retries
 
-In the future, we might provide language-specific libraries that will handle
-retries automatically and hide them from client code. For now, the application
-needs to perform a couple of steps (probably in a generic wrapper function, see
-code samples in [Build a Test App](build-a-test-app.html)).  Cockroach uses the
-standard SQL `SAVEPOINT` syntax to assist with retries.  However, we don't
-support the full functionality of savepoints, such as nested transactions;
-savepoints have to be used in a particular way:
+Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, however, one of the conflicting transactions must be retried or aborted.
 
-1. Start a transaction.
-  ```
-  BEGIN TRANSACTION
-  ```
-2. Define a savepoint called `cockroach_restart` **at the beginning of a
-   transaction**.
-  ```
-  SAVEPOINT cockroach_restart
-  ```
-3. Run the statements inside the transaction, as you normally would.
-4. Every statement might return an error. Some errors are *retryable*. They can
-   be recognized either by their error code (`CR000`), or, if the code is not
-   available, through the `"retry transaction"` string being present in the
-   error message.  
-   If a retryable error is found, the transaction can be restarted using the
-   rollback to savepoint statement:
-   ```
-   if retryable_error:
-      ROLLBACK TO SAVEPOINT cockroach_restart
-   ```
-   If the application does not want to retry the transaction, for whatever
-   reason, it can simply `ROLLBACK` at this point. Any other statement will be
-   rejected by the server, as is generally the case after an error has been
-   encountered and the transaction has not been closed.
-5. When the transaction is ready to commit, use the standard `RELEASE SAVEPOINT` 
-   statement for committing the changes. If this succeeds, all changes made by the 
-   transaction become visible to others and are guaranteed to be durable if a crash occurs
-   (note that this is a departure from standard SQL semantics, where `RELEASE`
-   only destroyes a savepoint, but the changes can still be rolled back with the
-   transaction).
-   The `RELEASE SAVEPOINT` statement can itself fail with a retryable error. In
-   fact, in CockroachDB, `RELEASE` is the most likely statement to fail in this way, as,
-   under various circumstances, transactions only realize that they need to be restarted 
-   when they attempt to commit. If this happens, the error can be handled as
-   described in step 4.
-   If the `RELEASE` succeeds, the transaction can be finalized by issuing a `COMMIT`. This statement
-   doesn't have an effect over the data; it only serves to finalize a
-   transaction's state machine. `COMMIT` will not return a retryable error.
-   ```
-   RELEASE SAVEPOINT cockroach_restart
-   if retryable_error:
-      ROLLBACK TO SAVEPOINT cockroach_restart
-      ... execute the transaction again ...
-   COMMIT
-   ```
+To assist with retries, CockroachDB provides a **generic retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
-Note that *implicit transactions* (SQL statements outside of a transaction) are internally 
-retried as needed; no special handling of errors is needed.
+### How the Retry Function Works
+
+1. The transaction starts.
+
+2. The `SAVEPOINT cockroach_restart` statement defines the intention to retry the transaction in the case of CockroachDB-retryable errors.
+
+3. The statements in the transaction are executed. 
+
+4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the `ROLLBACK TO SAVEPOINT cockroach_restart` statement restarts the transaction. 
+
+   In cases where you do not want the application to retry the transaction, you can adapt the wrapper funciton to simply `ROLLBACK` at this point. Any other statement will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
+
+5. When there are no retryable errors, the `RELEASE SAVEPOINT cockroach_restart` statement commits the changes. If this succeeds, all changes made by the transaction become visible to others and are guaranteed to be durable if a crash occurs.
+
+   In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
+
+{{site.data.alerts.callout_info}}In CockroachDB, individual statements outside of transactions are considered implicit transactions and are retried automatically; no special error handling is needed.{{site.data.alerts.end}}
 
 ## Transaction Priorities
 
-Each transaction in CockroachDB has a *priority*, assigned at start and possibly
-increased with each retry. This mechanism is designed to prevent starvation of
-certain classes of transaction under different access patterns. When two
-transactions interact with each other and one of them needs to be retried, the
-one with the lowest priority loses. But when it retries, it inherits the
-priority of the winner, meaning that each retry makes it stronger and more
-likely to succeed.  
-The client has some control over the initial priority of a transaction either
-when the transaction is started, using the `BEGIN TRANSACTION PRIORITY {LOW,
-NORMAL, HIGH}` statement, or immediately after using the `SET TRANSACTION PRIORITY {LOW,
-NORMAL, HIGH}` statement. These priorities can be assigned to transactions to
-help the ones with stricter deadlines succeed faster in high-contention
-scenarios.
+Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in high-contention scenarios, the client can set the priority within the `BEGIN TRANSACTION` statement:
 
+~~~ sql
+BEGIN TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
+~~~
 
-## Transaction Conflicts
+Alternately, the client can set the priority immediately after the transaction is started as follows:
 
-TODO
+~~~ sql
+SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
+~~~
+
+### Priority and Retries
+
+When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.
+
 
 ## Isolation Levels
 
