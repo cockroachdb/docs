@@ -77,8 +77,8 @@ Initial balances:
 
 **C++**
 
-~~~ c
-{% include app/basic-sample.c %}
+~~~ cpp
+{% include app/basic-sample.cpp %}
 ~~~
 
 **Clojure**
