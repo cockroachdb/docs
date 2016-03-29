@@ -21,21 +21,21 @@ We assume that you have already:
 - [Started a local cluster](start-a-local-cluster.html) in insecure mode
 - [Installed a client driver](install-client-drivers.html)
  
-## Step 1. Create the database
+## Step 1. Create the database and grant privileges
 
-As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create a `bank` database and an `accounts` table.
+As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create a `bank` database and grant privileges to the `maxroach` user. The privileges will enable the user to execute statements in the next steps. 
 
 ~~~ shell
-$ ./cockroach sql --insecure -e 'CREATE DATABASE bank'
-$ ./cockroach sql --insecure -e 'CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance INT)' 
+$ ./cockroach sql -e 'CREATE DATABASE bank'
+$ ./cockroach sql -e 'GRANT ALL ON bank TO maxroach`
 ~~~
 
-## Step 2. Grant privileges to a user
+## Step 2. Create the accounts table
 
-Again as the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to grant privileges on the `accounts` table to the `maxroach` user. This will enable the user to execute statements from a client in the next steps.
+As the `maxroach` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create an `accounts` table in the new database.
 
 ~~~ shell
-$ ./cockroach sql --insecure -e 'GRANT ALL ON bank.accounts TO maxroach' 
+$ ./cockroach sql --database=bank --user=maxroach -e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)' 
 ~~~
 
 ## Step 3. Execute basic statements from a client
@@ -77,8 +77,8 @@ Initial balances:
 
 **C++**
 
-~~~ c++
-{% include app/basic-sample.cpp %}
+~~~ c
+{% include app/basic-sample.c %}
 ~~~
 
 **Clojure**
