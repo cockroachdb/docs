@@ -7,7 +7,6 @@
 #include <string>
 #include <pqxx/pqxx>
 
-// Import the driver.
 using namespace std;
 
 int main() {
