@@ -11,13 +11,16 @@ using namespace std;
 
 int main() {
   try {
+    // Connect to the "bank" database.
     pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
 
     pqxx::nontransaction w(c);
 
-    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)");
+    // Insert two rows into the "accounts" table.
+    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
 
-    cout << "Account balances:" << endl;
+    // Print out the balances.
+    cout << "Initial balances:" << endl;
     pqxx::result r = w.exec("SELECT id, balance FROM accounts");
     for (auto row : r) {
       cout << row[0].as<int>() << ' ' << row[1].as<int>() << endl;
