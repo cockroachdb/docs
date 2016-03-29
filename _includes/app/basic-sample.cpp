@@ -15,9 +15,9 @@ int main() {
 
     pqxx::nontransaction w(c);
 
-    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 230)");
+    w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
 
-    cout << "Account balances:" << endl;
+    cout << "Initial balances:" << endl;
     pqxx::result r = w.exec("SELECT id, balance FROM accounts");
     for (auto row : r) {
       cout << row[0].as<int>() << ' ' << row[1].as<int>() << endl;

@@ -1,21 +1,14 @@
 # Import the driver.
 require 'pg'
 
-# Connect to the cluster.
-conn = PG.connect(user: 'root', host: 'localhost', port: 26257)
+# Connect to the "bank" database.
+conn = PG.connect(dbname: 'bank', user: 'maxroach', host: 'localhost', port: 26257)
 
-# Create a "bank" database and set it as default.
-conn.exec("CREATE DATABASE bank")
-conn.exec("SET DATABASE = bank")
-
-# Create an "accounts" table.
-conn.exec("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)")
-
-# Insert two rows into the table.
+# Insert two rows into the "accounts" table.
 conn.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
 
-# Check account balances.
-puts "Account balances:"
+# Print out the balances.
+puts "Initial balances:"
 conn.exec("SELECT id, balance FROM accounts") do |res|
         res.each do |row|
                 puts row
