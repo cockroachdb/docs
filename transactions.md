@@ -23,13 +23,13 @@ If at any point in the transaction you decide to abort all updates, you can issu
 
 Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, however, one of the conflicting transactions must be retried or aborted.
 
-To assist with retries, CockroachDB provides a **generic retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
+To assist with retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
 ### How the Retry Function Works
 
 1. The transaction starts.
 
-2. The `SAVEPOINT cockroach_restart` statement defines the intention to retry the transaction in the case of CockroachDB-retryable errors.
+2. The `SAVEPOINT cockroach_restart` statement defines the intention to retry the transaction in the case of CockroachDB-retryable errors. Note that CockroachDB's savepoint implementation does not support all savepoint functionality, such as nested transactions. 
 
 3. The statements in the transaction are executed. 
 
@@ -37,7 +37,7 @@ To assist with retries, CockroachDB provides a **generic retry function** that r
 
    In cases where you do not want the application to retry the transaction, you can adapt the wrapper funciton to simply `ROLLBACK` at this point. Any other statement will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
-5. When there are no retryable errors, the `RELEASE SAVEPOINT cockroach_restart` statement commits the changes. If this succeeds, all changes made by the transaction become visible to others and are guaranteed to be durable if a crash occurs.
+5. When there are no retryable errors, the `RELEASE SAVEPOINT cockroach_restart` statement commits the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
    In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
@@ -57,33 +57,38 @@ Alternately, the client can set the priority immediately after the transaction i
 SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
 ~~~
 
-### Priority and Retries
+### Priorities and Retries
 
 When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.
 
-
 ## Isolation Levels
 
-CockroachDB internally supports two transaction isolation levels: `SNAPSHOT
-ISOLATION` and `SERIALIZABLE` (the default). These are mapped to the ANSI SQL
-isolation levels as follows: READ UNCOMMITTED, READ COMMITTED, SNAPSHOT ->
-SNAPSHOT ISOLATION.  REPEATABLE READ, SERIALIZABLE -> SERIALIZABLE. The
-philosophy here is that we map ANSI levels to the next strongest Cockroach
-level.  
-A transaction's isolation can be set either when the transaction is started,
-with `BEGIN TRANSACTION ISOLATION LEVEL <ANSI SQL isolation level`, or using the
-`SET` statement: `SET TRANSACTION ISOLATION LEVEL <ANSI SQL isolation level>`.
+CockroachDB supports two transaction isolation levels: `SNAPSHOT ISOLATION` and `SERIALIZABLE`. By default, transactions use the `SERIALIZABLE` isolation level, but the client can explicitly set a transaction's isolation when starting the transaction:
+
+~~~ sql
+BEGIN TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
+~~~
+
+Alternately, the client can set the isolation level immediately after the transaction is started as follows:
+
+~~~ sql
+SET TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
+~~~
+
+The CockroachDB isolation levels map to [ANSI SQL isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels) as follows:
+
+CockroachDB level | ANSI SQL levels
+------------------|----------------
+`SERIALIZABLE` | `REPEATABLE READ`<br>`SERIALIZABLE`
+`SNAPSHOT ISOLATION` | `READ UNCOMMITTED`<br>`READ COMMITTED`<br>`SNAPSHOT`
 
 ### SERIALIZABLE ISOLATION
 
-TODO
-See the Serializability section in [this blog post](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
+With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default. 
+
+Unlike `SNAPSHOT ISOLATION`, `SERIALIZABLE` isolation permits no isolation anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT ISOLATION` for high concurrency workloads.
 
 ### SNAPSHOT ISOLATION
 
-Intuitively, `SNAPSHOT ISOLATION` means that the transaction behaves as if it
-were reading the state of the database consistenly at a fixed point in time.
-Interestingly this is not the same as `REPEATABLE READ` in a traditional
-database, and neither is it weaker nor stronger. `REPEATABLE READ` permits the
-*phantom reads* anomaly whereas `SNAPSHOT ISOLATION` doesn't, `SNAPSHOT
-ISOLATION` permits the *write skew* anomaly whereas `REPEATABLE READ` doesn't.
+With `SNAPSHOT ISOLATION`, a transaction behaves as if it
+were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT ISOLATION` permits the write skew anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.  
