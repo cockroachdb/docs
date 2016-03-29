@@ -23,7 +23,9 @@ If at any point in the transaction you decide to abort all updates, you can issu
 
 Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, however, one of the conflicting transactions must be retried or aborted.
 
-To assist with retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
+Individual statements, which are treated as implicit transactions, and statements batched between `BEGIN TRANSACTION` and `COMMIT`, are retried automatically by the CockroachDB server. Transactions involving business logic, however, must be retried from the client. For example, when a transaction depends on values read from the database, reads after a retry can return different results than before the retry, and so the follow-up logic may be different. 
+
+To assist with client-side retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
 ### How the Retry Function Works
 
