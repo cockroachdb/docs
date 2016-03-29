@@ -32,7 +32,7 @@ CockroachDB is not a good choice when very low latency reads and writes are crit
 
 Also, CockroachDB is not yet suitable for: 
 
-- Use cases requiring SQL joins (slated for the first major release post-beta)
+- Use cases requiring SQL joins (slated for an upcoming release)
 - Real-time analytics (on our long-term roadmap)
 
 ## How does CockroachDB scale?
