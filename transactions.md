@@ -3,7 +3,7 @@ title: Transactions
 toc: false
 ---
 
-CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed across machines. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
+CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
 
 <div id="toc"></div>
 
@@ -75,20 +75,21 @@ Alternately, the client can set the isolation level immediately after the transa
 SET TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
 ~~~
 
-The CockroachDB isolation levels map to [ANSI SQL isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels) as follows:
-
-CockroachDB level | ANSI SQL levels
-------------------|----------------
-`SERIALIZABLE` | `REPEATABLE READ`<br>`SERIALIZABLE`
-`SNAPSHOT ISOLATION` | `READ UNCOMMITTED`<br>`READ COMMITTED`<br>`SNAPSHOT`
-
 ### SERIALIZABLE ISOLATION
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default. 
 
-Unlike `SNAPSHOT ISOLATION`, `SERIALIZABLE` isolation permits no isolation anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT ISOLATION` for high concurrency workloads.
+Unlike `SNAPSHOT ISOLATION`, `SERIALIZABLE` isolation permits no anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT ISOLATION` for high concurrency workloads.
 
 ### SNAPSHOT ISOLATION
 
 With `SNAPSHOT ISOLATION`, a transaction behaves as if it
 were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT ISOLATION` permits the write skew anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.  
+
+### Comparison to [ANSI SQL Isolation Levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels)
+
+The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `REPEATABLE READ` level and equivalent to the ANSI SQL `SERIALIZABLE` level.
+
+The CockroachDB `SNAPSHOT ISOLATION` level is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
+
+For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
