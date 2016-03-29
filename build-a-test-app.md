@@ -27,7 +27,7 @@ As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.htm
 
 ~~~ shell
 $ ./cockroach sql -e 'CREATE DATABASE bank'
-$ ./cockroach sql -e 'GRANT ALL ON bank TO maxroach`
+$ ./cockroach sql -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~
 
 ## Step 2. Create a table in the new database
