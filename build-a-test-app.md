@@ -54,7 +54,6 @@ The balance printout will look like this:
 Initial balances:
 ['1', '1000']
 ['2', '250']
-
 ~~~
 
 **Ruby**
@@ -62,6 +61,10 @@ Initial balances:
 ~~~ ruby
 {% include app/basic-sample.rb %}
 ~~~
+
+**Go**
+
+Coming soon
 
 **Java**
 
@@ -91,25 +94,50 @@ Initial balances:
 
 Coming soon.
 
-**Go**
-
-Coming soon
-
 ## Step 4. Execute transactions from a client
 
-In addition to executing single statements, you'll want to batch statements together as atomic transactions, where all included statements are either commited or aborted together. 
+As the `maxroach` user, connect again from your preferred language, but this time execute a batch of statements as an atomic transaction, where all included statements are either commited or aborted. 
 
-More coming soon.
+{{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code as needed. For more details about retries and other transaction topics, see <a href="https://www.cockroachlabs.com/docs/transactions.html">Transactions</a>.{{site.data.alerts.end}}    
 
-<!-- TODO: Explain necessity for retry and show our reusable function
+**Python**
 
-TODO: Show retry function in context of a transaction (transfer funds from one account to the other)
-
-The balance printout will look like this:
-
-~~~ shell
-Balances after transfer:
-['1', '1000']
-['2', '250']
+~~~ py
+{% include app/txn-sample.py %}
 ~~~
--->
+
+**Ruby**
+
+Coming soon.
+
+**Go**
+
+~~~ py
+{% include app/txn-sample.go %}
+~~~
+
+**Java**
+
+Coming soon.
+
+**JavaScript (Node.js)**
+
+~~~ js
+{% include app/txn-sample.js %}
+~~~
+
+**C++**
+
+~~~ cpp
+{% include app/txn-sample.cpp %}
+~~~
+
+**Clojure**
+
+~~~ clojure
+{% include app/txn-sample.clj %}
+~~~
+
+**PHP**
+
+Coming soon.
