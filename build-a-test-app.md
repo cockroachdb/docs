@@ -64,7 +64,9 @@ Initial balances:
 
 **Go**
 
-Coming soon
+~~~ go
+{% include app/basic-sample.go %}
+~~~
 
 **Java**
 
@@ -112,7 +114,7 @@ Coming soon.
 
 **Go**
 
-For Go, the CockroachDB retry function is available as a client package that you can clone into your `$GOPATH` as follows:
+For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. You can clone the library into your `$GOPATH` as follows:
 
 ~~~ shell
 $ mkdir -p $GOPATH/github.com/cockroachdb 
