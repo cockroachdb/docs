@@ -1,7 +1,7 @@
 ;; Import the driver.
 (use 'clojure.java.jdbc)
 
-;; Connect to the "bank" database..
+;; Connect to the "bank" database.
 (def db-spec {:subprotocol "postgresql"
               :subname "//localhost:26257/bank"
               :user "maxroach"
