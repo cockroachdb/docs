@@ -112,7 +112,15 @@ Coming soon.
 
 **Go**
 
-~~~ py
+For Go, the CockroachDB retry function is available as a client package that you can clone into your `$GOPATH` as follows:
+
+~~~ shell
+$ mkdir -p $GOPATH/github.com/cockroachdb 
+$ cd $GOPATH/github.com/cockroachdb 
+$ git clone git@github.com:cockroachdb/cockroach-go.git
+~~~
+
+~~~ go
 {% include app/txn-sample.go %}
 ~~~
 
