@@ -79,12 +79,12 @@ SET TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default. 
 
-Unlike `SNAPSHOT ISOLATION`, `SERIALIZABLE` isolation permits no anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT ISOLATION` for high concurrency workloads.
+Unlike `SNAPSHOT ISOLATION`, `SERIALIZABLE` isolation permits no anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT ISOLATION` for high contention workloads.
 
 ### SNAPSHOT ISOLATION
 
 With `SNAPSHOT ISOLATION`, a transaction behaves as if it
-were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT ISOLATION` permits the write skew anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.  
+were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT ISOLATION` permits the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.  
 
 ### Comparison to [ANSI SQL Isolation Levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels)
 
