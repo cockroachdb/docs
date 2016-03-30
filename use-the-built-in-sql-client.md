@@ -29,13 +29,13 @@ The `cockroach sql` command supports the following flags as well as [logging fla
 
 Flag | Description 
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). If the cluster was started with security (i.e., without the `--insecure` flag), this flag is required. 
-`--cert` | The path to the [client certificate](create-security-certificates.html). If the cluster was started with security (i.e., without the `--insecure` flag), this flag is required.
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure. 
+`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.
 `--database`<br>`-d` | The database to connect to. The user specified in `--user` must have privileges to access the database. 
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. See the [examples](#execute-sql-statements-from-the-command-line) below. <br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each SQL statement are printed to the standard output.
 `--host` | The address of the node to connect to. This can be the address of any node in the cluster.
 `--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--ca-cert`, `--cert`, and `-key` flags but leave this flag out. If the cluster is insecure, set this flag.
-`--key` | The path to [client key](create-security-certificates.html) protecting the client certificate. If the cluster was started with security (i.e., without the `--insecure` flag), this flag is required.
+`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.
 `--port`<br>`-p` | The port to connect to. <br><br>**Default:** 26257
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` 
 `--user`<br>`-u` | The user connecting to the database. The user must have privileges to access the database specified in `--database`. <br><br>**Default:** root
