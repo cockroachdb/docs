@@ -522,6 +522,8 @@ header {
     margin-right: 0; }
 
   .filters .filter-button {
+    width: 12.5%;
+    margin: 0;
     font-family: 'AvenirLTStd-Light', serif;
     font-size: 16px;
     font-weight: normal;

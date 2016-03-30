@@ -171,6 +171,8 @@
 
 	.filters {
 		.filter-button {
+			width: 12.5%;
+			margin: 0;
 			@include avenir_l(16px);
 			line-height: 16px;
 		}
