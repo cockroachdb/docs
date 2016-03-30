@@ -30,7 +30,7 @@ Flag | Description
 `--cert` | The path to the [node certificate](create-security-certificates.html). This flag is required to stop a secure node.
 `--host` | A valid address for reaching the node. <br><br>**Default:** localhost
 `--http-port` | The port that the node listens on for HTTP requests. <br><br>**Default:** 8080
-`--insecure` | Whether or not the cluster is secure (authentication and encrypted client/node and inter-node communication). If the cluster is secure, set the `--ca-cert`, `--cert`, and `--key` flags but leave this flag out. If the cluster is insecure, set this flag.
+`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to stop a secure node. 
 
 ## Examples
