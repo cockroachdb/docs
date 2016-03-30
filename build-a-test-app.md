@@ -3,13 +3,33 @@ title: Build a Test App
 toc: false
 ---
 
-This page is CockroachDB's **Hello, world!** tutorial. It walks you through creating a database, granting privileges on the database to a user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
-
 <style>
 div#toc ul {
     max-width: 50%;
 }
 </style>
+
+<script>
+$(document).ready(function(){
+    
+	var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+    	var language = $(this).data('language'), 
+    	$current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+    	//remove current class from tab and content
+    	$current_tab.removeClass('current');
+    	$current_content.removeClass('current');
+
+    	//add current class to clicked button and corresponding content block
+    	$('.filter-button[data-language="'+language+'"').addClass('current');
+    	$('.filter-content[data-language="'+language+'"').addClass('current');
+    });
+});
+</script>
+
+This page is CockroachDB's **Hello, world!** tutorial. It walks you through creating a database, granting privileges on the database to a user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
 
 <div id="toc"></div>
 
@@ -42,6 +62,18 @@ $ ./cockroach sql --database=bank --user=maxroach -e 'CREATE TABLE accounts (id 
 
 As the `maxroach` user, connect from your preferred language, insert a few rows into the `accounts` table, and read and print the rows.
 
+<div id="step-three-filters" class="filters clearfix">
+	<button class="filter-button current" data-language="python">Python</button>
+	<button class="filter-button" data-language="ruby">Ruby</button>
+	<button class="filter-button" data-language="go">Go</button>
+	<button class="filter-button" data-language="java">Java</button>
+	<button class="filter-button" data-language="nodejs">Node.js</button>
+	<button class="filter-button" data-language="cplusplus">C++</button>
+	<button class="filter-button" data-language="clojure">Clojure</button>
+	<button class="filter-button" data-language="php">PHP</button>
+</div>
+
+<div class="filter-content current" markdown="1" data-language="python">
 **Python**
 
 ~~~ py
@@ -55,46 +87,61 @@ Initial balances:
 ['1', '1000']
 ['2', '250']
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="ruby">
 **Ruby**
 
 ~~~ ruby
 {% include app/basic-sample.rb %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="go">
 **Go**
 
 ~~~ go
 {% include app/basic-sample.go %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="java">
 **Java**
 
 ~~~ java
 {% include app/BasicSample.java %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="nodejs">
 **JavaScript (Node.js)**
 
 ~~~ js
 {% include app/basic-sample.js %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="cplusplus">
 **C++**
 
 ~~~ cpp
 {% include app/basic-sample.cpp %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="clojure">
 **Clojure**
 
 ~~~ clojure
 {% include app/basic-sample.clj %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="php">
 **PHP**
 
 Coming soon.
+</div>
 
 ## Step 4. Execute transactions from a client
 
@@ -102,16 +149,32 @@ As the `maxroach` user, connect again from your preferred language, but this tim
 
 {{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code as needed. For more details about retries and other transaction topics, see <a href="https://www.cockroachlabs.com/docs/transactions.html">Transactions</a>.{{site.data.alerts.end}}    
 
+<div id="step-four-filters" class="filters clearfix">
+	<button class="filter-button current" data-language="python">Python</button>
+	<button class="filter-button" data-language="ruby">Ruby</button>
+	<button class="filter-button" data-language="go">Go</button>
+	<button class="filter-button" data-language="java">Java</button>
+	<button class="filter-button" data-language="nodejs">Node.js</button>
+	<button class="filter-button" data-language="cplusplus">C++</button>
+	<button class="filter-button" data-language="clojure">Clojure</button>
+	<button class="filter-button" data-language="php">PHP</button>
+</div>
+
+<div class="filter-content current" markdown="1" data-language="python">
 **Python**
 
 ~~~ py
 {% include app/txn-sample.py %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="ruby">
 **Ruby**
 
 Coming soon.
+</div>
 
+<div class="filter-content" markdown="1" data-language="go">
 **Go**
 
 For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. You can clone the library into your `$GOPATH` as follows:
@@ -125,29 +188,40 @@ $ git clone git@github.com:cockroachdb/cockroach-go.git
 ~~~ go
 {% include app/txn-sample.go %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="java">
 **Java**
 
 Coming soon.
+</div>
 
+<div class="filter-content" markdown="1" data-language="nodejs">
 **JavaScript (Node.js)**
 
 ~~~ js
 {% include app/txn-sample.js %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="cplusplus">
 **C++**
 
 ~~~ cpp
 {% include app/txn-sample.cpp %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="clojure">
 **Clojure**
 
 ~~~ clojure
 {% include app/txn-sample.clj %}
 ~~~
+</div>
 
+<div class="filter-content" markdown="1" data-language="php">
 **PHP**
 
 Coming soon.
+</div>
