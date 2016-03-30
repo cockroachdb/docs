@@ -11,7 +11,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     ~~~ shell
     $ ./cockroach start --insecure &
 
-    build:     beta-20160328-2-g902c616 @ 2016/03/29 21:39:05 (go1.6)
+    build:     {{site.data.strings.build}}
     admin:     http://ROACHs-MBP:8080
     sql:       postgresql://root@ROACHs-MBP:26257?sslmode=disable
     logs:      cockroach-data/logs
