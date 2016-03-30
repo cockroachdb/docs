@@ -92,12 +92,12 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-beta-20160329.darwin-10.9-amd64.tgz">CockroachDB tarball for OS X</a>.</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz">CockroachDB tarball for OS X</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach-beta-20160329.darwin-10.9-amd64.tgz</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
@@ -256,12 +256,12 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-beta-20160329.linux-amd64.tgz">CockroachDB tarball for Linux</a>.</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz">CockroachDB tarball for Linux</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach-beta-20160329.linux-amd64.tgz</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>tar xfz cockroach-{{site.data.strings.version}}.linux-amd64.tgz</code></pre>
       </div>
     </li>
     <li>

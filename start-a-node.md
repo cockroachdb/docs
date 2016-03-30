@@ -53,7 +53,7 @@ Field | Description
 When you run `cockroach start`, some helpful details are printed to the standard output:
 
 ~~~ shell
-build:     beta-20160328-2-g902c616 @ 2016/03/29 21:39:05 (go1.6)
+build:     {{site.data.strings.build}}
 admin:     http://ROACHs-MBP:8080
 sql:       postgresql://root@ROACHs-MBP:26257?sslmode=disable
 logs:      cockroach-data/logs
