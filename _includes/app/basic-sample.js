@@ -12,8 +12,15 @@ var config = {
 };
 
 pg.connect(config, function (err, client, done) {
+  // Closes communication with the database and exit.
+  var finish = function () {
+    done();
+    process.exit();
+  };
+
   if (err) {
-    return console.error('could not connect to cockroachdb', err);
+    console.error('could not connect to cockroachdb', err);
+    finish();
   }
   async.waterfall([
     function (next) {
@@ -27,16 +34,15 @@ pg.connect(config, function (err, client, done) {
   ],
   function (err, results) {
     if (err) {
-      return console.error('error inserting into and selecting from accounts', err);
+      console.error('error inserting into and selecting from accounts', err);
+      finish();
     }
 
-    console.log('Initial account balances:');
+    console.log('Initial balances:');
     results.rows.forEach(function (row) {
       console.log(row);
     });
 
-    // Close communication with the database and exit.
-    done();
-    process.exit();
+    finish();
   });
 });
