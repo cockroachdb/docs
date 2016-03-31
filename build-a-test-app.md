@@ -94,7 +94,9 @@ Initial balances:
 
 **PHP**
 
-Coming soon.
+~~~ php
+{% include app/basic-sample-pdo.php %}
+~~~
 
 ## Step 4. Execute transactions from a client
 
