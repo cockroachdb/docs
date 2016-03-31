@@ -12,7 +12,7 @@ def onestmt(conn, sql):
         cur.execute(sql)
 
 # Wrapper for a transaction.
-# This automatically re-calls "op" with the open transaction as argument
+# This automatically re-calls "op" with the open transaction as an argument
 # as long as the database server asks for the transaction to be retried.
 def txnWrapper(conn, op):
     with conn:

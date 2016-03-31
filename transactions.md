@@ -37,13 +37,13 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 
 4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the `ROLLBACK TO SAVEPOINT cockroach_restart` statement restarts the transaction. 
 
-   In cases where you do not want the application to retry the transaction, you can adapt the wrapper funciton to simply `ROLLBACK` at this point. Any other statement will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
+   In cases where you do not want the application to retry the transaction, you can adapt the wrapper function to simply `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
 5. When there are no retryable errors, the `RELEASE SAVEPOINT cockroach_restart` statement commits the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
    In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
-{{site.data.alerts.callout_info}}In CockroachDB, individual statements outside of transactions are considered implicit transactions and are retried automatically; no special error handling is needed.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In CockroachDB, individual statements and statements batched between <code>BEGIN TRANSACTION</code> and <code>COMMIT</code> are considered implicit transactions and are retried automatically by the server; no special error handling is needed.{{site.data.alerts.end}}
 
 ## Transaction Priorities
 
