@@ -43,7 +43,7 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 
    In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
-{{site.data.alerts.callout_info}}In CockroachDB, individual statements and statements batched between <code>BEGIN TRANSACTION</code> and <code>COMMIT</code> are considered implicit statements and are retried automatically by the server; no special error handling is needed.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In CockroachDB, individual statements and statements batched between <code>BEGIN TRANSACTION</code> and <code>COMMIT</code> are considered implicit transactions and are retried automatically by the server; no special error handling is needed.{{site.data.alerts.end}}
 
 ## Transaction Priorities
 
