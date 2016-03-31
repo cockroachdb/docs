@@ -3,7 +3,7 @@ var async = require('async');
 // Require the driver.
 var pg = require('pg');
 
-// Connect to the cluster.
+// Connect to the "bank" database.
 var config = {
   user: 'maxroach',
   host: 'localhost',
