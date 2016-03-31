@@ -114,7 +114,7 @@ Initial balances:
 </div>
 
 <div class="filter-content" markdown="1" data-language="nodejs">
-**JavaScript (Node.js)**
+**Node.js**
 
 ~~~ js
 {% include app/basic-sample.js %}
@@ -139,6 +139,8 @@ Initial balances:
 
 <div class="filter-content" markdown="1" data-language="php">
 **PHP**
+
+~~~ php
 {% include app/basic-sample.php %}
 ~~~
 </div>
@@ -197,7 +199,7 @@ Coming soon.
 </div>
 
 <div class="filter-content" markdown="1" data-language="nodejs">
-**JavaScript (Node.js)**
+**Node.js**
 
 ~~~ js
 {% include app/txn-sample.js %}

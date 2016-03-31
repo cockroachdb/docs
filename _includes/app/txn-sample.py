@@ -30,7 +30,7 @@ def txnWrapper(conn, op):
                 if e.pgcode != 'CR000':
                     # A non-retryable error; report this up the call stack.
                     raise e
-                # Signal the database we'll retry.
+                # Signal the database that we'll retry.
                 onestmt(conn, "ROLLBACK TO SAVEPOINT cockroach_restart")
 
 
