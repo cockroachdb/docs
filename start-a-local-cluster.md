@@ -19,13 +19,15 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details1">Details</button>
-    <div id="details1" class="collapse">
-      <ul>
-        <li> Client/server communication defaults to insecure, with the server listening only on <code>localhost</code> on port 26257. To bind to different port, set <code>--port=&#60;port&#62;</code> and <code>--http-port=&#60;port&#62;</code>.</li>
-        <li>Node storage defaults to the <code>cockroach-data</code> directory. To store to a different location, set <code>--store=&#60;filepath&#62;</code>. To use multiple stores, set this flag separately for each.</li>
-        <li>The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.</li>
-        <li>For more details about the <code>cockroach start</code> command, see <a href="start-a-node.html">Start a Node</a>.</li>
-      </ul>
+    <div id="details1" class="collapse" markdown="1">
+
+    - Communication defaults to insecure, with the server listening only on `localhost` on port 26257 for internal and client communication and on port 8080 for HTTP requests from the Admin UI. 
+        - To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
+        - To listen on an external address, specify `--insecure` and set `--host=<external address>`. 
+    - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
+    - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
+    - For more details about the `cockroach start` command, see [Start a Node](start-a-node.html).
+
     </div>
 
 2.  For each additional node, repeat step 1 with a few extra flags:
@@ -36,13 +38,14 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details2">Details</button>
-    <div id="details2" class="collapse">
-      <p>These commands add two nodes to the cluster, but you can add as many as you like. For each node:
-      <ul>
-        <li>Set the <code>--store</code> flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.</li>
-        <li>Set the <code>--port</code> and <code>--http-port</code> flags to ports not in use by other nodes.</li>
-        <li>The <code>--join</code> flag connects the new node to the cluster. Set this flag to <code>localhost</code> and the port of the first node.</li>
-      </ul>
+    <div id="details2" class="collapse" markdown="1">
+
+    These commands add two nodes to the cluster, but you can add as many as you like. For each node:
+    
+    - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
+    - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
+    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
+
     </div>
 
 3.  Start the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
