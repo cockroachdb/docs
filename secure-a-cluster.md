@@ -6,20 +6,21 @@ expand: true
 
 Now that you have a [local cluster](start-a-local-cluster.html) up and running, let's secure it with authentication and encryption. This involves stopping the cluster, creating certificates, and restarting nodes with a few additional flags.
 
-1.  Stop the cluster:
+1.  Stop the cluster and close the Admin UI:
 
     ~~~ shell
-    $ ./cockroach quit --insecure
-    $ ./cockroach quit --insecure --http-port=8081
-    $ ./cockroach quit --insecure --http-port=8082
+    $ ./cockroach quit
+    $ ./cockroach quit --http-port=8081
+    $ ./cockroach quit --http-port=8082
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure1">Details</button>
-    <div id="details-secure1" class="collapse">
-        <ul>
-            <li>If you used the <code>cockroach start</code> commands on <a href="start-a-local-cluster.html">Start a Cluster</a> verbatim, the commands above will work as well. Otherwise, just set the <code>--http-port</code> flag to the ports you used.</li>
-            <li>For more details about the <code>cockroach quit</code> command, see <a href="stop-a-node.html">Stop a Node</a>.</li>
-        </ul>
+    <div id="details-secure1" class="collapse" markdown="1">
+
+    - If you used the `cockroach start` commands on [Start a Cluster](start-a-local-cluster.html) verbatim, the commands above will work as well. Otherwise, just set the `--http-port` flag to the ports you used.
+    - For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+    - If you leave the Admin UI open, when you restart the cluster with security (steps 3 and 4), you'll see "TLS handshake" errors until you adjust the URL to https (step 7).
+
     </div>
 
 2.  Create security certificates:
@@ -32,13 +33,13 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure2">Details</button>
-    <div id="details-secure2" class="collapse">
-        <ul>
-            <li>The first command makes a new directory for the certificates.</li>
-            <li>The second command creates the Certificate Authority (CA) certificate and key: <code>ca.cert</code> and <code>ca.key</code>.</li>
-            <li>The third command creates the node certificate and key: <code>node.cert</code> and <code>node.key</code>. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.</li>
-            <li>The fourth command creates the client certificate and key, in this case for the <code>root</code> user: <code>root.cert</code> and <code>root.key</code>. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 5).</li>
-        </ul>
+    <div id="details-secure2" class="collapse" markdown="1">
+
+    - The first command makes a new directory for the certificates.
+    - The second command creates the Certificate Authority (CA) certificate and key: `ca.cert` and `ca.key`.
+    - The third command creates the node certificate and key: `node.cert` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+    - The fourth command creates the client certificate and key, in this case for the `root` user: `root.cert` and `root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 5).
+        
     </div>
 
 3.  Restart the first node:
@@ -54,11 +55,13 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure3">Details</button>
-    <div id="details-secure3" class="collapse">
-        <p>This command restarts your first node with its existing data, but securely. The command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags to point to the CA certificate and the node certificate and key created in step 2.</p>
+    <div id="details-secure3" class="collapse" markdown="1">
+
+    This command restarts your first node with its existing data, but securely. The command is the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
+
     </div>
 
-3.  Restart additional nodes:
+4.  Restart additional nodes:
 
     ~~~ shell
     $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key &
@@ -66,11 +69,13 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
-    <div id="details-secure4" class="collapse">
-        <p>These commands restart additional nodes with their existing data, but securely. The commands are the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags to point to the CA certificate and the node certificate and key created in step 2.</p>
+    <div id="details-secure4" class="collapse" markdown="1">
+
+    These commands restart additional nodes with their existing data, but securely. The commands are the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
+
     </div>
 
-4.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
+5.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
     ~~~ shell
     $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
@@ -80,11 +85,13 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure5">Details</button>
-    <div id="details-secure5" class="collapse">
-      <p>This command is the same as before, but you leave out the <code>--insecure</code> flag and instead use the <code>--ca-cert</code>, <code>--cert</code>, and <code>--key</code> flags point to the CA certificate and the certificate and key for the <code>root</code> user created in step 2.</p>
+    <div id="details-secure5" class="collapse" markdown="1">
+
+    This command is the same as before, but now uses the additional `--ca-cert`, `--cert`, and `--key` flags point to the CA certificate and the certificate and key for the `root` user created in step 2.
+
     </div>
 
-5.  Run more [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+6.  Run more [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     ~~~ shell
     root@:26257> SET DATABASE = bank;
@@ -111,9 +118,9 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     When you're done using the SQL shell, press **CTRL + D** to exit.
  
-6.  Continue monitoring your cluster with the [Admin UI](explore-the-admin-ui.html).
+7.  Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup. 
 
-    If you already have it open, you'll need to change `http` to `https`. If you don't have it open, point your browser to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+    Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
 ## What's Next?
 
