@@ -465,6 +465,37 @@ header {
   #linux-installs .install-button:nth-child(-n+2) {
     margin-right: 2%; }
 
+/* Generic Filter Button */
+.filters {
+  font-size: 0; }
+  .filters .filter-button {
+    display: inline-block;
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+    text-align: center;
+    font-family: 'AvenirLTStd-Light', serif;
+    font-size: 12px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 12px;
+    color: #142848 !important;
+    text-decoration: none !important;
+    padding: 15px 0;
+    width: 23%;
+    margin: 1%;
+    outline: none; }
+    .filters .filter-button:hover {
+      border: 1px solid #46a417; }
+    .filters .filter-button.current {
+      border: 1px solid #46a417;
+      background-color: #F0FFE8; }
+
+.filter-content {
+  display: none; }
+  .filter-content.current {
+    display: block; }
+
 @media (min-width: 700px) {
   #os-tabs button {
     width: 150px; }
@@ -488,7 +519,17 @@ header {
 
   #mac-installs .install-button, #linux-installs .install-button {
     width: auto;
-    margin-right: 0; } }
+    margin-right: 0; }
+
+  .filters .filter-button {
+    width: 11.5%;
+    margin: 0 0.5%;
+    font-family: 'AvenirLTStd-Light', serif;
+    font-size: 16px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 16px; } }
 #overlay-bg {
   display: none;
   position: absolute;

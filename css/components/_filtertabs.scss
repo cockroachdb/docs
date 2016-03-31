@@ -103,6 +103,44 @@
 	}
 }
 
+/* Generic Filter Button */
+
+.filters {
+	font-size: 0;
+
+	.filter-button {
+		display: inline-block;
+		border: 1px solid #dddddd;
+		background-color: #ffffff;
+		text-align: center;
+		@include avenir_l(12px);
+		line-height: 12px;
+		color: $cl_blue !important;
+		text-decoration: none !important;
+		padding: 15px 0;
+		width: 23%;
+		margin: 1%;
+		outline: none;
+
+		&:hover {
+			border: 1px solid $cl_green;
+		}
+
+		&.current {
+			border: 1px solid $cl_green;
+			background-color: #F0FFE8;
+		}
+	}
+}
+
+.filter-content {
+	display: none;
+
+	&.current {
+		display: block;
+	}
+}
+
 
 @media (min-width: 700px) {
 	#os-tabs {
@@ -128,6 +166,15 @@
 		.install-button {
 			width: auto;
 			margin-right: 0;
+		}
+	}
+
+	.filters {
+		.filter-button {
+			width: 11.5%;
+			margin: 0 0.5%;
+			@include avenir_l(16px);
+			line-height: 16px;
 		}
 	}
 }
