@@ -94,7 +94,9 @@ Initial balances:
 
 **PHP**
 
-Coming soon.
+~~~ clojure
+{% include app/basic-sample.php %}
+~~~
 
 ## Step 4. Execute transactions from a client
 
