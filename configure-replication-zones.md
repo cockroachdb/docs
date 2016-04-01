@@ -46,15 +46,15 @@ Field | Description
 `replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. The number of replicas must be odd.<br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the replica can be placed on any node in the cluster. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 67108864
 
-Each zone may also contain `range_min_bytes` and `ttlseconds`, but these fields are not yet implemented and will not affect a zone. 
+Each zone can also contain `range_min_bytes` and `ttlseconds` fields, but the former is not yet implemented and the latter is not yet useful.  
 
 ## Subcommands
 
 Subcommand | Usage 
 -----------|------
 `ls` | List all replication zones.
-`set` | Create or edit a replication zone.  
 `get` | View the YAML contents of a replication zone.
+`set` | Create or edit a replication zone.  
 `rm` | Remove a replication zone.  
 
 ## Synopsis
