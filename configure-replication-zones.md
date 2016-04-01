@@ -27,11 +27,11 @@ There are three replication zone levels:
 - **Database:** You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 - **Table:** You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
 
-When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses a replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone. 
+When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses the replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone. 
 
 ### Replicaton Zone Format
 
-A replication zone is in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
+A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
 
 ~~~ yaml
 replicas:
@@ -43,10 +43,10 @@ range_max_bytes: <size-in-bytes>
 
 Field | Description
 ------|------------
-`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica.<br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the cluster will randomly choose a node for the replica. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be located on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
+`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. The number of replicas must be odd.<br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the replica can be placed on any node in the cluster. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 67108864
 
-A zone may also contain `range_min_bytes` and `ttlseconds`, but these fields are not yet implemented and will not affect a zone. 
+Each zone may also contain `range_min_bytes` and `ttlseconds`, but these fields are not yet implemented and will not affect a zone. 
 
 ## Subcommands
 
@@ -73,13 +73,13 @@ $ ./cockroach zone get <database> <flags>
 $ ./cockroach zone get <database.table> <flags>
 
 # Edit the default replication zone for the cluster:
-$ ./cockroach zone set .default <flags> "YAML content"
+$ ./cockroach zone set .default <flags> 'YAML content'
 
 # Create/edit the replication zone for a database:
-$ ./cockroach zone set <database> <flags> "YAML content"
+$ ./cockroach zone set <database> <flags> 'YAML content'
 
 # Create/edit the replication zone for a table:
-$ ./cockroach zone set <database.table> <flags> "YAML content"
+$ ./cockroach zone set <database.table> <flags> 'YAML content'
 
 # Remove the replication zone for a database:
 $ ./cockroach zone rm <database> <flags>
@@ -158,10 +158,10 @@ $ ./cockroach start --insecure --host=node3-hostname --attrs=us-west-1a --join=n
 You would then edit the default zone configuration as follows:
 
 ~~~ shell
-$ ./cockroach zone set .default --insecure "replicas:
+$ ./cockroach zone set .default --insecure 'replicas:
 - attrs: [us-east-1a]
 - attrs: [us-east-1b]
-- attrs: [us-west-1a]"
+- attrs: [us-west-1a]'
 ~~~
 
 To confirm that the default zone was updated correctly, you would then run:
@@ -194,25 +194,11 @@ $ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,att
 You would then create a zone configuration for the "bank" database as follows:
 
 ~~~ shell
-$ ./cockroach zone set bank --insecure "replicas:
-- attrs: [ssd01]
-- attrs: [ssd02]
-- attrs: [ssd03]"
-~~~
-
-To confirm that the replication zone for the "bank" database was created correctly, you would then run:
-
-~~~ shell
-$ ./cockroach zone get bank --insecure
-bank
-replicas:
+$ ./cockroach zone set bank --insecure 'replicas:
 - attrs: [ssd01]
 - attrs: [ssd02]
 - attrs: [ssd03]
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
+range_max_bytes: 67108864'
 ~~~
 
 ### Create a Replication Zone for a Table
@@ -230,23 +216,9 @@ $ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,att
 You would then create a zone configuration for the `bank` database as follows:
 
 ~~~ shell
-$ ./cockroach zone set bank.accounts --insecure "replicas:
-- attrs: [ssd01]
-- attrs: [ssd02]
-- attrs: [ssd03]"
-~~~
-
-To confirm that the replication zone for the "accounts" table was created correctly, you would then run:
-
-~~~ shell
-$ ./cockroach zone get bank.accounts --insecure
-bank.accounts
-replicas:
+$ ./cockroach zone set bank.accounts --insecure 'replicas:
 - attrs: [ssd01]
 - attrs: [ssd02]
 - attrs: [ssd03]
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
+range_max_bytes: 67108864'
 ~~~
