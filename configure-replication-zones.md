@@ -3,9 +3,17 @@ title: Configure Replication Zones
 toc: false
 ---
 
-In CockroachDB, a replication zone is a [YAML](https://en.wikipedia.org/wiki/YAML) file that controls how a specific set of data gets replicated. Initially, there is a single replication zone for the entire cluster, but you can add replication zones for individual databases and tables as well. For example, you might decide that most data in a cluster can be replicated normally (say, three times) within a single datacenter, while data in a certain database or in certain tables must be more highly replicated across multiple datacenters and geographies.
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default replication zone as well as add zones for individual databases and tables as needed. For example, you might use the default replication zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
-This page explains how replication zones work and how to use the `cockroach zone` commands to configure them. 
+This page explains how replication zones work and how to use the `cockroach zone` commands to configure them.
+
+{{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}   
+
+<style>
+div#toc ul {
+    max-width: 50%;
+}
+</style>
 
 <div id="toc"></div>
 
@@ -15,70 +23,63 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 There are three replication zone levels:
 
-- **Cluster:** CockroachDB comes with a single, default replication zone for the entire cluster.
-- **Database:** You can add replication zones for specific databases.
-- **Table:** You can add replication zones for specific tables. 
+- **Cluster:** CockroachDB comes with a single, default replication zone for the entire cluster. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
+- **Database:** You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
+- **Table:** You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
 
-When replicating a piece of data, if there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses a replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone. 
+When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses a replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone. 
 
-### Default Replication Zone
+### Replicaton Zone Format
 
-The cluster-wide replication zone (`.default`) is initially set to replicate data 3 times, with ranges in each replica splitting into new ranges after XXXX bytes. You can edit the default replication zone to replicate more or less or to split ranges at smaller or larger sizes (see xxx example below). 
-
-### Format
-
-Each replication zone is a [YAML](https://en.wikipedia.org/wiki/YAML) file that looks like this:
+A replication zone is in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
 
 ~~~ yaml
 replicas:
-  - attrs: [comma-separated attribute list]
-  - attrs: [comma-separated attribute list]
-  - attrs: ...
-range_min_bytes: <size-in-bytes>
+- attrs: [comma-separated attribute list]
+- attrs: [comma-separated attribute list]
+- attrs: [comma-separated attribute list]
 range_max_bytes: <size-in-bytes>
 ~~~
 
 Field | Description
 ------|------------
-`replicas` | 
+`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica.<br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the cluster will randomly choose a node for the replica. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be located on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
+`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 67108864
 
-Each `attrs` entry in the `replicas` field is a single replica for the zone.
-
-This default replication zone is set to replicate all data 3 times, with ranges in each replica splitting into new ranges after XXXX bytes. You can edit the default replication zone to replicate more or less or to split ranges are smaller or larger sizes (see xxx example below). 
+A zone may also contain `range_min_bytes` and `ttlseconds`, but these fields are not yet implemented and will not affect a zone. 
 
 ## Subcommands
 
 Subcommand | Usage 
 -----------|------
-`get` | Create the self-signed CA certificate and key for the entire cluster.
-`ls` | Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
-`rm` | Create a certificate and key for a specific user accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.  
-`set` | Create a certificate and key for a specific user accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.  
+`ls` | List all replication zones.
+`set` | Create or edit a replication zone.  
+`get` | View the YAML contents of a replication zone.
+`rm` | Remove a replication zone.  
 
 ## Synopsis
 
 ~~~ shell
+# List all replication zones:
+$ ./cockroach zone ls <flags>
 
-# Edit the default replication zone for the entire cluster:
-$ ./cockroach zone set .default <flags> <YAML content>
-
-# Create/edit the replication zone for a database:
-$ ./cockroach zone set <database> <flags> <YAML content>
-
-# Create/edit the replication zone for a table:
-$ ./cockroach zone set <database.table> <flags> <YAML content>
-
-# View the default replication zone for the entire cluster:
+# View the default replication zone for the cluster:
 $ ./cockroach zone get .default <flags>
 
-# View the replicaiton zone for a database:
+# View the replication zone for a database:
 $ ./cockroach zone get <database> <flags>
 
 # View the replication zone for a table:
 $ ./cockroach zone get <database.table> <flags>
 
-# List all replication zones:
-$ ./cockroach zone ls <flags>
+# Edit the default replication zone for the cluster:
+$ ./cockroach zone set .default <flags> "YAML content"
+
+# Create/edit the replication zone for a database:
+$ ./cockroach zone set <database> <flags> "YAML content"
+
+# Create/edit the replication zone for a table:
+$ ./cockroach zone set <database.table> <flags> "YAML content"
 
 # Remove the replication zone for a database:
 $ ./cockroach zone rm <database> <flags>
@@ -88,117 +89,164 @@ $ ./cockroach zone rm <database.table> <flags>
 
 # View help:
 $ ./cockroach help zone
-$ ./cockroach help zone get
 $ ./cockroach help zone ls
-$ ./cockroach help zone rm
+$ ./cockroach help zone get
 $ ./cockroach help zone set
+$ ./cockroach help zone rm
 ~~~
 
 ## Flags
 
-The `cert` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). 
+The `zone` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). 
 
-Flag | Description
+Flag | Description 
 -----|------------
-`--ca-cert` | The path to the CA certificate. <br><br>This flag is required for all subcommands. When used with `create-ca` in particular, this flag defines where to create the certificate and what to call it; the specified directory must exist. 
-`--ca-key` | The path to the private key protecting the CA certificate. <br><br>This flag is required for all subcommands. When used with `create-ca` in particular, it defines where to create the certificate and what to call it; the specified directory must exist. 
-`--cert` | The path to the node or client certificate. <br><br>This flag is used only with the `create-node` and `create-client` subcommands. It defines where to create the node or client certificate and what to call it; the specified directory must exist.  
-`--key` | The path to the private key protecting the node or client certificate. <br><br>This flag is used only with the `create-node` and `create-client` subcommands. It defines where to create the node or client key and what to call it; the specified directory must exist.
-`--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** 2048 
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure. 
+`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.
+`--database`<br>`-d` | Not currently implemented. 
+`--host` | The address of the node to connect to. This can be the address of any node in the cluster.
+`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.
+`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.
+`--port`<br>`-p` | The port to connect to. <br><br>**Default:** 26257
+`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` 
+`--user`<br>`-u` | The user connecting to the database. Currently, only the `root` user can configure replication zones. <br><br>**Default:** root
 
 ## Examples
 
-#### Create the CA certificate and key
+- [View the Default Replication Zone](#view-the-default-replication-zone)
+- [Edit the Default Replication Zone](#edit-the-default-replication-zone)
+- [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database)
+- [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table)
+
+###  View the Default Replication Zone
+
+The cluster-wide replication zone (`.default`) is initially set to replicate data to any 3 nodes in your cluster, with ranges in each replica splitting once they get larger than 67108864 bytes. 
+
+To view the default replication zone, use the `./cockroach zone get` command with appropriate flags as follows:
 
 ~~~ shell
-$ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key 
+$ ./cockroach zone get .default
+
+.default
+replicas:
+- attrs: []
+- attrs: []
+- attrs: []
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
 ~~~
 
-#### Create the certificate and key for a node
+### Edit the Default Replication Zone
+
+To edit the default replication zone, use the `./cockroach zone set` command with appropriate flags and the YAML changes specified as a string. 
+
+For example, let's say you are running a cluster across three data centers, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. So you start up each of these nodes as follows, specifying the datacenter location in the `--attrs` field. This example assumes these nodes are being added to an existing, insecure cluster.
 
 ~~~ shell
-$ ./cockroach cert create-node node1.example.com node1.another-example.com --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
+# Start node in first US east coast datacenter:
+$ ./cockroach start --insecure --host=node1-hostname --attrs=us-east-1a --join=node1-hostname:27257
+
+# Start node in second US east coast datacenter:
+$ ./cockroach start --insecure --host=node2-hostname --attrs=us-east-1b --join=node1-hostname:27257
+
+# Start node in US west coast datacenter:
+$ ./cockroach start --insecure --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
 ~~~
 
-#### Create the certificate and key for a client
+You would then edit the default zone configuration as follows:
 
 ~~~ shell
-$ ./cockroach cert create-client maxroach --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/maxroach.cert --key=certs/maxroach.key
+$ ./cockroach zone set .default --insecure "replicas:
+- attrs: [us-east-1a]
+- attrs: [us-east-1b]
+- attrs: [us-west-1a]"
 ~~~
 
-## Related Topics
+To confirm that the default zone was updated correctly, you would then run:
 
-- [Manual Deployment](manual-deployment.html): Walkthrough starting a multi-node secure cluster and accessing it from a client. 
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
+~~~ shell
+$ ./cockroach zone get .default --insecure
+.default
+replicas:
+- attrs: [us-east-1a]
+- attrs: [us-east-1b]
+- attrs: [us-west-1a]
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+~~~
 
-## Raw stuff
+### Create a Replication Zone for a Database
 
-let you create and manage replication zones, which are rules for how data in your cluster gets replicated. Initially, there is just one replication zone for the entire cluster (`.default`), but you can add replication zones for specific databases and tables as well. For example, you might decide that most data in a cluster can be replicated normally (say, three times) within a single datacenter, while data in certain tables must be more highly replicated across multiple datacenters and geographies.
+To create a replication zone for a specific database, use the `./cockroach zone set`, specifying the database name, any appropriate flags, and the zone settings as a YAML string. 
 
-The `cockroach zone` commands let you create and manage replication zones, which are rules for how data in your cluster gets replicated. Initially, there is just one replication zone for the entire cluster (`.default`), but you can add replication zones for specific databases and tables as well. For example, you might decide that most data in a cluster can be replicated normally (say, three times) within a single datacenter, while data in certain tables must be more highly replicated across multiple datacenters and geographies.
+For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank` database replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying ssd as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
 
-This page explains how replication zones work in general and how to use the `cockroach zone` commands to configure replication zones.
-For each replication zone, you can define:
+~~~ shell
+$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd01
+$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd02
+$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd03
+~~~
 
-- The number of replicas
-- The location of each replica
-- The minimum and maximum size for ranges in each replica
+You would then create a zone configuration for the "bank" database as follows:
 
-You can control replication at the cluster, database, and table levels. When determine how to replicate a piece of data, CockroachDB first looks to see if there's a replication zone for table containing the data; if not, it looks to see if there's a replication zone for the database containing the data; if not, it replicates the data based ont the cluster-wide replication zone. 
+~~~ shell
+$ ./cockroach zone set bank --insecure "replicas:
+- attrs: [ssd01]
+- attrs: [ssd02]
+- attrs: [ssd03]"
+~~~
 
+To confirm that the replication zone for the "bank" database was created correctly, you would then run:
 
-which are YAML files that control how specific sets of data get replicated. Initially, there is just one configuration zone (`.default.yaml`) for the entire cluster, but you can add replication zones for specific databases and tables as well.
+~~~ shell
+$ ./cockroach zone get bank --insecure
+bank
+replicas:
+- attrs: [ssd01]
+- attrs: [ssd02]
+- attrs: [ssd03]
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+~~~
 
-The `cockroach zone` commands let you create and manage replication zones, which are YAML files that control how specific sets of data get replicated. Initially, there is just one configuration zone (`.default.yaml`) for the entire cluster, but you can add replication zones for specific databases and tables as well.
+### Create a Replication Zone for a Table
 
- file  each of which controls how a specific set of data is replicated.
+To create a replication zone for a specific table, use the `./cockroach zone set`, specifying the table name in `database.table` format, any appropriate flags, and the zone settings as a YAML string. 
 
-configure replication zones, which are rules for how data is replicated across your cluster. Initially, there is just one replication zone for the entire cluster, but you can add replication zones for specific databases and tables as well. 
+For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank.accounts` table replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying ssd as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
 
-This page shows you how.
+~~~ shell
+$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd01
+$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd02
+$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd03
+~~~
 
-that controls  By default, there's a replication zone for the entire cluster, but you can have replication zones for specific databases and specific tables as well. 
+You would then create a zone configuration for the `bank` database as follows:
 
- for how many times 
-In CockroachDB, a replication zone controls how many times a specific set of data gets replicated and where. A replication zone can apply to the entire cluster, to a specific database, or to a specific table. 
+~~~ shell
+$ ./cockroach zone set bank.accounts --insecure "replicas:
+- attrs: [ssd01]
+- attrs: [ssd02]
+- attrs: [ssd03]"
+~~~
 
-In CockroachDB, 
+To confirm that the replication zone for the "accounts" table was created correctly, you would then run:
 
-You can define replication zones at the cluster, database, and table levels.
-
-The `cockroach zone` commands let you configure replication zones, which are rules for how specific sets of data are replicated. There is one `.default` YAML file controlling replication for the entire cluster, but you can create additional YAML files to define replication rules for specific databases and tables. 
-
-
-
-The `cockroach zone` commands let you configure how data is replicated at the cluster, database, and table levels. Each replication zone is formatted as a YAML file and specifies the number of replicas, the location of replicas, and the minimum and maximum size of ranges for the data to which it applies. 
-
-
-
-
-onfigure how data is replicated across your cluster. For example, you might decide that data in a database can be replicated normally (say, three times) within a single data center, while data in specific table must be more highly replicated across multiple datacenters in multiple geographies. 
-
-
- threecreate one zone configuration for a certain table that needs to be highly replicated across geographies
-
-
-Each zone configuration is stored as a YAML file
-In each replication zo
-
-
-## 
-
-
-You can control replication at the cluster, database, and table levels. When determine how to replicate a piece of data, CockroachDB first looks to see if there's a replication zone for table containing the data; if not, it looks to see if there's a replication zone for the database containing the data; if not, it replicates the data based ont the cluster-wide replication zone. 
-
-
-For each replication zone, you can define:
-
-- The number of replicas
-- The location of each replica
-- The minimum and maximum size for ranges in each replica
-
-
-
-which are YAML files that control how specific sets of data get replicated. Initially, there is just one configuration zone (`.default.yaml`) for the entire cluster, but you can add replication zones for specific databases and tables as well.
-
-The `cockroach zone` commands let you create and manage replication zones, which are YAML files that control how specific sets of data get replicated. Initially, there is just one configuration zone (`.default.yaml`) for the entire cluster, but you can add replication zones for specific databases and tables as well.
+~~~ shell
+$ ./cockroach zone get bank.accounts --insecure
+bank.accounts
+replicas:
+- attrs: [ssd01]
+- attrs: [ssd02]
+- attrs: [ssd03]
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+~~~

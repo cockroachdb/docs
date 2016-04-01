@@ -55,17 +55,20 @@ entries:
         - title: Cloud Deployment
           url: /cloud-deployment.html
 
-        - title: Cockroach Commands
-          url: /cockroach-commands.html
-
-        - title: Create Security Certificates
-          url: /create-security-certificates.html
-
         - title: Start a Node
           url: /start-a-node.html
 
         - title: Stop a Node
           url: /stop-a-node.html
+
+        - title: Create Security Certificates
+          url: /create-security-certificates.html
+
+        - title: Configure Replication Zones
+          url: /configure-replication-zones.html
+
+        - title: Cockroach Commands
+          url: /cockroach-commands.html
 
     - title: Manage
       items:
