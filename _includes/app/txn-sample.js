@@ -20,16 +20,6 @@ function txnWrapper(client, op, next) {
       return next(err);
     }
 
-    var commit = function (err) {
-      if (err) {
-        client.query('ROLLBACK', function () {
-          next(err);
-        });
-      } else {
-        client.query('COMMIT', next);
-      }
-    };
-
     var released = false;
     async.doWhilst(function (done) {
       var handleError = function (err) {
@@ -60,7 +50,16 @@ function txnWrapper(client, op, next) {
     },
     function () {
       return !released;
-    }, commit);
+    },
+    function (err) {
+      if (err) {
+        client.query('ROLLBACK', function () {
+          next(err);
+        });
+      } else {
+        client.query('COMMIT', next);
+      }
+    });
   });
 }
 
