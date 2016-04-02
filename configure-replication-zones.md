@@ -43,11 +43,19 @@ range_max_bytes: <size-in-bytes>
 
 Field | Description
 ------|------------
-`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. The number of replicas must be odd.<br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the replica can be placed on any node in the cluster. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
+`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the replica can be placed on any node in the cluster. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 67108864
 
 Each zone can also contain `range_min_bytes` and `ttlseconds` fields, but the former is not yet implemented and the latter is not yet useful.  
 
+### Node/Replica Recommendations
+
+When running a cluster with more than one node, each replica must be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore: 
+
+- When running a cluster with more than one node, you should run at least three to ensure that a majority of replicas remains (2 of 3) when a node goes down. 
+
+- When replicating more than three times, you should replicate at least five times to ensure that a majority of replicas remains (3 of 5) when two nodes go down.
+ 
 ## Subcommands
 
 Subcommand | Usage 
