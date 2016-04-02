@@ -130,10 +130,10 @@ Flag | Description
 
 The cluster-wide replication zone (`.default`) is initially set to replicate data to any 3 nodes in your cluster, with ranges in each replica splitting once they get larger than 67108864 bytes. 
 
-To view the default replication zone, use the `./cockroach zone get` command with appropriate flags as follows:
+To view the default replication zone, use the `./cockroach zone get .default` command with appropriate flags as follows:
 
 ~~~ shell
-$ ./cockroach zone get .default
+$ ./cockroach zone get .default --insecure
 
 .default
 replicas:
@@ -148,7 +148,7 @@ gc:
 
 ### Edit the Default Replication Zone
 
-To edit the default replication zone, use the `./cockroach zone set` command with appropriate flags and the YAML changes specified as a string. 
+To edit the default replication zone, use the `./cockroach zone set .default` command with appropriate flags and the YAML changes specified as a string. 
 
 For example, let's say you are running a cluster across three data centers, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. So you start up each of these nodes as follows, specifying the datacenter location in the `--attrs` field. This example assumes these nodes are being added to an existing, insecure cluster.
 
