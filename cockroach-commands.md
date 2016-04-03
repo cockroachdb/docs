@@ -13,8 +13,8 @@ Command | Usage
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
+[`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 `exterminate` | Destroy all data held by a node.
-`zone` | Get, set, list, and remove zones.
 `node` | List nodes and show their status.
 `gen` | Generate manpages and bash completion file.
 `version` | Output CockroachDB version information.

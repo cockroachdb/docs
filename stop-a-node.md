@@ -23,7 +23,6 @@ $ ./cockroach help quit
 
 The `quit` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-
 Flag | Description 
 -----|------------
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to stop a secure node. 
