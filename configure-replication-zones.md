@@ -43,18 +43,18 @@ range_max_bytes: <size-in-bytes>
 
 Field | Description
 ------|------------
-`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>If you leave an `attrs` list empty (i.e., `- attrs: []`), the replica can be placed on any node in the cluster. If you specify specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
-`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 67108864
+`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>It's normal and sufficient to define the number of replicas by listing `attrs` lines without any specific attributes (i.e., `- attrs: []`). But if you do set specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
+`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** 64MB
 
 Each zone can also contain `range_min_bytes` and `ttlseconds` fields, but the former is not yet implemented and the latter is not yet useful.  
 
 ### Node/Replica Recommendations
 
-When running a cluster with more than one node, each replica must be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore: 
+When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore: 
 
-- When running a cluster with more than one node, you should run at least three to ensure that a majority of replicas remains (2 of 3) when a node goes down. 
+- When running a cluster with more than one node, you should run at least three to ensure that a majority of replicas (2/3) remains available when a node goes down. 
 
-- When replicating more than three times, you should replicate at least five times to ensure that a majority of replicas remains (3 of 5) when two nodes go down.
+- Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a quorum (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
  
 ## Subcommands
 
@@ -134,7 +134,6 @@ To view the default replication zone, use the `./cockroach zone get .default` co
 
 ~~~ shell
 $ ./cockroach zone get .default --insecure
-
 .default
 replicas:
 - attrs: []
@@ -191,21 +190,21 @@ gc:
 
 To create a replication zone for a specific database, use the `./cockroach zone set`, specifying the database name, any appropriate flags, and the zone settings as a YAML string. 
 
-For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank` database replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying ssd as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
+For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank` database replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying `ssd` as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
 
 ~~~ shell
-$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd01
-$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd02
-$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd03
+$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
+$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd
+$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd
 ~~~
 
-You would then create a zone configuration for the "bank" database as follows:
+You would then create a zone configuration for the `bank` database with `ssd` set as the attribute for each replica. 
 
 ~~~ shell
 $ ./cockroach zone set bank --insecure 'replicas:
-- attrs: [ssd01]
-- attrs: [ssd02]
-- attrs: [ssd03]
+- attrs: [ssd]
+- attrs: [ssd]
+- attrs: [ssd]
 range_max_bytes: 67108864'
 ~~~
 
@@ -213,20 +212,20 @@ range_max_bytes: 67108864'
 
 To create a replication zone for a specific table, use the `./cockroach zone set`, specifying the table name in `database.table` format, any appropriate flags, and the zone settings as a YAML string. 
 
-For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank.accounts` table replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying ssd as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
+For example, let's say you are running a cluster across 5 nodes, three of which have ssd storage devices. You want data in the `bank.accounts` table replicated to these ssd devices, so you start up the three nodes with these devices as follows, specifying `ssd` as an attribute of the stores. This example assumes these nodes are being added to an existing, insecure cluster.
 
 ~~~ shell
-$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd01
-$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd02
-$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd03
+$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
+$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd
+$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd
 ~~~
 
-You would then create a zone configuration for the `bank` database as follows:
+You would then create a zone configuration for the `bank.accounts` table with `ssd` set as the attribute for each replica.
 
 ~~~ shell
 $ ./cockroach zone set bank.accounts --insecure 'replicas:
-- attrs: [ssd01]
-- attrs: [ssd02]
-- attrs: [ssd03]
+- attrs: [ssd]
+- attrs: [ssd]
+- attrs: [ssd]
 range_max_bytes: 67108864'
 ~~~
