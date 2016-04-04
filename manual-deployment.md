@@ -48,7 +48,13 @@ The only difference when starting the second node is that you connect it to the 
 
 Repeat step 2 for each additional node.
 
-### 4. Use the Built-in SQL Client
+### 4. Configure replication
+
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. 
+
+For more information, see [Configure Replication Zones](configure-replication-zones.html).
+
+### 5. Use the Built-in SQL Client
 
 Start the built-in SQL client from any machine with the `cockroach` binary. This could be one of the node machines or a different machine. 
 
@@ -84,13 +90,13 @@ root@26257> SELECT * FROM accounts;
 +------+---------+
 ~~~
 
-### 5. Connect an app to the cluster
+### 6. Connect an app to the cluster
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
 For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
 
-### 6. Monitor your cluster
+### 7. Monitor your cluster
 
 The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
 
@@ -153,7 +159,13 @@ The only difference when starting the second node is that you connect it to the 
 
 Repeat step 3 for each additional node. 
 
-### 5. Use the built-in SQL client
+### 5. Configure replication
+
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. 
+
+For more information, see [Configure Replication Zones](configure-replication-zones.html).
+
+### 6. Use the built-in SQL client
 
 You can run the built-in SQL client from any machine with the `cockroach` binary, CA cert, client certificate, and client key. Make sure the machine you want to use has these files and then start the client:  
 
@@ -189,13 +201,13 @@ root@26257> SELECT * FROM accounts;
 +------+---------+
 ~~~
 
-### 6. Connect an app to the cluster
+### 7. Connect an app to the cluster
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
 For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
 
-### 7. Monitor your cluster
+### 8. Monitor your cluster
 
 The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
 
