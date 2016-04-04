@@ -137,7 +137,6 @@ func main() {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				return
 				g, err := runParse(br(), nil, "stmt_block", true, nil)
 				if err != nil {
 					log.Fatal(err)
