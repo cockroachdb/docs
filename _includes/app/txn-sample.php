@@ -11,14 +11,12 @@ function transferMoney($dbh, $from, $to, $amount) {
 
   while (true) {
     try {
-      // TODO(tschottdorf): https://github.com/cockroachdb/cockroach/issues/5758
-      /*
+      // Note that we're not checking a lot of important things here, namely
+      // that both accounts exist and that the account the money is taken from
+      // has a sufficient balance.
       $stmt = $dbh->prepare('UPDATE accounts SET balance = balance + :deposit WHERE id = :account');
       $stmt->execute(array('account' => $to, 'deposit' => $amount));
       $stmt->execute(array('account' => $from, 'deposit' => -$amount));
-       */
-      $dbh->exec('UPDATE accounts SET balance=balance+'.$amount.' WHERE id='.$to);
-      $dbh->exec('UPDATE accounts SET balance=balance+'.(-$amount).' WHERE id='.$from);
 
       // Attempt to release the savepoint (which is really the commit).
       $dbh->exec('RELEASE SAVEPOINT cockroach_restart');
