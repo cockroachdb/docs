@@ -162,7 +162,7 @@ $ ./cockroach start --insecure --host=node2-hostname --attrs=us-east-1b --join=n
 $ ./cockroach start --insecure --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
 ~~~
 
-You would then edit the default zone configuration as follows:
+You would then edit the default zone configuration with one datacenter attribute set for each replica.
 
 ~~~ shell
 $ ./cockroach zone set .default --insecure 'replicas:
@@ -171,11 +171,10 @@ $ ./cockroach zone set .default --insecure 'replicas:
 - attrs: [us-west-1a]'
 ~~~
 
-To confirm that the default zone was updated correctly, you would then run:
+The `zone set` command automatically echoes the full zone configuration, so you can easily validate your changes without needing to run `zone get`.
 
 ~~~ shell
-$ ./cockroach zone get .default --insecure
-.default
+UPDATE 1
 replicas:
 - attrs: [us-east-1a]
 - attrs: [us-east-1b]
@@ -208,6 +207,20 @@ $ ./cockroach zone set bank --insecure 'replicas:
 range_max_bytes: 67108864'
 ~~~
 
+The `zone set` command automatically echoes the full zone configuration, so you can easily validate your changes without needing to run `zone get`.
+
+~~~ shell
+INSERT 1
+replicas:
+- attrs: [ssd]
+- attrs: [ssd]
+- attrs: [ssd]
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+~~~
+
 ### Create a Replication Zone for a Table
 
 To create a replication zone for a specific table, use the `./cockroach zone set`, specifying the table name in `database.table` format, any appropriate flags, and the zone settings as a YAML string. 
@@ -228,4 +241,18 @@ $ ./cockroach zone set bank.accounts --insecure 'replicas:
 - attrs: [ssd]
 - attrs: [ssd]
 range_max_bytes: 67108864'
+~~~
+
+The `zone set` command automatically echoes the full zone configuration, so you can easily validate your changes without needing to run `zone get`.
+
+~~~ shell
+INSERT 1
+replicas:
+- attrs: [ssd]
+- attrs: [ssd]
+- attrs: [ssd]
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
 ~~~
