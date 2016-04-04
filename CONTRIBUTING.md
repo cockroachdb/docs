@@ -15,10 +15,15 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 Once you're ready to contribute:
 
 1. Fork the CockroachDB [docs repository](https://github.com/cockroachdb/docs).
+
 2. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+
 3. Make your changes.
+
 4. [Build the docs locally](#build-the-docs-locally) and test them.
+
 5. [Push to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
+
 6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls).
 
 ## Docs Structure
@@ -34,7 +39,7 @@ toc: false
 ---
 ```
  
-The **title** field in the front matter is used as the h1 header. The **toc** field is for adding an auto-generated table of contents to the page. See [Page TOC](#page-toc) for full details.
+The `title` field in the front matter is used as the h1 header. The `toc` field is for adding an auto-generated table of contents to the page. See [Page TOC](#page-toc) for full details.
 
 ### Page TOC 
 
@@ -48,7 +53,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
     <div id="toc"></div>
     ```
 
--   By default, the toc panel is 300px wide. To change this, add the following bit of styling to the page as well, adjusting the `max-width` as appropriate:
+-   By default, the toc panel is 300px wide. To change this, add the following bit of styling to the page, adjusting the `max-width` as appropriate:
     
     ``` html
     <style>
@@ -64,7 +69,9 @@ The [`_data/sidebar_doc.yml`](_data/sidebar_doc.yml) file controls which pages a
 
 ### Auto-Included Content
 
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [Build a Test App](build-a-test-app.md) page includes code samples from `_includes/app`.
+Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and [build-a-test-app.md](build-a-test-app.md) includes code samples from `_includes/app`.
+
+The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 
 ## Style Guide
 
@@ -76,7 +83,7 @@ CockroachDB docs should be:
 
 ## Build the Docs Locally
 
-Once you've installed Jekyll and cloned the docs repository to your local machine, you can can build the docs as follows:
+Once you've installed Jekyll and have a local clone of the docs repository, you can build the docs as follows:
 
 1.  From the root directory of your clone, run:
     
@@ -88,4 +95,4 @@ Once you've installed Jekyll and cloned the docs repository to your local machin
 
     - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
 
-    - When you make changes to content, Jekyll automatically regenerates the html content. No need to stop and re-start Jekyll; just refresh your browser.
+    - When you make changes, Jekyll automatically regenerates the html content. No need to stop and re-start Jekyll; just refresh your browser.
