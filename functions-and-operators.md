@@ -1,6 +1,6 @@
 ---
 title: Functions and Operators
-toc: false
+toc: true
 ---
 
 {% include sql/functions.md %}
