@@ -3,7 +3,9 @@ title: Functions and Operators
 toc: false
 ---
 
-Coming soon.
+{% include sql/functions.md %}
+
+{% include sql/operators.md %}
 
 <!--
 ## `CAST()`
