@@ -38,7 +38,7 @@ Field | Description
 `Seq` | The position of the column in the index, starting with 1.
 `Column` | The indexed column.  
 `Direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns. 
-`Storing` | Whether or not the column is stored with the indexed column(s). Possible values: `true` or `false`. 
+`Storing` | Whether or not the `STORING` clause was used to index the column during index creation. Possible values: `true` or `false`. 
 
 ## Examples 
 
