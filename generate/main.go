@@ -117,6 +117,14 @@ func main() {
 		},
 	}
 
+	cmdFuncs := &cobra.Command{
+		Use:   "funcs",
+		Short: "Generates functions.md and operators.md",
+		Run: func(cmd *cobra.Command, args []string) {
+			generateFuncs()
+		},
+	}
+
 	var (
 		baseDir string
 	)
@@ -230,7 +238,7 @@ func main() {
 	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
 	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "diagrams"), "Base directory for html output.")
 
-	rootCmd.AddCommand(cmdBNF, cmdParse, cmdRR, cmdBody)
+	rootCmd.AddCommand(cmdBNF, cmdParse, cmdRR, cmdBody, cmdFuncs)
 	rootCmd.PersistentFlags().StringVar(&outputPath, "out", "", "Output path; stdout if empty.")
 	rootCmd.PersistentFlags().StringVar(&inputPath, "in", "", "Input path; stdin if empty.")
 	rootCmd.Execute()
