@@ -5,7 +5,7 @@ toc: true
 
 ## Description
 
-The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers with no limit on digits to the left and right of the decimal point. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data. 
 
 In CockroachDB, the following are aliases for `DECIMAL`:
 
@@ -14,12 +14,9 @@ In CockroachDB, the following are aliases for `DECIMAL`:
 
 ## Precision and Scale
 
-To limit the precision and scale of a `DECIMAL` column, use this syntax: `DECIMAL(precision, scale)`. 
+To limit a decimal column, use `DECIMAL(precision, scale)`, where `precision` is the maximum count of digits in a whole number, both to the left and right of the decimal point, and `scale` is the maximum count of digits to the right of the decimal point.
 
-- **Precision** is the maximum count of digits in a whole number, both to the left and right of the decimal.
-- **Scale** is the maximum count of digits to the right of the decimal point.
-
-If the digits to the right of a decimal value exceed the specified scale, CockroachDB rounds the decimal to the scale. After rounding to the specified scale, if the total count of digits exceeds the specified precision, CockroachDB gives an error.  
+When inserting a decimal value, if the digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale. After rounding, if the total count of digits exceeds the column's `precision`, CockroachDB gives an error.  
 
 ## Format
 
