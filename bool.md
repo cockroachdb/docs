@@ -7,9 +7,7 @@ toc: true
 
 The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`. 
 
-## Synonyms
-
-In CockroachDB, `BOOLEAN` is a synonym of `BOOL`. 
+In CockroachDB, `BOOLEAN` is an alias for `BOOL`. 
 
 ## Format
 

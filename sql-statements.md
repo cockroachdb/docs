@@ -4,7 +4,7 @@ toc: false
 ---
 <style>
 table td:first-child {
-  min-width: 200px;
+  min-width: 350px;
 
 }
 </style>
@@ -39,10 +39,10 @@ Statement | Description
 [`SHOW COLUMNS`](show-columns.html) | 
 [`SHOW DATABASES`](show-databases.html) | 
 [`SHOW GRANTS`](show-grants.html) | 
-[`SHOW INDEX`](show-index.html) | 
+[`SHOW INDEX`](show-index.html) | Returns index information for a table.
 [`SHOW TABLES`](show-tables.html) | 
 [`SHOW TIMEZONE`](show-timezone.html) | 
-[`SHOW TRANSACTION ISOLOATION LEVEL`](show-transaction-isolation-level.html) | 
+[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | 
 [`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | 
 [`TABLE`](table.html) | 
 [`TRUNCATE`](truncate.html) | 

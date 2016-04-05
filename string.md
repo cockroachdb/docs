@@ -7,9 +7,7 @@ toc: true
 
 The `STRING` [data type](data-types.html) stores strings of variable length. 
 
-## Synonyms 
-
-In CockroachDB, the following are synonyms of `STRING`: 
+In CockroachDB, the following are aliases for `STRING`: 
 
 - `CHAR` 
 - `CHAR(n)` 
