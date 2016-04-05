@@ -7,8 +7,6 @@ toc: true
  
 ## Synopsis
 
-## Synonyms
-
 ## Privileges
 
 ## Parameters
