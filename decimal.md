@@ -14,7 +14,12 @@ In CockroachDB, the following are aliases for `DECIMAL`:
 
 ## Precision and Scale
 
-Precision (the maximum count of digits in a whole number, both to the left and right of the decimal point) and scale (the maximum count of digits to the right of the decimal point) are always unlimited for a `DECIMAL` value. If you specify these limits by declaring `DECIMAL(precision, scale)` on a column, they will not be enforced. 
+To limit the precision and scale of a `DECIMAL` column, use this syntax: `DECIMAL(precision, scale)`. 
+
+- **Precision** is the maximum count of digits in a whole number, both to the left and right of the decimal.
+- **Scale** is the maximum count of digits to the right of the decimal point.
+
+If the digits to the right of a decimal value exceed the specified scale, CockroachDB rounds the decimal to the scale. After rounding to the specified scale, if the total count of digits exceeds the specified precision, CockroachDB gives an error.  
 
 ## Format
 
