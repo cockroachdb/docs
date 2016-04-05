@@ -7,9 +7,7 @@ toc: true
 
 The `BYTES` [data type](data-types.html) stores binary strings of variable length.
 
-## Synonyms
-
-In CockroachDB, the following are synonyms of `BYTES`: 
+In CockroachDB, the following are aliases for `BYTES`: 
 
 - `BYTEA` 
 - `BLOB` 

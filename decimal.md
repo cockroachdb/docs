@@ -7,9 +7,7 @@ toc: true
 
 The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers with no limit on digits to the left and right of the decimal point. This type is used when it is important to preserve exact precision, for example, with monetary data. 
 
-## Synonyms
-
-In CockroachDB, the following are synonyms of `DECIMAL`:
+In CockroachDB, the following are aliases for `DECIMAL`:
 
 - `DEC` 
 - `NUMERIC` 

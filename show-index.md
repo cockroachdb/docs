@@ -5,15 +5,62 @@ toc: true
 
 ## Description
 
+The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table. 
+
+In CockroachDB, the following are aliases for `SHOW INDEX`: 
+
+- `SHOW INDEXES` 
+- `SHOW KEYS`
+
+## Privileges
+
+No privileges are required to show indexes for a table.
+
 ## Synopsis
 
 {% include sql/diagrams/show_index.html %}
 
-## Privileges
-
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-|  |  |
+Parameter | Description
+----------|------------
+`var_name` | The name of the table to show indexes for. 
 
+## Response
+
+The following fields are returned for each index.
+
+Field | Description
+----------|------------
+`Table` | The name of the table.
+`Name` | The name of the index.
+`Unique` | Whether or not values in the indexed column are unique. Possible values: `true` or `false`. 
+`Seq` | The position of the column in the index, starting with 1.
+`Column` | The indexed column.  
+`Direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC`.
+`Storing` | 
+
+## Examples 
+
+~~~
+CREATE TABLE test (
+    a INT PRIMARY KEY,
+    b DECIMAL,
+    c TIMESTAMP
+);
+
+CREATE INDEX b_c_idx ON test (b, c);
+
+SHOW INDEX FROM test;
++-------+---------+--------+-----+--------+-----------+---------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing |
++-------+---------+--------+-----+--------+-----------+---------+
+| test  | primary | true   |   1 | a      | ASC       | false   |
+| test  | b_c_idx | false  |   1 | b      | ASC       | false   |
+| test  | b_c_idx | false  |   2 | c      | ASC       | false   |
++-------+---------+--------+-----+--------+-----------+---------+
+~~~
+
+## See Also
+
+[SQL Statements](sql-statements.html)

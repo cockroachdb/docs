@@ -7,9 +7,7 @@ toc: true
 
 The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point. 
 
-## Synonyms
-
-In CockroachDB, the following are synonyms of `FLOAT`:
+In CockroachDB, the following are aliases for `FLOAT`:
 
 - `REAL` 
 - `DOUBLE PRECISION` 
