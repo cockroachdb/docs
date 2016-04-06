@@ -5,176 +5,200 @@ T functions | Return
 greatest(T, ...) | T
 least(T, ...) | T
 
-bool functions | Return
+[bool](bool.html) functions | Return
 --- | ---
-max(bool) | bool
-min(bool) | bool
+max([bool](bool.html)) | [bool](bool.html)
+min([bool](bool.html)) | [bool](bool.html)
+
+[bytes](bytes.html) functions | Return
+--- | ---
+max([bytes](bytes.html)) | [bytes](bytes.html)
+min([bytes](bytes.html)) | [bytes](bytes.html)
+
+[date](date.html) functions | Return
+--- | ---
+max([date](date.html)) | [date](date.html)
+min([date](date.html)) | [date](date.html)
+
+[decimal](decimal.html) functions | Return
+--- | ---
+max([decimal](decimal.html)) | [decimal](decimal.html)
+min([decimal](decimal.html)) | [decimal](decimal.html)
+sum([decimal](decimal.html)) | [decimal](decimal.html)
+
+[float](float.html) functions | Return
+--- | ---
+max([float](float.html)) | [float](float.html)
+min([float](float.html)) | [float](float.html)
+sum([float](float.html)) | [float](float.html)
+
+[int](int.html) functions | Return
+--- | ---
+max([int](int.html)) | [int](int.html)
+min([int](int.html)) | [int](int.html)
+sum([int](int.html)) | [int](int.html)
+
+[interval](interval.html) functions | Return
+--- | ---
+max([interval](interval.html)) | [interval](interval.html)
+min([interval](interval.html)) | [interval](interval.html)
+
+[string](string.html) functions | Return
+--- | ---
+max([string](string.html)) | [string](string.html)
+min([string](string.html)) | [string](string.html)
+
+[timestamp](timestamp.html) functions | Return
+--- | ---
+max([timestamp](timestamp.html)) | [timestamp](timestamp.html)
+min([timestamp](timestamp.html)) | [timestamp](timestamp.html)
 
 bytes functions | Return
 --- | ---
-experimental_unique_bytes() | bytes
-experimental_uuid_v4() | bytes
-left(bytes, int) | bytes
-max(bytes) | bytes
-min(bytes) | bytes
-right(bytes, int) | bytes
+experimental_unique_bytes() | [bytes](bytes.html)
+experimental_uuid_v4() | [bytes](bytes.html)
+left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
+right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 
 date functions | Return
 --- | ---
-current_date() | date
-max(date) | date
-min(date) | date
+current_date() | [date](date.html)
 
 decimal functions | Return
 --- | ---
-abs(decimal) | decimal
-avg(decimal) | decimal
-cbrt(decimal) | decimal
-ceil(decimal) | decimal
-ceiling(decimal) | decimal
-div(decimal, decimal) | decimal
-exp(decimal) | decimal
-floor(decimal) | decimal
-ln(decimal) | decimal
-log(decimal) | decimal
-max(decimal) | decimal
-min(decimal) | decimal
-mod(decimal, decimal) | decimal
-pow(decimal, decimal) | decimal
-power(decimal, decimal) | decimal
-round(decimal) | decimal
-round(decimal, int) | decimal
-sign(decimal) | decimal
-sqrt(decimal) | decimal
-stddev(decimal) | decimal
-stddev(int) | decimal
-sum(decimal) | decimal
-trunc(decimal) | decimal
-variance(decimal) | decimal
-variance(int) | decimal
+abs([decimal](decimal.html)) | [decimal](decimal.html)
+avg([decimal](decimal.html)) | [decimal](decimal.html)
+cbrt([decimal](decimal.html)) | [decimal](decimal.html)
+ceil([decimal](decimal.html)) | [decimal](decimal.html)
+ceiling([decimal](decimal.html)) | [decimal](decimal.html)
+div([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
+exp([decimal](decimal.html)) | [decimal](decimal.html)
+floor([decimal](decimal.html)) | [decimal](decimal.html)
+ln([decimal](decimal.html)) | [decimal](decimal.html)
+log([decimal](decimal.html)) | [decimal](decimal.html)
+mod([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
+pow([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
+power([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
+round([decimal](decimal.html)) | [decimal](decimal.html)
+round([decimal](decimal.html), [int](int.html)) | [decimal](decimal.html)
+sign([decimal](decimal.html)) | [decimal](decimal.html)
+sqrt([decimal](decimal.html)) | [decimal](decimal.html)
+stddev([decimal](decimal.html)) | [decimal](decimal.html)
+stddev([int](int.html)) | [decimal](decimal.html)
+trunc([decimal](decimal.html)) | [decimal](decimal.html)
+variance([decimal](decimal.html)) | [decimal](decimal.html)
+variance([int](int.html)) | [decimal](decimal.html)
 
 float functions | Return
 --- | ---
-abs(float) | float
-acos(float) | float
-asin(float) | float
-atan(float) | float
-atan2(float, float) | float
-avg(float) | float
-avg(int) | float
-cbrt(float) | float
-ceil(float) | float
-ceiling(float) | float
-cos(float) | float
-cot(float) | float
-degrees(float) | float
-div(float, float) | float
-exp(float) | float
-floor(float) | float
-ln(float) | float
-log(float) | float
-max(float) | float
-min(float) | float
-mod(float, float) | float
-pi() | float
-pow(float, float) | float
-power(float, float) | float
-radians(float) | float
-random() | float
-round(float) | float
-round(float, int) | float
-sign(float) | float
-sin(float) | float
-sqrt(float) | float
-stddev(float) | float
-sum(float) | float
-tan(float) | float
-trunc(float) | float
-variance(float) | float
+abs([float](float.html)) | [float](float.html)
+acos([float](float.html)) | [float](float.html)
+asin([float](float.html)) | [float](float.html)
+atan([float](float.html)) | [float](float.html)
+atan2([float](float.html), [float](float.html)) | [float](float.html)
+avg([float](float.html)) | [float](float.html)
+avg([int](int.html)) | [float](float.html)
+cbrt([float](float.html)) | [float](float.html)
+ceil([float](float.html)) | [float](float.html)
+ceiling([float](float.html)) | [float](float.html)
+cos([float](float.html)) | [float](float.html)
+cot([float](float.html)) | [float](float.html)
+degrees([float](float.html)) | [float](float.html)
+div([float](float.html), [float](float.html)) | [float](float.html)
+exp([float](float.html)) | [float](float.html)
+floor([float](float.html)) | [float](float.html)
+ln([float](float.html)) | [float](float.html)
+log([float](float.html)) | [float](float.html)
+mod([float](float.html), [float](float.html)) | [float](float.html)
+pi() | [float](float.html)
+pow([float](float.html), [float](float.html)) | [float](float.html)
+power([float](float.html), [float](float.html)) | [float](float.html)
+radians([float](float.html)) | [float](float.html)
+random() | [float](float.html)
+round([float](float.html)) | [float](float.html)
+round([float](float.html), [int](int.html)) | [float](float.html)
+sign([float](float.html)) | [float](float.html)
+sin([float](float.html)) | [float](float.html)
+sqrt([float](float.html)) | [float](float.html)
+stddev([float](float.html)) | [float](float.html)
+tan([float](float.html)) | [float](float.html)
+trunc([float](float.html)) | [float](float.html)
+variance([float](float.html)) | [float](float.html)
 
 int functions | Return
 --- | ---
-abs(int) | int
-ascii(string) | int
-count(bool) | int
-count(bytes) | int
-count(date) | int
-count(decimal) | int
-count(float) | int
-count(int) | int
-count(interval) | int
-count(string) | int
-count(timestamp) | int
-count(tuple) | int
-extract(string, timestamp) | int
-length(bytes) | int
-length(string) | int
-max(int) | int
-min(int) | int
-mod(int, int) | int
-octet_length(bytes) | int
-octet_length(string) | int
-sign(int) | int
-strpos(string, string) | int
-sum(int) | int
-transaction_timestamp_unique() | int
-unique_rowid() | int
+abs([int](int.html)) | [int](int.html)
+ascii([string](string.html)) | [int](int.html)
+count([bool](bool.html)) | [int](int.html)
+count([bytes](bytes.html)) | [int](int.html)
+count([date](date.html)) | [int](int.html)
+count([decimal](decimal.html)) | [int](int.html)
+count([float](float.html)) | [int](int.html)
+count([int](int.html)) | [int](int.html)
+count([interval](interval.html)) | [int](int.html)
+count([string](string.html)) | [int](int.html)
+count([timestamp](timestamp.html)) | [int](int.html)
+count(tuple) | [int](int.html)
+extract([string](string.html), [timestamp](timestamp.html)) | [int](int.html)
+length([bytes](bytes.html)) | [int](int.html)
+length([string](string.html)) | [int](int.html)
+mod([int](int.html), [int](int.html)) | [int](int.html)
+octet_length([bytes](bytes.html)) | [int](int.html)
+octet_length([string](string.html)) | [int](int.html)
+sign([int](int.html)) | [int](int.html)
+strpos([string](string.html), [string](string.html)) | [int](int.html)
+transaction_timestamp_unique() | [int](int.html)
+unique_rowid() | [int](int.html)
 
 interval functions | Return
 --- | ---
-age(timestamp) | interval
-age(timestamp, timestamp) | interval
-max(interval) | interval
-min(interval) | interval
+age([timestamp](timestamp.html)) | [interval](interval.html)
+age([timestamp](timestamp.html), [timestamp](timestamp.html)) | [interval](interval.html)
 
 string functions | Return
 --- | ---
-btrim(string) | string
-btrim(string, string) | string
-concat(string, ...) | string
-concat_ws(string, ...) | string
-initcap(string) | string
-left(string, int) | string
-lower(string) | string
-ltrim(string) | string
-ltrim(string, string) | string
-max(string) | string
-md5(string) | string
-min(string) | string
-overlay(string, string, int) | string
-overlay(string, string, int, int) | string
-regexp_extract(string, string) | string
-regexp_replace(string, string, string) | string
-regexp_replace(string, string, string, string) | string
-repeat(string, int) | string
-replace(string, string, string) | string
-reverse(string) | string
-right(string, int) | string
-rtrim(string) | string
-rtrim(string, string) | string
-sha1(string) | string
-sha256(string) | string
-split_part(string, string, int) | string
-substr(string, int) | string
-substr(string, int, int) | string
-substr(string, string) | string
-substr(string, string, string) | string
-substring(string, int) | string
-substring(string, int, int) | string
-substring(string, string) | string
-substring(string, string, string) | string
-to_hex(int) | string
-translate(string, string, string) | string
-upper(string) | string
-version() | string
+btrim([string](string.html)) | [string](string.html)
+btrim([string](string.html), [string](string.html)) | [string](string.html)
+concat(string, ...) | [string](string.html)
+concat_ws(string, ...) | [string](string.html)
+initcap([string](string.html)) | [string](string.html)
+left([string](string.html), [int](int.html)) | [string](string.html)
+lower([string](string.html)) | [string](string.html)
+ltrim([string](string.html)) | [string](string.html)
+ltrim([string](string.html), [string](string.html)) | [string](string.html)
+md5([string](string.html)) | [string](string.html)
+overlay([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
+overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
+regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
+regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+repeat([string](string.html), [int](int.html)) | [string](string.html)
+replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+reverse([string](string.html)) | [string](string.html)
+right([string](string.html), [int](int.html)) | [string](string.html)
+rtrim([string](string.html)) | [string](string.html)
+rtrim([string](string.html), [string](string.html)) | [string](string.html)
+sha1([string](string.html)) | [string](string.html)
+sha256([string](string.html)) | [string](string.html)
+split_part([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
+substr([string](string.html), [int](int.html)) | [string](string.html)
+substr([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
+substr([string](string.html), [string](string.html)) | [string](string.html)
+substr([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+substring([string](string.html), [int](int.html)) | [string](string.html)
+substring([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
+substring([string](string.html), [string](string.html)) | [string](string.html)
+substring([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+to_hex([int](int.html)) | [string](string.html)
+translate([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+upper([string](string.html)) | [string](string.html)
+version() | [string](string.html)
 
 timestamp functions | Return
 --- | ---
-clock_timestamp() | timestamp
-current_timestamp() | timestamp
-max(timestamp) | timestamp
-min(timestamp) | timestamp
-now() | timestamp
-statement_timestamp() | timestamp
-transaction_timestamp() | timestamp
+clock_timestamp() | [timestamp](timestamp.html)
+current_timestamp() | [timestamp](timestamp.html)
+now() | [timestamp](timestamp.html)
+statement_timestamp() | [timestamp](timestamp.html)
+transaction_timestamp() | [timestamp](timestamp.html)
 

@@ -31,9 +31,9 @@ type operation struct {
 
 func (o operation) String() string {
 	if o.right == "" {
-		return fmt.Sprintf("%s%s", o.op, o.left)
+		return fmt.Sprintf("`%s`%s", o.op, linkType(o.left))
 	}
-	return fmt.Sprintf("%s %s %s", o.left, o.op, o.right)
+	return fmt.Sprintf("%s `%s` %s", linkType(o.left), o.op, linkType(o.right))
 }
 
 type operations []operation
@@ -101,7 +101,7 @@ func GenerateOperators() []byte {
 		fmt.Fprintf(b, "`%s` | Return\n", op)
 		fmt.Fprintf(b, "--- | ---\n")
 		for _, v := range ops[op] {
-			fmt.Fprintf(b, "`%s` | `%s`\n", v.String(), v.ret)
+			fmt.Fprintf(b, "%s | %s\n", v.String(), linkType(v.ret))
 		}
 		fmt.Fprintln(b)
 	}
@@ -109,7 +109,6 @@ func GenerateOperators() []byte {
 }
 
 func GenerateFunctions() []byte {
-	//*
 	typePtrs := make(map[uintptr]string)
 	typeFns := map[string]interface{}{
 		"bytes":     parser.TypeBytes,
@@ -133,7 +132,7 @@ func GenerateFunctions() []byte {
 			case parser.ArgTypes:
 				var typs []string
 				for _, typ := range ft {
-					typs = append(typs, typeName(typ))
+					typs = append(typs, linkType(typeName(typ)))
 				}
 				args = strings.Join(typs, ", ")
 			case parser.AnyType:
@@ -149,7 +148,7 @@ func GenerateFunctions() []byte {
 				// Aggregate function.
 				ret = args
 			}
-			s := fmt.Sprintf("%s(%s) | %s", name, args, ret)
+			s := fmt.Sprintf("%s(%s) | %s", name, args, linkType(ret))
 			functions[ret] = append(functions[ret], s)
 		}
 	}
@@ -168,8 +167,15 @@ func GenerateFunctions() []byte {
 		b.WriteString("\n\n")
 	}
 	return b.Bytes()
-	//*/
 	return nil
+}
+
+func linkType(t string) string {
+	switch t {
+	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
+		return fmt.Sprintf("[%s](%s.html)", t, t)
+	}
+	return t
 }
 
 func typeName(t reflect.Type) string {

@@ -2,154 +2,154 @@
 
 `%` | Return
 --- | ---
-`decimal % decimal` | `decimal`
-`float % float` | `float`
-`int % int` | `int`
+[decimal](decimal.html) `%` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `%` [float](float.html) | [float](float.html)
+[int](int.html) `%` [int](int.html) | [int](int.html)
 
 `&` | Return
 --- | ---
-`int & int` | `int`
+[int](int.html) `&` [int](int.html) | [int](int.html)
 
 `*` | Return
 --- | ---
-`decimal * decimal` | `decimal`
-`float * float` | `float`
-`int * int` | `int`
-`int * interval` | `interval`
-`interval * int` | `interval`
+[decimal](decimal.html) `*` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `*` [float](float.html) | [float](float.html)
+[int](int.html) `*` [int](int.html) | [int](int.html)
+[int](int.html) `*` [interval](interval.html) | [interval](interval.html)
+[interval](interval.html) `*` [int](int.html) | [interval](interval.html)
 
 `+` | Return
 --- | ---
-`+decimal` | `decimal`
-`+float` | `float`
-`+int` | `int`
-`date + int` | `date`
-`decimal + decimal` | `decimal`
-`float + float` | `float`
-`int + date` | `date`
-`int + int` | `int`
-`interval + interval` | `interval`
-`interval + timestamp` | `timestamp`
-`timestamp + interval` | `timestamp`
+`+`[decimal](decimal.html) | [decimal](decimal.html)
+`+`[float](float.html) | [float](float.html)
+`+`[int](int.html) | [int](int.html)
+[date](date.html) `+` [int](int.html) | [date](date.html)
+[decimal](decimal.html) `+` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `+` [float](float.html) | [float](float.html)
+[int](int.html) `+` [date](date.html) | [date](date.html)
+[int](int.html) `+` [int](int.html) | [int](int.html)
+[interval](interval.html) `+` [interval](interval.html) | [interval](interval.html)
+[interval](interval.html) `+` [timestamp](timestamp.html) | [timestamp](timestamp.html)
+[timestamp](timestamp.html) `+` [interval](interval.html) | [timestamp](timestamp.html)
 
 `-` | Return
 --- | ---
-`-decimal` | `decimal`
-`-float` | `float`
-`-int` | `int`
-`date - date` | `int`
-`date - int` | `date`
-`decimal - decimal` | `decimal`
-`float - float` | `float`
-`int - int` | `int`
-`interval - interval` | `interval`
-`timestamp - interval` | `timestamp`
-`timestamp - timestamp` | `interval`
+`-`[decimal](decimal.html) | [decimal](decimal.html)
+`-`[float](float.html) | [float](float.html)
+`-`[int](int.html) | [int](int.html)
+[date](date.html) `-` [date](date.html) | [int](int.html)
+[date](date.html) `-` [int](int.html) | [date](date.html)
+[decimal](decimal.html) `-` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `-` [float](float.html) | [float](float.html)
+[int](int.html) `-` [int](int.html) | [int](int.html)
+[interval](interval.html) `-` [interval](interval.html) | [interval](interval.html)
+[timestamp](timestamp.html) `-` [interval](interval.html) | [timestamp](timestamp.html)
+[timestamp](timestamp.html) `-` [timestamp](timestamp.html) | [interval](interval.html)
 
 `/` | Return
 --- | ---
-`decimal / decimal` | `decimal`
-`float / float` | `float`
-`int / int` | `float`
-`interval / int` | `interval`
+[decimal](decimal.html) `/` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `/` [float](float.html) | [float](float.html)
+[int](int.html) `/` [int](int.html) | [float](float.html)
+[interval](interval.html) `/` [int](int.html) | [interval](interval.html)
 
 `<` | Return
 --- | ---
-`bool < bool` | `bool`
-`bytes < bytes` | `bool`
-`date < date` | `bool`
-`decimal < decimal` | `bool`
-`decimal < float` | `bool`
-`decimal < int` | `bool`
-`float < decimal` | `bool`
-`float < float` | `bool`
-`float < int` | `bool`
-`int < decimal` | `bool`
-`int < float` | `bool`
-`int < int` | `bool`
-`interval < interval` | `bool`
-`string < string` | `bool`
-`timestamp < timestamp` | `bool`
+[bool](bool.html) `<` [bool](bool.html) | [bool](bool.html)
+[bytes](bytes.html) `<` [bytes](bytes.html) | [bool](bool.html)
+[date](date.html) `<` [date](date.html) | [bool](bool.html)
+[decimal](decimal.html) `<` [decimal](decimal.html) | [bool](bool.html)
+[decimal](decimal.html) `<` [float](float.html) | [bool](bool.html)
+[decimal](decimal.html) `<` [int](int.html) | [bool](bool.html)
+[float](float.html) `<` [decimal](decimal.html) | [bool](bool.html)
+[float](float.html) `<` [float](float.html) | [bool](bool.html)
+[float](float.html) `<` [int](int.html) | [bool](bool.html)
+[int](int.html) `<` [decimal](decimal.html) | [bool](bool.html)
+[int](int.html) `<` [float](float.html) | [bool](bool.html)
+[int](int.html) `<` [int](int.html) | [bool](bool.html)
+[interval](interval.html) `<` [interval](interval.html) | [bool](bool.html)
+[string](string.html) `<` [string](string.html) | [bool](bool.html)
+[timestamp](timestamp.html) `<` [timestamp](timestamp.html) | [bool](bool.html)
 
 `<<` | Return
 --- | ---
-`int << int` | `int`
+[int](int.html) `<<` [int](int.html) | [int](int.html)
 
 `<=` | Return
 --- | ---
-`bool <= bool` | `bool`
-`bytes <= bytes` | `bool`
-`date <= date` | `bool`
-`decimal <= decimal` | `bool`
-`decimal <= float` | `bool`
-`decimal <= int` | `bool`
-`float <= decimal` | `bool`
-`float <= float` | `bool`
-`float <= int` | `bool`
-`int <= decimal` | `bool`
-`int <= float` | `bool`
-`int <= int` | `bool`
-`interval <= interval` | `bool`
-`string <= string` | `bool`
-`timestamp <= timestamp` | `bool`
+[bool](bool.html) `<=` [bool](bool.html) | [bool](bool.html)
+[bytes](bytes.html) `<=` [bytes](bytes.html) | [bool](bool.html)
+[date](date.html) `<=` [date](date.html) | [bool](bool.html)
+[decimal](decimal.html) `<=` [decimal](decimal.html) | [bool](bool.html)
+[decimal](decimal.html) `<=` [float](float.html) | [bool](bool.html)
+[decimal](decimal.html) `<=` [int](int.html) | [bool](bool.html)
+[float](float.html) `<=` [decimal](decimal.html) | [bool](bool.html)
+[float](float.html) `<=` [float](float.html) | [bool](bool.html)
+[float](float.html) `<=` [int](int.html) | [bool](bool.html)
+[int](int.html) `<=` [decimal](decimal.html) | [bool](bool.html)
+[int](int.html) `<=` [float](float.html) | [bool](bool.html)
+[int](int.html) `<=` [int](int.html) | [bool](bool.html)
+[interval](interval.html) `<=` [interval](interval.html) | [bool](bool.html)
+[string](string.html) `<=` [string](string.html) | [bool](bool.html)
+[timestamp](timestamp.html) `<=` [timestamp](timestamp.html) | [bool](bool.html)
 
 `=` | Return
 --- | ---
-`bool = bool` | `bool`
-`bytes = bytes` | `bool`
-`date = date` | `bool`
-`decimal = decimal` | `bool`
-`decimal = float` | `bool`
-`decimal = int` | `bool`
-`float = decimal` | `bool`
-`float = float` | `bool`
-`float = int` | `bool`
-`int = decimal` | `bool`
-`int = float` | `bool`
-`int = int` | `bool`
-`interval = interval` | `bool`
-`string = string` | `bool`
-`timestamp = timestamp` | `bool`
-`tuple = tuple` | `bool`
+[bool](bool.html) `=` [bool](bool.html) | [bool](bool.html)
+[bytes](bytes.html) `=` [bytes](bytes.html) | [bool](bool.html)
+[date](date.html) `=` [date](date.html) | [bool](bool.html)
+[decimal](decimal.html) `=` [decimal](decimal.html) | [bool](bool.html)
+[decimal](decimal.html) `=` [float](float.html) | [bool](bool.html)
+[decimal](decimal.html) `=` [int](int.html) | [bool](bool.html)
+[float](float.html) `=` [decimal](decimal.html) | [bool](bool.html)
+[float](float.html) `=` [float](float.html) | [bool](bool.html)
+[float](float.html) `=` [int](int.html) | [bool](bool.html)
+[int](int.html) `=` [decimal](decimal.html) | [bool](bool.html)
+[int](int.html) `=` [float](float.html) | [bool](bool.html)
+[int](int.html) `=` [int](int.html) | [bool](bool.html)
+[interval](interval.html) `=` [interval](interval.html) | [bool](bool.html)
+[string](string.html) `=` [string](string.html) | [bool](bool.html)
+[timestamp](timestamp.html) `=` [timestamp](timestamp.html) | [bool](bool.html)
+tuple `=` tuple | [bool](bool.html)
 
 `>>` | Return
 --- | ---
-`int >> int` | `int`
+[int](int.html) `>>` [int](int.html) | [int](int.html)
 
 `IN` | Return
 --- | ---
-`bool IN tuple` | `bool`
-`bytes IN tuple` | `bool`
-`date IN tuple` | `bool`
-`float IN tuple` | `bool`
-`int IN tuple` | `bool`
-`interval IN tuple` | `bool`
-`string IN tuple` | `bool`
-`timestamp IN tuple` | `bool`
-`tuple IN tuple` | `bool`
+[bool](bool.html) `IN` tuple | [bool](bool.html)
+[bytes](bytes.html) `IN` tuple | [bool](bool.html)
+[date](date.html) `IN` tuple | [bool](bool.html)
+[float](float.html) `IN` tuple | [bool](bool.html)
+[int](int.html) `IN` tuple | [bool](bool.html)
+[interval](interval.html) `IN` tuple | [bool](bool.html)
+[string](string.html) `IN` tuple | [bool](bool.html)
+[timestamp](timestamp.html) `IN` tuple | [bool](bool.html)
+tuple `IN` tuple | [bool](bool.html)
 
 `LIKE` | Return
 --- | ---
-`string LIKE string` | `bool`
+[string](string.html) `LIKE` [string](string.html) | [bool](bool.html)
 
 `SIMILAR TO` | Return
 --- | ---
-`string SIMILAR TO string` | `bool`
+[string](string.html) `SIMILAR TO` [string](string.html) | [bool](bool.html)
 
 `^` | Return
 --- | ---
-`int ^ int` | `int`
+[int](int.html) `^` [int](int.html) | [int](int.html)
 
 `|` | Return
 --- | ---
-`int | int` | `int`
+[int](int.html) `|` [int](int.html) | [int](int.html)
 
 `||` | Return
 --- | ---
-`bytes || bytes` | `bytes`
-`string || string` | `string`
+[bytes](bytes.html) `||` [bytes](bytes.html) | [bytes](bytes.html)
+[string](string.html) `||` [string](string.html) | [string](string.html)
 
 `~` | Return
 --- | ---
-`~int` | `int`
+`~`[int](int.html) | [int](int.html)
 
