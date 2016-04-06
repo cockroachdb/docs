@@ -7,6 +7,8 @@ toc: true
  
 ## Synopsis
 
+{% include sql/diagrams/release_savepoint.html %}
+
 ## Privileges
 
 ## Parameters
