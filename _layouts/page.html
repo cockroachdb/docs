@@ -26,6 +26,14 @@ layout: default
 
 {% if page.homepage != true %}
    <script>
-       anchors.add('h2, h3, h4, h5');
+      anchors.add('h2, h3, h4, h5');
+
+      $('.anchorjs-link').on('click', function() {
+            var target = $(this.getAttribute('href'))
+               , scroll_target = target.offset().top;
+
+            $(window).scrollTop(scroll_target - 10);
+            return false;
+      });    
    </script>
 {% endif %}
