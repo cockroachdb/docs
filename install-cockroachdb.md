@@ -77,7 +77,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on Mac OS X:</p>
+<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -243,7 +243,7 @@ $(document).ready(function(){
 </div>
 
 <div id="linuxinstall" style="display: none;">
-<p>There are three ways to install CockroachDB on Linux:</p>
+<p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
 <div id="linux-installs" class="clearfix">    
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
@@ -379,7 +379,7 @@ $(document).ready(function(){
 </div>
 
 <div id="windowsinstall" style="display: none;">
-<p>At this time, it's possible to run CockroachDB on Windows only from within a Docker container, which is a stripped-to-basics version of a Linux operating system. 
+<p>You can run CockroachDB on Windows from within a Docker container, which is a stripped-to-basics version of a Linux operating system. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
 <ol>
   <li>
