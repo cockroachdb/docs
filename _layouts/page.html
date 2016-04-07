@@ -23,17 +23,22 @@ layout: default
    {% include linkrefs.html %}
 
 </div>
-
 {% if page.homepage != true %}
    <script>
       anchors.add('h2, h3, h4, h5');
 
-      $('.anchorjs-link').on('click', function() {
+      $('.anchorjs-link').click(function() {
+         $('html, body').animate({
+            scrollTop: $(this.getAttribute('href')).offset().top - 80
+         }, 20);
+      });
+
+      /*$('.anchorjs-link').on('click', function() {
             var target = $(this.getAttribute('href'))
                , scroll_target = target.offset().top;
 
             $(window).scrollTop(scroll_target - 80);
             return false;
-      });    
-   </script>
+      });*/
+   </script> 
 {% endif %}
