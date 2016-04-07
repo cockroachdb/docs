@@ -92,6 +92,9 @@ entries:
         - title: CockroachDB Features
           url: /cockroachdb-features.html
 
+        - title: Release Notes
+          url: /release-notes.html
+
     - title: Contribute
       items:
         - title: Contribute to CockroachDB
