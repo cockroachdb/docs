@@ -47,6 +47,7 @@ toc: false
 
    ~~~ shell
    $ cd $GOPATH/src/github.com/cockroachdb/cockroach
+   $ git checkout {{site.data.strings.version}}
    $ make build
    ~~~
 
