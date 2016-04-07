@@ -92,9 +92,6 @@ entries:
         - title: CockroachDB Features
           url: /cockroachdb-features.html
 
-        - title: Release Notes
-          url: /release-notes.html
-
     - title: Contribute
       items:
         - title: Contribute to CockroachDB
@@ -102,3 +99,8 @@ entries:
 
         - title: Improve the Docs
           url: /improve-the-docs.html
+
+    - title: Release Notes
+      items:
+        - title: beta-20160407
+          url: /beta-20160407.html
