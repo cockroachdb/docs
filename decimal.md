@@ -14,9 +14,11 @@ In CockroachDB, the following are aliases for `DECIMAL`:
 
 ## Precision and Scale
 
-To limit a decimal column, use `DECIMAL(precision, scale)`, where `precision` is the **maximum** count of digits both to the left and right of the decimal point and `scale` is the **exact** count of digits to the right of the decimal point. Note that using `DECIMAL(precision)` is equivalent to `DECIMAL(precision, 0)`.
+To limit a decimal column, use `DECIMAL(precision, scale)`, where `precision` is the **maximum** count of digits both to the left and right of the decimal point and `scale` is the **exact** count of digits to the right of the decimal point. The `precision` must be larger than the `scale`. 
 
-When inserting a decimal:
+Note that using `DECIMAL(precision)` is equivalent to `DECIMAL(precision, 0)`.
+
+When inserting a decimal value:
 
 - If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale. 
 - If digits to the right of the decimal point are less than the column's `scale`, CockroachDB pads to the scale with `0`s.
