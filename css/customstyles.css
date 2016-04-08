@@ -1647,7 +1647,7 @@ ol.series li {
 @media (min-width: 1000px) {
   ul#mysidebar {
     width: 225px;
-    position: fixed; } }
+    /*position: fixed;*/ } }
 @media (max-width: 900px) {
   ul#mysidebar {
     max-width: 100%; } }
