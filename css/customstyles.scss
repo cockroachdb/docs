@@ -27,6 +27,10 @@ h2 {
   font-size: 30px;
   line-height:35px;
   color: $cl_blue;
+
+  &.clickable-header {
+    cursor: pointer;
+  }
 }
 
 h3 {

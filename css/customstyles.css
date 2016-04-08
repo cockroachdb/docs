@@ -139,6 +139,8 @@ h2 {
   font-size: 30px;
   line-height: 35px;
   color: #142848; }
+  h2.clickable-header {
+    cursor: pointer; }
 
 h3 {
   font-size: 20px;
@@ -1647,7 +1649,7 @@ ol.series li {
 @media (min-width: 1000px) {
   ul#mysidebar {
     width: 225px;
-    /*position: fixed;*/ } }
+    position: fixed; } }
 @media (max-width: 900px) {
   ul#mysidebar {
     max-width: 100%; } }
