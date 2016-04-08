@@ -17,14 +17,20 @@ In CockroachDB, the following are aliases for `STRING`:
 And the following are aliases for `STRING(n)`:
 
 - `CHARACTER(n)`
-- `CHAR(n)` 
+- `CHARACTER VARYING(n)`
+- `CHAR(n)`
+- `CHAR VARYING(n)` 
 - `VARCHAR(n)` 
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of characters allowed.
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of characters allowed. 
 
-When inserting a string, if the value exceeds the column's length limit, Cockroach gives an error. However, when a value is cast as a string with a length limit (e.g., `CAST('hello world' AS CHAR(5))`), CockroachDB truncates to the limit.
+When inserting a string: 
+
+- If the value exceeds the column's length limit, CockroachDB gives an error.
+- If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
+- If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
 
 ## Format
 
