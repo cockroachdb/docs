@@ -24,7 +24,7 @@ Statement | Description
 [`DROP INDEX`](drop-index.html) | 
 [`DROP TABLE`](drop-table.html) | 
 [`EXPLAIN`](explain.html) | 
-[`GRANT`](grant.html) | 
+[`GRANT`](grant.html) | Grants privileges on databases or tables. 
 [`INSERT`](insert.html) | 
 [`RENAME COLUMN`](rename-column.html) | 
 [`RENAME DATABASE`](rename-database.html) | 

@@ -1,11 +1,13 @@
 ---
 title: SHOW INDEX
-toc: true
+toc: false
 ---
 
-## Description
-
 The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `SHOW INDEX`: 
 

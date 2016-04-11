@@ -1,11 +1,11 @@
 ---
 title: CREATE DATABASE
-toc: true
+toc: false
 ---
 
-## Description
-
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.  
+
+<div id="toc"></div>
 
 ## Privileges
 
