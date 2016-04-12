@@ -19,9 +19,22 @@ div#toc ul {
 
 {% include sql/diagrams/grant.html %}
 
-## Supported Privileges
+## Privileges
 
-CockroachDB supports the following privileges at the database and table levels. For details about privileges required by SQL statements not explicitly covered here, see the [SQL statement](sql-statements.html) documentation.
+Privileges can be granted to users at the database and table levels. When a privilege is granted on a database, the privilege will be inherited by all future tables in the database. When a privilege is granted on a table, the privilege is limited to that table. 
+
+The following table shows you the statements covered by each privilege, both at the database and table levels.
+
+Privilege | On Database | On Table
+----------|-------------|---------
+`ALL` | |
+`CREATE` | |
+`DROP` | |
+`GRANT` | |
+`SELECT` | |
+`INSERT` | |
+`DELETE` | |
+`UPDATE` | |
 
 - [`ALL`](#all)
 - [`CREATE`](#create)
