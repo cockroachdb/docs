@@ -144,7 +144,7 @@ To grant privileges on all **existing** tables in one or more databases, but not
 GRANT <privileges> on <databases>.* TO <users>
 ~~~
 
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separate list of database names, each with the `.*` suffix; and `<users>` is a comma-separate list of user names. 
+where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
 
 ### Example
 
@@ -199,7 +199,7 @@ To grant privileges on one or more specific tables in a database, use the follow
 GRANT <privileges> on <tables> TO <users>
 ~~~
 
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separate list of table names, each in `database.table` format; and `<users>` is a comma-separate list of user names.
+where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
 
 You can also use this syntax:
 
@@ -209,7 +209,7 @@ GRANT <privileges> on TABLE <tables> TO <users>
 
 ### Example
 
-Let's say you have an `music` database containing two tables: 
+Let's say you have a `music` database containing two tables: 
 
 ~~~ 
 SHOW tables FROM music;
