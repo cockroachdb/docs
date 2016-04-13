@@ -29,7 +29,7 @@ Statement | Description
 [`RENAME COLUMN`](rename-column.html) | 
 [`RENAME DATABASE`](rename-database.html) | 
 [`RENAME INDEX`](rename-index.html) | 
-[`RENAME TABLE`](rename-table.html) | 
+[`RENAME TABLE`](rename-table.html) | Renames a table or moves a table between databases.
 [`REVOKE`](revoke.html) | 
 [`ROLLBACK TRANSACTION`](rollback-transaction.html) | 
 [`SELECT`](select.html) | 

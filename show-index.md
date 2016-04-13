@@ -7,6 +7,10 @@ The `SHOW INDEX` [statement](sql-statements.html) returns index information for 
 
 <div id="toc"></div>
 
+## Synopsis
+
+{% include sql/diagrams/show_index.html %}
+
 ## Aliases
 
 In CockroachDB, the following are aliases for `SHOW INDEX`: 
@@ -14,19 +18,17 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 - `SHOW INDEXES` 
 - `SHOW KEYS`
 
-## Privileges
+## Required Privileges
 
 No privileges are required to show indexes for a table.
 
-## Synopsis
+## Usage
 
-{% include sql/diagrams/show_index.html %}
+To show indexes for a table, use the `SHOW INDEX FROM` statement followed by the table name in `database.table` format:
 
-## Parameters
-
-Parameter | Description
-----------|------------
-`var_name` | The name of the table to show indexes for. 
+~~~ sql
+SHOW INDEX FROM db1.table1;
+~~~
 
 ## Response
 
@@ -45,16 +47,16 @@ Field | Description
 ## Examples 
 
 ~~~
-CREATE TABLE table1 (
+CREATE TABLE db1.table1 (
     a INT PRIMARY KEY,
     b DECIMAL,
     c TIMESTAMP,
     d STRING
 );
 
-CREATE INDEX b_c_idx ON table1 (b, c) STORING (d);
+CREATE INDEX b_c_idx ON db1.table1 (b, c) STORING (d);
 
-SHOW INDEX FROM table1;
+SHOW INDEX FROM db1.table1;
 +--------+---------+--------+-----+--------+-----------+---------+
 | Table  |  Name   | Unique | Seq | Column | Direction | Storing |
 +--------+---------+--------+-----+--------+-----------+---------+
@@ -67,4 +69,7 @@ SHOW INDEX FROM table1;
 
 ## See Also
 
-[SQL Statements](sql-statements.html)
+- [`CREATE INDEX`](create-index.html)
+- [`DROP INDEX`](drop-index.html)
+- [`RENAME INDEX`](rename-index.html)
+- [Other SQL Statements](sql-statements.html)

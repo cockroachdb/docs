@@ -3,7 +3,7 @@ title: GRANT
 toc: false
 ---
 
-The `GRANT` [statement](sql-statements.html) grants privileges on one or more databases or tables to one or more users. 
+The `GRANT` [statement](sql-statements.html) grants one or more users specific privileges on one or more databases or tables. 
 
 The user granting privileges must have the `GRANT` privilege on the target databases or tables.  
 
@@ -21,7 +21,10 @@ div#toc ul {
 
 ## Privileges
 
-Privileges can be granted to users at the database and table levels. When a privilege is granted on a database, the privilege will be inherited by all future tables in the database. When a privilege is granted on a table, the privilege is limited to that table. 
+Users can be granted privileges at the database or table level. When privileges are granted on a database, any tables subsequently created in the database inherit the privileges, but their privileges can then be updated at any time. When privileges are granted on a table, the privileges are limited to the table.    
+
+The `root` user is assigned the `ALL` privilege all on new databases; this privilege cannot be revoked. Also, the `root` user is the only user allowed to create and drop databases. 
+
 
 The following table shows you the statements covered by each privilege, both at the database and table levels.
 
