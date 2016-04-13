@@ -33,7 +33,7 @@ For full details, see the [`SHOW GRANTS`](show-grants.html) documentation.
 
 ## Revoke Privileges
 
-To revoke privileges from users, use the `SHOW GRANTS` statement, for example:
+To revoke privileges from users, use the `REVOKE` statement, for example:
 
 ~~~
 REVOKE <privileges> ON <database.table> FROM <user>;
