@@ -126,7 +126,7 @@ $(document).ready(function(){
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
     </li>
     <li>
-      <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:</p>
+      <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the binary:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>

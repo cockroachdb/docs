@@ -19,7 +19,7 @@ toc: false
 
 1. [Install Homebrew](http://brew.sh/).
 
-2. Run our brew recipe to install dependencies, get the CockroachDB code, and build the CockroachDB binary:
+2. Run our brew recipe to install dependencies, get the CockroachDB code, and build the binary:
 
    ~~~ shell
    $ brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb

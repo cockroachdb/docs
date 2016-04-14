@@ -7,6 +7,8 @@ toc: true
 
 The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC. 
 
+In CockroachDB, `TIMESTAMPZ` is an alias for `TIMESTAMP`.
+
 ## Format
 
 When declaring a `TIMESTAMP`, use one of the following formats:

@@ -46,7 +46,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
     - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
-    If you don't plan to use more than one node, you can avoid unnecessary errors about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.  
+    If you don't plan to use more than one node, you can avoid unnecessary errors about replication in log files by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.  
 
     </div>
 
