@@ -168,7 +168,7 @@ func main() {
 			specs := []stmtSpec{
 				// TODO(mjibson): improve SET filtering
 				// TODO(mjibson): improve SELECT display
-				{name: "alter_table_stmt", inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def"}},
+				{name: "alter_table_stmt", inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data"}},
 				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, prefix: regexp.MustCompile("'BEGIN'")},
 				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, prefix: regexp.MustCompile("'COMMIT'")},
 				{name: "create_database_stmt"},
@@ -176,7 +176,7 @@ func main() {
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{name: "drop_database", stmt: "drop_stmt", prefix: regexp.MustCompile("'DROP' 'DATABASE'")},
-				{name: "drop_index", stmt: "drop_stmt", prefix: regexp.MustCompile("'DROP' 'INDEX'")},
+				{name: "drop_index", stmt: "drop_stmt", prefix: regexp.MustCompile("'DROP' 'INDEX'"), inline: []string{"opt_drop_behavior"}},
 				{name: "drop_stmt", inline: []string{"any_name_list", "any_name", "qualified_name_list", "qualified_name"}},
 				{name: "drop_table", stmt: "drop_stmt", prefix: regexp.MustCompile("'DROP' 'TABLE'")},
 				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
