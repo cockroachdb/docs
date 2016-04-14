@@ -43,7 +43,7 @@ We assume that you have already:
  
 ## Step 1. Create a database and grant privileges
 
-As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create a `bank` database and grant privileges to the `maxroach` user. The privileges will enable the user to execute statements in the next steps. 
+As the `root` user, use the [built-in SQL client](use-the-builtin-sql-client.html) to create a `bank` database and [grant privileges](grant.html) to the `maxroach` user. The privileges will enable the user to execute statements in the next steps. 
 
 ~~~ shell
 $ ./cockroach sql -e 'CREATE DATABASE bank'

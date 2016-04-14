@@ -11,39 +11,34 @@ For the privileges required by specific statements, see the documentation for th
 
 <div id="toc"></div>
 
-## Grant Privileges
+## Supported Privileges
 
-To grant privileges to a user, use the `GRANT` statement, for example: 
+For a full list of supported privileges, see the [`GRANT`](grant.html) documentation.
+
+## Granting Privileges
+
+To grant privileges to a user, use the [`GRANT`](grant.html) statement, for example: 
 
 ~~~
 GRANT <privileges> ON <database.table> TO <user>;
 ~~~
 
-For full details, including a list of supported privileges, see the [`GRANT`](grant.html) documentation.
+## Showing Privileges
 
-## Show Privileges
-
-To show privileges granted to users, use the `SHOW GRANTS` statement, for example:
+To show privileges granted to users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
 
 ~~~
 SHOW GRANTS ON <database.table> FOR <user>;
 ~~~
 
-For full details, see the [`SHOW GRANTS`](show-grants.html) documentation.
+## Revoking Privileges
 
-## Revoke Privileges
-
-To revoke privileges from users, use the `REVOKE` statement, for example:
+To revoke privileges from users, use the [`REVOKE`](revoke.html) statement, for example:
 
 ~~~
 REVOKE <privileges> ON <database.table> FROM <user>;
 ~~~
 
-For full details, see the [`REVOKE`](revoke.html) documentation.
-
 ## See Also
 
-- [`GRANT`](grant.hmtl)
-- [`REVOKE`](revoke.html)
-- [`SHOW GRANTS`](show-grants.html)
-- [Other SQL Statements](sql-statements.html)
+[SQL Statements](sql-statements.html)
