@@ -59,6 +59,7 @@ experimental_unique_bytes() | [bytes](bytes.html)
 experimental_uuid_v4() | [bytes](bytes.html)
 left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
+uuid_v4() | [bytes](bytes.html)
 
 date functions | Return
 --- | ---
@@ -71,6 +72,7 @@ avg([decimal](decimal.html)) | [decimal](decimal.html)
 cbrt([decimal](decimal.html)) | [decimal](decimal.html)
 ceil([decimal](decimal.html)) | [decimal](decimal.html)
 ceiling([decimal](decimal.html)) | [decimal](decimal.html)
+cluster_logical_timestamp() | [decimal](decimal.html)
 div([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 exp([decimal](decimal.html)) | [decimal](decimal.html)
 floor([decimal](decimal.html)) | [decimal](decimal.html)
@@ -147,7 +149,6 @@ octet_length([bytes](bytes.html)) | [int](int.html)
 octet_length([string](string.html)) | [int](int.html)
 sign([int](int.html)) | [int](int.html)
 strpos([string](string.html), [string](string.html)) | [int](int.html)
-transaction_timestamp_unique() | [int](int.html)
 unique_rowid() | [int](int.html)
 
 interval functions | Return
