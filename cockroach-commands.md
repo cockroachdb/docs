@@ -7,6 +7,10 @@ This page lists the `cockroach` commands for configuring, starting, and managing
 
 You can run `./cockroach help` in your shell to get similar guidance.
 
+<div id="toc"></div>
+
+## Commands
+
 Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
@@ -29,7 +33,7 @@ By default, CockroachDB logs all messages to files (see `--log-dir`) and message
 
 Flag | Description
 -----|------------
-`--alsologtostderr` | Copy log messages at or above this severity level to the standard error stream in addition to log files. Possible values: `info`, `warning`, `error`, and `fatal`. <br><br>**Default:** `none`
+`--alsologtostderr` | Copy log messages at or above this severity level to the standard error stream in addition to log files. Possible values: `info`, `warning`, `error`, `fatal`, and `none`. If this flag is set without a value, it uses the `info` level. <br><br>**Default:** `none`
 `--log-dir` | Write log files in this directory. <br><br> **Default:** `<first-store-dir>/logs` for the `start` command; `$TMPDIR` for all other commands  
 `--logtostderr` |  Write log messages of all severities to the standard error stream and not to log files. If this flag is set to `true`, `--log-dir` and `--alsologtostderr` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
 `--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
