@@ -7,7 +7,7 @@ toc: true
 
 ### Replicas failing on a single-node cluster
 
-When running a single-node CockroachDB cluster for testing, you eventually see an error about replicas failing, for example:
+When running a single-node CockroachDB cluster for testing, an error about replicas failing will eventually show up in the node's log files, for example:
 
 ~~~ shell
 E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"
