@@ -25,12 +25,12 @@ The user granting privileges must have the `GRANT` privilege on the target datab
 
 ## Supported Privileges
 
-Users can be granted the following privileges. Some privileges can be granted for databases and tables, while others can be granted only for tables. 
+Users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below). 
 
 - When a user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. 
 - When a user is granted privileges for a table, the privileges are limited to the table.
 - The `root` user is automatically assigned the `ALL` privilege for new databases and is the only user allowed to create databases. 
-- For the privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+- For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 Privilege | Levels
 ----------|------------ 
@@ -50,7 +50,7 @@ Privilege | Levels
 To grant privileges on one or more databases, use the following syntax:
 
 ~~~
-GRANT <privileges> on DATABASE <databases> TO <users>
+GRANT <privileges> ON DATABASE <databases> TO <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
@@ -62,7 +62,7 @@ The privileges will be inherited by any new tables created in the target databas
 To grant privileges on one or more tables in a database, use the following syntax:
 
 ~~~
-GRANT <privileges> on <tables> TO <users>
+GRANT <privileges> ON <tables> TO <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
@@ -78,7 +78,7 @@ GRANT <privileges> on TABLE <tables> TO <users>
 To grant privileges on all current tables in one or more databases, use the following syntax:
 
 ~~~
-GRANT <privileges> on <databases>.* TO <users>
+GRANT <privileges> ON <databases>.* TO <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
