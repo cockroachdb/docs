@@ -11,7 +11,7 @@ table td:first-child {
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-Statement | Description
+Statement | Description 
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | 
 [`BEGIN TRANSACTION`](begin-transaction.html)| 
@@ -24,12 +24,12 @@ Statement | Description
 [`DROP INDEX`](drop-index.html) | 
 [`DROP TABLE`](drop-table.html) | 
 [`EXPLAIN`](explain.html) | 
-[`GRANT`](grant.html) | 
+[`GRANT`](grant.html) | Grants privileges on databases or tables. 
 [`INSERT`](insert.html) | 
 [`RENAME COLUMN`](rename-column.html) | 
 [`RENAME DATABASE`](rename-database.html) | 
 [`RENAME INDEX`](rename-index.html) | 
-[`RENAME TABLE`](rename-table.html) | 
+[`RENAME TABLE`](rename-table.html) | Renames a table or moves a table between databases.
 [`REVOKE`](revoke.html) | 
 [`ROLLBACK TRANSACTION`](rollback-transaction.html) | 
 [`SELECT`](select.html) | 
@@ -39,7 +39,7 @@ Statement | Description
 [`SHOW COLUMNS`](show-columns.html) | 
 [`SHOW DATABASES`](show-databases.html) | 
 [`SHOW GRANTS`](show-grants.html) | 
-[`SHOW INDEX`](show-index.html) | Returns index information for a table.
+[`SHOW INDEX`](show-index.html) | Returns index information for a table. 
 [`SHOW TABLES`](show-tables.html) | 
 [`SHOW TIMEZONE`](show-timezone.html) | 
 [`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | 

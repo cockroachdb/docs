@@ -21,10 +21,6 @@ Coming soon.
 
 Coming soon.
 
-## Privileges
-
-Coming soon.
-
 ## Indexes
 
 Coming soon.

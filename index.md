@@ -1,5 +1,5 @@
 ---
-title: CockroachDB
+title: CockroachDB Docs
 type: first_page
 homepage: true
 toc: false

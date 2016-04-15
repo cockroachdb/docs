@@ -41,6 +41,9 @@ entries:
         - title: Data Types
           url: /data-types.html
 
+        - title: Privileges
+          url: /privileges.html
+          
         - title: Functions and Operators
           url: /functions-and-operators.html
 
