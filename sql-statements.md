@@ -11,7 +11,7 @@ table td:first-child {
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-Statement | Description
+Statement | Description 
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | 
 [`BEGIN TRANSACTION`](begin-transaction.html)| 
@@ -39,7 +39,7 @@ Statement | Description
 [`SHOW COLUMNS`](show-columns.html) | 
 [`SHOW DATABASES`](show-databases.html) | 
 [`SHOW GRANTS`](show-grants.html) | 
-[`SHOW INDEX`](show-index.html) | Returns index information for a table.
+[`SHOW INDEX`](show-index.html) | Returns index information for a table. 
 [`SHOW TABLES`](show-tables.html) | 
 [`SHOW TIMEZONE`](show-timezone.html) | 
 [`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | 
