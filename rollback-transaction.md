@@ -1,5 +1,5 @@
 ---
-title: ROLLBACK TRANSACTION
+title: ROLLBACK
 toc: true
 ---
 
@@ -10,6 +10,8 @@ toc: true
 {% include sql/diagrams/rollback_transaction.html %}
 
 ## Privileges
+
+No privileges are required to rollback a transaction. 
 
 ## Parameters
 

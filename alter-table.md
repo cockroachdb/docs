@@ -1,9 +1,11 @@
 ---
 title: ALTER TABLE
-toc: true
+toc: false
 ---
 
-## Description
+The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table.
+
+<div id="toc"></div>
 
 ## Synopsis
 
@@ -11,6 +13,7 @@ toc: true
 
 ## Privileges
 
+The user must have the `CREATE` [privilege](privileges.html) on the table. 
 
 ## Parameters
 
