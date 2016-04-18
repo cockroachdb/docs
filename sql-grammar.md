@@ -8,8 +8,8 @@ toc: false
 a[name]::before {
 	content: '';
 	display: block;
-	height: 150px;
-	margin: -150px 0 0;
+	height: 80px;
+	margin: -80px 0 0;
 }
 </style>
 
