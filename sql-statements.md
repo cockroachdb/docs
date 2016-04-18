@@ -23,16 +23,16 @@ Statement | Usage
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP TABLE`](drop-table.html) | Remove a table.
-[`EXPLAIN`](explain.html) | 
+[`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
 [`GRANT`](grant.html) | Grant privileges to users. 
 [`INSERT`](insert.html) | Insert rows into a table.
-[`RENAME COLUMN`](rename-column.html) | Rename a columnn in a table.
+[`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`REVOKE`](revoke.html) | Revoke privileges from users. 
 [`ROLLBACK`](rollback-transaction.html) | 
-[`SELECT`](select.html) | 
+[`SELECT`](select.html) | Select rows from a table.
 [`SET DATABASE`](set-database.html) | Set the default database.
 [`SET TIMEZONE`](set-timezone.html) | 
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level and/or priority of a [transaction](transactions.html).

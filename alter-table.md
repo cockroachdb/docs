@@ -11,7 +11,7 @@ The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a 
 
 {% include sql/diagrams/alter_table.html %}
 
-## Privileges
+## Required Privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table. 
 

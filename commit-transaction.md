@@ -9,7 +9,7 @@ toc: true
 
 {% include sql/diagrams/commit_transaction.html %}
 
-## Privileges
+## Required Privileges
 
 No privileges are required to commit a transaction. 
 

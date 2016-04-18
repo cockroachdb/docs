@@ -3,7 +3,7 @@ title: RENAME TABLE
 toc: false
 ---
 
-The `RENAME TABLE` [statement](sql-statements.html) alters the name of a table. It can also be used to move a table from one database to another.
+The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table. It can also be used to move a table from one database to another.
 
 <div id="toc"></div>
 

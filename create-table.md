@@ -1,15 +1,19 @@
 ---
 title: CREATE TABLE
-toc: true
+toc: false
 ---
 
-## Description
+The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/create_table.html %}
 
-## Privileges
+## Required Privileges
+
+The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
 
 ## Parameters
 

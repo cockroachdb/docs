@@ -13,7 +13,7 @@ The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table
 
 {% include sql/diagrams/create_index.html %}
 
-## Privileges
+## Required Privileges
 
 The user must have the `CREATE` privilege on the table.
 

@@ -1,15 +1,19 @@
 ---
 title: INSERT
-toc: true
+toc: false
 ---
 
-## Description
+The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/insert.html %}
 
-## Privileges
+## Required Privileges
+
+The user must have the `INSERT` [privilege](privileges.html) on the table. 
 
 ## Parameters
 

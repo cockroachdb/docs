@@ -1,15 +1,19 @@
 ---
 title: SELECT
-toc: true
+toc: false
 ---
 
-## Description
+The `SELECT` [statement](sql-statements.html) retrieves data from a table.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/select.html %}
 
-## Privileges
+## Required Privileges
+
+The user must have the `SELECT` [privilege](privileges.html) on the table.
 
 ## Parameters
 
