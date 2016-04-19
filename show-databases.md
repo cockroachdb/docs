@@ -1,19 +1,36 @@
 ---
 title: SHOW DATABASES
-toc: true
+toc: false
 ---
 
-## Description
+The `SHOW DATABASES` [statement](sql-statements.html) lists all database in the CockroachDB cluster.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/show_databases.html %}
 
-## Privileges
+## Required Privileges
 
-## Parameters
+No privileges are required to list the databases in the CockroachDB cluster.
 
-| Parameter | Description |
-|-----------|-------------|
-|  |  |
+## Usage
 
+To list all databases in the cluster, use the `SHOW DATABASES` statement:
+
+~~~ sql
+SHOW DATABASES;
+~~~
+~~~
++----------+
+| Database |
++----------+
+| bank     |
+| system   |
++----------+
+~~~
+
+## See Also
+
+[SQL Statements](sql-statements.html)

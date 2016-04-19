@@ -3,7 +3,7 @@ title: SET DATABASE
 toc: false
 ---
 
-The `SET DATABASE` [statement](sql-statements.html) sets the default database. When connected to the default database, you don't need to reference it explicitly in statements.
+The `SET DATABASE` [statement](sql-statements.html) sets the default database for the current session. When connected to the default database, you don't need to reference it explicitly in statements.
 
 <div id="toc"></div>
 

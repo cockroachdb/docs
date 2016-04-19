@@ -15,11 +15,11 @@ Statement | Usage
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
-[`COMMIT`](commit-transaction.html) | Commit a [transaction](transaction.html).
+[`COMMIT`](commit-transaction.html) | Commit the current [transaction](transaction.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database. 
-[`DELETE`](delete.html) | Delete rows from a table.
+[`DELETE`](delete.html) | Delete specific rows from a table.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP TABLE`](drop-table.html) | Remove a table.
@@ -31,21 +31,21 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`REVOKE`](revoke.html) | Revoke privileges from users. 
-[`ROLLBACK`](rollback-transaction.html) | 
+[`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transaction.html). 
 [`SELECT`](select.html) | Select rows from a table.
-[`SET DATABASE`](set-database.html) | Set the default database.
-[`SET TIMEZONE`](set-timezone.html) | 
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level and/or priority of a [transaction](transactions.html).
-[`SHOW COLUMNS`](show-columns.html) | View column information for a table.
+[`SET DATABASE`](set-database.html) | Set the default database for the session.
+[`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
+[`SET TRANSACTION`](set-transaction.html) | Set the isolation level and/or priority for the session or for an individual [transaction](transactions.html).
+[`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW INDEX`](show-index.html) | View index information for a table. 
 [`SHOW TABLES`](show-tables.html) | List tables in a database.
-[`SHOW TIMEZONE`](show-timezone.html) | 
-[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | View the isoloation level of a [transaction](transactions.html).
-[`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | View the priority of a [transaction](transactions.html). 
-[`TRUNCATE`](truncate.html) | 
-[`UPDATE`](update.html) | 
-[`VALUES`](values.html) | 
+[`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
+[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | View the transaction isolation level for the session or for an individual [transaction](transactions.html).
+[`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | View the transaction priority for the session or for an individual [transaction](transactions.html). 
+[`TRUNCATE`](truncate.html) | Delete all rows from a table.
+[`UPDATE`](update.html) | Update rows in a table.
+[`VALUES`](values.html) | Compute a row value or set of row values.
 
 

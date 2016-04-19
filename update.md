@@ -1,15 +1,19 @@
 ---
 title: UPDATE
-toc: true
+toc: false
 ---
 
-## Description
+The `UPDATE` [statement](sql-statements.html) updates rows in a table.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/update.html %}
 
-## Privileges
+## Required Privileges
+
+The user must have the `SELECT` and `UPDATE` privileges on that table.
 
 ## Parameters
 

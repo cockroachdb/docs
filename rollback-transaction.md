@@ -1,9 +1,13 @@
 ---
 title: ROLLBACK
-toc: true
+toc: false
 ---
 
-## Description
+The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by the transaction.
+
+[transaction](transaction.html).
+
+<div id="toc"></div>
 
 ## Synopsis
 
@@ -19,4 +23,8 @@ No privileges are required to rollback a transaction.
 |-----------|-------------|
 |  |  |
 
+## See Also
 
+- [Transactions](transactions.html)
+- [BEGIN](begin-transaction.html)
+- [COMMIT](commit-transaction.html)
