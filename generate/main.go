@@ -193,7 +193,7 @@ func main() {
 				{name: "select_stmt", inline: []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit"}},
 				{name: "set_database", stmt: "set_stmt"},
 				{name: "set_timezone", stmt: "set_stmt"},
-				{name: "set_transaction", stmt: "set_stmt"},
+				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, prefix: regexp.MustCompile("'TRANSACTION'")},
 				{name: "show_columns", stmt: "show_stmt", prefix: regexp.MustCompile("'SHOW' 'COLUMNS'")},
 				{name: "show_databases", stmt: "show_stmt", prefix: regexp.MustCompile("'SHOW' 'DATABASES'")},
 				{name: "show_grants", stmt: "show_stmt", inline: []string{"on_privilege_target_clause", "privilege_target", "for_grantee_clause", "grantee_list"}, prefix: regexp.MustCompile("'SHOW' 'GRANTS'")},
@@ -218,6 +218,9 @@ func main() {
 					g, err := runParse(br(), s.inline, s.stmt, false, s.prefix)
 					if err != nil {
 						log.Fatal(err)
+					}
+					for from, to := range s.replace {
+						g = bytes.Replace(g, []byte(from), []byte(to), -1)
 					}
 					rr, err := runRR(bytes.NewReader(g))
 					if err != nil {
@@ -248,10 +251,11 @@ func main() {
 }
 
 type stmtSpec struct {
-	name   string
-	stmt   string // if unspecified, uses name
-	inline []string
-	prefix *regexp.Regexp
+	name    string
+	stmt    string // if unspecified, uses name
+	inline  []string
+	replace map[string]string
+	prefix  *regexp.Regexp
 }
 
 func runBNF(addr string) ([]byte, error) {
