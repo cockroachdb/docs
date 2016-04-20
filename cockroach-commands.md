@@ -42,7 +42,9 @@ The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for 
 
 ## Environment Variables
 
-The flags for many `cockroach` commands can be set as environment variables. 
+The flags for many `cockroach` commands can be set as environment variables. For common configurations, such as `port` or `user`, you can set the environment variable once rather than manually pass the flag each time you run a command. 
+
+These variables make it easy to execute commands without having to manually set common flags (e.g., `port` or `user`).  
 
 - To find out which flags support environment variables, see the documentation for each [command](#commands). 
 - To output the current configuration of CockroachDB environment variables, run `./cockroach debug env`. 

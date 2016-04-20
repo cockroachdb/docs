@@ -3,7 +3,7 @@ title: Create Security Certificates
 toc: false
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` command with the appropriate subcommands and flags. 
+A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [command](cockroach-commands.html) with the appropriate subcommands and flags. 
 
 When using <code>cockroach cert</code> to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
@@ -46,7 +46,7 @@ Flag | Description
 `--ca-key` | The path to the private key protecting the CA certificate. <br><br>This flag is required for all subcommands. When used with `create-ca` in particular, it defines where to create the certificate and what to call it; the specified directory must exist. 
 `--cert` | The path to the node or client certificate. <br><br>This flag is used only with the `create-node` and `create-client` subcommands. It defines where to create the node or client certificate and what to call it; the specified directory must exist.  
 `--key` | The path to the private key protecting the node or client certificate. <br><br>This flag is used only with the `create-node` and `create-client` subcommands. It defines where to create the node or client key and what to call it; the specified directory must exist.
-`--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** 2048 
+`--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
 
 ## Examples
 
@@ -73,3 +73,6 @@ $ ./cockroach cert create-client maxroach --ca-cert=certs/ca.cert --ca-key=certs
 - [Manual Deployment](manual-deployment.html): Walkthrough starting a multi-node secure cluster and accessing it from a client. 
 - [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
 
+## See Also
+
+[Other Cockroach Commands](cockroach-commands.html)
