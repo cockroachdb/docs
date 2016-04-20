@@ -3,7 +3,7 @@ title: Cockroach Commands
 toc: false
 ---
 
-This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster. Click a command for supported flags and examples. See [logging flags](#logging-flags) for flags that can be set on any command. 
+This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command, and environment variables that can be used in place of certain flags.
 
 You can run `./cockroach help` in your shell to get similar guidance.
 
@@ -39,3 +39,17 @@ Flag | Description
 `--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
 
 The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for internal debugging. 
+
+## Environment Variables
+
+The flags for many `cockroach` commands can be set as environment variables. 
+
+- To find out which flags support environment variables, see the documentation for each [command](#commands). 
+- To output the current configuration of CockroachDB environment variables, run `./cockroach debug env`. 
+
+CockroachDB prioritizes command flags, environment variables, and defaults as follows:
+
+1. If a flag is set for a command, CockroachDB uses it.
+2. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
+3. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
+4. If there's no flag default, CockroachDB gives an error.
