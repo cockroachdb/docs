@@ -18,7 +18,7 @@ Command | Usage
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
-`node` | List nodes and show their status.
+[`node`](view-node-details.html) | List node IDs and show their status.
 `gen` | Generate manpages and bash completion file.
 `version` | Output CockroachDB version information.
 
