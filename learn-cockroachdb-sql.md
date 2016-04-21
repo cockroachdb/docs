@@ -318,7 +318,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete Rows in a Table
 
-To delete rows in a table, use the [`DELETE FROM`](delete.html) statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
+To delete rows from a table, use the [`DELETE FROM`](delete.html) statement followed by the table name and a `WHERE` clause identifying the rows to delete: 
 
 ~~~ sql
 DELETE FROM accounts WHERE id in (5, 6);

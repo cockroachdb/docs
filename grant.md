@@ -3,15 +3,9 @@ title: GRANT
 toc: false
 ---
 
-The `GRANT` statement grants user [privileges](privileges.html) for interacting with specific databases and tables. 
+The `GRANT` [statement](sql-statements.html) grants user [privileges](privileges.html) for interacting with specific databases and tables. 
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
-
-<style>
-div#toc ul {
-    max-width: 50%;
-}
-</style>
 
 <div id="toc"></div>
 

@@ -1,15 +1,19 @@
 ---
 title: EXPLAIN
-toc: true
+toc: false
 ---
 
-## Description
+The `EXPLAIN` [statement](sql-statements.html) provides debugging and analysis details for a `DELETE`, `INSERT`, `SELECT` or `UPDATE` statement.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/explain.html %}
 
-## Privileges
+## Required Privileges
+
+The user requires the appropriate [privileges](privileges.html) for the statement being explained.
 
 ## Parameters
 

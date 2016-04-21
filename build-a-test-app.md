@@ -5,7 +5,7 @@ toc: false
 
 <style>
 div#toc ul {
-    max-width: 50%;
+    max-width: 60%;
 }
 </style>
 
@@ -149,7 +149,7 @@ Initial balances:
 
 As the `maxroach` user, connect again from your preferred language, but this time execute a batch of statements as an atomic transaction, where all included statements are either commited or aborted. 
 
-{{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code. For more details about retries and other transaction topics, see <a href="https://www.cockroachlabs.com/docs/transactions.html">Transactions</a>.{{site.data.alerts.end}}    
+{{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code. For more details, see <a href="https://www.cockroachlabs.com/docs/transactions.html#transaction-retries">Transaction Retries</a>.{{site.data.alerts.end}}    
 
 <div id="step-four-filters" class="filters clearfix">
 	<button class="filter-button current" data-language="python">Python</button>

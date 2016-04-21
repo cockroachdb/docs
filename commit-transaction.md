@@ -1,5 +1,5 @@
 ---
-title: COMMIT TRANSACTION
+title: COMMIT
 toc: true
 ---
 
@@ -9,10 +9,18 @@ toc: true
 
 {% include sql/diagrams/commit_transaction.html %}
 
-## Privileges
+## Required Privileges
+
+No [privileges](privileges.html) are required to commit a transaction. 
 
 ## Parameters
 
 | Parameter | Description |
 |-----------|-------------|
 |  |  |
+
+## See Also
+
+- [Transactions](transactions.html)
+- [BEGIN](begin-transaction.html)
+- [ROLLBACK](rollback-transaction.html)

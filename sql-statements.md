@@ -11,42 +11,42 @@ table td:first-child {
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-Statement | Description 
+Statement | Usage 
 ----------|------------
-[`ALTER TABLE`](alter-table.html) | 
-[`BEGIN TRANSACTION`](begin-transaction.html)| 
-[`COMMIT TRANSACTION`](commit-transaction.html) | 
-[`CREATE DATABASE`](create-database.html) | Creates a new CockroachDB database.
-[`CREATE INDEX`](create-index.html) | 
-[`CREATE TABLE`](create-table.html) | 
-[`DELETE`](delete.html) | 
-[`DROP DATABASE`](drop-database.html) | 
-[`DROP INDEX`](drop-index.html) | 
-[`DROP TABLE`](drop-table.html) | 
-[`EXPLAIN`](explain.html) | 
-[`GRANT`](grant.html) | Grants privileges on databases or tables. 
-[`INSERT`](insert.html) | 
-[`RENAME COLUMN`](rename-column.html) | 
-[`RENAME DATABASE`](rename-database.html) | 
-[`RENAME INDEX`](rename-index.html) | 
-[`RENAME TABLE`](rename-table.html) | Renames a table or moves a table between databases.
-[`REVOKE`](revoke.html) | 
-[`ROLLBACK TRANSACTION`](rollback-transaction.html) | 
-[`SELECT`](select.html) | 
-[`SET DATABASE`](set-database.html) | 
-[`SET TIMEZONE`](set-timezone.html) | 
-[`SET TRANSACTION`](set-transaction.html) | 
-[`SHOW COLUMNS`](show-columns.html) | 
-[`SHOW DATABASES`](show-databases.html) | 
-[`SHOW GRANTS`](show-grants.html) | 
-[`SHOW INDEX`](show-index.html) | Returns index information for a table. 
-[`SHOW TABLES`](show-tables.html) | 
-[`SHOW TIMEZONE`](show-timezone.html) | 
-[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | 
-[`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | 
-[`TABLE`](table.html) | 
-[`TRUNCATE`](truncate.html) | 
-[`UPDATE`](update.html) | 
-[`VALUES`](values.html) | 
+[`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
+[`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
+[`COMMIT`](commit-transaction.html) | Commit the current [transaction](transaction.html).
+[`CREATE DATABASE`](create-database.html) | Create a new database.
+[`CREATE INDEX`](create-index.html) | Create an index for a table.
+[`CREATE TABLE`](create-table.html) | Create a new table in a database. 
+[`DELETE`](delete.html) | Delete specific rows from a table.
+[`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
+[`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP TABLE`](drop-table.html) | Remove a table.
+[`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
+[`GRANT`](grant.html) | Grant privileges to users. 
+[`INSERT`](insert.html) | Insert rows into a table.
+[`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
+[`RENAME DATABASE`](rename-database.html) | Rename a database.
+[`RENAME INDEX`](rename-index.html) | Rename an index for a table.
+[`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`RELEASE SAVEPOINT`](release-savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), commit the transaction's changes once there are no retryable errors.  
+[`REVOKE`](revoke.html) | Revoke privileges from users. 
+[`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transaction.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.  
+[`SELECT`](select.html) | Select rows from a table.
+[`SET DATABASE`](set-database.html) | Set the default database for the session.
+[`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
+[`SET TRANSACTION`](set-transaction.html) | Set the isolation level and/or priority for the session or for an individual [transaction](transactions.html).
+[`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
+[`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
+[`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
+[`SHOW INDEX`](show-index.html) | View index information for a table. 
+[`SHOW TABLES`](show-tables.html) | List tables in a database.
+[`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
+[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | View the transaction isolation level for the session or for an individual [transaction](transactions.html).
+[`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | View the transaction priority for the session or for an individual [transaction](transactions.html). 
+[`TRUNCATE`](truncate.html) | Delete all rows from a table.
+[`UPDATE`](update.html) | Update rows in a table.
+[`VALUES`](values.html) | Compute a row value or set of row values.
 
 

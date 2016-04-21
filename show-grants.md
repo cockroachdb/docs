@@ -1,15 +1,19 @@
 ---
 title: SHOW GRANTS
-toc: true
+toc: false
 ---
 
-## Description
+The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/show_grants.html %}
 
-## Privileges
+## Required Privileges
+
+No [privileges](privileges.html) are required to view privileges granted to users.
 
 ## Parameters
 

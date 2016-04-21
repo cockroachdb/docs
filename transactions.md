@@ -9,21 +9,21 @@ CockroachDB supports bundling multiple SQL statements into a single all-or-nothi
 
 ## Syntax
 
-In CockroachDB, a transaction is set up by surrounding SQL statements with the `BEGIN TRANSACTION` and `COMMIT` statements:
+In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements:
 
 ~~~ sql
-BEGIN TRANSACTION
+BEGIN
 <other statements>
 COMMIT
 ~~~
 
-If at any point in the transaction you decide to abort all updates, you can issue the `ROLLBACK` statement instead of the `COMMIT` statement.
+If at any point in the transaction you decide to abort all updates, you can issue the [`ROLLBACK`](rollback-transaction.html) statement instead of the `COMMIT` statement.
 
 ## Transaction Retries
 
 Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, however, one of the conflicting transactions must be retried or aborted.
 
-Individual statements, which are treated as implicit transactions, and statements batched between `BEGIN TRANSACTION` and `COMMIT`, are retried automatically by the CockroachDB server. Transactions involving business logic, however, must be retried from the client. For example, when a transaction depends on values read from the database, reads after a retry can return different results than before the retry, and so the follow-up logic may be different. 
+Individual statements, which are treated as implicit transactions, and statements batched between `BEGIN` and `COMMIT`, are retried automatically by the CockroachDB server. Transactions involving business logic, however, must be retried from the client. For example, when a transaction depends on values read from the database, reads after a retry can return different results than before the retry, and so the follow-up logic may be different. 
 
 To assist with client-side retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
@@ -35,22 +35,22 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 
 3. The statements in the transaction are executed. 
 
-4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the `ROLLBACK TO SAVEPOINT cockroach_restart` statement restarts the transaction. 
+4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) statement restarts the transaction. 
 
    In cases where you do not want the application to retry the transaction, you can adapt the wrapper function to simply `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
-5. When there are no retryable errors, the `RELEASE SAVEPOINT cockroach_restart` statement commits the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
+5. When there are no retryable errors, the [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) statement commits the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
    In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
-{{site.data.alerts.callout_info}}In CockroachDB, individual statements and statements batched between <code>BEGIN TRANSACTION</code> and <code>COMMIT</code> are considered implicit transactions and are retried automatically by the server; no special error handling is needed.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In CockroachDB, individual statements and statements batched between <code>BEGIN</code> and <code>COMMIT</code> are considered implicit transactions and are retried automatically by the server; no special error handling is needed.{{site.data.alerts.end}}
 
 ## Transaction Priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in high-contention scenarios, the client can set the priority within the `BEGIN TRANSACTION` statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in high-contention scenarios, the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
-BEGIN TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
+BEGIN PRIORITY <LOW, NORMAL, HIGH>
 ~~~
 
 Alternately, the client can set the priority immediately after the transaction is started as follows:
@@ -68,7 +68,7 @@ When two transactions contend for the same resource, the one with the lower prio
 CockroachDB supports two transaction isolation levels: `SNAPSHOT ISOLATION` and `SERIALIZABLE`. By default, transactions use the `SERIALIZABLE` isolation level, but the client can explicitly set a transaction's isolation when starting the transaction:
 
 ~~~ sql
-BEGIN TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
+BEGIN ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
 ~~~
 
 Alternately, the client can set the isolation level immediately after the transaction is started as follows:
@@ -95,3 +95,11 @@ The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `REPEATABLE R
 The CockroachDB `SNAPSHOT ISOLATION` level is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+
+## See Also
+
+- [`BEGIN`](begin-transaction.html)
+- [`COMMIT`](commit-transaction.html)
+- [`ROLLBACK`](rollback-transaction.html)
+- [`RELEASE SAVEPOINT`](release-savepoint.html)
+- [Retryable function code samples](build-a-test-app.html#step-4-execute-transactions-from-a-client)

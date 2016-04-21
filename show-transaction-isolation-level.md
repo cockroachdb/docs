@@ -1,15 +1,19 @@
 ---
 title: SHOW TRANSACTION ISOLATION LEVEL
-toc: true
+toc: false
 ---
 
-## Description
+The `SHOW TRANSACTION ISOLATION LEVEL` [statement](sql-statements.html) lists the default transaction isolation level for the current session or for an individual [transaction](transactions.html).
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/show_transaction_isolation_level.html %}
 
-## Privileges
+## Required Privileges
+
+No [privileges](privileges.html) are required to view the transaction isolation level.
 
 ## Parameters
 

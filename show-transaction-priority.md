@@ -1,15 +1,19 @@
 ---
 title: SHOW TRANSACTION PRIORITY
-toc: true
+toc: false
 ---
 
-## Description
+The `SHOW TRANSACTION PRIORITY` [statement](sql-statements.html) lists the default transaction priority for the current session or for an individual [transaction](transactions.html).
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/show_transaction_priority.html %}
 
-## Privileges
+## Required Privileges
+
+No [privileges](privileges.html) are required to view the transaction priority.
 
 ## Parameters
 

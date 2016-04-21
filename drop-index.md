@@ -1,15 +1,19 @@
 ---
 title: DROP INDEX
-toc: true
+toc: false
 ---
 
-## Description
+The `DROP INDEX` [statement](sql-statements.html) removes an index from a table.
+
+<div id="toc"></div>
 
 ## Synopsis
 
 {% include sql/diagrams/drop_index.html %}
 
-## Privileges
+## Required Privileges
+
+The user must have the `CREATE` [privilege](privileges.html) on the table. 
 
 ## Parameters
 
