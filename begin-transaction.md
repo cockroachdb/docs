@@ -13,7 +13,7 @@ The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transacti
 
 ## Required Privileges
 
-No privileges are required to initiate a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](privileges.html) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 
@@ -31,5 +31,5 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 ## See Also
 
 - [Transactions](transactions.html)
-- [COMMIT](commit-transaction.html)
-- [ROLLBACK](rollback-transaction.html)
+- [`COMMIT`](commit-transaction.html)
+- [`ROLLBACK`](rollback-transaction.html)

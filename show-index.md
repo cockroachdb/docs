@@ -20,7 +20,7 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 
 ## Required Privileges
 
-No privileges are required to show indexes for a table.
+No [privileges](privileges.html) are required to show indexes for a table.
 
 ## Usage
 

@@ -145,7 +145,7 @@ You can run a secure or insecure CockroachDB cluster. When secure, client/node a
 
 Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table levels. 
 
-For more details, see our [SQL privileges design](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/sql_privileges.md) document. Official docs are in progress.   
+For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.   
 
 ## Does Cockroach Labs offer a cloud database as a service?
 

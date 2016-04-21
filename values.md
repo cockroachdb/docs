@@ -13,7 +13,7 @@ The `VALUES` [statement](sql-statements.html) computes a row value or set of row
 
 ## Required Privileges
 
-No privileges are required to compute a set of rows.
+No [privileges](privileges.html) are required to compute a set of rows.
 
 ## Parameters
 

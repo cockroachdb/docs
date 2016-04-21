@@ -31,11 +31,11 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 
 1. The transaction starts.
 
-2. The [`SAVEPOINT cockroach_restart`](savepoint.html) statement defines the intention to retry the transaction in the case of CockroachDB-retryable errors. Note that CockroachDB's savepoint implementation does not support all savepoint functionality, such as nested transactions. 
+2. The `SAVEPOINT cockroach_restart` statement defines the intention to retry the transaction in the case of CockroachDB-retryable errors. Note that CockroachDB's savepoint implementation does not support all savepoint functionality, such as nested transactions. 
 
 3. The statements in the transaction are executed. 
 
-4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the `ROLLBACK TO SAVEPOINT cockroach_restart` statement restarts the transaction. 
+4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) statement restarts the transaction. 
 
    In cases where you do not want the application to retry the transaction, you can adapt the wrapper function to simply `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
@@ -95,3 +95,11 @@ The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `REPEATABLE R
 The CockroachDB `SNAPSHOT ISOLATION` level is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+
+## See Also
+
+- [`BEGIN`](begin-transaction.html)
+- [`COMMIT`](commit-transaction.html)
+- [`ROLLBACK`](rollback-transaction.html)
+- [`RELEASE SAVEPOINT`](release-savepoint.html)
+- [Retryable function code samples](build-a-test-app.html#step-4-execute-transactions-from-a-client)

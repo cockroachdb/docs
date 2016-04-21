@@ -13,7 +13,7 @@ The `SET DATABASE` [statement](sql-statements.html) sets the default database fo
 
 ## Required Privileges
 
-No privileges are required to set the default database. 
+No [privileges](privileges.html) are required to set the default database. 
 
 ## Parameters
 

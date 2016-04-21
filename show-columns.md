@@ -13,7 +13,7 @@ The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns 
 
 ## Required Privileges
 
-No privileges are required to view details about columns in a table. 
+No [privileges](privileges.html) are required to view details about columns in a table. 
 
 ## Parameters
 

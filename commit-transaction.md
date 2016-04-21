@@ -11,7 +11,7 @@ toc: true
 
 ## Required Privileges
 
-No privileges are required to commit a transaction. 
+No [privileges](privileges.html) are required to commit a transaction. 
 
 ## Parameters
 

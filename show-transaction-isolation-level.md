@@ -13,7 +13,7 @@ The `SHOW TRANSACTION ISOLATION LEVEL` [statement](sql-statements.html) lists th
 
 ## Required Privileges
 
-No privileges are required to view the transaction isolation level.
+No [privileges](privileges.html) are required to view the transaction isolation level.
 
 ## Parameters
 

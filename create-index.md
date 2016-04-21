@@ -15,7 +15,7 @@ The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table
 
 ## Required Privileges
 
-The user must have the `CREATE` privilege on the table.
+The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 

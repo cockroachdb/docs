@@ -13,7 +13,7 @@ The `EXPLAIN` [statement](sql-statements.html) provides debugging and analysis d
 
 ## Required Privileges
 
-The user requires the appropriate privileges for the statement being explained.
+The user requires the appropriate [privileges](privileges.html) for the statement being explained.
 
 ## Parameters
 

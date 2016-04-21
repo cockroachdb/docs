@@ -13,7 +13,7 @@ The `SET TIME ZONE` [statement](sql-statements.html) sets the default time zone 
 
 ## Required Privileges
 
-No privileges are required to set the default time zone. 
+No [privileges](privileges.html) are required to set the default time zone. 
 
 ## Parameters
 

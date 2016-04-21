@@ -13,7 +13,7 @@ The `SHOW TRANSACTION PRIORITY` [statement](sql-statements.html) lists the defau
 
 ## Required Privileges
 
-No privileges are required to view the transaction priority.
+No [privileges](privileges.html) are required to view the transaction priority.
 
 ## Parameters
 

@@ -13,7 +13,7 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables in a databas
 
 ## Required Privileges
 
-No privileges are required to list the tables in a database.
+No [privileges](privileges.html) are required to list the tables in a database.
 
 ## Parameters
 

@@ -3,7 +3,7 @@ title: SHOW GRANTS
 toc: false
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists the privileges granted to users.
+The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
 
 <div id="toc"></div>
 
@@ -13,7 +13,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the privileges granted 
 
 ## Required Privileges
 
-No privileges are required to view privileges granted to users.
+No [privileges](privileges.html) are required to view privileges granted to users.
 
 ## Parameters
 
