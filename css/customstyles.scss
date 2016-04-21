@@ -132,15 +132,17 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .breadcrumb > .active {color: #777 !important;}
 
 /* make room for the nav bar */
-h1[id],
-h2[id],
-h3[id],
-h4[id],
-h5[id],
-h6[id],
-dt[id]{
-    padding-top: 60px; 
-    margin-top: -40px
+h1[id]::before,
+h2[id]::before,
+h3[id]::before,
+h4[id]::before,
+h5[id]::before,
+h6[id]::before,
+dt[id]::before {
+  content: '';
+  display: block;
+  height: 100px;
+  margin-top: -80px;
 }
 
 body h1 {
