@@ -78,6 +78,9 @@ entries:
         - title: Explore the Admin UI
           url: /explore-the-admin-ui.html
 
+        - title: View Node Details
+          url: /view-node-details.html
+
         - title: Troubleshoot
           url: /troubleshoot.html
 

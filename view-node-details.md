@@ -3,7 +3,7 @@ title: View Node Details
 toc: false
 ---
 
-XXX
+To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
 <div id="toc"></div>
 
@@ -44,31 +44,62 @@ Flag | Description
 
 ## Response
 
+For the `node ls` command, only the `id` field is returned for each node. For the `node status` command, all of the following fields are returned for each node.
+
+Field | Description
+----------|------------
+`id` | 
+`address` | 
+`build` |  
+`updated_at` | 
+`started_at` |   
+`live_bytes` |  
+`key_bytes` |  
+`value_bytes` | 
+`intent_bytes` | 
+`system_bytes` | 
+`leader_ranges` | 
+`repl_ranges` | 
+`avail_ranges` | 
 
 ## Examples
 
-#### Create the CA certificate and key
+#### List node IDs
 
 ~~~ shell
-$ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key 
+$ ./cockroach node ls
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
 ~~~
 
-#### Create the certificate and key for a node
+#### Show the status of a single node
 
 ~~~ shell
-$ ./cockroach cert create-node node1.example.com node1.another-example.com --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
+$ ./cockroach node status 1 
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
+| id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
+|  1 | localhost:26257 | beta-20160421-42-g62a0fd2 | 2016-04-21 14:41:11 | 2016-04-21 14:12:21 |    4162883 |      4343 |     4159321 |            0 |         3459 |             4 |           4 |            4 |
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 ~~~
 
-#### Create the certificate and key for a client
+#### Show the status of all nodes
 
 ~~~ shell
-$ ./cockroach cert create-client maxroach --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/maxroach.cert --key=certs/maxroach.key
+$ ./cockroach node status
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
+| id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
+|  1 | localhost:26257 | beta-20160421-42-g62a0fd2 | 2016-04-21 14:41:51 | 2016-04-21 14:12:21 |    4260491 |      4343 |     4256929 |            0 |         3459 |             4 |           4 |            4 |
+|  2 | localhost:26258 | beta-20160421-42-g62a0fd2 | 2016-04-21 14:41:53 | 2016-04-21 14:12:53 |    4268625 |      4343 |     4265063 |            0 |         3459 |             1 |           1 |            1 |
+|  3 | localhost:26259 | beta-20160421-42-g62a0fd2 | 2016-04-21 14:41:48 | 2016-04-21 14:13:18 |    4252357 |      4343 |     4248795 |            0 |         3459 |             0 |           0 |            0 |
++----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 ~~~
-
-## Related Topics
-
-- [Manual Deployment](manual-deployment.html): Walkthrough starting a multi-node secure cluster and accessing it from a client. 
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
 
 ## See Also
 
