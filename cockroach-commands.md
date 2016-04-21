@@ -18,11 +18,9 @@ Command | Usage
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
-`exterminate` | Destroy all data held by a node.
 `node` | List nodes and show their status.
 `gen` | Generate manpages and bash completion file.
 `version` | Output CockroachDB version information.
-`debug` | Extract data from files of a failed process.
 
 ## Logging Flags
 
@@ -42,9 +40,7 @@ The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for 
 
 ## Environment Variables
 
-The flags for many `cockroach` commands can be set as environment variables. For common configurations, such as `port` or `user`, you can set the environment variable once rather than manually pass the flag each time you run a command. 
-
-These variables make it easy to execute commands without having to manually set common flags (e.g., `port` or `user`).  
+For many common `cockroach` flags, such as `--port` and `--user`, you can set environment variables once instead of manually passing the flags each time you execute commands. 
 
 - To find out which flags support environment variables, see the documentation for each [command](#commands). 
 - To output the current configuration of CockroachDB environment variables, run `./cockroach debug env`. 
