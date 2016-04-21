@@ -3,7 +3,7 @@ title: Cockroach Commands
 toc: false
 ---
 
-This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command, and environment variables that can be used in place of certain flags.
+This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command and environment variables that can be used in place of certain flags.
 
 You can run `./cockroach help` in your shell to get similar guidance.
 
@@ -43,7 +43,7 @@ The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for 
 For many common `cockroach` flags, such as `--port` and `--user`, you can set environment variables once instead of manually passing the flags each time you execute commands. 
 
 - To find out which flags support environment variables, see the documentation for each [command](#commands). 
-- To output the current configuration of CockroachDB environment variables, run `./cockroach debug env`. 
+- To output the current configuration of CockroachDB and other environment variables, run `env`. 
 
 CockroachDB prioritizes command flags, environment variables, and defaults as follows:
 
