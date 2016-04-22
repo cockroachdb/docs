@@ -11,7 +11,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     ~~~ shell
     $ ./cockroach start &
 
-    build:     {{site.data.strings.build}}
+    build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     http://localhost:8080
     sql:       postgresql://root@localhost:26257?sslmode=disable
     logs:      cockroach-data/logs

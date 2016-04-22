@@ -47,7 +47,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     ~~~ shell
     $ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key &
 
-    build:     {{site.data.strings.build}}
+    build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     https://ROACHs-MBP:8080
     sql:       postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
     logs:      cockroach-data/logs
