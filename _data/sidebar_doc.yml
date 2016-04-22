@@ -81,6 +81,9 @@ entries:
         - title: View Node Details
           url: /view-node-details.html
 
+        - title: View Version Details
+          url: /view-version-details.html
+
         - title: Troubleshoot
           url: /troubleshoot.html
 
