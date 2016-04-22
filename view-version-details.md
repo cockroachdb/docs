@@ -7,22 +7,22 @@ To view version details for a specific `cockroach` binary, run the `cockroach ve
 
 ~~~ shell
 $ ./cockroach version
-Build Tag:   beta-20160421
-Build Time:  2016/04/21 16:25:23
+Build Tag:   {{site.data.strings.version}}
+Build Time:  {{site.data.strings.build_time}}
 Platform:    darwin amd64
 Go Version:  go1.6.1
 C Compiler:  4.2.1 Compatible Ubuntu Clang 3.7.0 (tags/RELEASE_370/final)
 ~~~
 
-The output includes the following fields:
+The `cockroach version` command outputs the following fields:
 
 Field | Description 
 ------|------------
-`Build Tag` |
-`Build Time` |
-`Platform` |
-`Go Version` |
-`C Compiler` |
+`Build Tag` | The CockroachDB version.
+`Build Time` | The date and time when the binary was built.
+`Platform` | The platform that the binary can run on.
+`Go Version` | The version of Go in which the source code is written.
+`C Compiler` | The C compiler used to build the binary.
 
 To also list the repositories containing first- and third-party code used to the build the binary, add the `--deps` flag:
 

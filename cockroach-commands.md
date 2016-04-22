@@ -19,8 +19,8 @@ Command | Usage
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
+[`version`](view-version-details.html) | Output CockroachDB version and dependency details.
 `gen` | Generate manpages and bash completion file.
-`version` | Output CockroachDB version information.
 
 ## Logging Flags
 
