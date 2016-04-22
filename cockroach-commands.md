@@ -3,7 +3,7 @@ title: Cockroach Commands
 toc: false
 ---
 
-This page lists the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster. Click a command for supported flags and examples. See [logging flags](#logging-flags) for flags that can be set on any command. 
+This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command and environment variables that can be used in place of certain flags.
 
 You can run `./cockroach help` in your shell to get similar guidance.
 
@@ -18,11 +18,9 @@ Command | Usage
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
-`exterminate` | Destroy all data held by a node.
-`node` | List nodes and show their status.
+[`node`](view-node-details.html) | List node IDs and show their status.
 `gen` | Generate manpages and bash completion file.
 `version` | Output CockroachDB version information.
-`debug` | Extract data from files of a failed process.
 
 ## Logging Flags
 
@@ -39,3 +37,17 @@ Flag | Description
 `--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
 
 The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for internal debugging. 
+
+## Environment Variables
+
+For many common `cockroach` flags, such as `--port` and `--user`, you can set environment variables once instead of manually passing the flags each time you execute commands. 
+
+- To find out which flags support environment variables, see the documentation for each [command](#commands). 
+- To output the current configuration of CockroachDB and other environment variables, run `env`. 
+
+CockroachDB prioritizes command flags, environment variables, and defaults as follows:
+
+1. If a flag is set for a command, CockroachDB uses it.
+2. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
+3. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
+4. If there's no flag default, CockroachDB gives an error.

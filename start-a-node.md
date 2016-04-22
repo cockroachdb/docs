@@ -3,7 +3,7 @@ title: Start a Node
 toc: false
 ---
 
-To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` command with appropriate flags. 
+To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags. 
 
 <div id="toc"></div>
 
@@ -101,3 +101,7 @@ $ ./cockroach start --host=node1-hostname --ca-cert=certs/ca.cert --cert=certs/n
 $ ./cockroach start --host=node2-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node2.cert --key=certs/node2.key
 $ ./cockroach start --host=node3-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node3.cert --key=certs/node3.key
 ~~~
+
+## See Also
+
+[Other Cockroach Commands](cockroach-commands.html)

@@ -58,6 +58,9 @@ entries:
         - title: Cloud Deployment
           url: /cloud-deployment.html
 
+        - title: Cockroach Commands
+          url: /cockroach-commands.html
+
         - title: Start a Node
           url: /start-a-node.html
 
@@ -70,13 +73,13 @@ entries:
         - title: Configure Replication Zones
           url: /configure-replication-zones.html
 
-        - title: Cockroach Commands
-          url: /cockroach-commands.html
-
     - title: Manage
       items:
         - title: Explore the Admin UI
           url: /explore-the-admin-ui.html
+
+        - title: View Node Details
+          url: /view-node-details.html
 
         - title: Troubleshoot
           url: /troubleshoot.html

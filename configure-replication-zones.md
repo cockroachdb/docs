@@ -5,7 +5,7 @@ toc: false
 
 In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
-This page explains how replication zones work and how to use the `cockroach zone` commands to configure them.
+This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
 
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}   
 
@@ -109,15 +109,15 @@ The `zone` command and subcommands support the following flags, as well as [logg
 
 Flag | Description 
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure. 
-`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
+`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--database`<br>`-d` | Not currently implemented. 
-`--host` | The address of the node to connect to. This can be the address of any node in the cluster.
-`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.
-`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.
-`--port`<br>`-p` | The port to connect to. <br><br>**Default:** 26257
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` 
-`--user`<br>`-u` | The user connecting to the database. Currently, only the `root` user can configure replication zones. <br><br>**Default:** root
+`--host` | The address of the node to connect to. This can be the address of any node in the cluster.<br><br>**Env Variable:** `COCKROACH_HOST`
+`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
+`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
+`--port`<br>`-p` | The port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>`<br><br>**Env Variable:** `COCKROACH_URL` 
+`--user`<br>`-u` | The user connecting to the database. Currently, only the `root` user can configure replication zones. <br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
 ## Examples
 
@@ -256,3 +256,7 @@ range_max_bytes: 67108864
 gc:
   ttlseconds: 86400
 ~~~
+
+## See Also
+
+[Other Cockroach Commands](cockroach-commands.html)
