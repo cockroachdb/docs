@@ -9,7 +9,7 @@ The `SET DATABASE` [statement](sql-statements.html) sets the default database fo
 
 ## Synopsis
 
-{% include sql/diagrams/set_database.html %}
+{% include sql/diagrams/set.html %}
 
 ## Required Privileges
 

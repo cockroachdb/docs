@@ -9,7 +9,7 @@ The `SET TIME ZONE` [statement](sql-statements.html) sets the default time zone 
 
 ## Synopsis
 
-{% include sql/diagrams/set_timezone.html %}
+{% include sql/diagrams/set.html %}
 
 ## Required Privileges
 
