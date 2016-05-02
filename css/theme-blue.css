@@ -99,6 +99,24 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     color: #46a417;
 }
 
+.gitter-open-chat-button{
+    background: #46a417;
+    border-top: 2px solid #46a417;
+    border-left: 2px solid #46a417;
+    border-right: 2px solid #46a417;
+    font-family: Avernir-Black, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 0 29px;
+    line-height: 40px;
+    color: #fff;
+}
+
+.gitter-open-chat-button:hover {
+    background: #fff;
+    color: #46a417;
+}
+
 .navbar-header-items > ul > li {
     list-style-type: none;
     display: inline-block;
