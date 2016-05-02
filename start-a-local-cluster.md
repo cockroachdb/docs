@@ -26,7 +26,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
         - To listen on an external address, specify `--insecure` and set `--host=<external address>`. 
     - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
     - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
-    - The `--background` flag starts the node in the background so you can complete the next steps in the same shell. For more details about the `cockroach start` command, see [Start a Node](start-a-node.html).
+    - The `--background` flag starts the node in the background so you can continue the next steps in the same shell. For more details about the `cockroach start` command, see [Start a Node](start-a-node.html).
 
     </div>
 
@@ -45,7 +45,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
     - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
     - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node. 
-    - The `--background` flag starts the node in the background so you can complete the next steps in the same shell.
+    - The `--background` flag starts the node in the background so you can continue the next steps in the same shell.
 
     If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.  
 
