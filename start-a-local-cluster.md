@@ -4,12 +4,12 @@ toc: false
 expand: true
 ---
 
-Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly start a single- or multi-node cluster locally with each node listening on a different port. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.
+Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly start a single- or multi-node cluster locally with each node listening on a different port. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>. 
 
 1.  From the directory with the `cockroach` binary, start your first node:
 
     ~~~ shell
-    $ ./cockroach start &
+    $ ./cockroach start --background
 
     build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     http://localhost:8080
@@ -26,15 +26,15 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
         - To listen on an external address, specify `--insecure` and set `--host=<external address>`. 
     - Node storage defaults to the `cockroach-data` directory. To store to a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
     - The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
-    - For more details about the `cockroach start` command, see [Start a Node](start-a-node.html).
+    - The `--background` flag starts the node in the background so you can complete the next steps in the same shell. For more details about the `cockroach start` command, see [Start a Node](start-a-node.html).
 
     </div>
 
 2.  For each additional node, repeat step 1 with a few extra flags:
    
     ~~~ shell
-    $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 &
-    $ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 &
+    $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --background
+    $ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --background
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details2">Details</button>
@@ -44,7 +44,8 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     
     - Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
     - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
-    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
+    - The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node. 
+    - The `--background` flag starts the node in the background so you can complete the next steps in the same shell.
 
     If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.  
 
