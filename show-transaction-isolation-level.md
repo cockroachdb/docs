@@ -9,7 +9,7 @@ The `SHOW TRANSACTION ISOLATION LEVEL` [statement](sql-statements.html) lists th
 
 ## Synopsis
 
-{% include sql/diagrams/show_transaction_isolation_level.html %}
+{% include sql/diagrams/show_transaction.html %}
 
 ## Required Privileges
 
