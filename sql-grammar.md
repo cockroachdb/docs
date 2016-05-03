@@ -11,6 +11,9 @@ a[name]::before {
 	height: 80px;
 	margin: -80px 0 0;
 }
+a[name]:focus {
+	outline: 0;
+}
 </style>
 
 {% include sql/diagrams/grammar.html %}
