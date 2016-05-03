@@ -9,7 +9,7 @@ The `SHOW TRANSACTION PRIORITY` [statement](sql-statements.html) lists the defau
 
 ## Synopsis
 
-{% include sql/diagrams/show_transaction_priority.html %}
+{% include sql/diagrams/show_transaction.html %}
 
 ## Required Privileges
 
