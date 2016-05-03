@@ -9,7 +9,7 @@ We're an open source project and welcome contributions.
 
 For development-related question, there are two easy ways to get in touch:
 
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach). This is the best, most immedate way to connect with CockroachDB engineers. 
+- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach). This is the best, most immedate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page. 
 - [Post to our Developer mailing list](https://groups.google.com/forum/#!forum/cockroach-db). Please join first or your messages may be held back for moderation.
 
 ## Suggest Improvements
