@@ -99,20 +99,38 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     color: #46a417;
 }
 
-.gitter-open-chat-button{
+.gitter-chat-embed {
+  z-index: 9999;
+}
+.cockroach-gitter-open-chat-button{
+    z-index: 9999;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    right: 10px;
     background: #46a417;
     border-top: 2px solid #46a417;
     border-left: 2px solid #46a417;
     border-right: 2px solid #46a417;
+    border-top-left-radius: .5em;
+    border-top-right-radius: .5em;
     font-family: Avernir-Black, sans-serif;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
-    padding: 0 29px;
+    letter-spacing: 1px;
+    padding: 0 15px;
     line-height: 40px;
-    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: initial;
 }
 
-.gitter-open-chat-button:hover {
+.cockroach-gitter-open-chat-button:hover {
     background: #fff;
     color: #46a417;
 }

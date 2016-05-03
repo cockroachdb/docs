@@ -1,8 +1,10 @@
 <!-- This adds our public gitter room as a sidecar. -->
 
+<button class="cockroach-gitter-open-chat-button">Chat with Developers</button>
 <script>
-  ((window.gitter = {}).chat = {}).options = {
-    room: 'cockroachdb/cockroach'
-  };
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'cockroachdb/cockroach',
+      activationElement: '.cockroach-gitter-open-chat-button'
+    };
 </script>
 <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>

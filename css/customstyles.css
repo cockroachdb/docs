@@ -1717,8 +1717,3 @@ dd {
 
 a.accordion-toggle {
   font-style: normal; }
-
-
-.gitter-chat-embed, .gitter-open-chat-button {
-  z-index: 9999;
-}
