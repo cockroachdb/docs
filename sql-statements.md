@@ -36,15 +36,14 @@ Statement | Usage
 [`SELECT`](select.html) | Select rows from a table.
 [`SET DATABASE`](set-database.html) | Set the default database for the session.
 [`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level and/or priority for the session or for an individual [transaction](transactions.html).
+[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW INDEX`](show-index.html) | View index information for a table. 
 [`SHOW TABLES`](show-tables.html) | List tables in a database.
 [`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
-[`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction-isolation-level.html) | View the transaction isolation level for the session or for an individual [transaction](transactions.html).
-[`SHOW TRANSACTION PRIORITY`](show-transaction-priority.html) | View the transaction priority for the session or for an individual [transaction](transactions.html). 
+[`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`TRUNCATE`](truncate.html) | Delete all rows from a table.
 [`UPDATE`](update.html) | Update rows in a table.
 [`VALUES`](values.html) | Compute a row value or set of row values.
