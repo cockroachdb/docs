@@ -5,17 +5,25 @@ toc: false
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.  
 
+To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
+
 <div id="toc"></div>
 
 ## Synopsis
 
 ~~~ shell
-# Open the interactive SQL shell:
-$ ./cockroach sql <flags>
-
 # Execute SQL from the command line:
 $ ./cockroach sql --execute='<sql-statement>;<sql-statement>' --execute='<sql-statement>' <flags>
 
+# Open the interactive SQL shell:
+$ ./cockroach sql <flags>
+
+# In the SQL shell, run an external command and prints its results to stdout:
+> \! <external command>
+ 
+# In the SQL shell, run the output of an external command as SQL statements
+> \| <external command>
+ 
 # View help:
 $ ./cockroach help sql
 ~~~

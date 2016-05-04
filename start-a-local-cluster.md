@@ -85,7 +85,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
     +------+----------+
     ~~~
 
-    When you're done using the SQL shell, press **CTRL + D** to exit.
+    When you're done using the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit.
  
 5.  [Check out the Admin UI](explore-the-admin-ui.html) by pointing your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
