@@ -5,7 +5,7 @@ toc: false
 
 This page shows you how to manually deploy a multi-node CockroachDB cluster on multiple machines. 
 
-{{site.data.alerts.callout_info}} For deployment on AWS and other cloud providers, see <a href="cloud-deployment.html">Cloud Deployment</a>. For local testing and development, see <a href="start-a-local-cluster.html">Start a Local Cluster</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} For testing and development, you can <a href="start-a-local-cluster.html">Start a Local Cluster</a> or <a href="cloud-deployment.html">Deploy on Google Cloud Engine using Terraform</a>. You can also <a href="http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html">Run CockroachDB inside a VirtualBox VM</a> (community-supported).{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -221,3 +221,9 @@ store[0]:  path=cockroach-data
 ~~~
 
 <img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+
+## See Also
+
+- [Cloud Deployment](cloud-deployment.html)
+- [Start a Local Cluster](start-a-local-cluster.html)
+- [Run CockroachDB in a VirtualBox VM](http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html) (community-supported)
