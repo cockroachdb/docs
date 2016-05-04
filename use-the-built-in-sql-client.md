@@ -12,17 +12,15 @@ To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
 ## Synopsis
 
 ~~~ shell
-# Execute SQL from the command line:
-$ ./cockroach sql --execute='<sql-statement>;<sql-statement>' --execute='<sql-statement>' <flags>
-
 # Open the interactive SQL shell:
 $ ./cockroach sql <flags>
 
-# In the SQL shell, run an external command and prints its results to stdout:
-> \! <external command>
- 
-# In the SQL shell, run the output of an external command as SQL statements
-> \| <external command>
+# Run external commands from the SQL shell:
+> \! <external command>    <-- Run command and print its results to stdout
+> \| <external command>    <-- Run output of command as SQL statements
+
+# Execute SQL from the command line:
+$ ./cockroach sql --execute='<sql-statement>;<sql-statement>' --execute='<sql-statement>' <flags>
  
 # View help:
 $ ./cockroach help sql
@@ -57,7 +55,7 @@ Flag | Description
 $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Insecure:
-$ ./cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 ~~~
 
 #### Open a SQL shell using the `--url` flag
@@ -67,17 +65,69 @@ $ ./cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=2625
 $ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt 
 
 # Insecure:
-$ ./cockroach sql --insecure --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
+$ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
 ~~~
 
 #### Execute SQL statements from the command line
 
 ~~~ shell
 # Multiple statements in one `--execute` flag:
-$ ./cockroach sql --execute='CREATE DATABASE roaches;CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ ./cockroach sql --execute='CREATE DATABASE roaches;CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Multiple statements in separate `--execute` flags:
-$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT);INSERT INTO roaches.countries VALUES ('United States', 'US', 20000000000000)'  --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
+$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT);INSERT INTO roaches.countries VALUES ('United States', 'US', 20000000000000)' --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
+~~~
+
+#### Run external commands from the SQL shell:
+
+From within the SQL shell, you use `\!` to run an external command and print its results to stdout, and you use `\|` to run the output of an external command as SQL statements. 
+
+For example, here we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table. 
+
+~~~ shell
+> \! cat test.csv
+12, 13, 14
+10, 20, 30
+
+> CREATE TABLE csv (x INT, y INT, z INT);
+CREATE TABLE
+
+> \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
+INSERT 1
+
+> SELECT * FROM csv;
++----+----+----+
+| x  | y  | z  |
++----+----+----+
+| 12 | 13 | 14 |
+| 10 | 20 | 30 |
++----+----+----+
+~~~
+
+In this example, we create a table and then use `\|` to programmatically insert values.
+
+~~~ shell
+> CREATE TABLE for_loop (x INT);
+CREATE TABLE
+
+> \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
+INSERT 1
+
+> SELECT * FROM for_loop;
++---+
+| x |
++---+
+| 0 |
+| 1 |
+| 2 |
+| 3 |
+| 4 |
+| 5 |
+| 6 |
+| 7 |
+| 8 |
+| 9 |
++---+
 ~~~
 
 ## See Also
