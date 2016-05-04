@@ -4,7 +4,9 @@ toc: false
 expand: true
 ---
 
-Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly start a single- or multi-node cluster locally with each node listening on a different port. For details about running CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>. 
+Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly start a single- or multi-node cluster locally with each node listening on a different port. 
+
+{{site.data.alerts.callout_info}}To run CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>. To run CockroachDB inside a single VirtualBox virtual machine, see these <a href="http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html">community-supported docs</a>.{{site.data.alerts.end}}
 
 1.  From the directory with the `cockroach` binary, start your first node:
 
