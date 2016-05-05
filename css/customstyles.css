@@ -1246,9 +1246,6 @@ div#toc ul li ul {
   padding: 0px; 
 }
 
-/*div#toc ul li ul li::before {
-  content: "–  "; }*/
-
 div#toc > ul::before {
   content: "On This Page";
   font-weight: 500;
@@ -1558,7 +1555,7 @@ li img {
   clear: both; }
 
 div#toc ul li ul li {
-  list-style-type: disc;
+  list-style-type: circle;
   margin: 10px 0px 0px 20px; }
 
 .tab-content {
