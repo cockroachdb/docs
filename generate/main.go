@@ -181,7 +181,7 @@ func main() {
 				{name: "drop_table", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'TABLE'")},
 				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
 				{name: "grant_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
-				{name: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}},
+				{name: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'INSERT'")},
 				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
 				{name: "rename_column", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' opt_column")},
 				{name: "rename_database", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'DATABASE'")},
@@ -203,6 +203,7 @@ func main() {
 				{name: "show_transaction", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'TRANSACTION'")},
 				{name: "truncate_stmt", inline: []string{"opt_table", "relation_expr_list", "relation_expr"}},
 				{name: "update_stmt", inline: []string{"relation_expr_opt_alias", "set_clause_list", "set_clause", "single_set_clause", "multiple_set_clause", "ctext_row", "ctext_expr_list", "ctext_expr", "from_clause", "from_list", "where_clause", "returning_clause"}},
+				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'UPSERT'")},
 				{name: "values", stmt: "values_clause", inline: []string{"ctext_row", "ctext_expr_list", "ctext_expr"}},
 			}
 

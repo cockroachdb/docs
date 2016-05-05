@@ -58,36 +58,41 @@ func (p operations) Less(i, j int) bool {
 
 func GenerateOperators() []byte {
 	ops := make(map[string]operations)
-	for k, v := range parser.UnaryOps {
-		op := k.Op.String()
-		typ := typeName(k.ArgType)
-		ops[op] = append(ops[op], operation{
-			left: typ,
-			ret:  v.ReturnType.Type(),
-			op:   op,
-		})
+	for optyp, overloads := range parser.UnaryOps {
+		op := optyp.String()
+		for _, v := range overloads {
+			ops[op] = append(ops[op], operation{
+				left: v.Typ.Type(),
+				ret:  v.ReturnType.Type(),
+				op:   op,
+			})
+		}
 	}
-	for k, v := range parser.BinOps {
-		op := k.Op.String()
-		left := typeName(k.LeftType)
-		right := typeName(k.RightType)
-		ops[op] = append(ops[op], operation{
-			left:  left,
-			right: right,
-			ret:   v.ReturnType.Type(),
-			op:    op,
-		})
+	for optyp, overloads := range parser.BinOps {
+		op := optyp.String()
+		for _, v := range overloads {
+			left := v.LeftType.Type()
+			right := v.RightType.Type()
+			ops[op] = append(ops[op], operation{
+				left:  left,
+				right: right,
+				ret:   v.ReturnType.Type(),
+				op:    op,
+			})
+		}
 	}
-	for k := range parser.CmpOps {
-		op := k.Op.String()
-		left := typeName(k.LeftType)
-		right := typeName(k.RightType)
-		ops[op] = append(ops[op], operation{
-			left:  left,
-			right: right,
-			ret:   "bool",
-			op:    op,
-		})
+	for optyp, overloads := range parser.CmpOps {
+		op := optyp.String()
+		for _, v := range overloads {
+			left := v.LeftType.Type()
+			right := v.RightType.Type()
+			ops[op] = append(ops[op], operation{
+				left:  left,
+				right: right,
+				ret:   "bool",
+				op:    op,
+			})
+		}
 	}
 	var opstrs []string
 	for k, v := range ops {
@@ -111,6 +116,7 @@ func GenerateOperators() []byte {
 func GenerateFunctions() []byte {
 	typePtrs := make(map[uintptr]string)
 	typeFns := map[string]interface{}{
+		"bool":      parser.DummyBool,
 		"bytes":     parser.TypeBytes,
 		"date":      parser.TypeDate,
 		"float":     parser.TypeFloat,
@@ -119,7 +125,6 @@ func GenerateFunctions() []byte {
 		"interval":  parser.TypeInterval,
 		"string":    parser.TypeString,
 		"timestamp": parser.TypeTimestamp,
-		"T":         parser.TypeTuple,
 	}
 	for name, v := range typeFns {
 		typePtrs[reflect.ValueOf(v).Pointer()] = name
@@ -132,21 +137,21 @@ func GenerateFunctions() []byte {
 			case parser.ArgTypes:
 				var typs []string
 				for _, typ := range ft {
-					typs = append(typs, linkType(typeName(typ)))
+					typs = append(typs, linkType(typ.Type()))
 				}
 				args = strings.Join(typs, ", ")
 			case parser.AnyType:
 				args = "T, ..."
 			case parser.VariadicType:
-				args = fmt.Sprintf("%s, ...", typeName(ft.Typ))
+				args = fmt.Sprintf("%s, ...", ft.Typ.Type())
 			default:
 				panic(fmt.Sprintf("unknown type: %T", ft))
 			}
-			fp := reflect.ValueOf(fn.ReturnType).Pointer()
-			ret, ok := typePtrs[fp]
-			if !ok {
-				// Aggregate function.
-				ret = args
+			var fp uintptr
+			ret := "T"
+			if fn.ReturnType != nil {
+				fp = reflect.ValueOf(fn.ReturnType).Pointer()
+				ret = typePtrs[fp]
 			}
 			s := fmt.Sprintf("%s(%s) | %s", name, args, linkType(ret))
 			functions[ret] = append(functions[ret], s)
@@ -176,8 +181,4 @@ func linkType(t string) string {
 		return fmt.Sprintf("[%s](%s.html)", t, t)
 	}
 	return t
-}
-
-func typeName(t reflect.Type) string {
-	return reflect.Zero(t).Interface().(parser.Datum).Type()
 }
