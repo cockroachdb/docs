@@ -1,7 +1,6 @@
 ---
 title: GRANT
 toc: false
-toc_nested: true
 ---
 
 The `GRANT` [statement](sql-statements.html) grants user [privileges](privileges.html) for interacting with specific databases and tables. 

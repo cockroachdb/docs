@@ -1,15 +1,8 @@
-<!-- TOC LEVEL and TOC PLACEMENT. To include h2 and h3 headers in the toc, set `toc_nested: true` in the page's front-matter. Otherwise, only h2 headers are included. To place the toc at the top of the page, set `toc: true` in the page's front-matter. To place the toc somewhere else, set `toc: false` in the front-matter, and then include the below <div> manually where you want it. -->
-{% if page.toc_nested == true %}
-	<script>
-		$( document ).ready(function() {
-  		// Handler for .ready() called.
-			$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3' });
-		});
-	</script>
-	{% unless page.toc == false %}
-		<div id="toc"></div>
-	{% endunless %}
-{% else %}
+<!-- 
+TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
+TOC PLACEMENT: To place the toc at the top of the page, set `toc: true` in the page's front-matter. To place the toc somewhere else, set `toc: false` in the front-matter, and then include the below <div> manually where you want it. 
+-->
+{% if page.toc_not_nested == true %}
 	<script>
 		$( document ).ready(function() {
   		// Handler for .ready() called.
@@ -19,5 +12,14 @@
 	{% unless page.toc == false %}
 		<div id="toc"></div>
 	{% endunless %}
+{% else %}
+	<script>
+		$( document ).ready(function() {
+  		// Handler for .ready() called.
+			$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3' });
+		});
+	</script>
+	{% unless page.toc == false %}
+		<div id="toc"></div>
+	{% endunless %}
 {% endif %}
-

@@ -55,11 +55,11 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
     <div id="toc"></div>
     ```
 
+-   To omit a page TOC from the page, set `toc: false` in the page's front-matter.
+
 ### TOC Levels
 
-- To include h2 and h3 headers in the toc, set `toc_nested: true` in the page's front-matter. 
-
-- To include only h2 headers, leave `toc_nested` out of the page's front-matter or set it to `false`. 
+By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter. 
 
 ### Sidebar
 
