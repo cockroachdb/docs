@@ -6,12 +6,6 @@ toc_nested: true
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
-<style>
-div#toc ul {
-    max-width: 65%;
-}
-</style>
-
 <div id="toc"></div>
 
 ## Subcommands

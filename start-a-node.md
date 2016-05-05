@@ -6,12 +6,6 @@ toc_nested: true
 
 To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags. 
 
-<style>
-div#toc ul {
-    max-width: 65%;
-}
-</style>
-
 <div id="toc"></div>
 
 ## Synopsis

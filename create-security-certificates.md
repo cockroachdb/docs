@@ -8,12 +8,6 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 
 When using <code>cockroach cert</code> to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
-<style>
-div#toc ul {
-    max-width: 65%;
-}
-</style>
-
 <div id="toc"></div>
 
 ## Subcommands

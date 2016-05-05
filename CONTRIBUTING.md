@@ -61,10 +61,6 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 - To include only h2 headers, leave `toc_nested` out of the page's front-matter or set it to `false`. 
 
-### TOC Width
-
-By default, the toc panel is 300px wide. To change this, set `toc_width` in the page's front-matter to the percentage of the page that the toc should not exceed. Possible values: `50%`, `60%`, `70%`, `80%`, `90%`, or `100%`.
-
 ### Sidebar
 
 The [`_data/sidebar_doc.yml`](_data/sidebar_doc.yml) file controls which pages appear in the docs sidebar. If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.

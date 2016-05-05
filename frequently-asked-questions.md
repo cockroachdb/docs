@@ -3,12 +3,6 @@ title: Frequently Asked Questions
 toc: false
 ---
 
-<style>
-div#toc ul {
-    max-width: 80%;
-}
-</style>
-
 <div id="toc"></div>
 
 ## What is CockroachDB?
