@@ -1229,21 +1229,22 @@ p.post-meta {
 div#toc ul li {
   /*margin: 8px 0px 8px 22px;*/
   margin-left: 30px;
+  margin-right: 30px;
   font-size: 90%;
   list-style: disc; }
 
 div#toc ul {
   background-color: #f0f0f0;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
-  max-width: 300px;
+  min-width: 300px;
+  display: table;
   color: gray; }
 
 div#toc ul li ul {
-  padding-left: 8px; }
-
-div#toc ul li ul li::before {
-  content: "–  "; }
+  /*padding-left: 8px;*/
+  padding: 0px; 
+}
 
 div#toc > ul::before {
   content: "On This Page";
@@ -1554,8 +1555,8 @@ li img {
   clear: both; }
 
 div#toc ul li ul li {
-  list-style-type: none;
-  margin: 5px 0px 0px 0px; }
+  list-style-type: circle;
+  margin: 10px 0px 0px 20px; }
 
 .tab-content {
   padding: 15px;

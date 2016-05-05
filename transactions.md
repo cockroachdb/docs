@@ -27,7 +27,7 @@ Individual statements, which are treated as implicit transactions, and statement
 
 To assist with client-side retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
-### How the Retry Function Works
+**How the retry function works:**
 
 1. The transaction starts.
 
@@ -59,9 +59,7 @@ Alternately, the client can set the priority immediately after the transaction i
 SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
 ~~~
 
-### Priorities and Retries
-
-When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.
+{{site.data.alerts.callout_info}}When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.{{site.data.alerts.end}}
 
 ## Isolation Levels
 

@@ -9,12 +9,6 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}   
 
-<style>
-div#toc ul {
-    max-width: 50%;
-}
-</style>
-
 <div id="toc"></div>
 
 ## Overview

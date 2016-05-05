@@ -32,16 +32,16 @@ Flag | Description
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY` 
 
-## Examples
+## Example
 
 #### Shut down a node
 
 ~~~ shell
+# Insecure:
+$ ./cockroach quit --host=nodehostname.com --http-port=8081
+
 # Secure:
 $ ./cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --http-port=8081
-
-# Insecure:
-$ ./cockroach quit --insecure --host=nodehostname.com --http-port=8081
 ~~~
 
 ## See Also

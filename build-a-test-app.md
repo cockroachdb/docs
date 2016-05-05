@@ -3,12 +3,6 @@ title: Build a Test App
 toc: false
 ---
 
-<style>
-div#toc ul {
-    max-width: 60%;
-}
-</style>
-
 <script>
 $(document).ready(function(){
     

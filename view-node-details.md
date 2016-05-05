@@ -64,7 +64,7 @@ Field | Description
 
 ## Examples
 
-#### List node IDs
+### List node IDs
 
 ~~~ shell
 $ ./cockroach node ls
@@ -77,7 +77,7 @@ $ ./cockroach node ls
 +----+
 ~~~
 
-#### Show the status of a single node
+### Show the status of a single node
 
 ~~~ shell
 $ ./cockroach node status 1 
@@ -88,7 +88,7 @@ $ ./cockroach node status 1
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 ~~~
 
-#### Show the status of all nodes
+### Show the status of all nodes
 
 ~~~ shell
 $ ./cockroach node status

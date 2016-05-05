@@ -39,7 +39,7 @@ Flag | Description
 `--port`<br>`-p` | The port to listen on for internal and client communication. <br><br>**Default:** 26257
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
-### `store`
+#### `store`
 
 The `store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values. 
 
@@ -71,7 +71,7 @@ Field | Description
 
 ## Examples
 
-#### Start a local cluster
+### Start a local cluster
 
 This example demonstrates starting up three nodes locally. See [Start a Cluster](start-a-local-cluster.html) and [Secure a Cluster](secure-a-cluster.html) for a detailed walkthrough.
 
@@ -87,15 +87,15 @@ $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join
 $ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
 ~~~
 
-#### Start a distributed cluster
+### Start a distributed cluster
 
 This example demonstrates starting up three nodes on different machines. Because each is on a different machine, default ports can be used without causing conflict. See [Manual Deployment](manual-deployment.html) for a detailed walkthrough.
 
 ~~~ shell
 # Insecure:
-$ ./cockroach start --insecure --host=node1-hostname
-$ ./cockroach start --insecure --host=node2-hostname --join=node1-hostname:26257
-$ ./cockroach start --insecure --host=node3-hostname --join=node1-hostname:26257
+$ ./cockroach start --host=node1-hostname
+$ ./cockroach start --host=node2-hostname --join=node1-hostname:26257
+$ ./cockroach start --host=node3-hostname --join=node1-hostname:26257
 
 # Secure:
 $ ./cockroach start --host=node1-hostname --ca-cert=certs/ca.cert --cert=certs/node1.cert --key=certs/node1.key  
