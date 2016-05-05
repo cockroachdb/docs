@@ -12,7 +12,7 @@ To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
 ## Synopsis
 
 ~~~ shell
-# Open the interactive SQL shell:
+# Start the interactive SQL shell:
 $ ./cockroach sql <flags>
 
 # Run external commands from the SQL shell:
@@ -31,7 +31,7 @@ $ ./cockroach help sql
 
 The `cockroach sql` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-- To open an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
+- To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
 - To execute SQL statements from the command line, use the `--execute` flag.
 
 Flag | Description 
@@ -49,7 +49,7 @@ Flag | Description
 
 ## Examples
 
-### Open a SQL shell using standard connection flags
+### Start a SQL shell using standard connection flags
 
 ~~~ shell
 # Secure:
@@ -59,7 +59,7 @@ $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs
 $ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 ~~~
 
-### Open a SQL shell using the `--url` flag
+### Start a SQL shell using the `--url` flag
 
 ~~~ shell
 # Secure:
