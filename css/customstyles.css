@@ -1240,10 +1240,12 @@ div#toc ul {
   color: gray; }
 
 div#toc ul li ul {
-  padding-left: 8px; }
+  /*padding-left: 8px;*/
+  padding: 0px; 
+}
 
-div#toc ul li ul li::before {
-  content: "–  "; }
+/*div#toc ul li ul li::before {
+  content: "–  "; }*/
 
 div#toc > ul::before {
   content: "On This Page";
@@ -1554,8 +1556,8 @@ li img {
   clear: both; }
 
 div#toc ul li ul li {
-  list-style-type: none;
-  margin: 5px 0px 0px 0px; }
+  list-style-type: disc;
+  margin: 10px 0px 0px 20px; }
 
 .tab-content {
   padding: 15px;

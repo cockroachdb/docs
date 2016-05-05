@@ -1,11 +1,18 @@
 ---
 title: GRANT
 toc: false
+toc_nested: true
 ---
 
 The `GRANT` [statement](sql-statements.html) grants user [privileges](privileges.html) for interacting with specific databases and tables. 
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+
+<style>
+div#toc ul {
+    max-width: 65%;
+}
+</style>
 
 <div id="toc"></div>
 
