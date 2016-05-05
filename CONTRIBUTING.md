@@ -43,7 +43,7 @@ The `title` field in the front matter is used as the h1 header. The `toc` field 
 
 ### Page TOC 
 
-The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 headers or all h2 and h3 headers on the page. 
+The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 headers or all h2 and h3 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`. 
 
 #### TOC Placement
 
@@ -63,15 +63,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 ### TOC Width
 
-By default, the toc panel is 300px wide. To change this, add the following bit of styling to the page, adjusting the `max-width` as appropriate:
-    
-``` html
-<style>
-    div#toc ul {
-        max-width: 50%;
-    }
-</style>
-```
+By default, the toc panel is 300px wide. To change this, set `toc_width` in the page's front-matter to the percentage of the page that the toc should not exceed. Possible values: `50%`, `60%`, `70%`, `80%`, `90%`, or `100%`.
 
 ### Sidebar
 
