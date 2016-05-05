@@ -20,7 +20,8 @@ $ ./cockroach sql <flags>
 > \| <external command>    <-- Run output of command as SQL statements
 
 # Execute SQL from the command line:
-$ ./cockroach sql --execute='<sql-statement>;<sql-statement>' --execute='<sql-statement>' <flags>
+$ ./cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+$ echo "<sql statement>;<sql statement>" | ./cockroach sql <flags>
  
 # View help:
 $ ./cockroach help sql
@@ -48,7 +49,7 @@ Flag | Description
 
 ## Examples
 
-#### Open a SQL shell using standard connection flags
+### Open a SQL shell using standard connection flags
 
 ~~~ shell
 # Secure:
@@ -58,7 +59,7 @@ $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs
 $ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 ~~~
 
-#### Open a SQL shell using the `--url` flag
+### Open a SQL shell using the `--url` flag
 
 ~~~ shell
 # Secure:
@@ -68,21 +69,39 @@ $ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?s
 $ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
 ~~~
 
-#### Execute SQL statements from the command line
+### Execute SQL statements from the command line
 
 ~~~ shell
-# Multiple statements in one `--execute` flag:
-$ ./cockroach sql --execute='CREATE DATABASE roaches;CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+# Statements with a single --execute flag:
+$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+CREATE TABLE
+INSERT 2 
 
-# Multiple statements in separate `--execute` flags:
-$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT);INSERT INTO roaches.countries VALUES ('United States', 'US', 20000000000000)' --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
+# Statements with multiple --execute flags:
+$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
+CREATE TABLE
+INSERT 2
+
+# Statements with echo command:
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
++----------+
+|  Table   |
++----------+
+| roaches  |
++----------+
++-----------------------+---------------+
+|         name          |    country    |
++-----------------------+---------------+
+| American Cockroach    | United States |
+| Brownbanded Cockroach | United States |
++-----------------------+---------------+
 ~~~
 
-#### Run external commands from the SQL shell:
+### Run external commands from the SQL shell
 
-From within the SQL shell, you use `\!` to run an external command and print its results to stdout, and you use `\|` to run the output of an external command as SQL statements. 
+From within the SQL shell, you use `\!` to run an external command and print its results to `stdout`, and you use `\|` to run the output of an external command as SQL statements. 
 
-For example, here we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table. 
+For example, here we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table: 
 
 ~~~ shell
 > \! cat test.csv
@@ -104,7 +123,7 @@ INSERT 1
 +----+----+----+
 ~~~
 
-In this example, we create a table and then use `\|` to programmatically insert values.
+In this example, we create a table and then use `\|` to programmatically insert values:
 
 ~~~ shell
 > CREATE TABLE for_loop (x INT);
