@@ -1,9 +1,16 @@
 ---
 title: Transactions
 toc: false
+toc_nested: true
 ---
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
+
+<style>
+div#toc ul {
+    max-width: 65%;
+}
+</style>
 
 <div id="toc"></div>
 
@@ -27,7 +34,7 @@ Individual statements, which are treated as implicit transactions, and statement
 
 To assist with client-side retries, CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, this function is available as a library. For other languages, it can be copy and pasted directly into your application code. See [Build a Test App](build-a-test-app.html#step-4-execute-transactions-from-a-client) for the code. 
 
-### How the Retry Function Works
+**How the retry function works:**
 
 1. The transaction starts.
 
@@ -59,9 +66,7 @@ Alternately, the client can set the priority immediately after the transaction i
 SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
 ~~~
 
-### Priorities and Retries
-
-When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.
+{{site.data.alerts.callout_info}}When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.{{site.data.alerts.end}}
 
 ## Isolation Levels
 

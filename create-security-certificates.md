@@ -1,11 +1,18 @@
 ---
 title: Create Security Certificates
 toc: false
+toc_nested: true
 ---
 
 A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [command](cockroach-commands.html) with the appropriate subcommands and flags. 
 
 When using <code>cockroach cert</code> to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+
+<style>
+div#toc ul {
+    max-width: 65%;
+}
+</style>
 
 <div id="toc"></div>
 
@@ -50,29 +57,26 @@ Flag | Description
 
 ## Examples
 
-#### Create the CA certificate and key
+### Create the CA certificate and key
 
 ~~~ shell
 $ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key 
 ~~~
 
-#### Create the certificate and key for a node
+### Create the certificate and key for a node
 
 ~~~ shell
 $ ./cockroach cert create-node node1.example.com node1.another-example.com --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
 ~~~
 
-#### Create the certificate and key for a client
+### Create the certificate and key for a client
 
 ~~~ shell
 $ ./cockroach cert create-client maxroach --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/maxroach.cert --key=certs/maxroach.key
 ~~~
 
-## Related Topics
+## See Also
 
 - [Manual Deployment](manual-deployment.html): Walkthrough starting a multi-node secure cluster and accessing it from a client. 
 - [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
-
-## See Also
-
-[Other Cockroach Commands](cockroach-commands.html)
+- [Other Cockroach Commands](cockroach-commands.html)

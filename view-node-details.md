@@ -1,9 +1,16 @@
 ---
 title: View Node Details
 toc: false
+toc_nested: true
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
+
+<style>
+div#toc ul {
+    max-width: 65%;
+}
+</style>
 
 <div id="toc"></div>
 
@@ -64,7 +71,7 @@ Field | Description
 
 ## Examples
 
-#### List node IDs
+### List node IDs
 
 ~~~ shell
 $ ./cockroach node ls
@@ -77,7 +84,7 @@ $ ./cockroach node ls
 +----+
 ~~~
 
-#### Show the status of a single node
+### Show the status of a single node
 
 ~~~ shell
 $ ./cockroach node status 1 
@@ -88,7 +95,7 @@ $ ./cockroach node status 1
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 ~~~
 
-#### Show the status of all nodes
+### Show the status of all nodes
 
 ~~~ shell
 $ ./cockroach node status
