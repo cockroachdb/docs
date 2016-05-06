@@ -15,10 +15,6 @@ To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
 # Start the interactive SQL shell:
 $ ./cockroach sql <flags>
 
-# Run external commands from the SQL shell:
-> \! <external command>    <-- Run command and print its results to stdout
-> \| <external command>    <-- Run output of command as SQL statements
-
 # Execute SQL from the command line:
 $ ./cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 $ echo "<sql statement>;<sql statement>" | ./cockroach sql <flags>
@@ -46,6 +42,17 @@ Flag | Description
 `--port`<br>`-p` | The port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The user connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+
+## SQL Shell Commands
+
+In addition to executing [SQL statements](sql-statements.html) within the shell, you can use the following commands:
+
+Command | Usage
+--------|------------
+`\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
+`\|` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
+`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
+`\?`<br>`help` | View this help within the shell.
 
 ## Examples
 
@@ -99,9 +106,7 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | ./cockroach sql --user=maxroach -
 
 ### Run external commands from the SQL shell
 
-From within the SQL shell, you use `\!` to run an external command and print its results to `stdout`, and you use `\|` to run the output of an external command as SQL statements. 
-
-For example, here we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table: 
+In this example, we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table.
 
 ~~~ shell
 > \! cat test.csv
@@ -123,7 +128,7 @@ INSERT 1
 +----+----+----+
 ~~~
 
-In this example, we create a table and then use `\|` to programmatically insert values:
+In this example, we create a table and then use `\|` to programmatically insert values.
 
 ~~~ shell
 > CREATE TABLE for_loop (x INT);
@@ -151,4 +156,6 @@ INSERT 1
 
 ## See Also
 
-[Other Cockroach Commands](cockroach-commands.html)
+- [Other Cockroach Commands](cockroach-commands.html)
+- [SQL Statements](sql-statements.html)
+- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
