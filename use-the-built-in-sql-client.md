@@ -5,17 +5,20 @@ toc: false
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.  
 
+To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
+
 <div id="toc"></div>
 
 ## Synopsis
 
 ~~~ shell
-# Open the interactive SQL shell:
+# Start the interactive SQL shell:
 $ ./cockroach sql <flags>
 
 # Execute SQL from the command line:
-$ ./cockroach sql --execute='<sql-statement>;<sql-statement>' --execute='<sql-statement>' <flags>
-
+$ ./cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+$ echo "<sql statement>;<sql statement>" | ./cockroach sql <flags>
+ 
 # View help:
 $ ./cockroach help sql
 ~~~
@@ -24,7 +27,7 @@ $ ./cockroach help sql
 
 The `cockroach sql` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-- To open an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
+- To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
 - To execute SQL statements from the command line, use the `--execute` flag.
 
 Flag | Description 
@@ -40,38 +43,119 @@ Flag | Description
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The user connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
+## SQL Shell Commands
+
+In addition to executing [SQL statements](sql-statements.html) within the shell, you can use the following commands:
+
+Command | Usage
+--------|------------
+`\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
+`\|` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
+`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
+`\?`<br>`help` | View this help within the shell.
+
 ## Examples
 
-#### Open a SQL shell using standard connection flags
+### Start a SQL shell using standard connection flags
 
 ~~~ shell
 # Secure:
 $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Insecure:
-$ ./cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 ~~~
 
-#### Open a SQL shell using the `--url` flag
+### Start a SQL shell using the `--url` flag
 
 ~~~ shell
 # Secure:
 $ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt 
 
 # Insecure:
-$ ./cockroach sql --insecure --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
+$ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
 ~~~
 
-#### Execute SQL statements from the command line
+### Execute SQL statements from the command line
 
 ~~~ shell
-# Multiple statements in one `--execute` flag:
-$ ./cockroach sql --execute='CREATE DATABASE roaches;CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT)' --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+# Statements with a single --execute flag:
+$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+CREATE TABLE
+INSERT 2 
 
-# Multiple statements in separate `--execute` flags:
-$ ./cockroach sql --execute='CREATE DATABASE roaches' --execute='CREATE TABLE roaches.countries (name STRING, code STRING, roach_population INT);INSERT INTO roaches.countries VALUES ('United States', 'US', 20000000000000)'  --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb  
+# Statements with multiple --execute flags:
+$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
+CREATE TABLE
+INSERT 2
+
+# Statements with echo command:
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
++----------+
+|  Table   |
++----------+
+| roaches  |
++----------+
++-----------------------+---------------+
+|         name          |    country    |
++-----------------------+---------------+
+| American Cockroach    | United States |
+| Brownbanded Cockroach | United States |
++-----------------------+---------------+
+~~~
+
+### Run external commands from the SQL shell
+
+In this example, we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table.
+
+~~~ shell
+> \! cat test.csv
+12, 13, 14
+10, 20, 30
+
+> CREATE TABLE csv (x INT, y INT, z INT);
+CREATE TABLE
+
+> \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
+INSERT 1
+
+> SELECT * FROM csv;
++----+----+----+
+| x  | y  | z  |
++----+----+----+
+| 12 | 13 | 14 |
+| 10 | 20 | 30 |
++----+----+----+
+~~~
+
+In this example, we create a table and then use `\|` to programmatically insert values.
+
+~~~ shell
+> CREATE TABLE for_loop (x INT);
+CREATE TABLE
+
+> \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
+INSERT 1
+
+> SELECT * FROM for_loop;
++---+
+| x |
++---+
+| 0 |
+| 1 |
+| 2 |
+| 3 |
+| 4 |
+| 5 |
+| 6 |
+| 7 |
+| 8 |
+| 9 |
++---+
 ~~~
 
 ## See Also
 
-[Other Cockroach Commands](cockroach-commands.html)
+- [Other Cockroach Commands](cockroach-commands.html)
+- [SQL Statements](sql-statements.html)
+- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
