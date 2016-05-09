@@ -29,6 +29,12 @@ Also, CockroachDB is not yet suitable for:
 - Use cases requiring SQL joins (slated for an upcoming release)
 - Real-time analytics (on our long-term roadmap)
 
+## How easy is it to install CockroachDB?
+
+It's as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
+
+For more details, see [Install CockroachDB](install-cockroachdb.html).
+
 ## How does CockroachDB scale?
 
 CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or a private or public cloud. [Adding capacity](start-a-node.html) is as easy as pointing a new node at the running cluster. 
@@ -99,6 +105,14 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 
 See [Install Client Drivers](install-client-drivers.html) for more details.
 
+## What is CockroachDB’s security model?
+
+You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
+
+Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table levels. 
+
+For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.   
+
 ## How does CockroachDB compare to MySQL or PostgreSQL?
 
 While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
@@ -115,37 +129,13 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
 
-## How easy is it to install CockroachDB?
-
-It's as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
-
-For more details, see [Install CockroachDB](install-cockroachdb.html).
-
-<!--
-## How easy is it to deploy CockroachDB?
-
-TBD. [Single binary, no external dependencies, self-organization, rebalancing, re-replication on failures]
-
-## What are some recommended deployments? 
-
-TBD (Cloud service providers: Digital Ocean, AWS, Azure, Google Cloud; How to optimize for performance and consistency.)
-
-## How do you configure and monitor a CockroachDB cluster? 
-
-TBD.
--->
-
-## What is CockroachDB’s security model?
-
-You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
-
-Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table levels. 
-
-For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.   
-
 ## Does Cockroach Labs offer a cloud database as a service?
 
 Not yet, but this is on our long-term roadmap. 
+
+## Can I use CockroachDB as a key-value store?
+
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. At this time, it is not possible to access the key-value store directly. As an alternative, you can [create a SQL table](create-table.html) with two columns, `k` and `v`, and set `k` as the primary key. This will map rather directly to the underlying key-value operations.
 
 ## Have questions that weren’t answered? 
 
