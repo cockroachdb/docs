@@ -49,6 +49,8 @@ When running a cluster with more than one node, each replica will be on a differ
 - When running a cluster with more than one node, you should run at least three to ensure that a majority of replicas (2/3) remains available when a node goes down. 
 
 - Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a quorum (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
+
+- When replicating across geographies, you should limit regions to a single continent to ensure better peformance. In the future, cross-continent and other high-latency scenarios will be better supported. 
  
 ## Subcommands
 
