@@ -1,11 +1,13 @@
 ---
 title: TIMESTAMP
-toc: true
+toc: false
 ---
 
-## Description
-
 The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, `TIMESTAMPZ` is an alias for `TIMESTAMP`.
 

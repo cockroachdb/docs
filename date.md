@@ -1,11 +1,11 @@
 ---
 title: DATE
-toc: true
+toc: false
 ---
 
-## Description
-
 The `DATE` [data type](data-types.html) stores a year, month, and day.
+
+<div id="toc"></div>
 
 ## Format
 

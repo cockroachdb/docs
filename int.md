@@ -1,11 +1,13 @@
 ---
 title: INT
-toc: true
+toc: false
 ---
 
-## Description
-
 The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `INT`: 
 

@@ -1,11 +1,11 @@
 ---
 title: INTERVAL
-toc: true
+toc: false
 ---
 
-## Description
-
 The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time. 
+
+<div id="toc"></div>
 
 ## Format
 

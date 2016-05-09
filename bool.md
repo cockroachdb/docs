@@ -1,11 +1,13 @@
 ---
 title: BOOL
-toc: true
+toc: false
 ---
 
-## Description
-
 The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, `BOOLEAN` is an alias for `BOOL`. 
 

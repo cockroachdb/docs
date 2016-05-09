@@ -1,11 +1,13 @@
 ---
 title: STRING
-toc: true
+toc: false
 ---
 
-## Description
-
 The `STRING` [data type](data-types.html) stores a string of characters.
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `STRING`: 
 
@@ -20,7 +22,7 @@ And the following are aliases for `STRING(n)`:
 - `CHARACTER VARYING(n)`
 - `CHAR(n)`
 - `CHAR VARYING(n)` 
-- `VARCHAR(n)` 
+- `VARCHAR(n)`  
 
 ## Length
 
@@ -35,6 +37,10 @@ When inserting a string:
 ## Format
 
 When inserting a string value, format it as `'a1b2c3'`.
+
+## Storage Size
+
+The storage size for a `STRING` column is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.   
 
 ## Examples
 
