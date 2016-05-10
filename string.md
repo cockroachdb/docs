@@ -38,9 +38,9 @@ When inserting a string:
 
 When inserting a string value, format it as `'a1b2c3'`.
 
-## Storage Size
+## Size
 
-The storage size for a `STRING` column is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.   
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.   
 
 ## Examples
 

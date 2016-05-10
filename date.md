@@ -13,6 +13,10 @@ When declaring a `DATE`, format it as `DATE '2016-01-25'`.
 
 In some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
 
+## Size
+
+A `DATE` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+
 ## Examples
 
 ~~~

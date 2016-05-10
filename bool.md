@@ -20,6 +20,10 @@ Alternately, you can cast `0` or `1` as a `BOOL`:
 - `CAST(0 AS BOOL)` (false)
 - `CAST(1 AS BOOL)` (true)
 
+## Size
+
+A `BOOL` value is 1 byte in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
+
 ## Examples
 
 ~~~

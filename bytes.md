@@ -21,9 +21,9 @@ When declaring a `BYTES` string, use either of the following byte escape formats
 - 1 octet per byte: `b'\141\061\142\062\143\063'`
 - 2 hexadecimal digits per byte: `b'\x61\x31\x62\x32\x63\x33'`. 
 
-## Storage Size
+## Size
 
-The storage size for a `BYTES` column is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.  
+The size of a `BYTES` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.  
 
 ## Examples
 

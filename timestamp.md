@@ -21,7 +21,11 @@ When declaring a `TIMESTAMP`, use one of the following formats:
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.999999999`
 
 Note that the fractional seconds portion is optional.
- 
+
+## Size
+
+A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+
 ## Examples
 
 ~~~

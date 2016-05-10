@@ -20,6 +20,12 @@ In CockroachDB, the following are aliases for `INT`:
 
 When declaring an `INT`, format it as `12345`.
 
+## Size
+
+An `INT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+
+CockroachDB does not offer multiple integer types for different widths; instead, our compression ensures that smaller integers use less disk space than larger integers. 
+
 ## Examples
 
 ~~~

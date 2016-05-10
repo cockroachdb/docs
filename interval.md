@@ -20,6 +20,10 @@ When declaring an `INTERVAL`, format it as `INTERVAL '2h30m30s'`, where the foll
 
 Regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
 
+## Size
+
+An `INTERVAL` column supports values up to 24 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+
 ## Examples
 
 ~~~

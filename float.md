@@ -24,6 +24,10 @@ Alternately, you can use the `CAST()` function to declare a float as `+Inf` (pos
 - `CAST('-Inf' AS FLOAT)`
 - `CAST('NaN' AS FLOAT)`
 
+## Size
+
+A `FLOAT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
+
 ## Examples
 
 ~~~
