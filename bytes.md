@@ -1,11 +1,13 @@
 ---
 title: BYTES
-toc: true
+toc: false
 ---
 
-## Description
-
 The `BYTES` [data type](data-types.html) stores binary strings of variable length.
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `BYTES`: 
 
@@ -18,6 +20,10 @@ When declaring a `BYTES` string, use either of the following byte escape formats
 
 - 1 octet per byte: `b'\141\061\142\062\143\063'`
 - 2 hexadecimal digits per byte: `b'\x61\x31\x62\x32\x63\x33'`. 
+
+## Size
+
+The size of a `BYTES` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.  
 
 ## Examples
 

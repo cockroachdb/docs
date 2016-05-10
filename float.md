@@ -1,11 +1,13 @@
 ---
 title: FLOAT
-toc: true
+toc: false
 ---
 
-## Description
-
 The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `FLOAT`:
 
@@ -21,6 +23,10 @@ Alternately, you can use the `CAST()` function to declare a float as `+Inf` (pos
 - `CAST('+Inf' AS FLOAT)`
 - `CAST('-Inf' AS FLOAT)`
 - `CAST('NaN' AS FLOAT)`
+
+## Size
+
+A `FLOAT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
 
 ## Examples
 

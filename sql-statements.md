@@ -2,12 +2,6 @@
 title: SQL Statements
 toc: false
 ---
-<style>
-table td:first-child {
-  min-width: 350px;
-
-}
-</style>
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 

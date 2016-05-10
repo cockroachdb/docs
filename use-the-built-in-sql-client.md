@@ -18,6 +18,7 @@ $ ./cockroach sql <flags>
 # Execute SQL from the command line:
 $ ./cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 $ echo "<sql statement>;<sql statement>" | ./cockroach sql <flags>
+$ ./cockroach sql <flags> < file-containing-statements.sql
  
 # View help:
 $ ./cockroach help sql
@@ -35,7 +36,7 @@ Flag | Description
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
 `--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`  
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. See the [examples](#execute-sql-statements-from-the-command-line) below. <br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each SQL statement are printed to the standard output.
+`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each SQL statement are printed to the standard output.<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below. 
 `--host` | The address of the node to connect to. This can be the address of any node in the cluster.<br><br>**Env Variable:** `COCKROACH_HOST`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
@@ -80,16 +81,25 @@ $ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?ssl
 
 ~~~ shell
 # Statements with a single --execute flag:
-$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+$ ./cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
 CREATE TABLE
 INSERT 2 
 
 # Statements with multiple --execute flags:
-$ ./cockroach sql --execute="CREATE TABLE roaches2 (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
+$ ./cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
 CREATE TABLE
 INSERT 2
 
-# Statements with echo command:
+# Statements from a file:
+$ cat statements.sql
+CREATE TABLE roaches (name STRING, country STRING);
+INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
+
+$ ./cockroach sql --user=maxroach --host=roachcluster.com ---port=26257 --database=critterdb < statements.sql
+CREATE TABLE
+INSERT 2
+
+# Statements with the echo command:
 $ echo "SHOW TABLES; SELECT * FROM roaches;" | ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
 +----------+
 |  Table   |

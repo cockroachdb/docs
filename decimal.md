@@ -1,11 +1,13 @@
 ---
 title: DECIMAL
-toc: true
+toc: false
 ---
 
-## Description
-
 The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+
+<div id="toc"></div>
+
+## Aliases
 
 In CockroachDB, the following are aliases for `DECIMAL`:
 
@@ -30,6 +32,10 @@ When inserting a decimal value, format it as `DECIMAL '1.2345'`. This casts the 
 Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
 
 {{site.data.alerts.callout_info}}A future version of CockroachDB will support declaring a decimal as a literal instead of needing to cast from a string or float.{{site.data.alerts.end}}
+
+## Size
+
+The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degredation.  
 
 ## Examples
 

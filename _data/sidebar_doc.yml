@@ -84,6 +84,9 @@ entries:
         - title: View Version Details
           url: /view-version-details.html
 
+        - title: Back Up and Restore Data
+          url: /back-up-and-restore-data.html
+
         - title: Troubleshoot
           url: /troubleshoot.html
 
