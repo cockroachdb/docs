@@ -116,7 +116,7 @@ func GenerateOperators() []byte {
 func GenerateFunctions() []byte {
 	typePtrs := make(map[uintptr]string)
 	typeFns := map[string]interface{}{
-		"bool":      parser.DummyBool,
+		"bool":      parser.TypeBool,
 		"bytes":     parser.TypeBytes,
 		"date":      parser.TypeDate,
 		"float":     parser.TypeFloat,
