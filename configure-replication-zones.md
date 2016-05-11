@@ -50,7 +50,7 @@ When running a cluster with more than one node, each replica will be on a differ
 
 - Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a quorum (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
 
-- When replicating across datacenters, you should use to datacenters on a single continent to ensure better peformance. Cross-continent and other high-latency scenarios will be better supported in the future. 
+- When replicating across datacenters, you should use datacenters on a single continent to ensure peformance (cross-continent scenarios will be better supported in the future). Also, you should adjust the [`raft-tick-interval`](start-a-node.html#flags) flag on each node to prevent excessive replica leader elections, during which operations on affected replicas stop. 
  
 ## Subcommands
 
