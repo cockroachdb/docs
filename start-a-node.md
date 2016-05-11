@@ -37,6 +37,7 @@ Flag | Description
 `--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list.
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
 `--port`<br>`-p` | The port to listen on for internal and client communication. <br><br>**Default:** 26257
+`--raft-tick-interval` | CockroachDB uses Raft to guarantee consistency between replicas. For each replica group, an elected leader heartbeats its followers and keeps their logs replicated. When followers fail to receive heartbeats, a new leader is elected. <br><br>This flag sets the interval at which the replica leader heartbeats followers. For high-latency environments, you can adjust this interval to prevent leader elections, which   The interval at which the replica leaders with heartbeat their followers. 
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
 #### `store`
