@@ -95,8 +95,8 @@ entries:
         - title: Frequently Asked Questions
           url: /frequently-asked-questions.html
 
-        - title: Videos and Talks
-          url: /videos-and-talks.html
+        - title: Tech Talks
+          url: /tech-talks.html
 
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
