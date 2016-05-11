@@ -13,7 +13,7 @@ In CockroachDB, `BOOLEAN` is an alias for `BOOL`.
 
 ## Format
 
-When declaring a `BOOL`, format it as `false` or `true` (case-insensitive).
+When inserting into a `BOOL` column, format the value as `false` or `true` (case-insensitive).
 
 Alternately, you can cast `0` or `1` as a `BOOL`:
 

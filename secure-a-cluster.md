@@ -104,7 +104,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     | 1234 | 10000.50 |
     +------+----------+
 
-    root@26257> INSERT INTO accounts VALUES (5678, DECIMAL '250.75');
+    root@26257> INSERT INTO accounts VALUES (5678, 250.75);
     INSERT 1
 
     root@26257> SELECT * FROM accounts;

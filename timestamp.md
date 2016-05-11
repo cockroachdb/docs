@@ -13,7 +13,7 @@ In CockroachDB, `TIMESTAMPZ` is an alias for `TIMESTAMP`.
 
 ## Format
 
-When declaring a `TIMESTAMP`, use one of the following formats:
+When inserting into a `TIMESTAMP` column, use one of the following formats:
 
 - Date only: `TIMESTAMP '2016-01-25'`
 - Date and Time: `TIMESTAMP '2016-01-25 10:10:10.999999999'`

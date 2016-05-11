@@ -36,7 +36,7 @@ When inserting a string:
 
 ## Format
 
-When inserting a string value, format it as `'a1b2c3'`.
+When inserting into a `STRING` column, format the value as `'a1b2c3'`.
 
 ## Size
 

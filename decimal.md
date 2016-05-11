@@ -27,11 +27,9 @@ When inserting a decimal value:
 
 ## Format
 
-When inserting a decimal value, format it as `DECIMAL '1.2345'`. This casts the value as a string, which preserves the number's exact precision.
+When inserting into a `DECIMAL` column, format the value as `1.2345`. CockroachDB considers the type of the column when handling literals, so non-decimal numbers are also accepted.
 
-Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
-
-{{site.data.alerts.callout_info}}A future version of CockroachDB will support declaring a decimal as a literal instead of needing to cast from a string or float.{{site.data.alerts.end}}
+Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that the precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
 
 ## Size
 
@@ -51,7 +49,7 @@ SHOW COLUMNS FROM decimals;
 | c     | DECIMAL       | true  | NULL    |
 +-------+---------------+-------+---------+
 
-INSERT INTO decimals VALUES (DECIMAL '1.01234567890123456789', DECIMAL '1.01234567890123456789', CAST(1.01234567890123456789 AS DECIMAL));
+INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, CAST(1.01234567890123456789 AS DECIMAL));
 
 SELECT * FROM decimals;
 +------------------------+---------+--------------------+

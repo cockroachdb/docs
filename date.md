@@ -9,7 +9,7 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 ## Format
 
-When declaring a `DATE`, format it as `DATE '2016-01-25'`. 
+When inserting into a `DATE` column, format the value as `DATE '2016-01-25'`. 
 
 In some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
 

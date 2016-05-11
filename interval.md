@@ -9,7 +9,7 @@ The `INTERVAL` [data type](data-types.html) stores a value that represents a spa
 
 ## Format
 
-When declaring an `INTERVAL`, format it as `INTERVAL '2h30m30s'`, where the following units can be specified either as positive or negative decimal numbers:
+When inserting into an `INTERVAL` column, format the value as `INTERVAL '2h30m30s'`, where the following units can be specified either as positive or negative decimal numbers:
 
 - `h` (hour)
 - `m` (minute)
