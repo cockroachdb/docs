@@ -16,9 +16,9 @@ In CockroachDB, the following are aliases for `FLOAT`:
 
 ## Format
 
-When inserting into a `FLOAT` column, format the value as `1.2345`. CockroachDB considers the type of the column when handling literals, so non-decimal numbers are also accepted.
+When inserting into a `FLOAT` column, format the value as a numeric literal, eg., `1.2345` or `1`.
 
-Alternately, you can use the `CAST()` function to declare a float as `+Inf` (positive infinity), `-Inf` (negative infinity), or `NaN` (not a number):
+Alternately, you can cast `+Inf` (positive infinity), `-Inf` (negative infinity), or `NaN` (not a number) as a float:
 
 - `CAST('+Inf' AS FLOAT)`
 - `CAST('-Inf' AS FLOAT)`
