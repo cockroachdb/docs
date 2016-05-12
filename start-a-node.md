@@ -38,8 +38,6 @@ Flag | Description
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
 `--port`<br>`-p` | The port to listen on for internal and client communication. <br><br>**Default:** 26257
 `--raft-tick-interval` | CockroachDB uses the [Raft consensus algorithm](https://raft.github.io/) to replicate data consistently according to your [replication zone configuration](configure-replication-zones.html). For each replica group, an elected leader heartbeats its followers and keeps their logs replicated. When followers fail to receive heartbeats, a new leader is elected. <br><br>This flag sets the interval at which the replica leader heartbeats followers. For high-latency deployments, set this flag to a value greater than the average latency between your nodes. Also, this flag should be set identically on all nodes in the cluster.<br><br>**Default:** 100ms 
-
-the raft heartbeat frequency to be changed in high-latency deployments
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
 
 #### `store`
