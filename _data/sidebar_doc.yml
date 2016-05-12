@@ -94,7 +94,10 @@ entries:
       items:
         - title: Frequently Asked Questions
           url: /frequently-asked-questions.html
-          
+
+        - title: Tech Talks
+          url: /tech-talks.html
+
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
 
