@@ -5,7 +5,7 @@ toc: false
 
 In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
-This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
+This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them. For a detailed discussion of how CockroachDB has tested replicated data for correctness and consistency, see [DIY Jepson Testing of CockroachDB](https://www.cockroachlabs.com/blog/diy-jepsen-testing-cockroachdb/)
 
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}   
 

@@ -32,10 +32,16 @@ The project is currently in **Beta**. For details about upcoming features, see t
 </div>
 </div>
 
-### Recent Blog Posts
+---
+
+<div class="recent-articles" markdown="1">
+
+## Recent Articles By CockroachDB Engineers
 
 **[A Tale of Two Ports](https://www.cockroachlabs.com/blog/a-tale-of-two-ports/)**
 
 **[Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/)** 
 
 **[Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)**
+
+</div>
