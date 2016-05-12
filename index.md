@@ -7,7 +7,7 @@ toc: false
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports strongly-consistent ACID transactions; and provides a familiar SQL API for structuring, manipulating, and querying data. 
 
-The project is currently in **Beta**.
+The project is currently in **Beta**. For details about upcoming features, see the [Roadmap](https://github.com/cockroachdb/cockroach/wiki).
 
 <div class="row">
 <div class="col-md-4 roach">
@@ -31,4 +31,11 @@ The project is currently in **Beta**.
     </a>
 </div>
 </div>
-<br>
+
+### Recent Blog Posts
+
+**[A Tale of Two Ports](https://www.cockroachlabs.com/blog/a-tale-of-two-ports/)**
+
+**[Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/)** 
+
+**[Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)**
