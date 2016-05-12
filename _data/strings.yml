@@ -1,5 +1,5 @@
 search_placeholder_text: Search
 search_no_results_text: No results found.
 copyright_line: "&copy;2016 Cockroach Labs. All rights reserved."
-version: beta-20160505
-build_time: 2016/05/05 15:50:45 (go1.6.1)
+version: beta-20160512
+build_time: 2016/05/12 15:50:45 (go1.6.1)
