@@ -16,7 +16,7 @@ In CockroachDB, the following are aliases for `BYTES`:
 
 ## Format
 
-When declaring a `BYTES` string, use either of the following byte escape formats:
+When inserting into a `BYTES` column, use either of the following byte escape formats:
 
 - 1 octet per byte: `b'\141\061\142\062\143\063'`
 - 2 hexadecimal digits per byte: `b'\x61\x31\x62\x32\x63\x33'`. 

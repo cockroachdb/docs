@@ -18,7 +18,7 @@ In CockroachDB, the following are aliases for `INT`:
 
 ## Format
 
-When declaring an `INT`, format it as `12345`.
+When inserting into an `INT` column, format the value as `12345`.
 
 ## Size
 

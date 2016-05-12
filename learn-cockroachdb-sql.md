@@ -147,22 +147,22 @@ SHOW TABLES FROM animals;
 To insert a row into a table, use the [`INSERT INTO`](insert.html) statement followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 ~~~ sql
-INSERT INTO accounts VALUES (1, DECIMAL '10000.50');
+INSERT INTO accounts VALUES (1, 10000.50);
 ~~~
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:
 
 ~~~ sql
 INSERT INTO accounts (balance, id) VALUES 
-    (DECIMAL '25000.00', 2);
+    (25000.00, 2);
 ~~~
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ~~~ sql
 INSERT INTO accounts VALUES 
-    (3, DECIMAL '8100.73'),
-    (4, DECIMAL '9400.10');
+    (3, 8100.73),
+    (4, 9400.10);
 ~~~
 
 [Defaults values](data-definition.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
@@ -262,7 +262,7 @@ SELECT * FROM accounts;
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
 
 ~~~ sql
-SELECT id, balance FROM accounts WHERE balance > DECIMAL '9000';
+SELECT id, balance FROM accounts WHERE balance > 9000;
 ~~~
 ~~~
 +----+----------+
@@ -297,7 +297,7 @@ SELECT id, balance FROM accounts ORDER BY balance DESC;
 To update rows in a table, use the [`UPDATE`](update.html) statement followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 ~~~ sql
-UPDATE accounts SET balance = balance - DECIMAL '5.50' WHERE balance < DECIMAL '10000';
+UPDATE accounts SET balance = balance - 5.50 WHERE balance < 10000;
 
 SELECT * FROM accounts;
 ~~~
