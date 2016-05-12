@@ -29,6 +29,12 @@ Database names must follow [these rules](data-definition.html#identifiers). To a
 CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
+The `CREATE DATABASE` statement also accepts an `ENCODING` option for compatibility with PostgreSQL, but `UTF8` is the only supported encoding:
+
+~~~ sql
+CREATE DATABASE bank ENCODING = 'UTF8'
+~~~
+
 ## Example
 
 ~~~
