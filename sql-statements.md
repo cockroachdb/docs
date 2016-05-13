@@ -5,8 +5,6 @@ toc: false
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-{{site.data.alerts.callout_info}}For background on how CockroachDB maps SQL table data and table indexes to key-value storage, see <a href="https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/">SQL in CockroachDB</a>.{{site.data.alerts.end}}
-
 Statement | Usage 
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.

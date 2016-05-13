@@ -5,7 +5,7 @@ toc: false
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
 
-{{site.data.alerts.callout_info}}For a detailed discussion of CockroachDB transaction semantics by CockroachDB engineers, see <a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/">How CockroachDB Does Distributed Atomic Transactions</a> and <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}For a detailed discussion of CockroachDB transaction semantics, see <a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/">How CockroachDB Does Distributed Atomic Transactions</a> and <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
