@@ -51,7 +51,9 @@
             <li>
                 <div class="search">
                     <span class="fa fa-search"></span>
-                    <input type="text" id="search-input" placeholder="{{site.data.strings.search_placeholder_text}}">
+                    <form method="GET" action="search.html">
+                        <input type="text" id="search-input" name="q" placeholder="{{site.data.strings.search_placeholder_text}}">
+                    </form>
                 </div>
             </li>
             {% for entry in sidebar %}

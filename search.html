@@ -1,0 +1,56 @@
+---
+title: Search
+toc: false
+---
+
+<script>
+
+// http://stackoverflow.com/a/979995/864236
+var QueryString = function () {
+	// This function is anonymous, is executed immediately and 
+	// the return value is assigned to QueryString!
+	var query_string = {};
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+				// If first entry with this name
+		if (typeof query_string[pair[0]] === "undefined") {
+			query_string[pair[0]] = decodeURIComponent(pair[1]);
+				// If second entry with this name
+		} else if (typeof query_string[pair[0]] === "string") {
+			var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+			query_string[pair[0]] = arr;
+				// If third or later entry with this name
+		} else {
+			query_string[pair[0]].push(decodeURIComponent(pair[1]));
+		}
+	} 
+	return query_string;
+}();
+
+document.title = 'Search - ' + QueryString.q;
+
+var obj = {
+	q: QueryString.q,
+	cx: '014222686769097698638:i_krv_mjv4w',
+	key: 'AIzaSyCMGfdDaSfjqv5zYoS0mTJnOT3e9MURWkU'
+};
+
+$.getJSON('https://www.googleapis.com/customsearch/v1', obj, function (data) {
+	var div = $('<div/>');
+	if (data.items) {
+		data.items.forEach(function(item) {
+			var h = $('<div/>', {class: 'search-title'});
+			h.append($('<a/>', {href: item.link}).html(item.htmlTitle));
+			var r = $('<div/>', {class: 'search-item'});
+			r.append(h);
+			r.append($('<div/>', {class: 'search-link'}).html(item.formattedUrl));
+			r.append($('<div/>', {class: 'search-snippet'}).html(item.htmlSnippet));
+			div.append(r);
+		});
+	}
+	$('.post-content').html(div);
+});
+
+</script>
