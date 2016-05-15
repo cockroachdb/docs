@@ -35,13 +35,13 @@ The different types of constraints are:
 
 ### NOT NULL
 
-A NOT NULL constraint is specified using `NOT NULL` at the column level. It requires that the column's value is mandatory and must contain a value that is not *NULL*. If not specified, the default is `NULL` and means the column's value is optional.
+A NOT NULL constraint is specified using `NOT NULL` at the column level. It requires that the column's value is mandatory and must contain a value that is not *NULL*. You can also explicitly just say `NULL` which means the column's value is optional and the column may contain a *NULL* value. If nothing is specified, the default is `NULL`.
 
 ~~~sql
 CREATE TABLE customers
 (
   customer_id INT         PRIMARY KEY,
-  cust_name   STRING(30),
+  cust_name   STRING(30)  NULL,
   cust_email  STRING(100) NOT NULL
 );
 
@@ -52,7 +52,9 @@ pq: null value in column "cust_email" violates not-null constraint
 
 ### Primary Key
 
-A Primary Key constraint is specified using `PRIMARY KEY` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may not** contain *NULL* values. A unique index called **primary** is created on the column(s). Columns that are part of a Primary Key are mandatory (NOT NULL). If an optional (nullable) column is made part of a Primary Key, it is made mandatory (NOT NULL).
+A Primary Key constraint is specified using `PRIMARY KEY` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may not** contain *NULL* values. You can optionally give the constraint a name A unique index called **primary** is created on the column(s). Columns that are part of a Primary Key are mandatory (NOT NULL). If an optional (nullable) column is made part of a Primary Key, it is made mandatory (NOT NULL).
+
+The Primary Key can only be specified in the [CREATE TABLE]() statement. It can't be changed latter using statements like `ALTER TABLE` or `DROP INDEX`.
 
 A Primary Key constraint can be specified at the column level if it has only one column.
 
@@ -134,11 +136,24 @@ select * from logon;
 
 ### Check
 
-A Check constraint is specified using `CHECK` at the column level. It requires that the column's value satisfies a Boolean expression within the constraint. The expression must evaluate to TRUE for every row affected by an INSERT or UPDATE statement. The DML statement will fail if the condition evaluates to FALSE or UNKNOWN for any row.
+A Check constraint is specified using `CHECK` at the column or table level. It requires that the column(s) value satisfies a Boolean expression within the constraint. The expression must evaluate to TRUE or NULL for every row affected by an INSERT or UPDATE statement. The DML statement will fail if the condition evaluates to FALSE for any row.
 
-You can only have one Check constraint on a single column but you can combine multiple conditions with the AND operator and you can have Check constraints on multiple columns but an argument of a Check constraint cannot refer to other columns.
+You can have multiple Check constraints on a single column but ideally these should be combined using the logical operators. So, for example, `warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)` should be specified as `warranty_period INT CHECK (warranty_period >= 0 AND warranty_period <= 24)`
 
-Check constraints can only be specified at the column level and can only reference the defining column, not others within the table.
+Check constraints that refer to multiple columns should be specified at the table level. 
+
+~~~sql
+CREATE TABLE inventories
+(
+  product_id        INT NOT NULL,
+  warehouse_id      INT NOT NULL,
+  quantity_on_hand  INT NOT NULL,
+  PRIMARY KEY (product_id, warehouse_id),
+  CONSTRAINT ok_to_supply CHECK (quantity_on_hand > 0 AND warehouse_id BETWEEN 100 AND 200)
+);
+~~~
+
+Check constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column level Check constrints are converted to table level constraints so they can be handled in a consistent fashion.
 
 ~~~sql
 CREATE TABLE inventories
@@ -153,21 +168,7 @@ INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ~~~
 
-{{site.data.alerts.warning}}
-If a Check constraint is defined on an optional column (one where a NULL value is allowed), then all insert or update statements containing rows with NULL values in that column will fail because the condition will not evaluate to TRUE when a NULL is used in the expression. To work around this, include the condition "OR column IS NULL" in the Check constraint.
-{{site.data.alerts.end}}
-
-For Example:
-
-~~~sql
-CREATE TABLE product_information
-(
-  product_id           INT PRIMARY KEY NOT NULL,
-  product_name         STRING(50),
-  warranty_period      INT CHECK ( (warranty_period >= 0 AND warranty_period <= 24) OR warranty_period IS NULL),
-  supplier_id          INT
-);
-~~~
+At present, there doesn't appear a way to inspect the Check constraints defined on a table.
 
 <!-- ### References Constraint -->
 
