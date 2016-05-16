@@ -21,6 +21,8 @@ If a constraint refers to only one column (column level constraint) it can be de
 
 The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked.
 
+{% include sql/diagrams/column_constraint.html %}
+
 The different types of constraints are:
 
 
