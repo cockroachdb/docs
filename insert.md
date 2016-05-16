@@ -101,7 +101,7 @@ INSERT INTO accounts (id, balance) VALUES (1, 5000.50), (2, 7500.50) RETURNING b
 +------------------------+
 ~~~
 
-### Update Values with `ON CONFLICT`
+### Update Values `ON CONFLICT`
 
 Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column with the unique conflict and the `DO UPDATE SET` expression set to the columns to be updated:
 
@@ -117,6 +117,14 @@ Note the following limitations:
 -   If the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error. 
 
 {{site.data.alerts.callout_info}}As a short-hand alternative to the <code>ON CONFLICT</code> clause, you can use the <code><a href="https://cockroachlabs.com/docs/upsert.html">UPSERT</a></code> statement. However, note that <code>UPSERT</code> does not let you specify the column with the unique conflict; it assumes that the conflict column is the primary key. Using <code>ON CONFLICT</code> is therefore more flexible.{{site.data.alerts.end}}
+
+### Ignore Insert `ON CONFLICT`
+
+To avoid an error in case an insert conflicts with a `UNIQUE` constraint, set the `ON CONFLICT` clause to `DO NOTHING`:
+
+~~~ sql
+INSERT INTO table1 (a, b, c) VALUES (1, 2, 3) ON CONFLICT (a) DO NOTHING;
+~~~
 
 ## Examples
 
