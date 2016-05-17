@@ -8,7 +8,7 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 <div id="toc"></div>
 
-## Synopsis
+## Syntax
 
 {% include sql/diagrams/create_table.html %}
 
@@ -17,39 +17,46 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
 
 
-## Parameters
+## Semantics
 
 ### IF NOT EXISTS
 
-Do not raise a **table already exists** error if a table of the same name in the same database already exists. Note that the existance check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created. 
+Do not raise a **table already exists** error if a table of the same name in the database already exists. Note that the existance check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created. 
 
 
 #### any_name
 
-The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created.
+The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database.
+
+The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommedned to use the name `EXCLUDED` for any of your tables.
 
 
 #### column_def
 
-An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints).
+An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints). Column names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as indexes or constraints, however this is not recommended. Any  Primary Key, Unique, and Check constraints that were originally defined at the column level are moved to the table level as part of the table's creation. Using the `SHOW CREATE TABLE` command will show these constraints at the table level.
 
 
 #### index_def
 
-An optional comma separated list of any [index definitions](data-definition.html#indexes).
+An optional comma separated list of any [index definitions](data-definition.html#indexes). Index names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or constraints, however this is not recommended.
 
 
 #### table_constraint
 
-An optional comma separated list of any [table level constraints](data-definition.html#table-level-constraints)
+An optional comma separated list of any [table level constraints](data-definition.html#table-level-constraints). Constraint names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or indexes, however this is not recommended. 
 
 
 ## Usage
 
-If the table does not have a `PRIMARY KEY` constraint defined, a mandatory column called `rowid` of type `INT` will be added and automatically populated with a unique along with a unique index called `primary`. The column and index will still be added if the table has an `UNIQUE` constraint but no `PRIMARY KEY` constraint.
+If the table does not have a `PRIMARY KEY` constraint defined, a mandatory column called `rowid` of type `INT` will be added and automatically populated with a unique id that will be used as the primary key. The column will be added even if the table has an `UNIQUE` constraint.
 
-The maximum number of columns in a table is ???.
+To display a list of tables created in a database, use the [`SHOW TABLES`](show-tables.html) command.
 
+To display information about columns in a table, use the [`SHOW COLUMNS`](show-columns.html) command.
+
+To show the definition of a table, use the [`SHOW CREATE TABLE`]() command. 
+
+By default, tables are created in the default replication zone but can be placed into a specific replication zone. See the discussion on [Creating a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
 ## Examples
 
@@ -63,13 +70,14 @@ CREATE TABLE product_information
   product_description  STRING(2000),
   category_id          STRING(1) NOT NULL CHECK (category_id IN ('A','B','C')),
   weight_class         INT,
-  warranty_period      INT CHECK ((warranty_period >= 0 AND warranty_period <= 24) OR warranty_period IS NULL),
+  warranty_period      INT CONSTRAINT valid_warranty CHECK (warranty_period BETWEEN 0 AND 24),
   supplier_id          INT,
   product_status       STRING(20),
   list_price           DECIMAL(8,2),
   min_price            DECIMAL(8,2),
   catalog_url          STRING(50) UNIQUE,
   date_added           DATE DEFAULT CURRENT_DATE(),
+  CONSTRAINT price_check CHECK (list_price >= min_price),
   INDEX date_added_idx (date_added),
   INDEX supp_id_prod_status_idx (supplier_id, product_status)
 );
@@ -97,4 +105,7 @@ SHOW COLUMNS FROM table_name;
 - [`DROP TABLE`](drop-table.html)
 - [`RENAME TABLE`](rename-table.html)
 - [`TRUNCATE`](truncate.html)
+- [`SHOW TABLES`](show-tables.html)
+- [`SHOW CREATE`]()
+- [`SHOW COLUMNS`](show-columns.html)
 - [Table Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
