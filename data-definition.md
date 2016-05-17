@@ -19,9 +19,11 @@ Constraints offer additional data integrity by enforcing conditions on the data 
 
 If a constraint refers to only one column (column level constraint) it can be defined against the column as part of its definition. If a constraint refers to more than one column (table level constraint) it needs to be defined as a separate entry in the tables definition.  
 
-The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked.
+The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked. Use the [`SHOW CREATE TABLE`](show-create-table.html) command to show the constraints defined on a table.
 
-{% include sql/diagrams/column_constraint.html %}
+<!-- % include sql/diagrams/column_constraint.html % -->
+
+<!-- % include sql/diagrams/table_constraint.html % -->
 
 The different types of constraints are:
 
@@ -54,9 +56,15 @@ pq: null value in column "cust_email" violates not-null constraint
 
 ### Primary Key
 
-A Primary Key constraint is specified using `PRIMARY KEY` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may not** contain *NULL* values. You can optionally give the constraint a name A unique index called **primary** is created on the column(s). Columns that are part of a Primary Key are mandatory (NOT NULL). If an optional (nullable) column is made part of a Primary Key, it is made mandatory (NOT NULL).
+A Primary Key constraint is specified using `PRIMARY KEY` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may not** contain *NULL* values. You can optionally give the constraint a name using the `CONSTRAINT name` syntax, otherwise the constraint and it's associated unique index are called **primary**. 
 
-The Primary Key can only be specified in the [CREATE TABLE]() statement. It can't be changed latter using statements like `ALTER TABLE` or `DROP INDEX`.
+{{site.data.alerts.callout_info}}
+Strictly speaking, a primary key's unique index is not created, it's derived from the key(s) under which the data is stored so it takes no additional space. However, it appears as a normal unique index when using commands like SHOW INDEXES.
+{{site.data.alerts.end}}
+
+Columns that are part of a Primary Key are mandatory (NOT NULL). If an optional (nullable) column is made part of a Primary Key, it is made mandatory (NOT NULL). 
+
+The Primary Key for a table can only be specified in the [`CREATE TABLE`](create-table.html) statement. It can't be changed latter using statements like `ALTER TABLE` or `DROP INDEX`.
 
 A Primary Key constraint can be specified at the column level if it has only one column.
 
@@ -86,7 +94,7 @@ CREATE TABLE inventories
 
 ### Unique
 
-A Unique constraint is specified using `UNIQUE` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may** contain *NULL* values. A unique index called ***\<tablename\>*_*\<columnname(s)\>*_key** is created on the column(s).
+A Unique constraint is specified using `UNIQUE` at either the column or table level. It requires that the column(s) values are unique and that the column(s) **may** contain *NULL* values. You can optionally give the constraint a name using the `CONSTRAINT name` syntax, otherwise the constraint and it's associated index are called ***\<tablename\>*_*\<columnname(s)\>*_key***.
 
 A Unique constraint can be specified at the column level if it has only one column.
 
@@ -140,7 +148,20 @@ select * from logon;
 
 A Check constraint is specified using `CHECK` at the column or table level. It requires that the column(s) value satisfies a Boolean expression within the constraint. The expression must evaluate to TRUE or NULL for every row affected by an INSERT or UPDATE statement. The DML statement will fail if the condition evaluates to FALSE for any row.
 
-You can have multiple Check constraints on a single column but ideally these should be combined using the logical operators. So, for example, `warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)` should be specified as `warranty_period INT CHECK (warranty_period >= 0 AND warranty_period <= 24)`
+You can have multiple Check constraints on a single column but ideally these should be combined using the logical operators. So, for example, 
+
+~~~sql
+warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
+~~~
+should be specified as 
+
+~~~sql
+warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
+~~~
+
+{{site.data.alerts.callout_warning}}
+Check constraints are still under developement and are not yet ready for production use. They are currently not checked during UPDATE operations.
+{{site.data.alerts.end}}
 
 Check constraints that refer to multiple columns should be specified at the table level. 
 
@@ -170,7 +191,6 @@ INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ~~~
 
-At present, there doesn't appear a way to inspect the Check constraints defined on a table.
 
 <!-- ### References Constraint -->
 
