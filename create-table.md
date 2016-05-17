@@ -21,22 +21,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ### IF NOT EXISTS
 
-<<<<<<< HEAD
 Do not raise a **table already exists** error if a table of the same name in the database already exists. Note that the existence check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created. 
-=======
-Do not raise a **table already exists** error if a table of the same name in the database already exists. Note that the existance check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created. 
->>>>>>> 401b056beb373a4a03da7eb4edda46099ee6c629
 
 
 #### any_name
 
 The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database.
 
-<<<<<<< HEAD
 The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommended to use the name `EXCLUDED` for any of your tables.
-=======
-The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommedned to use the name `EXCLUDED` for any of your tables.
->>>>>>> 401b056beb373a4a03da7eb4edda46099ee6c629
 
 
 #### column_def
