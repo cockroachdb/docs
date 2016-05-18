@@ -32,6 +32,9 @@ func GenerateRR(bnf []byte) ([]byte, error) {
 	//v.Add("options", "suppressebnf")
 	v.Add("text", string(bnf))
 	v.Add("width", "760")
+	v.Add("options", "eliminaterecursion")
+	v.Add("options", "factoring")
+	v.Add("options", "inline")
 
 	resp, err := http.Post(rrAddr, "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
 	if err != nil {
