@@ -7,15 +7,29 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 <div id="toc"></div>
 
-## Synopsis
-
-{% include sql/diagrams/insert.html %}
-
 ## Required Privileges
 
 The user must have the `INSERT` [privilege](privileges.html) on the table. 
 
-## Usage
+## Synopsis
+
+{% include sql/diagrams/insert.html %}
+
+## Parameters
+
+Parameter | Description
+----------|------------
+`qualified_name` | The name of the table to insert into.
+`AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name. 
+`qualified_name_list` | A comma-separated list of column names, in parentheses. If column names are listed, the `VALUES` clause must list values in corresponding order. If column names are not listed, the `INSERT` will use the columns of the table in their declared order.
+`VALUES` | A comma-separated list of column values for a single row, in parentheses. To insert values into multiple rows, use a comma-separated list of parentheses.
+`DEFAULT VALUES` | To fill all columns with their [default values](data-definition.html#default-value), use `DEFAULT VALUES` in place of a `VALUES` clause. To fill a specific column with its default value, use `DEFAULT` at the appropriate position in the `VALUES` clause or just leave a value out of the clause. 
+`select_stmt` | A [`SELECT`](select.html) statement to retrieve values from another table and insert them as new rows. The target columns in the `SELECT` statement must match the type of the columns being inserted into.
+`opt_on_conflict` |
+`opt_on_conflict` | 
+`RETURNING target_list` |
+
+## Examples
 
 ### Basic Insert
 
@@ -125,7 +139,5 @@ To avoid an error in case an insert conflicts with a `UNIQUE` constraint, set th
 ~~~ sql
 INSERT INTO table1 (a, b, c) VALUES (1, 2, 3) ON CONFLICT (a) DO NOTHING;
 ~~~
-
-## Examples
 
 ## See Also
