@@ -13,9 +13,9 @@
 `*` | Return
 --- | ---
 [decimal](decimal.html) `*` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `*` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `*` [float](float.html) | [float](float.html)
-[float](float.html) `*` [int](int.html) | [float](float.html)
-[int](int.html) `*` [float](float.html) | [float](float.html)
+[int](int.html) `*` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `*` [int](int.html) | [int](int.html)
 [int](int.html) `*` [interval](interval.html) | [interval](interval.html)
 [interval](interval.html) `*` [int](int.html) | [interval](interval.html)
@@ -56,7 +56,7 @@ timestamptz `-` timestamptz | [interval](interval.html)
 --- | ---
 [decimal](decimal.html) `/` [decimal](decimal.html) | [decimal](decimal.html)
 [float](float.html) `/` [float](float.html) | [float](float.html)
-[int](int.html) `/` [int](int.html) | [float](float.html)
+[int](int.html) `/` [int](int.html) | [decimal](decimal.html)
 [interval](interval.html) `/` [int](int.html) | [interval](interval.html)
 
 `<` | Return

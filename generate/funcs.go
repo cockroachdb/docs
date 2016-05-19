@@ -131,6 +131,11 @@ func GenerateFunctions() []byte {
 	}
 	functions := make(map[string][]string)
 	for name, fns := range parser.Builtins {
+		if name != strings.ToLower(name) {
+			// Each function appears in parser.Builtins twice: once in
+			// uppercase and once in lowercase. Skip the uppercase variant.
+			continue
+		}
 		for _, fn := range fns {
 			var args string
 			switch ft := fn.Types.(type) {
