@@ -32,6 +32,9 @@ func GenerateRR(bnf []byte) ([]byte, error) {
 	//v.Add("options", "suppressebnf")
 	v.Add("text", string(bnf))
 	v.Add("width", "760")
+	v.Add("options", "eliminaterecursion")
+	v.Add("options", "factoring")
+	v.Add("options", "inline")
 
 	resp, err := http.Post(rrAddr, "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
 	if err != nil {
@@ -75,7 +78,7 @@ func GenerateBNF(addr string) (ebnf []byte, err error) {
 	for _, p := range t.Productions {
 		var impl [][]yacc.Item
 		for _, e := range p.Expressions {
-			if !strings.Contains(e.Command, "unimplemented()") {
+			if !strings.Contains(e.Command, "unimplemented") {
 				impl = append(impl, e.Items)
 			}
 		}
