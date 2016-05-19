@@ -17,127 +17,207 @@ The user must have the `INSERT` [privilege](privileges.html) on the table.
 
 ## Parameters
 
+<style>
+table td:first-child {
+    min-width: 250px;
+}
+</style>
+
 Parameter | Description
 ----------|------------
 `qualified_name` | The name of the table to insert into.
 `AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name. 
-`qualified_name_list` | A comma-separated list of column names, in parentheses. If column names are listed, the `VALUES` clause must list values in corresponding order. If column names are not listed, the `INSERT` will use the columns of the table in their declared order.
-`VALUES` | A comma-separated list of column values for a single row, in parentheses. To insert values into multiple rows, use a comma-separated list of parentheses.
-`DEFAULT VALUES` | To fill all columns with their [default values](data-definition.html#default-value), use `DEFAULT VALUES` in place of a `VALUES` clause. To fill a specific column with its default value, use `DEFAULT` at the appropriate position in the `VALUES` clause or just leave a value out of the clause. 
-`select_stmt` | A [`SELECT`](select.html) statement to retrieve values from another table and insert them as new rows. The target columns in the `SELECT` statement must match the type of the columns being inserted into.
-`opt_on_conflict` |
-`opt_on_conflict` | 
-`RETURNING target_list` |
+`qualified_name_list` | A comma-separated list of column names, in parentheses.
+`select_stmt` | A comma-separated list of column values for a single row, in parentheses. To insert values into multiple rows, use a comma-separated list of parentheses. Alternately, you can use [`SELECT`](select.html) statements to retrieve values from other tables and insert them as new rows. See the [Insert a Single Row](#insert-a-single-row), [Insert Multiple Rows](#insert-multiple-rows), [Insert from a `SELECT` Statement](#insert-from-a-select-statement) examples below.<br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table. 
+`DEFAULT VALUES` | To fill all columns with their [default values](data-definition.html#default-value), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. See the [Insert and Return Values](#insert-and-return-values) example below. 
+`on_conflict` | Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated. To avoid an error, set the `ON CONFLICT` clause to `DO NOTHING`. See the [Update Values ON CONFLICT](#update-values-on-conflict) and [Ignore Insert ON CONFLICT](#ignore-insert-on-conflict) examples below.<br><br>Note that it's not possible to update the same row twice with a single `INSERT ... ON CONFLICT` statement. Also, if the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error.<br><br>As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`](upsert.html) statement. However, `UPSERT` does not let you specify the column with the unique constraint; it assumes that the column is the primary key. Using `ON CONFLICT` is therefore more flexible.
 
 ## Examples
 
-### Basic Insert
+### Insert a Single Row
 
-To insert a row into a table, use the `INSERT INTO` statement followed by the table name, the target columns in parenthesis, the `VALUES` keyword, and then the column values in parentheses:
+~~~
+INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
+INSERT 1
 
-~~~ sql
-INSERT INTO accounts (id, balance) VALUES (1, 10000.50);
+SELECT * FROM accounts;
++----+---------+
+| id | balance |
++----+---------+
+|  1 | 10000.5 |
++----+---------+
 ~~~
 
-If you don't list column names, the statement will use the columns of the table in their declared order.
+If you don't list column names, the statement will use the columns of the table in their declared order:
 
-To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
+~~~
+SHOW COLUMNS FROM accounts;
++---------+---------+-------+----------------+
+|  Field  |  Type   | Null  |    Default     |
++---------+---------+-------+----------------+
+| id      | INT     | false | unique_rowid() |
+| balance | DECIMAL | true  | NULL           |
++---------+---------+-------+----------------+
 
-~~~ sql
+INSERT INTO accounts VALUES (2, 20000.75);
+INSERT 1
+
+SELECT * FROM accounts;
++----+----------+
+| id | balance  |
++----+----------+
+|  1 |  10000.5 |
+|  2 | 20000.75 |
++----+----------+
+~~~
+
+### Insert Multiple Rows
+
+~~~ 
 INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
+INSERT 2
+
+SELECT * FROM accounts;
++----+----------+
+| id | balance  |
++----+----------+
+|  1 |  10000.5 |
+|  2 | 20000.75 |
+|  3 |  8100.73 |
+|  4 |   9400.1 |
++----+----------+
 ~~~
 
 ### Insert from a `SELECT` Statement
 
-Instead of explicitly specifying column values, you can use a `SELECT` statement to retrieve values from another table and insert them as new rows:
+~~~
+SHOW COLUMS FROM other_accounts;
++--------+---------+-------+---------+
+| Field  |  Type   | Null  | Default |
++--------+---------+-------+---------+
+| number | INT     | false | NULL    |
+| amount | DECIMAL | true  | NULL    |
++--------+---------+-------+---------+
 
-~~~ sql
-INSERT INTO table1 (a, b) SELECT b, c FROM table2   
+INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+INSERT 3
+
+SELECT * FROM accounts;
++----+----------+
+| id | balance  |
++----+----------+
+|  1 |  10000.5 |
+|  2 | 20000.75 |
+|  3 |  8100.73 |
+|  4 |   9400.1 |
+|  5 |    350.1 |
+|  6 |      150 |
+|  7 |    200.1 |
++----+----------+
 ~~~
 
-The target columns in the `SELECT` statement must match the type of the columns being inserted into.
+### Insert Default Values
 
-### Default Values
-
-[Defaults values](data-definition.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
-
-~~~ sql
-INSERT INTO accounts (id, balance) VALUES (5);
-
-INSERT INTO accounts (id, balance) VALUES (6, DEFAULT);
 ~~~
+INSERT INTO accounts (id, balance) VALUES (8);
+INSERT 1
 
-To fill all columns with default values, use just the table name and the expression `DEFAULT VALUES`:
+INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
+INSERT 1
 
-~~~ sql
-INSERT INTO accounts DEFAULT VALUES;
-~~~
-
-### Returning Values
-
-To return values based on rows inserted, use the `RETURNING` keyword followed by the column you want to return:
-
-~~~ sql
-INSERT INTO accounts (id, balance) VALUES (6, DEFAULT) RETURNING balance;
-~~~
-~~~
-+---------+
-| balance |
-+---------+
-| NULL    |
-+---------+
-~~~
-
-To return all columns of the inserted rows, use the `*` character:
-
-~~~ sql
-INSERT INTO accounts (id, balance) VALUES (6, DEFAULT) RETURNING *;
-~~~
-~~~
+SELECT * FROM accounts WHERE id in (8, 9);
 +----+---------+
 | id | balance |
 +----+---------+
-|  6 | NULL    |
+|  8 | NULL    |
+|  9 | NULL    |
 +----+---------+
+
+INSERT INTO accounts DEFAULT VALUES;
+INSERT 1
+
+SELECT * FROM accounts;
++--------------------+----------+
+|         id         | balance  |
++--------------------+----------+
+|                  1 |  10000.5 |
+|                  2 | 20000.75 |
+|                  3 |  8100.73 |
+|                  4 |   9400.1 |
+|                  5 |    350.1 |
+|                  6 |      150 |
+|                  7 |    200.1 |
+|                  8 | NULL     |
+|                  9 | NULL     |
+| 142933248649822209 | NULL     |
++--------------------+----------+
 ~~~
 
-You can also compute and return values based on rows inserted:
+### Insert and Return Values
 
-~~~ sql
-INSERT INTO accounts (id, balance) VALUES (1, 5000.50), (2, 7500.50) RETURNING balance * 2;
-~~~
-~~~
-+------------------------+
-|      balance * 2       |
-+------------------------+
-| 10001.0000000000000000 |
-| 15001.0000000000000000 |
-+------------------------+
+~~~ 
+INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
++--------------------+
+|         id         |
++--------------------+
+| 142935769332121601 |
++--------------------+
+
+INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
++--------------------+---------+
+|         id         | balance |
++--------------------+---------+
+| 142935982200750081 |  250000 |
++--------------------+---------+
+
+INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
++-------------+
+| balance * 2 |
++-------------+
+|        4000 |
++-------------+
 ~~~
 
 ### Update Values `ON CONFLICT`
 
-Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column with the unique conflict and the `DO UPDATE SET` expression set to the columns to be updated:
+~~~ 
+INSERT INTO accounts (id, balance) 
+    VALUES (8, 500.50) 
+    ON CONFLICT (id) 
+    DO UPDATE SET balance = excluded.balance;
+INSERT 1
 
-~~~ sql
-INSERT INTO table1 (a, b, c) VALUES (1, 2, 3) ON CONFLICT (a) DO UPDATE SET b = excluded.b, c = excluded.c;
+SELECT * FROM accounts WHERE id = 8;
++----+---------+
+| id | balance |
++----+---------+
+|  8 |   500.5 |
++----+---------+
 ~~~ 
 
-When a unique conflict is detected, CockroachDB temporarily stores the row(s) in a table called `excluded`. As you can see above, you set the columns to be update to the corresponding columns in the temporary `excluded` table.
-
-Note the following limitations:
-
--   It's not possible to update the same row twice with a single `INSERT ... ON CONFLICT` statement. For example, the following would not be allowed:
--   If the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error. 
-
-{{site.data.alerts.callout_info}}As a short-hand alternative to the <code>ON CONFLICT</code> clause, you can use the <code><a href="https://cockroachlabs.com/docs/upsert.html">UPSERT</a></code> statement. However, note that <code>UPSERT</code> does not let you specify the column with the unique conflict; it assumes that the conflict column is the primary key. Using <code>ON CONFLICT</code> is therefore more flexible.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When a unique conflict is detected, CockroachDB temporarily stores the row(s) in a table called <code>excluded</code>. As you can see above, you set the columns to be update to the corresponding columns in the temporary <code>excluded</code> table.{{site.data.alerts.end}}
 
 ### Ignore Insert `ON CONFLICT`
 
-To avoid an error in case an insert conflicts with a `UNIQUE` constraint, set the `ON CONFLICT` clause to `DO NOTHING`:
+In this example, we get an error from a uniqueness conflict:
 
-~~~ sql
-INSERT INTO table1 (a, b, c) VALUES (1, 2, 3) ON CONFLICT (a) DO NOTHING;
+~~~
+INSERT INTO accounts (id, balance) VALUES (9, 125.50);
+pq: duplicate key value (id)=(9) violates unique constraint "primary"
+~~~
+
+In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error:
+
+~~~
+INSERT INTO accounts (id, balance) 
+    VALUES (9, 125.50) 
+    ON CONFLICT (id) 
+    DO NOTHING;
+INSERT 1
 ~~~
 
 ## See Also
+
+- [`UPSERT`](upsert.html)
+- [Other SQL Statements](sql-statements.html)
