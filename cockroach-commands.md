@@ -15,12 +15,13 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-[`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
+`freeze-cluster` | Freeze the cluster in preparation for an upgrade (docs coming soon).
+[`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
 [`version`](view-version-details.html) | Output CockroachDB version and dependency details.
-`gen` | Generate manpages and bash completion file.
+`gen` | Generate manpages and bash completion file (docs coming soon).
 
 ## Logging Flags
 
