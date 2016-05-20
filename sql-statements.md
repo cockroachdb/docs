@@ -40,6 +40,7 @@ Statement | Usage
 [`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`TRUNCATE`](truncate.html) | Delete all rows from a table.
 [`UPDATE`](update.html) | Update rows in a table.
+[`UPSERT`](upsert.html) | Insert rows that do not violate uniquenesss constraints; update rows that do.
 [`VALUES`](values.html) | Compute a row value or set of row values.
 
 

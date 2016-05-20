@@ -24,7 +24,7 @@ The user revoking privileges must have the `GRANT` privilege on the target datab
 To revoke privileges on one or more databases, use the following syntax:
 
 ~~~
-REVOKE <privileges> ON DATABASE <databases> TO <users>
+REVOKE <privileges> ON DATABASE <databases> FROM <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
@@ -36,7 +36,7 @@ Note that any tables that previously inherited the database-level privileges ret
 To revoke privileges on one or more tables in a database, use the following syntax:
 
 ~~~
-REVOKE <privileges> ON <tables> TO <users>
+REVOKE <privileges> ON <tables> FROM <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
@@ -44,7 +44,7 @@ where `<privileges>` is a comma-separated list of [privileges](#supported-privil
 Alternately, you can add the `TABLE` keyword:
 
 ~~~
-REVOKE <privileges> on TABLE <tables> TO <users>
+REVOKE <privileges> on TABLE <tables> FROM <users>
 ~~~
 
 ### Revoke Privileges on All Tables in a Database
@@ -52,7 +52,7 @@ REVOKE <privileges> on TABLE <tables> TO <users>
 To revoke privileges on all current tables in one or more databases, use the following syntax:
 
 ~~~
-REVOKE <privileges> ON <databases>.* TO <users>
+REVOKE <privileges> ON <databases>.* FROM <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
