@@ -11,7 +11,7 @@ Note that `UPSERT` considers uniqueness only for [`PRIMARY KEY`](data-definition
 
 ## Required Privileges
 
-When there is no uniqueness conflict on the primary key, the user must have the `INSERT` [privilege](privileges.html) on the table. When there is a uniqueness conflict on the primary key, the user must have the `UPDATE` privilege on the table. 
+The user must have the `INSERT` and `UPDATE` privileges on the table.
 
 ## Synopsis
 
