@@ -11,7 +11,7 @@ Note that `UPSERT` considers uniqueness only for [`PRIMARY KEY`](data-definition
 
 ## Required Privileges
 
-The user must have the `INSERT` and `UPDATE` privileges on the table.
+The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the table.
 
 ## Synopsis
 
