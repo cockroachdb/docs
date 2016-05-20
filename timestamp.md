@@ -22,7 +22,13 @@ When inserting into a `TIMESTAMP` column, use one of the following formats:
 
 Alternatively, you can cast a string as a timestamp: `CAST('2016-01-25T10:10:10' AS TIMESTAMP)`.
 
-Note that the fractional portion is optional and is truncated to microseconds (6 digits after decimal) for compatibility with the PostgreSQL wire protocol. To define or select a timestamp value at nanosecond resolution (9 digits after the decimal), you can use the `format_timestamp_ns(ts)` or `extract(nanosecond from ts)` string [functions](functions-and-operators.html).   
+Note that the fractional portion is optional and is rounded to
+microseconds (6 digits after decimal) for compatibility with the
+PostgreSQL wire protocol. To create a timestamp with nanoseconds, use the
+`parse_timestamp_ns(string)` [function](functions-and-operators.html)
+which will create a timestamp with nanoseconds from a string. To create
+a string with nanosecond precision, use `format_timestamp_ns(ts)`. The
+`extract` function supports nanoseconds: `extract(nanosecond from ts)`.
 
 ## Size
 
