@@ -19,13 +19,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| IF NOT EXISTS | Do not raise a **table already exists** error if a table of the same name in the database already exists. Note that the existence check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created.  |
-| any_name | The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database. The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommended to use the name `EXCLUDED` for any of your tables. |
-| column_def | An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints). Column names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as indexes or constraints, however this is not recommended. Any  Primary Key, Unique, and Check constraints that were originally defined at the column level are moved to the table level as part of the table's creation. Using the `SHOW CREATE TABLE` command will show these constraints at the table level. |
-| index_def | An optional comma separated list of any [index definitions](data-definition.html#indexes). Index names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or constraints, however this is not recommended. |
-| table_constraint | An optional comma separated list of any [table level constraints](data-definition.html#table-level-constraints). Constraint names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or indexes, however this is not recommended. |
+Parameter | Description
+----------|-----------
+`IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that this checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. 
+`any_name` | The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database. The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommended to use the name `EXCLUDED` for any of your tables.
+`column_def` | An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints). Column names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as indexes or constraints, however this is not recommended. Any  Primary Key, Unique, and Check constraints that were originally defined at the column level are moved to the table level as part of the table's creation. Using the `SHOW CREATE TABLE` command will show these constraints at the table level.
+`index_def` | An optional comma separated list of any [index definitions](data-definition.html#indexes). Index names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or constraints, however this is not recommended.
+table_constraint | An optional comma separated list of any [table level constraints](data-definition.html#table-level-constraints). Constraint names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or indexes, however this is not recommended.
 
 
 ## Examples
@@ -138,9 +138,6 @@ CREATE TABLE product_information (
 )
 ~~~
 Note that the column level Primary Key, Unique, and Check constraints have been moved to the table level.
-
-
-
 
 ## See Also
 
