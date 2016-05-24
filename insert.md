@@ -3,7 +3,7 @@ title: INSERT
 toc: false
 ---
 
-The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values violate uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows. 
+The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows. 
 
 <div id="toc"></div>
 
