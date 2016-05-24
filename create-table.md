@@ -4,7 +4,8 @@ toc: false
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
-By default, tables are created in the default replication zone but can be placed into a specific replication zone. See the discussion on [Creating a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
+
+By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Creating a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
 <div id="toc"></div>
 
@@ -16,11 +17,10 @@ By default, tables are created in the default replication zone but can be placed
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
 
-
 ## Parameters
 
 Parameter | Description
-----------|-----------
+----------|------------
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that this checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. 
 `any_name` | The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database. The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommended to use the name `EXCLUDED` for any of your tables.
 `column_def` | An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints). Column names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as indexes or constraints, however this is not recommended. Any  Primary Key, Unique, and Check constraints that were originally defined at the column level are moved to the table level as part of the table's creation. Using the `SHOW CREATE TABLE` command will show these constraints at the table level.
