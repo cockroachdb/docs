@@ -27,7 +27,7 @@ def txnWrapper(conn, op):
                 break
 
             except psycopg2.DatabaseError as e:
-                if e.pgcode != 'CR000':
+                if e.pgcode != '40001':
                     # A non-retryable error; report this up the call stack.
                     raise e
                 # Signal the database that we'll retry.

@@ -38,7 +38,7 @@ function transferMoney($dbh, $from, $to, $amount) {
       $dbh->commit();
       return;
     } catch (PDOException $e) {
-      if ($e->getCode() != 'CR000') {
+      if ($e->getCode() != '40001') {
         // Non-recoverable error. Rollback and bubble error up the chain.
         $dbh->rollBack();
         throw $e;

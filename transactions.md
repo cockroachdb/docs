@@ -37,7 +37,7 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 
 3. The statements in the transaction are executed. 
 
-4. If a statement returns a retryable error (identified via the `CR000` error code or `retry transaction` string in the error message), the [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) statement restarts the transaction. 
+4. If a statement returns a retryable error (identified via the `40001` error code or `retry transaction` string in the error message), the [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) statement restarts the transaction. 
 
    In cases where you do not want the application to retry the transaction, you can adapt the wrapper function to simply `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 

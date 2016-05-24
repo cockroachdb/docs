@@ -24,7 +24,7 @@ function txnWrapper(client, op, next) {
     async.doWhilst(function (done) {
       var handleError = function (err) {
         // If we got an error, see if it's a retryable one and, if so, restart.
-        if (err.code === 'CR000') {
+        if (err.code === '40001') {
           // Signal the database that we'll retry.
           return client.query('ROLLBACK TO SAVEPOINT cockroach_restart', done);
         }
