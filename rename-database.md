@@ -15,10 +15,59 @@ The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a dat
 
 Only the `root` user can rename databases.
 
-## Usage
+## Parameters
 
-To rename a database, use the `ALTER TABLE` statement followed by the current database name, the `RENAME TO` statement, and the new database name:
+Parameter | Description
+----------|------------
+`name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name must follow these [naming rules](data-definition.html#identifiers).
 
-~~~ sql
-ALTER DATABASE db1 RENAME TO db2  
+## Examples
+
+### Rename a Database
+
 ~~~
+SHOW DATABASES;
++----------+
+| Database |
++----------+
+| db1      |
+| db2      |
+| system   |
++----------+
+
+ALTER DATABASE db1 RENAME TO db3;
+RENAME DATABASE
+
+SHOW DATABASES;
++----------+
+| Database |
++----------+
+| db2      |
+| db3      |
+| system   |
++----------+
+~~~
+
+### Rename Fails (New Name Already In Use)
+
+~~~
+SHOW DATABASES;
++----------+
+| Database |
++----------+
+| db2      |
+| db3      |
+| system   |
++----------+
+
+ALTER DATABASE db2 RENAME TO db3;
+pq: the new database name "db3" already exists
+~~~
+
+## See Also
+
+- [`CREATE DATABASE`](create-database.html)
+- [`SHOW DATABASES`](show-databases.html)
+- [`SET DATABASE`](set-database.html)
+- [`DROP DATABASE`](drop-database.html)
+- [Other SQL Statements](sql-statements.html)

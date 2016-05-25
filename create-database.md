@@ -20,7 +20,7 @@ Only the `root` user can create databases.
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error. 
-`name` | The name of the database to create. Names must follow [these rules](data-definition#identifiers).
+`name` | The name of the database to create, following these [naming rules](data-definition.html#identifiers).
 `opt_encoding_clause` | The `CREATE DATABASE` statement accepts an `ENCODING` option for compatibility with PostgreSQL, but `UTF8` is the only supported encoding: `CREATE DATABASE bank ENCODING = 'UTF8'`.
 
 ## Example
