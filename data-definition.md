@@ -244,6 +244,12 @@ If no `DEFAULT` constraint is specified and an explicit value is not given, a va
 
 ## Indexes
 
-For index-related SQL statements, see [`CREATE INDEX`](create-index.html), [`DROP INDEX`](drop-index.html), [`RENAME INDEX`](rename-index.html), and [`SHOW INDEX`](show-index.html). To understand how CockroachDB chooses the best index for running a query, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+Indexes are used to quickly locate data without having to look through every row of a table. They can be created during table creation ([`CREATE TABLE`](create-table.html)) or separately using the [`CREATE INDEX`](create-index.html) statement. During table creation, indexes are automatically created for the primary key of a table and any columns with a unique constraint.
 
-More docs on indexes coming soon.
+Other index-related SQL statements:
+
+- [`DROP INDEX`](drop-index.html) 
+- [`RENAME INDEX`](rename-index.html) 
+- [`SHOW INDEX`](show-index.html). 
+ 
+To understand how CockroachDB chooses the best index for running a query, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
