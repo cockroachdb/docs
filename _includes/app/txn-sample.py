@@ -1,20 +1,20 @@
 # Import the driver.
 import psycopg2
+import psycopg2.errorcodes
 
 # Connect to the cluster.
 conn = psycopg2.connect(database='bank', user='maxroach', host='localhost', port=26257)
 
-# Ensure we are running with transactions.
-conn.set_session(autocommit=False)
 
 def onestmt(conn, sql):
     with conn.cursor() as cur:
         cur.execute(sql)
 
+
 # Wrapper for a transaction.
 # This automatically re-calls "op" with the open transaction as an argument
 # as long as the database server asks for the transaction to be retried.
-def txnWrapper(conn, op):
+def run_transaction(conn, op):
     with conn:
         onestmt(conn, "SAVEPOINT cockroach_restart")
         while True:
@@ -26,8 +26,8 @@ def txnWrapper(conn, op):
                 onestmt(conn, "RELEASE SAVEPOINT cockroach_restart")
                 break
 
-            except psycopg2.DatabaseError as e:
-                if e.pgcode != '40001':
+            except psycopg2.OperationalError as e:
+                if e.pgcode != psycopg2.errorcodes.SERIALIZATION_FAILURE:
                     # A non-retryable error; report this up the call stack.
                     raise e
                 # Signal the database that we'll retry.
@@ -35,24 +35,24 @@ def txnWrapper(conn, op):
 
 
 # The transaction we want to run.
-def transferFunds(txn, frm, to, amount):
+def transfer_funds(txn, frm, to, amount):
     with txn.cursor() as cur:
 
         # Check the current balance.
         cur.execute("SELECT balance FROM accounts WHERE id = " + str(frm))
-        fromBalance = cur.fetchone()[0]
-        if fromBalance < amount:
+        from_balance = cur.fetchone()[0]
+        if from_balance < amount:
             raise "Insufficient funds"
 
         # Perform the transfer.
-        cur.execute("UPDATE accounts SET balance = balance - " + str(amount) +
-                    " WHERE id = " + str(frm))
-        cur.execute("UPDATE accounts SET balance = balance + " + str(amount) +
-                    " WHERE id = " + str(to))
+        cur.execute("UPDATE accounts SET balance = balance - %s WHERE id = %s",
+                    (amount, frm))
+        cur.execute("UPDATE accounts SET balance = balance + %s WHERE id = %s",
+                    (amount, to))
 
 
 # Execute the transaction.
-txnWrapper(conn, lambda conn: transferFunds(conn, 1, 2, 100))
+run_transaction(conn, lambda conn: transfer_funds(conn, 1, 2, 100))
 
 
 with conn:
