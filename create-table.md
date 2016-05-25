@@ -23,19 +23,72 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. 
 `any_name` | The name of the table to create, following these [naming rules](data-definition.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. For each column, a [name](data-definition.html#identifiers) and [data type](data-types.html) must be specified; optionally, a [column-level constraint](data-definition.html#column-level-constraints) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](data-definition.<html id="constraints"></html>) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name](data-definition.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](data-definition.html#column-level-constraints) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](data-definition.<html id="constraints"></html>) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](data-definition.html#indexes). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table but can have the same name as columns or constraints. See the [Create Indexes with a Table](#create-indexes-with-a-table) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.  
 `table_constraint` | An optional, comma-separated list of [table-level constraints](data-definition.html#table-level-constraints). Constraint names must be unique within the table but can have the same name as columns or indexes.
 
-
 ## Examples
 
-If the table does **not** have a `PRIMARY KEY` constraint defined, a mandatory column called `rowid` of type `INT` will be added and automatically populated with a unique id that will be used as the primary key. The column will be added even if the table has an `UNIQUE` constraint.
+### Create a Table Without a Primary Key
 
-~~~sql
+In this example, we create a table with two columns, neither of which are given the the `PRIMARY KEY` constraint. As a result, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. Note that the `rowid` column is added even when columns are given the `UNIQUE` constraint.
+
+~~~
+CREATE TABLE logon (user_id INT, logon_date DATE);
+CREATE TABLE
+
+SHOW COLUMS FROM logon;
++------------+------+-------+----------------+
+|   Field    | Type | Null  |    Default     |
++------------+------+-------+----------------+
+| user_id    | INT  | true  | NULL           |
+| logon_date | DATE | true  | NULL           |
+| rowid      | INT  | false | unique_rowid() |
++------------+------+-------+----------------+
+~~~
+
+During table creation, an index is automatically created for the primary key of the table, which you can view with the [`SHOW INDEX`](show-index.html) statement.
+
+~~~
+SHOW INDEX FROM logon;
++-------+---------+--------+-----+--------+-----------+---------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing |
++-------+---------+--------+-----+--------+-----------+---------+
+| logon | primary | true   |   1 | rowid  | ASC       | false   |
++-------+---------+--------+-----+--------+-----------+---------+
+~~~
+
+### Create a Table With a Primary Key
+
+In this example, we create a table with the `PRIMARY KEY` constraint applied to one column. Another column is given the `UNIQUE` constraint. Indexes are automatically created for both of these columns.  
+
+~~~
+CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
+CREATE TABLE
+
+SHOW COLUMS FROM logoff;
++-------------+--------+-------+---------+
+|    Field    |  Type  | Null  | Default |
++-------------+--------+-------+---------+
+| user_id     | INT    | false | NULL    |
+| user_email  | STRING | true  | NULL    |
+| logoff_date | DATE   | true  | NULL    |
++-------------+--------+-------+---------+
+
+SHOW INDEX FROM logoff;
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| logoff | primary               | true   |   1 | user_id    | ASC       | false   |
+| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
++--------+-----------------------+--------+-----+------------+-----------+---------+
+~~~
+
+
+~~~
 CREATE TABLE logon
 (
-  userid     INT NOT NULL,
+  userid     INT P,
   logon_date DATE
 );
 SHOW COLUMNS FROM logon;
