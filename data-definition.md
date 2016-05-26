@@ -226,7 +226,7 @@ If no `DEFAULT` constraint is specified and an explicit value is not given, a va
 
 ## Indexes
 
-Indexes are used to quickly locate data without having to look through every row of a table. They can be created during table creation ([`CREATE TABLE`](create-table.html)) or separately using the [`CREATE INDEX`](create-index.html) statement. During table creation, indexes are automatically created for the primary key of a table and any columns with a unique constraint.
+Indexes are used to quickly locate data without having to look through every row of a table. They can be created during table creation ([`CREATE TABLE`](create-table.html)) or separately using the [`CREATE INDEX`](create-index.html) statement. During table creation, the primary key and column with the `UNIQUE` constraint are automatically indexed.
 
 Other index-related SQL statements:
 
