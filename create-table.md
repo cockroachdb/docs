@@ -13,7 +13,7 @@ By default, tables are created in the default replication zone but can be placed
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
 
-## Syntax
+## Synopsis
 
 {% include sql/diagrams/create_table.html %}
 
@@ -29,41 +29,17 @@ Parameter | Description
 
 ## Examples
 
-### Create a Table With a Primary Key
+### Create a Table (No Primary Key Defined)
 
-In this example, we create a table with three columns. One column is given the [`PRIMARY KEY`](data-definition.html#primary-key) constraint, another is given the [`UNIQUE`](data-definition.html#unique) constraint, and the third has no constraints. Indexes are automatically created for columns with the `PRIMARY KEY` and `UNIQUE` constraints.
+In CockroachDB, every table requires a [`PRIMARY KEY`](data-definition.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
 
-~~~ 
-CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
-CREATE TABLE
-
-SHOW COLUMNS FROM logoff;
-+-------------+--------+-------+---------+
-|    Field    |  Type  | Null  | Default |
-+-------------+--------+-------+---------+
-| user_id     | INT    | false | NULL    |
-| user_email  | STRING | true  | NULL    |
-| logoff_date | DATE   | true  | NULL    |
-+-------------+--------+-------+---------+
-
-SHOW INDEX FROM logoff;
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-| logoff | primary               | true   |   1 | user_id    | ASC       | false   |
-| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-~~~
-
-### Create a Table Without a Primary Key
-
-In this example, we create a table with two columns, neither of which are given the the [`PRIMARY KEY`](data-definition.html#primary-key) constraint. As a result, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. Also, an index is automatically created for `rowid`, since it is the primary key. 
+{{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
 ~~~ 
-CREATE TABLE logon (user_id INT, logon_date DATE);
+> CREATE TABLE logon (user_id INT, logon_date DATE);
 CREATE TABLE
 
-SHOW COLUMNS FROM logon;
+> SHOW COLUMNS FROM logon;
 +------------+------+-------+----------------+
 |   Field    | Type | Null  |    Default     |
 +------------+------+-------+----------------+
@@ -72,7 +48,7 @@ SHOW COLUMNS FROM logon;
 | rowid      | INT  | false | unique_rowid() |
 +------------+------+-------+----------------+
 
-SHOW INDEX FROM logon;
+> SHOW INDEX FROM logon;
 +-------+---------+--------+-----+--------+-----------+---------+
 | Table |  Name   | Unique | Seq | Column | Direction | Storing |
 +-------+---------+--------+-----+--------+-----------+---------+
@@ -80,14 +56,39 @@ SHOW INDEX FROM logon;
 +-------+---------+--------+-----+--------+-----------+---------+
 ~~~
 
-### Create a Table With Secondary Indexes
+### Create a Table (Primary Key Defined)
 
-In addition to a primary index, a table can have one or more secondary indexes to allow efficient access to data with keys other than the primary key. 
-
-In this example, we explicitly create two secondary indexes during table creation. These indexes are in addition to the indexes created automatically for columns with the `PRIMARY KEY` and `UNIQUE` constraints. This example also demonstrates a number of column-level and table-level [constraints](data-definition.html#constraints).
+In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](data-definition.html#primary-key), another is given the [`UNIQUE`](data-definition.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
 
 ~~~ 
-CREATE TABLE product_information
+> CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
+CREATE TABLE
+
+> SHOW COLUMNS FROM logoff;
++-------------+--------+-------+---------+
+|    Field    |  Type  | Null  | Default |
++-------------+--------+-------+---------+
+| user_id     | INT    | false | NULL    |
+| user_email  | STRING | true  | NULL    |
+| logoff_date | DATE   | true  | NULL    |
++-------------+--------+-------+---------+
+
+> SHOW INDEX FROM logoff;
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| logoff | primary               | true   |   1 | user_id    | ASC       | false   |
+| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
++--------+-----------------------+--------+-----+------------+-----------+---------+
+~~~
+
+
+### Create a Table With Secondary Indexes
+
+In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](data-definition.html#constraints).
+
+~~~ 
+> CREATE TABLE product_information
 (
   product_id           INT PRIMARY KEY NOT NULL,
   product_name         STRING(50) UNIQUE NOT NULL,
@@ -107,7 +108,7 @@ CREATE TABLE product_information
 );
 CREATE TABLE
 
-SHOW INDEX FROM product_information;
+> SHOW INDEX FROM product_information;
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
 |        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing |
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
@@ -120,11 +121,14 @@ SHOW INDEX FROM product_information;
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
 ~~~
 
-An alternate way to create the secondary indexes above would be to use [`CREATE INDEX`](create-index.html) statements following table creation:
+An alternate way to create secondary indexes would be to use [`CREATE INDEX`](create-index.html) statements once the table has been created:
 
-~~~ sql
+~~~
 CREATE INDEX date_added_idx ON product_information (date_added);
+CREATE INDEX
+
 CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
+CREATE INDEX
 ~~~
 
 ### Show the Definition of a Table
@@ -132,7 +136,7 @@ CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, produc
 To show the definition of a table, use the `SHOW CREATE TABLE` statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
 ~~~ 
-SHOW CREATE TABLE logon;
+> SHOW CREATE TABLE logon;
 +-------+------------------------------------------------------------------------+
 | Table |                              CreateTable                               |
 +-------+------------------------------------------------------------------------+
