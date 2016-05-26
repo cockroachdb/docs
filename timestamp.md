@@ -19,7 +19,7 @@ When inserting into a `TIMESTAMP` column, use one of the following formats:
 - Date and Time: `TIMESTAMP '2016-01-25 10:10:10.555555'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-When inserting into a `TIMESTAMPZ` column (with time zone offset from UTC), use one of the following: `TIMESTAMPZ '2016-01-25 10:10:10.555555-5:00'`
+When inserting into a `TIMESTAMPZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPZ '2016-01-25 10:10:10.555555-5:00'`
 
 Alternatively, you can cast a string as a timestamp: `CAST('2016-01-25T10:10:10' AS TIMESTAMP)`.
 
