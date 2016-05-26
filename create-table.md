@@ -5,7 +5,7 @@ toc: false
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
-By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Creating a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
+By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
 <div id="toc"></div>
 
@@ -29,44 +29,15 @@ Parameter | Description
 
 ## Examples
 
-### Create a Table Without a Primary Key
-
-In this example, we create a table with two columns, neither of which are given the the `PRIMARY KEY` constraint. As a result, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. Note that the `rowid` column is added even when columns are given the `UNIQUE` constraint.
-
-~~~
-CREATE TABLE logon (user_id INT, logon_date DATE);
-CREATE TABLE
-
-SHOW COLUMS FROM logon;
-+------------+------+-------+----------------+
-|   Field    | Type | Null  |    Default     |
-+------------+------+-------+----------------+
-| user_id    | INT  | true  | NULL           |
-| logon_date | DATE | true  | NULL           |
-| rowid      | INT  | false | unique_rowid() |
-+------------+------+-------+----------------+
-~~~
-
-During table creation, an index is automatically created for the primary key of the table, which you can view with the [`SHOW INDEX`](show-index.html) statement.
-
-~~~
-SHOW INDEX FROM logon;
-+-------+---------+--------+-----+--------+-----------+---------+
-| Table |  Name   | Unique | Seq | Column | Direction | Storing |
-+-------+---------+--------+-----+--------+-----------+---------+
-| logon | primary | true   |   1 | rowid  | ASC       | false   |
-+-------+---------+--------+-----+--------+-----------+---------+
-~~~
-
 ### Create a Table With a Primary Key
 
-In this example, we create a table with the `PRIMARY KEY` constraint applied to one column. Another column is given the `UNIQUE` constraint. Indexes are automatically created for both of these columns.  
+In this example, we create a table with three columns. One column is given the [`PRIMARY KEY`](data-definition.html#primary-key) constraint, another is given the [`UNIQUE`](data-definition.html#unique) constraint, and the third has no constraints. Indexes are automatically created for columns with the `PRIMARY KEY` and `UNIQUE` constraints.
 
-~~~
+~~~ 
 CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
 CREATE TABLE
 
-SHOW COLUMS FROM logoff;
+SHOW COLUMNS FROM logoff;
 +-------------+--------+-------+---------+
 |    Field    |  Type  | Null  | Default |
 +-------------+--------+-------+---------+
@@ -84,60 +55,38 @@ SHOW INDEX FROM logoff;
 +--------+-----------------------+--------+-----+------------+-----------+---------+
 ~~~
 
+### Create a Table Without a Primary Key
 
-~~~
-CREATE TABLE logon
-(
-  userid     INT P,
-  logon_date DATE
-);
+In this example, we create a table with two columns, neither of which are given the the [`PRIMARY KEY`](data-definition.html#primary-key) constraint. As a result, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. Also, an index is automatically created for `rowid`, since it is the primary key. 
+
+~~~ 
+CREATE TABLE logon (user_id INT, logon_date DATE);
+CREATE TABLE
+
 SHOW COLUMNS FROM logon;
 +------------+------+-------+----------------+
 |   Field    | Type | Null  |    Default     |
 +------------+------+-------+----------------+
-| userid     | INT  | false | NULL           |
+| user_id    | INT  | true  | NULL           |
 | logon_date | DATE | true  | NULL           |
 | rowid      | INT  | false | unique_rowid() |
 +------------+------+-------+----------------+
+
+SHOW INDEX FROM logon;
++-------+---------+--------+-----+--------+-----------+---------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing |
++-------+---------+--------+-----+--------+-----------+---------+
+| logon | primary | true   |   1 | rowid  | ASC       | false   |
++-------+---------+--------+-----+--------+-----------+---------+
 ~~~
 
-To display a list of tables created in a database, use the [`SHOW TABLES`](show-tables.html) command.
+### Create a Table With Secondary Indexes
 
-~~~sql
-SHOW TABLES;
-+-------+
-| Table |
-+-------+
-| logon |
-+-------+
-~~~
+In addition to a primary index, a table can have one or more secondary indexes to allow efficient access to data with keys other than the primary key. 
 
-To display information about columns in a table, use the [`SHOW COLUMNS`](show-columns.html) command.
+In this example, we explicitly create two secondary indexes during table creation. These indexes are in addition to the indexes created automatically for columns with the `PRIMARY KEY` and `UNIQUE` constraints. This example also demonstrates a number of column-level and table-level [constraints](data-definition.html#constraints).
 
-~~~sql
-
-SHOW COLUMNS FROM product_information;
-+---------------------+--------------+-------+------------------+
-|        Field        |     Type     | Null  |     Default      |
-+---------------------+--------------+-------+------------------+
-| product_id          | INT          | false | NULL             |
-| product_name        | STRING(50)   | false | NULL             |
-| product_description | STRING(2000) | true  | NULL             |
-| category_id         | STRING(1)    | false | NULL             |
-| weight_class        | INT          | true  | NULL             |
-| warranty_period     | INT          | true  | NULL             |
-| supplier_id         | INT          | true  | NULL             |
-| product_status      | STRING(20)   | true  | NULL             |
-| list_price          | DECIMAL(8,2) | true  | NULL             |
-| min_price           | DECIMAL(8,2) | true  | NULL             |
-| catalog_url         | STRING(50)   | true  | NULL             |
-| date_added          | DATE         | true  | "CURRENT_DATE"() |
-+---------------------+--------------+-------+------------------+
-~~~
-
-To show the definition of a table, use the `SHOW CREATE TABLE` command. The contents of the CreateTable column in the output is a string with embedded line breaks which when echoed produces formatted output. 
-
-~~~sql
+~~~ 
 CREATE TABLE product_information
 (
   product_id           INT PRIMARY KEY NOT NULL,
@@ -156,41 +105,40 @@ CREATE TABLE product_information
   INDEX date_added_idx (date_added),
   INDEX supp_id_prod_status_idx (supplier_id, product_status)
 );
+CREATE TABLE
 
-SHOW CREATE TABLE product_information;
-----------------------+-----------------------------------------------------------------------------------+
-|        Table        |                                   CreateTable                                     |
-+---------------------+-----------------------------------------------------------------------------------+
-| product_information | "CREATE TABLE product_information (\n\tproduct_id INT NOT NULL,\n\tproduct_name STRING(50) NOT NULL,\n\tproduct_description STRING(2000) NULL,\n\tcategory_id STRING(1) NOT NULL,\n\tweight_class INT NULL,\n\twarranty_period INT NULL,\n\tsupplier_id INT NULL,\n\tproduct_status STRING(20) NULL,\n\tlist_price DECIMAL(8,2) NULL,\n\tmin_price DECIMAL(8,2) NULL,\n\tcatalog_url STRING(50) NULL,\n\tdate_added DATE NULL DEFAULT \"CURRENT_DATE\"(),\n\tCONSTRAINT \"primary\" PRIMARY KEY (product_id),\n\tUNIQUE INDEX product_information_product_name_key (product_name),\n\tUNIQUE INDEX product_information_catalog_url_key (catalog_url),\n\tINDEX date_added_idx (date_added),\n\tINDEX supp_id_prod_status_idx (supplier_id, product_status),\n\tCONSTRAINT price_check CHECK (list_price >= min_price),\n\tCHECK (category_id IN ('A', 'B', 'C')),\n\tCHECK (warranty_period BETWEEN 0 AND 24)\n)" |
-+---------------------+-----------------------------------------------------------------------------------+
+SHOW INDEX FROM product_information;
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
+|        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
+| product_information | primary                              | true   |   1 | product_id     | ASC       | false   |
+| product_information | product_information_product_name_key | true   |   1 | product_name   | ASC       | false   |
+| product_information | product_information_catalog_url_key  | true   |   1 | catalog_url    | ASC       | false   |
+| product_information | date_added_idx                       | false  |   1 | date_added     | ASC       | false   |
+| product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   |
+| product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
 ~~~
 
-~~~sql
-$ echo -e <CreateTable_string>
-CREATE TABLE product_information (
-	product_id INT NOT NULL,
-	product_name STRING(50) NOT NULL,
-	product_description STRING(2000) NULL,
-	category_id STRING(1) NOT NULL,
-	weight_class INT NULL,
-	warranty_period INT NULL,
-	supplier_id INT NULL,
-	product_status STRING(20) NULL,
-	list_price DECIMAL(8,2) NULL,
-	min_price DECIMAL(8,2) NULL,
-	catalog_url STRING(50) NULL,
-	date_added DATE NULL DEFAULT "CURRENT_DATE"(),
-	CONSTRAINT "primary" PRIMARY KEY (product_id),
-	UNIQUE INDEX product_information_product_name_key (product_name),
-	UNIQUE INDEX product_information_catalog_url_key (catalog_url),
-	INDEX date_added_idx (date_added),
-	INDEX supp_id_prod_status_idx (supplier_id, product_status),
-	CONSTRAINT price_check CHECK (list_price >= min_price),
-	CHECK (category_id IN ('A', 'B', 'C')),
-	CHECK (warranty_period BETWEEN 0 AND 24)
-)
+An alternate way to create the secondary indexes above would be to use [`CREATE INDEX`](create-index.html) statements following table creation:
+
+~~~ sql
+CREATE INDEX date_added_idx ON product_information (date_added);
+CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
 ~~~
-Note that the column level Primary Key, Unique, and Check constraints have been moved to the table level.
+
+### Show the Definition of a Table
+
+To show the definition of a table, use the `SHOW CREATE TABLE` statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
+
+~~~ 
+SHOW CREATE TABLE logon;
++-------+------------------------------------------------------------------------+
+| Table |                              CreateTable                               |
++-------+------------------------------------------------------------------------+
+| logon | "CREATE TABLE logon (\n\tuser_id INT NULL,\n\tlogon_date DATE NULL\n)" |
++-------+------------------------------------------------------------------------+
+~~~
 
 ## See Also
 
@@ -201,4 +149,4 @@ Note that the column level Primary Key, Unique, and Check constraints have been 
 - [`SHOW TABLES`](show-tables.html)
 - [`SHOW CREATE`]()
 - [`SHOW COLUMNS`](show-columns.html)
-- [Table Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
+- [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
