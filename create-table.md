@@ -9,13 +9,13 @@ By default, tables are created in the default replication zone but can be placed
 
 <div id="toc"></div>
 
-## Syntax
-
-{% include sql/diagrams/create_table.html %}
-
 ## Required Privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
+
+## Syntax
+
+{% include sql/diagrams/create_table.html %}
 
 ## Parameters
 
