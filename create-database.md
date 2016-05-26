@@ -15,25 +15,13 @@ The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB
 
 Only the `root` user can create databases.
 
-## Usage
+## Parameters
 
-To create a new database, use the `CREATE DATABASE` statement followed by a database name:
-
-~~~ sql
-CREATE DATABASE bank;
-~~~
-
-Database names must follow [these rules](data-definition.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
-
-~~~ sql
-CREATE DATABASE IF NOT EXISTS bank;
-~~~
-
-The `CREATE DATABASE` statement also accepts an `ENCODING` option for compatibility with PostgreSQL, but `UTF8` is the only supported encoding:
-
-~~~ sql
-CREATE DATABASE bank ENCODING = 'UTF8'
-~~~
+Parameter | Description
+----------|------------
+`IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error. 
+`name` | The name of the database to create, following these [naming rules](data-definition.html#identifiers).
+`opt_encoding_clause` | The `CREATE DATABASE` statement accepts an `ENCODING` option for compatibility with PostgreSQL, but `UTF8` is the only supported encoding: `CREATE DATABASE bank ENCODING = 'UTF8'`.
 
 ## Example
 

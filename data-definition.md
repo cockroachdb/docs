@@ -160,9 +160,7 @@ should be specified as
 warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
 ~~~
 
-{{site.data.alerts.callout_warning}}
-Check constraints are still under developement and are not yet ready for production use. They are currently not checked during UPDATE operations.
-{{site.data.alerts.end}}
+{% include check_warning.html %}
 
 Check constraints that refer to multiple columns should be specified at the table level. 
 
@@ -190,22 +188,6 @@ CREATE TABLE inventories
 
 INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, -20);
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
-~~~
-
-{{site.data.alerts.warning}}
-If a Check constraint is defined on an optional column (one where a NULL value is allowed), then all insert or update statements containing rows with NULL values in that column will fail because the condition will not evaluate to TRUE when a NULL is used in the expression. To work around this, include the condition "OR column IS NULL" in the Check constraint.
-{{site.data.alerts.end}}
-
-For Example:
-
-~~~sql
-CREATE TABLE product_information
-(
-  product_id           INT PRIMARY KEY NOT NULL,
-  product_name         STRING(50),
-  warranty_period      INT CHECK ( (warranty_period >= 0 AND warranty_period <= 24) OR warranty_period IS NULL),
-  supplier_id          INT
-);
 ~~~
 
 <!-- ### References Constraint -->
@@ -244,6 +226,12 @@ If no `DEFAULT` constraint is specified and an explicit value is not given, a va
 
 ## Indexes
 
-For index-related SQL statements, see [`CREATE INDEX`](create-index.html), [`DROP INDEX`](drop-index.html), [`RENAME INDEX`](rename-index.html), and [`SHOW INDEX`](show-index.html). To understand how CockroachDB chooses the best index for running a query, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+Indexes are used to quickly locate data without having to look through every row of a table. They can be created during table creation ([`CREATE TABLE`](create-table.html)) or separately using the [`CREATE INDEX`](create-index.html) statement. During table creation, the primary key and column with the `UNIQUE` constraint are automatically indexed.
 
-More docs on indexes coming soon.
+Other index-related SQL statements:
+
+- [`DROP INDEX`](drop-index.html) 
+- [`RENAME INDEX`](rename-index.html) 
+- [`SHOW INDEX`](show-index.html). 
+ 
+To understand how CockroachDB chooses the best index for running a query, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).

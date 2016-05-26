@@ -4,88 +4,91 @@ toc: false
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
-By default, tables are created in the default replication zone but can be placed into a specific replication zone. See the discussion on [Creating a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
+
+By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
 <div id="toc"></div>
-
-## Syntax
-
-{% include sql/diagrams/create_table.html %}
 
 ## Required Privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
 
+## Synopsis
+
+{% include sql/diagrams/create_table.html %}
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| IF NOT EXISTS | Do not raise a **table already exists** error if a table of the same name in the database already exists. Note that the existence check is on the table name only, there is no guarantee that the existing table has the same columns, indexes, constraints, etc as the one that would have been created.  |
-| any_name | The [name](data-definition.html#identifiers) (optionally schema-qualified) of the table to be created. Table names are required to be unique within a database. The `UPSERT` and `INSERT INTO ... ON CONFLICT` statements make use of a table called `EXCLUDED` to handle data conflicts during execution. It's therefore not recommended to use the name `EXCLUDED` for any of your tables. |
-| column_def | An optional comma separated list of any [column names](data-definition.html#identifiers), their [data types](data-types.html), and any [column level constraints](data-definition.html#column-level-constraints). Column names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as indexes or constraints, however this is not recommended. Any  Primary Key, Unique, and Check constraints that were originally defined at the column level are moved to the table level as part of the table's creation. Using the `SHOW CREATE TABLE` command will show these constraints at the table level. |
-| index_def | An optional comma separated list of any [index definitions](data-definition.html#indexes). Index names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or constraints, however this is not recommended. |
-| table_constraint | An optional comma separated list of any [table level constraints](data-definition.html#table-level-constraints). Constraint names have their own namespace within a table's definition so are required to be unique for the table but may have the same name as columns or indexes, however this is not recommended. |
-
+Parameter | Description
+----------|------------
+`IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. 
+`any_name` | The name of the table to create, following these [naming rules](data-definition.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name](data-definition.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](data-definition.html#column-level-constraints) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](data-definition.<html id="constraints"></html>) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
+`index_def` | An optional, comma-separated list of [index definitions](data-definition.html#indexes). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table but can have the same name as columns or constraints. See the [Create Indexes with a Table](#create-indexes-with-a-table) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.  
+`table_constraint` | An optional, comma-separated list of [table-level constraints](data-definition.html#table-level-constraints). Constraint names must be unique within the table but can have the same name as columns or indexes.
 
 ## Examples
 
-If the table does **not** have a `PRIMARY KEY` constraint defined, a mandatory column called `rowid` of type `INT` will be added and automatically populated with a unique id that will be used as the primary key. The column will be added even if the table has an `UNIQUE` constraint.
+### Create a Table (No Primary Key Defined)
 
-~~~sql
-CREATE TABLE logon
-(
-  userid     INT NOT NULL,
-  logon_date DATE
-);
-SHOW COLUMNS FROM logon;
+In CockroachDB, every table requires a [`PRIMARY KEY`](data-definition.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
+
+{{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
+
+~~~ 
+> CREATE TABLE logon (user_id INT, logon_date DATE);
+CREATE TABLE
+
+> SHOW COLUMNS FROM logon;
 +------------+------+-------+----------------+
 |   Field    | Type | Null  |    Default     |
 +------------+------+-------+----------------+
-| userid     | INT  | false | NULL           |
+| user_id    | INT  | true  | NULL           |
 | logon_date | DATE | true  | NULL           |
 | rowid      | INT  | false | unique_rowid() |
 +------------+------+-------+----------------+
+
+> SHOW INDEX FROM logon;
++-------+---------+--------+-----+--------+-----------+---------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing |
++-------+---------+--------+-----+--------+-----------+---------+
+| logon | primary | true   |   1 | rowid  | ASC       | false   |
++-------+---------+--------+-----+--------+-----------+---------+
 ~~~
 
-To display a list of tables created in a database, use the [`SHOW TABLES`](show-tables.html) command.
+### Create a Table (Primary Key Defined)
 
-~~~sql
-SHOW TABLES;
-+-------+
-| Table |
-+-------+
-| logon |
-+-------+
+In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](data-definition.html#primary-key), another is given the [`UNIQUE`](data-definition.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
+
+~~~ 
+> CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
+CREATE TABLE
+
+> SHOW COLUMNS FROM logoff;
++-------------+--------+-------+---------+
+|    Field    |  Type  | Null  | Default |
++-------------+--------+-------+---------+
+| user_id     | INT    | false | NULL    |
+| user_email  | STRING | true  | NULL    |
+| logoff_date | DATE   | true  | NULL    |
++-------------+--------+-------+---------+
+
+> SHOW INDEX FROM logoff;
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
++--------+-----------------------+--------+-----+------------+-----------+---------+
+| logoff | primary               | true   |   1 | user_id    | ASC       | false   |
+| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
++--------+-----------------------+--------+-----+------------+-----------+---------+
 ~~~
 
-To display information about columns in a table, use the [`SHOW COLUMNS`](show-columns.html) command.
 
-~~~sql
+### Create a Table With Secondary Indexes
 
-SHOW COLUMNS FROM product_information;
-+---------------------+--------------+-------+------------------+
-|        Field        |     Type     | Null  |     Default      |
-+---------------------+--------------+-------+------------------+
-| product_id          | INT          | false | NULL             |
-| product_name        | STRING(50)   | false | NULL             |
-| product_description | STRING(2000) | true  | NULL             |
-| category_id         | STRING(1)    | false | NULL             |
-| weight_class        | INT          | true  | NULL             |
-| warranty_period     | INT          | true  | NULL             |
-| supplier_id         | INT          | true  | NULL             |
-| product_status      | STRING(20)   | true  | NULL             |
-| list_price          | DECIMAL(8,2) | true  | NULL             |
-| min_price           | DECIMAL(8,2) | true  | NULL             |
-| catalog_url         | STRING(50)   | true  | NULL             |
-| date_added          | DATE         | true  | "CURRENT_DATE"() |
-+---------------------+--------------+-------+------------------+
-~~~
+In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](data-definition.html#constraints).
 
-To show the definition of a table, use the `SHOW CREATE TABLE` command. The contents of the CreateTable column in the output is a string with embedded line breaks which when echoed produces formatted output. 
-
-~~~sql
-CREATE TABLE product_information
+~~~ 
+> CREATE TABLE product_information
 (
   product_id           INT PRIMARY KEY NOT NULL,
   product_name         STRING(50) UNIQUE NOT NULL,
@@ -103,44 +106,43 @@ CREATE TABLE product_information
   INDEX date_added_idx (date_added),
   INDEX supp_id_prod_status_idx (supplier_id, product_status)
 );
+CREATE TABLE
 
-SHOW CREATE TABLE product_information;
-----------------------+-----------------------------------------------------------------------------------+
-|        Table        |                                   CreateTable                                     |
-+---------------------+-----------------------------------------------------------------------------------+
-| product_information | "CREATE TABLE product_information (\n\tproduct_id INT NOT NULL,\n\tproduct_name STRING(50) NOT NULL,\n\tproduct_description STRING(2000) NULL,\n\tcategory_id STRING(1) NOT NULL,\n\tweight_class INT NULL,\n\twarranty_period INT NULL,\n\tsupplier_id INT NULL,\n\tproduct_status STRING(20) NULL,\n\tlist_price DECIMAL(8,2) NULL,\n\tmin_price DECIMAL(8,2) NULL,\n\tcatalog_url STRING(50) NULL,\n\tdate_added DATE NULL DEFAULT \"CURRENT_DATE\"(),\n\tCONSTRAINT \"primary\" PRIMARY KEY (product_id),\n\tUNIQUE INDEX product_information_product_name_key (product_name),\n\tUNIQUE INDEX product_information_catalog_url_key (catalog_url),\n\tINDEX date_added_idx (date_added),\n\tINDEX supp_id_prod_status_idx (supplier_id, product_status),\n\tCONSTRAINT price_check CHECK (list_price >= min_price),\n\tCHECK (category_id IN ('A', 'B', 'C')),\n\tCHECK (warranty_period BETWEEN 0 AND 24)\n)" |
-+---------------------+-----------------------------------------------------------------------------------+
+> SHOW INDEX FROM product_information;
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
+|        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
+| product_information | primary                              | true   |   1 | product_id     | ASC       | false   |
+| product_information | product_information_product_name_key | true   |   1 | product_name   | ASC       | false   |
+| product_information | product_information_catalog_url_key  | true   |   1 | catalog_url    | ASC       | false   |
+| product_information | date_added_idx                       | false  |   1 | date_added     | ASC       | false   |
+| product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   |
+| product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
 ~~~
 
-~~~sql
-$ echo -e <CreateTable_string>
-CREATE TABLE product_information (
-	product_id INT NOT NULL,
-	product_name STRING(50) NOT NULL,
-	product_description STRING(2000) NULL,
-	category_id STRING(1) NOT NULL,
-	weight_class INT NULL,
-	warranty_period INT NULL,
-	supplier_id INT NULL,
-	product_status STRING(20) NULL,
-	list_price DECIMAL(8,2) NULL,
-	min_price DECIMAL(8,2) NULL,
-	catalog_url STRING(50) NULL,
-	date_added DATE NULL DEFAULT "CURRENT_DATE"(),
-	CONSTRAINT "primary" PRIMARY KEY (product_id),
-	UNIQUE INDEX product_information_product_name_key (product_name),
-	UNIQUE INDEX product_information_catalog_url_key (catalog_url),
-	INDEX date_added_idx (date_added),
-	INDEX supp_id_prod_status_idx (supplier_id, product_status),
-	CONSTRAINT price_check CHECK (list_price >= min_price),
-	CHECK (category_id IN ('A', 'B', 'C')),
-	CHECK (warranty_period BETWEEN 0 AND 24)
-)
+An alternate way to create secondary indexes would be to use [`CREATE INDEX`](create-index.html) statements once the table has been created:
+
 ~~~
-Note that the column level Primary Key, Unique, and Check constraints have been moved to the table level.
+CREATE INDEX date_added_idx ON product_information (date_added);
+CREATE INDEX
 
+CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
+CREATE INDEX
+~~~
 
+### Show the Definition of a Table
 
+To show the definition of a table, use the `SHOW CREATE TABLE` statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
+
+~~~ 
+> SHOW CREATE TABLE logon;
++-------+------------------------------------------------------------------------+
+| Table |                              CreateTable                               |
++-------+------------------------------------------------------------------------+
+| logon | "CREATE TABLE logon (\n\tuser_id INT NULL,\n\tlogon_date DATE NULL\n)" |
++-------+------------------------------------------------------------------------+
+~~~
 
 ## See Also
 
@@ -151,4 +153,4 @@ Note that the column level Primary Key, Unique, and Check constraints have been 
 - [`SHOW TABLES`](show-tables.html)
 - [`SHOW CREATE`]()
 - [`SHOW COLUMNS`](show-columns.html)
-- [Table Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
+- [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
