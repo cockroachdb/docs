@@ -1,0 +1,2 @@
+{{site.data.alerts.callout_danger}}
+Do not rename a column that has a <code>CHECK</code> constraint. Due to a <a href="https://github.com/cockroachdb/cockroach/issues/6169">current bug</a>, if you rename such a column, you will not be able to insert or alter rows in the table.{{site.data.alerts.end}}
