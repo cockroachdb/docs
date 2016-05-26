@@ -3,13 +3,13 @@ title: TIMESTAMP
 toc: false
 ---
 
-The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC, whereas `TIMESTAMPZ` stores a date and time pair with a time zone offset from UTC. 
+The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC, whereas `TIMESTAMPTZ` stores a date and time pair with a time zone offset from UTC. 
 
 <div id="toc"></div>
 
 ## Aliases
 
-In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `TIMESTAMP WITH TIME ZONE` is an alias for `TIMESTAMPZ`.
+In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `TIMESTAMP WITH TIME ZONE` is an alias for `TIMESTAMPTZ`.
 
 ## Format
 
@@ -19,7 +19,7 @@ When inserting into a `TIMESTAMP` column, use one of the following formats:
 - Date and Time: `TIMESTAMP '2016-01-25 10:10:10.555555'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-When inserting into a `TIMESTAMPZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPZ '2016-01-25 10:10:10.555555-5:00'`
+When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-5:00'`
 
 Alternatively, you can cast a string as a timestamp: `CAST('2016-01-25T10:10:10' AS TIMESTAMP)`.
 
