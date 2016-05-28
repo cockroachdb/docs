@@ -315,6 +315,11 @@ a:focus {
   border-bottom: 1px solid #46a417;
 }
 
+.post-content .roach a:hover {
+  color: #46a417;
+  border-bottom: none;
+} 
+
 img {
   vertical-align: middle;
 }
