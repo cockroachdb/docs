@@ -312,7 +312,7 @@ a:focus {
 
 .post-content a:hover {
   color: #46a417;
-  border-bottom: 1px dotted #46a417;
+  border-bottom: 1px solid #46a417;
 }
 
 img {
