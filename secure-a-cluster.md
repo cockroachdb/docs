@@ -10,8 +10,8 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     ~~~ shell
     $ ./cockroach quit
-    $ ./cockroach quit --http-port=8081
-    $ ./cockroach quit --http-port=8082
+    $ ./cockroach quit --port=26258
+    $ ./cockroach quit --port=26259
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure1">Details</button>
