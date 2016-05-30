@@ -77,10 +77,18 @@ func GenerateBNF(addr string) (ebnf []byte, err error) {
 	prods := make(map[string][][]yacc.Item)
 	for _, p := range t.Productions {
 		var impl [][]yacc.Item
+	Loop:
 		for _, e := range p.Expressions {
-			if !strings.Contains(e.Command, "unimplemented") {
-				impl = append(impl, e.Items)
+			if strings.Contains(e.Command, "unimplemented") {
+				continue
 			}
+			// TODO(mjibson): remove this once JOINs work
+			for _, i := range e.Items {
+				if i.Value == "joined_table" {
+					continue Loop
+				}
+			}
+			impl = append(impl, e.Items)
 		}
 		prods[p.Name] = impl
 	}
