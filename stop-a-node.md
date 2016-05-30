@@ -30,7 +30,7 @@ Flag | Description
 `--host` | A valid address for reaching the node. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** localhost
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
-`--port` | The port to listen on for internal and client communication. <br><br>**Default:** `26257`
+`--port`<br>`-p` | The port to listen on for internal and client communication. <br><br>**Default:** 26257
 
 ## Example
 
