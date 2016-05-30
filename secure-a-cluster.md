@@ -10,14 +10,14 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     ~~~ shell
     $ ./cockroach quit
-    $ ./cockroach quit --http-port=8081
-    $ ./cockroach quit --http-port=8082
+    $ ./cockroach quit --port=26258
+    $ ./cockroach quit --port=26259
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure1">Details</button>
     <div id="details-secure1" class="collapse" markdown="1">
 
-    - If you used the `cockroach start` commands on [Start a Cluster](start-a-local-cluster.html) verbatim, the commands above will work as well. Otherwise, just set the `--http-port` flag to the ports you used.
+    - If you used the `cockroach start` commands on [Start a Cluster](start-a-local-cluster.html) verbatim, the commands above will work as well. Otherwise, just set the `--port` flag to the ports you used.
     - For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
     - If you leave the Admin UI open, when you restart the cluster with security (steps 3 and 4), you'll see "TLS handshake" errors until you adjust the URL to https (step 7).
 
