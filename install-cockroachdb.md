@@ -101,6 +101,9 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
@@ -179,6 +182,9 @@ $(document).ready(function(){
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form install-form-3 clearfix">
@@ -263,6 +269,9 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
         <script>
@@ -310,6 +319,9 @@ $(document).ready(function(){
 
     <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
   </li>
+  <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>
   <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
