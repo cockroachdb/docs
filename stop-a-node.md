@@ -28,9 +28,9 @@ Flag | Description
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
 `--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--host` | A valid address for reaching the node. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** localhost
-`--http-port` | The port that the node listens on for HTTP requests. <br><br>**Env Variable:** `COCKROACH_HTTP_PORT`<br>**Default:** `8080`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
-`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY` 
+`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
+`--port`<br>`-p` | The port that the node listens on for internal and client communication. <br><br>**Default:** 26257
 
 ## Example
 
@@ -38,10 +38,10 @@ Flag | Description
 
 ~~~ shell
 # Insecure:
-$ ./cockroach quit --host=nodehostname.com --http-port=8081
+$ ./cockroach quit --host=nodehostname.com --port=26258
 
 # Secure:
-$ ./cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --http-port=8081
+$ ./cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --port=26258
 ~~~
 
 ## See Also
