@@ -145,7 +145,7 @@ gc:
 
 To edit the default replication zone, use the `./cockroach zone set .default` command with appropriate flags and the YAML changes specified as a string. 
 
-For example, let's say you want to run a three-node cluster across three data centers, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. So you start each node with the relevant datacenter location specified in the `--attrs` field. 
+For example, let's say you want to run a three-node cluster across three datacenters, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. So you start each node with the relevant datacenter location specified in the `--attrs` field. 
 
 ~~~ shell
 # Start node in first US east coast datacenter:
