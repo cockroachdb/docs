@@ -26,6 +26,30 @@ Once you're ready to contribute:
 
 6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls).
 
+## Keep Contributing
+
+If you want to regularly contribute to the CockroachDB docs, there are a few things we recommend:
+
+1. Note that our "master" branch is called `gh-pages`.
+
+2. Make it easy to bring updated docs into your fork by tracking us upstream:
+
+    ``` shell
+    $ git remote add --track gh-pages upstream https://github.com/cockroachdb/docs.git
+    ```
+
+3. When you're ready to make your next round of changes, get our latest docs:
+
+    ``` shell
+    $ git fetch upstream
+    ```
+
+    ``` shell
+    $ git merge upstream/gh-pages
+    ```
+
+4. Repeat the write, build, push, pull flow from the __Get Started__ section above.
+
 ## Docs Structure
 
 ### Pages
