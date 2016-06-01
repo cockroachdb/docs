@@ -16,7 +16,7 @@ E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing wit
 This error occurs because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by updating your default zone configuration to expect only one node as follows:
 
 ~~~ shell
-$ ./cockroach zone set .default 'replicas:
+$ cockroach zone set .default 'replicas:
 - attrs: []'
 ~~~
 

@@ -8,10 +8,10 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
 
 {{site.data.alerts.callout_info}}To run CockroachDB on multiple machines or in the cloud, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>. To run CockroachDB inside a single VirtualBox virtual machine, see these <a href="http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html">community-supported docs</a>.{{site.data.alerts.end}}
 
-1.  From the directory with the `cockroach` binary, start your first node:
+1.  Start your first node:
 
     ~~~ shell
-    $ ./cockroach start --background
+    $ cockroach start --background
 
     build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     http://localhost:8080
@@ -35,8 +35,8 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
 2.  For each additional node, repeat step 1 with a few extra flags:
    
     ~~~ shell
-    $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --background
-    $ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --background
+    $ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --background
+    $ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --background
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details2">Details</button>
@@ -56,7 +56,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), you can quickly s
 3.  Start the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
     ~~~ shell
-    $ ./cockroach sql
+    $ cockroach sql
     # Welcome to the cockroach SQL interface.
     # All statements must be terminated by a semicolon.
     # To exit: CTRL + D.

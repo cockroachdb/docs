@@ -18,15 +18,15 @@ Subcommand | Usage
 
 ~~~ shell
 # List node IDs:
-$ ./cockroach node ls <flags> 
+$ cockroach node ls <flags> 
 
 # Show the status of nodes:
-$ ./cockroach node status <optional node ID> <flags>
+$ cockroach node status <optional node ID> <flags>
 
 # View help:
-$ ./cockroach help node
-$ ./cockroach help node ls
-$ ./cockroach help node status
+$ cockroach help node
+$ cockroach help node ls
+$ cockroach help node status
 ~~~
 
 ## Flags
@@ -67,7 +67,7 @@ Field | Description
 ### List node IDs
 
 ~~~ shell
-$ ./cockroach node ls
+$ cockroach node ls
 +----+
 | id |
 +----+
@@ -80,7 +80,7 @@ $ ./cockroach node ls
 ### Show the status of a single node
 
 ~~~ shell
-$ ./cockroach node status 1 
+$ cockroach node status 1 
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 | id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
@@ -91,7 +91,7 @@ $ ./cockroach node status 1
 ### Show the status of all nodes
 
 ~~~ shell
-$ ./cockroach node status
+$ cockroach node status
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 | id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
