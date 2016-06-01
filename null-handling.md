@@ -3,7 +3,7 @@ title: NULL Handling
 toc: true
 ---
 
-This page summarizes how *NULL* values are handled in CockroachDB SQL.
+This page summarizes how `NULL` values are handled in CockroachDB SQL.
 
 By way of example it uses the following table and data.
 
@@ -35,12 +35,12 @@ SELECT * FROM t1;
 | 7 | NULL | NULL |
 +---+------+------+
 ~~~
-When using the CockroachDB built-in client, *NULL* values are displayed using the word **NULL** as opposed to an empty field. This distinguishes them from a character field that contains an empty string ("").
+When using the CockroachDB built-in client, `NULL` values are displayed using the word **NULL** as opposed to an empty field. This distinguishes them from a character field that contains an empty string ("").
 
 
 ## NULLs and Logic
 
-Any comparison between a value and *NULL* results in *NULL*. This behavior is consistent with PostgresSQL as well as all other major RDBMS's.
+Any comparison between a value and `NULL` results in `NULL`. This behavior is consistent with PostgresSQL as well as all other major RDBMS's.
 
 ~~~sql
 SELECT * FROM t1 WHERE b < 10;
@@ -102,7 +102,7 @@ SELECT * FROM t1 WHERE NOT (c = 1 AND b < 10);
 
 ~~~
 
-Use the `IS NULL` or `IS NOT NULL` clauses when checking for *NULL* values.
+Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 
 ~~~sql
 SELECT * FROM t1 WHERE b IS NULL AND c IS NOT NULL;
@@ -117,7 +117,7 @@ SELECT * FROM t1 WHERE b IS NULL AND c IS NOT NULL;
 
 ## NULLs and Arithmetic 
 
-Arithmetic operations involving a *NULL* value will yield a *NULL* result.
+Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
 ~~~sql
 SELECT a, b, c, b*0, b*c, b+c FROM t1;
@@ -139,10 +139,13 @@ SELECT a, b, c, b*0, b*c, b+c FROM t1;
 
 Aggregate functions are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
 
-Note that *NULL* values are not included in the `COUNT()` of a column that contains *NULL* values. `COUNT(*)` returns 7 while `COUNT(b)` returns 4.
-*NULL* values are not considered as high or low values in `MIN()` or `MAX()`.
+Note the following:
 
-The `AVG(b)` returns `SUM(b)/COUNT(b)` which is different than `AVG(*)` as *NULL* values are not considered in the `COUNT(b)` of rows.  Refer to the [*NULL*s as Other Values](#nulls-as-other-values) section below.
+- `NULL` values are not included in the `COUNT()` of a column that contains `NULL` values. `COUNT(*)` returns 7 while `COUNT(b)` returns 4.
+
+- `NULL` values are not considered as high or low values in `MIN()` or `MAX()`.
+
+- The `AVG(b)` returns `SUM(b)/COUNT(b)` which is different than `AVG(*)` as `NULL` values are not considered in the `COUNT(b)` of rows.  Refer to the [NULLs as Other Values](#nulls-as-other-values) section below.
 
 ~~~sql
 SELECT * FROM t1;
@@ -167,9 +170,9 @@ SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), MIN(b), MAX(b) FROM t1;
 ~~~
 
 
-## *NULL*s as Distinct Values
+## NULL as a Distinct Value
 
-*NULL* values are considered distinct from other values and are included in the list of distinct values from a column containing *NULL*s.
+`NULL` values are considered distinct from other values and are included in the list of distinct values from a column containing `NULL`s.
 
 ~~~sql
 SELECT DISTINCT b FROM t1;
@@ -194,9 +197,9 @@ SELECT COUNT(DISTINCT b) FROM t1;
 ~~~
 
 
-## *NULL*s as Other Values
+## NULLs as Other Values
 
-You may want *NULL* values to be included in calculations like arithmetic or aggregate functions. For example, you may want to calculate the average value of column *b* as being the `SUM()` of all numbers in *b* divided by the total number of rows, regardless of whether *b*'s value is *NULL*. We can include *NULL* values in the calculation by substituting a value for the *NULL* during the calculation. In this case, a value of zero (0) is appropriate. CockroachDB provides a function called `IFNULL(arg1, arg2)` which returns *arg2* if *arg1* is *NULL*.
+You may want `NULL` values to be included in calculations like arithmetic or aggregate functions. For example, you may want to calculate the average value of column *b* as being the `SUM()` of all numbers in *b* divided by the total number of rows, regardless of whether *b*'s value is `NULL`. We can include `NULL` values in the calculation by substituting a value for the `NULL` during the calculation. In this case, a value of zero (0) is appropriate. CockroachDB provides a function called `IFNULL(arg1, arg2)` which returns *arg2* if *arg1* is `NULL`.
 
 The example shows `IFNULL()` being used in the `AVG()` calculation.
 
@@ -210,9 +213,9 @@ The example shows `IFNULL()` being used in the `AVG()` calculation.
 ~~~
 
 
-## *NULL*s and Set Operations
+## NULLs and Set Operations
 
-*NULL* values are considered as part of a `UNION` set operation.
+`NULL` values are considered as part of a `UNION` set operation.
 
 ~~~sql
 SELECT b FROM t1 UNION SELECT b FROM t1;
@@ -226,13 +229,13 @@ SELECT b FROM t1 UNION SELECT b FROM t1;
 ~~~
 
 
-## *NULL*s and Sorting
+## NULL Values and Sorting
 
-When sorting on a column containing *NULL* values, CockroachDB  orders *NULL*s lower than the first non-*NULL* value.
+When sorting on a column containing `NULL` values, CockroachDB  orders `NULL`s lower than the first non-`NULL` value.
 
-The `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB so you cannot currently change where *NULL* values appear in the sort order.
+The `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB so you cannot currently change where `NULL` values appear in the sort order.
 
-CockroachDB differs from PostgreSQL in that it orders *NULL* values higher than the last  non-*NULL* value.
+CockroachDB differs from PostgreSQL in that it orders `NULL` values higher than the last  non-`NULL` value.
 
 ~~~sql
 SELECT * FROM t1 ORDER BY b;
@@ -263,9 +266,9 @@ SELECT * FROM t1 ORDER BY b DESC;
 ~~~
 
 
-## *NULL*s and Unique Constraints 
+## NULLs and Unique Constraints 
 
-As the example shows, *NULL* values are not considered unique as the `UNIQUE` constraint on column b was not violated when two rows with *NULL* values were inserted. If a table has a `UNIQUE` constraint on column(s) that are optional (nullable), it is still possible to insert duplicate rows that appear to violate the constraint if they contain a *NULL* value in at least one of the columns. This is because *NULL*s are never considered equal and hence don't violate the uniqueness constraint.
+As the example shows, `NULL` values are not considered unique as the `UNIQUE` constraint on column b was not violated when two rows with `NULL` values were inserted. If a table has a `UNIQUE` constraint on column(s) that are optional (nullable), it is still possible to insert duplicate rows that appear to violate the constraint if they contain a `NULL` value in at least one of the columns. This is because `NULL`s are never considered equal and hence don't violate the uniqueness constraint.
 
 
 ~~~sql
