@@ -4,7 +4,7 @@ toc: false
 expand: true
 ---
 
-Once you’ve [installed CockroachDB](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how. Feel free to use the code samples verbatim.
+Once you’ve [installed CockroachDB](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how. You can use the code samples verbatim.
 
 {{site.data.alerts.callout_info}}This page assumes you are running CockroachDB from a binary. If you are running CockroachDB in Docker, see <a href="start-a-local-cluster-in-docker.html">Start a Cluster in Docker</a> instead.{{site.data.alerts.end}}
 
@@ -12,7 +12,7 @@ Once you’ve [installed CockroachDB](install-cockroachdb.html), it's simple to 
 
 ## Before You Begin
 
-Make sure you have:
+Make sure you have already:
 
 - Installed the [CockroachDB binary](install-cockroachdb.html)
 - Added the directory containing the binary to your `PATH`
