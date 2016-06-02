@@ -18,7 +18,9 @@ When inserting into an `INTERVAL` column, format the value as `INTERVAL '2h30m30
 - `us` (microsecond)
 - `ns` (nanosecond)
 
-Regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
+Alternatively, you can use a string literal, e.g., `'2h30m30s'`, which CockroachDB will resolve into the `INTERVAL` type.
+
+Note that regardless of the units used, the interval is stored as hour, minute, and second, for example, `12h2m1.023s`.
 
 ## Size
 

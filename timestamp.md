@@ -21,7 +21,7 @@ When inserting into a `TIMESTAMP` column, use one of the following formats:
 
 When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-5:00'`
 
-Alternatively, you can cast a string as a timestamp: `CAST('2016-01-25T10:10:10' AS TIMESTAMP)`.
+Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'2016-01-25 10:10:10.555555-5:00'`, which CockroachDB will resolve into the `TIMESTAMP` or `TIMESTAMPTZ` type.
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the

@@ -9,9 +9,11 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 ## Format
 
-When inserting into a `DATE` column, format the value as `DATE '2016-01-25'`. 
+When inserting into a `DATE` column, format the value as `DATE '2016-01-25'`.  
 
-In some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
+Alternatively, you can use a string literal, e.g., `'2016-01-25'`, which CockroachDB will resolve into the `DATE` type.
+
+Note that in some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
 
 ## Size
 
