@@ -7,7 +7,7 @@ Constraints offer additional data integrity by enforcing conditions on the data 
 
 If a constraint refers to only one column (column-level constraint) it can be defined against the column as part of its definition. If a constraint refers to more than one column (table-level constraint) it needs to be defined as a separate entry in the tables definition.  
 
-The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked. Use the [`SHOW CREATE TABLE`](show-create-table.html) command to show the constraints defined on a table.
+The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked. Use the `SHOW CREATE TABLE` command to show the constraints defined on a table.
 
 <!-- % include sql/diagrams/column_constraint.html % -->
 
