@@ -38,6 +38,10 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 ## Recent Articles By CockroachDB Engineers
 
+**[Building an Application with CockroachDB and SQLAlchemy](https://www.cockroachlabs.com/blog/building-application-cockroachdb-sqlalchemy-2/)**
+
+**[Trust, But Verify: How CockroachDB Checks Replication](https://www.cockroachlabs.com/blog/trust-but-verify-cockroachdb-checks-replication/)**
+
 **[A Tale of Two Ports](https://www.cockroachlabs.com/blog/a-tale-of-two-ports/)**
 
 **[Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/)** 
