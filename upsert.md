@@ -5,7 +5,7 @@ toc: false
 
 The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints. 
 
-Note that `UPSERT` considers uniqueness only for [`PRIMARY KEY`](data-definition.html#primary-key) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
+Note that `UPSERT` considers uniqueness only for [`PRIMARY KEY`](constraints.html#primary-key) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
 
 <div id="toc"></div>
 
@@ -25,11 +25,11 @@ Parameter | Description
 `AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name. 
 `qualified_name_list` | A comma-separated list of column names, in parentheses.
 `select_stmt` | A comma-separated list of column values for a single row, in parentheses. To upsert values into multiple rows, use a comma-separated list of parentheses. Alternately, you can use [`SELECT`](select.html) statements to retrieve values from other tables and upsert them.<br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table. 
-`DEFAULT VALUES` | To fill all columns with their [default values](data-definition.html#default-value), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
+`DEFAULT VALUES` | To fill all columns with their [default values](constraints.html#default-value), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
 
 ## How `UPSERT` Transforms into `INSERT ON CONFLICT`
 
-`UPSERT` considers uniqueness only for [`PRIMARY KEY`](data-definition.html#primary-key) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
+`UPSERT` considers uniqueness only for [`PRIMARY KEY`](constraints.html#primary-key) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
 ~~~
 UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
@@ -99,7 +99,7 @@ SELECT * FROM accounts;
 
 ### Upsert that Fails (Conflict on Non-Primay Key)
 
-`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE`](data-definition.html#unique) constraint. Because the inserted `b` value is not unique, the `UPSERT` fails.
+`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE`](constraints.html#unique) constraint. Because the inserted `b` value is not unique, the `UPSERT` fails.
 
 ~~~
 SELECT * FROM unique_test;
