@@ -4,7 +4,7 @@ toc: false
 expand: true
 ---
 
-Once you’ve [installed CockroachDB](install-cockroachdb.html) into a Docker container, it's simple to start a multi-node cluster with each node listening on a different port. This page shows you how. You can use the code samples verbatim.
+Once you've installed [Docker](https://docs.docker.com/mac/step_one/), it's easy to run a multi-node cluster across multiple Docker containers. This page shows you how. 
 
 {{site.data.alerts.callout_info}}This page provides Docker-specific instructions. If you downloaded a binary, used Homebrew, or built from source, see <a href="start-a-local-cluster.html">Start a Cluster</a> instead.{{site.data.alerts.end}}
 
