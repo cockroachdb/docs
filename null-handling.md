@@ -259,7 +259,7 @@ SELECT * FROM t1 ORDER BY b DESC;
 
 ## NULLs and Unique Constraints 
 
-`NULL` values are not considered unique. Therefore, if a table has the `UNIQUE` constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
+`NULL` values are not considered unique. Therefore, if a table has a `UNIQUE` constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 
 ~~~sql
 CREATE TABLE t2(a INT, b INT UNIQUE);

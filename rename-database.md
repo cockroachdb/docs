@@ -19,7 +19,7 @@ Only the `root` user can rename databases.
 
 Parameter | Description
 ----------|------------
-`name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name must follow these [naming rules](data-definition.html#identifiers).
+`name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name must follow these [naming rules](identifiers.html).
 
 ## Examples
 

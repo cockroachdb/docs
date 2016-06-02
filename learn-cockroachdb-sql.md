@@ -17,7 +17,7 @@ CockroachDB comes with a single default `system` database, which contains Cockro
 CREATE DATABASE bank;
 ~~~
 
-Database names must follow [these rules](data-definition.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS bank;
@@ -68,7 +68,7 @@ SHOW DATABASE;
 
 ## Create a Table
 
-To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](data-definition.html#constraint), if any, for each column:
+To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -77,7 +77,7 @@ CREATE TABLE accounts (
 );
 ~~~
 
-Table and column names must follow [these rules](data-definition.html#identifiers). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](identifiers.html). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -165,7 +165,7 @@ INSERT INTO accounts VALUES
     (4, 9400.10);
 ~~~
 
-[Defaults values](data-definition.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](constraints.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 INSERT INTO accounts (id, balance) VALUES 
