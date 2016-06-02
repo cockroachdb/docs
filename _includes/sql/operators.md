@@ -59,6 +59,12 @@ timestamptz `-` timestamptz | [interval](interval.html)
 [int](int.html) `/` [int](int.html) | [decimal](decimal.html)
 [interval](interval.html) `/` [int](int.html) | [interval](interval.html)
 
+`//` | Return
+--- | ---
+[decimal](decimal.html) `//` [decimal](decimal.html) | [decimal](decimal.html)
+[float](float.html) `//` [float](float.html) | [float](float.html)
+[int](int.html) `//` [int](int.html) | [int](int.html)
+
 `<` | Return
 --- | ---
 [bool](bool.html) `<` [bool](bool.html) | [bool](bool.html)
