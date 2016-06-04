@@ -36,16 +36,16 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. 
-`any_name` | The name of the table to create, following these [naming rules](data-definition.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. Each column requires a [name](data-definition.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](data-definition.html#constraints) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](data-definition.<html id="constraints"></html>) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
-`index_def` | An optional, comma-separated list of [index definitions](data-definition.html#indexes). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table but can have the same name as columns or constraints. See the [Create a Table With Secondary Indexes](#create-a-table-with-secondary-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.  
-`table_constraint` | An optional, comma-separated list of [table-level constraints](data-definition.html#constraints). Constraint names must be unique within the table but can have the same name as columns or indexes.
+`any_name` | The name of the table to create, following these [naming rules](identifiers.html). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name](identifiers.html) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
+`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table but can have the same name as columns or constraints. See the [Create Indexes with a Table](#create-indexes-with-a-table) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.  
+`table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns or indexes.
 
 ## Examples
 
 ### Create a Table (No Primary Key Defined)
 
-In CockroachDB, every table requires a [`PRIMARY KEY`](data-definition.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
+In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
@@ -72,7 +72,7 @@ CREATE TABLE
 
 ### Create a Table (Primary Key Defined)
 
-In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](data-definition.html#primary-key), another is given the [`UNIQUE`](data-definition.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
+In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](constraints.html#primary-key), another is given the [`UNIQUE`](constraints.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
 
 ~~~ 
 > CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
@@ -96,10 +96,9 @@ CREATE TABLE
 +--------+-----------------------+--------+-----+------------+-----------+---------+
 ~~~
 
-
 ### Create a Table With Secondary Indexes
 
-In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](data-definition.html#constraints).
+In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
 ~~~ 
 > CREATE TABLE product_information
