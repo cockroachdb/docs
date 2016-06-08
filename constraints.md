@@ -9,9 +9,11 @@ If a constraint refers to only one column (column-level constraint) it can be de
 
 The order of the constraints within the table definition is not important and does not determine the order in which the constraints are checked. Use the `SHOW CREATE TABLE` command to show the constraints defined on a table.
 
-<!-- % include sql/diagrams/column_constraint.html % -->
+**column_level_constraint ::=**
+{% include sql/diagrams/col_qual_list.html %}
 
-<!-- % include sql/diagrams/table_constraint.html % -->
+**table_level_constraint ::=**
+{% include sql/diagrams/table_constraint.html %}
 
 The different types of constraints are:
 
