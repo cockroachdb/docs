@@ -5,6 +5,8 @@ toc: false
 
 The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
 
+{{site.data.alerts.callout_info}}To auto-generate globally unique integers, use the <a href="serial.html"><code>SERIAL</code></a> data type.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Aliases
