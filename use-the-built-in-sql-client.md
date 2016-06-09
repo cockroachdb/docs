@@ -58,24 +58,47 @@ Command | Usage
 
 ## Examples
 
-### Start a SQL shell using standard connection flags
+### Start a SQL shell
+
+In these examples, we connect a SQL shell to a **secure cluster**.
 
 ~~~ shell
-# Secure:
+# Using standard connection flags:
 $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
-# Insecure:
-$ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+# Using the --url flag:
+$ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt 
 ~~~
 
-### Start a SQL shell using the `--url` flag
+In these examples, we connect a SQL shell to an **insecure cluster**.
 
 ~~~ shell
-# Secure:
-$ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt 
+# Using standard connection flags:
+$ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
-# Insecure:
+# Using the --url flag:
 $ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
+~~~
+
+### Execute SQL statement within the SQL shell
+
+This examples assume that we have already started the SQL shell (see examples above).
+
+~~~ shell
+> CREATE TABLE animals (id SERIAL PRIMARY KEY, name STRING);
+CREATE TABLE
+
+> INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
+INSERT 3
+
+> SELECT * FROM animals;
++--------------------+----------+
+|         id         |   name   |
++--------------------+----------+
+| 148899952591994881 | bobcat   |
+| 148899952592060417 | 🐢        |
+| 148899952592093185 | barn owl |
++--------------------+----------+
 ~~~
 
 ### Execute SQL statements from the command line
