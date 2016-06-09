@@ -23,6 +23,12 @@ $(document).ready(function(){
 });
 </script>
 
+<style>
+.filters .scope-button {
+  width: 12%;
+}
+</style>
+
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
@@ -36,8 +42,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 ## Synopsis
 
 <div id="step-three-filters" class="filters clearfix">
-  <button class="filter-button current" data-scope="basic">Basic</button>
-  <button class="filter-button" data-scope="expanded">Expanded</button>
+  <button class="filter-button scope-button current" data-scope="basic">Basic</button>
+  <button class="filter-button scope-button" data-scope="expanded">Expanded</button>
 </div><p></p>
 
 <div class="filter-content current" markdown="1" data-scope="basic">

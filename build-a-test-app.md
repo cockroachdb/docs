@@ -65,6 +65,7 @@ As the `maxroach` user, connect from your preferred language, insert a few rows 
 	<button class="filter-button" data-language="cplusplus">C++</button>
 	<button class="filter-button" data-language="clojure">Clojure</button>
 	<button class="filter-button" data-language="php">PHP</button>
+    <button class="filter-button" data-language="rust">Rust</button>
 </div>
 
 <div class="filter-content current" markdown="1" data-language="python">
@@ -139,6 +140,14 @@ Initial balances:
 ~~~
 </div>
 
+<div class="filter-content" markdown="1" data-language="rust">
+**Rust**
+
+~~~ rust
+{% include app/basic-sample.rs %}
+~~~
+</div>
+
 ## Step 4. Execute transactions from a client
 
 As the `maxroach` user, connect again from your preferred language, but this time execute a batch of statements as an atomic transaction, where all included statements are either commited or aborted. 
@@ -154,6 +163,7 @@ As the `maxroach` user, connect again from your preferred language, but this tim
 	<button class="filter-button" data-language="cplusplus">C++</button>
 	<button class="filter-button" data-language="clojure">Clojure</button>
 	<button class="filter-button" data-language="php">PHP</button>
+    <button class="filter-button" data-language="rust">Rust</button>
 </div>
 
 <div class="filter-content current" markdown="1" data-language="python">
@@ -220,4 +230,12 @@ Coming soon.
 **PHP**
 
 Coming soon.
+</div>
+
+<div class="filter-content" markdown="1" data-language="rust">
+**Rust**
+
+~~~ rust
+{% include app/txn-sample.rs %}
+~~~
 </div>
