@@ -21,7 +21,7 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error. 
 `name` | The name of the database to create, following these [naming rules](identifiers.html).
-`opt_encoding_clause` | The `CREATE DATABASE` statement accepts an `ENCODING` option for compatibility with PostgreSQL, but `UTF8` is the only supported encoding: `CREATE DATABASE bank ENCODING = 'UTF8'`.
+`encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case insensitive. Eg; `CREATE DATABASE bank ENCODING = 'UTF8'`.
 
 ## Example
 
