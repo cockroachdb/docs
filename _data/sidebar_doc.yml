@@ -129,20 +129,5 @@ entries:
         - title: beta-20160519
           url: /beta-20160519.html
 
-        - title: beta-20160512
-          url: /beta-20160512.html
-
-        - title: beta-20160505
-          url: /beta-20160505.html
-
-        - title: beta-20160428
-          url: /beta-20160428.html
-
-        - title: beta-20160421
-          url: /beta-20160421.html
-
-        - title: beta-20160414
-          url: /beta-20160414.html
-
-        - title: beta-20160407
-          url: /beta-20160407.html
+        - title: Older Versions
+          url: /older-versions.html
