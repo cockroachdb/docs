@@ -3,6 +3,26 @@ title: CREATE TABLE
 toc: false
 ---
 
+<script>
+$(document).ready(function(){
+
+  var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+      var scope = $(this).data('scope'),
+      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+      //remove current class from tab and content
+      $current_tab.removeClass('current');
+      $current_content.removeClass('current');
+
+      //add current class to clicked button and corresponding content block
+      $('.filter-button[data-scope="'+scope+'"').addClass('current');
+      $('.filter-content[data-scope="'+scope+'"').addClass('current');
+    });
+});
+</script>
+
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
@@ -15,7 +35,17 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-**create_table ::=**
+<div id="step-three-filters" class="filters clearfix">
+  <button class="filter-button current" data-scope="basic">Basic</button>
+  <button class="filter-button" data-scope="expanded">Expanded</button>
+</div><p></p>
+
+<div class="filter-content current" markdown="1" data-scope="basic">
+{% include sql/diagrams/create_table.html %}
+</div>
+
+<div class="filter-content" markdown="1" data-scope="expanded">
+
 {% include sql/diagrams/create_table.html %}
 
 **column_def ::=**
@@ -29,7 +59,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **table_constraint ::=**
 {% include sql/diagrams/table_constraint.html %}
-
+</div>
 
 ## Parameters
 
