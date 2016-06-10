@@ -7,13 +7,13 @@ The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB
 
 <div id="toc"></div>
 
-## Synopsis
-
-{% include sql/diagrams/create_database.html %}
-
 ## Required Privileges
 
 Only the `root` user can create databases.
+
+## Synopsis
+
+{% include sql/diagrams/create_database.html %}
 
 ## Parameters
 
