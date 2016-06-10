@@ -173,7 +173,7 @@ func main() {
 				{name: "column_def"},
 				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
 				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'")},
-				{name: "create_database_stmt"},
+				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}},
 				{name: "create_index_stmt", inline: []string{"opt_unique", "opt_name", "index_params"}},
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}, replace: map[string]string{"| family_def": ""}},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
