@@ -56,6 +56,7 @@ Backslash Escape Sequence | Interpretation
 `\xHH` | hexadecimal byte value
 `\ooo` | octal byte value
 `\uXXXX` | 16-bit hexadecimal Unicode character value
+`\UXXXXXXXX` | 32-bit hexadecimal Unicode character value
 
 For example, the `e'x61\141\u0061'` escape string represents the hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character values equivalent to the `'aaa'` string literal. 
 
