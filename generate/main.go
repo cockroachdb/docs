@@ -275,7 +275,10 @@ func runParse(r io.Reader, inline []string, topStmt string, descend bool, match,
 	if err := g.Inline(inline...); err != nil {
 		log.Fatal(err)
 	}
-	return g.ExtractProduction(topStmt, descend, match, exclude)
+	b, err := g.ExtractProduction(topStmt, descend, match, exclude)
+	b = bytes.Replace(b, []byte("IDENT"), []byte("identifier"), -1)
+	b = bytes.Replace(b, []byte("_LA"), []byte(""), -1)
+	return b, err
 }
 
 func runRR(r io.Reader) ([]byte, error) {
