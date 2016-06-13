@@ -50,7 +50,7 @@ SELECT * FROM floats;
 +----------------+--------------------+------+
 | 1.012345678901 | 2.0123456789012346 | +Inf |
 +----------------+--------------------+------+
-# Note that the value in "a" has been limited to 17 digits.
+# Note that the value in "b" has been limited to 17 digits.
 ~~~
 
 ## See Also
