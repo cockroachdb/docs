@@ -15,5 +15,5 @@ Type | Description | Example
 [`DATE`](date.html) | A date. | `DATE '2016-01-25'`
 [`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
-[`STRING`](string.html) | A string of characters. | `'a1b2c3'`
+[`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
