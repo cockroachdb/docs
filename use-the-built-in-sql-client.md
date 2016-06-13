@@ -82,7 +82,7 @@ $ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?ssl
 
 ### Execute SQL statement within the SQL shell
 
-This examples assume that we have already started the SQL shell (see examples above).
+This example assume that we have already started the SQL shell (see examples above).
 
 ~~~ shell
 > CREATE TABLE animals (id SERIAL PRIMARY KEY, name STRING);

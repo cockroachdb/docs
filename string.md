@@ -3,7 +3,7 @@ title: STRING
 toc: false
 ---
 
-The `STRING` [data type](data-types.html) stores a string of characters.
+The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
 <div id="toc"></div>
 
@@ -36,7 +36,30 @@ When inserting a string:
 
 ## Format
 
-When inserting into a `STRING` column, format the value as `'a1b2c3'`.
+A `STRING` column accepts both string literals and escape strings. 
+
+### String Literal
+
+When inserting a string literal into a `STRING` column, format the value as Unicode characters within single quotes, e.g., `'a1b2c3'`.
+
+### Escape String
+
+When inserting an escape string into a `STRING` column, use either `e` or `E` and followed by one or more of the following backslash escape sequences within single quotes:   
+
+Backslash Escape Sequence | Interpretation
+--------------------------|---------------
+`\b` | backspace
+`\f` | form feed
+`\n` | newline
+`\r` | carriage return
+`\t` | tab
+`\xHH` | hexadecimal byte value
+`\ooo` | octal byte value
+`\uXXXX` | 16-bit hexadecimal Unicode character value
+
+For example, the `e'x61\141\u0061'` escape string represents the hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character values equivalent to the `'aaa'` string literal. 
+
+Note that any character not in the table above is taken literally in an escape string. Also, when continuing an escape string across lines, write `e` or `E` only before the first opening quote.
 
 ## Size
 
