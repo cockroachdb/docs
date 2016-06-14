@@ -1,5 +1,3 @@
-## Operators
-
 `%` | Return
 --- | ---
 [decimal](decimal.html) `%` [decimal](decimal.html) | [decimal](decimal.html)

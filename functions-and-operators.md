@@ -3,7 +3,15 @@ title: Functions and Operators
 toc: true
 ---
 
+## Builtin Functions
+
 {% include sql/functions.md %}
+
+## Aggregate Functions
+
+{% include sql/aggregates.md %}
+
+## Operators
 
 {% include sql/operators.md %}
 

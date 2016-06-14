@@ -1,38 +1,23 @@
-## Functions
-
 T functions | Return
 --- | ---
 greatest(T, ...) | T
 least(T, ...) | T
-
-bool functions | Return
---- | ---
-bool_and([bool](bool.html)) | [bool](bool.html)
-bool_or([bool](bool.html)) | [bool](bool.html)
-max([bool](bool.html)) | [bool](bool.html)
-min([bool](bool.html)) | [bool](bool.html)
 
 bytes functions | Return
 --- | ---
 experimental_unique_bytes() | [bytes](bytes.html)
 experimental_uuid_v4() | [bytes](bytes.html)
 left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
-max([bytes](bytes.html)) | [bytes](bytes.html)
-min([bytes](bytes.html)) | [bytes](bytes.html)
 right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 uuid_v4() | [bytes](bytes.html)
 
 date functions | Return
 --- | ---
 current_date() | [date](date.html)
-max([date](date.html)) | [date](date.html)
-min([date](date.html)) | [date](date.html)
 
 decimal functions | Return
 --- | ---
 abs([decimal](decimal.html)) | [decimal](decimal.html)
-avg([decimal](decimal.html)) | [decimal](decimal.html)
-avg([int](int.html)) | [decimal](decimal.html)
 cbrt([decimal](decimal.html)) | [decimal](decimal.html)
 ceil([decimal](decimal.html)) | [decimal](decimal.html)
 ceiling([decimal](decimal.html)) | [decimal](decimal.html)
@@ -42,8 +27,6 @@ exp([decimal](decimal.html)) | [decimal](decimal.html)
 floor([decimal](decimal.html)) | [decimal](decimal.html)
 ln([decimal](decimal.html)) | [decimal](decimal.html)
 log([decimal](decimal.html)) | [decimal](decimal.html)
-max([decimal](decimal.html)) | [decimal](decimal.html)
-min([decimal](decimal.html)) | [decimal](decimal.html)
 mod([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 pow([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 power([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
@@ -51,13 +34,7 @@ round([decimal](decimal.html)) | [decimal](decimal.html)
 round([decimal](decimal.html), [int](int.html)) | [decimal](decimal.html)
 sign([decimal](decimal.html)) | [decimal](decimal.html)
 sqrt([decimal](decimal.html)) | [decimal](decimal.html)
-stddev([decimal](decimal.html)) | [decimal](decimal.html)
-stddev([int](int.html)) | [decimal](decimal.html)
-sum([decimal](decimal.html)) | [decimal](decimal.html)
-sum([int](int.html)) | [decimal](decimal.html)
 trunc([decimal](decimal.html)) | [decimal](decimal.html)
-variance([decimal](decimal.html)) | [decimal](decimal.html)
-variance([int](int.html)) | [decimal](decimal.html)
 
 float functions | Return
 --- | ---
@@ -66,7 +43,6 @@ acos([float](float.html)) | [float](float.html)
 asin([float](float.html)) | [float](float.html)
 atan([float](float.html)) | [float](float.html)
 atan2([float](float.html), [float](float.html)) | [float](float.html)
-avg([float](float.html)) | [float](float.html)
 cbrt([float](float.html)) | [float](float.html)
 ceil([float](float.html)) | [float](float.html)
 ceiling([float](float.html)) | [float](float.html)
@@ -78,8 +54,6 @@ exp([float](float.html)) | [float](float.html)
 floor([float](float.html)) | [float](float.html)
 ln([float](float.html)) | [float](float.html)
 log([float](float.html)) | [float](float.html)
-max([float](float.html)) | [float](float.html)
-min([float](float.html)) | [float](float.html)
 mod([float](float.html), [float](float.html)) | [float](float.html)
 pi() | [float](float.html)
 pow([float](float.html), [float](float.html)) | [float](float.html)
@@ -91,31 +65,16 @@ round([float](float.html), [int](int.html)) | [float](float.html)
 sign([float](float.html)) | [float](float.html)
 sin([float](float.html)) | [float](float.html)
 sqrt([float](float.html)) | [float](float.html)
-stddev([float](float.html)) | [float](float.html)
-sum([float](float.html)) | [float](float.html)
 tan([float](float.html)) | [float](float.html)
 trunc([float](float.html)) | [float](float.html)
-variance([float](float.html)) | [float](float.html)
 
 int functions | Return
 --- | ---
 abs([int](int.html)) | [int](int.html)
 ascii([string](string.html)) | [int](int.html)
-count([bool](bool.html)) | [int](int.html)
-count([bytes](bytes.html)) | [int](int.html)
-count([date](date.html)) | [int](int.html)
-count([decimal](decimal.html)) | [int](int.html)
-count([float](float.html)) | [int](int.html)
-count([int](int.html)) | [int](int.html)
-count([interval](interval.html)) | [int](int.html)
-count([string](string.html)) | [int](int.html)
-count([timestamp](timestamp.html)) | [int](int.html)
-count(tuple) | [int](int.html)
 extract([string](string.html), [timestamp](timestamp.html)) | [int](int.html)
 length([bytes](bytes.html)) | [int](int.html)
 length([string](string.html)) | [int](int.html)
-max([int](int.html)) | [int](int.html)
-min([int](int.html)) | [int](int.html)
 mod([int](int.html), [int](int.html)) | [int](int.html)
 octet_length([bytes](bytes.html)) | [int](int.html)
 octet_length([string](string.html)) | [int](int.html)
@@ -127,8 +86,6 @@ interval functions | Return
 --- | ---
 age([timestamp](timestamp.html)) | [interval](interval.html)
 age([timestamp](timestamp.html), [timestamp](timestamp.html)) | [interval](interval.html)
-max([interval](interval.html)) | [interval](interval.html)
-min([interval](interval.html)) | [interval](interval.html)
 
 string functions | Return
 --- | ---
@@ -142,9 +99,7 @@ left([string](string.html), [int](int.html)) | [string](string.html)
 lower([string](string.html)) | [string](string.html)
 ltrim([string](string.html)) | [string](string.html)
 ltrim([string](string.html), [string](string.html)) | [string](string.html)
-max([string](string.html)) | [string](string.html)
 md5([string](string.html)) | [string](string.html)
-min([string](string.html)) | [string](string.html)
 overlay([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
 overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
 regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
@@ -177,8 +132,6 @@ timestamp functions | Return
 clock_timestamp() | [timestamp](timestamp.html)
 current_timestamp() | [timestamp](timestamp.html)
 current_timestamp_ns() | [timestamp](timestamp.html)
-max([timestamp](timestamp.html)) | [timestamp](timestamp.html)
-min([timestamp](timestamp.html)) | [timestamp](timestamp.html)
 now() | [timestamp](timestamp.html)
 parse_timestamp_ns([string](string.html)) | [timestamp](timestamp.html)
 statement_timestamp() | [timestamp](timestamp.html)
