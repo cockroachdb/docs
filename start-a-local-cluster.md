@@ -147,9 +147,7 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 Once you've installed Docker and the official CockroachDB image, it's simple to run a multi-node cluster across multiple Docker containers on a single host. This page shows you how. 
 
-{{site.data.alerts.callout_info}}It's not currently possible to use Docker volumes to persist node data on Mac and Windows. Therefore, Docker is recommended only for testing on those operating systems. Once a native Docker version is available for Mac and Windows, volumes.   on Mac and Windows. CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/wiki">Product Roadmap</a> for more details.{{site.data.alerts.end}} 
-
-NOTE about potential for data loss. And that docs for multi-host scenario will come soon.
+{{site.data.alerts.callout_info}}Docs for running CockroachDB across multiple Docker hosts are coming soon.{{site.data.alerts.end}}
 
 ## Before You Begin
 
@@ -160,6 +158,9 @@ Make sure you have already:
 - Pulled the official CockroachDB image from Docker Hub
 
 For full details, go to [Install CockroachDB](install-cockroachdb.html) and choose **Use Docker** for your OS. 
+
+{{site.data.alerts.callout_info}}Please note that it's not currently possible to use <strong>Docker volumes</strong> to persist node data on Mac and Windows. Therefore, Docker is recommended only for testing on those operating systems. Once Docker is available natively on Mac and Windows, peristing data with volumes will be possible. On Linux, however, it is currently possible to use volumes to persist container data. See Docker's <a href="https://docs.docker.com/engine/userguide/containers/dockervolumes/">Manage data in containers</a> topic for details.{{site.data.alerts.end}}
+
 
 ## Step 1. Create a bridge network
 
