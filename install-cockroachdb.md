@@ -76,8 +76,8 @@ $(document).ready(function(){
     <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
-<div id="macinstall">
-<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<div id="macinstall" markdown="1">
+There are four ways to install CockroachDB on Mac OS X. See [Release Notes]({{site.data.strings.version}}.html) for what's new in the latest version.
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -86,14 +86,13 @@ $(document).ready(function(){
 <a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
-<div id="download-the-binary" class="install-option">
+<div id="download-the-binary" class="install-option" markdown="1">
 <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
-  <h2>Download the Binary</h2>
 
+## Download the Binary
+
+1. Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.
   <ol>
-    <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
-    </li>
     <li>
       <p>Extract the binary:</p>
 
