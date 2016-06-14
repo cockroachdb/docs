@@ -14,7 +14,10 @@ import (
 
 func generateFuncs() {
 	outDir := filepath.Join("..", "_includes", "sql")
-	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(), 0644); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(parser.Builtins), 0644); err != nil {
+		panic(err)
+	}
+	if err := ioutil.WriteFile(filepath.Join(outDir, "aggregates.md"), GenerateFunctions(parser.Aggregates), 0644); err != nil {
 		panic(err)
 	}
 	if err := ioutil.WriteFile(filepath.Join(outDir, "operators.md"), GenerateOperators(), 0644); err != nil {
@@ -101,7 +104,6 @@ func GenerateOperators() []byte {
 	}
 	sort.Strings(opstrs)
 	b := new(bytes.Buffer)
-	b.WriteString("## Operators\n\n")
 	for _, op := range opstrs {
 		fmt.Fprintf(b, "`%s` | Return\n", op)
 		fmt.Fprintf(b, "--- | ---\n")
@@ -113,7 +115,7 @@ func GenerateOperators() []byte {
 	return b.Bytes()
 }
 
-func GenerateFunctions() []byte {
+func GenerateFunctions(from map[string][]parser.Builtin) []byte {
 	typePtrs := make(map[uintptr]string)
 	typeFns := map[string]interface{}{
 		"bool":      parser.TypeBool,
@@ -130,12 +132,15 @@ func GenerateFunctions() []byte {
 		typePtrs[reflect.ValueOf(v).Pointer()] = name
 	}
 	functions := make(map[string][]string)
-	for name, fns := range parser.Builtins {
-		if name != strings.ToLower(name) {
-			// Each function appears in parser.Builtins twice: once in
-			// uppercase and once in lowercase. Skip the uppercase variant.
+	seen := make(map[string]struct{})
+	for name, fns := range from {
+		// NB: funcs can appear more than once i.e. upper/lowercase varients for
+		// faster lookups, so normalize to lowercase and de-dupe using a set.
+		name = strings.ToLower(name)
+		if _, ok := seen[name]; ok {
 			continue
 		}
+		seen[name] = struct{}{}
 		for _, fn := range fns {
 			var args string
 			switch ft := fn.Types.(type) {
@@ -169,7 +174,6 @@ func GenerateFunctions() []byte {
 	}
 	sort.Strings(rets)
 	b := new(bytes.Buffer)
-	b.WriteString("## Functions\n\n")
 	for _, ret := range rets {
 		fmt.Fprintf(b, "%s functions | Return\n", ret)
 		b.WriteString("--- | ---\n")
@@ -177,7 +181,6 @@ func GenerateFunctions() []byte {
 		b.WriteString("\n\n")
 	}
 	return b.Bytes()
-	return nil
 }
 
 func linkType(t string) string {
