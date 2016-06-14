@@ -39,7 +39,14 @@ $(document).ready(function(){
 
 <div class="filter-content current" markdown="1" data-scope="binary">
 
-Once you've installed the [CockroachDB binary](install-cockroachdb.html) and added the binary directory to your `PATH`, it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how.
+Once you've installed CockroachDB, it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how.
+
+## Before You Begin
+
+Make sure you have already:
+
+- Installed the [CockroachDB binary](install-cockroachdb.html)
+- Added the binary directory to your `PATH`
 
 ## Step 1. Start your first node
 
@@ -138,7 +145,9 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 <div class="filter-content" markdown="1" data-scope="docker">
 
-Once you've installed Docker and the official CockroachDB image, it's easy to run a multi-node cluster across multiple Docker containers on a single host. This page shows you how. 
+Once you've installed Docker and the official CockroachDB image, it's simple to run a multi-node cluster across multiple Docker containers on a single host. This page shows you how. 
+
+{{site.data.alerts.callout_info}}It's not currently possible to use Docker volumes to persist node data on Mac and Windows. Therefore, Docker is recommended only for testing on those operating systems. Once a native Docker version is available for Mac and Windows, volumes.   on Mac and Windows. CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. Joins, for example, will be built into version 1.0. See our <a href="https://github.com/cockroachdb/cockroach/wiki">Product Roadmap</a> for more details.{{site.data.alerts.end}} 
 
 NOTE about potential for data loss. And that docs for multi-host scenario will come soon.
 
@@ -157,61 +166,51 @@ For full details, go to [Install CockroachDB](install-cockroachdb.html) and choo
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/dockernetworks/#a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks. 
 
 ~~~ shell
-$ docker network create -d bridge roachnetwork
+$ docker network create -d bridge roachnet
 ~~~
 
-We've used `roachnetwork` as the network name here and in subsequent steps. Feel free to give your network any name you like.
+We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
 
 ## Step 2. Start your first container/node
 
-Each node will be running in a single CockroachDB container. 
-
-
 ~~~ shell
-$ cockroach start --background
-
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     http://localhost:8080
-sql:       postgresql://root@localhost:26257?sslmode=disable
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
+$ docker run -d --name=roach1 --hostname=roach1 --net=roachnet -p 26257:26257 -p 8080:8080 cockroachdb/cockroach start --insecure
 ~~~
 
-This command starts a node, accepting all [`cockroach start`](start-a-node.html) defaults.
+This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
 
-- Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI. To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
+- `docker run`: The Docker command to start a new container.
+- `-d`: This flag runs the container in the background so you can continue the next steps in the same shell. 
+- `--name`: The name for the container. This is optional, but a custom name makes it significantly easier to reference the container in other commands, for example, when opening a Bash session in the container or stopping the container. 
+- `--hostname`: The hostname for the container. You will use this to join other containers/nodes to the cluster.
+- `--net`: The bridge network for the container to join. See step 1 for more details.
+- `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port of HTTP requests from the Admin UI (`8080`) from the container to the `docker-machine`. This enables inter-container communication and makes it possible to call up the Admin UI from a browser outside of the `docker-machine`.
+- `cockroachdb/cockroach start --insecure`: The command to start a node in the container in insecure mode. Otherwise, it accepts all [`cockroach start`](start-a-node.html) defaults.
 
-- Node data is stored in the `cockroach-data` directory. To store data in a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
+## Step 3. Start additional containers/nodes
 
-- The `--background` flag runs the node in the background so you can continue the next steps in the same shell. 
-
-- The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
-
-## Step 2. Join additional nodes to the cluster
-   
 ~~~ shell
-$ cockroach start --store=node2 --port=26258 --http-port=8081 --join=localhost:26257 --background
-$ cockroach start --store=node3 --port=26259 --http-port=8082 --join=localhost:26257 --background
+$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P cockroachdb/cockroach start --insecure --join=roach1
+$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P cockroachdb/cockroach start --insecure --join=roach1
 ~~~
 
-These commands add two nodes to the cluster, but you can add as many as you like. For each node:
+These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
-- Set the `--store` flag to a storage location not in use by other nodes. To use multiple stores, set this flag separately for each.
+- `-P`: This flag maps all of the container's exposed ports to random ports on the `docker-machine`. This random mapping is fine since we've already mapped the relevant ports for the first container.
+- `cockroachdb/cockroach start --insecure --join`: The command to start a node in the container and join the node to the first container/node, using the first container's `hostname`. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
-- Set the `--port` and `--http-port` flags to ports not in use by other nodes.
+## Step 4. Use the built-in SQL client
 
-- The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node. 
-
-- The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
-
-If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.
-
-## Step 3. Use the built-in SQL client
-
-Open the [built-in SQL client](use-the-built-in-sql-client.html) in interactive mode:
+Use the `docker exec` command to start a Bash session in the first container:
 
 ~~~ shell
-$ cockroach sql
+$ docker exec -it roach1 bash
+~~~
+
+Start the [built-in SQL client](use-the-built-in-sql-client.html) in interactive mode:
+
+~~~ shell
+root@roach1:/cockroach# ./cockroach sql --insecure
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -240,11 +239,35 @@ root@26257> SELECT * FROM accounts;
 +------+----------+
 ~~~
 
-When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit.
+When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit. Then use **CTRL + D** to exit the Bash session.
+
+If you want to verify that the containers/nodes are, in fact, joined into a cluster, you can start a Bash session in one of the other containers, start the SQL client in interactive mode, and check for the new `bank` database:
+
+~~~ shell
+$ docker exec -it roach2 bash
+root@roach1:/cockroach# ./cockroach sql --insecure
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+root@:26257> SHOW DATABASES;
++----------+
+| Database |
++----------+
+| bank     |
+| system   |
++----------+
+~~~
 
 ## Step 4. Open the Admin UI
 
-To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
+To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, first look up the IP address for your `docker-machine`:
+
+~~~ shell
+$ docker-machine ip default
+192.168.99.100
+~~~
+
+Then point your browser to that IP and port `8080`, e.g., `http://192.168.99.100:8080`: 
 
 <img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
 
