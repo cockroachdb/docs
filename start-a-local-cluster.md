@@ -39,14 +39,7 @@ $(document).ready(function(){
 
 <div class="filter-content current" markdown="1" data-scope="binary">
 
-This page shows you how to start a multi-node cluster locally with each node listening on a different port.
-
-## Before You Begin
-
-Make sure you have already:
-
-- Installed the [CockroachDB binary](install-cockroachdb.html)
-- Added the directory containing the binary to your `PATH`
+Once you've installed the [CockroachDB binary](install-cockroachdb.html) and added the binary directory to your `PATH`, it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how.
 
 ## Step 1. Start your first node
 
@@ -62,7 +55,9 @@ store[0]:  path=cockroach-data
 
 This command starts a node, accepting all [`cockroach start`](start-a-node.html) defaults.
 
-- Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI. To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
+- Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI. 
+   - To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
+   - To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. For a demonstration, see [Manual Deployment](manual-deployment.html). 
 
 - Node data is stored in the `cockroach-data` directory. To store data in a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
@@ -135,7 +130,7 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
 
-- [Manual Deployment](manual-deployment.html): How to run CockroachDB on multiple machines
+- [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
 - [Run CockroachDB inside a VirtualBox VM](http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html) (community-supported docs)
 
@@ -143,18 +138,34 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 <div class="filter-content" markdown="1" data-scope="docker">
 
-This page shows you how to run a multi-node cluster across multiple Docker containers on a single host.  
+Once you've installed Docker and the official CockroachDB image, it's easy to run a multi-node cluster across multiple Docker containers on a single host. This page shows you how. 
+
+NOTE about potential for data loss. And that docs for multi-host scenario will come soon.
 
 ## Before You Begin
 
 Make sure you have already:
 
 - Installed Docker
-- Loaded the official CockroachDB image into a Docker container
+- Started a `docker-machine` in which to run CockroachDB (Mac and Windows only)
+- Pulled the official CockroachDB image from Docker Hub
 
 For full details, go to [Install CockroachDB](install-cockroachdb.html) and choose **Use Docker** for your OS. 
 
-## Step 1. Start your first node
+## Step 1. Create a bridge network
+
+Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/dockernetworks/#a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks. 
+
+~~~ shell
+$ docker network create -d bridge roachnetwork
+~~~
+
+We've used `roachnetwork` as the network name here and in subsequent steps. Feel free to give your network any name you like.
+
+## Step 2. Start your first container/node
+
+Each node will be running in a single CockroachDB container. 
+
 
 ~~~ shell
 $ cockroach start --background
