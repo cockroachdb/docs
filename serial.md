@@ -11,7 +11,12 @@ The `SERIAL` [data type](data-types.html) defaults to a unique 64-bit signed int
 
 ## Aliases
 
-The `SERIAL` type is an alias for [`INT DEFAULT unique_rowid()`](int.html).
+In CockroachDB, the following are aliases for `SERIAL`:
+
+- `SMALLSERIAL`
+- `BIGSERIAL`
+
+Also, note that `SERIAL` is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
 
 ## Format
 
