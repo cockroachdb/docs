@@ -163,8 +163,12 @@ func GenerateFunctions(from map[string][]parser.Builtin) []byte {
 				fp = reflect.ValueOf(fn.ReturnType).Pointer()
 				ret = typePtrs[fp]
 			}
+			cat := ret
+			if c := fn.Category(); c != "" {
+				cat = c
+			}
 			s := fmt.Sprintf("%s(%s) | %s", name, args, linkType(ret))
-			functions[ret] = append(functions[ret], s)
+			functions[cat] = append(functions[cat], s)
 		}
 	}
 	var rets []string
