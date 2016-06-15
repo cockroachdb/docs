@@ -3,7 +3,7 @@ title: Functions and Operators
 toc: true
 ---
 
-## Builtin Functions
+## Built-in Functions
 
 {% include sql/functions.md %}
 
