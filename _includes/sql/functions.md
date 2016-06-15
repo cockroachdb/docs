@@ -1,9 +1,13 @@
-T functions | Return
+### T Functions
+
+Function | Return
 --- | ---
 greatest(T, ...) | T
 least(T, ...) | T
 
-bytes functions | Return
+### bytes Functions
+
+Function | Return
 --- | ---
 experimental_unique_bytes() | [bytes](bytes.html)
 experimental_uuid_v4() | [bytes](bytes.html)
@@ -11,11 +15,15 @@ left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 uuid_v4() | [bytes](bytes.html)
 
-date functions | Return
+### date Functions
+
+Function | Return
 --- | ---
 current_date() | [date](date.html)
 
-decimal functions | Return
+### decimal Functions
+
+Function | Return
 --- | ---
 abs([decimal](decimal.html)) | [decimal](decimal.html)
 cbrt([decimal](decimal.html)) | [decimal](decimal.html)
@@ -36,7 +44,9 @@ sign([decimal](decimal.html)) | [decimal](decimal.html)
 sqrt([decimal](decimal.html)) | [decimal](decimal.html)
 trunc([decimal](decimal.html)) | [decimal](decimal.html)
 
-float functions | Return
+### float Functions
+
+Function | Return
 --- | ---
 abs([float](float.html)) | [float](float.html)
 acos([float](float.html)) | [float](float.html)
@@ -68,7 +78,9 @@ sqrt([float](float.html)) | [float](float.html)
 tan([float](float.html)) | [float](float.html)
 trunc([float](float.html)) | [float](float.html)
 
-int functions | Return
+### int Functions
+
+Function | Return
 --- | ---
 abs([int](int.html)) | [int](int.html)
 ascii([string](string.html)) | [int](int.html)
@@ -82,12 +94,16 @@ sign([int](int.html)) | [int](int.html)
 strpos([string](string.html), [string](string.html)) | [int](int.html)
 unique_rowid() | [int](int.html)
 
-interval functions | Return
+### interval Functions
+
+Function | Return
 --- | ---
 age([timestamp](timestamp.html)) | [interval](interval.html)
 age([timestamp](timestamp.html), [timestamp](timestamp.html)) | [interval](interval.html)
 
-string functions | Return
+### string Functions
+
+Function | Return
 --- | ---
 btrim([string](string.html)) | [string](string.html)
 btrim([string](string.html), [string](string.html)) | [string](string.html)
@@ -127,7 +143,9 @@ translate([string](string.html), [string](string.html), [string](string.html)) |
 upper([string](string.html)) | [string](string.html)
 version() | [string](string.html)
 
-timestamp functions | Return
+### timestamp Functions
+
+Function | Return
 --- | ---
 clock_timestamp() | [timestamp](timestamp.html)
 current_timestamp() | [timestamp](timestamp.html)
