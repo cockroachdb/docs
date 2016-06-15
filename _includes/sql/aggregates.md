@@ -1,21 +1,29 @@
-bool functions | Return
+### bool Functions
+
+Function | Return
 --- | ---
 bool_and([bool](bool.html)) | [bool](bool.html)
 bool_or([bool](bool.html)) | [bool](bool.html)
 max([bool](bool.html)) | [bool](bool.html)
 min([bool](bool.html)) | [bool](bool.html)
 
-bytes functions | Return
+### bytes Functions
+
+Function | Return
 --- | ---
 max([bytes](bytes.html)) | [bytes](bytes.html)
 min([bytes](bytes.html)) | [bytes](bytes.html)
 
-date functions | Return
+### date Functions
+
+Function | Return
 --- | ---
 max([date](date.html)) | [date](date.html)
 min([date](date.html)) | [date](date.html)
 
-decimal functions | Return
+### decimal Functions
+
+Function | Return
 --- | ---
 avg([decimal](decimal.html)) | [decimal](decimal.html)
 avg([int](int.html)) | [decimal](decimal.html)
@@ -28,7 +36,9 @@ sum([int](int.html)) | [decimal](decimal.html)
 variance([decimal](decimal.html)) | [decimal](decimal.html)
 variance([int](int.html)) | [decimal](decimal.html)
 
-float functions | Return
+### float Functions
+
+Function | Return
 --- | ---
 avg([float](float.html)) | [float](float.html)
 max([float](float.html)) | [float](float.html)
@@ -37,7 +47,9 @@ stddev([float](float.html)) | [float](float.html)
 sum([float](float.html)) | [float](float.html)
 variance([float](float.html)) | [float](float.html)
 
-int functions | Return
+### int Functions
+
+Function | Return
 --- | ---
 count([bool](bool.html)) | [int](int.html)
 count([bytes](bytes.html)) | [int](int.html)
@@ -52,17 +64,23 @@ count(tuple) | [int](int.html)
 max([int](int.html)) | [int](int.html)
 min([int](int.html)) | [int](int.html)
 
-interval functions | Return
+### interval Functions
+
+Function | Return
 --- | ---
 max([interval](interval.html)) | [interval](interval.html)
 min([interval](interval.html)) | [interval](interval.html)
 
-string functions | Return
+### string Functions
+
+Function | Return
 --- | ---
 max([string](string.html)) | [string](string.html)
 min([string](string.html)) | [string](string.html)
 
-timestamp functions | Return
+### timestamp Functions
+
+Function | Return
 --- | ---
 max([timestamp](timestamp.html)) | [timestamp](timestamp.html)
 min([timestamp](timestamp.html)) | [timestamp](timestamp.html)

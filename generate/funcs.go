@@ -175,7 +175,8 @@ func GenerateFunctions(from map[string][]parser.Builtin) []byte {
 	sort.Strings(rets)
 	b := new(bytes.Buffer)
 	for _, ret := range rets {
-		fmt.Fprintf(b, "%s functions | Return\n", ret)
+		fmt.Fprintf(b, "### %s Functions\n\n", ret)
+		fmt.Fprintln(b, "Function | Return")
 		b.WriteString("--- | ---\n")
 		b.WriteString(strings.Join(functions[ret], "\n"))
 		b.WriteString("\n\n")
