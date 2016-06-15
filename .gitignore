@@ -2,3 +2,4 @@
 .DS_Store
 .sass-cache
 _site
+generate/generate
