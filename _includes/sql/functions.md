@@ -1,27 +1,19 @@
-### T Functions
+### BYTES Functions
 
 Function | Return
 --- | ---
-greatest(T, ...) | T
-least(T, ...) | T
-
-### bytes Functions
-
-Function | Return
---- | ---
-experimental_unique_bytes() | [bytes](bytes.html)
-experimental_uuid_v4() | [bytes](bytes.html)
 left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
+length([bytes](bytes.html)) | [int](int.html)
+octet_length([bytes](bytes.html)) | [int](int.html)
 right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
-uuid_v4() | [bytes](bytes.html)
 
-### date Functions
+### DATE Functions
 
 Function | Return
 --- | ---
 current_date() | [date](date.html)
 
-### decimal Functions
+### DECIMAL Functions
 
 Function | Return
 --- | ---
@@ -44,7 +36,7 @@ sign([decimal](decimal.html)) | [decimal](decimal.html)
 sqrt([decimal](decimal.html)) | [decimal](decimal.html)
 trunc([decimal](decimal.html)) | [decimal](decimal.html)
 
-### float Functions
+### FLOAT Functions
 
 Function | Return
 --- | ---
@@ -78,46 +70,52 @@ sqrt([float](float.html)) | [float](float.html)
 tan([float](float.html)) | [float](float.html)
 trunc([float](float.html)) | [float](float.html)
 
-### int Functions
+### ID Generation Functions
+
+Function | Return
+--- | ---
+experimental_unique_bytes() | [bytes](bytes.html)
+experimental_uuid_v4() | [bytes](bytes.html)
+unique_rowid() | [int](int.html)
+uuid_v4() | [bytes](bytes.html)
+
+### INT Functions
 
 Function | Return
 --- | ---
 abs([int](int.html)) | [int](int.html)
-ascii([string](string.html)) | [int](int.html)
 extract([string](string.html), [timestamp](timestamp.html)) | [int](int.html)
-length([bytes](bytes.html)) | [int](int.html)
-length([string](string.html)) | [int](int.html)
 mod([int](int.html), [int](int.html)) | [int](int.html)
-octet_length([bytes](bytes.html)) | [int](int.html)
-octet_length([string](string.html)) | [int](int.html)
 sign([int](int.html)) | [int](int.html)
 strpos([string](string.html), [string](string.html)) | [int](int.html)
-unique_rowid() | [int](int.html)
+to_hex([int](int.html)) | [string](string.html)
 
-### interval Functions
+### INTERVAL Functions
 
 Function | Return
 --- | ---
-age([timestamp](timestamp.html)) | [interval](interval.html)
 age([timestamp](timestamp.html), [timestamp](timestamp.html)) | [interval](interval.html)
 
-### string Functions
+### STRING Functions
 
 Function | Return
 --- | ---
+ascii([string](string.html)) | [int](int.html)
 btrim([string](string.html)) | [string](string.html)
 btrim([string](string.html), [string](string.html)) | [string](string.html)
 concat(string, ...) | [string](string.html)
 concat_ws(string, ...) | [string](string.html)
-format_timestamp_ns([timestamp](timestamp.html)) | [string](string.html)
 initcap([string](string.html)) | [string](string.html)
 left([string](string.html), [int](int.html)) | [string](string.html)
+length([string](string.html)) | [int](int.html)
 lower([string](string.html)) | [string](string.html)
 ltrim([string](string.html)) | [string](string.html)
 ltrim([string](string.html), [string](string.html)) | [string](string.html)
 md5([string](string.html)) | [string](string.html)
+octet_length([string](string.html)) | [int](int.html)
 overlay([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
 overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
+parse_timestamp_ns([string](string.html)) | [timestamp](timestamp.html)
 regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
@@ -138,20 +136,32 @@ substring([string](string.html), [int](int.html)) | [string](string.html)
 substring([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
 substring([string](string.html), [string](string.html)) | [string](string.html)
 substring([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-to_hex([int](int.html)) | [string](string.html)
 translate([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 upper([string](string.html)) | [string](string.html)
-version() | [string](string.html)
 
-### timestamp Functions
+### System Info Functions
 
 Function | Return
 --- | ---
+version() | [string](string.html)
+
+### T Functions
+
+Function | Return
+--- | ---
+greatest(T, ...) | T
+least(T, ...) | T
+
+### TIMESTAMP Functions
+
+Function | Return
+--- | ---
+age([timestamp](timestamp.html)) | [interval](interval.html)
 clock_timestamp() | [timestamp](timestamp.html)
 current_timestamp() | [timestamp](timestamp.html)
 current_timestamp_ns() | [timestamp](timestamp.html)
+format_timestamp_ns([timestamp](timestamp.html)) | [string](string.html)
 now() | [timestamp](timestamp.html)
-parse_timestamp_ns([string](string.html)) | [timestamp](timestamp.html)
 statement_timestamp() | [timestamp](timestamp.html)
 transaction_timestamp() | [timestamp](timestamp.html)
 
