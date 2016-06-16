@@ -36,15 +36,19 @@ When inserting a string:
 
 ## Format
 
-A `STRING` column accepts both string literals and escape strings. 
+A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings. 
 
-### String Literal
+### Unicode String Literal
 
-When inserting a string literal into a `STRING` column, format the value as Unicode characters within single quotes, e.g., `'a1b2c3'`.
+When inserting a Unicode string literal into a `STRING` column, format the value as Unicode characters within single quotes, e.g., `'a1b2c3'`.
+
+### Hexadecimal String Literal
+
+When inserting a hexadecimal string literal into a `STRING` column, use `x` or `X` followed by hexadecimal digits in single quotes. For example, `x'636174'` or `X'636174'` correspond to the Unicode string literal `'cat'`.
 
 ### Escape String
 
-When inserting an escape string into a `STRING` column, use either `e` or `E` and followed by one or more of the following backslash escape sequences within single quotes:   
+When inserting an escape string into a `STRING` column, use either `e` or `E` followed by one or more of the following backslash escape sequences within single quotes:   
 
 Backslash Escape Sequence | Interpretation
 --------------------------|---------------
