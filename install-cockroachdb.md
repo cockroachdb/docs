@@ -132,7 +132,7 @@ $(document).ready(function(){
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
     </li>
     <li>
-      <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the binary:</p>
+      <p>Run our brew recipe to get the CockroachDB code and build the binary:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
@@ -224,7 +224,7 @@ $(document).ready(function(){
 
     <p>If you’d rather do this manually, run:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine env default
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
 <span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
 </code></pre>
     </div>
@@ -253,7 +253,7 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>
 </div>
 
@@ -399,7 +399,7 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>
 </div>
 
@@ -415,7 +415,7 @@ $(document).ready(function(){
 
     <p>If you’d rather do this manually, run:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine env default
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
 <span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
 </code></pre>
     </div>    
@@ -445,5 +445,5 @@ $(document).ready(function(){
 
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>
