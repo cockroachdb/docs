@@ -14,10 +14,10 @@ import (
 
 func generateFuncs() {
 	outDir := filepath.Join("..", "_includes", "sql")
-	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(parser.Builtins), 0644); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(parser.Builtins, true), 0644); err != nil {
 		panic(err)
 	}
-	if err := ioutil.WriteFile(filepath.Join(outDir, "aggregates.md"), GenerateFunctions(parser.Aggregates), 0644); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(outDir, "aggregates.md"), GenerateFunctions(parser.Aggregates, false), 0644); err != nil {
 		panic(err)
 	}
 	if err := ioutil.WriteFile(filepath.Join(outDir, "operators.md"), GenerateOperators(), 0644); err != nil {
@@ -115,7 +115,7 @@ func GenerateOperators() []byte {
 	return b.Bytes()
 }
 
-func GenerateFunctions(from map[string][]parser.Builtin) []byte {
+func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte {
 	typePtrs := make(map[uintptr]string)
 	typeFns := map[string]interface{}{
 		"bool":      parser.TypeBool,
@@ -167,22 +167,27 @@ func GenerateFunctions(from map[string][]parser.Builtin) []byte {
 			if c := fn.Category(); c != "" {
 				cat = c
 			}
+			if !categorize {
+				cat = ""
+			}
 			s := fmt.Sprintf("%s(%s) | %s", name, args, linkType(ret))
 			functions[cat] = append(functions[cat], s)
 		}
 	}
-	var rets []string
+	var cats []string
 	for k, v := range functions {
 		sort.Strings(v)
-		rets = append(rets, k)
+		cats = append(cats, k)
 	}
-	sort.Strings(rets)
+	sort.Strings(cats)
 	b := new(bytes.Buffer)
-	for _, ret := range rets {
-		fmt.Fprintf(b, "### %s Functions\n\n", ret)
+	for _, cat := range cats {
+		if categorize {
+			fmt.Fprintf(b, "### %s Functions\n\n", cat)
+		}
 		fmt.Fprintln(b, "Function | Return")
 		b.WriteString("--- | ---\n")
-		b.WriteString(strings.Join(functions[ret], "\n"))
+		b.WriteString(strings.Join(functions[cat], "\n"))
 		b.WriteString("\n\n")
 	}
 	return b.Bytes()
