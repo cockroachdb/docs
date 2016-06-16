@@ -20,11 +20,13 @@ Only the `root` user can create databases.
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error. 
-`name` | The name of the database to create, following these [naming rules](identifiers.html).
+`name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case insensitive. Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
 
 ## Example
 
+
+### Create a Database
 ~~~
 CREATE DATABASE bank;
 CREATE DATABASE
@@ -36,9 +38,30 @@ SHOW DATABASES;
 | bank     |
 | system   |
 +----------+
+~~~
+
+
+### Create Fails (Name Already In Use)
+
+~~~
+SHOW DATABASES;
++----------+
+| Database |
++----------+
+| bank     |
+| system   |
++----------+
 
 CREATE DATABASE bank;
 pq: database "bank" already exists
+
+SHOW DATABASES;
++----------+
+| Database |
++----------+
+| bank     |
+| system   |
++----------+
 
 CREATE DATABASE IF NOT EXISTS bank;
 CREATE DATABASE
