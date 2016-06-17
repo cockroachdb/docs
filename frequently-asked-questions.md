@@ -88,7 +88,7 @@ Yes. Every transaction in CockroachDB guarantees ACID semantics.
 
 ## How are transactions in CockroachDB lock-free? 
 
-Transactions in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, one of the conflicting transactions must be restarted or aborted. 
+[Transactions](transactions.html) in CockroachDB do not explicitly lock their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, one of the conflicting transactions must be restarted or aborted. 
 
 In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) can significantly improve performance.
 
@@ -110,6 +110,7 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 - C++/C
 - Clojure
 - PHP
+- Rust
 
 See [Install Client Drivers](install-client-drivers.html) for more details.
 
