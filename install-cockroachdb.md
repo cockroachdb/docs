@@ -2,7 +2,6 @@
 title: Install CockroachDB
 toc: false
 ---
-<!-- This page must be in html, not markdown. To get the html, serve up install-cockroachdb-in-md.md, view page source, and paste the relevant bits here (only steps, not headings). -->
 
 <script>
 $(document).ready(function(){
@@ -101,6 +100,9 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
@@ -116,6 +118,10 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+
+<h2 id="whats-next">What's Next?</h2>
+
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-homebrew" class="install-option" style="display: none;">
@@ -126,7 +132,7 @@ $(document).ready(function(){
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
     </li>
     <li>
-      <p>Run our brew recipe to install dependencies, get the CockroachDB code, and build the binary:</p>
+      <p>Run our brew recipe to get the CockroachDB code and build the binary:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
@@ -147,7 +153,12 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+
+<h2 id="whats-next">What's Next?</h2>
+
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
+
 <div id="build-from-source" class="install-option" style="display: none;">
 <h2>Build from Source</h2>
 <ol>
@@ -169,15 +180,17 @@ $(document).ready(function(){
   <li>
     <p>Get the CockroachDB code:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step2"><span class="gp" data-eventcategory="mac-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre>
-    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step2"><span class="gp" data-eventcategory="mac-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
   </li>
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="mac-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make build</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="mac-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
+    <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+  </li>
+  <li>
+    <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -195,6 +208,9 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
+<h2 id="whats-next">What's Next?</h2>
+
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 <div id="use-docker" class="install-option" style="display: none;">
 <h2>Use Docker</h2>
@@ -205,17 +221,18 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Open <strong>Launchpad</strong> and start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>
-  </li>
-  <li>
-    <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
+    <p>If you’d rather do this manually, run:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
+<span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
+</code></pre>
     </div>
   </li>
   <li>
-    <p>Start a new Docker container and load the CockroachDB image into it:</p>
+    <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
   </li>
   <li>
@@ -234,10 +251,10 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
+</div>
 </div>
 
 <div id="linuxinstall" style="display: none;">
@@ -263,6 +280,9 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
+      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+    </li>      
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
         <script>
@@ -278,7 +298,12 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+
+<h2 id="whats-next">What's Next?</h2>
+
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
+
 <div id="build-from-source-linux" class="install-option" style="display: none;">
 <h2>Build from Source</h2>
 
@@ -306,9 +331,12 @@ $(document).ready(function(){
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="linux-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make build</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="linux-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code class="highlighter-rouge">make</code>, it can take awhile to download and install various dependencies.</p>
+    <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+  </li>
+  <li>
+    <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
   </li>
   <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -326,7 +354,12 @@ $(document).ready(function(){
       </div>
     </li>
 </ol>
+
+<h2 id="whats-next">What's Next?</h2>
+
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
+
 <div id="use-docker-linux" class="install-option" style="display: none;">
 <h2>Use Docker</h2>
 
@@ -349,12 +382,6 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-    <p>Start a new Docker container and load the CockroachDB image into it:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run -t -i cockroachdb/cockroach shell</code></pre>
-    </div>
-  </li>
-  <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form install-form-7 clearfix">
       <script>
@@ -370,14 +397,14 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
+</div>
 </div>
 
 <div id="windowsinstall" style="display: none;">
-<p>You can run CockroachDB on Windows from within a Docker container, which is a stripped-to-basics version of a Linux operating system. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<p>You can run CockroachDB on Windows from within a Docker virtual machine, which is a stripped-to-basics version of a Linux operating system. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
 <ol>
   <li>
@@ -385,17 +412,18 @@ $(document).ready(function(){
   </li>
   <li>
     <p>Start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>
+
+    <p>If you’d rather do this manually, run:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
+<span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
+</code></pre>
+    </div>    
   </li>
   <li>
-    <p>In the shell, pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="gp" data-eventcategory="win-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Start a new Docker container and load the CockroachDB image into it:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>docker run -t -i cockroachdb/cockroach shell</code></pre>
     </div>
   </li>
   <li>
@@ -417,5 +445,5 @@ $(document).ready(function(){
 
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>

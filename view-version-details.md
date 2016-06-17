@@ -6,7 +6,7 @@ toc: false
 To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html):
 
 ~~~ shell
-$ ./cockroach version
+$ cockroach version
 Build Tag:   {{site.data.strings.version}}
 Build Time:  {{site.data.strings.build_time}}
 Platform:    darwin amd64
@@ -27,7 +27,7 @@ Field | Description
 To also list the repositories containing first- and third-party code used to the build the binary, add the `--deps` flag:
 
 ~~~ shell
-$ ./cockroach version --deps
+$ cockroach version --deps
 Build Tag:   {{site.data.strings.version}}
 Build Time:  {{site.data.strings.build_time}}
 Platform:    darwin amd64

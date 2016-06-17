@@ -5,7 +5,7 @@ toc: false
 
 This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command and environment variables that can be used in place of certain flags.
 
-You can run `./cockroach help` in your shell to get similar guidance.
+You can run `cockroach help` in your shell to get similar guidance.
 
 <div id="toc"></div>
 

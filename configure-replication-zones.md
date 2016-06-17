@@ -68,38 +68,38 @@ Subcommand | Usage
 
 ~~~ shell
 # List all replication zones:
-$ ./cockroach zone ls <flags>
+$ cockroach zone ls <flags>
 
 # View the default replication zone for the cluster:
-$ ./cockroach zone get .default <flags>
+$ cockroach zone get .default <flags>
 
 # View the replication zone for a database:
-$ ./cockroach zone get <database> <flags>
+$ cockroach zone get <database> <flags>
 
 # View the replication zone for a table:
-$ ./cockroach zone get <database.table> <flags>
+$ cockroach zone get <database.table> <flags>
 
 # Edit the default replication zone for the cluster:
-$ ./cockroach zone set .default <flags> 'YAML content'
+$ cockroach zone set .default <flags> 'YAML content'
 
 # Create/edit the replication zone for a database:
-$ ./cockroach zone set <database> <flags> 'YAML content'
+$ cockroach zone set <database> <flags> 'YAML content'
 
 # Create/edit the replication zone for a table:
-$ ./cockroach zone set <database.table> <flags> 'YAML content'
+$ cockroach zone set <database.table> <flags> 'YAML content'
 
 # Remove the replication zone for a database:
-$ ./cockroach zone rm <database> <flags>
+$ cockroach zone rm <database> <flags>
 
 # Remove the replication zone for a table:
-$ ./cockroach zone rm <database.table> <flags>
+$ cockroach zone rm <database.table> <flags>
 
 # View help:
-$ ./cockroach help zone
-$ ./cockroach help zone ls
-$ ./cockroach help zone get
-$ ./cockroach help zone set
-$ ./cockroach help zone rm
+$ cockroach help zone
+$ cockroach help zone ls
+$ cockroach help zone get
+$ cockroach help zone set
+$ cockroach help zone rm
 ~~~
 
 ## Flags
@@ -129,10 +129,10 @@ Flag | Description
 
 The cluster-wide replication zone (`.default`) is initially set to replicate data to any three nodes in your cluster, with ranges in each replica splitting once they get larger than 67108864 bytes. 
 
-To view the default replication zone, use the `./cockroach zone get .default` command with appropriate flags as follows:
+To view the default replication zone, use the `cockroach zone get .default` command with appropriate flags as follows:
 
 ~~~ shell
-$ ./cockroach zone get .default --insecure
+$ cockroach zone get .default --insecure
 .default
 replicas:
 - attrs: []
@@ -146,25 +146,25 @@ gc:
 
 ### Edit the Default Replication Zone
 
-To edit the default replication zone, use the `./cockroach zone set .default` command with appropriate flags and the YAML changes specified as a string. 
+To edit the default replication zone, use the `cockroach zone set .default` command with appropriate flags and the YAML changes specified as a string. 
 
 For example, let's say you want to run a three-node cluster across three datacenters, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. So you start each node with the relevant datacenter location specified in the `--attrs` field. 
 
 ~~~ shell
 # Start node in first US east coast datacenter:
-$ ./cockroach start --insecure --host=node1-hostname --attrs=us-east-1a
+$ cockroach start --insecure --host=node1-hostname --attrs=us-east-1a
 
 # Start node in second US east coast datacenter:
-$ ./cockroach start --insecure --host=node2-hostname --attrs=us-east-1b --join=node1-hostname:27257
+$ cockroach start --insecure --host=node2-hostname --attrs=us-east-1b --join=node1-hostname:27257
 
 # Start node in US west coast datacenter:
-$ ./cockroach start --insecure --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
+$ cockroach start --insecure --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
 ~~~
 
 You then edit the default zone configuration with one datacenter attribute set for each replica.
 
 ~~~ shell
-$ ./cockroach zone set .default --insecure 'replicas:
+$ cockroach zone set .default --insecure 'replicas:
 - attrs: [us-east-1a]
 - attrs: [us-east-1b]
 - attrs: [us-west-1a]'
@@ -186,25 +186,25 @@ gc:
 
 ### Create a Replication Zone for a Database
 
-To create a replication zone for a specific database, use the `./cockroach zone set`, specifying the database name, any appropriate flags, and the zone settings as a YAML string. 
+To create a replication zone for a specific database, use the `cockroach zone set`, specifying the database name, any appropriate flags, and the zone settings as a YAML string. 
 
 For example, let's say you want to run a cluster across five nodes, three of which have ssd storage devices. You want data in the `bank` database replicated to these ssd devices. So when starting the three nodes with these devices, you specify `ssd` as an attribute of the stores, and when starting the other two nodes, you leave the attribute out.
 
 ~~~ shell
 # Start nodes with ssd storage devices:
-$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
-$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
-$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
+$ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
+$ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
+$ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
 
 # Start nodes without ssd storage devices:
-$ ./cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
-$ ./cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
+$ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
+$ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
 ~~~
 
 You then create a zone configuration for the `bank` database with `ssd` set as the attribute for each replica. 
 
 ~~~ shell
-$ ./cockroach zone set bank --insecure 'replicas:
+$ cockroach zone set bank --insecure 'replicas:
 - attrs: [ssd]
 - attrs: [ssd]
 - attrs: [ssd]
@@ -227,25 +227,25 @@ gc:
 
 ### Create a Replication Zone for a Table
 
-To create a replication zone for a specific table, use the `./cockroach zone set`, specifying the table name in `database.table` format, any appropriate flags, and the zone settings as a YAML string. 
+To create a replication zone for a specific table, use the `cockroach zone set`, specifying the table name in `database.table` format, any appropriate flags, and the zone settings as a YAML string. 
 
 For example, let's say you want to run a cluster across five nodes, three of which have ssd storage devices. You want data in the `bank.accounts` table replicated to these ssd devices. So when starting the three nodes with these devices, you specify `ssd` as an attribute of the stores. When starting the other two nodes, you leave the attribute out. 
 
 ~~~ shell
 # Start nodes with ssd storage devices:
-$ ./cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
-$ ./cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
-$ ./cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
+$ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
+$ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
+$ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
 
 # Start nodes without ssd storage devices:
-$ ./cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
-$ ./cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
+$ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
+$ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
 ~~~
 
 You then create a zone configuration for the `bank.accounts` table with `ssd` set as the attribute for each replica.
 
 ~~~ shell
-$ ./cockroach zone set bank.accounts --insecure 'replicas:
+$ cockroach zone set bank.accounts --insecure 'replicas:
 - attrs: [ssd]
 - attrs: [ssd]
 - attrs: [ssd]

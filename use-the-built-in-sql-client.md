@@ -13,15 +13,15 @@ To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
 
 ~~~ shell
 # Start the interactive SQL shell:
-$ ./cockroach sql <flags>
+$ cockroach sql <flags>
 
 # Execute SQL from the command line:
-$ ./cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
-$ echo "<sql statement>;<sql statement>" | ./cockroach sql <flags>
-$ ./cockroach sql <flags> < file-containing-statements.sql
+$ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+$ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
+$ cockroach sql <flags> < file-containing-statements.sql
  
 # View help:
-$ ./cockroach help sql
+$ cockroach help sql
 ~~~
 
 ## Flags
@@ -64,20 +64,20 @@ In these examples, we connect a SQL shell to a **secure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Using the --url flag:
-$ ./cockroach sql --url=postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt 
+$ cockroach sql --url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt"
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Using the --url flag:
-$ ./cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
+$ cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable 
 ~~~
 
 ### Execute SQL statement within the SQL shell
@@ -107,12 +107,12 @@ In these examples, we use the `--execute` flag to execute statements from the co
 
 ~~~ shell
 # Statements with a single --execute flag:
-$ ./cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+$ cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
 CREATE TABLE
 INSERT 2 
 
 # Statements with multiple --execute flags:
-$ ./cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
+$ cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
 CREATE TABLE
 INSERT 2
 ~~~
@@ -121,7 +121,7 @@ In this example, we use the `echo` command to execute statements from the comman
 
 ~~~ shell
 # Statements with the echo command:
-$ echo "SHOW TABLES; SELECT * FROM roaches;" | ./cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
 +----------+
 |  Table   |
 +----------+
@@ -148,7 +148,7 @@ $ cockroach sql --pretty --execute="INSERT INTO emojis VALUES ('🐥 '), ('🐢 
 +----+
 
 # Using --execute without the --pretty flag:
-$ ./cockroach sql --execute="INSERT INTO emojis VALUES ('🐥 '), ('🐢 ') RETURNING *;"
+$ cockroach sql --execute="INSERT INTO emojis VALUES ('🐥 '), ('🐢 ') RETURNING *;"
 2 rows
 a
 "\U0001f425 "
@@ -164,7 +164,7 @@ $ cat statements.sql
 CREATE TABLE roaches (name STRING, country STRING);
 INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
 
-$ ./cockroach sql --user=maxroach --host=roachcluster.com ---port=26257 --database=critterdb < statements.sql
+$ cockroach sql --user=maxroach --host=roachcluster.com ---port=26257 --database=critterdb < statements.sql
 CREATE TABLE
 INSERT 2
 ~~~

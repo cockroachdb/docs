@@ -9,9 +9,9 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 1.  Stop the cluster and close the Admin UI:
 
     ~~~ shell
-    $ ./cockroach quit
-    $ ./cockroach quit --port=26258
-    $ ./cockroach quit --port=26259
+    $ cockroach quit
+    $ cockroach quit --port=26258
+    $ cockroach quit --port=26259
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure1">Details</button>
@@ -27,9 +27,9 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     ~~~ shell
     $ mkdir certs
-    $ ./cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key
-    $ ./cockroach cert create-node localhost $(hostname) --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
-    $ ./cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/root.cert --key=certs/root.key
+    $ cockroach cert create-ca --ca-cert=certs/ca.cert --ca-key=certs/ca.key
+    $ cockroach cert create-node localhost $(hostname) --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/node.cert --key=certs/node.key
+    $ cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.key --cert=certs/root.cert --key=certs/root.key
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure2">Details</button>
@@ -45,7 +45,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 3.  Restart the first node:
  
     ~~~ shell
-    $ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
 
     build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     https://ROACHs-MBP:8080
@@ -64,8 +64,8 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 4.  Restart additional nodes:
 
     ~~~ shell
-    $ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
-    $ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
@@ -78,7 +78,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 5.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell:
 
     ~~~ shell
-    $ ./cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+    $ cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
     # Welcome to the cockroach SQL interface.
     # All statements must be terminated by a semicolon.
     # To exit: CTRL + D.

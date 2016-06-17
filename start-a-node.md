@@ -11,13 +11,13 @@ To start a new CockroachDB cluster, or add a node to an existing cluster, run th
 
 ~~~ shell
 # Start the first node of a cluster:
-$ ./cockroach start <flags, excluding --join>
+$ cockroach start <flags, excluding --join>
 
 # Add a node to a cluster:
-$ ./cockroach start <flags, including --join>
+$ cockroach start <flags, including --join>
 
 # View help:
-$ ./cockroach help start
+$ cockroach help start
 ~~~
 
 ## Flags
@@ -78,14 +78,14 @@ This example demonstrates starting up three nodes locally. See [Start a Cluster]
 
 ~~~ shell
 # Insecure:
-$ ./cockroach start
-$ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257
-$ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257
+$ cockroach start
+$ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257
+$ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257
 
 # Secure:
-$ ./cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key  
-$ ./cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
-$ ./cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
+$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key  
+$ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
+$ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
 ~~~
 
 ### Start a distributed cluster
@@ -94,14 +94,14 @@ This example demonstrates starting up three nodes on different machines. Because
 
 ~~~ shell
 # Insecure:
-$ ./cockroach start --host=node1-hostname
-$ ./cockroach start --host=node2-hostname --join=node1-hostname:26257
-$ ./cockroach start --host=node3-hostname --join=node1-hostname:26257
+$ cockroach start --host=node1-hostname
+$ cockroach start --host=node2-hostname --join=node1-hostname:26257
+$ cockroach start --host=node3-hostname --join=node1-hostname:26257
 
 # Secure:
-$ ./cockroach start --host=node1-hostname --ca-cert=certs/ca.cert --cert=certs/node1.cert --key=certs/node1.key  
-$ ./cockroach start --host=node2-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node2.cert --key=certs/node2.key
-$ ./cockroach start --host=node3-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node3.cert --key=certs/node3.key
+$ cockroach start --host=node1-hostname --ca-cert=certs/ca.cert --cert=certs/node1.cert --key=certs/node1.key  
+$ cockroach start --host=node2-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node2.cert --key=certs/node2.key
+$ cockroach start --host=node3-hostname --join=node1-hostname:26257 --ca-cert=certs/ca.cert --cert=certs/node3.cert --key=certs/node3.key
 ~~~
 
 ## See Also

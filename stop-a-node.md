@@ -13,10 +13,10 @@ The `quit` command allows in-flight requests to complete and then shuts down the
 
 ~~~ shell
 # Stop a node:
-$ ./cockroach quit <flags>
+$ cockroach quit <flags>
 
 # View help:
-$ ./cockroach help quit
+$ cockroach help quit
 ~~~
 
 ## Flags
@@ -38,10 +38,10 @@ Flag | Description
 
 ~~~ shell
 # Insecure:
-$ ./cockroach quit --host=nodehostname.com --port=26258
+$ cockroach quit --host=nodehostname.com --port=26258
 
 # Secure:
-$ ./cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --port=26258
+$ cockroach quit --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --host=nodehostname.com --port=26258
 ~~~
 
 ## See Also
