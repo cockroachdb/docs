@@ -131,7 +131,7 @@ root@:26257> SHOW DATABASES;
 +----------+
 ~~~
 
-## Step 4. Open the Admin UI
+## Step 5. Open the Admin UI
 
 To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, first look up the IP address for your `docker-machine`:
 
