@@ -171,7 +171,7 @@ For more information, see [Configure Replication Zones](configure-replication-zo
 You can run the built-in SQL client from any machine with the `cockroach` binary, CA cert, client certificate, and client key. Make sure the machine you want to use has these files and then start the client:  
 
 ~~~ shell
-$ cockroach sql --url=postgresql://root@<node1-hostname>:26257/?sslcert=root.cert&sslkey=root.key&sslmode=verify-full&sslrootcert=ca.cert
+$ cockroach sql --url="postgresql://root@<node1-hostname>:26257/?sslcert=root.cert&sslkey=root.key&sslmode=verify-full&sslrootcert=ca.cert"
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
