@@ -1,5 +1,6 @@
 ---
 title: RENAME COLUMN
+summary: The RENAME COLUMN statement changes the name of a column in a table.
 toc: false
 ---
 

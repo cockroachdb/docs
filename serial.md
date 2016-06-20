@@ -1,5 +1,6 @@
 ---
 title: SERIAL
+summary: The SERIAL data type defaults to a unique 64-bit signed integer that is the combination of the insert timestamp and the ID of the node.
 toc: false
 ---
 

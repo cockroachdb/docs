@@ -1,5 +1,6 @@
 ---
 title: UPDATE
+summary: The UPDATE statement updates rows in a table.
 toc: false
 ---
 

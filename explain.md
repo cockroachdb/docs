@@ -1,5 +1,6 @@
 ---
 title: EXPLAIN
+summary: The EXPLAIN statement provides debugging and analysis for a DELETE, INSERT, SELECT, or UPDATE statement.
 toc: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: FLOAT
+summary: The FLOAT data type stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point.
 toc: false
 ---
 

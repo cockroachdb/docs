@@ -1,5 +1,6 @@
 ---
 title: Older Versions
+summary: Release notes for older versions of CockroachDB.
 toc: false
 ---
 

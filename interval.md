@@ -1,5 +1,6 @@
 ---
 title: INTERVAL
+summary: The INTERVAL data type stores a value that represents a span of time.
 toc: false
 ---
 

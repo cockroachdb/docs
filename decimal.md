@@ -1,5 +1,6 @@
 ---
 title: DECIMAL
+summary: The DECIMAL data type stores exact, fixed-point numbers.
 toc: false
 ---
 

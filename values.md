@@ -1,5 +1,6 @@
 ---
 title: VALUES
+summary: The VALUES statement computes a row value or set of row values specified by value expressions.
 toc: false
 ---
 

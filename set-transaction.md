@@ -1,5 +1,6 @@
 ---
 title: SET TRANSACTION
+summary: The SET TRANSACTION statement sets the transaction isolation level and/or priority for the current session or for an individual transaction.
 toc: false
 ---
 

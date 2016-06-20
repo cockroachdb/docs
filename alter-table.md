@@ -1,5 +1,6 @@
 ---
 title: ALTER TABLE
+summary: Use the ALTER TABLE statement to change the schema of a table. 
 toc: false
 ---
 

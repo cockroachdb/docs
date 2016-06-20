@@ -1,5 +1,6 @@
 ---
 title: Improve the Docs
+summary: Contribute to the improvement and expansion of CockroachDB documentation.
 toc: false
 ---
 

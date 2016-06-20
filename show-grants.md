@@ -1,5 +1,6 @@
 ---
 title: SHOW GRANTS
+summary: The SHOW GRANTS statement lists the privileges granted to users.
 toc: false
 ---
 

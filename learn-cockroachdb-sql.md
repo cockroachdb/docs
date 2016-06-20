@@ -1,5 +1,6 @@
 ---
 title: Learn CockroachDB SQL
+summary: Learn some of the most essential CockroachDB SQL statements.
 toc: false
 ---
 
@@ -165,7 +166,7 @@ INSERT INTO accounts VALUES
     (4, 9400.10);
 ~~~
 
-[Defaults values](constraints.html#default-values) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](constraints.html#default-value) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 INSERT INTO accounts (id, balance) VALUES 

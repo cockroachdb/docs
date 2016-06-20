@@ -1,5 +1,6 @@
 ---
 title: Functions and Operators
+summary: CockroachDB supports many built-in functions, aggregate functions, and operators.
 toc: true
 ---
 

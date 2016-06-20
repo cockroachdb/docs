@@ -1,5 +1,6 @@
 ---
 title: Troubleshooting
+summary: Troubleshooting issues with CockroachDB.
 toc: true
 ---
 
