@@ -1,6 +1,6 @@
 ---
 title: Install CockroachDB
-summary: Install CockroachDB on Mac, Linux, or Windows.
+summary: Simple instructions for installing CockroachDB on Mac, Linux, or Windows.
 toc: false
 ---
 
@@ -218,7 +218,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/mac/step_one/">Install Docker</a>.</p>
+    <p><a href="https://docs.docker.com/mac/">Install Docker</a>.</p>
   </li>
   <li>
     <p>Open <strong>Launchpad</strong> and start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>

@@ -28,7 +28,7 @@ To revoke privileges on one or more databases, use the following syntax:
 REVOKE <privileges> ON DATABASE <databases> FROM <users>
 ~~~
 
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
+where `<privileges>` is a comma-separated list of [privileges](privileges.html#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
 
 Note that any tables that previously inherited the database-level privileges retain the privileges. 
 
@@ -40,7 +40,7 @@ To revoke privileges on one or more tables in a database, use the following synt
 REVOKE <privileges> ON <tables> FROM <users>
 ~~~
 
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
+where `<privileges>` is a comma-separated list of [privileges](privileges.html#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
 
 Alternately, you can add the `TABLE` keyword:
 
@@ -56,7 +56,7 @@ To revoke privileges on all current tables in one or more databases, use the fol
 REVOKE <privileges> ON <databases>.* FROM <users>
 ~~~
 
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
+where `<privileges>` is a comma-separated list of [privileges](privileges.html#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
 
 ## See Also
 

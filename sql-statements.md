@@ -10,7 +10,7 @@ Statement | Usage
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
-[`COMMIT`](commit-transaction.html) | Commit the current [transaction](transaction.html).
+[`COMMIT`](commit-transaction.html) | Commit the current [transaction](transactions.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database. 
@@ -27,7 +27,7 @@ Statement | Usage
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`RELEASE SAVEPOINT`](release-savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), commit the transaction's changes once there are no retryable errors.  
 [`REVOKE`](revoke.html) | Revoke privileges from users. 
-[`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transaction.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.  
+[`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.  
 [`SELECT`](select.html) | Select rows from a table.
 [`SET DATABASE`](set-database.html) | Set the default database for the session.
 [`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.

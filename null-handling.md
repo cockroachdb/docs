@@ -134,7 +134,7 @@ SELECT a, b, c, b*0, b*c, b+c FROM t1;
 
 ## NULLs and Aggregate Functions
 
-Aggregate [functions](functions-and-operators.html#functions) are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
+Aggregate [functions](functions-and-operators.html) are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
 
 ~~~sql
 SELECT * FROM t1;

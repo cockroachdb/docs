@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Docs
-summary: CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store.
+summary: Read the documentation for CockroachDB, a distributed SQL database built on a transactional and strongly-consistent key-value store.
 type: first_page
 homepage: true
 toc: false

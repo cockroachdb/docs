@@ -96,7 +96,7 @@ root@26257> SELECT * FROM accounts;
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
-For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
 ### 7. Monitor your cluster
 
@@ -207,7 +207,7 @@ root@26257> SELECT * FROM accounts;
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
-For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
 ### 8. Monitor your cluster
 

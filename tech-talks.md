@@ -1,6 +1,6 @@
 ---
 title: Tech Talks
-summary: Watch recordings of CockroachDB founders and engineers giving high-level and detailed talks about the database.
+summary: Watch recordings of CockroachDB founders and engineers giving high-level and detailed tech talks about the database.
 toc: false
 ---
 
