@@ -1,5 +1,6 @@
 ---
 title: STRING
+summary: The STRING data type stores a string of Unicode characters.
 toc: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Start a Cluster
+summary: Run a multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
-expand: true
 ---
 
 <style>

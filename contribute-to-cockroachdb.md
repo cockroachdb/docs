@@ -1,5 +1,6 @@
 ---
 title: Contribute to CockroachDB
+summary: Contribute to the development of CockroachDB.
 toc: false
 ---
 

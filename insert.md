@@ -1,5 +1,6 @@
 ---
 title: INSERT
+summary: The INSERT statement inserts one or more rows into a table.
 toc: false
 ---
 

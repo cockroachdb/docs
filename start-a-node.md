@@ -1,5 +1,6 @@
 ---
 title: Start a Node
+summary: To start a new CockroachDB cluster, or add a node to an existing cluster, run the cockroach start command.
 toc: false
 ---
 

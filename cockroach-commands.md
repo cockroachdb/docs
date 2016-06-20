@@ -1,5 +1,6 @@
 ---
 title: Cockroach Commands
+summary: Learn the commands for configuring, starting, and managing a CockroachDB cluster.
 toc: false
 ---
 

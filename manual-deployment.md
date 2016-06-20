@@ -1,5 +1,6 @@
 ---
 title: Manual Deployment
+summary: Learn how to manually deploy a multi-node CockroachDB cluster on multiple machines.
 toc: false
 toc_not_nested: true
 ---

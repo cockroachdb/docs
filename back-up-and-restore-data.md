@@ -1,5 +1,6 @@
 ---
 title: Back Up and Restore Data
+summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
 ---
 

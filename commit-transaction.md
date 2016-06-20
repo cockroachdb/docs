@@ -1,5 +1,6 @@
 ---
 title: COMMIT
+summary: Use the COMMIT statement to commit a transaction.
 toc: true
 ---
 

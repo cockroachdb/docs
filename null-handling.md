@@ -1,5 +1,6 @@
 ---
 title: NULL Handling
+summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: false
 ---
 

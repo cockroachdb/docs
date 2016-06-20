@@ -1,5 +1,6 @@
 ---
 title: CockroachDB Architecture
+summary: Explore the architecture of CockroachDB.
 toc: false
 ---
 

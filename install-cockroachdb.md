@@ -1,5 +1,6 @@
 ---
 title: Install CockroachDB
+summary: Install CockroachDB on Mac, Linux, or Windows.
 toc: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: SHOW INDEX
+summary: The SHOW INDEX statement returns index information for a table. 
 toc: false
 ---
 

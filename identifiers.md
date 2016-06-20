@@ -1,5 +1,6 @@
 ---
 title: Identifiers
+summary: Learn the rules for naming a database, table, column, or other object in CockroachDB.
 toc: false
 ---
 

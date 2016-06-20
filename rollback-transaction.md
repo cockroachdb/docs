@@ -1,5 +1,6 @@
 ---
 title: ROLLBACK
+summary: The ROLLBACK statement aborts the current transaction, discarding all updates made by statements included in the transaction.
 toc: false
 ---
 

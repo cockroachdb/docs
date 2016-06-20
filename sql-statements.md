@@ -1,5 +1,6 @@
 ---
 title: SQL Statements
+summary: SQL statements supported by CockroachDB.
 toc: false
 ---
 

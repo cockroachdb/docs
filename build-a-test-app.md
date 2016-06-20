@@ -1,5 +1,6 @@
 ---
 title: Build a Test App
+summary: Follow this tutorial to quickly learn how to create a CockroachDB database and connect to it from a client applicaiton.
 toc: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: DROP TABLE
+summary: The DROP TABLE statement removes a table and all its indexes from a database.
 toc: false
 ---
 

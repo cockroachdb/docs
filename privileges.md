@@ -1,5 +1,6 @@
 ---
 title: Privileges
+summary: Privileges are granted to users at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 toc: false
 ---
 

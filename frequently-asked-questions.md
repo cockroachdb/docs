@@ -1,5 +1,6 @@
 ---
 title: Frequently Asked Questions
+summary: Get answers to frequently asked questions about CockroachDB.
 toc: false
 ---
 

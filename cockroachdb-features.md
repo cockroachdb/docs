@@ -1,5 +1,6 @@
 ---
 title: CockroachDB Features
+summary: Learn about essential CockroachDB features, such as automated scaling and repair, strong consistency, distributed transactions, and simplified deployment.
 toc: true
 ---
 

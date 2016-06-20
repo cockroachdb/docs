@@ -1,5 +1,6 @@
 ---
 title: BOOL
+summary: The BOOL data type stores Boolean values of false or true.
 toc: false
 ---
 

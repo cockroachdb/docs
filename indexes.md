@@ -1,5 +1,6 @@
 ---
 title: Indexes
+summary: Indexes are used to quickly locate data without having to look through every row of a table.
 toc: false
 ---
 

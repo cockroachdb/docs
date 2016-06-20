@@ -1,5 +1,6 @@
 ---
 title: CockroachDB in Comparison
+summary: Learn how CockroachDB compares to other popular databases.
 toc: false
 ---
 

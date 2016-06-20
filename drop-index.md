@@ -1,5 +1,6 @@
 ---
 title: DROP INDEX
+summary: The DROP INDEX statement removes an index from a table.
 toc: false
 ---
 

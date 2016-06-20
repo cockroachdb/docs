@@ -1,5 +1,6 @@
 ---
 title: REVOKE
+summary: The REVOKE statement revokes privileges from users.
 toc: false
 ---
 

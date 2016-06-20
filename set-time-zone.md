@@ -1,5 +1,6 @@
 ---
 title: SET TIME ZONE
+summary: The SET TIME ZONE statement sets the default time zone for the current session.
 toc: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: DATE
+summary: The DATE data type stores a year, month, and day.
 toc: false
 ---
 

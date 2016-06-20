@@ -1,7 +1,7 @@
 ---
 title: Start a Cluster
+summary: Run a multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: false
-expand: true
 ---
 
 <style>
