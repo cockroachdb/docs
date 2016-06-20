@@ -130,7 +130,7 @@ select * from logon;
 
 ### Check
 
-A Check constraint is specified using `CHECK` at the column or table level. It requires that the column(s) value satisfies a Boolean expression within the constraint. The expression must evaluate to TRUE or NULL for every row affected by an INSERT or UPDATE statement. The DML statement will fail if the condition evaluates to FALSE for any row.
+A Check constraint is specified using `CHECK` at the column or table level. It requires that the column(s) value satisfies a Boolean expression within the constraint. The expression must evaluate to TRUE (or NULL) for every row affected by an INSERT or UPDATE statement. The DML statement will fail if the condition evaluates to FALSE for any row.
 
 You can have multiple Check constraints on a single column but ideally these should be combined using the logical operators. So, for example, 
 
@@ -142,8 +142,6 @@ should be specified as
 ~~~sql
 warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
 ~~~
-
-{% include check_warning.html %}
 
 Check constraints that refer to multiple columns should be specified at the table level. 
 

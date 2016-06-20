@@ -277,3 +277,8 @@ SELECT * FROM t2;
 | 3 | NULL |
 +---+------+
 ~~~
+
+## NULLs and CHECK Constraints
+
+A `CHECK` constraint expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be
+used along side a CHECK expression.
