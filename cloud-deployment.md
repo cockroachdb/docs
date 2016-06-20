@@ -1,6 +1,6 @@
 ---
 title: Cloud Deployment
-summary: Deploy CockroachDB on Google Cloud Engine or AWS.
+summary: Learn how to deploy CockroachDB on Google Cloud Engine or AWS.
 toc: false
 ---
 
