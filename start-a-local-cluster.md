@@ -112,7 +112,7 @@ When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to 
 
 To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's Next?
 

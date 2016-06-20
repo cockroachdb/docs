@@ -110,7 +110,7 @@ logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Deploy a Secure Cluster
 
@@ -221,7 +221,7 @@ logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## See Also
 

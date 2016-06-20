@@ -12,21 +12,21 @@ The project is currently in **Beta**. For details about upcoming features, see t
 <div class="row">
 <div class="col-md-4 roach">
     <a href="install-cockroachdb.html">
-        <img src="images/builder_craig.png"/>
+        <img src="images/builder_craig.png" alt="Install CockroachDB"/>
         <h3>Install</h3>
     </a>
 </div>
 
 <div class="col-md-4 roach">
         <a href="start-a-local-cluster.html">
-            <img src="images/SCENE_superhero_profile_craig.png"/>
+            <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
             <h3>Quickstart</h3>
         </a>
 </div>
 
 <div class="col-md-4 roach">
     <a href="frequently-asked-questions.html">
-        <img src="images/fireside_catrina.png"/>
+        <img src="images/fireside_catrina.png" alt="Frequently asked questions about CockroachDB"/>
         <h3>Why CockroachDB?</h3>
     </a>
 </div>
