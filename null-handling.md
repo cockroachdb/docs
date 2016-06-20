@@ -277,3 +277,30 @@ SELECT * FROM t2;
 | 3 | NULL |
 +---+------+
 ~~~
+
+## NULLs and CHECK Constraints
+
+A [`CHECK`](constraints.html#check) constraint expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be
+used along side a `CHECK` expression.
+
+
+~~~sql
+CREATE TABLE products (id STRING PRIMARY KEY, price INT NOT NULL CHECK (price > 0), discount INT, CHECK (discount <= price));
+
+INSERT INTO products (id, price) VALUES ('ncc-1701-d', 100);
+INSERT INTO products (id, price, discount) VALUES ('ncc-1701-a', 100, 50);
+
+SELECT * FROM products;
++----------+-------+----------+
+|    id    | price | discount |
++----------+-------+----------+
+| ncc1701a |   100 |       50 |
+| ncc1701d |   100 | NULL     |
++----------+-------+----------+
+
+INSERT INTO products (id, price) VALUES ('ncc-1701-b', -5);
+failed to satisfy CHECK constraint (price > 0)
+
+INSERT INTO products (id, price, discount) VALUES ('ncc-1701-b', 100, 150);
+failed to satisfy CHECK constraint (discount <= price)
+~~~
