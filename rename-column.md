@@ -6,8 +6,6 @@ toc: false
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.
 
-{% include check_warning.html %}
-
 <div id="toc"></div>
 
 ## Synopsis
