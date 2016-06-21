@@ -1,0 +1,14 @@
+machine:
+  ruby:
+    version: 2.2.3
+
+test:
+  override:
+    - bundle exec jekyll build
+    - bundle exec rake htmlproofer
+  post:
+    # Unfortunately, we don't have a good way to run only on green builds, so this may
+    # fail if the jekyll build failed.
+    - aws configure set region us-east-1
+    - aws s3 sync --quiet --delete ./_site s3://cockroach-docs-review/${CIRCLE_SHA1}/
+    - echo "http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/${CIRCLE_SHA1}/"
