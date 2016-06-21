@@ -1,5 +1,6 @@
 ---
 title: GRANT
+summary: The GRANT statement grants user privileges for interacting with specific databases and tables.
 toc: false
 ---
 

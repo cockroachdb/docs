@@ -1,5 +1,6 @@
 ---
 title: Data Definition
+summary: Learn how CockroachDB handles identifiers, constraints, null values, and other aspects of data definition.
 toc: false
 ---
 

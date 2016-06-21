@@ -1,5 +1,6 @@
 ---
 title: BEGIN
+summary: Use the BEGIN statement to initiate a CockroachDB transaction.
 toc: false
 ---
 

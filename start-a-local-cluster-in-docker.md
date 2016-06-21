@@ -1,7 +1,7 @@
 ---
 title: Start a Cluster
+summary: Run a multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
-expand: true
 ---
 
 <style>
@@ -142,7 +142,7 @@ $ docker-machine ip default
 
 Then point your browser to that IP and port `8080`, e.g., `http://192.168.99.100:8080`: 
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's Next?
 

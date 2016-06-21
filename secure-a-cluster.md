@@ -1,5 +1,6 @@
 ---
 title: Secure a Cluster
+summary: Learn how to secure a CockroachDB cluster with authentication and encryption.
 toc: false
 expand: true
 ---

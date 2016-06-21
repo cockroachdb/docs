@@ -1,5 +1,6 @@
 ---
 title: Create Security Certificates
+summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. 
 toc: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: CockroachDB Features
+summary: Learn about essential CockroachDB features, such as automated scaling and repair, strong consistency, distributed transactions, and simplified deployment.
 toc: true
 ---
 
@@ -11,7 +12,7 @@ CockroachDB transparently manages scale with an upgrade path from a single node 
 -   Self-organizes, self-heals, and automatically rebalances
 -   Migrate data seamlessly between clouds
 
-<img src="images/2automated-scaling-repair.png" style="width: 400px" />
+<img src="images/2automated-scaling-repair.png" alt="Automated scaling and repair in CockroachDB" style="width: 400px" />
 
 ## Strong Consistency
 
@@ -21,7 +22,7 @@ CockroachDB implements consistent replication via majority consensus between rep
 -   Local or wide-area replication with no stale reads on failover
 -   Employs Raft, a popular successor to Paxos
 
-<img src="images/2strong-consistency.png" style="width: 400px" />
+<img src="images/2strong-consistency.png" alt="Strong consistency in CockroachDB" style="width: 400px" />
 
 ## Distributed Transactions
 
@@ -32,7 +33,7 @@ CockroachDB implements efficient, fully-serializable distributed transactions. W
 -   Efficient two phase commit
 -   Serializable default isolation level
 
-<img src="images/2distributed-transactions.png" style="width: 400px" />
+<img src="images/2distributed-transactions.png" alt="Distributed transactions in CockroachDB" style="width: 400px" />
 
 ## Simplified Deployment
 
@@ -44,7 +45,7 @@ Deploying and maintaining databases has forever been a difficult and expensive p
 -   Symmetric nodes are ideally suited to container-based deployments
 -   Every node provides access to centralized admin console
 
-<img src="images/2simplified-deployments.png" style="width: 400px" />
+<img src="images/2simplified-deployments.png" alt="CockroachDB is simple to deploy" style="width: 400px" />
 
 ## Open Source
 
@@ -55,7 +56,7 @@ Run on your laptop, development cluster, and public or private cloud without com
 -   Bigger and more active community for support and troubleshooting
 -   Debug problems through your entire stack
 
-<img src="images/2open-source.png" style="width: 400px" />
+<img src="images/2open-source.png" alt="CockroachDB is open source" style="width: 400px" />
 
 ## Go Implementation
 
@@ -66,4 +67,4 @@ The choice of language matters. Speed, stability, maintainability: each of these
 -   Garbage collection and type safety provide stability
 -   Readable, well-documented code encourages open source contributions
 
-<img src="images/2go-implementation.png" style="width: 400px" />
+<img src="images/2go-implementation.png" alt="CockroachDB is built in Go" style="width: 400px" />

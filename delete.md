@@ -1,5 +1,6 @@
 ---
 title: DELETE
+summary: The DELETE statement deletes rows from a table.
 toc: false
 ---
 

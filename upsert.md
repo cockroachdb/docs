@@ -1,5 +1,6 @@
 ---
 title: UPSERT
+summary: The UPSERT statement inserts rows when values do not violate uniqueness constraints, and it updates rows when values do violate uniqueness constraints.
 toc: false
 ---
 

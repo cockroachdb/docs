@@ -1,5 +1,6 @@
 ---
 title: SELECT
+summary: The SELECT statement retrieves data from a table.
 toc: false
 ---
 

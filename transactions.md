@@ -1,5 +1,6 @@
 ---
 title: Transactions
+summary: CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction.
 toc: false
 ---
 

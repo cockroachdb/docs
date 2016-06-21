@@ -1,5 +1,6 @@
 ---
 title: Manual Deployment
+summary: Learn how to manually deploy a multi-node CockroachDB cluster on multiple machines.
 toc: false
 toc_not_nested: true
 ---
@@ -95,7 +96,7 @@ root@26257> SELECT * FROM accounts;
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
-For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
 ### 7. Monitor your cluster
 
@@ -110,7 +111,7 @@ logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Deploy a Secure Cluster
 
@@ -206,7 +207,7 @@ root@26257> SELECT * FROM accounts;
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client driver to connect an app to the cluster. 
 
-For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](built-a-test-app.html).  
+For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
 ### 8. Monitor your cluster
 
@@ -221,7 +222,7 @@ logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
 
-<img src="images/admin_ui.png" style="border:1px solid #eee;max-width:100%" />
+<img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## See Also
 

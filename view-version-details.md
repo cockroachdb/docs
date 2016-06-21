@@ -1,5 +1,6 @@
 ---
 title: View Version Details
+summary: To view version details for a specific cockroach binary, run the cockroach version command.
 toc: false
 ---
 

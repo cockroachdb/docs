@@ -1,5 +1,6 @@
 ---
 title: BYTES
+summary: The BYTES data type stores binary strings of variable length.
 toc: false
 ---
 

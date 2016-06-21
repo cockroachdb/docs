@@ -1,5 +1,6 @@
 ---
 title: RENAME TABLE
+summary: The RENAME TABLE statement changes the name of a table.
 toc: false
 ---
 

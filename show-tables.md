@@ -1,5 +1,6 @@
 ---
 title: SHOW TABLES
+summary: The SHOW TABLES statement lists the tables in a database.
 toc: false
 ---
 

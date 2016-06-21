@@ -1,11 +1,10 @@
 ---
 title: RENAME COLUMN
+summary: The RENAME COLUMN statement changes the name of a column in a table.
 toc: false
 ---
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.
-
-{% include check_warning.html %}
 
 <div id="toc"></div>
 

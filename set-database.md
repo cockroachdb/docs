@@ -1,5 +1,6 @@
 ---
 title: SET DATABASE
+summary: The SET DATABASE statement sets the default database for the current session.
 toc: false
 ---
 

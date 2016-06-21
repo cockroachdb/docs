@@ -1,5 +1,6 @@
 ---
 title: Stop a Node
+summary: To stop a CockroachDB node running in the background, run the cockroach quit command.
 toc: false
 ---
 

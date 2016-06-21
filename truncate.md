@@ -1,5 +1,6 @@
 ---
 title: TRUNCATE
+summany: The TRUNCATE statement deletes all rows from a table.
 toc: false
 ---
 

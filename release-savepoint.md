@@ -1,5 +1,6 @@
 ---
 title: RELEASE SAVEPOINT
+summary: The RELEASE SAVEPOINT cockroach_restart statement commits a transaction's changes once there are no retryable errors.
 toc: false
 ---
 
