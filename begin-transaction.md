@@ -12,6 +12,9 @@ The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transacti
 
 {% include sql/diagrams/begin_transaction.html %}
 
+**iso_level ::=**
+{% include sql/diagrams/iso_level.html %}
+
 ## Required Privileges
 
 No [privileges](privileges.html) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
