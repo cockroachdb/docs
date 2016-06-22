@@ -18,7 +18,7 @@ CockroachDB comes with a single default `system` database, which contains Cockro
 CREATE DATABASE bank;
 ~~~
 
-Database names must follow [these rules](identifiers.html). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS bank;
