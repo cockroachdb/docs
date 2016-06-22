@@ -78,7 +78,7 @@ CREATE TABLE accounts (
 );
 ~~~
 
-Table and column names must follow [these rules](identifiers.html). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you don't explicitly define a `PRIMARY KEY`, CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
