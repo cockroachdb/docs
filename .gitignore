@@ -3,3 +3,4 @@
 .sass-cache
 _site
 generate/generate
+Gemfile.lock
