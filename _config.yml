@@ -10,7 +10,7 @@ theme_file: theme-blue.css
 highlighter: rouge
 markdown: kramdown
 
-exclude: ["choose-a-deployment-profile.md", "recommended-environments.md"]
+exclude: ["choose-a-deployment-profile.md", "recommended-environments.md", "vendor"]
 
 defaults:
   -
