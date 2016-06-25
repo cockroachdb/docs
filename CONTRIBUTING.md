@@ -28,7 +28,7 @@ Once you're ready to contribute:
 
 6.  Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`.
 
-    We'll review your changes, providing feedback and guidance as necessary. Also, CircleCI, the system we use to automate tests, will run the markdown files through Jekyll and then run [HTMLProofer](https://github.com/gjtorikian/html-proofer) against the resulting HTML output to check for errors. CircleCI will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the CircleCI fail status.    
+We'll review your changes, providing feedback and guidance as necessary. Also, CircleCI, the system we use to automate tests, will run the markdown files through Jekyll and then run [HTMLProofer](https://github.com/gjtorikian/html-proofer) against the resulting HTML output to check for errors. CircleCI will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the CircleCI fail status.    
 
 ## Keep Contributing
 
