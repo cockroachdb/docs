@@ -16,17 +16,19 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 Once you're ready to contribute:
 
-1. Fork the CockroachDB [docs repository](https://github.com/cockroachdb/docs).
+1.  Fork the CockroachDB [docs repository](https://github.com/cockroachdb/docs).
 
-2. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+2.  [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
 
-3. Make your changes.
+3.  Make your changes.
 
-4. [Build and test the docs locally](#build-and-test-the-docs-locally).
+4.  [Build and test the docs locally](#build-and-test-the-docs-locally).
 
-5. [Push to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
+5.  [Push to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
 
-6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls).
+6.  Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`.
+
+    We'll review your changes, providing feedback and guidance as necessary. Also, CircleCI, the system we use to automate tests, will run the markdown files through Jekyll and then run [HTMLProofer](https://github.com/gjtorikian/html-proofer) against the resulting HTML output to check for errors. CircleCI will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the CircleCI fail status.    
 
 ## Keep Contributing
 
@@ -75,7 +77,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 -   To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
 
--   To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following html where you want the toc to appear on the page:
+-   To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
     
     ``` html
     <div id="toc"></div>
@@ -119,7 +121,7 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
     - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
 
-    - When you make additional changes, Jekyll automatically regenerates the html content. No need to stop and re-start Jekyll; just refresh your browser.
+    - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser.
 
     Once you're done viewing your changes, use **CTRL + C** to stop the Jekyll server.
 
