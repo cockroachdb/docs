@@ -64,6 +64,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 **index_def ::=**
 {% include sql/diagrams/index_def.html %}
 
+**family_def ::=**
+{% include sql/diagrams/family_def.html %}
+
 **table_constraint ::=**
 {% include sql/diagrams/table_constraint.html %}
 </div>
