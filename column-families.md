@@ -4,15 +4,15 @@ summary:
 toc: false
 ---
 
-As of the `beta-20160629` release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. Storing column values in this way significantly reduces storage overhead. 
+As of the `beta-20160630` release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. Storing column values in this way significantly reduces storage overhead. 
 
-{{site.data.alerts.callout_info}}Tables created as of <code>beta-20160629</code> are not be compatible with earlier versions of CockroachDB.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}New tables created with multi-column families will not be compatible with versions of CockroachDB earlier than <code>beta-20160630</code>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ## Overview
 
-When a row is inserted into a table with column families, CockroachDB stores the values for each column family as a single key-value pair. For example, consider a table with 2 columns, where the columns are grouped into a column family:
+When a row is inserted into a table with column families, CockroachDB stores a single key-value pair per family. For example, consider a table with 2 columns, where the columns are grouped into a column family:
 
 ~~~ sql
 CREATE TABLE t1 (
@@ -22,7 +22,7 @@ CREATE TABLE t1 (
 );
 ~~~
 
-Inserting 10 rows into this table would create 10 underlying key-value pairs, 1 per row. In contrast, if the table's columns were not grouped into a family, each column and value would be a distinct key-value pair; thus, inserting 10 rows would create 20 underlying key-value pairs, 2 per row. 
+Inserting 10 rows into this table would create 10 underlying key-value pairs, 1 per row. This is a significant improvement over earlier versions of CockroachDB, where inserting 10 rows would have created 30 underlying key-value pairs, 3 per row: one key-value pair per column plus an extra key-value pair per row.  
 
 ## Using Column Families
 
@@ -74,7 +74,7 @@ SHOW CREATE TABLE t3;
 
 ## Upcoming Improvements
 
-In an upcoming release, you won't need to define column families manually. Instead, CockroachDB will group columns into families for you when a table is created. CockroachDB's default groupings will ensure optimal storage and performance, but you will still have the option to define your own groups using the `FAMILY` keyword, as show above. 
+In an upcoming release, you won't need to define column families manually. Instead, CockroachDB will group columns into families for you when a table is created. CockroachDB's default groupings will ensure reasonable storage and performance, but you will still have the option to define your own groups using the `FAMILY` keyword, as show above. 
 
 ## See Also
 
