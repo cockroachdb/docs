@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-As of the `beta-20160630` release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. Storing column values in this way significantly reduces storage overhead. 
+As of the `beta-20160630` release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. The reduced number of keys results in a smaller storage overhead and, even more signifcantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
 
 {{site.data.alerts.callout_info}}New tables created with multi-column families will not be compatible with versions of CockroachDB earlier than <code>beta-20160630</code>.{{site.data.alerts.end}}
 
@@ -31,7 +31,9 @@ Column families are defined at [table creation](create-table.html). Currently, w
 ~~~ sql
 CREATE TABLE t2 (
     a STRING PRIMARY KEY, 
-    b INT
+    b INT,
+    c BOOL,
+    d TIMESTAMP
 );
 
 SHOW CREATE TABLE t2;
@@ -41,9 +43,13 @@ SHOW CREATE TABLE t2;
 | t2    | CREATE TABLE t2 (␤                         |
 |       |     a STRING NOT NULL,␤                    |
 |       |     b INT NULL,␤                           |
+|       |     c BOOL NULL,␤                          |
+|       |     d TIMESTAMP NULL,␤                     |
 |       |     CONSTRAINT "primary" PRIMARY KEY (a),␤ |
 |       |     FAMILY "primary" (a),␤                 |
-|       |     FAMILY fam_2_b (b)␤                    |
+|       |     FAMILY fam_2_b (b),␤                   |
+|       |     FAMILY fam_3_c (c),␤                   |
+|       |     FAMILY fam_4_d (d)␤                    |
 |       | )                                          |
 +-------+--------------------------------------------+
 (1 row)
@@ -54,23 +60,36 @@ To group columns into multi-column families, you must use the `FAMILY` keyword, 
 ~~~ sql
 CREATE TABLE t3 (
     a STRING PRIMARY KEY, 
-    b INT, 
-    FAMILY f1 (a, b)
+    b INT,
+    c BOOL,
+    d TIMESTAMP,
+    FAMILY f1 (a, b),
+    FAMILY f2 (c, d)
 );
 
 SHOW CREATE TABLE t3;
 +-------+--------------------------------------------+
 | Table |                CreateTable                 |
 +-------+--------------------------------------------+
-| t3    | CREATE TABLE t3 (␤                         |
+| t30   | CREATE TABLE t30 (␤                        |
 |       |     a STRING NOT NULL,␤                    |
 |       |     b INT NULL,␤                           |
+|       |     c BOOL NULL,␤                          |
+|       |     d TIMESTAMP NULL,␤                     |
 |       |     CONSTRAINT "primary" PRIMARY KEY (a),␤ |
-|       |     FAMILY f1 (a, b)␤                      |
+|       |     FAMILY f1 (a, b),␤                     |
+|       |     FAMILY f2 (c, d)␤                      |
 |       | )                                          |
 +-------+--------------------------------------------+
 (1 row)
 ~~~
+
+## Column Family Recommendations
+
+When defining column families for a table, keep the following in mind:
+
+- Since column families reduce the number of underlying keys, it's best for performance to use as few families as is reasonable.
+- Try to avoid grouping columns that get updated a lot with columns that don't. If a small column that gets updated frequently is grouped with a big column that gets updated seldomly, the big column will be rewritten every time the small one is updated.  
 
 ## Upcoming Improvements
 
