@@ -130,5 +130,3 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
     ``` shell
     $ htmlproofer ./_site --allow-hash-href true
     ```
-
-    The same tests will be run when you open a pull request, and errors will prevent the PR from being merged, so it's best to find and resolve errors locally before opening a PR.
