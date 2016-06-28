@@ -31,7 +31,7 @@ Identifiers are most commonly used as names of objects like databases, tables, o
 
 ### Rules for Identifiers
 
-In our our [SQL grammar](sql-grammar.html), all values that accept an `identifier` must:
+In our [SQL grammar](sql-grammar.html), all values that accept an `identifier` must:
 
 - Begin with a Unicode letter or an underscore (_). Subsequent characters can be letters, underscores, digits (0-9), or dollar signs ($).
 - Not equal any [SQL keyword](#keywords) unless the keyword is accepted by the element's syntax. For example, [`name`](sql-grammar.html#name) accepts Unreserved or Column Name keywords.
