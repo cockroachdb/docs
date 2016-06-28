@@ -39,10 +39,10 @@ Parameter | Description
 ### Insert a Single Row
 
 ~~~
-INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
+> INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
 INSERT 1
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+---------+
 | id | balance |
 +----+---------+
@@ -53,7 +53,7 @@ SELECT * FROM accounts;
 If you don't list column names, the statement will use the columns of the table in their declared order:
 
 ~~~
-SHOW COLUMNS FROM accounts;
+> SHOW COLUMNS FROM accounts;
 +---------+---------+-------+----------------+
 |  Field  |  Type   | Null  |    Default     |
 +---------+---------+-------+----------------+
@@ -61,10 +61,10 @@ SHOW COLUMNS FROM accounts;
 | balance | DECIMAL | true  | NULL           |
 +---------+---------+-------+----------------+
 
-INSERT INTO accounts VALUES (2, 20000.75);
+> INSERT INTO accounts VALUES (2, 20000.75);
 INSERT 1
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -76,10 +76,10 @@ SELECT * FROM accounts;
 ### Insert Multiple Rows
 
 ~~~ 
-INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
+> INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
 INSERT 2
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -93,7 +93,7 @@ SELECT * FROM accounts;
 ### Insert from a `SELECT` Statement
 
 ~~~
-SHOW COLUMS FROM other_accounts;
+> SHOW COLUMS FROM other_accounts;
 +--------+---------+-------+---------+
 | Field  |  Type   | Null  | Default |
 +--------+---------+-------+---------+
@@ -101,10 +101,10 @@ SHOW COLUMS FROM other_accounts;
 | amount | DECIMAL | true  | NULL    |
 +--------+---------+-------+---------+
 
-INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+> INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
 INSERT 3
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -121,13 +121,13 @@ SELECT * FROM accounts;
 ### Insert Default Values
 
 ~~~
-INSERT INTO accounts (id) VALUES (8);
+> INSERT INTO accounts (id) VALUES (8);
 INSERT 1
 
-INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
+> INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
 INSERT 1
 
-SELECT * FROM accounts WHERE id in (8, 9);
+> SELECT * FROM accounts WHERE id in (8, 9);
 +----+---------+
 | id | balance |
 +----+---------+
@@ -135,10 +135,10 @@ SELECT * FROM accounts WHERE id in (8, 9);
 |  9 | NULL    |
 +----+---------+
 
-INSERT INTO accounts DEFAULT VALUES;
+> INSERT INTO accounts DEFAULT VALUES;
 INSERT 1
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +--------------------+----------+
 |         id         | balance  |
 +--------------------+----------+
@@ -158,21 +158,21 @@ SELECT * FROM accounts;
 ### Insert and Return Values
 
 ~~~ 
-INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
+> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
 +--------------------+
 |         id         |
 +--------------------+
 | 142935769332121601 |
 +--------------------+
 
-INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
+> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
 +--------------------+---------+
 |         id         | balance |
 +--------------------+---------+
 | 142935982200750081 |  250000 |
 +--------------------+---------+
 
-INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
+> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
 +-------------+
 | balance * 2 |
 +-------------+
@@ -185,13 +185,13 @@ INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called <code>excluded</code>. This example demonstrates how you use the columns in the temporary <code>excluded</code> table to apply updates on conflict:
 
 ~~~ 
-INSERT INTO accounts (id, balance) 
+> INSERT INTO accounts (id, balance) 
     VALUES (8, 500.50) 
     ON CONFLICT (id) 
     DO UPDATE SET balance = excluded.balance;
 INSERT 1
 
-SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM accounts WHERE id = 8;
 +----+---------+
 | id | balance |
 +----+---------+
@@ -204,27 +204,27 @@ SELECT * FROM accounts WHERE id = 8;
 In this example, we get an error from a uniqueness conflict:
 
 ~~~
-SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM accounts WHERE id = 8;
 +----+---------+
 | id | balance |
 +----+---------+
 |  8 |   500.5 |
 +----+---------+
 
-INSERT INTO accounts (id, balance) VALUES (8, 125.50);
+> INSERT INTO accounts (id, balance) VALUES (8, 125.50);
 pq: duplicate key value (id)=(8) violates unique constraint "primary"
 ~~~
 
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
 ~~~
-INSERT INTO accounts (id, balance) 
+> INSERT INTO accounts (id, balance) 
     VALUES (8, 125.50) 
     ON CONFLICT (id) 
     DO NOTHING;
 INSERT 1
 
-SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM accounts WHERE id = 8;
 +----+---------+
 | id | balance |
 +----+---------+
@@ -235,13 +235,13 @@ SELECT * FROM accounts WHERE id = 8;
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
 ~~~
-INSERT INTO accounts (id, balance)
+> INSERT INTO accounts (id, balance)
     VALUES (8, 125.50), (10, 450)
     ON CONFLICT (id)
     DO NOTHING;
 INSERT 2
 
-SELECT * FROM accounts WHERE id in (8, 10);
+> SELECT * FROM accounts WHERE id in (8, 10);
 +----+---------+
 | id | balance |
 +----+---------+

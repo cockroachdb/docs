@@ -41,7 +41,7 @@ ALTER TABLE db1.table1 RENAME TO db2.table1
 ### Rename a table
 
 ~~~ 
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+
@@ -49,10 +49,10 @@ SHOW TABLES FROM db1;
 | table2 |
 +--------+
 
-ALTER TABLE db1.table1 RENAME TO db1.tablea
+> ALTER TABLE db1.table1 RENAME TO db1.tablea
 RENAME TABLE
 
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+
@@ -64,7 +64,7 @@ SHOW TABLES FROM db1;
 ### Move a table
 
 ~~~ 
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+
@@ -73,7 +73,7 @@ SHOW DATABASES;
 | system   |
 +----------+
 
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+
@@ -81,23 +81,23 @@ SHOW TABLES FROM db1;
 | tablea |
 +--------+
 
-SHOW TABLES FROM db2;
+> SHOW TABLES FROM db2;
 +-------+
 | Table |
 +-------+
 +-------+
 
-ALTER TABLE db1.tablea RENAME TO db2.tablea
+> ALTER TABLE db1.tablea RENAME TO db2.tablea
 RENAME TABLE
 
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+
 | table2 |
 +--------+
 
-SHOW TABLES FROM db2;
+> SHOW TABLES FROM db2;
 +--------+
 | Table  |
 +--------+

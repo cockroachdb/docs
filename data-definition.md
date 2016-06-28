@@ -8,5 +8,6 @@ Click a topic for details.
 
 - [Keywords & Identifiers](keywords-and-identifiers.html)
 - [Constraints](constraints.html)
-- [NULL Handling](null-handling.html)
+- [Column Families](column-families.html)
 - [Indexes](indexes.html)  
+- [NULL Handling](null-handling.html)
