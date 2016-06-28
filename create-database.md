@@ -29,10 +29,10 @@ Parameter | Description
 
 ### Create a Database
 ~~~
-CREATE DATABASE bank;
+> CREATE DATABASE bank;
 CREATE DATABASE
 
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+
@@ -45,7 +45,7 @@ SHOW DATABASES;
 ### Create Fails (Name Already In Use)
 
 ~~~
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+
@@ -53,10 +53,10 @@ SHOW DATABASES;
 | system   |
 +----------+
 
-CREATE DATABASE bank;
+> CREATE DATABASE bank;
 pq: database "bank" already exists
 
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+
@@ -64,10 +64,10 @@ SHOW DATABASES;
 | system   |
 +----------+
 
-CREATE DATABASE IF NOT EXISTS bank;
+> CREATE DATABASE IF NOT EXISTS bank;
 CREATE DATABASE
 
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+

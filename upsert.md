@@ -50,7 +50,7 @@ INSERT INTO t (a, b, c)
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
 ~~~
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -58,10 +58,10 @@ SELECT * FROM accounts;
 |  2 | 20000.75 |
 +----+----------+
 
-UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
+> UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
 INSERT 1
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -76,7 +76,7 @@ SELECT * FROM accounts;
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
 ~~~
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -85,10 +85,10 @@ SELECT * FROM accounts;
 |  3 |   6325.2 |
 +----+----------+
 
-UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
+> UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
 INSERT 1
 
-SELECT * FROM accounts;
+> SELECT * FROM accounts;
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -103,7 +103,7 @@ SELECT * FROM accounts;
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE`](constraints.html#unique) constraint. Because the inserted `b` value is not unique, the `UPSERT` fails.
 
 ~~~
-SELECT * FROM unique_test;
+> SELECT * FROM unique_test;
 +---+---+
 | a | b |
 +---+---+
@@ -112,17 +112,17 @@ SELECT * FROM unique_test;
 | 3 | 3 |
 +---+---+
 
-UPSERT INTO unique_test VALUES (4, 1);
+> UPSERT INTO unique_test VALUES (4, 1);
 pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 ~~~
 
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the `UNIQUE` constraint.
 
 ~~~
-INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
+> INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
 INSERT 1
 
-SELECT * FROM unique_test;
+> SELECT * FROM unique_test;
 +---+---+
 | a | b |
 +---+---+

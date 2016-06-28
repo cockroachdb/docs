@@ -33,7 +33,7 @@ DROP DATABASE IF EXISTS db1;
 ## Example
 
 ~~~
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+
@@ -41,16 +41,16 @@ SHOW DATABASES;
 | system   |
 +----------+
 
-DROP DATABASE db1;
+> DROP DATABASE db1;
 DROP DATABASE
 
-DROP DATABASE db2;
+> DROP DATABASE db2;
 pq: database "db2" does not exist
 
-DROP DATABASE IF EXISTS db2;
+> DROP DATABASE IF EXISTS db2;
 DROP DATABASE
 
-SHOW DATABASES;
+> SHOW DATABASES;
 +----------+
 | Database |
 +----------+

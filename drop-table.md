@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS db1.table1, db1.table2;
 ## Example
 
 ~~~
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+
@@ -42,10 +42,10 @@ SHOW TABLES FROM db1;
 | table3 |
 +--------+
 
-DROP TABLE db1.table1, db1.table2;
+> DROP TABLE db1.table1, db1.table2;
 DROP TABLE
 
-SHOW TABLES FROM db1;
+> SHOW TABLES FROM db1;
 +--------+
 | Table  |
 +--------+

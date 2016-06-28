@@ -8,9 +8,9 @@ The `SHOW INDEX` [statement](sql-statements.html) returns index information for 
 
 <div id="toc"></div>
 
-## Synopsis
+## Required Privileges
 
-{% include sql/diagrams/show_index.html %}
+No [privileges](privileges.html) are required to show indexes for a table.
 
 ## Aliases
 
@@ -19,17 +19,15 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 - `SHOW INDEXES` 
 - `SHOW KEYS`
 
-## Required Privileges
+## Synopsis
 
-No [privileges](privileges.html) are required to show indexes for a table.
+{% include sql/diagrams/show_index.html %}
 
-## Usage
+## Parameters
 
-To show indexes for a table, use the `SHOW INDEX FROM` statement followed by the table name in `database.table` format:
-
-~~~ sql
-SHOW INDEX FROM db1.table1;
-~~~
+Parameter | Description
+----------|------------
+`var_name` | The name of the table for which you want to show indexes.
 
 ## Response
 
@@ -48,24 +46,27 @@ Field | Description
 ## Examples 
 
 ~~~
-CREATE TABLE db1.table1 (
+> CREATE TABLE t1 (
     a INT PRIMARY KEY,
     b DECIMAL,
     c TIMESTAMP,
     d STRING
-);
+  );
+CREATE TABLE
 
-CREATE INDEX b_c_idx ON db1.table1 (b, c) STORING (d);
+> CREATE INDEX b_c_idx ON t1 (b, c) STORING (d);
+CREATE INDEX
 
-SHOW INDEX FROM db1.table1;
+> SHOW INDEX FROM t1;
 +--------+---------+--------+-----+--------+-----------+---------+
 | Table  |  Name   | Unique | Seq | Column | Direction | Storing |
 +--------+---------+--------+-----+--------+-----------+---------+
-| table1 | primary | true   |   1 | a      | ASC       | false   |
-| table1 | b_c_idx | false  |   1 | b      | ASC       | false   |
-| table1 | b_c_idx | false  |   2 | c      | ASC       | false   |
-| table1 | b_c_idx | false  |   3 | d      | N/A       | true    |
+| t1     | primary | true   |   1 | a      | ASC       | false   |
+| t1     | b_c_idx | false  |   1 | b      | ASC       | false   |
+| t1     | b_c_idx | false  |   2 | c      | ASC       | false   |
+| t1     | b_c_idx | false  |   3 | d      | N/A       | true    |
 +--------+---------+--------+-----+--------+-----------+---------+
+(4 rows)
 ~~~
 
 ## See Also

@@ -83,7 +83,7 @@ where `<privileges>` is a comma-separated list of [privileges](#supported-privil
 Let's say you have an `animals` database containing two tables: 
 
 ~~~ 
-SHOW tables FROM animals;
+> SHOW tables FROM animals;
 +-------------+
 |    Table    |
 +-------------+
@@ -97,10 +97,10 @@ You want the `maxroach` user to have the `SELECT` privilege on both tables, and 
 First, you grant the `maxroach` user the `SELECT` privilege on the two current tables:
 
 ~~~ 
-GRANT SELECT ON animals.* TO maxroach;
+> GRANT SELECT ON animals.* TO maxroach;
 GRANT
 
-SHOW GRANTS ON animals.* FOR maxroach;
+> SHOW GRANTS ON animals.* FOR maxroach;
 +-----------+----------+------------+
 |   Table   |   User   | Privileges |
 +-----------+----------+------------+
@@ -112,10 +112,10 @@ SHOW GRANTS ON animals.* FOR maxroach;
 Next, you grant the `betsyroach` user the `ALL` privilege on the two current tables:
 
 ~~~ 
-GRANT ALL ON animals.* TO betsyroach;
+> GRANT ALL ON animals.* TO betsyroach;
 GRANT
 
-SHOW GRANTS ON animals.* FOR betsyroach;
+> SHOW GRANTS ON animals.* FOR betsyroach;
 +-----------+------------+------------+
 |   Table   |    User    | Privileges |
 +-----------+------------+------------+
@@ -127,10 +127,10 @@ SHOW GRANTS ON animals.* FOR betsyroach;
 Finally, you grant the `betsyroach` user the `ALL` privilege on the `animals` database to ensure that the user retains the privilege for all new tables created in the database:
 
 ~~~ 
-GRANT ALL ON DATABASE animals TO betsyroach;
+> GRANT ALL ON DATABASE animals TO betsyroach;
 GRANT
 
-SHOW GRANTS ON DATABASE animals FOR betsyroach;
+> SHOW GRANTS ON DATABASE animals FOR betsyroach;
 +----------+------------+------------+
 | Database |    User    | Privileges |
 +----------+------------+------------+
@@ -141,10 +141,10 @@ SHOW GRANTS ON DATABASE animals FOR betsyroach;
 Whenever a new table is created in the `animals` database, the `betsyroach` user will inherit the `ALL` privilege on the table:
 
 ~~~ 
-CREATE TABLE animals.cockroaches (name STRING, count INT);
+> CREATE TABLE animals.cockroaches (name STRING, count INT);
 CREATE TABLE
 
-SHOW GRANTS ON animals.cockroaches FOR betsyroach;
+> SHOW GRANTS ON animals.cockroaches FOR betsyroach;
 +-------------+------------+------------+
 |    Table    |    User    | Privileges |
 +-------------+------------+------------+

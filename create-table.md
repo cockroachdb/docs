@@ -79,7 +79,7 @@ Parameter | Description
 `any_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table level as part of the table's creation. Use the `SHOW CREATE TABLE` statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table but can have the same name as columns or constraints. See the [Create a Table with Secondary Indexes](#create-a-table-with-secondary-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
-`family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.  
+`family_def` | An optional, comma-separated list of [column family definitions](column-families.html). A column family is a group of columns that are stored as a single key-value pair in the underlying key-value layer. The reduced number of keys results in a smaller storage overhead and, even more signifcantly, in improved performance during data manipulation. Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.  
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 
 ## Examples
@@ -90,11 +90,8 @@ In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-~~~ sql
-> CREATE TABLE logon (
-    user_id INT, 
-    logon_date DATE
-  );
+~~~ 
+> CREATE TABLE logon (user_id INT, logon_date DATE);
 CREATE TABLE
 
 > SHOW COLUMNS FROM logon;
@@ -105,6 +102,7 @@ CREATE TABLE
 | logon_date | DATE | true  | NULL           |
 | rowid      | INT  | false | unique_rowid() |
 +------------+------+-------+----------------+
+(3 rows)
 
 > SHOW INDEX FROM logon;
 +-------+---------+--------+-----+--------+-----------+---------+
@@ -112,14 +110,22 @@ CREATE TABLE
 +-------+---------+--------+-----+--------+-----------+---------+
 | logon | primary | true   |   1 | rowid  | ASC       | false   |
 +-------+---------+--------+-----+--------+-----------+---------+
+(1 row)
 ~~~
 
 ### Create a Table (Primary Key Defined)
 
 In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](constraints.html#primary-key), another is given the [`UNIQUE`](constraints.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
 
+Also, since all three columns are likely to be small, we group them into a single [column family](column-families.html). As a result, each row inserted will be stored as a single key-value pair in the underlying key-value layer, thus reducing the storage overhead and improving performance during data manipulation. 
+
 ~~~ 
-> CREATE TABLE logoff (user_id INT PRIMARY KEY, user_email STRING UNIQUE, logoff_date DATE);
+> CREATE TABLE logoff (
+    user_id INT PRIMARY KEY, 
+    user_email STRING UNIQUE, 
+    logoff_date DATE,
+    FAMILY f1 (user_id, user_email, logoff_date)
+);
 CREATE TABLE
 
 > SHOW COLUMNS FROM logoff;
@@ -130,6 +136,7 @@ CREATE TABLE
 | user_email  | STRING | true  | NULL    |
 | logoff_date | DATE   | true  | NULL    |
 +-------------+--------+-------+---------+
+(3 rows)
 
 > SHOW INDEX FROM logoff;
 +--------+-----------------------+--------+-----+------------+-----------+---------+
@@ -138,6 +145,7 @@ CREATE TABLE
 | logoff | primary               | true   |   1 | user_id    | ASC       | false   |
 | logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
 +--------+-----------------------+--------+-----+------------+-----------+---------+
+(2 rows)
 ~~~
 
 ### Create a Table With Secondary Indexes
@@ -176,15 +184,16 @@ CREATE TABLE
 | product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   |
 | product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   |
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
+(6 rows)
 ~~~
 
 An alternate way to create secondary indexes would be to use [`CREATE INDEX`](create-index.html) statements once the table has been created:
 
 ~~~
-CREATE INDEX date_added_idx ON product_information (date_added);
+> CREATE INDEX date_added_idx ON product_information (date_added);
 CREATE INDEX
 
-CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
+> CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
 CREATE INDEX
 ~~~
 
@@ -193,12 +202,20 @@ CREATE INDEX
 To show the definition of a table, use the `SHOW CREATE TABLE` statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
 ~~~ 
-> SHOW CREATE TABLE logon;
-+-------+------------------------------------------------------------------------+
-| Table |                              CreateTable                               |
-+-------+------------------------------------------------------------------------+
-| logon | "CREATE TABLE logon (\n\tuser_id INT NULL,\n\tlogon_date DATE NULL\n)" |
-+-------+------------------------------------------------------------------------+
+> SHOW CREATE TABLE logoff;
++--------+-------------------------------------------------------+
+| Table  |                      CreateTable                      |
++--------+-------------------------------------------------------+
+| logoff | CREATE TABLE logoff (␤                                |
+|        |     user_id INT NOT NULL,␤                            |
+|        |     user_email STRING NULL,␤                          |
+|        |     logoff_date DATE NULL,␤                           |
+|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),␤      |
+|        |     UNIQUE INDEX logoff_user_email_key (user_email),␤ |
+|        |     FAMILY f1 (user_id, user_email, logoff_date)␤     |
+|        | )                                                     |
++--------+-------------------------------------------------------+
+(1 row)
 ~~~
 
 ## See Also
