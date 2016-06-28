@@ -164,7 +164,7 @@ $(document).ready(function(){
 <h2>Build from Source</h2>
 <ol>
   <li>
-    <p>Make sure you have the following prerequisites:</p>
+    <p>Install the following prerequisites, as necessary:</p>
 
     <ul>
       <li>
@@ -174,9 +174,10 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+</p>
+        <p>Git 1.8+.</p>
       </li>
     </ul>
+    <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
     <p>Get the CockroachDB code:</p>
@@ -310,7 +311,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Make sure you have the following prerequisites:</p>
+    <p>Install the following prerequisites, as necessary:</p>
 
     <ul>
       <li>
@@ -320,9 +321,10 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+</p>
+        <p>Git 1.8+.</p>
       </li>
     </ul>
+    <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
     <p>Get the CockroachDB code:</p>
