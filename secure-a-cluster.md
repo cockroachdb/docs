@@ -65,8 +65,8 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 4.  Restart additional nodes:
 
     ~~~ shell
-    $ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
-    $ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=node2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=node3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
