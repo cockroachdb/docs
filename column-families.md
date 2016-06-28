@@ -71,7 +71,7 @@ SHOW CREATE TABLE t3;
 +-------+--------------------------------------------+
 | Table |                CreateTable                 |
 +-------+--------------------------------------------+
-| t30   | CREATE TABLE t30 (␤                        |
+| t3    | CREATE TABLE t3 (␤                         |
 |       |     a STRING NOT NULL,␤                    |
 |       |     b INT NULL,␤                           |
 |       |     c BOOL NULL,␤                          |
@@ -84,12 +84,26 @@ SHOW CREATE TABLE t3;
 (1 row)
 ~~~
 
-## Column Family Recommendations
+## Restrictions and Recommendations
 
 When defining column families for a table, keep the following in mind:
 
+-   By default, columns that are part of the primary index are assigned to the first column family. If you manually assign primary index columns to a family, it must be the first family listed in the `CREATE TABLE` statement.  
+
 - Since column families reduce the number of underlying keys, it's best for performance to use as few families as is reasonable.
-- Try to avoid grouping columns that get updated a lot with columns that don't. If a small column that gets updated frequently is grouped with a big column that gets updated seldomly, the big column will be rewritten every time the small one is updated.  
+
+- Avoid grouping columns that get updated a lot with columns that don't. If a small column that gets updated frequently is grouped with a big column that gets updated seldomly, the big column will be rewritten every time the small one is updated.  
+
+-   By default, `STRING` columns with no length limit and `DECIMAL` columns with no precision are assigned to their own families. When you know that such columns will be small, it's best to assign them to families with other columns. For example, for a table such as the following, where you know that user names and addresses will be relatively small, you could assign all of the columns to one family: 
+
+    ~~~ sql
+    CREATE TABLE users (
+        id SERIAL PRIMARY KEY, 
+        name STRING, 
+        address STRING, 
+        FAMILY f1 (id, name, address)
+    );
+    ~~~
 
 ## Upcoming Improvements
 
