@@ -219,17 +219,10 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/mac/">Install Docker</a>.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>.</p><p><strong>Docker for Mac</strong> is Docker's native OS X application, currently in public beta. It's a lot simpler to use than Docker Toolbox; whereas Toolbox requires manual setup and management of virtual machines and makes it hard to use volumes to persist data, Docker for Mac provisions a VM at install time and works correctly with volumes. That said, you can use Docker Toolbox with CockroachDB if you prefer; you'll just need to <a href="https://docs.docker.com/machine/get-started/">create a local VM and point your environment to it</a>.</p>
   </li>
   <li>
-    <p>Open <strong>Launchpad</strong> and start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>
-
-    <p>If you’d rather do this manually, run:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
-<span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
-</code></pre>
-    </div>
+    <p>If it's not already running, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
@@ -368,10 +361,10 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Install Docker</a>.</p>
+    <p>Install <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker for Linux</a>.</p>
   </li>
   <li>
-    <p>If you don’t already have the Docker daemon running in the background, run:</p>
+    <p>If the Docker daemon is not already running in the background, run:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="gp" data-eventcategory="linux-docker-step2">$ </span>sudo docker -d &amp;</code></pre>
     </div>
@@ -407,21 +400,14 @@ $(document).ready(function(){
 </div>
 
 <div id="windowsinstall" style="display: none;">
-<p>You can run CockroachDB on Windows from within a Docker virtual machine, which is a stripped-to-basics version of a Linux operating system. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<p>At this time, it's possible to run CockroachDB on Windows only from within a Docker virtual environment. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version of CockroachDB.</p>
 
 <ol>
   <li>
-    <p><a href="https://docs.docker.com/engine/installation/windows/">Install Docker</a>.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>.</p><p><strong>Docker for Windows</strong> is Docker's native Windows application, currently in public beta. It's a lot simpler to use than Docker Toolbox; whereas Toolbox requires manual setup and management of virtual machines and makes it hard to use volumes to persist data, Docker for Windows provisions a VM at install time and works correctly with volumes. That said, you can use Docker Toolbox with CockroachDB if you prefer; you'll just need to <a href="https://docs.docker.com/machine/get-started/">create a local VM and point your environment to it</a>.</p>
   </li>
   <li>
-    <p>Start the <strong>Docker Quickstart Terminal</strong>. This opens a new shell, creates and starts a default Docker virtual machine (VM), and points the terminal environment to this VM.</p>
-
-    <p>If you’d rather do this manually, run:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>docker-machine create --driver virtualbox default
-<span class="gp">$ </span><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>docker-machine env default<span class="k">)</span><span class="s2">"</span>
-</code></pre>
-    </div>    
+    <p>If it's not already running, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
