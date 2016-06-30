@@ -4,9 +4,9 @@ summary:
 toc: false
 ---
 
-As of the `beta-20160630` release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. The reduced number of keys results in a smaller storage overhead and, even more signifcantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
+As of the [`beta-20160629`](beta-20160629.html) release, CockroachDB supports **column families**. A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value layer. The reduced number of keys results in a smaller storage overhead and, even more signifcantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
 
-{{site.data.alerts.callout_info}}New tables created with multi-column families will not be compatible with versions of CockroachDB earlier than <code>beta-20160630</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}New tables created with multi-column families will not be compatible with versions of CockroachDB earlier than <code>beta-20160629</code>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
