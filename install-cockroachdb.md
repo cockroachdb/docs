@@ -219,10 +219,14 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>.</p><p><strong>Docker for Mac</strong> is Docker's native OS X application, currently in public beta. It's a lot simpler to use than Docker Toolbox; whereas Toolbox requires manual setup and management of virtual machines and makes it hard to use volumes to persist data, Docker for Mac provisions a VM at install time and works correctly with volumes. That said, you can use Docker Toolbox with CockroachDB if you prefer; you'll just need to <a href="https://docs.docker.com/machine/get-started/">create a local VM and point your environment to it</a>.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>.</p>
   </li>
   <li>
-    <p>If it's not already running, start the <strong>Docker</strong> application.</p>
+    <p>Confirm that the Docker daemon is running in the background:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>$ docker version</code></pre>
+    </div>
+    <p>If you don't see the server listed, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
@@ -364,7 +368,11 @@ $(document).ready(function(){
     <p>Install <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker for Linux</a>.</p>
   </li>
   <li>
-    <p>If the Docker daemon is not already running in the background, run:</p>
+    <p>Confirm that the Docker daemon is running in the background:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo docker version</code></pre>
+    </div>
+    <p>If you don't see the server listed, run:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="gp" data-eventcategory="linux-docker-step2">$ </span>sudo docker -d &amp;</code></pre>
     </div>
@@ -404,10 +412,14 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>.</p><p><strong>Docker for Windows</strong> is Docker's native Windows application, currently in public beta. It's a lot simpler to use than Docker Toolbox; whereas Toolbox requires manual setup and management of virtual machines and makes it hard to use volumes to persist data, Docker for Windows provisions a VM at install time and works correctly with volumes. That said, you can use Docker Toolbox with CockroachDB if you prefer; you'll just need to <a href="https://docs.docker.com/machine/get-started/">create a local VM and point your environment to it</a>.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>.
   </li>
   <li>
-    <p>If it's not already running, start the <strong>Docker</strong> application.</p>
+    <p>Confirm that the Docker daemon is running in the background:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>$ docker version</code></pre>
+    </div>
+    <p>If you don't see the server listed, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
