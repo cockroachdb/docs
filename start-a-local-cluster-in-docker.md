@@ -55,7 +55,7 @@ This command creates a container and starts the first CockroachDB node inside it
 - `--hostname`: The hostname for the container. You will use this to join other containers/nodes to the cluster.
 - `--net`: The bridge network for the container to join. See step 1 for more details.
 - `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port of HTTP requests from the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
-- `-v $(PWD)/cockroach-data/roach1:/cockroach/cockroach-data`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `$(PWD)/cockroach-data/roach1` on your host and will persist after the container is stopped or deleted. For more details about volumes, see Docker's <a href="https://docs.docker.com/engine/userguide/containers/dockervolumes/">Manage data in containers</a> topic.
+- `-v $(PWD)/cockroach-data/roach1:/cockroach/cockroach-data`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `$(PWD)/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details about volumes, see Docker's <a href="https://docs.docker.com/engine/userguide/containers/dockervolumes/">Manage data in containers</a> topic.
 - `cockroachdb/cockroach:{{site.data.strings.version}} start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode. 
 
 ## Step 3. Start additional containers/nodes
@@ -67,8 +67,8 @@ $ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v $(PWD)/cock
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
-- `-P`: This flag maps each container's exposed ports to random ports on the host. This random mapping is fine since we've already mapped the relevant ports for the first container.
-- `-v`: For each container, this flag mounts a unique host directory as a data volume. Data and logs for these nodes will be stored in `$(PWD)/cockroach-data/roach2` and `$(PWD)/cockroach-data/roach3` on your host and will persist after the containers are stopped or deleted.
+- `-P`: This flag maps exposed ports to random ports on the host. This random mapping is fine since we've already mapped the relevant ports for the first container.
+- `-v`: This flag mounts a host directory as a data volume. Data and logs for these nodes will be stored in `$(PWD)/cockroach-data/roach2` and `$(PWD)/cockroach-data/roach3` on the host and will persist after the containers are stopped or deleted.
 - `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
 ## Step 4. Use the built-in SQL client
@@ -132,7 +132,7 @@ root@:26257> SHOW DATABASES;
 
 ## Step 5. Open the Admin UI
 
-When you started your first container/node, you mapped the node's default HTTP port `8080` to port `8080` on your host. To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started your first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
