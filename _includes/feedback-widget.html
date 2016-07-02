@@ -1,0 +1,47 @@
+<!-- Helpful? question with Yes and No buttons. Yes button submits directly to hubspot via the forms api. No button triggers a popup with an embedded hubspot form. -->
+
+<div id="feedback-prompt">
+  <p class="feedback-question">Was this page helpful?</p>
+  <form action='https://forms.hubspot.com/uploads/form/v2/1753393/6739d0dd-8ecb-40a6-a814-d6f84b05a6ee' method="post">
+    <input name="helpful" value="yes" type="hidden">
+    <input name="hs_context" value='{"pageTitle":"{{page.title}}"}' type="hidden">
+    <button class="yes-button">Yes</button>
+  </form>
+  <a href="#feedback-popup" class="no-button">No</a>
+</div>
+
+<div id="feedback-popup" class="white-popup mfp-hide">
+  <!--[if lte IE 8]>
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+  <![endif]-->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+  <script>
+    hbspt.forms.create({ 
+      css: '',
+      portalId: '1753393',
+      formId: '6739d0dd-8ecb-40a6-a814-d6f84b05a6ee'
+    });
+  </script>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.no-button').magnificPopup({
+      type:'inline',
+      midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+    });
+  });
+</script>
+
+
+<!-- Alternate design: stars for rating the page. Clicking a star opens a feedback modal.
+<div class="rating" data-toggle="modal" data-target="#feedback">
+  <p><i>Was this page helpful?</i></p>
+  <ul>
+    <li><p class="vote 1" id="vote" data-toggle="tooltip" data-container="body" title="Unusable">&starf;</p></li>
+    <li><p class="vote 2" id="vote" data-toggle="tooltip" data-container="body" title="Poor">&starf;</p></li>
+    <li><p class="vote 3" id="vote" data-toggle="tooltip" data-container="body" title="OK">&starf;</p></li>
+    <li><p class="vote 4" id="vote" data-toggle="tooltip" data-container="body" title="Good">&starf;</p></li>
+    <li><p class="vote 5" id="vote" data-toggle="tooltip" data-container="body" title="Exellent">&starf;</p></li>
+  </ul> 
+</div> -->
