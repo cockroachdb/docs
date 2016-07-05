@@ -42,9 +42,9 @@ table td:first-child {
 
 To create an index of one or more columns, use the following syntax:
 
-```
+~~~
 CREATE INDEX ON <table> (<columns>);
-```
+~~~
 
 - `<table>` is the table you want to use for the index.
 - `<columns>` is a comma-separated list of column names you want to index.
@@ -55,9 +55,9 @@ When deciding to create indexes of multiple columns, see [Indexes: Best Practice
 
 To create an index that stores columns, use the following syntax:
 
-```
+~~~
 CREATE INDEX ON <table> (<indexed columns>) STORING (<stored columns>);
-```
+~~~
 
 - `<table>` is the table you want to use for the index.
 - `<indexed columns>` is a comma-separated list of column names you want to index.
@@ -69,9 +69,9 @@ For information on when to use `STORING`, see [Indexes: Storing Columns](indexes
 
 To query a specific index (instead of letting CockroachDB select the best set of indexes), use the following syntax:
 
-```
+~~~
 ... FROM <table>@<index> ...
-```
+~~~
 
 - `<table>` is the name of the table the index is on.
 - `<index>` is the name of the index you want to use. To find an index's name, use [`SHOW INDEX`](show-index.html).
@@ -85,13 +85,13 @@ The goal of indexes is to reduce the number of rows SQL has to scan when queryin
 
 Let's get started by creating a table with a few columns:
 
-```sql
+~~~sql
 CREATE TABLE products (id INT PRIMARY KEY, name STRING, price DECIMAL, stock INT);
-```
+~~~
 
 Because our table contains a [`PRIMARY KEY`](constraints.html#primary-key), CockroachDB automatically creates an index called `@primary`. Here's an example of what queries using the primary key look like:
 
-```sql
+~~~sql
 EXPLAIN SELECT name, price FROM products WHERE id = 1;
 
 +-------+------+------------------------+
@@ -99,13 +99,13 @@ EXPLAIN SELECT name, price FROM products WHERE id = 1;
 +-------+------+------------------------+
 |     0 | scan | products@primary /1-/2 |
 +-------+------+------------------------+
-```
+~~~
 
 You can read the description as, "Scan through the product table's primary index for values starting at 1 but less than 2."
 
 However, until we create additional indexes, `@primary` is the only index SQL can use regardless of the columns we search. For example, searching another column gives us...
 
-```sql
+~~~sql
 EXPLAIN SELECT name FROM products WHERE stock > 0;
 
 +-------+------+--------------------+
@@ -113,7 +113,7 @@ EXPLAIN SELECT name FROM products WHERE stock > 0;
 +-------+------+--------------------+
 |     0 | scan | products@primary - |
 +-------+------+--------------------+
-```
+~~~
 
 `@primary` only sorts the primary key, so SQL has to scan each row one-by-one (shown by `-` in the description) to find `stock` values matching the filter.
 
@@ -122,7 +122,7 @@ In terms of performance, scanning every row is the worst-case scenario. Every ti
 To improve the query's performance, let's create an index for `stock`. (You don't normally need to choose names for your indexes, but we will for our examples.)
 
 
-```sql
+~~~sql
 CREATE INDEX byStock ON products (stock);
 
 EXPLAIN SELECT name FROM products WHERE stock > 0;
@@ -134,13 +134,13 @@ EXPLAIN SELECT name FROM products WHERE stock > 0;
 |     1 | scan       | products@byStock /1- |
 |     1 | scan       | products@primary     |
 +-------+------------+----------------------+
-```
+~~~
 
 SQL still had to use `@primary` to get values from `name`, which `@byStock` doesn't include. Despite that, CockroachDB calculates this plan is likely faster than scanning every row of `@primary`. Note that this scan of `@primary` doesn't examine every row (indicated by the absence of `-`), only those that `@byStock` returns.
 
 If this is a common type of query, we can improve its performance by storing `name` in an index with `stock`, removing the need to use `@primary`. We want to _store_ instead of _index_ `name` because its values aren't filtered; sorting them won't improve the query's performance.
 
-```sql
+~~~sql
 CREATE INDEX byStock_storeName ON products (stock) STORING (name);
 
 EXPLAIN SELECT name FROM products WHERE stock>0;
@@ -150,11 +150,11 @@ EXPLAIN SELECT name FROM products WHERE stock>0;
 +-------+------+----------------------------------+
 |     0 | scan | products@byStock_storeName /1-   |
 +-------+------+----------------------------------+
-```
+~~~
 
 Predictably, if we add another column to the `WHERE` clause (we'll use `price`), SQL is going to have to use `@primary` to find the values.
 
-```sql
+~~~sql
 EXPLAIN SELECT name FROM products WHERE stock > 0 AND price >= 10;
 
 +-------+------------+----------------------+
@@ -164,11 +164,11 @@ EXPLAIN SELECT name FROM products WHERE stock > 0 AND price >= 10;
 |     1 | scan       | products@byStock /1- |
 |     1 | scan       | products@primary     |
 +-------+------------+----------------------+
-```
+~~~
 
 Again, if this is a common query whose performance matters, we can index the column along with the others. This time we should _index_ `price` so it's sorted because the query filters its values.
 
-```sql
+~~~sql
 CREATE INDEX byStockPrice_storeName ON products (stock, price) STORING (name);
 
 EXPLAIN SELECT name FROM products WHERE stock>0 AND price >= 10;
@@ -178,7 +178,7 @@ EXPLAIN SELECT name FROM products WHERE stock>0 AND price >= 10;
 +-------+------+------------------------------------------+
 |     0 | scan | products@byStockPrice_storeName /1/10-   |
 +-------+------+------------------------------------------+
-```
+~~~
 
 Before planning your database's indexes, you should also review [Indexes: Best Practices](indexes.html#best-practices).
 

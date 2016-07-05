@@ -14,9 +14,9 @@ Indexes copy and sort a column's values (without sorting the values in the table
 
 For example, if you index an `INT` column and then search it for rows that equal 10:
 
-```
+~~~
 SELECT * FROM <table> WHERE <column> = 10;
-```
+~~~
 
 SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate _every_ row in the column for values equalling 10.
 
@@ -48,15 +48,15 @@ Stored columns are not sorted, unlike indexed columns, which are. This means you
 
 For example, to optimize the performance of the following query...
 
-```
+~~~
 SELECT <column 1>, <column 2> FROM <table> WHERE <column 1> = 10;
-```
+~~~
 
 ...you would index `<column 1>` and store `<column 2>`:
 
-```
+~~~
 CREATE INDEX ON <table> (<column 1>) STORING (<column 2>);
-```
+~~~
 
 
 ## Technical Details
