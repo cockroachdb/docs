@@ -10,6 +10,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 The project is currently in **Beta**. For details about upcoming features, see the [Roadmap](https://github.com/cockroachdb/cockroach/wiki).
 
+<br>
 <div class="row">
 <div class="col-md-4 roach">
     <a href="install-cockroachdb.html">
@@ -32,13 +33,15 @@ The project is currently in **Beta**. For details about upcoming features, see t
     </a>
 </div>
 </div>
+<br>
 
 ---
 
+<br>
 <div class="recent-articles" markdown="1">
 
 ## Recent Articles By CockroachDB Engineers
-
+<br>
 **[Time-Travel Queries: SELECT witty_subtitle FROM THE FUTURE](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)**
 
 **[Outsmarting Go Dependencies in Testing Code](https://www.cockroachlabs.com/blog/outsmarting-go-dependencies-testing-code/)**
