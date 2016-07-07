@@ -21,8 +21,7 @@ This process assumes the following:
 
 ## Recommendations
 
-- Put each node on a different machine. Since CockroachDB replicates across nodes, placing more than one node on a single machine increases the risk of data unavailability when a machine fails.  
-- Run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. CockroachDB needs moderately accurate time; if the machines' clocks drift too far apart, transactions will never succeed and the cluster will crash. 
+For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 ## Deploy an Insecure Cluster
 
