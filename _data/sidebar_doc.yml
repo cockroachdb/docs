@@ -52,6 +52,10 @@ entries:
 
     - title: Deploy
       items:
+
+        - title: Recommended Production Settings
+          url: /recommended-production-settings.html
+
         - title: Manual Deployment
           url: /manual-deployment.html
 
