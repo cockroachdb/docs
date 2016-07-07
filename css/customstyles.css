@@ -1686,7 +1686,9 @@ span.muted {
   color: #C0C0C0; }
 
 table code {
-  background-color: transparent; }
+  background-color: transparent; 
+  font-weight: bold;
+}
 
 .highlight .err {
   color: #a61717;
