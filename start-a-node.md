@@ -33,7 +33,8 @@ Flag | Description
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to start a secure node. 
 `--cert` | The path to the [node certificate](create-security-certificates.html). This flag is required to start a secure node.
 `--host` | The address to listen on for internal and client communication. The node also advertises itself to other nodes using this address. Therefore, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>When running an insecure local cluster (without `--insecure` and without cert flags), this defaults to `localhost` and cannot be changed. When running an insecure distributed cluster (with `--insecure` but without cert flags) or a secure local or distributed cluster (without `--insecure` but with cert flags), this can be an external address.
-`--http-port` | The port to listen on for HTTP requests from the Admin UI. <br><br>**Default:** 8080
+`--http-port` | The port to listen on for HTTP requests to the Admin UI. <br><br>**Default:** 8080
+`--http-addr` | The IP address or hostname to bind for Admin UI HTTP requests. <br><br>**Default:** same as --host
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.
 `--join` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node. Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list.
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
@@ -84,9 +85,9 @@ $ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=l
 $ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257
 
 # Secure:
-$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key  
-$ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
-$ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
+$ cockroach start --http-addr=127.0.0.1 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key  
+$ cockroach start --store=cockroach-data2 --port=26258 --http-port=8081 --http-addr=127.0.0.1 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
+$ cockroach start --store=cockroach-data3 --port=26259 --http-port=8082  --http-addr=127.0.0.1 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key
 ~~~
 
 ### Start a distributed cluster

@@ -142,17 +142,17 @@ Store the CA key somewhere safe and keep a backup; if you lose it, you will not 
 Copy the `cockroach` binary, CA certificate, and node 1 certificate and key to the first machine and then start the node:
 
 ~~~ shell
-$ cockroach start --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname>
+$ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname>
 ~~~
 
-This command specifies the location of certificates and the address at which other nodes can reach it. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html). 
+This command specifies the location of certificates and the address at which other nodes can reach it. It also restricts the http Admin UI to 127.0.0.1 traffic only. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI port 8080. To set these options manually, see [Start a Node](start-a-node.html). 
 
 ### 3. Set up the second node
 
 Copy the `cockroach` binary, CA certificate, and node 2 certificate and key to the second machine and then start the node:
 
 ~~~ shell
-$ cockroach start --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --join=<node1-hostname>:26257
+$ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --join=<node1-hostname>:26257
 ~~~
 
 The only difference when starting the second node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
@@ -211,16 +211,26 @@ For a list of recommended drivers that we've tested, see [Install Client Drivers
 
 ### 8. Monitor your cluster
 
-The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
+The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To view the secured Admin UI on remote node1.example.com, first establish an ssh tunnel, then point your browser to the URL in the `admin` field listed in the standard output of any node on startup. For example, your start command may have gaven output like this:
 
 ~~~ shell
-$ cockroach start --insecure --host=node1.example.com
+$ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=node1.example.com
 build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     https://node1.example.com:8080 <-------------------------------- USE THIS URL
+admin:     https://127.0.0.1:8080 <-------------- ESTABLISH SSH TUNNEL TO HERE
 sql:       postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...
 logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
+
+Here is how to use ssh to tunnel port 8081 from your desktop to the node1.example.com cluster node:
+
+~~~ shell
+$ ssh -L 8081:127.0.0.1:8080 node1.example.com
+~~~
+
+(See the ssh man pages for details the -L port forwarding command)[http://linuxcommand.org/man_pages/ssh1.html]. Once the ssh login is complete, you may just leave the remote shell open in the terminal window. This allows you to easily monitor the tunnel, should network problems cause a disconnect.
+
+Continuing the example above, you would point your browser to `https://127.0.0.1:8081` to view the Admin UI. The ssh tunnel takes care of securely routing this traffic to port 8080 on the node1.example.com, without exposing the Admin UI to the public world.
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
