@@ -46,7 +46,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 3.  Restart the first node:
  
     ~~~ shell
-    $ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-addr=127.0.0.1 --background
 
     build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
     admin:     https://ROACHs-MBP:8080
@@ -58,21 +58,21 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure3">Details</button>
     <div id="details-secure3" class="collapse" markdown="1">
 
-    This command restarts your first node with its existing data, but securely. The command is the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
+    This command restarts your first node with its existing data, but securely. The command is the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. It also uses the --http-addr command to bind the http Admin UI to a non-public IP. This restricts access to the Admin UI to those who are authorized to establish an ssh tunnel to the host, as demonstrated below.
 
     </div>
 
 4.  Restart additional nodes:
 
     ~~~ shell
-    $ cockroach start --store=node2 --port=26258 --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
-    $ cockroach start --store=node3 --port=26259 --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=node2 --port=26258 --http-port=8081 --http-addr=127.0.0.1 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+    $ cockroach start --store=node3 --port=26259 --http-port=8082 --http-addr=127.0.0.1 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
     ~~~
 
     <button type="button" class="btn details collapsed" data-toggle="collapse" data-target="#details-secure4">Details</button>
     <div id="details-secure4" class="collapse" markdown="1">
 
-    These commands restart additional nodes with their existing data, but securely. The commands are the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
+    These commands restart additional nodes with their existing data, but securely. The commands are the same as before but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. The additional `--http-addr` restricts access to the http Admin UI interface, so that only local 127.0.0.1 or ssh-tunnelled administrators may access it.
 
     </div>
 
@@ -119,7 +119,7 @@ Now that you have a [local cluster](start-a-local-cluster.html) up and running, 
 
     When you're done using the SQL shell, press **CTRL + D** to exit.
  
-7.  Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup. 
+7.  Access the [Admin UI](explore-the-admin-ui.html) by first establishing an SSH tunnel for the http traffic from you laptop to the cockroach server by doing `ssh -L 8081:127.0.0.1:8080 ROACHs-MBP` at the shell prompt (substitute your first node's address for ROACHs-MBP). Note that you can and should skip the ssh tunnel if you are running cockroach locally on your laptop. Then point your browser at `https://127.0.0.1:8081`. You can find the address to tunnel to in the `admin` field in the standard output of any node on startup. 
 
     Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
