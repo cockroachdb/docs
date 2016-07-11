@@ -45,7 +45,7 @@ This command starts a node, accepting all [`cockroach start`](start-a-node.html)
 
 - Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI. 
    - To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
-   - To bind the Admin web UI to a private IP address or host, set `--http-addr=<private-addr>`.
+   - To bind the Admin UI to a private IP address or host, set `--http-addr=<private-addr>`.
    - To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. For a demonstration, see [Manual Deployment](manual-deployment.html). 
 
 - Node data is stored in the `cockroach-data` directory. To store data in a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
