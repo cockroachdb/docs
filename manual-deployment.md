@@ -41,7 +41,7 @@ This command sets the node to insecure and identifies the address at which other
 Copy the `cockroach` binary to the second machine and then start the node:
     
 ~~~ shell
-$ cockroach start --insecure --join=<node1-hostname>:26257
+$ cockroach start --insecure --host=<node2-hostname> --join=<node1-hostname>:26257
 ~~~
 
 The only difference when starting the second node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
@@ -142,17 +142,17 @@ Store the CA key somewhere safe and keep a backup; if you lose it, you will not 
 Copy the `cockroach` binary, CA certificate, and node 1 certificate and key to the first machine and then start the node:
 
 ~~~ shell
-$ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname>
+$ cockroach start --host=<node1-hostname> --http-addr=<private-address> --ca-cert=ca.cert --cert=node1.cert --key=node1.key
 ~~~
 
-This command specifies the location of certificates and the address at which other nodes can reach it. It also restricts the http Admin UI to 127.0.0.1 traffic only. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI port 8080. To set these options manually, see [Start a Node](start-a-node.html). 
+This command specifies the location of certificates and the address at which other nodes can reach it. It also restricts Admin UI traffic to the address specified by `--http-addr`. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, binds internal and client communication to port `26257`, and binds Admin UI HTTP requests to port `8080`. To set these options manually, see [Start a Node](start-a-node.html). 
 
 ### 3. Set up the second node
 
 Copy the `cockroach` binary, CA certificate, and node 2 certificate and key to the second machine and then start the node:
 
 ~~~ shell
-$ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --join=<node1-hostname>:26257
+$ cockroach start --host=<node2-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node2.cert --key=node2.key
 ~~~
 
 The only difference when starting the second node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
@@ -211,28 +211,20 @@ For a list of recommended drivers that we've tested, see [Install Client Drivers
 
 ### 8. Monitor your cluster
 
-The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To view the secured Admin UI on remote node1.example.com, first establish an ssh tunnel, then point your browser to the URL in the `admin` field listed in the standard output of any node on startup. For example, your start command may have gaven output like this:
+The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To access the Admin UI, from the address specified by the `--http-addr` flag in steps 2 and 3, point a browser to the URL in the `admin` field listed in the standard output on startup, for example:
 
 ~~~ shell
 $ cockroach start --http-addr=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=node1.example.com
 build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     https://127.0.0.1:8080 <-------------- ESTABLISH SSH TUNNEL TO HERE
+admin:     https://<private-address>:8080 <-------------- USE THIS URL
 sql:       postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...
 logs:      cockroach-data/logs
 store[0]:  path=cockroach-data
 ~~~
 
-Here is how to use ssh to tunnel port 8081 from your desktop to the node1.example.com cluster node:
-
-~~~ shell
-$ ssh -L 8081:127.0.0.1:8080 node1.example.com
-~~~
-
-(See the ssh man pages for details the -L port forwarding command)[http://linuxcommand.org/man_pages/ssh1.html]. Once the ssh login is complete, you may just leave the remote shell open in the terminal window. This allows you to easily monitor the tunnel, should network problems cause a disconnect.
-
-Continuing the example above, you would point your browser to `https://127.0.0.1:8081` to view the Admin UI. The ssh tunnel takes care of securely routing this traffic to port 8080 on the node1.example.com, without exposing the Admin UI to the public world.
-
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_info}}In cases where you set <code>--http-addr</code> to <code>localhost</code> and need to access the Admin UI from a separate machine, you can use SSH to tunnel from the machine to a node.{{site.data.alerts.end}}  
 
 ## See Also
 
