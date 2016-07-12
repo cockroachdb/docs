@@ -224,7 +224,7 @@ store[0]:  path=cockroach-data
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-{{site.data.alerts.callout_info}}In cases where you set <code>--http-addr</code> to <code>localhost</code> and need to access the Admin UI from a machine separate from the cluster, you can use SSH to tunnel from the machine to a node.{{site.data.alerts.end}}  
+{{site.data.alerts.callout_info}}In cases where you set <code>--http-addr</code> to <code>localhost</code> and need to access the Admin UI from a separate machine, you can use SSH to tunnel from the machine to a node.{{site.data.alerts.end}}  
 
 ## See Also
 
