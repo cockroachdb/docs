@@ -14,32 +14,33 @@ This page explains how CockroachDB organizes columns into families as well as ca
 
 When a table is created, CockroachDB automatically groups columns into families as follows:
 
-- Fixed-size columns are stored as a single column family: `INT`, `DECIMAL` with precision, `FLOAT`, `BOOL`, `DATE`, `TIMESTAMP`, `INTERVAL`, `STRING` with length limit, and `BYTES`. 
-- Each variable-size column is stored as its own column family: `STRING` without length limit, `DECIMAL` without precision, and `BYTES`.
+- Fixed-size columns are stored as a single column family: `INT`, `DECIMAL` with precision, `FLOAT`, `BOOL`, `DATE`, `TIMESTAMP`, `INTERVAL`, and `STRING` with length limit. 
+- Each unbounded column is stored as its own column family: `STRING` without length limit, `DECIMAL` without precision, and `BYTES`.
 
 This default approach ensures efficient key-value storage and performance in most cases. However, in special cases, you may want to manually override this logic.
 
 ## Manual Override
 
 ### Reasons to Manually Assign Column Families
+
 There are are few cases when you might want to manually group columns into column families:
 
 - As mentioned above, `STRING` columns with no length limit, `DECIMAL` columns with no precision, and `BYTES` columns are assigned to their own families by default. When you know that such columns will be small, it's best to assign them to families with other columns to reduce the number of underlying keys. 
 
-- When frequently updated columns are grouped with seldom update columns, the seldom updated columns are nonetheless rewritten on every update. It's therefore more performant to split frequently updated columns into a distinct family. 
+- When frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. It's therefore more performant to split frequently updated columns into a distinct family. 
 
 ### How to Manually Assign Column Families
 
 To manually create a column family, you use the `FAMILY` keyword on table creation. 
 
-For example, let's say we want to create a `users` table containing `id` and `last_login` columns. Since both of these columns are of a fixed size, CockroachDB would assign them to a single column family by default. However, since it's very likely that the `last_login` column will be updated more often than the `id` column, we can use the `FAMILY` keyword to make sure the columns are assigned to separate families:
+For example, let's say we want to create a `users` table to store user IDs (`id INT`), date and time when users joined (`joined TIMESTAMP`), and user names (`name STRING`). We don't know how long a name will be, so we leave it unbounded. However, since names are generally short, we use the `FAMILY` keyword to group `name` with the other columns:
 
 ~~~
 CREATE TABLE users (
     id INT PRIMARY KEY, 
-    last_login TIMESTAMP,
-    FAMILY f1 (id),
-    FAMILY f2 (last_login)
+    joined TIMESTAMP,
+    name STRING,
+    FAMILY f1 (id, joined, name)
 );
 
 SHOW CREATE TABLE users;
@@ -48,10 +49,10 @@ SHOW CREATE TABLE users;
 +-------+---------------------------------------------+
 | users | CREATE TABLE users (␤                       |
 |       |     id INT NOT NULL,␤                       |
-|       |     last_login TIMESTAMP NULL,␤             |
+|       |     joined TIMESTAMP NULL,␤                 |
+|       |     name STRING NULL,␤                      |
 |       |     CONSTRAINT "primary" PRIMARY KEY (id),␤ |
-|       |     FAMILY f1 (id),␤                        |
-|       |     FAMILY f2 (last_login)␤                 |
+|       |     FAMILY f1 (id, joined, name)␤           |
 |       | )                                           |
 +-------+---------------------------------------------+
 (1 row)
@@ -61,7 +62,7 @@ SHOW CREATE TABLE users;
 
 ## Compatibility with Past Releases
 
-As of the [`beta-20160714`](beta-20160714.html) release, creating a new table makes your data incompatible with earlier versions. 
+Using the [`beta-20160714`](beta-20160714.html) release makes your data incompatible with versions earlier than [`beta-20160629`](beta-20160629.html). 
 
 ## See Also
 

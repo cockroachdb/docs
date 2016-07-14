@@ -119,11 +119,14 @@ SHOW INDEX FROM logon;
 
 In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](constraints.html#primary-key), another is given the [`UNIQUE`](constraints.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
 
+By default, CockroachDB would assign the `user_id` and `logoff_date` columns to a single column family, since they're of a fixed size, and `user_email` to its own column family, since it's unbounded. We know that `user_email` will be relatively small, however, so we use the `FAMILY` keyword to group it with the other columns. As a result, each new row in the table would correspond to a single underlying key-value pair. For more deails about how columns are assigned to column families, see [Column Families](column-families.html).
+
 ~~~ 
 CREATE TABLE logoff (
     user_id INT PRIMARY KEY, 
-    user_email STRING(50) UNIQUE, 
-    logoff_date DATE
+    user_email STRING UNIQUE, 
+    logoff_date DATE,
+    FAMILY f1 (user_id, user_email, logoff_date)
 );
 
 SHOW COLUMNS FROM logoff;
@@ -131,7 +134,7 @@ SHOW COLUMNS FROM logoff;
 |    Field    |    Type    | Null  | Default |
 +-------------+------------+-------+---------+
 | user_id     | INT        | false | NULL    |
-| user_email  | STRING(50) | true  | NULL    |
+| user_email  | STRING     | true  | NULL    |
 | logoff_date | DATE       | true  | NULL    |
 +-------------+------------+-------+---------+
 (3 rows)
