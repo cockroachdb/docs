@@ -29,7 +29,7 @@ There are are few cases when you might want to manually group columns into colum
 
 - When frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. It's therefore more performant to split frequently updated columns into a distinct family. 
 
-### Assigning Column Families on Table Creation
+### Assign Column Families on Table Creation
 
 To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
 
@@ -60,9 +60,9 @@ SHOW CREATE TABLE users;
 
 {{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}} 
 
-### Assigning Column Families When Adding Columns
+### Assign Column Families When Adding Columns
 
-When using the `ALTER TABLE` statement to add a column to a table, you can assign the column to a new or existing column family. 
+When using the [`ALTER TABLE`](alter-table.html) statement to add a column to a table, you can assign the column to a new or existing column family. 
 
 - Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data BYTES` column to the `users` table above and assign it to a new column family: 
 
