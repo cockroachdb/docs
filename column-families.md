@@ -29,9 +29,9 @@ There are are few cases when you might want to manually group columns into colum
 
 - When frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. It's therefore more performant to split frequently updated columns into a distinct family. 
 
-### How to Manually Assign Column Families
+### Assigning Column Families on Table Creation
 
-To manually create a column family, you use the `FAMILY` keyword on table creation. 
+To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
 
 For example, let's say we want to create a `users` table to store user IDs (`id INT`), date and time when users joined (`joined TIMESTAMP`), and user names (`name STRING`). We don't know how long a name will be, so we leave it unbounded. However, since names are generally short, we use the `FAMILY` keyword to group `name` with the other columns:
 
@@ -59,6 +59,28 @@ SHOW CREATE TABLE users;
 ~~~
 
 {{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}} 
+
+### Assigning Column Families When Adding Columns
+
+When using the `ALTER TABLE` statement to add a column to a table, you can assign the column to a new or existing column family. 
+
+- To add a column and assign it to a new family, use the `CREATE FAMILY` keyword. For example, if we wanted to add an `email` column to the `users` table above and assign it to a new column family, we would run the following: 
+
+  ~~~
+  ALTER TABLE users ADD COLUMN email STRING CREATE FAMILY f2;
+  ~~~
+
+- To add a column and assign it to an existing family, use the `FAMILY` keyword. For example, if we wanted to add an `email` colum to the `users` table above and assign it to family `f1`, we would run the following:
+
+  ~~~
+  ALTER TABLE users ADD COLUMN email STRING FAMILY f1;
+  ~~~
+
+- To add a column and assign it to an existing family or, if the family doesn't exist, to a new family, use the `CREATE IF NOT EXISTS FAMILY` keyword. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
+
+  ~~~
+  ALTER TABLE users ADD COLUMN email STRING CREATE IF NOT EXISTS FAMILY f1;
+  ~~~
 
 ## Compatibility with Past Releases
 
