@@ -64,27 +64,27 @@ SHOW CREATE TABLE users;
 
 When using the `ALTER TABLE` statement to add a column to a table, you can assign the column to a new or existing column family. 
 
-- To add a column and assign it to a new family, use the `CREATE FAMILY` keyword. For example, if we wanted to add an `email` column to the `users` table above and assign it to a new column family, we would run the following: 
+- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data BYTES` column to the `users` table above and assign it to a new column family: 
 
   ~~~
-  ALTER TABLE users ADD COLUMN email STRING CREATE FAMILY f2;
+  ALTER TABLE users ADD COLUMN data BYTES CREATE FAMILY f2;
   ~~~
 
-- To add a column and assign it to an existing family, use the `FAMILY` keyword. For example, if we wanted to add an `email` colum to the `users` table above and assign it to family `f1`, we would run the following:
+- Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `data BYTES` colum to the `users` table above and assign it to family `f1`:
 
   ~~~
-  ALTER TABLE users ADD COLUMN email STRING FAMILY f1;
+  ALTER TABLE users ADD COLUMN data BYTES FAMILY f1;
   ~~~
 
-- To add a column and assign it to an existing family or, if the family doesn't exist, to a new family, use the `CREATE IF NOT EXISTS FAMILY` keyword. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
+- Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an **existing family or, if the family doesn't exist, to a new family**. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
 
   ~~~
-  ALTER TABLE users ADD COLUMN email STRING CREATE IF NOT EXISTS FAMILY f1;
+  ALTER TABLE users ADD COLUMN data BYTES CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
 ## Compatibility with Past Releases
 
-Using the [`beta-20160714`](beta-20160714.html) release makes your data incompatible with versions earlier than [`beta-20160629`](beta-20160629.html). 
+Using the [`beta-20160714`](beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](beta-20160629.html) release. 
 
 ## See Also
 
