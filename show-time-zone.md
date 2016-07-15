@@ -1,6 +1,7 @@
 ---
 title: SHOW TIME ZONE
 summary: The SHOW TIME ZONE statement lists the default time zone for the current session.
+keywords: reflection
 toc: false
 ---
 
