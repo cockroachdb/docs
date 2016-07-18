@@ -19,17 +19,17 @@ This page provides recommended settings for production deployments.
 
 Run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. CockroachDB needs moderately accurate time; if the machines’ clocks drift too far apart, [transactions](transactions.html) will never succeed and the cluster will crash.
 
-## Open Files Limit
+## File Descriptors Limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
 
 For each CockroachDB node:
 
-- At a **minimum**, the open files limit must be 256 per store plus 256 for networking. If the limit is below this threshold, the node will not start. 
-- The **recommended** open files limit is at least 5000 per store plus 5000 for networking. These higher limits ensure performance and accommodate cluster growth. 
-- When the open files limit is between these minimum and recommended amounts, CockroachDB will allocate 256 to networking and evenly split the rest across stores.
+- At a **minimum**, the file descriptors limit must be 256 per store plus 256 for networking. If the limit is below this threshold, the node will not start. 
+- The **recommended** file descriptors limit is at least 5000 per store plus 5000 for networking. This higher limit ensures performance and accommodates cluster growth. 
+- When the file descriptors limit is between these minimum and recommended amounts, CockroachDB will allocate 256 to networking and evenly split the rest across stores.
 
-### Increase the Open Files Limit
+### Increase the File Descriptors Limit
 
 <script>
 $(document).ready(function(){
@@ -110,7 +110,7 @@ $(document).ready(function(){
 
 #### Yosemite and later
 
-To adjust the open files limit for a single process in Mac OS X Yosemite and later, you must create two property list configuration files with the hard limit set to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create two property list configuration files with the hard limit set to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
 
@@ -189,7 +189,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 #### Older versions
 
-To adjust the open files limit for a single process in OS X versions earlier than Yosemite, edit `/etc/launchd.conf` and increase the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process in OS X versions earlier than Yosemite, edit `/etc/launchd.conf` and increase the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
 
@@ -226,7 +226,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 #### Debian and Ubuntu
 
-To adjust the open files limits for a single process on Debian and Ubuntu, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process on Debian and Ubuntu, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
 
@@ -263,7 +263,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 #### CentOS and Red Hat
 
-To adjust the open files limits for a single process on CentOS and Red Hat, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process on CentOS and Red Hat, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#open-files-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
 
@@ -288,10 +288,10 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 <div id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the open files limits on Windows.
+CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
 
 </div>
 
 #### Attributions
 
-This section, "Open File Limits", is a derivative of Open File Limits by Riak, used under Creative Commons Attribution 3.0 Unported License.
+This section, "file descriptors limit", is a derivative of Open File Limits by Riak, used under Creative Commons Attribution 3.0 Unported License.
