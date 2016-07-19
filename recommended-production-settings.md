@@ -25,8 +25,8 @@ CockroachDB can use a large number of open file descriptors, often more than is 
 
 For each CockroachDB node:
 
-- At a **minimum**, the file descriptors limit must be 512 --- 256 per store plus 256 for networking. If the limit is below this threshold, the node will not start. 
-- The **recommended** file descriptors limit is at least 10000 --- 5000 per store plus 5000 for networking. This higher limit ensures performance and accommodates cluster growth. 
+- At a **minimum**, the file descriptors limit must be 512 (256 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
+- The **recommended** file descriptors limit is at least 10000 (5000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth. 
 - When the file descriptors limit is between these minimum and recommended amounts, CockroachDB will allocate 256 to networking and evenly split the rest across stores.
 
 ### Increase the File Descriptors Limit
@@ -110,9 +110,9 @@ $(document).ready(function(){
 
 #### Yosemite and later
 
-To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create two property list configuration files with the hard limit set to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create two property list configuration files with the limit set to the recommendation mentioned [above](#file-descriptors-limit).
 
-For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
+For example, for a node with 3 stores, we would set the limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
 
 1.  Check the current limits:
 
@@ -122,7 +122,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
     kern.maxfilesperproc: 10240
     ~~~
 
-    `kern.maxfilesperproc` is the relevant setting, as it controls the open file limit for a single process.
+    `kern.maxfilesperproc` is the relevant setting, as it controls the file descriptors limit for a single process. However, `kern.maxfiles` controls the file descriptors limit for the kernal, so it must be set at least as high as `kern.maxfilesperproc`.
 
 2.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 20000:
 
@@ -183,7 +183,8 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 5.  Check the current limits:
 
     ~~~ shell
-    $ sysctl -A | grep kern.maxfilesperproc
+    $ sysctl -A | grep kern.maxfiles
+    kern.maxfiles: 20000
     kern.maxfilesperproc: 20000
     ~~~
 
@@ -245,6 +246,8 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
     *              hard     nofile          20000
     ~~~
 
+    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+
 4.  Save and close the file.
 
 5.  If you will be accessing the CockroachDB node via secure shell (ssh), you should also edit `/etc/ssh/sshd_config` and uncomment the following line and set it to `yes`:
@@ -274,6 +277,8 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
     *              hard     nofile          20000
     ~~~
 
+    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+
 2.  Save and close the file.
 
 3.  Restart the system for the new limits to take effect.
@@ -294,4 +299,4 @@ CockroachDB does not yet provide a native Windows binary. Once that's available,
 
 #### Attributions
 
-This section, "File Descriptors Limit", is a derivative of Open File Limits by Riak, used under Creative Commons Attribution 3.0 Unported License.
+This section, "File Descriptors Limit", is a derivative of [Open File Limits](http://docs.basho.com/riak/kv/2.1.4/using/performance/open-files-limit/) by Riak, used under Creative Commons Attribution 3.0 Unported License.
