@@ -110,19 +110,18 @@ $(document).ready(function(){
 
 #### Yosemite and later
 
-To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create two property list configuration files with the limit set to the recommendation mentioned [above](#file-descriptors-limit).
+To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create a property list configuration file with the hard limit set to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
-For example, for a node with 3 stores, we would set the limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
+For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
 
 1.  Check the current limits:
 
     ~~~ shell
-    $ sysctl -A | grep kern.maxfiles
-    kern.maxfiles: 12288
-    kern.maxfilesperproc: 10240
+    $ launchctl limit maxfiles
+    maxfiles    10240          10240      
     ~~~
 
-    `kern.maxfilesperproc` is the relevant setting, as it controls the file descriptors limit for a single process. However, `kern.maxfiles` controls the file descriptors limit for the kernal, so it must be set at least as high as `kern.maxfilesperproc`.
+    The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
 
 2.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 20000:
 
@@ -151,62 +150,34 @@ For example, for a node with 3 stores, we would set the limit to at least 20000 
 
     Make sure the plist file is owned by `root:wheel` and has permissions `-rw-r--r--`. These permissions should be in place by default.
 
-3.  Create `/Library/LaunchDaemons/limit.maxproc.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 20000:
+3.  Restart the system for the new limits to take effect.
 
-    ~~~ xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-            <string>limit.maxproc</string>
-          <key>ProgramArguments</key>
-            <array>
-              <string>launchctl</string>
-              <string>limit</string>
-              <string>maxproc</string>
-              <string>20000</string>
-              <string>20000</string>
-            </array>
-          <key>RunAtLoad</key>
-            <true />
-          <key>ServiceIPC</key>
-            <false />
-        </dict>
-      </plist>
-    ~~~
-
-    Again, make sure the plist file is owned by `root:wheel` and has permissions `-rw-r--r--`.
-
-4.  Restart the system for the new limits to take effect.
-
-5.  Check the current limits:
+4.  Check the current limits:
 
     ~~~ shell
-    $ sysctl -A | grep kern.maxfiles
-    kern.maxfiles: 20000
-    kern.maxfilesperproc: 20000
+    $ launchctl limit maxfiles
+    maxfiles    20000          20000      
     ~~~
 
 #### Older versions
 
-To adjust the file descriptors limit for a single process in OS X versions earlier than Yosemite, edit `/etc/launchd.conf` and increase the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process in OS X versions earlier than Yosemite, edit `/etc/launchd.conf` and increase the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
 
 1.  Check the current limits:
 
     ~~~ shell
-    $ launchtctl limit maxfiles
+    $ launchctl limit maxfiles
     maxfiles    10240          10240      
     ~~~
 
-    The last two columns are the soft and hard limits, respectively.  
+    The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
 
 2.  Edit (or create) `/etc/launchd.conf` and add a line that looks like the following, with the last value set to the new hard limit:
 
     ~~~ shell
-    limit maxfiles 10240 20000
+    limit maxfiles 20000 20000
     ~~~
 
 3.  Save the file, and restart the system for the new limits to take effect. 
@@ -214,32 +185,25 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 4.  Verify the new limits:
 
     ~~~ shell
-    $ launchtctl limit maxfiles
-    maxfiles    10240          20000      
+    $ launchctl limit maxfiles
+    maxfiles    20000          20000      
     ~~~
 
 </div>
 
 <div id="linuxinstall" markdown="1">
 
-- [Debian and Ubuntu](#debian-and-ubuntu)
-- [CentOS and Red Hat](#centos-and-red-hat)
-
-#### Debian and Ubuntu
-
-To adjust the file descriptors limit for a single process on Debian and Ubuntu, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
+To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
 
-1.  Edit `/etc/pam.d/common-session` and append the following line:
+1.  Make sure the following line is present in both `/etc/pam.d/common-session` and `/etc/pam.d/common-session-noninteractive`:
 
     ~~~ shell
     session    required   pam_limits.so
     ~~~
 
-2.  Save and close the file. If `/etc/pam.d/common-session-noninteractive` exists, append the same line as above.
-
-3.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+2.  Edit `/etc/security/limits.conf` and append the following lines to the file:
 
     ~~~ shell
     *              soft     nofile          20000
@@ -250,40 +214,9 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 4.  Save and close the file.
 
-5.  If you will be accessing the CockroachDB node via secure shell (ssh), you should also edit `/etc/ssh/sshd_config` and uncomment the following line and set it to `yes`:
+5.  Restart the system for the new limits to take effect.
 
-    ~~~ shell
-    UseLogin yes
-    ~~~
-
-6.  Restart the system for the new limits to take effect.
-
-7.  Verify the new limits:
-
-    ~~~ shell
-    ulimit -a
-    ~~~
-
-#### CentOS and Red Hat
-
-To adjust the file descriptors limit for a single process on CentOS and Red Hat, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit.
-
-For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
-
-1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
-
-    ~~~ shell
-    *              soft     nofile          20000
-    *              hard     nofile          20000
-    ~~~
-
-    Note that `*` can be replaced with the username that will be running the CockroachDB server.
-
-2.  Save and close the file.
-
-3.  Restart the system for the new limits to take effect.
-
-4.  Verify the new limits:
+6.  Verify the new limits:
 
     ~~~ shell
     ulimit -a
