@@ -123,11 +123,19 @@
   padding: 5px 20px;
   font-weight: bold;
   text-transform: uppercase;
+  outline: none;
+  margin-top: 5px;
 }
 
 .white-popup .hbspt-form .hs-button:hover {
   background: #fff;
   color: #46a417;
+  outline: none;
+}
+
+.white-popup .hbspt-form .submitted-message {
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .mfp-bg {
