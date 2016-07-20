@@ -3,7 +3,7 @@
 .feedback-question {
   float: left;
   display: inline-block;
-  line-height: 0px;
+  line-height: 0;
   padding-right: 10px;
 }
 
@@ -59,7 +59,10 @@
   color: #fff !important;
 }
 
-/* Feedback popup and hubspot form */
+/* Feedback popup and hubspot form 
+* Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
+* http://dimsemenov.com/plugins/magnific-popup/
+* Copyright (c) 2016 Dmitry Semenov; */
 
 .white-popup {
   position: relative;
@@ -488,51 +491,3 @@ img.mfp-img {
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
-
-
-/*
-.rating {
-  padding-top: 20px;
-}
-
-.rating.top {
-  float: right;
-  padding-top: 5px;
-  margin: 0px 10px;
-}
-
-.rating ul { 
-  margin: 0;
-  padding: 0;
-  list-style-type: none; 
-}
-
-.rating ul li { 
-  display: inline-block; 
-  margin: -15px 0px;
-}
-
-p.vote {
-  color: #46a417;
-  opacity: 0.2;
-  font-size: 25px;
-  cursor: pointer;
-}
-
-img.vote {
-  width: 27px;
-  margin: 12px 5px 0px 0px;
-  opacity: 0.2;
-}
-
-@media screen and (min-width: 768px) {
-  .modal, .modal-dialog, .modal-content {
-    left: 0;
-    position: static;
-  }
-}
-
-.modal-backdrop {
-  z-index: 0;
-}
-*/
