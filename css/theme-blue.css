@@ -104,7 +104,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
 }
 
 .cockroach-gitter-open-chat-button {
-    z-index: 9999;
+    z-index: 1000;
     color: #fff;
     position: fixed;
     bottom: 0;
