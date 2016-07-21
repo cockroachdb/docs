@@ -4,8 +4,13 @@ summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
 ---
 
-The `cockroach dump` [command](cockroach-commands.html) lets you back up a specific table by outputting the SQL statements required to recreate the table and all its rows. Using this command, you can back up each table of each database in your cluster. Note that the output should be suitable for importing into other relational databases as well, with minimal adjustments.
+The `cockroach dump` [command](cockroach-commands.html) lets you back up a specific table by outputting the SQL statements required to recreate the table and all its rows. Using this command, you can back up each table of each database in your cluster. Note also that the output should be suitable for importing into other relational databases as well, with minimal adjustments.
 
+When you run `cockroach dump`:
+
+- The table data is dumped as it appears at the time that the command is started. Any changes after the command starts will not be included in the dump.
+- If the dump takes longer than the `ttlseconds` [replication zone](configure-replication-zones.html) setting for the table (24 hours by default), the dump may fail. 
+- Reads and schema changes can happen while a dump is in progress.
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can run the <code>cockroach dump</code> command.{{site.data.alerts.end}}
 
 <div id="toc"></div>

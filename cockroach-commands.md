@@ -21,7 +21,7 @@ Command | Usage
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
-[`dump`](back-up-and-restore-data.html) | Back up a table by outputting the SQL statements required recreate a table and all its rows.
+[`dump`](back-up-and-restore-data.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 `gen` | Generate manpages and bash completion file (docs coming soon).
 [`version`](view-version-details.html) | Output CockroachDB version and dependency details.
 
