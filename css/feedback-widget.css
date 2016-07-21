@@ -8,7 +8,7 @@
 }
 
 .no-button {
-  width: 5%;
+  width: 40px;
   margin: 0 0.5%;
   font-family: 'AvenirLTStd-Light', serif;
   font-size: 14px;
@@ -31,7 +31,7 @@
 
 .yes-button {
   float: left;
-  width: 5%;
+  width: 40px;
   margin: 0 0.5%;
   font-family: 'AvenirLTStd-Light', serif;
   font-size: 14px;
