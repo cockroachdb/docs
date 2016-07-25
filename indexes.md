@@ -2,67 +2,90 @@
 title: Indexes
 summary: Indexes improve SQL's performance by helping it locate data without having to look through every row of a table.
 toc: false
+toc_not_nested: true
 ---
 
-Indexes improve SQL's performance by helping it locate data without having to look through every row of a table. You can create indexes at the same time as a table ([`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes)) or after the table is created ([`CREATE INDEX`](create-index.html)).
+Indexes improve SQL's performance by helping it locate data without having to look through every row of a table. 
 
-{{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="constraints.html#primary-key"><code>PRIMARY KEY</code></a> and <a href="constraints.html#unique"><code>UNIQUE</code></a> columns.{{site.data.alerts.end}}
+<div id="toc"></div>
 
 ## How do indexes work?
 
-Indexes copy and sort a column's values (without sorting the values in the table itself). This way, when you filter indexed columns with `WHERE` clauses, SQL can easily search an index's sorted values instead of scanning each row individually. On large tables, indexes greatly reduce the number of rows SQL has to scan, executing queries exponentially faster.
+When you create an index, CockroachDB "indexes" the columns you specify, which creates a copy of the columns and then sorts their values (without sorting the values in the table itself).
 
-For example, if you index an `INT` column and then search it for rows that equal 10:
+After a column is indexed, SQL can easily filter its values using the index instead of scanning each row one-by-one. On large tables, this greatly reduces the number of rows SQL has to use, executing queries exponentially faster.
 
-~~~
-SELECT * FROM <table> WHERE <column> = 10;
-~~~
+For example, if you index an `INT` column and then filter it <code>WHERE &lt;indexed column&gt; = 10</code>, SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate _every_ row in the column for values equaling 10.
 
-SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate _every_ row in the column for values equalling 10.
+### Creation
 
-As rows change, CockroachDB automatically updates your indexes. This can consume a noticeable amount of resources, especially for large, write-heavy tables. To make sure updating your indexes doesn't harm your performance, we recommend a few best practices.
+Each table automatically has an index created called `primary`, which indexes either its `PRIMARY KEY` or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. The `primary` index helps filter a table's primary key (if it has one) but doesn't help SQL find values in any other columns.
+
+However, you can easily improve the performance of queries using columns besides the table's primary key with secondary indexes. You can create them:
+
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for `UNIQUE` columns.
+- For existing tables with [`CREATE INDEX`](create-index.html).
+- By applying the [`UNIQUE`](constraints.html#unique) constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
+
+To create the most useful secondary indexes, you should also check out our [best practices](#best-practices).
+
+### Selection
+
+Because each query can only use a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e. the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+
+To override CockroachDB's index selection, you can also [query specific indexes](create-index.html#query-specific-indexes).
+
+### Storage
+
+CockroachDB stores indexes directly in your key-value store. You can find more information in our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+
+### Locking
+
+Tables are not locked during index creation thanks to CockroachDB's [schema change procedure](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
+
+### Performance
+
+Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
+
+To maximize your indexes' performance, we recommend following a few [best practices](#best-practices).
 
 ## Best Practices
 
-Indexes are meant to optimize your database's performance, but poorly planned indexes can actually slow down your database. Plan your indexes well by following these guidelines:
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that: 
 
-- Design indexes to optimize specific, commonly used queries.
-- Favor creating many indexes of single columns over a few indexes of multiple columns. If you do use multiple columns, follow the best practices for [indexing](#indexing-multiple-columns) or [storing](#storing-columns) them.
-- Do not use more than 3 columns in an index.
+- [Index all columns](#indexing-columns) in the `WHERE` clause.
+- [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
 
-You can find advanced guidance in our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+### Indexing Columns
 
-### Indexing Multiple Columns
+When designing indexes, it's important to consider which columns you index and the order you list them. Here are a few guidelines to help you make the best choices:
 
-If you decide to create indexes of multiple columns:
-
-- Only index columns that queries filter with `WHERE` clauses. If you only want to retrieve their values (e.g. using `SELECT`), you should instead [store the columns](#storing-columns).
-- Order columns to maximize your index's efficiency. Columns are sorted in the order you list them, so your index's first column should have the greatest number of distinct values. Only index additional columns if they would have many distinct values after sorting the index by the first column.
+- Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that don't filter `(A)` won't benefit from the index.<br><br>This feature lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+- Columns are sorted in the order you list them, so&mdash;in most cases&mdash;your index's first column should have the greatest number of distinct values. Order subsequent columns so they have the largest number of distinct values after sorting the index by the previous column.
+- Indexes of the same columns in different orders can produce different results for each query. This means you might not always order columns based on the number of distinct values. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
+- Inequality operators (`<`, `>`) are most efficient when applied to the last column in an index.
 
 ### Storing Columns
 
-Stored columns are not sorted, unlike indexed columns, which are. This means you might consider storing columns when:
+Storing a column optimizes the performance of queries that retrieve its values (i.e. in the `FROM` clause) but don’t filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
 
-- Columns are retrieved but not filtered with `WHERE` clauses (because sorting the column's values won't improve a query's performance).
-- Queries filter other columns you plan to include in the same index.
+However, for SQL to use stored columns, queries must filter another column in the same index.
 
-For example, to optimize the performance of the following query...
+### Example
 
-~~~
-SELECT <column 1>, <column 2> FROM <table> WHERE <column 1> = 10;
-~~~
+If you wanted to optimize the performance of the following queries:
 
-...you would index `<column 1>` and store `<column 2>`:
+~~~sql
+SELECT col1 FROM tbl WHERE col1 = 10;
 
-~~~
-CREATE INDEX ON <table> (<column 1>) STORING (<column 2>);
+SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
 
+You could create a single index of `col1` and `col2` that stores `col3`:
 
-## Technical Details
-
-- Indexes are created [in your key-value store](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
-- Tables are not locked while CockroachDB creates indexes.
+~~~sql
+CREATE INDEX ON tbl (col1, col2) STORING (col3);
+~~~
 
 ## See Also
 

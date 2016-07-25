@@ -6,17 +6,17 @@ toc: false
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve SQL's performance by helping it locate data without having to look through every row of a table.
 
-{{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="constraints.html#primary-key"><code>PRIMARY KEY</code></a> and <a href="constraints.html#unique"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest collection of indexes. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="constraints.html#primary-key"><code>PRIMARY KEY</code></a> and <a href="constraints.html#unique"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest index. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
-
-## Synopsis
-
-{% include sql/diagrams/create_index.html %}
 
 ## Required Privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
+
+## Synopsis
+
+{% include sql/diagrams/create_index.html %}
 
 ## Parameters
 
@@ -28,159 +28,93 @@ table td:first-child {
 
 | Parameter | Description |
 |-----------|-------------|
-|`UNIQUE` | Apply the [`UNIQUE`](constraints.html#unique) constraint to the indexed columns.<br><br>This also applies the `UNIQUE` constraint at the table level, similarly to <code><a href="alter-table.html">ALTER TABLE</a> &lt;table&gt; ADD CONSTRAINT &lt;name&gt; UNIQUE (&lt;columns&gt;)</code>.|
+|`UNIQUE` | Apply the [`UNIQUE`](constraints.html#unique) constraint to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the `UNIQUE` constraint at the table level, so the system checks for duplicate values when inserting or updating data.|
 |`IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.|
-|`name`<br>_(First instance)_ | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you don't specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
-|`qualified_name` | The name of the table you want to create the index on. |
-|`name`<br>_(Second instance)_  | The name of the column you want to index.<br><br>When deciding to create indexes of multiple columns, see [Indexes: Best Practices](indexes.html#best-practices).|
-|`ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted can affect query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`|
-|`STORING ...`| Store (but do not sort) each column whose `name` you include in the clause.<br><br>`COVERING` aliases `STORING` and works identically.<br><br>For information on when to use `STORING`, see [Indexes: Storing Columns](indexes.html#storing-columns).
-
-## Usage
-
-### Create Indexes
-
-To create an index of one or more columns, use the following syntax:
-
-~~~
-CREATE INDEX ON <table> (<columns>);
-~~~
-
-- `<table>` is the table you want to use for the index.
-- `<columns>` is a comma-separated list of column names you want to index.
-
-When deciding to create indexes of multiple columns, see [Indexes: Best Practices](indexes.html#best-practices).
-
-### Store Columns
-
-To create an index that stores columns, use the following syntax:
-
-~~~
-CREATE INDEX ON <table> (<indexed columns>) STORING (<stored columns>);
-~~~
-
-- `<table>` is the table you want to use for the index.
-- `<indexed columns>` is a comma-separated list of column names you want to index.
-- `<stored columns>` is a comma-separated list of column names you want to store.
-
-For information on when to use `STORING`, see [Indexes: Storing Columns](indexes.html#storing-columns).
-
-### Query Specific Indexes
-
-To query a specific index (instead of letting CockroachDB select the best set of indexes), use the following syntax:
-
-~~~
-... FROM <table>@<index> ...
-~~~
-
-- `<table>` is the name of the table the index is on.
-- `<index>` is the name of the index you want to use. To find an index's name, use [`SHOW INDEX`](show-index.html).
-- `...` is the rest of your statement.
-
-
+|`index_name` | The [`name`](sql-grammar.html#name) of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you don't specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
+|`table_name` | The [`qualified_name`](sql-grammar.html#qualified_name) of the table you want to create the index on. |
+|`column_name` | The name of the column you want to index.|
+|`ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`|
+|`STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).<br><br>`COVERING` aliases `STORING` and works identically.
 
 ## Examples
 
-The goal of indexes is to reduce the number of rows SQL has to scan when querying tables, so we'll focus on doing that for some simple queries. To see indexes working, we'll use `EXPLAIN` with `SELECT`, which shows the indexes CockroachDB plans to use for the query.
+### Create Indexes
 
-Let's get started by creating a table with a few columns:
+To create the most efficient indexes, we recommend reviewing:
 
-~~~sql
-CREATE TABLE products (id INT PRIMARY KEY, name STRING, price DECIMAL, stock INT);
-~~~
+- [Indexes: Best Practices](indexes.html#best-practices)
+- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
 
-Because our table contains a [`PRIMARY KEY`](constraints.html#primary-key), CockroachDB automatically creates an index called `@primary`. Here's an example of what queries using the primary key look like:
+#### Single-Column Indexes
 
-~~~sql
-EXPLAIN SELECT name, price FROM products WHERE id = 1;
-
-+-------+------+------------------------+
-| Level | Type |      Description       |
-+-------+------+------------------------+
-|     0 | scan | products@primary /1-/2 |
-+-------+------+------------------------+
-~~~
-
-You can read the description as, "Scan through the product table's primary index for values starting at 1 but less than 2."
-
-However, until we create additional indexes, `@primary` is the only index SQL can use regardless of the columns we search. For example, searching another column gives us...
+Single-column indexes sort the values of a single column.
 
 ~~~sql
-EXPLAIN SELECT name FROM products WHERE stock > 0;
-
-+-------+------+--------------------+
-| Level | Type |    Description     |
-+-------+------+--------------------+
-|     0 | scan | products@primary - |
-+-------+------+--------------------+
+CREATE INDEX ON products (price);
 ~~~
 
-`@primary` only sorts the primary key, so SQL has to scan each row one-by-one (shown by `-` in the description) to find `stock` values matching the filter.
+Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
 
-In terms of performance, scanning every row is the worst-case scenario. Every time we avoid it, we've probably done some optimization. We say _probably_ because it's possible to create indexes that actually slow down your database.
+#### Multiple-Column Indexes
 
-To improve the query's performance, let's create an index for `stock`. (You don't normally need to choose names for your indexes, but we will for our examples.)
-
+Multiple-column indexes sort columns in the order you list them.
 
 ~~~sql
-CREATE INDEX byStock ON products (stock);
-
-EXPLAIN SELECT name FROM products WHERE stock > 0;
-
-+-------+------------+----------------------+
-| Level |    Type    |     Description      |
-+-------+------------+----------------------+
-|     0 | index-join |                      |
-|     1 | scan       | products@byStock /1- |
-|     1 | scan       | products@primary     |
-+-------+------------+----------------------+
+CREATE INDEX ON products (price, stock);
 ~~~
 
-SQL still had to use `@primary` to get values from `name`, which `@byStock` doesn't include. Despite that, CockroachDB calculates this plan is likely faster than scanning every row of `@primary`. Note that this scan of `@primary` doesn't examine every row (indicated by the absence of `-`), only those that `@byStock` returns.
+To create the most useful multiple-column indexes, we recommend reviewing our [best practices](indexes.html#indexing-columns).
 
-If this is a common type of query, we can improve its performance by storing `name` in an index with `stock`, removing the need to use `@primary`. We want to _store_ instead of _index_ `name` because its values aren't filtered; sorting them won't improve the query's performance.
+#### Unique Indexes
+
+Unique indexes do not allow duplicate values among their columns.
 
 ~~~sql
-CREATE INDEX byStock_storeName ON products (stock) STORING (name);
-
-EXPLAIN SELECT name FROM products WHERE stock>0;
-
-+-------+------+----------------------------------+
-| Level | Type |           Description            |
-+-------+------+----------------------------------+
-|     0 | scan | products@byStock_storeName /1-   |
-+-------+------+----------------------------------+
+CREATE UNIQUE INDEX ON products (name, manufacturer_id);
 ~~~
 
-Predictably, if we add another column to the `WHERE` clause (we'll use `price`), SQL is going to have to use `@primary` to find the values.
+This also applies the [`UNIQUE`](constraints.html#unique) constraint at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is roughly equivalent to:
 
 ~~~sql
-EXPLAIN SELECT name FROM products WHERE stock > 0 AND price >= 10;
-
-+-------+------------+----------------------+
-| Level |    Type    |     Description      |
-+-------+------------+----------------------+
-|     0 | index-join |                      |
-|     1 | scan       | products@byStock /1- |
-|     1 | scan       | products@primary     |
-+-------+------------+----------------------+
+ALTER TABLE products ADD CONSTRAINT name_manufacturer UNIQUE (name, manufacturer_id);
 ~~~
 
-Again, if this is a common query whose performance matters, we can index the column along with the others. This time we should _index_ `price` so it's sorted because the query filters its values.
+### Store Columns
+
+Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
 
 ~~~sql
-CREATE INDEX byStockPrice_storeName ON products (stock, price) STORING (name);
-
-EXPLAIN SELECT name FROM products WHERE stock>0 AND price >= 10;
-
-+-------+------+------------------------------------------+
-| Level | Type |               Description                |
-+-------+------+------------------------------------------+
-|     0 | scan | products@byStockPrice_storeName /1/10-   |
-+-------+------+------------------------------------------+
+CREATE INDEX ON products (price) STORING (name);
 ~~~
 
-Before planning your database's indexes, you should also review [Indexes: Best Practices](indexes.html#best-practices).
+However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
+
+### Change Column Sort Order
+
+To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
+
+~~~sql
+CREATE INDEX ON products (price DESC, stock);
+~~~
+
+How columns are sorted impacts the order of rows returned by queries using the index, which particularly affects queries using `LIMIT`.
+
+### Query Specific Indexes
+
+Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
+
+~~~sql
+SHOW INDEX FROM products;
++----------+--------------------+--------+-----+--------+-----------+---------+
+|  Table   |        Name        | Unique | Seq | Column | Direction | Storing |
++----------+--------------------+--------+-----+--------+-----------+---------+
+| products | primary            | true   |   1 | id     | ASC       | false   |
+| products | products_price_idx | false  |   1 | price  | ASC       | false   |
+| products | products_price_idx | false  |   2 | name   | N/A       | true    |
++----------+--------------------+--------+-----+--------+-----------+---------+
+
+SELECT name FROM products@products_price_idx WHERE price > 10;
+~~~
 
 ## See Also
 
