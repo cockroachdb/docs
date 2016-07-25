@@ -378,12 +378,9 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo docker version</code></pre>
     </div>
-    <p>If you don't see the server listed, run:</p>
+    <p>If you don't see the server listed, start the Docker daemon. </p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="gp" data-eventcategory="linux-docker-step2">$ </span>sudo docker -d &amp;</code></pre>
-    </div>
-
-    <div class="bs-callout bs-callout-info"> On Linux, Docker needs sudo privileges.</div>
+    <div class="bs-callout bs-callout-info">On Linux, Docker needs sudo privileges.</div>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
