@@ -17,7 +17,7 @@ This page provides recommended settings for production deployments.
 
 ## Clock Synchronization
 
-Run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. CockroachDB needs moderately accurate time; if the machines’ clocks drift too far apart, [transactions](transactions.html) will never succeed and the cluster will crash.
+CockroachDB needs moderately accurate time to preserve data consistency, so it's important to run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. If clocks drift too far apart, nodes will self-terminate, but this mechanism is not fail-safe and data consistency guarantees may be lost.
 
 ## File Descriptors Limit
 
