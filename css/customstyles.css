@@ -1324,6 +1324,12 @@ dl.dl-horizontal dd {
   /*margin:0px;*/
   padding: 7px 7px; }
 
+.nav ul li ul {
+  border-left: none;
+  margin: 0 0 0 15px;
+  padding: 0 0 0 0;
+}
+
 .nav {
   /* padding: 4px;*/
   padding: 0px;
@@ -1346,6 +1352,14 @@ dl.dl-horizontal dd {
   border-radius: 4px;*/
   text-decoration: none; }
 
+.nav a code {
+  color: #142848;
+}
+
+.nav a code:hover, .nav li.active > a > code {
+  color: #46a417;
+}
+
 .nav li > a > span {
   float: right;
   font-size: 19px;
@@ -1365,7 +1379,7 @@ dl.dl-horizontal dd {
 
 .nav li.active > a {
   /*background-color: #8D8D8D;*/
-  /*color: #f5f5f5;*/
+  color: #46a417;
   background-color: transparent;
   /*color: #f80;*/
   /*font-weight: bold;*/ }
@@ -1394,9 +1408,6 @@ ul#mysidebar {
   margin-top: 40px;
   background-color: transparent;
   border-radius: 0px; }
-
-.nav ul li ul li a {
-  padding-left: 20px; }
 
 .nav li.thirdlevel > a {
   background-color: transparent;
@@ -1678,7 +1689,7 @@ ol.series li {
 @media (min-width: 1000px) {
   ul#mysidebar {
     width: 225px;
-    position: fixed; } }
+    position: relative; } }
 @media (max-width: 900px) {
   ul#mysidebar {
     max-width: 100%; } }

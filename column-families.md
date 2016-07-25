@@ -89,4 +89,4 @@ Using the [`beta-20160714`](beta-20160714.html) release makes your data incompat
 ## See Also
 
 - [`CREATE TABLE`](create-table.html)
-- [Data Definition](data-definition.html)
+- [Other SQL Statements](sql-statements.html)

@@ -16,4 +16,4 @@ To understand how CockroachDB chooses the best index for running a query, see [I
 
 ## See Also
 
-[Data Definition](data-definition.html)
+[SQL Statements](sql-statements.html)
