@@ -255,7 +255,7 @@ $(document).ready(function(){
   <li>
     <p>Make sure CockroachDB installed successfully:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>cockroach version</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -421,7 +421,7 @@ $(document).ready(function(){
   <li>
       <p>Make sure CockroachDB installed successfully:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>cockroach version</code></pre></div>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -468,7 +468,7 @@ $(document).ready(function(){
   <li>
       <p>Make sure CockroachDB installed successfully:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>cockroach version</code></pre></div>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
