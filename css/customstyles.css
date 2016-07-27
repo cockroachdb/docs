@@ -1,6 +1,3 @@
-@charset "UTF-8";
-/*Colors*/
-/*Mixins*/
 @import url("//hello.myfonts.net/count/2e0219");
 @font-face {
   font-family: 'Adelle-Bold';
@@ -1117,31 +1114,23 @@ body h1 {
   color: #46a417; }
 
 .post-content img {
-  margin: 12px 0px 3px 0px; 
-}
-
+  margin: 12px 0px 3px 0px; }
 .post-content .row .roach {
-  -webkit-transition: all .2s ease;
-  transition: all .2s ease;
-  text-align: center; 
+  text-align: center;
+  opacity: 0.85;
   top: 0px;
-  opacity: .85;
-}
-
-.post-content .row .roach:hover {
-  -webkit-transition: all .2s ease;
-  transition: all .2s ease;
-  top: -10px;
-  opacity: 1;
-}
-
-.post-content .row .roach a img {
-    height: 150px; 
-  }
-
-.post-content .row .roach h3 {
-  color: #46a417;
-}
+  position: relative;
+  -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  .post-content .row .roach h3 {
+    color: #46a417; }
+  .post-content .row .roach a img {
+    height: 150px; }
+  .post-content .row .roach:hover {
+    top: -10px;
+    opacity: 1; }
 
 .post-content ol li, .post-content ul li {
   margin: 10px 0px; }
@@ -1262,9 +1251,7 @@ div#toc ul {
   color: gray; }
 
 div#toc ul li ul {
-  /*padding-left: 8px;*/
-  padding: 0px; 
-}
+  padding: 0; }
 
 div#toc > ul::before {
   content: "On This Page";
@@ -1327,8 +1314,7 @@ dl.dl-horizontal dd {
 .nav ul li ul {
   border-left: none;
   margin: 0 0 0 15px;
-  padding: 0 0 0 0;
-}
+  padding: 0; }
 
 .nav {
   /* padding: 4px;*/
@@ -1353,12 +1339,9 @@ dl.dl-horizontal dd {
   text-decoration: none; }
 
 .nav a code {
-  color: #142848;
-}
-
-.nav a code:hover, .nav li.active > a > code {
-  color: #46a417;
-}
+  color: #142848; }
+  .nav a code:hover {
+    color: #46a417; }
 
 .nav li > a > span {
   float: right;
@@ -1378,11 +1361,10 @@ dl.dl-horizontal dd {
   /*color: #28baaf;*/ }
 
 .nav li.active > a {
-  /*background-color: #8D8D8D;*/
-  color: #46a417;
   background-color: transparent;
-  /*color: #f80;*/
-  /*font-weight: bold;*/ }
+  color: #46a417; }
+  .nav li.active > a > code {
+    color: #46a417; }
 
 .nav li a {
   font-size: 14px;
@@ -1633,8 +1615,7 @@ hr {
 .recent-articles {
   width: 90%;
   margin-left: auto;
-  margin-right: auto;
-}
+  margin-right: auto; }
 
 button.cursorNorm {
   cursor: pointer; }
@@ -1697,9 +1678,8 @@ span.muted {
   color: #C0C0C0; }
 
 table code {
-  background-color: transparent; 
-  font-weight: bold;
-}
+  background-color: transparent;
+  font-weight: bold; }
 
 .highlight .err {
   color: #a61717;

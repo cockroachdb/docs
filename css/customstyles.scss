@@ -158,12 +158,25 @@ body h1 {
   .row {
     
     .roach {
-      text-align: center; 
+      text-align: center;
+      opacity: 0.85;
+      top: 0px;
+      position: relative; 
+      @include groovy(all);
+
+      h3 {
+        color: $cl_green;
+      }
       
       a {
         img {
           height: 150px;
         }
+      }
+
+      &:hover {
+        top: -10px;
+        opacity: 1;
       }
     }
   }
@@ -285,20 +298,21 @@ margin: 3px;
 div#toc ul li {
 /*margin: 8px 0px 8px 22px;*/
 margin-left: 30px;
+margin-right: 30px;
 font-size: 90%;
 list-style: disc;
 }
 div#toc ul {
 background-color: #f0f0f0;
-padding: 10px;
+padding: 20px;
 border-radius: 5px;
-max-width: 300px;
+min-width: 300px;
+display: table;
 color: gray;
 }
 
 div#toc ul li ul {
-  padding-left:8px;
-
+  padding: 0;
 }
 
 div#toc >ul::before {
@@ -376,6 +390,12 @@ dl.dl-horizontal dd {
     padding: 7px 7px;
 }
 
+.nav ul li ul {
+  border-left: none;
+  margin: 0 0 0 15px;
+  padding: 0;
+}
+
 .nav {
     /* padding: 4px;*/
     padding:0px;
@@ -402,6 +422,14 @@ dl.dl-horizontal dd {
     text-decoration: none;
 }
 
+.nav a code {
+  color: $cl_blue;
+
+  &:hover {
+    color: $cl_green;
+  }
+}
+
 .nav li > a > span {
     float: right;
     font-size: 19px;
@@ -424,11 +452,12 @@ dl.dl-horizontal dd {
 }
 
 .nav li.active > a {
-    /*background-color: #8D8D8D;*/
-    /*color: #f5f5f5;*/
     background-color: transparent;
-    /*color: #f80;*/
-    /*font-weight: bold;*/
+    color: $cl_green;
+
+    > code {
+      color: $cl_green;
+    }
 }
 
 .nav li a {
@@ -460,11 +489,6 @@ ul#mysidebar {
   background-color: transparent;
   border-radius:0px;
 }
-
-.nav ul li ul li a {
-  padding-left:20px;
-}
-
 
 .nav li.thirdlevel > a {
 background-color: transparent;
@@ -679,8 +703,8 @@ ol li ol li {list-style-type: lower-alpha;}
 li img {clear:both; }
 
 div#toc ul li ul li {
-    list-style-type: circle;
-    margin: 5px 0px 0px 0px;
+  list-style-type: circle;
+  margin: 10px 0px 0px 20px;
 }
 
 .tab-content {
@@ -721,12 +745,18 @@ div.tags {padding: 10px 5px;}
 
 hr {
     border: 0;
-    border-bottom: 1px dashed #ccc;
+    border-bottom: 1px solid #ccc;
     background: #999;
     margin: 30px 0px;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.recent-articles {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 button.cursorNorm {
@@ -793,7 +823,7 @@ ol.series li {
 
     ul#mysidebar {
         width: 225px;
-        position: fixed;
+        position: relative;
     }
 }
 
@@ -806,7 +836,10 @@ ol.series li {
 
 span.muted {color: #C0C0C0;}
 
-table code {background-color: transparent;}
+table code {
+  background-color: transparent;
+  font-weight: bold;
+}
 
 .highlight .err {
     color: #a61717;
