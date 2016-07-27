@@ -104,6 +104,11 @@ $(document).ready(function(){
       <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
     </li>
     <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+    
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
+    </li>
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
@@ -137,6 +142,11 @@ $(document).ready(function(){
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
+    </li>
+    <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+    
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -198,6 +208,11 @@ $(document).ready(function(){
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
   </li>
   <li>
+    <p>Make sure CockroachDB installed successfully:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
+  </li>
+  <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form install-form-3 clearfix">
       <script>
@@ -236,6 +251,11 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
+  </li>
+  <li>
+    <p>Make sure CockroachDB installed successfully:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -283,7 +303,12 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
-    </li>      
+    </li>
+    <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
+    </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
@@ -345,6 +370,11 @@ $(document).ready(function(){
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
   </li>
   <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
+  </li>
+  <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
         <script>
@@ -389,6 +419,11 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>cockroach version</code></pre></div>
+  </li>
+  <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
     <div class="hubspot-install-form install-form-7 clearfix">
       <script>
@@ -429,6 +464,11 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="gp" data-eventcategory="win-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
+  </li>
+  <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
