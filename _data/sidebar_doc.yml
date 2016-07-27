@@ -295,6 +295,8 @@ entries:
 
     - title: Release Notes
       items:
+        - title: beta-20160728
+          url: /beta-20160728.html
 
         - title: beta-20160721
           url: /beta-20160721.html
@@ -304,9 +306,6 @@ entries:
 
         - title: beta-20160629
           url: /beta-20160629.html
-
-        - title: beta-20160616
-          url: /beta-20160616.html
 
         - title: Older Versions
           url: /older-versions.html
