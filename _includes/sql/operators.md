@@ -1,7 +1,9 @@
 `%` | Return
 --- | ---
 [decimal](decimal.html) `%` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `%` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `%` [float](float.html) | [float](float.html)
+[int](int.html) `%` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `%` [int](int.html) | [int](int.html)
 
 `&` | Return
@@ -25,8 +27,10 @@
 `+`[int](int.html) | [int](int.html)
 [date](date.html) `+` [int](int.html) | [date](date.html)
 [decimal](decimal.html) `+` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `+` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `+` [float](float.html) | [float](float.html)
 [int](int.html) `+` [date](date.html) | [date](date.html)
+[int](int.html) `+` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `+` [int](int.html) | [int](int.html)
 [interval](interval.html) `+` [interval](interval.html) | [interval](interval.html)
 [interval](interval.html) `+` [timestamp](timestamp.html) | [timestamp](timestamp.html)
@@ -42,7 +46,9 @@ timestamptz `+` [interval](interval.html) | timestamptz
 [date](date.html) `-` [date](date.html) | [int](int.html)
 [date](date.html) `-` [int](int.html) | [date](date.html)
 [decimal](decimal.html) `-` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `-` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `-` [float](float.html) | [float](float.html)
+[int](int.html) `-` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `-` [int](int.html) | [int](int.html)
 [interval](interval.html) `-` [interval](interval.html) | [interval](interval.html)
 [timestamp](timestamp.html) `-` [interval](interval.html) | [timestamp](timestamp.html)
@@ -53,14 +59,18 @@ timestamptz `-` timestamptz | [interval](interval.html)
 `/` | Return
 --- | ---
 [decimal](decimal.html) `/` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `/` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `/` [float](float.html) | [float](float.html)
+[int](int.html) `/` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `/` [int](int.html) | [decimal](decimal.html)
 [interval](interval.html) `/` [int](int.html) | [interval](interval.html)
 
 `//` | Return
 --- | ---
 [decimal](decimal.html) `//` [decimal](decimal.html) | [decimal](decimal.html)
+[decimal](decimal.html) `//` [int](int.html) | [decimal](decimal.html)
 [float](float.html) `//` [float](float.html) | [float](float.html)
+[int](int.html) `//` [decimal](decimal.html) | [decimal](decimal.html)
 [int](int.html) `//` [int](int.html) | [int](int.html)
 
 `<` | Return
