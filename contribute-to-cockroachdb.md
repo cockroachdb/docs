@@ -19,5 +19,5 @@ For filing bugs, suggesting improvements, or requesting new features, help us ou
 
 ## Need Help?
 
-- [CockroachDB Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
 - [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
