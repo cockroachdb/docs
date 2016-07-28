@@ -816,6 +816,8 @@ section.footer {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             line-height: 30px; } }
+        section.footer .footer-nav li a:hover {
+          color: #46a417; }
       @media screen and (min-width: 992px) {
         section.footer .footer-nav li {
           text-align: left; } }

@@ -32,6 +32,10 @@ section.footer {
 					@include avenir_bk(17px);
 					line-height: 30px;
 				}
+
+				&:hover {
+					color: $cl_green;
+				}
 			}
 
 
