@@ -1,342 +1,301 @@
-#footer {
+section.footer {
 	background: $cl_blue;
 	padding-top:65px;
 	padding-bottom: 30px;
 	position: relative;
 	z-index: 1000;
 
-	.form_header {
-		color: $cl_green;
-		@include avenir_bl(14px);
-		text-transform: uppercase;
-		width:100%;
-		list-style:none;
-		text-align:center;
-		padding:0;
-		margin:50px 0 0 0;
-		text-indent:0;
-		line-height:14px;
-	}
-
-	.hbspt-form {
-		max-width: 250px;
-		margin: 0 auto 20px;
-
-		form {
-			overflow: auto;
-		}
-
-		label {
-			display: none;
-		}
-
-		.hs-input {
-			width: 80%;
-			font-size:14px;
-			padding:0px 15px;
-			line-height:40px;
-			outline:none;
-			margin-top:10px;
-			min-height:40px;
-			@include border-left-radius(38px);
-			float: left;
-			background-color: transparent;	
-			border: 2px solid rgba(255, 255, 255, 0.2);	
-			border-right-width: 1px;
-			color: #FFFFFF;
-
-			&::-webkit-input-placeholder {
-			    color:    $cl_green;
-			}
-			&:-moz-placeholder { 
-			   color:    $cl_green;
-			   opacity:  1;
-			}
-			&::-moz-placeholder { 
-			   color:    $cl_green;
-			   opacity:  1;
-			}
-			&:-ms-input-placeholder { 
-			   color:    $cl_green;
-			}
-			&:placeholder-shown {
-			  color:    $cl_green;
-			}
-		}
-
-		.hs_submit {
-			position: relative;
-
-			&:after {
-				content: '\f00c';
-				font-family: 'FontAwesome';
-				position: absolute;
-				color: rgba(255, 255, 255, 0.2);
-				top: 17px;
-				right: 11px;
-				width: 20px;
-				height: 20px;
-				font-size: 20px;
-				z-index: 4;
-			}
-
-			&:hover:after {
-				color: rgba(255, 255, 255, 1)
-			}
-		}
-
-		.hs-button {
-			background-color: transparent;
-			border-color:$cl_blue;
-			width:20%;
-			margin-top:10px;
-			min-height: 40px;
-			color:#fff;
-			padding: 0;
-			line-height:40px;
-			@include border-right-radius(38px);
-			text-indent: -5000px;
-			float: right;
-			border: 2px solid rgba(255, 255, 255, 0.2);	
-			border-left-width: 1px;
-			position: relative;
-			outline: 0;
-			z-index: 5;
-		}
-
-		.hs-error-msgs, .hs-form-required {
-			display: none !important;
-		}
-
-		.submitted-message {
-			text-align: center;
-			width: 100%;
-			color: $cl_green;
-			@include avenir_bk(16px);
-		}
-	}
-
-
-
-	.footer_nav_row {
-		margin:0;
-		width:100%;
-
-
-		.footer_nav, .footer_social, .footer_documentation {
-			list-style: none;
-			width:100%;
-			margin:0;
-			padding:0;
-
-			li {
-				color:#FFFFFF;
-				text-transform: uppercase;
-				width:100%;
-				list-style:none;
-				text-align:center;
-				padding:0;
-				margin:0;
-				text-indent:0;
-				line-height:14px;
-
-				a {
-					color:#FFFFFF;
-					@include avenir_bk(14px);
-					text-transform: none;
-					line-height: 26px;
-				}
-
-				
-			}
-			li.header {
-				width:100%;
-				margin-bottom:10px;
-				@include avenir_bl(13px);
-			}
-			li:before {
-			    content: "";
-				display:none;
-				left:auto;
-				top:auto;
-			}
-		}
-
-		.footer_documentation {
-			margin-top: 40px;
-		}
-
-		.contact_header {
-			color: #FFFFFF;
-			margin-bottom:10px;
-			@include avenir_bl(13px);
-			text-transform: uppercase;
-			line-height: 13px;
-		}
-
-		.address {
-			color:#FFFFFF;
-			@include avenir_bk(14px);
-			line-height: 26px;
-		}
-
-		.address_two {
-			margin-bottom: 30px;
-		}
-
-		.contact_col {
-			margin-top: 40px;
-			text-align: center;
-		}
-
-		.contact_email a {
-			color:#FFFFFF;
-			@include avenir_bk(12px);
-			line-height: 30px;
-		}
-	}
-
-	.footer_logo_row {
+	//Nav Items
+	.footer-nav {
+		list-style: none;
 		margin: 0;
-	}
+		padding: 0;
 
-	.footer_logo {
-		width:20%;
-		margin:40px auto 10px;
-		display: inline-block;
-
-		img {
-			max-width:36px;
-			width: 100%;
-			height: auto;
-		}
-
-	}
-
-	.copyright {
-		margin:0;
-		color:#FFFFFF;
-	}
-}
-
-/** intermediate between mobile/tablet **/
-@media (min-width: 600px) {
-	
-	#footer {
-		.footer_nav_row {
-			margin:0;
+		li {
+			color:#FFFFFF;
+			text-transform: uppercase;
 			width:100%;
+			list-style:none;
+			text-align:center;
+			padding:0;
+			margin:0;
+			text-indent:0;
+			line-height:14px;
 
-			.contact_email a {
+			a {
+				color:#FFFFFF;
 				@include avenir_bk(14px);
-			}
-		}
-	}
-}
+				text-transform: none;
+				line-height: 26px;
 
-/** mobile-only **/
-@media (min-width: 768px) {
-	
-	#footer {
-		padding-top:55px;	
+				@include at-query($min, $screen-sm){
+					@include avenir_bk(17px);
+					line-height: 30px;
+				}
 
-		.footer_nav_row {
-			.footer_nav, .footer_social, .footer_documentation {
-				li {
-
-					&.header {
-						@include avenir_bl(14px);
-					}
-
-					a {
-						@include avenir_bk(17px);
-						line-height: 30px;
-					}
+				&:hover {
+					color: $cl_green;
 				}
 			}
 
-			.address {
-				@include avenir_bk(17px);
-				line-height: 30px;
-			}
 
-			.footer_documentation {
-				margin-top: 0;
-			}
-
-			.contact_col {
-				margin-top: 0;
+			@include at-query($min, $screen-md){
 				text-align: left;
 			}
 		}
 
-		.hbspt-form {
-			.hs_submit {
-				&:after {
-					right: 13px;
-				}
+		li.header {
+			width:100%;
+			margin-bottom:10px;
+			@include avenir_bl(13px);
+
+			@include at-query($min, $screen-sm){
+				@include avenir_bl(14px);
 			}
 		}
+		li:before {
+		    content: "";
+			display:none;
+			left:auto;
+			top:auto;
+		}
 	}
-}
 
-/** medium desktop **/
-@media (min-width: 992px) {
+	.documentation-col { 
+		margin-top: 40px;
 
-	#footer {
-		padding-top:60px;
-
-		.form_header {
+		@include at-query($min, $screen-sm){
 			margin-top: 0;
 		}
+	}
 
-		.hbspt-form {
-			.hs_submit {
-				&:after {
-					right: 13px;
-				}
-			}
-		}
+	.community-col, .social-col { 
+		margin-top: 40px;
 
-		.footer_nav_row {
-
-			.footer_logo {
-				width:25%;
-			}
-
-			.footer_nav_col, .footer_social_col {
-				//width:25%;
-			}
-
-			.footer_nav, .footer_social, .footer_documentation {
-				float:right;
-
-				li {
-					text-align:left;
-					width:100%;
-				}
-				li.header {
-					width:100%;
-				}
-
-			}
+		@include at-query($min, $screen-md){
+			margin-top: 0;
 		}
 	}
-}
 
-/** large desktop **/
-@media (min-width: 1200px) {
+	//Footer Logo + Copyright
+	.footer-logo-wrap {
+		text-align: left;
 
-	#footer {
-		padding-top:65px;
+		.footer-logo {
+			text-align: center;
+			margin-bottom: 5px;
 
-		.hbspt-form {
-			.hs_submit {
-				&:after {
-					right: 17px;
-				}
+			img {
+				max-width:36px;
+				width: 100%;
+				height: auto;
+			}
+
+			@include at-query($min, $screen-md){
+				text-align: left;
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 5px;
+				margin-bottom: 0;
+			}
+
+		}
+
+		.copyright {
+			margin:0;
+			color:#FFFFFF;
+			text-align: center;
+			@include avenir_m(12px);
+
+			@include at-query($min, $screen-md){
+				text-align: left;
+				display: inline-block;
+				vertical-align: middle;
 			}
 		}
+
+		@include at-query($min, $screen-md){
+			margin-top: 75px;
+		}
+	}
+
+	//Hubspot Form
+	#hubspot-form {
+		margin: 50px 0;
+
+		.form-header {
+			color: #FFFFFF;
+			@include avenir_m(14px);
+			line-height: 14px;
+			text-align: center;
+			margin-bottom: 10px;
+
+			@include at-query($min, $screen-md){
+				font-size: 16px;
+				line-height: 16px;
+				text-align: left;
+				display: inline-block;
+				vertical-align: middle;
+				margin-bottom: 0;
+			}
+		}
+
+		.hbspt-form {
+			width: 100%;
+			max-width: 325px;
+			margin: 0 auto;
+
+			form {
+				overflow: auto;
+			}
+
+			label {
+				display: none;
+			}
+
+			.hs_email {
+				position: relative;
+				height: 42px;
+				width: calc(100% - 110px);
+				float: left;
+
+				&:before {
+					background-image: url('https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png');
+  				background-size: 19px 12px;
+  				background-repeat: no-repeat;
+  				width: 19px;
+  				height: 12px;
+  				position: absolute;
+  				left: 15px;
+  				top: 50%;	
+  				@include translate(0, -50%);
+  				content: '';
+				}
+			}
+
+			.hs-input {
+				font-size:14px;
+				padding:0px 15px 0 40px;
+				line-height:40px;
+				outline:none;
+				min-height:40px;
+				@include border-left-radius(38px);
+				width: 100%;
+				background-color: transparent;
+				border: 1px solid #FFFFFF;
+				border-right-width: 1px;
+				color: #FFFFFF;
+
+				&::-webkit-input-placeholder {
+			    color:    $cl_green;
+				}
+				&:-moz-placeholder { 
+				   color:    $cl_green;
+				   opacity:  1;
+				}
+				&::-moz-placeholder { 
+				   color:    $cl_green;
+				   opacity:  1;
+				}
+				&:-ms-input-placeholder { 
+				   color:    $cl_green;
+				}
+				&:placeholder-shown {
+				  color:    $cl_green;
+				}
+
+				@include at-query($min, $screen-md){
+					font-size: 16px;
+				}
+			}
+
+			.hs_submit {
+				position: relative;
+			}
+
+			.hs-button {
+				width: 110px;
+				text-align: center;
+				background-color: transparent;
+				min-height: 40px;
+				color: #FFFFFF;
+				padding: 0;
+				line-height:40px;
+				@include avenir_bl(10px);
+				text-transform: uppercase;
+				letter-spacing: 0.75px;
+				@include border-right-radius(38px);
+				float: right;
+				border: 1px solid #FFFFFF;
+				border-left-width: 1px;
+				position: relative;
+				outline: 0;
+				z-index: 5;
+
+				&:hover {
+					color: $cl_green;
+				}
+			}
+
+			.hs-error-msgs, .hs-form-required {
+				display: none !important;
+			}
+
+			.submitted-message {
+				font-size:14px;
+				padding:0px 15px 0 40px;
+				line-height:40px;
+				outline:none;
+				min-height:40px;
+				border-radius: 38px;
+				text-align: left;
+				width: 100%;
+				background-color: transparent;
+				border: 1px solid #FFFFFF;
+				color: #FFFFFF;
+				position: relative;
+
+				&:before {
+					background-image: url('https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png');
+  				background-size: 19px 12px;
+  				background-repeat: no-repeat;
+  				width: 19px;
+  				height: 12px;
+  				position: absolute;
+  				left: 15px;
+  				top: 50%;	
+  				@include translate(0, -50%);
+  				content: '';
+				}
+
+				@include at-query($min, $screen-md){
+					font-size: 16px;
+				}
+			}
+
+			@include at-query($min, $screen-md){
+				display: inline-block;
+				vertical-align: middle;
+				margin: 0 0 0 15px;
+				max-width: 350px;
+			}
+		}
+
+		@include at-query($min, $screen-md){
+			margin: 75px 0 0;
+			text-align: right;
+		}
+	}
+
+	@include at-query($min, $screen-sm){
+		padding-top: 55px;
+	}
+
+	@include at-query($min, $screen-md){
+		padding-top: 60px;
+	}
+
+	@include at-query($min, $screen-lg){
+		padding-top: 65px;
 	}
 }
-

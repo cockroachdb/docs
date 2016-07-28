@@ -4,7 +4,7 @@
         var _viewport_width = $(window).width(),
             $mobile_menu = $('nav.mobile_expanded'),
             $sidebar = $('#mysidebar'),
-            $footer = $('#footer'),
+            $footer = $('section.footer'),
             footertotop, scrolltop, difference;
 
 
