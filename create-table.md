@@ -188,16 +188,8 @@ SHOW INDEX FROM product_information;
 
 We also have other resources on indexes:
 
-<<<<<<< HEAD
 - Create indexes for existing tables using [`CREATE INDEX`](create-index.html).
 - [Learn more about indexes](indexes.html).
-=======
-~~~
-CREATE INDEX date_added_idx ON product_information (date_added);
-
-CREATE INDEX supp_id_prod_status_idx ON product_information (supplier_id, product_status);
-~~~
->>>>>>> gh-pages
 
 ### Show the Definition of a Table
 
