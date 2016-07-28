@@ -18,6 +18,11 @@ layout: default
 
    {% include linkrefs.html %}
 
+   {% if page.feedback != false %}
+      <br><br>
+      {% include feedback-widget.html %}
+   {% endif %}
+
 </div>
 
 {% if page.homepage != true %}

@@ -93,4 +93,5 @@ CREATE INDEX ON tbl (col1, col2) STORING (col3);
 - [`DROP INDEX`](drop-index.html) 
 - [`RENAME INDEX`](rename-index.html) 
 - [`SHOW INDEX`](show-index.html)
+- [SQL Statements](sql-statements.html)
 - [Data Definition](data-definition.html)

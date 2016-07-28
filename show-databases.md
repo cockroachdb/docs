@@ -1,6 +1,7 @@
 ---
 title: SHOW DATABASES
 summary: The SHOW DATABASES statement lists all database in the CockroachDB cluster.
+keywords: reflection
 toc: false
 ---
 

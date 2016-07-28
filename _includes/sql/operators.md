@@ -131,11 +131,16 @@ tuple `=` tuple | [bool](bool.html)
 --- | ---
 [int](int.html) `>>` [int](int.html) | [int](int.html)
 
+`ILIKE` | Return
+--- | ---
+[string](string.html) `ILIKE` [string](string.html) | [bool](bool.html)
+
 `IN` | Return
 --- | ---
 [bool](bool.html) `IN` tuple | [bool](bool.html)
 [bytes](bytes.html) `IN` tuple | [bool](bool.html)
 [date](date.html) `IN` tuple | [bool](bool.html)
+[decimal](decimal.html) `IN` tuple | [bool](bool.html)
 [float](float.html) `IN` tuple | [bool](bool.html)
 [int](int.html) `IN` tuple | [bool](bool.html)
 [interval](interval.html) `IN` tuple | [bool](bool.html)
@@ -168,4 +173,9 @@ tuple `IN` tuple | [bool](bool.html)
 `~` | Return
 --- | ---
 `~`[int](int.html) | [int](int.html)
+[string](string.html) `~` [string](string.html) | [bool](bool.html)
+
+`~*` | Return
+--- | ---
+[string](string.html) `~*` [string](string.html) | [bool](bool.html)
 

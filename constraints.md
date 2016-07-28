@@ -204,4 +204,4 @@ If no `DEFAULT` constraint is specified and an explicit value is not given, a va
 
 ## See Also
 
-[Data Definition](data-definition.html)
+[`CREATE TABLE`](create-table.html)

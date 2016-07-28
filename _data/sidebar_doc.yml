@@ -4,13 +4,22 @@
 entries:
 - title: Sidebar
   subcategories:
+
     - title: Get Started
       items:
+
         - title: Install CockroachDB
           url: /install-cockroachdb.html
 
-        - title: Start a Cluster
-          url: /start-a-local-cluster.html
+          thirdlevel:
+            - title: Start a Cluster
+              thirdlevelitems:
+
+                - title: From Binary
+                  url: /start-a-local-cluster.html
+
+                - title: In Docker
+                  url: /start-a-local-cluster-in-docker.html
 
         - title: Secure a Cluster
           url: /secure-a-cluster.html
@@ -26,20 +35,182 @@ entries:
 
     - title: Develop
       items:
+
         - title: Install Client Drivers
           url: /install-client-drivers.html
 
-        - title: SQL Statements
-          url: /sql-statements.html
+          thirdlevel:
+            - title: SQL Statements
+              thirdlevelitems:
+
+                - title: Overview
+                  url: /sql-statements.html
+
+                - title: <code>ALTER TABLE</code>
+                  url: /alter-table.html
+
+                - title: <code>BEGIN</code>
+                  url: /begin-transaction.html
+
+                - title: <code>COMMIT</code>
+                  url: /commit-transaction.html
+
+                - title: <code>CREATE DATABASE</code>
+                  url: /create-database.html
+
+                - title: <code>CREATE INDEX</code>
+                  url: /create-index.html
+
+                - title: <code>CREATE TABLE</code>
+                  url: /create-table.html
+
+                - title: <code>DELETE</code>
+                  url: /delete.html
+
+                - title: <code>DROP DATABASE</code>
+                  url: /drop-database.html
+
+                - title: <code>DROP INDEX</code>
+                  url: /drop-index.html
+
+                - title: <code>DROP TABLE</code>
+                  url: /drop-table.html
+
+                - title: <code>EXPLAIN</code>
+                  url: /explain.html
+
+                - title: <code>GRANT</code>
+                  url: /grant.html
+
+                - title: <code>INSERT</code>
+                  url: /insert.html
+
+                - title: <code>RENAME COLUMN</code>
+                  url: /rename-column.html
+
+                - title: <code>RENAME DATABASE</code>
+                  url: /rename-database.html
+
+                - title: <code>RENAME INDEX</code>
+                  url: /rename-index.html
+
+                - title: <code>RENAME TABLE</code>
+                  url: /rename-table.html
+
+                - title: <code>ALTER TABLE</code>
+                  url: /alter-table.html
+
+                - title: <code>RELEASE SAVEPOINT</code>
+                  url: /release-savepoint.html
+
+                - title: <code>REVOKE</code>
+                  url: /revoke.html
+
+                - title: <code>ROLLBACK</code>
+                  url: /rollback-transaction.html
+
+                - title: <code>SELECT</code>
+                  url: /select.html
+
+                - title: <code>SET DATABASE</code>
+                  url: /set-database.html
+
+                - title: <code>SET TIMESZONE</code>
+                  url: /set-time-zone.html
+
+                - title: <code>SET TRANSACTION</code>
+                  url: /set-transaction.html
+
+                - title: <code>SHOW COLUMNS</code>
+                  url: /show-columns.html
+
+                - title: <code>SHOW DATABASES</code>
+                  url: /show-databases.html
+
+                - title: <code>SHOW GRANTS</code>
+                  url: /show-grants.html
+
+                - title: <code>SHOW INDEX</code>
+                  url: /show-index.html
+
+                - title: <code>SHOW TABLES</code>
+                  url: /show-tables.html
+
+                - title: <code>SHOW TIME ZONE</code>
+                  url: /show-time-zone.html
+
+                - title: <code>SHOW TRANSACTION</code>
+                  url: /show-transaction.html
+
+                - title: <code>TRUNCATE</code>
+                  url: /show-grants.html
+
+                - title: <code>UPDATE</code>
+                  url: /update.html
+
+                - title: <code>UPSERT</code>
+                  url: /upsert.html
+
+                - title: <code>VALUES</code>
+                  url: /values.html
 
         - title: SQL Grammar
           url: /sql-grammar.html
 
-        - title: Data Definition
-          url: /data-definition.html
+          thirdlevel:
+            - title: Data Definition
+              thirdlevelitems:
 
-        - title: Data Types
-          url: /data-types.html
+                - title: Keywords & Identifiers
+                  url: /keywords-and-identifiers.html
+
+                - title: Constraints
+                  url: /constraints.html
+
+                - title: Column Families
+                  url: /column-families.html
+
+                - title: Indexes
+                  url: /indexes.html
+
+                - title: <code>NULL</code> Handling
+                  url: /null-handling.html
+
+            - title: Data Types
+              thirdlevelitems:
+
+                - title: Overview
+                  url: /data-types.html
+
+                - title: <code>INT</code>
+                  url: /int.html
+
+                - title: <code>SERIAL</code>
+                  url: /serial.html
+
+                - title: <code>DECIMAL</code>
+                  url: /decimal.html
+
+                - title: <code>FLOAT</code>
+                  url: /float.html
+
+                - title: <code>BOOL</code>
+                  url: /bool.html
+
+                - title: <code>DATE</code>
+                  url: /date.html
+
+                - title: <code>TIMESTAMP</code>
+                  url: /timestamp.html
+
+                - title: <code>INTERVAL</code>
+                  url: /interval.html
+
+                - title: <code>STRING</code>
+                  url: /string.html
+
+                - title: <code>BYTES</code>
+                  url: /bytes.html
 
         - title: Privileges
           url: /privileges.html
@@ -52,6 +223,10 @@ entries:
 
     - title: Deploy
       items:
+
+        - title: Recommended Production Settings
+          url: /recommended-production-settings.html
+
         - title: Manual Deployment
           url: /manual-deployment.html
 
@@ -75,6 +250,7 @@ entries:
 
     - title: Manage
       items:
+
         - title: Explore the Admin UI
           url: /explore-the-admin-ui.html
 
@@ -92,6 +268,7 @@ entries:
 
     - title: Learn How It Works
       items:
+
         - title: Frequently Asked Questions
           url: /frequently-asked-questions.html
 
@@ -109,6 +286,7 @@ entries:
 
     - title: Contribute
       items:
+
         - title: Contribute to CockroachDB
           url: /contribute-to-cockroachdb.html
 
@@ -117,17 +295,18 @@ entries:
 
     - title: Release Notes
       items:
+
+        - title: beta-20160721
+          url: /beta-20160721.html
+
+        - title: beta-20160714
+          url: /beta-20160714.html
+
         - title: beta-20160629
           url: /beta-20160629.html
 
         - title: beta-20160616
           url: /beta-20160616.html
-
-        - title: beta-20160609
-          url: /beta-20160609.html
-
-        - title: beta-20160602
-          url: /beta-20160602.html
 
         - title: Older Versions
           url: /older-versions.html

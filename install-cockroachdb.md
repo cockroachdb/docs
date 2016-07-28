@@ -104,6 +104,11 @@ $(document).ready(function(){
       <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
     </li>
     <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+    
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
+    </li>
+    <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
@@ -137,6 +142,11 @@ $(document).ready(function(){
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
       </div>
+    </li>
+    <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+    
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -174,7 +184,10 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+.</p>
+        <p>Git 1.8+</p>
+      </li>
+      <li>
+        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
       </li>
     </ul>
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
@@ -193,6 +206,11 @@ $(document).ready(function(){
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+  </li>
+  <li>
+    <p>Make sure CockroachDB installed successfully:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -233,6 +251,11 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
+  </li>
+  <li>
+    <p>Make sure CockroachDB installed successfully:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -280,7 +303,12 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
-    </li>      
+    </li>
+    <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
+    </li>
     <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
@@ -318,7 +346,10 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+.</p>
+        <p>Git 1.8+</p>
+      </li>
+      <li>
+        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
       </li>
     </ul>
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
@@ -337,6 +368,11 @@ $(document).ready(function(){
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+  </li>
+  <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
       <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -372,18 +408,20 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo docker version</code></pre>
     </div>
-    <p>If you don't see the server listed, run:</p>
+    <p>If you don't see the server listed, start the Docker daemon. </p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="gp" data-eventcategory="linux-docker-step2">$ </span>sudo docker -d &amp;</code></pre>
-    </div>
-
-    <div class="bs-callout bs-callout-info"> On Linux, Docker needs sudo privileges.</div>
+    <div class="bs-callout bs-callout-info">On Linux, Docker needs sudo privileges.</div>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
+  </li>
+  <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>
@@ -426,6 +464,11 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="gp" data-eventcategory="win-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre>
     </div>
+  </li>
+  <li>
+      <p>Make sure CockroachDB installed successfully:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with software releases and usage best practices:</p>

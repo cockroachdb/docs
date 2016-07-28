@@ -1,6 +1,7 @@
 ---
 title: Configure Replication Zones
 summary: In CockroachDB, you use replication zones to control the number and location of replicas for specific sets of data.
+keywords: ttl, time to live, availability zone
 toc: false
 ---
 
@@ -29,7 +30,7 @@ When replicating a piece of data, CockroachDB uses the most granular zone availa
 A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
 
 ~~~ yaml
-replicas:
+replicas: 
 - attrs: [comma-separated attribute list]
 - attrs: [comma-separated attribute list]
 - attrs: [comma-separated attribute list]
@@ -39,9 +40,19 @@ gc:
   ttlseconds: <time-in-seconds>
 ~~~
 
+Alternately, the `replicas` field can be simplified into a single line:
+
+~~~ yaml
+replicas: [attrs: [attribute list], attrs: [attribute list], attrs: [attribute list]]
+range_min_bytes: <size-in-bytes>
+range_max_bytes: <size-in-bytes>
+gc:
+  ttlseconds: <time-in-seconds>
+~~~
+
 Field | Description
 ------|------------
-`replicas` | The number and location of replicas for the zone. Each `attrs` line equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>It's normal and sufficient to define the number of replicas by listing `attrs` lines without any specific attributes (i.e., `- attrs: []`). But if you do set specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
+`replicas` | The number and location of replicas for the zone. Each `attrs` item equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>It's normal and sufficient to define the number of replicas by listing `attrs` without any specific attributes (i.e., `- attrs: []`). But if you do set specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MB)
 `range_min_bytes` | Not yet implemented.
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries. It is not recommended to set this below `600` (10 minutes).<br><br>**Default:** `86400` (24 hours)

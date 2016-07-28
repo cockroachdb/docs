@@ -10,6 +10,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 The project is currently in **Beta**. For details about upcoming features, see the [Roadmap](https://github.com/cockroachdb/cockroach/wiki).
 
+<br>
 <div class="row">
 <div class="col-md-4 roach">
     <a href="install-cockroachdb.html">
@@ -32,21 +33,23 @@ The project is currently in **Beta**. For details about upcoming features, see t
     </a>
 </div>
 </div>
+<br>
 
 ---
 
+<br>
 <div class="recent-articles" markdown="1">
 
 ## Recent Articles By CockroachDB Engineers
+<br>
+**[Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)**
+
+**[Consensus, Made Thrive](https://www.cockroachlabs.com/blog/consensus-made-thrive/)**
+
+**[Critters in a Jar: Running CockroachDB in a FreeBSD Jail](https://www.cockroachlabs.com/blog/critters-in-a-jar-running-cockroachdb-in-a-freebsd-jail/)**
 
 **[Time-Travel Queries: SELECT witty_subtitle FROM THE FUTURE](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)**
 
 **[Outsmarting Go Dependencies in Testing Code](https://www.cockroachlabs.com/blog/outsmarting-go-dependencies-testing-code/)**
-
-**[Revisiting SQL Typing in CockoachDB](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/)**
-
-**[Building an Application with CockroachDB and SQLAlchemy](https://www.cockroachlabs.com/blog/building-application-cockroachdb-sqlalchemy-2/)**
-
-**[Trust, But Verify: How CockroachDB Checks Replication](https://www.cockroachlabs.com/blog/trust-but-verify-cockroachdb-checks-replication/)**
 
 </div>

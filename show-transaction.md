@@ -1,6 +1,7 @@
 ---
 title: SHOW TRANSACTION
 summary: The SHOW TRANSACTION statement lists the default transaction isolation level or transaction priority for the current session or for an individual transaction.
+keywords: reflection
 toc: false
 ---
 

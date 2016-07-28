@@ -172,9 +172,20 @@ func main() {
 				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority"}, match: regexp.MustCompile("'BEGIN'|'START'")},
 				{name: "column_def"},
 				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
-				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'")},
-				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}},
-				{name: "create_index_stmt", inline: []string{"opt_storing", "storing", "opt_unique", "opt_name", "index_params", "index_elem", "opt_asc_desc", "name_list"}},
+				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'|'END'")},
+				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
+				{
+					name:   "create_index_stmt",
+					inline: []string{"opt_storing", "storing", "opt_unique", "opt_name", "index_params", "index_elem", "opt_asc_desc", "name_list"},
+					replace: map[string]string{
+						"'INDEX' ( name": "'INDEX' ( index_name",
+						"'EXISTS' name":  "'EXISTS' index_name",
+						"qualified_name": "table_name",
+						"',' name":       "',' column_name",
+						"( name (":       "( column_name (",
+					},
+					unlink: []string{"index_name", "table_name", "column_name"},
+				},
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{name: "drop_database", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'DATABASE'")},
@@ -213,7 +224,7 @@ func main() {
 				{name: "values", stmt: "values_clause", inline: []string{"ctext_row", "ctext_expr_list", "ctext_expr"}},
 			}
 
-			for _, spec := range specs {
+			for _, s := range specs {
 				wg.Add(1)
 				go func(s stmtSpec) {
 					defer wg.Done()
@@ -237,10 +248,15 @@ func main() {
 					}
 					body = strings.Replace(body, `<a xlink:href="#`, `<a xlink:href="sql-grammar.html#`, -1)
 					name := strings.Replace(s.name, "_stmt", "", 1)
+					for _, u := range s.unlink {
+						s := fmt.Sprintf(`<a xlink:href="sql-grammar.html#%s" xlink:title="%s">((?s).*?)</a>`, u, u)
+						link := regexp.MustCompile(s)
+						body = link.ReplaceAllString(body, "$1")
+					}
 					if err := ioutil.WriteFile(filepath.Join(baseDir, fmt.Sprintf("%s.html", name)), []byte(body), 0644); err != nil {
 						log.Fatal(err)
 					}
-				}(spec)
+				}(s)
 			}
 			wg.Wait()
 		},
@@ -261,6 +277,7 @@ type stmtSpec struct {
 	inline         []string
 	replace        map[string]string
 	match, exclude *regexp.Regexp
+	unlink         []string
 }
 
 func runBNF(addr string) ([]byte, error) {

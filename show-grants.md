@@ -1,6 +1,7 @@
 ---
 title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
+keywords: reflection
 toc: false
 ---
 
