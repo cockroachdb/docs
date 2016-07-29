@@ -11,7 +11,6 @@
 
 	#main-content {
 		.content-col {
-			border-left: 1px solid $cl_border;
 			padding-bottom: 100px;
 		}
 	}
@@ -35,6 +34,7 @@
 			min-height: 625px;
 
 			.content-col {
+				border-left: 1px solid $cl_border;
 				min-height: 625px;
 				padding-left: 55px;
 			}

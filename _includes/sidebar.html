@@ -1,12 +1,12 @@
     <!-- Sidebar Column -->
-    <div class="col-md-3">
+    <div class="col-md-3 col-sidebar">
 
         <script>
 
             $(document).ready(function() {
                 // Initialize navgoco with default options
                 var $sidebar = $('#mysidebar'),
-                    $maincontent = $('#main-content');
+                    $maincontent = $('#main-content'), $contentcol = $('.content-col');
 
                 $sidebar.navgoco({
                     caretHtml: '',
@@ -35,8 +35,10 @@
                         var height = $sidebar.outerHeight();
                         if(height > 475){
                             $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+                            $contentcol.css({ 'min-height' : 625 + (height - 475) });
                         }else{
                             $maincontent.animate({ 'min-height' : 625 }, 200);
+                            $contentcol.css({ 'min-height' : 625 });
                         }
                     }, 400);
                 }
