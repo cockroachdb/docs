@@ -1,15 +1,15 @@
 ---
 title: Indexes
-summary: Indexes improve SQL's performance by helping it locate data without having to look through every row of a table.
+summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: false
 toc_not_nested: true
 ---
 
-Indexes improve SQL's performance by helping it locate data without having to look through every row of a table. 
+Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
 <div id="toc"></div>
 
-## How do indexes work?
+## How Do Indexes Work?
 
 When you create an index, CockroachDB "indexes" the columns you specify, which creates a copy of the columns and then sorts their values (without sorting the values in the table itself).
 
@@ -19,9 +19,9 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
 ### Creation
 
-Each table automatically has an index created called `primary`, which indexes either its `PRIMARY KEY` or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. The `primary` index helps filter a table's primary key (if it has one) but doesn't help SQL find values in any other columns.
+Each table automatically has an index created called `primary`, which indexes either its [`PRIMARY KEY`](constraints.html#primary-key) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
-However, you can easily improve the performance of queries using columns besides the table's primary key with secondary indexes. You can create them:
+The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can improve the performance of queries using columns besides the primary key with secondary indexes. You can create them:
 
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for `UNIQUE` columns.
 - For existing tables with [`CREATE INDEX`](create-index.html).
@@ -31,7 +31,7 @@ To create the most useful secondary indexes, you should also check out our [best
 
 ### Selection
 
-Because each query can only use a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e. the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e. the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 To override CockroachDB's index selection, you can also [query specific indexes](create-index.html#query-specific-indexes).
 
@@ -60,14 +60,15 @@ We recommend creating indexes for all of your common queries. To design the most
 
 When designing indexes, it's important to consider which columns you index and the order you list them. Here are a few guidelines to help you make the best choices:
 
-- Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that don't filter `(A)` won't benefit from the index.<br><br>This feature lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+- Each table's `PRIMARY KEY` (which we recommend always [defining](create-table.html#create-a-table-primary-key-defined)) is automatically indexed. The index it creates (called `primary`) cannot be changed, nor can you change the `PRIMARY KEY` of a table after it's been created, so this is a critical decision for every table.
+- Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that don't filter `(A)` won't benefit from the index.<br><br>This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+- Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 - Columns are sorted in the order you list them, so&mdash;in most cases&mdash;your index's first column should have the greatest number of distinct values. Order subsequent columns so they have the largest number of distinct values after sorting the index by the previous column.
 - Indexes of the same columns in different orders can produce different results for each query. This means you might not always order columns based on the number of distinct values. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
-- Inequality operators (`<`, `>`) are most efficient when applied to the last column in an index.
 
 ### Storing Columns
 
-Storing a column optimizes the performance of queries that retrieve its values (i.e. in the `FROM` clause) but don’t filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
+Storing a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but don’t filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
 
 However, for SQL to use stored columns, queries must filter another column in the same index.
 
