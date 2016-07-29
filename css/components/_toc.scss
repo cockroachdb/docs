@@ -1,0 +1,57 @@
+#toc {
+  > ul {
+    background-color: $cl_light_green;
+    padding: 20px 30px;
+    margin: 0;
+    width: 100%;
+
+    li {
+      margin: 0;
+      padding: 0 0 0 20px;
+      font-size: 90%;
+      list-style: none;
+
+      a {
+        @include avenir_bk(14px);
+        line-height: 30px;
+        color: $cl_blue;
+
+        &:hover {
+          color: $cl_green;
+          text-decoration: none;
+          border-bottom: none;
+        }
+      }
+
+      a:first-child {
+        position: relative;
+
+        &:before {
+          position: absolute;
+          content: '•';
+          left: -20px;
+        }
+
+        &:hover {
+          &:before {
+            color: $cl_blue;
+          }
+        }
+      }
+    }
+
+    &:before {
+      content: "On This Page";
+      @include avenir_bk(20px);
+      line-height: 27px;
+      color: $cl_blue;
+      display: block;
+      padding-bottom:15px;
+    }
+  }
+
+  code {
+    color: inherit;
+    padding: 0px;
+  }
+} 

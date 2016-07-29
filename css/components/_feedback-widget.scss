@@ -1,62 +1,51 @@
 /* Feedback question and buttons */
 
+#feedback-prompt {
+  display: inline-block;
+  padding: 25px;
+  background-color: $cl_light_green; 
+  font-size: 0;
+
+  form {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+}
+
 .feedback-question {
-  float: left;
   display: inline-block;
   line-height: 0;
-  padding-right: 10px;
+  margin-right: 15px;
+  vertical-align: bottom;
+  @include avenir_bk(16px);
 }
 
-.no-button {
+.yes-button, .no-button {
   width: 40px;
-  margin: 0 0.5%;
-  font-family: 'AvenirLTStd-Light', serif;
-  font-size: 14px;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 16px;
+  height: 40px;
+  margin: 0 5px;
+  padding: 0;
   display: inline-block;
-  border: 1px solid #46A418;
-  border-radius: 2px;
-  background-color: #ffffff;
+  vertical-align: bottom;
+  background-color: $cl_light_green;
+  color: $cl_blue !important;
+  @include avenir_bk(16px);
   text-align: center;
-  color: #46A418;
   text-decoration: none !important;
   text-transform: uppercase;
-  transition: .2s background ease-in-out;
-  padding: 10px 0;
+  line-height: 40px;
+  border: 1px solid $cl_blue;
+  border-radius: 5px;
   outline: none;
-}
 
-.yes-button {
-  float: left;
-  width: 40px;
-  margin: 0 0.5%;
-  font-family: 'AvenirLTStd-Light', serif;
-  font-size: 14px;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 16px;
-  display: inline-block;
-  border: 1px solid #46A418;
-  border-radius: 2px;
-  background-color: #ffffff;
-  text-align: center;
-  color: #46A418;
-  text-decoration: none !important;
-  text-transform: uppercase;
-  transition: .2s background ease-in-out;
-  padding: 10px 0;
-  outline: none;
+  &:hover {
+    border-color: $cl_green;
+    color: $cl_green !important;
+  }
 }
 
 .no-button:hover, .yes-button:hover, .no-button:focus, .yes-button:focus {
-  outline: none;
-  transition: .2s background ease-in-out;
-  background-color: #46A418;
-  color: #fff !important;
+
 }
 
 /* Feedback popup and hubspot form 
