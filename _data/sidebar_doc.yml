@@ -124,6 +124,9 @@ entries:
                 - title: <code>SHOW COLUMNS</code>
                   url: /show-columns.html
 
+                - title: <code>SHOW CONSTRAINTS</code>
+                  url: /show-constraints.html
+
                 - title: <code>SHOW DATABASES</code>
                   url: /show-databases.html
 
