@@ -450,7 +450,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>.
+    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>.</p>
   </li>
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
