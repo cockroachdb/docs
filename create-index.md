@@ -1,10 +1,10 @@
 ---
 title: CREATE INDEX
-summary: The CREATE INDEX statement creates an index for a table. Indexes improve SQL's performance by helping it locate data without having to look through every row of a table.
+summary: The CREATE INDEX statement creates an index for a table. Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: false
 ---
 
-The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve SQL's performance by helping it locate data without having to look through every row of a table.
+The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
 {{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="constraints.html#primary-key"><code>PRIMARY KEY</code></a> and <a href="constraints.html#unique"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest index. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
 
@@ -73,10 +73,10 @@ Unique indexes do not allow duplicate values among their columns.
 CREATE UNIQUE INDEX ON products (name, manufacturer_id);
 ~~~
 
-This also applies the [`UNIQUE`](constraints.html#unique) constraint at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is roughly equivalent to:
+This also applies the [`UNIQUE`](constraints.html#unique) constraint at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
 
 ~~~sql
-ALTER TABLE products ADD CONSTRAINT name_manufacturer UNIQUE (name, manufacturer_id);
+ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
 ### Store Columns
@@ -109,8 +109,8 @@ SHOW INDEX FROM products;
 |  Table   |        Name        | Unique | Seq | Column | Direction | Storing |
 +----------+--------------------+--------+-----+--------+-----------+---------+
 | products | primary            | true   |   1 | id     | ASC       | false   |
-| products | products_price_idx | false  |   1 | price  | ASC       | false   |
-| products | products_price_idx | false  |   2 | name   | N/A       | true    |
+| products | products_price_idx | false  |   1 | name   | N/A       | true    |
+| products | products_price_idx | false  |   2 | price  | ASC       | false   |
 +----------+--------------------+--------+-----+--------+-----------+---------+
 
 SELECT name FROM products@products_price_idx WHERE price > 10;
