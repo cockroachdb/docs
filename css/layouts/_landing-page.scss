@@ -11,6 +11,7 @@
     line-height: 40px;
     color: $cl_green;
     margin-bottom: 5px;
+    text-transform: initial;
   }
   
   a {
@@ -49,6 +50,63 @@
         max-width: 270px;
         height: auto;
       }
+    }
+  }
+}
+
+.blog-post {
+  border: 1px solid $cl_border;
+  padding: 10px 20px;
+  border-bottom: none;
+  overflow: auto;
+
+  .blog-title {
+    @include avenir_bk(14px);
+    line-height: 20px;
+    color: $cl_blue;
+    margin-bottom: 5px;
+  }
+
+  .blog-meta {
+    @include avenir_o(12px);
+    line-height: 28px;
+    color: $cl_gray_text;
+
+    .meta-emphasis {
+      color: $cl_green;
+    }
+  }
+
+  &.last-entry {
+    border-bottom: 1px solid $cl_border;
+  }
+
+  &:hover {
+    background-color: $cl_gray;
+  }
+
+  @include at-query($min, $screen-sm){
+    .blog-title {
+      float: left;
+      line-height: 28px;
+    }
+    .blog-meta {
+      float: right;
+    }
+  }
+}
+
+.view-blog {
+  margin-top: 15px;
+  text-align: right;
+  
+  a {
+    text-transform: uppercase;
+    @include avenir_bl(12px);
+    color: $cl_gray_text;
+
+    &:hover {
+      border-bottom: none;
     }
   }
 }

@@ -55,23 +55,51 @@ The project is currently in **Beta**. For details about upcoming features, see t
         </a>
     </div>
 </div>
-<br>
 
----
+## Recent Blog Posts
 
-<br>
-<div class="recent-articles" markdown="1">
-
-## Recent Articles By CockroachDB Engineers
-<br>
-**[Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)**
-
-**[Consensus, Made Thrive](https://www.cockroachlabs.com/blog/consensus-made-thrive/)**
-
-**[Critters in a Jar: Running CockroachDB in a FreeBSD Jail](https://www.cockroachlabs.com/blog/critters-in-a-jar-running-cockroachdb-in-a-freebsd-jail/)**
-
-**[Time-Travel Queries: SELECT witty_subtitle FROM THE FUTURE](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)**
-
-**[Outsmarting Go Dependencies in Testing Code](https://www.cockroachlabs.com/blog/outsmarting-go-dependencies-testing-code/)**
-
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/cockroachdbs-first-join/">
+        <div class="blog-post">
+            <div class="blog-title">Modesty in Simplicity: CockroachDB’s JOIN</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">July 20</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/consensus-made-thrive/">
+        <div class="blog-post">
+            <div class="blog-title">Consensus, Made Thrive</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Tobias Schottdorf</span> on <span class="meta-emphasis">July 14</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/critters-in-a-jar-running-cockroachdb-in-a-freebsd-jail/">
+        <div class="blog-post">
+            <div class="blog-title">Critters in a Jar: Running CockroachDB in a FreeBSD Jail</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">July 7</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/">
+        <div class="blog-post last-entry">
+            <div class="blog-title">Time-Travel Queries: SELECT witty_subtitle FROM THE FUTURE</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Matt Jibson</span> on <span class="meta-emphasis">June 22</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="view-blog"><a href="https://www.cockroachlabs.com/blog">View All Posts</a></div>
+    </div>
 </div>
