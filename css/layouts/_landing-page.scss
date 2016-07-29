@@ -1,0 +1,113 @@
+.roach {
+  border: 1px solid $cl_border;
+  margin-bottom: 20px;
+  padding: 10px;
+  text-align: center;
+  top: 0px;
+  position: relative; 
+
+  h3 {
+    @include adelle(26px);
+    line-height: 40px;
+    color: $cl_green;
+    margin-bottom: 5px;
+    text-transform: initial;
+  }
+  
+  a {
+    img {
+      height: 120px;
+    }
+  }
+
+  p {
+    padding: 5px 0 10px;
+    margin: 0;
+    @include avenir_bk(14px);
+    line-height: 20px;
+  }
+
+  &:hover {
+    border-color: $cl_green;
+    background-color: $cl_gray;
+  }
+
+  &.full-roach {
+    .catrina {
+      height: 120px;
+    }
+  }
+
+  @include at-query($min, $screen-md){
+    //min-height: 350px;
+
+    &.full-roach {
+      text-align: left;
+      min-height: 0;
+
+      .catrina {
+        width: 100%;
+        max-width: 270px;
+        height: auto;
+      }
+    }
+  }
+}
+
+.blog-post {
+  border: 1px solid $cl_border;
+  padding: 10px 20px;
+  border-bottom: none;
+  overflow: auto;
+
+  .blog-title {
+    @include avenir_bk(14px);
+    line-height: 20px;
+    color: $cl_blue;
+    margin-bottom: 5px;
+  }
+
+  .blog-meta {
+    @include avenir_o(12px);
+    line-height: 28px;
+    color: $cl_gray_text;
+
+    .meta-emphasis {
+      color: $cl_green;
+    }
+  }
+
+  &.last-entry {
+    border-bottom: 1px solid $cl_border;
+  }
+
+  &:hover {
+    background-color: $cl_gray;
+  }
+
+  @include at-query($min, $screen-sm){
+    .blog-title {
+      float: left;
+      line-height: 28px;
+      margin-bottom: 0;
+    }
+    .blog-meta {
+      float: right;
+    }
+  }
+}
+
+.view-blog {
+  margin-top: 15px;
+  text-align: right;
+  
+  a {
+    text-transform: uppercase;
+    @include avenir_bl(12px);
+    color: $cl_gray_text;
+
+    &:hover {
+      border-bottom: none;
+    }
+  }
+}

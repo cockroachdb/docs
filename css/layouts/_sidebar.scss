@@ -1,0 +1,112 @@
+/* navgoco sidebar styles (customized) */
+.col-sidebar {
+  background-color: $cl_gray;
+  border-bottom: 1px solid $cl_border;
+
+  @include at-query($min, $screen-sm){
+    background-color: transparent;
+    border-bottom: none;
+  }
+}
+
+#mysidebar {
+  padding-top: 40px;
+  background-color: transparent;
+  border-radius: 0px;
+  padding-bottom: 20px;
+
+  @include at-query($min, $screen-md){
+    padding-top: 65px;
+    padding-bottom: 0;
+  }
+}
+
+.nav {
+  background-color: transparent;
+  padding:0px;
+  margin: 0px;
+
+  //1st level
+  > li {
+    margin-bottom: 15px;
+    list-style: none;
+
+    > a {
+      display: block;
+      outline: none;
+      text-decoration: none;
+      padding: 0 0 0 10px;
+      color: $cl_blue;
+      @include avenir_m(16px);
+      line-height: 30px;
+    }
+
+    > ul {
+      border-left: 1px solid $cl_green;
+      margin: 0 0 0 12px;
+      padding: 5px 0 10px 0;
+
+      //2nd level
+      > li {
+        margin: 0 0 0 30px;
+        padding: 5px 0 0;
+        list-style: none;
+
+        > a {
+          @include avenir_m(14px);
+          line-height: 20px;
+        }
+
+        > ul {
+          border-left: 1px solid $cl_green;
+          margin: 0;
+          padding: 5px 0 10px 0;
+
+          //3rd level
+          > li {
+            margin: 0 0 0 25px;
+            padding: 5px 0 0;
+            list-style: none;
+            
+            > a {
+              @include avenir_m(14px);
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    background-color: transparent;
+    display: inline-block;
+
+    code {
+      color: $cl_blue;
+
+      &:hover {
+        color: $cl_green;
+      }
+    }
+
+    &:hover, &:active {
+      background-color: transparent;
+
+      > span {
+        color: $cl_green;
+      }
+    }
+  }
+
+  li.active {
+    > a {
+      background-color: transparent;
+      color: $cl_green;
+
+      > code {
+        color: $cl_green;
+      }
+    }
+  }
+}

@@ -47,7 +47,7 @@ header {
   	background:#fff;
 	-webkit-transition:margin 0.4s;
     transition:margin 0.4s;
-    border-bottom:1px solid rgba(0,0,0,0.1);
+    border-bottom:1px solid $cl_border;
 
 	.logo {
 		width:160px;
