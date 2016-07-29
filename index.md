@@ -12,26 +12,48 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <br>
 <div class="row">
-<div class="col-md-4 roach">
-    <a href="install-cockroachdb.html">
-        <img src="images/builder_craig.png" alt="Install CockroachDB"/>
-        <h3>Install</h3>
-    </a>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="start-a-local-cluster.html">
+                <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
+                <h3>Quickstart</h3>
+                <p>Start CockroachDB locally and try out the built-in SQL client.</p>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="install-cockroachdb.html">
+                <img src="images/builder_craig.png" alt="Install CockroachDB"/>
+                <h3>Install</h3>
+                <p>Run a multi-node cluster across multiple machines.</p>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="frequently-asked-questions.html">
+                <img src="images/fireside_catrina.png" alt="Frequently asked questions about CockroachDB"/>
+                <h3>FAQ</h3>
+                <p>Get answers to frequently asked questions about CockroachDB.</p>
+            </a>
+        </div>
+    </div>
 </div>
-
-<div class="col-md-4 roach">
-        <a href="start-a-local-cluster.html">
-            <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
-            <h3>Quickstart</h3>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://forum.cockroachlabs.com/">
+        <div class="roach full-roach">
+            <div class="row">
+                <div class="col-md-4"><img src="images/catrina_desk.png" class="catrina" alt="Join the CockroachDB Community Forum"/></div>
+                <div class="col-md-8">
+                    <h3>Need help? Join the CockroachDB Community Forum</h3>
+                    <p>Looking for answers about how to use CockroachDB? Head to the CockroachDB Community Forum, where you can find answers, ask questions, and help out fellow CockroachDB users.</p>
+                </div>
+            </div>
+        </div>
         </a>
-</div>
-
-<div class="col-md-4 roach">
-    <a href="frequently-asked-questions.html">
-        <img src="images/fireside_catrina.png" alt="Frequently asked questions about CockroachDB"/>
-        <h3>Why CockroachDB?</h3>
-    </a>
-</div>
+    </div>
 </div>
 <br>
 

@@ -56,6 +56,7 @@ h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 @import "layouts/header";
 @import "layouts/sidebar";
+@import "layouts/landing-page";
 @import "layouts/content";
 @import "layouts/footer";
 
@@ -83,32 +84,6 @@ dt[id]::before {
 .post-content {
   img {
     margin: 12px 0px 3px 0px;
-  }
-
-  .row {
-    
-    .roach {
-      text-align: center;
-      opacity: 0.85;
-      top: 0px;
-      position: relative; 
-      @include groovy(all);
-
-      h3 {
-        color: $cl_green;
-      }
-      
-      a {
-        img {
-          height: 150px;
-        }
-      }
-
-      &:hover {
-        top: -10px;
-        opacity: 1;
-      }
-    }
   }
 }
 
