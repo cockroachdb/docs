@@ -1,5 +1,5 @@
 (function($) {
-    $(document).ready(function() {
+    $(window).load(function() {
         
         var _viewport_width = $(window).width(),
             $mobile_menu = $('nav.mobile_expanded'),
@@ -26,9 +26,11 @@
             if(_viewport_width > 768) {
                 $('body').removeClass('menu_open');     
             }
+
+            $(window).scroll();
         });
 
-        $(window).scroll(function(e) {
+        $(window).on('scroll', function(){
             _viewport_width = $(window).width();
 
             if(_viewport_width >= 992) {
@@ -38,12 +40,16 @@
                 difference = scrolltop-footertotop;
 
                 if (scrolltop > footertotop) {
-                    $sidebar.css('margin-top',  40-difference);
+                    $sidebar.css('padding-top',  65-difference);
                 }
                 else  {
-                    $sidebar.css('margin-top', 40);
+                    $sidebar.css('padding-top', 65);
                 }
+            }else{
+                $sidebar.css('padding-top', 40);
             }
         });
+
+        $(window).scroll();
     });
 })(jQuery);

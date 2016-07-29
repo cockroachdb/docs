@@ -1,15 +1,30 @@
 /* navgoco sidebar styles (customized) */
+.col-sidebar {
+  background-color: $cl_gray;
+  border-bottom: 1px solid $cl_border;
+
+  @include at-query($min, $screen-sm){
+    background-color: transparent;
+    border-bottom: none;
+  }
+}
+
 #mysidebar {
-  margin-top: 65px;
+  padding-top: 40px;
   background-color: transparent;
-  border-radius:0px;
+  border-radius: 0px;
+  padding-bottom: 20px;
+
+  @include at-query($min, $screen-md){
+    padding-top: 65px;
+    padding-bottom: 0;
+  }
 }
 
 .nav {
   background-color: transparent;
   padding:0px;
   margin: 0px;
-  margin-top: 30px;
 
   //1st level
   > li {
