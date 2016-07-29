@@ -498,7 +498,8 @@ header {
   @media screen and (min-width: 768px) {
     .blog-post .blog-title {
       float: left;
-      line-height: 28px; }
+      line-height: 28px;
+      margin-bottom: 0; }
     .blog-post .blog-meta {
       float: right; } }
 
