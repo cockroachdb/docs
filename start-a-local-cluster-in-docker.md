@@ -61,8 +61,8 @@ This command creates a container and starts the first CockroachDB node inside it
 ## Step 3. Start additional containers/nodes
 
 ~~~ shell
-$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P -v "$(PWD)/cockroach-data/roach2:/cockroach/cockroach-data cockroachdb/cockroach:{{site.data.strings.version}}" start --insecure --join=roach1
-$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v "$(PWD)/cockroach-data/roach3:/cockroach/cockroach-data cockroachdb/cockroach:{{site.data.strings.version}}" start --insecure --join=roach1
+$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P -v "$(PWD)/cockroach-data/roach2:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
+$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v "$(PWD)/cockroach-data/roach3:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
 ~~~
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
