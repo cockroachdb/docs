@@ -210,6 +210,7 @@ func main() {
 				{name: "set_stmt", inline: []string{"set_rest", "set_rest_more", "generic_set"}, exclude: regexp.MustCompile("CHARACTERISTICS"), replace: map[string]string{"'TRANSACTION' transaction_mode_list | ": ""}},
 				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: regexp.MustCompile("'TRANSACTION'")},
 				{name: "show_columns", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'COLUMNS'")},
+				{name: "show_constraints", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'CONSTRAINTS'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_databases", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'DATABASES'")},
 				{name: "show_grants", stmt: "show_stmt", inline: []string{"on_privilege_target_clause", "privilege_target", "for_grantee_clause", "grantee_list"}, match: regexp.MustCompile("'SHOW' 'GRANTS'")},
 				{name: "show_index", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'INDEX'")},
