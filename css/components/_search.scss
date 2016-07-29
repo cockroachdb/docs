@@ -5,19 +5,19 @@
     position: absolute;
     top: 11px;
     left: 12px;
-    color: #142848;
+    color: $cl-green;
   }
 
   #search-input {
     background-color: white;
-    border: 2px solid #ebebeb; 
+    border: solid 1px #bcbcbc;
     border-radius: 32px; 
     height: 35px;
     width: 90%;
     outline: 0px none;
     padding: 0px 10px 0px 35px;
     transition: all 0.15s ease 0s;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     margin-top: 3px;
     font-size: 14px;
   }

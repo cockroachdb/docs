@@ -1,0 +1,43 @@
+#content {
+	background: #fff;
+	position: relative;
+	padding-top: 50px;
+	
+	width: 100%;
+	z-index: 1000;
+	-webkit-transition: margin 0.4s;
+			transition: margin 0.4s;
+	overflow: auto;
+
+	#main-content {
+		.content-col {
+			border-left: 1px solid $cl_border;
+			padding-bottom: 100px;
+		}
+	}
+
+	@include at-query($min, 600px){
+		padding-top: 60px;
+	}
+
+	@include at-query($min, $screen-sm){
+		padding-top: 75px;
+
+		#main-content {
+			.content-col {
+				padding-top: 25px;
+			}
+		}
+	}
+
+	@include at-query($min, $screen-md){
+		#main-content {
+			min-height: 625px;
+
+			.content-col {
+				min-height: 625px;
+				padding-left: 55px;
+			}
+		}
+	}
+}
