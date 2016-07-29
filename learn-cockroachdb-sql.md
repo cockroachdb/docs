@@ -187,8 +187,7 @@ SELECT * FROM accounts WHERE id in (5, 6);
 ~~~
 
 ## Create an Index
-
-Indexes are used to quickly locate data without having to look through every row of a table. They are automatically created for the primary key of a table and any columns with a unique constraint.
+[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [`PRIMARY KEY`](constraints.html#primary-key) key of a table and any columns with a [`UNIQUE`](constraints.html#unique) constraint.
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
