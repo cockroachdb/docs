@@ -425,6 +425,47 @@ header {
     .nav li.active > a > code {
       color: #46a417; }
 
+.roach {
+  border: 1px solid #d9dbe2;
+  margin-bottom: 20px;
+  padding: 10px;
+  text-align: center;
+  top: 0px;
+  position: relative; }
+  .roach h3 {
+    font-family: 'Adelle-Regular', serif;
+    font-size: 26px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 40px;
+    color: #46a417;
+    margin-bottom: 5px; }
+  .roach a img {
+    height: 120px; }
+  .roach p {
+    padding: 5px 0 10px;
+    margin: 0;
+    font-family: 'AvenirLTStd-Book', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 20px; }
+  .roach:hover {
+    border-color: #46a417;
+    background-color: #f7f7f7; }
+  .roach.full-roach .catrina {
+    height: 120px; }
+  @media screen and (min-width: 992px) {
+    .roach.full-roach {
+      text-align: left;
+      min-height: 0; }
+      .roach.full-roach .catrina {
+        width: 100%;
+        max-width: 270px;
+        height: auto; } }
+
 #content {
   background: #fff;
   position: relative;
@@ -741,22 +782,6 @@ dt[id]::before {
 
 .post-content img {
   margin: 12px 0px 3px 0px; }
-.post-content .row .roach {
-  text-align: center;
-  opacity: 0.85;
-  top: 0px;
-  position: relative;
-  -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
-  .post-content .row .roach h3 {
-    color: #46a417; }
-  .post-content .row .roach a img {
-    height: 150px; }
-  .post-content .row .roach:hover {
-    top: -10px;
-    opacity: 1; }
 
 .post-content ol li, .post-content ul li {
   margin: 10px 0px; }
