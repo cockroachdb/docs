@@ -26,6 +26,7 @@ The different types of constraints are:
 | Unique | Specifies that the column(s) values are unique and that the column(s) **may** contain *NULL* values. See [Unique](#unique) Constraint. |
 | Check |  Specifies that the column value must satisfy a Boolean expression. See [Check](#check) Constraint. |
 | Default Value | Specifies a value to populate a column with if none is provided. See [Default Value](#default-value) Constraint. |
+| Foreign Keys | Specifies a column can only contain values exactly matching existing values from the column it references. See [Foreign Keys](#foreign-keys) Constraint. |
 
 ### NOT NULL
 
@@ -200,7 +201,79 @@ SELECT * FROM inventories;
 +------------+--------------+------------------+
 ~~~
 
-If no `DEFAULT` constraint is specified and an explicit value is not given, a value of *NULL* is assigned to the column. This may cause an error if the column has a `NOT NULL` constraint. 
+If no `DEFAULT` constraint is specified and an explicit value is not given, a value of *NULL* is assigned to the column. This may cause an error if the column has a `NOT NULL` constraint.
+
+### Foreign Keys
+
+The Foreign Key constraint is specified using `REFERENCES` at the column level or `FOREIGN KEY` and `REFERENCES` at the table level. It helps enforce referential integrity between two tables by guaranteeing that all values in a table's foreign key columns exist in the referenced columns of another table, as well as preventing referenced values from being updated or deleted.
+
+For example, if you create a foreign key on `orders.customer` that references `customers.id`:
+
+- Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
+- Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ present in `orders.customer` can be.
+
+#### Rules for Creating Foreign Keys
+
+__Foreign Key Columns__
+
+- Only new tables created via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys) can use foreign keys. In a future release, we plan to add support for existing tables through `ALTER TABLE`.
+- You must [index](indexes.html) foreign key columns in the [`CREATE TABLE`](create-table.html) statement. You can do this explicitly using [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) or implicitly with [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique), which both automatically create indexes of their constrained columns. <br><br>Using the foreign key columns as the prefix of an index's columns also satisfies this requirement. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+- Foreign key columns must use their referenced column's [type](data-types.html).
+- Each column cannot belong to more than 1 Foreign Key constraint.
+
+__Referenced Columns__
+
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](#unique) or [`PRIMARY KEY`](#primary-key) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
+- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
+
+#### _NULL_ Values
+
+Single-column foreign keys accept _NULL_ values.
+
+Multiple-column foreign keys only accept _NULL_ values in these scenarios:
+
+- The row you're ultimately referencing&mdash;determined by the statement's other values&mdash;contains _NULL_ as the value of the referenced column (i.e., _NULL_ is valid from the perspective of referential integrity)
+- The write contains _NULL_ values for all foreign key columns
+
+For example, if you have a Foreign Key constraint on columns `(A, B)` and try to insert `(1, NULL)`, the write would fail unless the row with the value `1` for `(A)` contained a _NULL_ value for `(B)`. However, inserting `(NULL, NULL)` would succeed.
+
+However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use [`NOT NULL`](#not-null) on both sets of columns when [creating your tables](create-table.html). (`NOT NULL` cannot be added to existing tables.)
+
+#### Performance
+
+Because the Foreign Key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
+
+We're currently working to improve the performance of these statements, though.
+
+#### Example
+
+~~~sql
+CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+
+CREATE TABLE orders 
+(
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id),
+  orderTotal DECIMAL(9,2),
+  INDEX (customer)
+);
+
+INSERT INTO customers VALUES (1001, 'a@co.tld');
+INSERT 1
+
+INSERT INTO orders VALUES (1, 1002, 29.99);
+pq: foreign key violation: value [1002] not found in customers@primary [id]
+
+INSERT INTO orders VALUES (1, 1001, 29.99);
+INSERT 1
+
+UPDATE customers SET id = 1002 WHERE id = 1001;
+pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+
+DELETE FROM customers WHERE id = 1001;
+pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+~~~
+
 
 ## See Also
 
