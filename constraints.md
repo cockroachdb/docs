@@ -26,6 +26,7 @@ The different types of constraints are:
 | Unique | Specifies that the column(s) values are unique and that the column(s) **may** contain *NULL* values. See [Unique](#unique) Constraint. |
 | Check |  Specifies that the column value must satisfy a Boolean expression. See [Check](#check) Constraint. |
 | Default Value | Specifies a value to populate a column with if none is provided. See [Default Value](#default-value) Constraint. |
+| Foreign Keys | Specifies a column can only contain values exactly matching existing values from the column it references. See [Foreign Keys](#foreign-keys) Constraint. |
 
 ### NOT NULL
 
@@ -200,7 +201,72 @@ SELECT * FROM inventories;
 +------------+--------------+------------------+
 ~~~
 
-If no `DEFAULT` constraint is specified and an explicit value is not given, a value of *NULL* is assigned to the column. This may cause an error if the column has a `NOT NULL` constraint. 
+If no `DEFAULT` constraint is specified and an explicit value is not given, a value of *NULL* is assigned to the column. This may cause an error if the column has a `NOT NULL` constraint.
+
+### Foreign Keys
+
+The Foreign Key constraint is specified using `REFERENCES` at the column level or `FOREIGN KEY` and `REFERENCES` at the table level. It guarantees that all values in the constrained columns also exist in the referenced columns&mdash;this enforces referential integrity between the two tables.
+
+For example, if you create a foreign key on `orders.customer` that references `customers.id`:
+
+- Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
+- Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ used in `orders.customer` can.
+
+#### Rules for Creating Foreign Keys
+
+__Constrained Columns__
+
+- You can create foreign keys only on new tables via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys). In a future release, we plan to add support for existing tables through `ALTER TABLE`.
+- oreign key columns must be [indexed](indexes.html) in the [`CREATE TABLE`](create-table.html) statement using [`PRIMARY KEY`](#primary-key), [`UNIQUE`](#unique), or [`INDEX`](create-table.html#create-a-table-with-secondary-indexes).
+- The constrained column must be of the same [type](data-types.html) as the column it references.
+- Each column can have no more than 1 Foreign Key constraint.
+
+
+__Referenced Columns__
+
+- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique) constraint.
+- In the `REFERENCES` clause, if you specify the table but no columns, CockroachDB references the table's primary key. In these cases, you can only create single-column foreign keys.
+
+__Using Null Values__
+
+You can write _NULL_ values to columns with the Foreign Key constraint if and only if the write contains _NULL_ values for each constrained column. (This is similar to the `MATCH FULL` behavior in Postgres.) For example, if you have a Foreign Key constraint column on two columns and try to write an `INT` into one and a _NULL_ into the other, it will fail. However, writing _NULL_ values into both columns would succeed.
+
+Because using _NULL_ values can conceptually break referential integrity, we recommend using [`NOT NULL`](#not-null) in conjunction with your Foreign Key constraint.
+
+__Bulk Inserts__
+
+Though not a rule, we do not currently recommend bulk inserting rows into tables with foreign keys due to potential performance issues.
+
+#### Example
+
+~~~sql
+
+CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE); 
+
+CREATE TABLE orders 
+(
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id),
+  orderTotal DECIMAL(9,2),
+  INDEX (customer)
+);
+
+INSERT INTO customers VALUES (1001, 'a@co.tld');
+INSERT 1
+
+INSERT INTO orders VALUES (1, 1002, 29.99);
+pq: foreign key violation: value [1002] not found in customers@primary [id]
+
+INSERT INTO orders VALUES (1, 1001, 29.99);
+INSERT 1
+
+UPDATE customers SET id = 1002 WHERE id = 1001;
+pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+
+DELETE FROM customers WHERE id = 1001;
+pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+~~~
+
 
 ## See Also
 
