@@ -27,7 +27,8 @@ CockroachDB is not a good choice when very low latency reads and writes are crit
 
 Also, CockroachDB is not yet suitable for: 
 
-- Use cases requiring SQL joins (slated for an upcoming release)
+- Use cases requiring SQL joins ([the feature still needs optimization](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/))
+- Use cases requiring JSON/Protobuf data ([slated for an upcoming release](https://github.com/cockroachdb/cockroach/issues/2969))
 - Real-time analytics (on our long-term roadmap)
 
 ## How easy is it to install CockroachDB?
@@ -141,7 +142,21 @@ The current version of CockroachDB is intended for use with new applications. Th
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Not yet, but this is on our long-term roadmap. 
+Not yet, but this is on our long-term roadmap.
+
+## How do I bulk insert data into CockroachDB?
+
+Right now, the best way to bulk insert data is to run [`INSERT`](insert.html) statements in batches of 1,000.
+
+## Does CockroachDB support `JOIN`?
+
+CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
+
+To learn more, see our blog post [CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+
+## Does CockroachDB support JSON or Protobuf datatypes?
+
+Not currently, but [we plan to offer JSON/Protobuf datatypes](https://github.com/cockroachdb/cockroach/issues/2969).
 
 ## Can I use CockroachDB as a key-value store?
 
