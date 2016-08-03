@@ -21,7 +21,7 @@ CockroachDB needs moderately accurate time to preserve data consistency, so it's
 
 ## Cache Size
 
-If you run multiple applications on the same machine as a CockroachDB node, you might consider manually setting the cache size instead of using the default 25% of the available disk space.
+If you run multiple applications on the same machine as a CockroachDB node, you might consider manually setting the cache size instead of using the default 25% of available memory.
 
 To manually set the limit of the cache size, start the node using the [`--cache` flag](start-a-node.html#flags). For example, the following command limits a node's cache to 5GB:
 
