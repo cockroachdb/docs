@@ -19,6 +19,16 @@ This page provides recommended settings for production deployments.
 
 CockroachDB needs moderately accurate time to preserve data consistency, so it's important to run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. If clocks drift too far apart, nodes will self-terminate, but this mechanism is not fail-safe and data consistency guarantees may be lost.
 
+## Cache Size
+
+If you run multiple applications on the same machine as a CockroachDB node, you might consider manually setting the cache size instead of using the default 25% of available memory.
+
+To manually set the limit of the cache size, start the node using the [`--cache` flag](start-a-node.html#flags). For example, the following command limits a node's cache to 5GB:
+
+```shell
+$ cockroach start --cache=5GB <other start flags>
+```
+
 ## File Descriptors Limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
