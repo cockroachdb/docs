@@ -146,13 +146,13 @@ Not yet, but this is on our long-term roadmap.
 
 ## How do I bulk insert data into CockroachDB?
 
-Right now, the best way to bulk insert data is to run [`INSERT`](insert.html) statements in batches of 1,000.
+Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best.
 
 ## Does CockroachDB support `JOIN`?
 
 CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
 
-To learn more, see our blog post [CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+To learn more, see our blog post on [CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
