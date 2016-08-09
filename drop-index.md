@@ -16,19 +16,16 @@ The `DROP INDEX` [statement](sql-statements.html) removes an index from a table.
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
-## Usage
 
-To remove an index from a CockroachDB database, use the `DROP INDEX` statement followed by a table@index_name:
+## Parameters
 
-~~~ sql
-DROP INDEX table@index_name
-~~~
+| Parameter | Description |
+|-----------|-------------|
+| IF EXISTS | avoid error in case index does not exist |
+| table_name_with_index_list | $table@$index_name|
+| CASCADE   | delete interleaved rows if a parent is deleted |
+| RESTRICT  | allow removal of parent rows with no interleaved rows, but will error if interleaved rows would be orphaned |
 
-To avoid error in case the index does not exist, you can include `IF EXISTS`:
-
-~~~ sql
-DROP INDEX IF EXISTS table@index_name
-~~~
 
 ## Example
 
