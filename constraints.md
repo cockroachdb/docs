@@ -205,43 +205,52 @@ If no `DEFAULT` constraint is specified and an explicit value is not given, a va
 
 ### Foreign Keys
 
-The Foreign Key constraint is specified using `REFERENCES` at the column level or `FOREIGN KEY` and `REFERENCES` at the table level. It guarantees that all values in the constrained columns also exist in the referenced columns&mdash;this enforces referential integrity between the two tables.
+The Foreign Key constraint is specified using `REFERENCES` at the column level or `FOREIGN KEY` and `REFERENCES` at the table level. It helps enforce referential integrity between two tables by guaranteeing that all values in a table's foreign key columns already exist in the referenced columns of another table.
 
 For example, if you create a foreign key on `orders.customer` that references `customers.id`:
 
 - Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
-- Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ used in `orders.customer` can.
+- Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ present in `orders.customer` can be.
 
 #### Rules for Creating Foreign Keys
 
-__Constrained Columns__
+__Foreign Key Columns__
 
-- You can create foreign keys only on new tables via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys). In a future release, we plan to add support for existing tables through `ALTER TABLE`.
-- oreign key columns must be [indexed](indexes.html) in the [`CREATE TABLE`](create-table.html) statement using [`PRIMARY KEY`](#primary-key), [`UNIQUE`](#unique), or [`INDEX`](create-table.html#create-a-table-with-secondary-indexes).
-- The constrained column must be of the same [type](data-types.html) as the column it references.
-- Each column can have no more than 1 Foreign Key constraint.
-
+- Only new tables created via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys) can use foreign keys. In a future release, we plan to add support for existing tables through `ALTER TABLE`.
+- You must [index](indexes.html) foreign key columns in the [`CREATE TABLE`](create-table.html) statement. You can do this explicitly using [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) or implicitly with [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique), which both automatically create indexes of their constrained columns. <br><br>Using the foreign key columns as the prefix of an index's columns also satisfies this requirement. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+- Foreign key columns must use their referenced column's [type](data-types.html).
+- Each column can belong to no more than 1 Foreign Key constraint.
 
 __Referenced Columns__
 
-- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique) constraint.
-- In the `REFERENCES` clause, if you specify the table but no columns, CockroachDB references the table's primary key. In these cases, you can only create single-column foreign keys.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](#unique) or [`PRIMARY KEY`](#primary-key) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
+- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
 
-__Using Null Values__
+#### _NULL_ Values
 
-You can write _NULL_ values to columns with the Foreign Key constraint if and only if the write contains _NULL_ values for each constrained column. (This is similar to the `MATCH FULL` behavior in Postgres.) For example, if you have a Foreign Key constraint column on two columns and try to write an `INT` into one and a _NULL_ into the other, it will fail. However, writing _NULL_ values into both columns would succeed.
+By default, foreign keys will accept _NULL values in some scenarios. However, because [_NULL_](null-handling.html) values can introduce ambiguous references in data, we recommend strictly enforcing referential integrity by using [`NOT NULL`](#not-null) on both the foreign key and referenced columns when [creating your tables](create-table.html). (`NOT NULL` cannot be added to existing tables.)
 
-Because using _NULL_ values can conceptually break referential integrity, we recommend using [`NOT NULL`](#not-null) in conjunction with your Foreign Key constraint.
+__Foreign Key _NULL_-Handling Details__
 
-__Bulk Inserts__
+Single-column foreign keys accept _NULL_ values.
 
-Though not a rule, we do not currently recommend bulk inserting rows into tables with foreign keys due to potential performance issues.
+Multiple-column foreign keys only accept _NULL_ values in these scenarios:
+
+- The row you're ultimately referencing&mdash;determined by the statement's other values&mdash;contains _NULL_ as the value of the referenced column (i.e., _NULL_ is valid from the perspective of referential integrity)
+- The write contains _NULL_ values for all foreign key columns
+
+For example, if you have a Foreign Key constraint on columns `(A, B)` and try to insert `(1, NULL)`, the write would fail unless the row with the value `1` for `(A)` contained a _NULL_ value for `(B)`. However, inserting `(NULL, NULL)` would succeed, albeit with the side effect of degrading your tables' referential integrity.
+
+Similarly, if your foreign keys' referenced columns allow for _NULL_ values, those reference can become ambiguous and result in similar degradation of the tables' referential integrity.
+
+#### Bulk Inserts
+
+Bulk inserts into tables with foreign keys might be slow, but we're working to improve their performance.
 
 #### Example
 
 ~~~sql
-
-CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE); 
+CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 
 CREATE TABLE orders 
 (
