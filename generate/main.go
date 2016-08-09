@@ -189,7 +189,7 @@ func main() {
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{name: "drop_database", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'DATABASE'")},
-				{name: "drop_index", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'INDEX'"), inline: []string{"opt_drop_behavior"}},
+				{name: "drop_index", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'INDEX'"), inline: []string{"opt_drop_behavior", "table_name_with_index_list", "table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
 				{name: "drop_stmt", inline: []string{"table_name_list", "any_name", "qualified_name_list", "qualified_name"}},
 				{name: "drop_table", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'TABLE'")},
 				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
