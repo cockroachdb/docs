@@ -191,6 +191,45 @@ We also have other resources on indexes:
 - Create indexes for existing tables using [`CREATE INDEX`](create-index.html).
 - [Learn more about indexes](indexes.html).
 
+### Create a Table with Foreign Keys
+
+[Foreign keys](constraints.html#foreign-keys) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+
+There are a [number of rules](constraints.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
+
+- Foreign key columns must be [indexed](indexes.html) when creating the table using `INDEX`, `PRIMARY KEY`, or `UNIQUE`.
+- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](constraints.html#primary-key) or [`UNIQUE`](constraints.html#unique) constraint.
+
+In this example, we'll show a series of tables using different formats of foreign keys.
+
+~~~ 
+CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+
+CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
+
+CREATE TABLE orders (
+  id INT PRIMARY KEY,
+  product STRING NOT NULL REFERENCES products,
+  quantity INT,
+  customer INT NOT NULL CONSTRAINT valid_customer REFERENCES customers (id),
+  CONSTRAINT id_customer_unique UNIQUE (id, customer),
+  INDEX (product),
+  INDEX (customer)
+);
+
+CREATE TABLE reviews (
+  id INT PRIMARY KEY,
+  product STRING NOT NULL REFERENCES products,
+  customer INT NOT NULL,
+  "order" INT NOT NULL,
+  body STRING,
+  CONSTRAINT order_customer_fk FOREIGN KEY ("order", customer) REFERENCES orders (id, customer),
+  INDEX (product),
+  INDEX (customer),
+  INDEX ("order", customer)
+);
+~~~
+
 ### Show the Definition of a Table
 
 To show the definition of a table, use the `SHOW CREATE TABLE` statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
