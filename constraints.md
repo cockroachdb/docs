@@ -274,6 +274,38 @@ DELETE FROM customers WHERE id = 1001;
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
+#### Remove the Foreign Key Constraint
+
+The Foreign Key constraint depends on [the index of foreign key columns](#rules-for-creating-foreign-keys). To remove the Foreign Key constraint you must [drop that index](drop-index.html) with the `CASCADE` clause, which also drops the constraint.
+
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> also drops any other objects that depend on the index.{{site.data.alerts.end}}
+
+~~~sql
+SHOW CONSTRAINTS FROM orders;
++--------+---------------------------+-------------+------------+----------------+
+| Table  |           Name            |    Type     | Column(s)  |    Details     |
++--------+---------------------------+-------------+------------+----------------+
+| orders | fk_customer_ref_customers | FOREIGN KEY | [customer] | customers.[id] |
+| orders | primary                   | PRIMARY KEY | [id]       | NULL           |
++--------+---------------------------+-------------+------------+----------------+
+
+SHOW INDEX FROM orders;
++--------+---------------------+--------+-----+----------+-----------+---------+
+| Table  |        Name         | Unique | Seq |  Column  | Direction | Storing |
++--------+---------------------+--------+-----+----------+-----------+---------+
+| orders | primary             | true   |   1 | id       | ASC       | false   |
+| orders | orders_customer_idx | false  |   1 | customer | ASC       | false   |
++--------+---------------------+--------+-----+----------+-----------+---------+
+
+DROP INDEX orders@orders_customer_idx CASCADE;
+
+SHOW CONSTRAINTS FROM orders;
++--------+---------+-------------+-----------+---------+
+| Table  |  Name   |    Type     | Column(s) | Details |
++--------+---------+-------------+-----------+---------+
+| orders | primary | PRIMARY KEY | [id]      | NULL    |
++--------+---------+-------------+-----------+---------+
+~~~
 
 ## See Also
 
