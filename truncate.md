@@ -20,4 +20,26 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 
 | Parameter | Description |
 |-----------|-------------|
-|  |  |
+| `table_name` | The [`qualified_name`](sql-grammar.html#qualified_name) of the table you want to truncate. |
+
+## Example
+
+~~~sql
+> SELECT * FROM tbl;
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
+
+> TRUNCATE tbl;
+TRUNCATE
+
+> SELECT * FROM tbl;
++----+
+| id |
++----+
++----+
+~~~
