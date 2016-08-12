@@ -218,7 +218,7 @@ func main() {
 				{name: "show_timezone", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'TIME' 'ZONE'")},
 				{name: "show_transaction", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'TRANSACTION'")},
 				{name: "table_constraint", inline: []string{"constraint_elem", "opt_storing", "storing"}},
-				{name: "truncate_stmt", inline: []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"}},
+				{name: "truncate_stmt", inline: []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"}, replace: map[string]string{"'ONLY' '(' qualified_name ')'" : "", "'ONLY' qualified_name" : "", "qualified_name": "table_name", "'*'": "", "'CASCADE'": "", "'RESTRICT'": ""}, unlink: []string{"table_name"}},
 				{name: "update_stmt", inline: []string{"relation_expr_opt_alias", "set_clause_list", "set_clause", "single_set_clause", "multiple_set_clause", "ctext_row", "ctext_expr_list", "ctext_expr", "from_clause", "from_list", "where_clause", "returning_clause"}},
 				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'UPSERT'")},
 				{name: "values", stmt: "values_clause", inline: []string{"ctext_row", "ctext_expr_list", "ctext_expr"}},
