@@ -4,7 +4,9 @@ summary: The SHOW CONSTRAINTS statement lists the constraints on a table.
 toc: false
 ---
 
-The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists the [constraints](constraints.html) on a table.
+The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed `CHECK` constraints on a table.
+
+{{site.data.alerts.callout_danger}}The <code>SHOW CONSTRAINTS</code> statement is under development; the exact output will continue to change.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -30,10 +32,12 @@ Parameter | Description
 
 The following fields are returned for each constraint. 
 
+{{site.data.alerts.callout_danger}}The <code>SHOW CONSTRAINTS</code> statement is under development; the exact output will continue to change.{{site.data.alerts.end}}
+
 Field | Description
 ------|------------
 `Table` | The name of the table.
-`Name` | The name of the constraint, if any.
+`Name` | The name of the constraint.
 `Type` | The type of constraint.
 `Column(s)` | The column(s) to which the constraint applies. For `CHECK` constraints, column information will be in `Details` and this field will be `NULL`.
 `Details` | The conditions for a `CHECK` constraint.
