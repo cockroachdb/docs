@@ -33,6 +33,7 @@ Statement | Usage
 [`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
+[`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW INDEX`](show-index.html) | View index information for a table. 
