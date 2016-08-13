@@ -143,7 +143,7 @@ entries:
                   url: /show-transaction.html
 
                 - title: <code>TRUNCATE</code>
-                  url: /show-grants.html
+                  url: /truncate.html
 
                 - title: <code>UPDATE</code>
                   url: /update.html
