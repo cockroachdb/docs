@@ -281,6 +281,9 @@ entries:
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
 
+        - title: SQL Feature Support
+          url: /sql-feature-support.html
+
         - title: CockroachDB Architecture
           url: /cockroachdb-architecture.html
 
