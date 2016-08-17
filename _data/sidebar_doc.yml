@@ -310,5 +310,8 @@ entries:
         - title: beta-20160629
           url: /beta-20160629.html
 
-        - title: Older Versions
+        - title: Older Beta Versions
           url: /older-versions.html
+
+        - title: Features on Develop Branch
+          url: /develop-branch.html
