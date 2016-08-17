@@ -35,7 +35,7 @@ When inserting a string:
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
 - If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
 
-## Format
+## Formats
 
 A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings. 
 

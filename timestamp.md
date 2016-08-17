@@ -12,7 +12,7 @@ The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC,
 
 In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `TIMESTAMP WITH TIME ZONE` is an alias for `TIMESTAMPTZ`.
 
-## Format
+## Formats
 
 When inserting into a `TIMESTAMP` column, use one of the following formats:
 
