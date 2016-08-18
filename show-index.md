@@ -1,7 +1,6 @@
 ---
 title: SHOW INDEX
-summary: The SHOW INDEX statement returns index information for a table. 
-keywords: reflection
+summary: The SHOW INDEX statement returns index information for a table.
 toc: false
 ---
 
@@ -11,7 +10,7 @@ The `SHOW INDEX` [statement](sql-statements.html) returns index information for 
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to show indexes for a table.
+The user must have any [privilege](privileges.html) on the target table.
 
 ## Aliases
 
@@ -28,7 +27,7 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 
 Parameter | Description
 ----------|------------
-`var_name` | The name of the table for which you want to show indexes.
+`table_name` | The name of the table for which you want to show indexes.
 
 ## Response
 
@@ -46,7 +45,7 @@ Field | Description
 
 ## Examples 
 
-~~~
+~~~ shell
 > CREATE TABLE t1 (
     a INT PRIMARY KEY,
     b DECIMAL,
