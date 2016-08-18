@@ -12,7 +12,7 @@ The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constra
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to list the constraints on a table.
+The user must have any [privilege](privileges.html) on the target table.
 
 ## Aliases
 
@@ -26,7 +26,7 @@ No [privileges](privileges.html) are required to list the constraints on a table
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table to show constraints on.
+`table_name` | The name of the table for which to column constraints.
 
 ## Response
 
@@ -45,7 +45,7 @@ Field | Description
 ## Example
 
 ~~~ shell
-CREATE TABLE orders (
+> CREATE TABLE orders (
     id INT PRIMARY KEY,
     date TIMESTAMP NOT NULL,
     priority INT DEFAULT 1,
@@ -56,7 +56,7 @@ CREATE TABLE orders (
     FAMILY (id, date, priority, customer_id, status)
 );
 
-SHOW CONSTRAINTS FROM orders;
+> SHOW CONSTRAINTS FROM orders;
 +--------+------------------------+-------------+---------------+--------------------------------------------------------+
 | Table  |          Name          |    Type     |   Column(s)   |                        Details                         |
 +--------+------------------------+-------------+---------------+--------------------------------------------------------+
