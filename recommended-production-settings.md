@@ -232,8 +232,24 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
     ulimit -a
     ~~~
 
-</div>
+#### Systemd
 
+Alternatively, if you're using Systemd, you can also configure the maximum number of open files through
+the service definition:
+
+~~~ ini
+[Service]
+...
+LimitNOFILE=20000
+~~~
+
+After making changes to the service definition make sure to reload Systemd using:
+
+~~~ shell
+# systemctl daemon-reload
+~~~
+
+</div>
 <div id="windowsinstall" markdown="1">
 
 CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
