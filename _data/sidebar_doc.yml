@@ -127,6 +127,9 @@ entries:
                 - title: <code>SHOW CONSTRAINTS</code>
                   url: /show-constraints.html
 
+                - title: <code>SHOW CREATE TABLE</code>
+                  url: /show-create-table.html
+
                 - title: <code>SHOW DATABASES</code>
                   url: /show-databases.html
 
