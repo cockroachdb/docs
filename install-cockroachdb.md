@@ -77,7 +77,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -200,9 +200,11 @@ $(document).ready(function(){
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="mac-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
     <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+
+    <div class="bs-callout bs-callout-success">This step builds a binary for the latest beta release. To get access to <a href="develop-branch.html">features not yet included in a beta release</a>, you can build a binary from the <code>develop</code> branch instead. Simply leave out the <code>git checkout {{site.data.strings.version}}</code> step above.</div>
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
@@ -333,7 +335,6 @@ $(document).ready(function(){
 
 <div id="build-from-source-linux" class="install-option" style="display: none;">
 <h2>Build from Source</h2>
-
 <ol>
   <li>
     <p>Install the following prerequisites, as necessary:</p>
@@ -362,9 +363,11 @@ $(document).ready(function(){
   <li>
     <p>Compile the CockroachDB binary:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br><span class="gp" data-eventcategory="linux-source-step3">$ </span>git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
     <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+
+    <div class="bs-callout bs-callout-success">This step builds a binary for the latest beta release. To get access to <a href="develop-branch.html">features not yet included in a beta release</a>, you can build a binary from the <code>develop</code> branch instead. Simply leave out the <code>git checkout {{site.data.strings.version}}</code> step above.</div>
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>

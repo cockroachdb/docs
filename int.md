@@ -19,7 +19,7 @@ In CockroachDB, the following are aliases for `INT`:
 - `INT64` 
 - `BIGINT`
 
-## Format
+## Formats
 
 An `INT` column accepts numeric literals and hexadecimal-encoded numeric literals.
 

@@ -15,7 +15,7 @@ In CockroachDB, the following are aliases for `BYTES`:
 - `BYTEA` 
 - `BLOB` 
 
-## Format
+## Formats
 
 When inserting into a `BYTES` column, use either of the following byte escape formats:
 
