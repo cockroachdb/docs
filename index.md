@@ -60,6 +60,16 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <div class="row">
     <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/squashing-a-schroedinbug-with-strong-typing/">
+        <div class="blog-post">
+            <div class="blog-title">Squashing a Schrödinbug With Strong Typing</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">August 18</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/cockroachdbs-first-join/">
         <div class="blog-post">
             <div class="blog-title">Modesty in Simplicity: CockroachDB’s JOIN</div>
