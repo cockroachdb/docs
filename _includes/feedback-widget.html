@@ -1,4 +1,4 @@
-<!-- Helpful? question with Yes and No buttons. Yes button submits directly to hubspot via the forms api. No button triggers a popup with an embedded hubspot form. -->
+<!-- "Was this page helpful?" question with "Yes" and "No" buttons. Yes submits directly to hubspot via the forms api. No triggers a popup with an embedded hubspot form. -->
 
 <div id="feedback-prompt">
   <p class="feedback-question">Was this page helpful?</p>
@@ -24,13 +24,29 @@
   </script>
 </div>
 
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+
 <script>
   $(document).ready(function() {
+    // Open popup for No submissions.
     $('.no-button').magnificPopup({
       type:'inline',
       midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
     });
+
+    // Get hubspot cookie to send with Yes submissions.
+    // This code comes from: https://stackoverflow.com/questions/10730362/get-cookie-by-name
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    // Add form values for Yes submissions.
+    $("input[name=hs_context]").val(JSON.stringify({
+      "pageUrl":"{{page.url}}",
+      "pageTitle":"{{page.title}}",
+      "hutk": getCookie("hubspotutk")
+    }))
   });
 </script>
-
-<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
