@@ -186,7 +186,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 2.  Edit (or create) `/etc/launchd.conf` and add a line that looks like the following, with the last value set to the new hard limit:
 
-    ~~~ shell
+    ~~~
     limit maxfiles 20000 20000
     ~~~
 
@@ -202,6 +202,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 </div>
 
 <div id="linuxinstall" markdown="1">
+
+- [Standard](#standard)
+- [With Systemd](#with-systemd)
+
+#### Standard
 
 To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
@@ -229,25 +234,26 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 6.  Verify the new limits:
 
     ~~~ shell
-    ulimit -a
+    $ ulimit -a
     ~~~
 
-#### Systemd
+#### With Systemd
 
-Alternatively, if you're using Systemd, you can also configure the maximum number of open files through
-the service definition:
+Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd): 
 
-~~~ ini
-[Service]
-...
-LimitNOFILE=20000
-~~~
+1.  Edit the service definition to configure the maximum number of open files:
 
-After making changes to the service definition make sure to reload Systemd using:
+    ~~~ ini
+    [Service]
+    ...
+    LimitNOFILE=20000
+    ~~~
 
-~~~ shell
-# systemctl daemon-reload
-~~~
+2.  Reload Systemd for the new limit to take effect:
+
+    ~~~ shell
+    $ systemctl daemon-reload
+    ~~~
 
 </div>
 <div id="windowsinstall" markdown="1">
