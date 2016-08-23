@@ -169,7 +169,7 @@ func main() {
 				// TODO(mjibson): improve SET filtering
 				// TODO(mjibson): improve SELECT display
 				{name: "alter_table_stmt", inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data"}},
-				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority"}, match: regexp.MustCompile("'BEGIN'|'START'")},
+				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"}, match: regexp.MustCompile("'BEGIN'"), replace: map[string]string{"'READ' 'UNCOMMITTED'": "","| 'READ' 'COMMITTED'": "", "| 'REPEATABLE' 'READ'": "", "| 'SNAPSHOT'": "'SNAPSHOT'"}},
 				{name: "column_def"},
 				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
 				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'|'END'")},
@@ -197,7 +197,9 @@ func main() {
 				{name: "grant_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
 				{name: "index_def", inline: []string{"opt_storing", "storing", "index_params", "opt_name"}},
 				{name: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'INSERT'")},
-				{name: "iso_level"},
+				
+				{name: "iso_level", replace: map[string]string{"'READ' 'UNCOMMITTED'": "","| 'READ' 'COMMITTED'": "", "| 'REPEATABLE' 'READ'": "", "| 'SNAPSHOT'": "'SNAPSHOT'"}},
+
 				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
 				{name: "rename_column", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' opt_column")},
 				{name: "rename_database", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'DATABASE'")},
