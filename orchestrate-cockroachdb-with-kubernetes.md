@@ -1,0 +1,570 @@
+---
+title: Orchestrate CockroachDB with Kubernetes
+summary: 
+toc: false
+---
+
+[Kubernetes](http://kubernetes.io/) is an open-source system for automating the deployment, scaling, and management of containerized applications. This page shows you how to use Kubernetes' [`minikube`](https://github.com/kubernetes/minikube) tool to test out CockroachDB on Kubernetes locally, using the alpha [Pet Set](http://kubernetes.io/docs/user-guide/petset/) feature and [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) to ensure distinguishable network identity and persistent storage for CockroachDB nodes. Docs for running CockroachDB on Kubernetes in a cloud environment are coming soon. 
+
+{{site.data.alerts.callout_info}}Running a stateful application such as CockroachDB on Kubernetes requires using some of Kubernetes' more complex features available only in alpha versions. There are easier ways to run CockroachDB on Kubernetes for testing purposes, but the method presented here is destined to become a production deployment once Kubernetes matures sufficiently.{{site.data.alerts.end}}
+
+<div id="toc"></div>
+
+## Before You Begin
+
+This tutorial shows you how to run a 5-node CockroachDB cluster on Kubernetes locally. Before you begin, it's helpful to understand some Kubernetes-specific terminology:
+
+Feature | Description
+--------|------------
+[minikube](http://kubernetes.io/docs/getting-started-guides/minikube/) | This is the tool you'll use to run a single-node Kubernetes cluster inside a VM on your computer.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In our case, each pod will contain one Docker container running a single CockroachDB node. You'll start with 5 pods and grow to 6.
+[Pet Set](http://kubernetes.io/docs/user-guide/petset/) | You'll run CockroachDB as a Pet Set to ensure that each pod has distinguishable network identity and always binds back to the same persistent storage on restart. Pet Sets are only available in Kubernetes clusters that have alpha features enabled.
+[persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | Because each CockroachDB node must bind back to the same persistent storage on restart, you'll mount local temporary directories as persistent volumes that will endure for as long as the Kubernetes cluster is running.
+[persistent volume claim](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) | When pods are created (one per CockroachDB node), each pod will request a persistent volume claim to “claim” durable storage for its node.
+
+## Step 1. Install and start Kubernetes locally
+
+Follow Kubernetes' [documentation](http://kubernetes.io/docs/getting-started-guides/minikube/) to install `minikube` and `kubectl` for your OS. Then start a local Kubernetes cluster:
+
+~~~ shell
+$ minikube start
+Starting local Kubernetes cluster...
+Kubectl is now configured to use the cluster.
+~~~
+
+## Step 2. Create persistent volumes and volume claims
+
+To create persistent volumes and volume claims, run the following Bash script or individual `kubetcl` commands:
+
+<div id="step-three-filters" class="filters clearfix">
+  <button class="filter-button scope-button current" data-scope="bash">Bash</button>
+  <button class="filter-button scope-button" data-scope="commands">Commands</button>
+</div><p></p>
+
+<div class="filter-content current" markdown="1" data-scope="bash">
+~~~ bash
+#!/usr/bin/env bash
+# Excerpted from https://github.com/cockroachdb/cockroach/tree/develop/cloud/kubernetes/minikube.sh
+
+set -exuo pipefail
+
+# Create persistent volumes and volume claims:
+for i in $(seq 0 5); do
+  cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv${i}
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/${i}"
+EOF
+
+  cat <<EOF | kubectl create -f -
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-${i}
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+done;
+~~~
+</div>
+
+<div class="filter-content" markdown="1" data-scope="commands">
+~~~ shell
+# Create the first persistent volume and volume claim:
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv0
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/0"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-0
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+~~~ shell
+# Create the second persistent volume and volume claim:
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv1
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/1"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-1
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+~~~ shell
+# Create the third persistent volume and volume claim:
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv2
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/2"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-2
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+~~~ shell
+# Create the fourth persistent volume and volume claim;
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv3
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/3"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-3
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+~~~ shell
+# Create the fifth persistent volume and volume claim:
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv4
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/4"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-4
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+~~~ shell
+# Create an extra persistent volume and volume claim for scaling up the cluster later: 
+$ cat <<EOF | kubectl create -f -
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv5
+  labels:
+    type: local
+    app: cockroachdb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/5"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-cockroachdb-5
+  labels:
+    app: cockroachdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+~~~
+</div>
+
+Use the [`kubectl get pv`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_get/) command to verify that the persistent volumes and corresponding claims were created successfully:
+
+~~~ shell
+$ kubectl get pv
+NAME      CAPACITY   ACCESSMODES   STATUS    CLAIM                           REASON    AGE
+pv0       1Gi        RWO           Bound     default/datadir-cockroachdb-0             27s
+pv1       1Gi        RWO           Bound     default/datadir-cockroachdb-1             26s
+pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
+pv3       1Gi        RWO           Bound     default/datadir-cockroachdb-3             26s
+pv4       1Gi        RWO           Bound     default/datadir-cockroachdb-4             26s
+pv5       1Gi        RWO           Bound     default/datadir-cockroachdb-5             26s
+~~~
+
+## Step 3. Create the Pet Set and start the CockroachDB cluster
+
+In Kubernetes, pods are normally treated as stateless units. The [Pet Set](http://kubernetes.io/docs/user-guide/petset/) feature, however, causes pods to have distinguishable network identity and persistent storage. Using this feature, if a pod crashes or is otherwise removed, Kubernetes will create another pod with the same network identity and storage (as demonstrated in [step 5](#step-5-simulate-node-failure)). 
+
+To create the Pet Set and start the CockrochDB cluster, create a yaml file with the contents below and then run `kubectl create -f <file-name.ymal>` against it. 
+
+~~~ yaml
+# Excerpted from https://github.com/cockroachdb/cockroach/tree/develop/cloud/kubernetes/cockroachdb-petset.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  # This service is meant to be used by clients of the database. It exposes a ClusterIP that will
+  # automatically load balance connections to the different database pods.
+  name: cockroachdb-public
+  labels:
+    app: cockroachdb
+spec:
+  ports:
+  # The main port, served by gRPC, serves Postgres-flavor SQL, internode
+  # traffic and the cli.
+  - port: 26257
+    targetPort: 26257
+    name: grpc
+  # The secondary port serves the UI as well as health and debug endpoints.
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: cockroachdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    # Make sure DNS is resolvable during initialization.
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+    # Enable automatic monitoring of all instances when Prometheus is running in the cluster.
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "_status/vars"
+    prometheus.io/port: "8080"
+  # This service only exists to create DNS entries for each pet in the petset such that they can resolve
+  # each other's IP addresses. It does not create a load-balanced ClusterIP and should not be used
+  # directly by clients in most circumstances.
+  name: cockroachdb
+  labels:
+    app: cockroachdb
+spec:
+  ports:
+  - port: 26257
+    targetPort: 26257
+    name: grpc
+  - port: 8080
+    targetPort: 8080
+    name: http
+  clusterIP: None
+  selector:
+    app: cockroachdb
+---
+apiVersion: apps/v1alpha1
+kind: PetSet
+metadata:
+  name: cockroachdb
+spec:
+  serviceName: "cockroachdb"
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: cockroachdb
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+      - name: cockroachdb
+        image: cockroachdb/cockroach:{{site.data.strings.version}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 26257
+          name: grpc
+        - containerPort: 8080
+          name: http
+        livenessProbe:
+          httpGet:
+            path: /_admin/v1/health
+            port: http
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /_admin/v1/health
+            port: http
+          initialDelaySeconds: 10
+        volumeMounts:
+        - name: datadir
+          mountPath: /cockroach/cockroach-data
+        command:
+          - "/bin/bash"
+          - "-ecx"
+          - |
+            # The use of qualified `hostname -f` is crucial:
+            # Other nodes aren't able to look up the unqualified hostname.
+            CRARGS=("start" "--logtostderr" "--insecure" "--host" "$(hostname -f)")
+            if [ ! "$(hostname)" == "cockroachdb-0" ] || \
+               [ -e "/cockroach/cockroach-data/COCKROACHDB_VERSION" ]
+            then
+              CRARGS+=("--join" "cockroachdb")
+            fi
+            /cockroach/cockroach ${CRARGS[*]}
+      # No pre-stop hook is required, a SIGTERM plus some time is all that's
+      # needed for graceful shutdown of a node.
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: datadir
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1Gi
+~~~
+
+Wait a minute, and then verify that five pods were created successfully. If you don't see five pods, wait longer and try again.
+
+~~~ shell
+$ kubectl get pod
+NAME            READY     STATUS    RESTARTS   AGE
+cockroachdb-0   1/1       Running   0          3m
+cockroachdb-1   1/1       Running   0          3m
+cockroachdb-2   1/1       Running   0          3m
+cockroachdb-3   1/1       Running   0          2m
+cockroachdb-4   1/1       Running   0          2m
+~~~
+
+{{site.data.alerts.callout_success}}The Pet Set configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs PODNAME</code> rather than checking the log on the pod itself.{{site.data.alerts.end}}
+
+## Step 4. Use the Built-in SQL Client 
+
+Use the [`kubectl exec`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_exec/) command to start a Bash session in any pod:
+
+~~~ shell
+$ kubectl exec -it cockroachdb-0 bash
+~~~
+
+Start the [built-in SQL client](use-the-built-in-sql-client.html) in interactive mode:
+
+~~~ shell
+root@cockroachdb-0:/cockroach# ./cockroach sql --host $(hostname)
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+~~~
+
+Then run some [CockroachDB SQL statements](sql-statements.html):
+
+~~~ shell
+root@cockroachdb-0:26257> CREATE DATABASE bank;
+CREATE DATABASE
+
+root@cockroachdb-0:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+CREATE TABLE
+
+root@cockroachdb-0:26257> INSERT INTO bank.accounts VALUES (1234, 10000.50);
+INSERT 1
+
+root@cockroachdb-0:26257> SELECT * FROM bank.accounts;
++------+----------+
+|  id  | balance  |
++------+----------+
+| 1234 | 10000.50 |
++------+----------+
+(1 row)
+~~~
+
+When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit. Then use **CTRL + D** to exit the Bash session.
+
+## Step 5. Simulate node failure
+
+Based on the `replicas: 5` line in the Pet Set configuration, Kubernetes ensures that five pods/nodes are running at all times. If a pod/node fails, Kubernetes will automatically create another pod/node with the same identity and storage.
+
+To see this in action, kill one of CockroachDB nodes:
+
+~~~ shell
+$ kubectl exec cockroachdb-3 -- /bin/bash -c "while true; do kill 1; done"
+~~~
+
+Verify that the pod was restarted:
+
+~~~ shell
+$ kubectl get pod cockroachdb-3
+NAME            READY     STATUS             RESTARTS   AGE
+cockroachdb-3   0/1       CrashLoopBackOff   1          1m
+~~~
+
+Wait a bit and then verify that the pod is ready:
+
+~~~ shell
+$ kubectl get pod cockroachdb-3
+NAME            READY     STATUS    RESTARTS   AGE
+cockroachdb-3   1/1       Running   1          1m
+~~~
+
+## Step 6. Scale the cluster up or down
+
+To increase or decrease the number of pods/nodes in your cluster, use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to alter the `replicas: 5` configuration for your Pet Set. 
+
+For example, since you created six persistent volumes and volume claims in [step 2](#step-2-create-persistent-volumes-and-volume-claims), and only five of them are in use by pods, you can add a replica and safely assume that it will claim the final persistent volume:
+
+~~~ shell
+$ kubectl patch petset cockroachdb -p '{"spec":{"replicas":6}}'
+"cockroachdb" patched
+~~~ 
+
+Verify that a sixth pod was added successfully: 
+
+~~~ shell
+$ kubectl get pod
+NAME            READY     STATUS    RESTARTS   AGE
+cockroachdb-0   1/1       Running   0          20m
+cockroachdb-1   1/1       Running   0          19m
+cockroachdb-2   1/1       Running   0          19m
+cockroachdb-3   1/1       Running   1          11m
+cockroachdb-4   1/1       Running   0          18m
+cockroachdb-5   1/1       Running   0          57s 
+~~~
+
+## Step 7. Stop the cluster 
+
+When you've finished testing out CockroachDB on Kubernetes, stop the Kubernetes cluster: 
+
+~~~ shell
+$ minikube stop
+Stopping local Kubernetes cluster...
+Machine stopped.
+~~~
+
+{{site.data.alerts.callout_success}}Stopping the Kubernetes cluster will delete the persistent storage, which was bound to temp directories, so if you want to retain logs, copy them from each pod's <code>stderr</code> before shutting down the cluster. To access a pod's standard error stream, run <code>kubectl logs PODNAME</code>.{{site.data.alerts.end}}
+
+Alternately, if you'd rather keep the Kubernetes cluster running, run the following command to delete all of the CockroachDB resources:
+
+~~~ shell
+$ kubectl delete petsets,pods,persistentvolumes,persistentvolumeclaims,services -l app=cockroachdb
+~~~
+
+<script>
+$(document).ready(function(){
+
+  var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+      var scope = $(this).data('scope'),
+      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+      //remove current class from tab and content
+      $current_tab.removeClass('current');
+      $current_content.removeClass('current');
+
+      //add current class to clicked button and corresponding content block
+      $('.filter-button[data-scope="'+scope+'"').addClass('current');
+      $('.filter-content[data-scope="'+scope+'"').addClass('current');
+    });
+});
+</script>
+
+<style>
+.filters .scope-button {
+  width: 15%;
+}
+</style>
