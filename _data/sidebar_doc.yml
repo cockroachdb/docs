@@ -239,6 +239,13 @@ entries:
         - title: Cloud Deployment
           url: /cloud-deployment.html
 
+          thirdlevel:
+            - title: Orchestration
+              thirdlevelitems:
+
+                - title: With Kubernetes
+                  url: /orchestrate-cockroachdb-with-kubernetes.html
+
         - title: Cockroach Commands
           url: /cockroach-commands.html
 
