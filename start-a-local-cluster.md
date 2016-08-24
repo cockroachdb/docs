@@ -115,6 +115,18 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
+## Step 6.  Stop the cluster
+
+Once you're done looking through the Admin UI, you can stop the nodes (and therefore the cluster):
+
+~~~ shell
+$ cockroach quit
+$ cockroach quit --port=26258
+$ cockroach quit --port=26259
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+
 ## What's Next?
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
