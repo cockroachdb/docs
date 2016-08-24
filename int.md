@@ -23,41 +23,72 @@ In CockroachDB, the following are aliases for `INT`:
 ## Syntax
 
 A constant value of type `INT` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
-For example: `42`, `-1234` or `0xCAFE`.
+For example: `42`, `-1234`, or `0xCAFE`.
+
+## Length
+
+CockroachDB does not offer multiple integer types for different lengths; instead, our compression ensures that smaller integers use less disk space than larger integers.
+
+However, you can use `BIT(n)` to limit integers based on their corresponding binary values. For example, `BIT(5)` would allow `31` because it corresponds to the five-digit binary integer `11111`, but would not allow `32` because it corresponds to the six-digit binary integer `100000`, which is 1 bit too long. See the [example](#examples) below for a demonstration.
+
+{{site.data.alerts.callout_info}}Although a column defined as <code>BIT(n)</code> is represented as such in <a href="show-columns.html"><code>SHOW COLUMNS</code></a> and other modes of introspection, values stored in the column are decimal integers, not binary integers. Also note that <code>BIT</code> is equivalent to <code>BIT(1)</code>.{{site.data.alerts.end}}
 
 ## Size
 
-An `INT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
-
-CockroachDB does not offer multiple integer types for different widths; instead, our compression ensures that smaller integers use less disk space than larger integers. 
+An `INT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
 
 ## Examples
 
 ~~~ sql
-> CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT, c INTEGER);
+> CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT, c BIT(5));
+~~~
 
+~~~
+CREATE TABLE
+~~~
+
+~~~ sql
 > SHOW COLUMNS FROM ints;
 ~~~
-~~~
-+-------+------+-------+---------+
-| Field | Type | Null  | Default |
-+-------+------+-------+---------+
-| a     | INT  | false | NULL    |
-| b     | INT  | true  | NULL    |
-| c     | INT  | true  | NULL    |
-+-------+------+-------+---------+
-~~~
-~~~ sql
-> INSERT INTO ints VALUES (11111, 22222, 33333);
 
+~~~
++-------+--------+-------+---------+-----------+
+| Field |  Type  | Null  | Default |  Indices  |
++-------+--------+-------+---------+-----------+
+| a     | INT    | false | NULL    | {primary} |
+| b     | INT    | true  | NULL    | {}        |
+| c     | BIT(5) | true  | NULL    | {}        |
++-------+--------+-------+---------+-----------+
+(3 rows)
+~~~
+
+~~~ sql
+> INSERT INTO ints VALUES (1, 32, 32);
+~~~
+
+~~~
+pq: bit string too long for type BIT(5) (column "c")
+~~~
+
+~~~ sql
+> INSERT INTO ints VALUES (1, 32, 31);
+~~~
+
+~~~
+INSERT 1
+~~~
+
+~~~ sql
 > SELECT * FROM ints;
 ~~~
+
 ~~~
-+-------+-------+-------+
-|   a   |   b   |   c   |
-+-------+-------+-------+
-| 11111 | 22222 | 33333 |
-+-------+-------+-------+
++---+----+----+
+| a | b  | c  |
++---+----+----+
+| 1 | 32 | 31 |
++---+----+----+
+(1 row)
 ~~~
 
 ## Supported Casting & Conversion
