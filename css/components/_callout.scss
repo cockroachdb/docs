@@ -1,6 +1,7 @@
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
+    background-color: rgba(238,231,221,0.15);
     border-left: 5px solid #eee;
     @include avenir_bk(16px);
     line-height: 30px;
@@ -50,7 +51,6 @@
     color: #f0ad4e;
 }
 .bs-callout-info {
-    background-color: $cl_light_blue;
     border-left-color: $cl_blue_border;
 }
 .bs-callout-info h4 {

@@ -1,6 +1,6 @@
 (function($) {
     $(window).load(function() {
-        
+
         var _viewport_width = $(window).width(),
             $mobile_menu = $('nav.mobile_expanded'),
             $sidebar = $('#mysidebar'),
@@ -51,5 +51,14 @@
         });
 
         $(window).scroll();
+
+        // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
+        terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp
+        
+        for(var i = 0; i < terminalMarkers.length; i++){
+            terminalMarkers[i].innerText="";    // Remove the existing on-page terminal marker
+            terminalMarkers[i].className += " shellterminal"; // Add shellterminal class, which then displays the terminal marker as a ::before element
+        }
+
     });
 })(jQuery);
