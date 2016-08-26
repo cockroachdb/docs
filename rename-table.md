@@ -21,38 +21,46 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 To rename a table, use the `ALTER TABLE` statement followed by the current table name in `database.table` format, the `RENAME TO` statement, and the new table name in `database.table` format:
 
 ~~~ sql
-ALTER TABLE db1.table1 RENAME TO db1.table2  
+> ALTER TABLE db1.table1 RENAME TO db1.table2;
 ~~~
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 ~~~ sql
-ALTER TABLE IF EXISTS db1.table1 RENAME TO db1.table2  
+> ALTER TABLE IF EXISTS db1.table1 RENAME TO db1.table2;
 ~~~
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
 ~~~ sql
-ALTER TABLE db1.table1 RENAME TO db2.table1  
+> ALTER TABLE db1.table1 RENAME TO db2.table1;
 ~~~
 
 ## Examples
 
 ### Rename a table
 
-~~~ 
+~~~ sql
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+
 | table1 |
 | table2 |
 +--------+
-
+~~~
+~~~ sql
 > ALTER TABLE db1.table1 RENAME TO db1.tablea
+~~~
+~~~
 RENAME TABLE
-
+~~~
+~~~ sql
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+
@@ -63,8 +71,10 @@ RENAME TABLE
 
 ### Move a table
 
-~~~ 
+~~~ sql 
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+
@@ -72,32 +82,47 @@ RENAME TABLE
 | db2      |
 | system   |
 +----------+
-
+~~~
+~~~ sql
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+
 | table2 |
 | tablea |
 +--------+
-
+~~~
+~~~ sql
 > SHOW TABLES FROM db2;
+~~~
+~~~
 +-------+
 | Table |
 +-------+
 +-------+
-
+~~~
+~~~ sql
 > ALTER TABLE db1.tablea RENAME TO db2.tablea
+~~~
+~~~
 RENAME TABLE
-
+~~~
+~~~ sql
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+
 | table2 |
 +--------+
-
+~~~
+~~~ sql
 > SHOW TABLES FROM db2;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+

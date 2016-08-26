@@ -35,7 +35,7 @@ Field | Description
 
 ## Example
 
-~~~ shell
+~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY DEFAULT unique_rowid(),
     date TIMESTAMP NOT NULL,
@@ -48,6 +48,8 @@ Field | Description
 );
 
 > SHOW COLUMNS FROM orders;
+~~~
+~~~
 +-------------+-----------+-------+----------------+
 |    Field    |   Type    | Null  |    Default     |
 +-------------+-----------+-------+----------------+

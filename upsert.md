@@ -32,10 +32,10 @@ Parameter | Description
 
 `UPSERT` considers uniqueness only for [`PRIMARY KEY`](constraints.html#primary-key) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
-~~~
-UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
+~~~ sql
+> UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 
-INSERT INTO t (a, b, c) 
+> INSERT INTO t (a, b, c) 
     VALUES (1, 2, 3)
     ON CONFLICT (a, b)
     DO UPDATE SET c = excluded.c;
@@ -49,19 +49,23 @@ INSERT INTO t (a, b, c)
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
-~~~
+~~~ sql
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
 |  1 |  10000.5 |
 |  2 | 20000.75 |
 +----+----------+
-
+~~~
+~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
-INSERT 1
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -75,8 +79,10 @@ INSERT 1
 
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
-~~~
+~~~ sql
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -84,11 +90,13 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 |  2 | 20000.75 |
 |  3 |   6325.2 |
 +----+----------+
-
+~~~
+~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
-INSERT 1
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -102,8 +110,10 @@ INSERT 1
 
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE`](constraints.html#unique) constraint. Because the inserted `b` value is not unique, the `UPSERT` fails.
 
-~~~
+~~~ sql
 > SELECT * FROM unique_test;
+~~~
+~~~
 +---+---+
 | a | b |
 +---+---+
@@ -111,18 +121,22 @@ INSERT 1
 | 2 | 2 |
 | 3 | 3 |
 +---+---+
-
+~~~
+~~~ sql
 > UPSERT INTO unique_test VALUES (4, 1);
+~~~
+~~~
 pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 ~~~
 
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the `UNIQUE` constraint.
 
-~~~
+~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
-INSERT 1
 
 > SELECT * FROM unique_test;
+~~~
+~~~
 +---+---+
 | a | b |
 +---+---+

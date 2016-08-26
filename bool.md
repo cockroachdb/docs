@@ -27,10 +27,12 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 
 ## Examples
 
-~~~
-CREATE TABLE bool (a INT PRIMARY KEY, b BOOL, c BOOLEAN);
+~~~ sql
+> CREATE TABLE bool (a INT PRIMARY KEY, b BOOL, c BOOLEAN);
 
-SHOW COLUMNS FROM bool;
+> SHOW COLUMNS FROM bool;
+~~~
+~~~
 +-------+------+-------+---------+
 | Field | Type | Null  | Default |
 +-------+------+-------+---------+
@@ -38,10 +40,13 @@ SHOW COLUMNS FROM bool;
 | b     | BOOL | true  | NULL    |
 | c     | BOOL | true  | NULL    |
 +-------+------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO bool VALUES (12345, true, CAST(0 AS BOOL));
 
-INSERT INTO bool VALUES (12345, true, CAST(0 AS BOOL));
-
-SELECT * FROM bool;
+> SELECT * FROM bool;
+~~~
+~~~
 +-------+------+-------+
 |   a   |  b   |   c   |
 +-------+------+-------+

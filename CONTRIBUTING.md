@@ -105,7 +105,22 @@ CockroachDB docs should be:
 
 - Clear 
 - Correct 
-- Concise 
+- Concise
+
+We also have additional guidance to ensure consistency with our existing documents.
+
+### Code Samples
+
+Code samples are marked with an opening and closing set of 3 tildes (`~~~`). Shell and SQL commands should be syntax high-lighted where appropriate using the following info.
+
+#### Shell Code Samples
+Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`.
+
+#### SQL Code Samples
+SQL code samples are broken into two sections: commands and responses.
+
+- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`.
+- **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
 
 ## Build and Test the Docs Locally
 

@@ -52,12 +52,12 @@ Field | Description
     c TIMESTAMP,
     d STRING
   );
-CREATE TABLE
 
 > CREATE INDEX b_c_idx ON t1 (b, c) STORING (d);
-CREATE INDEX
 
 > SHOW INDEX FROM t1;
+~~~
+~~~
 +--------+---------+--------+-----+--------+-----------+---------+
 | Table  |  Name   | Unique | Seq | Column | Direction | Storing |
 +--------+---------+--------+-----+--------+-----------+---------+

@@ -49,8 +49,10 @@ Successful `DELETE` statements return one of the following:
 
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
-~~~
+~~~ sql
 > DELETE FROM account_details;
+~~~
+~~~
 DELETE 7
 ~~~
 
@@ -58,6 +60,8 @@ This is roughly equivalent to [`TRUNCATE`](truncate.html).
 
 ~~~
 > TRUNCATE account_details;
+~~~
+~~~
 TRUNCATE
 ~~~
 
@@ -73,8 +77,10 @@ Using your table's `PRIMARY KEY` or `UNIQUE` columns to delete rows ensures your
 
 In this example, `account_id` is our `PRIMARY KEY` and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
 
-~~~
+~~~ sql
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;
+~~~
+~~~
 +------------+---------+--------------+
 | account_id | balance | account_type |
 +------------+---------+--------------+
@@ -86,8 +92,10 @@ In this example, `account_id` is our `PRIMARY KEY` and we want to delete the row
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-~~~
+~~~ sql
 > DELETE FROM account_details WHERE balance = 30000 RETURNING *;
+~~~
+~~~
 +------------+---------+--------------+
 | account_id | balance | account_type |
 +------------+---------+--------------+
@@ -105,8 +113,10 @@ To see which rows your statement deleted, include the `RETURNING` clause to retr
 #### Use All Columns
 By specifying `*`, you retrieve all columns of the delete rows.
 
-~~~
+~~~ sql
 > DELETE FROM account_details WHERE balance < 23000 RETURNING *;
+~~~
+~~~
 +------------+---------+--------------+
 | account_id | balance | account_type |
 +------------+---------+--------------+
@@ -118,8 +128,10 @@ By specifying `*`, you retrieve all columns of the delete rows.
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-~~~
+~~~ sql
 > DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
+~~~
+~~~
 +------------+--------------+
 | account_id | account_type |
 +------------+--------------+
@@ -131,8 +143,10 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-~~~
+~~~ sql
 > DELETE FROM account_details WHERE balance < 22500 RETURNING account_id, balance AS final_balance;
+~~~
+~~~
 +------------+---------------+
 | account_id | final_balance |
 +------------+---------------+

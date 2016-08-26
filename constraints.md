@@ -32,15 +32,17 @@ The different types of constraints are:
 
 A NOT NULL constraint is specified using `NOT NULL` at the column level. It requires that the column's value is mandatory and must contain a value that is not *NULL*. You can also explicitly just say `NULL` which means the column's value is optional and the column may contain a *NULL* value. If nothing is specified, the default is `NULL`.
 
-~~~sql
-CREATE TABLE customers
+~~~ sql
+> CREATE TABLE customers
 (
   customer_id INT         PRIMARY KEY,
   cust_name   STRING(30)  NULL,
   cust_email  STRING(100) NOT NULL
 );
 
-INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
+> INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
+~~~
+~~~
 pq: null value in column "cust_email" violates not-null constraint
 ~~~
 
@@ -56,8 +58,8 @@ The Primary Key for a table can only be specified in the [`CREATE TABLE`](create
 
 A Primary Key constraint can be specified at the column level if it has only one column.
 
-~~~sql
-CREATE TABLE orders
+~~~ sql
+> CREATE TABLE orders
 (
   order_id        INT PRIMARY KEY NOT NULL,
   order_date      TIMESTAMP NOT NULL,
@@ -69,8 +71,8 @@ CREATE TABLE orders
 
 It needs to be specified at the table level if it has more than one column.
 
-~~~sql
-CREATE TABLE inventories
+~~~ sql
+> CREATE TABLE inventories
 (
   product_id        INT NOT NULL,
   warehouse_id      INT NOT NULL,
@@ -85,8 +87,8 @@ A Unique constraint is specified using `UNIQUE` at either the column or table le
 
 A Unique constraint can be specified at the column level if it has only one column.
 
-~~~sql
-CREATE TABLE warehouses
+~~~ sql
+> CREATE TABLE warehouses
 (
   warehouse_id    INT        PRIMARY KEY NOT NULL,
   warehouse_name  STRING(35) UNIQUE,
@@ -96,8 +98,8 @@ CREATE TABLE warehouses
 
 It needs to be specified at the table level if it has more than one column.
 
-~~~sql
-CREATE TABLE logon
+~~~ sql
+> CREATE TABLE logon
 (
   login_id	INT PRIMARY KEY, 
   customer_id   INT,
@@ -108,8 +110,8 @@ CREATE TABLE logon
 
 Be aware that if a table has a `UNIQUE` constraint on column(s) that are optional (nullable), it is still possible to insert duplicate rows that appear to violate the constraint if they contain a *NULL* value in at least one of the columns. This is because *NULL*s are never considered equal and hence don't violate the uniqueness constraint.
 
-~~~sql
-CREATE TABLE logon
+~~~ sql
+> CREATE TABLE logon
 (
   login_id INT PRIMARY KEY, 
   customer_id   INT NOT NULL,
@@ -117,11 +119,12 @@ CREATE TABLE logon
   UNIQUE (customer_id, sales_id)
 );
 
-INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, NULL);
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, NULL);
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (2, 2, NULL);
 
-INSERT INTO logon (login_id, customer_id, sales_id) VALUES (2, 2, NULL);
-
-select * from logon;
+> SELECT * FROM logon;
+~~~
+~~~
 +----------+-------------+----------+
 | login_id | customer_id | sales_id |
 +----------+-------------+----------+
@@ -136,19 +139,19 @@ A Check constraint is specified using `CHECK` at the column or table level. It r
 
 You can have multiple Check constraints on a single column but ideally these should be combined using the logical operators. So, for example, 
 
-~~~sql
+~~~ sql
 warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
 ~~~
 should be specified as 
 
-~~~sql
+~~~ sql
 warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
 ~~~
 
 Check constraints that refer to multiple columns should be specified at the table level. 
 
-~~~sql
-CREATE TABLE inventories
+~~~ sql
+> CREATE TABLE inventories
 (
   product_id        INT NOT NULL,
   warehouse_id      INT NOT NULL,
@@ -160,8 +163,8 @@ CREATE TABLE inventories
 
 Check constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column level Check constrints are converted to table level constraints so they can be handled in a consistent fashion.
 
-~~~sql
-CREATE TABLE inventories
+~~~ sql
+> CREATE TABLE inventories
 (
   product_id        INT NOT NULL,
   warehouse_id      INT NOT NULL,
@@ -169,7 +172,9 @@ CREATE TABLE inventories
   PRIMARY KEY (product_id, warehouse_id)
 );
 
-INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, -20);
+> INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, -20);
+~~~
+~~~
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ~~~
 
@@ -179,8 +184,8 @@ A Default Value constraint is specified using `DEFAULT` at the column level. It 
 The Datatype of the DEFAULT value or expression should be the same as the Datatype of the column.
 The DEFAULT constraint only applies on insert if the column is not specified in the INSERT statement. You can still insert a *NULL* into an optional (nullable) column by explicitly stating the column and the *NULL* value.
 
-~~~sql
-CREATE TABLE inventories
+~~~ sql
+> CREATE TABLE inventories
 (
   product_id        INT NOT NULL,
   warehouse_id      INT NOT NULL,
@@ -188,11 +193,13 @@ CREATE TABLE inventories
   PRIMARY KEY (product_id, warehouse_id)
 );
 
-INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
+> INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
 
-INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (2,30, NULL);
+> INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (2,30, NULL);
 
-SELECT * FROM inventories;
+> SELECT * FROM inventories;
+~~~
+~~~
 +------------+--------------+------------------+
 | product_id | warehouse_id | quantity_on_hand |
 +------------+--------------+------------------+
@@ -247,10 +254,10 @@ We're currently working to improve the performance of these statements, though.
 
 #### Example
 
-~~~sql
-CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+~~~ sql
+> CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 
-CREATE TABLE orders 
+> CREATE TABLE orders 
 (
   id INT PRIMARY KEY,
   customer INT NOT NULL REFERENCES customers (id),
@@ -258,19 +265,25 @@ CREATE TABLE orders
   INDEX (customer)
 );
 
-INSERT INTO customers VALUES (1001, 'a@co.tld');
-INSERT 1
+> INSERT INTO customers VALUES (1001, 'a@co.tld');
 
-INSERT INTO orders VALUES (1, 1002, 29.99);
+> INSERT INTO orders VALUES (1, 1002, 29.99);
+~~~
+~~~
 pq: foreign key violation: value [1002] not found in customers@primary [id]
+~~~
+~~~ sql
+> INSERT INTO orders VALUES (1, 1001, 29.99);
 
-INSERT INTO orders VALUES (1, 1001, 29.99);
-INSERT 1
-
-UPDATE customers SET id = 1002 WHERE id = 1001;
+> UPDATE customers SET id = 1002 WHERE id = 1001;
+~~~
+~~~
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
-
-DELETE FROM customers WHERE id = 1001;
+~~~
+~~~ sql
+> DELETE FROM customers WHERE id = 1001;
+~~~
+~~~
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
@@ -280,26 +293,34 @@ The Foreign Key constraint depends on [the index of foreign key columns](#rules-
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> also drops any other objects that depend on the index.{{site.data.alerts.end}}
 
-~~~sql
-SHOW CONSTRAINTS FROM orders;
+~~~ sql
+> SHOW CONSTRAINTS FROM orders;
+~~~
+~~~
 +--------+---------------------------+-------------+------------+----------------+
 | Table  |           Name            |    Type     | Column(s)  |    Details     |
 +--------+---------------------------+-------------+------------+----------------+
 | orders | fk_customer_ref_customers | FOREIGN KEY | [customer] | customers.[id] |
 | orders | primary                   | PRIMARY KEY | [id]       | NULL           |
 +--------+---------------------------+-------------+------------+----------------+
-
-SHOW INDEX FROM orders;
+~~~
+~~~ sql
+> SHOW INDEX FROM orders;
+~~~
+~~~
 +--------+---------------------+--------+-----+----------+-----------+---------+
 | Table  |        Name         | Unique | Seq |  Column  | Direction | Storing |
 +--------+---------------------+--------+-----+----------+-----------+---------+
 | orders | primary             | true   |   1 | id       | ASC       | false   |
 | orders | orders_customer_idx | false  |   1 | customer | ASC       | false   |
 +--------+---------------------+--------+-----+----------+-----------+---------+
+~~~
+~~~ sql
+> DROP INDEX orders@orders_customer_idx CASCADE;
 
-DROP INDEX orders@orders_customer_idx CASCADE;
-
-SHOW CONSTRAINTS FROM orders;
+> SHOW CONSTRAINTS FROM orders;
+~~~
+~~~
 +--------+---------+-------------+-----------+---------+
 | Table  |  Name   |    Type     | Column(s) | Details |
 +--------+---------+-------------+-----------+---------+

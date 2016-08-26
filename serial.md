@@ -33,15 +33,16 @@ A `SERIAL` column supports values up to 8 bytes in width, but the total storage 
 
 In this example, we create a table with the `SERIAL` column as the `PRIMARY KEY` so we can auto-generate unique IDs on insert.
 
-~~~
+~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING(30), c BOOL);
-CREATE TABLE
 ~~~
 
 The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default. 
 
-~~~
+~~~ sql
 > SHOW COLUMNS FROM serial;
+~~~
+~~~
 +-------+------------+-------+----------------+
 | Field |    Type    | Null  |    Default     |
 +-------+------------+-------+----------------+
@@ -53,8 +54,10 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 
 When we insert 3 rows without values in column `a` and return the new rows, we see that each row has defaulted to a unique value in column `a`. 
 
-~~~
+~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true) RETURNING *;
+~~~
+~~~
 +--------------------+--------+-------+
 |         a          |   b    |   c   |
 +--------------------+--------+-------+
@@ -72,23 +75,25 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. Create a table with a `SERIAL` column.
 
-   ~~~
-   CREATE TABLE increment (a SERIAL PRIMARY KEY);
+   ~~~ sql
+   > CREATE TABLE increment (a SERIAL PRIMARY KEY);
    ~~~ 
 
 2. Run four transactions for inserting rows. 
 
-   ~~~
-   BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
-   BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
-   BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
-   BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
+   ~~~ sql
+   > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+   > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
+   > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+   > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
    ~~~ 
 
 3. View the rows created.
 
+   ~~~ sql
+   > SELECT * from increment;
    ~~~
-   SELECT * from increment;
+   ~~~
    +---+
    | a |
    +---+

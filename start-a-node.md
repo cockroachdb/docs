@@ -94,6 +94,14 @@ $ cockroach start --store=node3 --port=26259 --http-port=8082 --http-addr=localh
 
 This example demonstrates starting up three nodes on different machines. Because each is on a different machine, default ports can be used without causing conflict. See [Manual Deployment](manual-deployment.html) for a detailed walkthrough.
 
+<style>
+.pg::before {
+    content: "test";
+}
+.pg::after {
+    content: "test2";
+}
+</style>
 ~~~ shell
 # Insecure:
 $ cockroach start --insecure --host=<node1-hostname>
@@ -101,9 +109,9 @@ $ cockroach start --insecure --host=<node2-hostname> --join=<node1-hostname>:262
 $ cockroach start --insecure --host=<node3-hostname> --join=<node1-hostname>:26257
 
 # Secure:
-$ cockroach start --host=<node1-hostname> --http-addr=<private-address> --ca-cert=ca.cert --cert=node1.cert --key=node1.key
-$ cockroach start --host=<node2-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node2.cert --key=node2.key 
-$ cockroach start --host=<node3-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node3.cert --key=node3.key 
+$ cockroach start --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname> --http-addr=<private-address>
+$ cockroach start --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257
+$ cockroach start --ca-cert=ca.cert --cert=node3.cert --key=node3.key --host=<node3-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node3.cert --key=node3.key
 ~~~
 
 ## See Also

@@ -29,18 +29,23 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 ## Examples
 
 ### Remove an Index
-~~~
+~~~ sql
 > SHOW INDEX FROM tbl;
+~~~
+~~~ 
 +-------+------------+--------+-----+--------+-----------+---------+
 | Table |    Name    | Unique | Seq | Column | Direction | Storing |
 +-------+------------+--------+-----+--------+-----------+---------+
 | tbl   | primary    | true   |   1 | id     | ASC       | false   |
 | tbl   | index_name | false  |   1 | name   | ASC       | false   |
 +-------+------------+--------+-----+--------+-----------+---------+
-
+~~~
+~~~ sql
 > DROP INDEX tbl@index_name;
 
 > SHOW INDEX FROM tbl;
+~~~
+~~~ 
 +-------+---------+--------+-----+--------+-----------+---------+
 | Table |  Name   | Unique | Seq | Column | Direction | Storing |
 +-------+---------+--------+-----+--------+-----------+---------+
@@ -52,29 +57,40 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
-~~~
+~~~ sql
 > SHOW INDEX FROM orders;
+~~~
+~~~ 
 +--------+---------------------+--------+-----+----------+-----------+---------+
 | Table  |        Name         | Unique | Seq |  Column  | Direction | Storing |
 +--------+---------------------+--------+-----+----------+-----------+---------+
 | orders | primary             | true   |   1 | id       | ASC       | false   |
 | orders | orders_customer_idx | false  |   1 | customer | ASC       | false   |
 +--------+---------------------+--------+-----+----------+-----------+---------+
-
+~~~
+~~~ sql
 > DROP INDEX orders@orders_customer_idx;
+~~~
+~~~ 
 pq: index "orders_customer_idx" is in use as a foreign key constraint
-
+~~~
+~~~ sql
 > SHOW CONSTRAINTS FROM orders;
+~~~
+~~~
 +--------+---------------------------+-------------+------------+----------------+
 | Table  |           Name            |    Type     | Column(s)  |    Details     |
 +--------+---------------------------+-------------+------------+----------------+
 | orders | fk_customer_ref_customers | FOREIGN KEY | [customer] | customers.[id] |
 | orders | primary                   | PRIMARY KEY | [id]       | NULL           |
 +--------+---------------------------+-------------+------------+----------------+
-
+~~~
+~~~ sql
 > DROP INDEX orders@orders_customer_idx CASCADE;
 
 > SHOW CONSTRAINTS FROM orders;
+~~~
+~~~
 +--------+---------+-------------+-----------+---------+
 | Table  |  Name   |    Type     | Column(s) | Details |
 +--------+---------+-------------+-----------+---------+

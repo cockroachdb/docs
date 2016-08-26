@@ -28,10 +28,12 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 
 ## Examples
 
-~~~
-CREATE TABLE bytes (a INT PRIMARY KEY, b BYTES, c BLOB);
+~~~ sql
+> CREATE TABLE bytes (a INT PRIMARY KEY, b BYTES, c BLOB);
 
-SHOW COLUMNS FROM bytes;
+> SHOW COLUMNS FROM bytes;
+~~~
+~~~
 +-------+-------+-------+---------+
 | Field | Type  | Null  | Default |
 +-------+-------+-------+---------+
@@ -39,10 +41,13 @@ SHOW COLUMNS FROM bytes;
 | b     | BYTES | true  | NULL    |
 | c     | BYTES | true  | NULL    |
 +-------+-------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO bytes VALUES (12345, b'\141\061\142\062\143\063', b'\x61\x31\x62\x32\x63\x33');
 
-INSERT INTO bytes VALUES (12345, b'\141\061\142\062\143\063', b'\x61\x31\x62\x32\x63\x33');
-
-SELECT * FROM bytes;
+> SELECT * FROM bytes;
+~~~
+~~~
 +-------+--------+--------+
 |   a   |   b    |   c    |
 +-------+--------+--------+

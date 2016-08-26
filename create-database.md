@@ -28,11 +28,12 @@ Parameter | Description
 
 
 ### Create a Database
-~~~
+~~~ sql
 > CREATE DATABASE bank;
-CREATE DATABASE
 
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+
@@ -44,18 +45,24 @@ CREATE DATABASE
 
 ### Create Fails (Name Already In Use)
 
+~~~ sql
+> SHOW DATABASES;
 ~~~
-> SHOW DATABASES;
+~~~
 +----------+
 | Database |
 +----------+
 | bank     |
 | system   |
 +----------+
-
+~~~
+~~~ sql
 > CREATE DATABASE bank;
+~~~
+~~~
 pq: database "bank" already exists
-
+~~~
+~~~ sql
 > SHOW DATABASES;
 +----------+
 | Database |
@@ -63,11 +70,19 @@ pq: database "bank" already exists
 | bank     |
 | system   |
 +----------+
+~~~
 
+~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
-CREATE DATABASE
+~~~
 
+SQL does not generate an error, but instead responds `CREATE DATABASE` even though a new database wasn't created.
+
+~~~ sql
 > SHOW DATABASES;
+~~~
+
+~~~
 +----------+
 | Database |
 +----------+

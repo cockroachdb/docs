@@ -44,8 +44,8 @@ Privilege | Levels
 
 To grant privileges on one or more databases, use the following syntax:
 
-~~~
-GRANT <privileges> ON DATABASE <databases> TO <users>
+~~~ sql
+> GRANT <privileges> ON DATABASE <databases> TO <users>;
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
@@ -56,24 +56,24 @@ The privileges will be inherited by any new tables created in the target databas
 
 To grant privileges on one or more tables in a database, use the following syntax:
 
-~~~
-GRANT <privileges> ON <tables> TO <users>
+~~~ sql
+> GRANT <privileges> ON <tables> TO <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
 
 Alternately, you can add the `TABLE` keyword:
 
-~~~
-GRANT <privileges> on TABLE <tables> TO <users>
+~~~ sql
+> GRANT <privileges> on TABLE <tables> TO <users>
 ~~~
 
 ### Grant Privileges on All Tables in a Database
 
 To grant privileges on all current tables in one or more databases, use the following syntax:
 
-~~~
-GRANT <privileges> ON <databases>.* TO <users>
+~~~ sql
+> GRANT <privileges> ON <databases>.* TO <users>
 ~~~
 
 where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
@@ -82,8 +82,10 @@ where `<privileges>` is a comma-separated list of [privileges](#supported-privil
 
 Let's say you have an `animals` database containing two tables: 
 
-~~~ 
+~~~ sql 
 > SHOW tables FROM animals;
+~~~
+~~~
 +-------------+
 |    Table    |
 +-------------+
@@ -96,11 +98,12 @@ You want the `maxroach` user to have the `SELECT` privilege on both tables, and 
 
 First, you grant the `maxroach` user the `SELECT` privilege on the two current tables:
 
-~~~ 
+~~~ sql
 > GRANT SELECT ON animals.* TO maxroach;
-GRANT
 
 > SHOW GRANTS ON animals.* FOR maxroach;
+~~~
+~~~
 +-----------+----------+------------+
 |   Table   |   User   | Privileges |
 +-----------+----------+------------+
@@ -111,11 +114,12 @@ GRANT
 
 Next, you grant the `betsyroach` user the `ALL` privilege on the two current tables:
 
-~~~ 
+~~~ sql
 > GRANT ALL ON animals.* TO betsyroach;
-GRANT
 
 > SHOW GRANTS ON animals.* FOR betsyroach;
+~~~
+~~~
 +-----------+------------+------------+
 |   Table   |    User    | Privileges |
 +-----------+------------+------------+
@@ -126,11 +130,12 @@ GRANT
 
 Finally, you grant the `betsyroach` user the `ALL` privilege on the `animals` database to ensure that the user retains the privilege for all new tables created in the database:
 
-~~~ 
+~~~ sql
 > GRANT ALL ON DATABASE animals TO betsyroach;
-GRANT
 
 > SHOW GRANTS ON DATABASE animals FOR betsyroach;
+~~~
+~~~
 +----------+------------+------------+
 | Database |    User    | Privileges |
 +----------+------------+------------+
@@ -140,11 +145,12 @@ GRANT
 
 Whenever a new table is created in the `animals` database, the `betsyroach` user will inherit the `ALL` privilege on the table:
 
-~~~ 
+~~~ sql
 > CREATE TABLE animals.cockroaches (name STRING, count INT);
-CREATE TABLE
 
 > SHOW GRANTS ON animals.cockroaches FOR betsyroach;
+~~~
+~~~
 +-------------+------------+------------+
 |    Table    |    User    | Privileges |
 +-------------+------------+------------+

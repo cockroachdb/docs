@@ -70,20 +70,18 @@ This command uses the `--url` flag to identify the client user and the hostname 
 
 Once you're connected, run some [SQL statements](learn-cockroachdb-sql.html): 
 
-~~~ shell
-root@:26257> CREATE DATABASE bank;
-CREATE DATABASE
+~~~ sql
+> CREATE DATABASE bank;
 
-root@:26257> SET DATABASE = bank;
-SET DATABASE
+> SET DATABASE = bank;
 
-root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-CREATE TABLE
+> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
 
-root@26257> INSERT INTO accounts VALUES (1234, 10000);
-INSERT 1
+> INSERT INTO accounts VALUES (1234, 10000);
 
-root@26257> SELECT * FROM accounts;
+> SELECT * FROM accounts;
+~~~
+~~~
 +------+---------+
 |  id  | balance |
 +------+---------+
@@ -181,20 +179,18 @@ This command uses the `--url` flag to identify the client user, the hostname and
 
 Once you're connected, run some [SQL statements](learn-cockroachdb-sql.html): 
 
-~~~ shell
-root@:26257> CREATE DATABASE bank;
-CREATE DATABASE
+~~~ sql
+> CREATE DATABASE bank;
 
-root@:26257> SET DATABASE = bank;
-SET DATABASE
+> SET DATABASE = bank;
 
-root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-CREATE TABLE
+> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
 
-root@26257> INSERT INTO accounts VALUES (1234, 10000);
-INSERT 1
+> INSERT INTO accounts VALUES (1234, 10000);
 
-root@26257> SELECT * FROM accounts;
+> SELECT * FROM accounts;
+~~~
+~~~
 +------+---------+
 |  id  | balance |
 +------+---------+

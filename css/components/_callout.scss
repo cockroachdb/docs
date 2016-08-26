@@ -32,12 +32,14 @@
     color: #428bca;
 }
 .bs-callout-success {
+    background-color: rgba(248,245,225,0.4);
     border-left-color: #5cb85c;
 }
 .bs-callout-success h4 {
     color: #5cb85c;
 }
 .bs-callout-danger {
+    background-color: rgba(217,83,79, .07);
     border-left-color: #d9534f;
 }
 .bs-callout-danger h4 {
@@ -45,6 +47,7 @@
 }
 .bs-callout-warning {
     border-left-color: #f0ad4e;
+    background-color: rgba(248,245,225,0.4);
 }
 .bs-callout-warning h4 {
     color: #f0ad4e;

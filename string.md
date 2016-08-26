@@ -73,10 +73,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Examples
 
-~~~
-CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
+~~~ sql
+> CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
 
-SHOW COLUMNS FROM strings;
+> SHOW COLUMNS FROM strings;
+~~~
+~~~
 +-------+-----------+-------+---------+
 | Field |  Type     | Null  | Default |
 +-------+-----------+-------+---------+
@@ -84,10 +86,13 @@ SHOW COLUMNS FROM strings;
 | b     | STRING(4) | true  | NULL    |
 | c     | STRING    | true  | NULL    |
 +-------+-----------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
 
-INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
-
-SELECT * FROM strings;
+> SELECT * FROM strings;
+~~~
+~~~
 +----------+------+--------+
 |    a     |  b   |   c    |
 +----------+------+--------+

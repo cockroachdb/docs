@@ -75,16 +75,16 @@ However, for SQL to use stored columns, queries must filter another column in th
 
 If you wanted to optimize the performance of the following queries:
 
-~~~sql
-SELECT col1 FROM tbl WHERE col1 = 10;
+~~~ sql
+> SELECT col1 FROM tbl WHERE col1 = 10;
 
-SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+> SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
 
 You could create a single index of `col1` and `col2` that stores `col3`:
 
-~~~sql
-CREATE INDEX ON tbl (col1, col2) STORING (col3);
+~~~ sql
+> CREATE INDEX ON tbl (col1, col2) STORING (col3);
 ~~~
 
 ## See Also

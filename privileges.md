@@ -20,24 +20,24 @@ For a full list of supported privileges, see the [`GRANT`](grant.html) documenta
 
 To grant privileges to a user, use the [`GRANT`](grant.html) statement, for example: 
 
-~~~
-GRANT SELECT, INSERT ON bank.accounts TO maxroach;
+~~~ sql
+> GRANT SELECT, INSERT ON bank.accounts TO maxroach;
 ~~~
 
 ## Showing Privileges
 
 To show privileges granted to users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
 
-~~~
-SHOW GRANTS ON DATABASE bank FOR maxroach;
+~~~ sql
+> SHOW GRANTS ON DATABASE bank FOR maxroach;
 ~~~
 
 ## Revoking Privileges
 
 To revoke privileges from users, use the [`REVOKE`](revoke.html) statement, for example:
 
-~~~
-REVOKE INSERT ON bank.accounts FROM maxroach;
+~~~ sql
+> REVOKE INSERT ON bank.accounts FROM maxroach;
 ~~~
 
 ## See Also

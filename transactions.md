@@ -15,9 +15,9 @@ CockroachDB supports bundling multiple SQL statements into a single all-or-nothi
 In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements:
 
 ~~~ sql
-BEGIN
+> BEGIN;
 <other statements>
-COMMIT
+> COMMIT;
 ~~~
 
 If at any point in the transaction you decide to abort all updates, you can issue the [`ROLLBACK`](rollback-transaction.html) statement instead of the `COMMIT` statement.
@@ -53,13 +53,13 @@ To assist with client-side retries, CockroachDB provides a generic **retry funct
 Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in high-contention scenarios, the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
-BEGIN PRIORITY <LOW, NORMAL, HIGH>
+> BEGIN PRIORITY <LOW, NORMAL, HIGH>;
 ~~~
 
 Alternately, the client can set the priority immediately after the transaction is started as follows:
 
 ~~~ sql
-SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
+> SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>;
 ~~~
 
 {{site.data.alerts.callout_info}}When two transactions contend for the same resource, the one with the lower priority loses and is retried. On retry, the transaction inherits the priority of the winner. This means that each retry makes a transaction stronger and more likely to succeed.{{site.data.alerts.end}}
@@ -69,13 +69,13 @@ SET TRANSACTION PRIORITY <LOW, NORMAL, HIGH>
 CockroachDB supports two transaction isolation levels: `SNAPSHOT ISOLATION` and `SERIALIZABLE`. By default, transactions use the `SERIALIZABLE` isolation level, but the client can explicitly set a transaction's isolation when starting the transaction:
 
 ~~~ sql
-BEGIN ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
+> BEGIN ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>;
 ~~~
 
 Alternately, the client can set the isolation level immediately after the transaction is started:
 
 ~~~ sql
-SET TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>
+> SET TRANSACTION ISOLATION LEVEL <ANSI SQL ISOLATION LEVEL>;
 ~~~
 
 {{site.data.alerts.callout_info}}For a detailed discussion of isolation in CockroachDB transactions, see <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>.{{site.data.alerts.end}}

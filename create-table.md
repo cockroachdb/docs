@@ -90,13 +90,15 @@ In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-~~~ 
-CREATE TABLE logon (
+~~~ sql
+> CREATE TABLE logon (
     user_id INT, 
     logon_date DATE
 );
 
-SHOW COLUMNS FROM logon;
+> SHOW COLUMNS FROM logon;
+~~~
+~~~
 +------------+------+-------+----------------+
 |   Field    | Type | Null  |    Default     |
 +------------+------+-------+----------------+
@@ -105,8 +107,11 @@ SHOW COLUMNS FROM logon;
 | rowid      | INT  | false | unique_rowid() |
 +------------+------+-------+----------------+
 (3 rows)
-
-SHOW INDEX FROM logon;
+~~~
+~~~ sql
+> SHOW INDEX FROM logon;
+~~~
+~~~
 +-------+---------+--------+-----+--------+-----------+---------+
 | Table |  Name   | Unique | Seq | Column | Direction | Storing |
 +-------+---------+--------+-----+--------+-----------+---------+
@@ -121,7 +126,7 @@ In this example, we create a table with three columns. One column is the [`PRIMA
 
 By default, CockroachDB would assign the `user_id` and `logoff_date` columns to a single column family, since they're of a fixed size, and `user_email` to its own column family, since it's unbounded. We know that `user_email` will be relatively small, however, so we use the `FAMILY` keyword to group it with the other columns. As a result, each new row in the table would correspond to a single underlying key-value pair. For more deails about how columns are assigned to column families, see [Column Families](column-families.html).
 
-~~~ 
+~~~ sql
 CREATE TABLE logoff (
     user_id INT PRIMARY KEY, 
     user_email STRING UNIQUE, 
@@ -129,7 +134,9 @@ CREATE TABLE logoff (
     FAMILY f1 (user_id, user_email, logoff_date)
 );
 
-SHOW COLUMNS FROM logoff;
+> SHOW COLUMNS FROM logoff;
+~~~
+~~~
 +-------------+------------+-------+---------+
 |    Field    |    Type    | Null  | Default |
 +-------------+------------+-------+---------+
@@ -138,8 +145,11 @@ SHOW COLUMNS FROM logoff;
 | logoff_date | DATE       | true  | NULL    |
 +-------------+------------+-------+---------+
 (3 rows)
-
-SHOW INDEX FROM logoff;
+~~~
+~~~ sql
+> SHOW INDEX FROM logoff;
+~~~
+~~~
 +--------+-----------------------+--------+-----+------------+-----------+---------+
 | Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
 +--------+-----------------------+--------+-----+------------+-----------+---------+
@@ -153,8 +163,8 @@ SHOW INDEX FROM logoff;
 
 In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
-~~~ 
-CREATE TABLE product_information (
+~~~ sql
+> CREATE TABLE product_information (
     product_id           INT PRIMARY KEY NOT NULL,
     product_name         STRING(50) UNIQUE NOT NULL,
     product_description  STRING(2000),
@@ -172,7 +182,9 @@ CREATE TABLE product_information (
     INDEX supp_id_prod_status_idx (supplier_id, product_status)
 );
 
-SHOW INDEX FROM product_information;
+> SHOW INDEX FROM product_information;
+~~~
+~~~
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
 |        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing |
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
@@ -202,12 +214,12 @@ There are a [number of rules](constraints.html#rules-for-creating-foreign-keys) 
 
 In this example, we'll show a series of tables using different formats of foreign keys.
 
-~~~ 
-CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+~~~ sql
+> CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 
-CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
+> CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
 
-CREATE TABLE orders (
+> CREATE TABLE orders (
   id INT PRIMARY KEY,
   product STRING NOT NULL REFERENCES products,
   quantity INT,
@@ -217,7 +229,7 @@ CREATE TABLE orders (
   INDEX (customer)
 );
 
-CREATE TABLE reviews (
+> CREATE TABLE reviews (
   id INT PRIMARY KEY,
   product STRING NOT NULL REFERENCES products,
   customer INT NOT NULL,
@@ -234,8 +246,10 @@ CREATE TABLE reviews (
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
-~~~ 
-SHOW CREATE TABLE logoff;
+~~~ sql
+> SHOW CREATE TABLE logoff;
+~~~
+~~~
 +--------+----------------------------------------------------------+
 | Table  |                       CreateTable                        |
 +--------+----------------------------------------------------------+
