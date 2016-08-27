@@ -6,7 +6,9 @@ toc: false
 
 Now that you have a [local cluster](start-a-local-cluster.html) up and running, let's secure it with authentication and encryption. This involves creating certificates and restarting your nodes with a few additional flags.
 
-{{site.data.alerts.callout_danger}}If you didn't <a href="start-a-local-cluster.html#step-6--stop-the-cluster">stop the insecure cluster</a>, when you restart the cluster with security (steps 2 and 3), you'll see "TLS handshake" errors when accessing the Admin UI until you adjust the URL to include <code>https</code> (step 6).{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}If you didn't <a href="start-a-local-cluster.html#step-5--stop-the-cluster">stop the insecure cluster</a>, when you restart the cluster with security (steps 2 and 3), you'll see "TLS handshake" errors when accessing the Admin UI until you adjust the URL to include <code>https</code> (step 6).{{site.data.alerts.end}}
+
+<div id="toc"></div>
 
 ## Step 1.  Create security certificates
 

@@ -20,7 +20,9 @@ toc: false
   <button class="filter-button scope-button current">In <strong>Docker</strong></button>
 </div><p></p>
 
-Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data. This page shows you how. 
+Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
+
+<div id="toc"></div>
 
 ## Before You Begin
 

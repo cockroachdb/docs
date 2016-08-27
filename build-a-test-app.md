@@ -4,33 +4,13 @@ summary: Follow this tutorial to quickly learn how to create a CockroachDB datab
 toc: false
 ---
 
-<script>
-$(document).ready(function(){
-    
-	var $filter_button = $('.filter-button');
-
-    $filter_button.on('click', function(){
-    	var language = $(this).data('language'), 
-    	$current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
-
-    	//remove current class from tab and content
-    	$current_tab.removeClass('current');
-    	$current_content.removeClass('current');
-
-    	//add current class to clicked button and corresponding content block
-    	$('.filter-button[data-language="'+language+'"]').addClass('current');
-    	$('.filter-content[data-language="'+language+'"]').addClass('current');
-    });
-});
-</script>
-
-This page is CockroachDB's **Hello, world!** tutorial. It walks you through creating a database, granting privileges on the database to a user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
+This page is CockroachDB's **Hello, World!** tutorial. It walks you through creating a database, granting privileges on the database to a user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
 
 <div id="toc"></div>
 
-## Prerequisites
+## Before You Begin
 
-We assume that you have already:
+Make sure you have already:
 
 - [Installed CockroachDB](install-cockroachdb.html) 
 - [Started a local cluster](start-a-local-cluster.html) in insecure mode
@@ -240,3 +220,24 @@ Coming soon.
 {% include app/txn-sample.rs %}
 ~~~
 </div>
+
+<script>
+$(document).ready(function(){
+    
+    var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+        var language = $(this).data('language'), 
+        $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+        //remove current class from tab and content
+        $current_tab.removeClass('current');
+        $current_content.removeClass('current');
+
+        //add current class to clicked button and corresponding content block
+        $('.filter-button[data-language="'+language+'"]').addClass('current');
+        $('.filter-content[data-language="'+language+'"]').addClass('current');
+    });
+});
+</script>
+

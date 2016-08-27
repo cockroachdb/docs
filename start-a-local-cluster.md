@@ -20,7 +20,9 @@ toc: false
   <a href="start-a-local-cluster-in-docker.html"><button class="filter-button scope-button">In <strong>Docker</strong></button></a>
 </div><p></p>
 
-Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. This page shows you how.
+Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port.
+
+<div id="toc"></div>
 
 ## Before You Begin
 
@@ -115,7 +117,7 @@ To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point y
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 6.  Stop the cluster
+## Step 5.  Stop the cluster
 
 Once you're done looking through the Admin UI, you can stop the nodes (and therefore the cluster):
 
