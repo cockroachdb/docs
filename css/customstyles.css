@@ -224,11 +224,53 @@ header {
     width: 160px;
     float: left;
     margin-left: 8px;
-    margin-top: 5px; }
+    margin-top: 5px;
+    line-height: 23px; }
+    @media screen and (min-width: 1200px) {
+      header .logo {
+        width: 209px; } }
   header .container {
     position: relative; }
   header nav.desktop {
     display: none; }
+    header nav.desktop a {
+      font-family: 'AvenirLTStd-Black', serif;
+      font-size: 12px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #142848;
+      text-transform: uppercase;
+      float: left;
+      margin: 0 10px;
+      padding: 0;
+      line-height: 42px;
+      text-decoration: none; }
+      @media screen and (min-width: 992px) {
+        header nav.desktop a {
+          font-size: 14px; } }
+    header nav.desktop a.current-menu-item, header nav.desktop a:hover {
+      color: #46a417;
+      text-decoration: none; }
+    header nav.desktop a.cl-btn {
+      color: #fff; }
+    header nav.desktop a.cl-btn:hover {
+      color: #46a417; }
+    header nav.desktop a.github {
+      margin-right: 15px;
+      padding: 0px 13px;
+      line-height: 28px;
+      margin-top: 4px; }
+      @media screen and (min-width: 992px) {
+        header nav.desktop a.github {
+          margin-right: 0;
+          padding: 0 29px;
+          line-height: 39px;
+          margin-top: 0; } }
+    @media screen and (min-width: 768px) {
+      header nav.desktop {
+        display: inline-block;
+        float: right; } }
   header nav.mobile {
     float: right; }
     header nav.mobile a.cl-btn {
@@ -238,108 +280,38 @@ header {
       margin-right: 15px;
       padding: 1px 13px 0;
       line-height: 28px;
-      margin-top: 0px; }
+      margin-top: 0px;
+      text-transform: uppercase;
+      font-size: 11px; }
     header nav.mobile .hamburger {
       width: 21px;
       float: right;
-      margin-right: 10px;
+      margin-right: 6px;
       margin-top: 6px;
-      padding-bottom: 4px;
+      padding-bottom: 3px;
       border-bottom: 4px solid #46a417; }
       header nav.mobile .hamburger .hamburger_inner {
         border: 4px solid #46a417;
         border-right: none;
         border-left: none;
-        height: 12px;
+        height: 11px;
         width: 100%; }
     header nav.mobile .hamburger:hover {
       border-color: #37880f; }
       header nav.mobile .hamburger:hover .hamburger_inner {
         border-color: #37880f; }
+    @media screen and (min-width: 768px) {
+      header nav.mobile {
+        display: none; } }
+  @media screen and (min-width: 600px) {
+    header {
+      height: 60px;
+      padding: 12px 0 0; } }
+  @media screen and (min-width: 768px) {
+    header {
+      height: 75px;
+      padding: 18px 0; } }
 
-/** intermediate between mobile/tablet **/
-@media (min-width: 600px) {
-  header {
-    height: 60px;
-    padding: 12px 0 0; }
-    header .logo {
-      margin-top: 3px;
-      width: 209px; }
-    header nav.mobile a.github {
-      margin-right: 19px;
-      margin-top: 2px; }
-    header nav.mobile .hamburger {
-      width: 24px;
-      margin-top: 8px; } }
-/** small desktop **/
-@media (min-width: 768px) {
-  header {
-    height: 75px;
-    padding: 18px 0; }
-    header nav.desktop {
-      display: inline-block;
-      float: right; }
-      header nav.desktop a {
-        font-family: 'AvenirLTStd-Black', serif;
-        font-size: 14px;
-        font-weight: normal;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #142848;
-        text-transform: uppercase;
-        float: left;
-        margin: 0 10px;
-        padding: 0;
-        line-height: 45px;
-        text-decoration: none; }
-      header nav.desktop a.current-menu-item, header nav.desktop a:hover {
-        color: #46a417;
-        text-decoration: none; }
-      header nav.desktop a.cl-btn {
-        color: #fff; }
-      header nav.desktop a.cl-btn:hover {
-        color: #46a417; }
-      header nav.desktop a.github {
-        padding: 0 29px;
-        line-height: 40px; }
-    header nav.mobile {
-      display: none; } }
-/** large desktop **/
-@media (min-width: 1200px) {
-  header {
-    height: 75px;
-    padding: 18px 0; }
-    header .logo {
-      margin-top: 5px;
-      width: 209px; }
-    header nav.desktop {
-      display: inline-block;
-      float: right; }
-      header nav.desktop a {
-        font-family: 'AvenirLTStd-Black', serif;
-        font-size: 14px;
-        font-weight: normal;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #142848;
-        text-transform: uppercase;
-        float: left;
-        margin: 0 10px;
-        padding: 0;
-        line-height: 45px;
-        text-decoration: none; }
-      header nav.desktop a.current-menu-item, header nav.desktop a:hover {
-        color: #46a417;
-        text-decoration: none; }
-      header nav.desktop a.cl-btn {
-        color: #fff; }
-      header nav.desktop a.cl-btn:hover {
-        color: #46a417; }
-      header nav.desktop a.github {
-        padding: 0 29px;
-        line-height: 40px; }
-    header nav.mobile {
-      display: none; } }
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: #f7f7f7;
