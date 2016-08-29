@@ -92,12 +92,12 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-latest.darwin-10.9-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
@@ -295,12 +295,12 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB tarball for Linux</a>.</p>
+      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB tarball for Linux</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>tar xfz cockroach-{{site.data.strings.version}}.linux-amd64.tgz</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>tar xfz cockroach-latest.linux-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
