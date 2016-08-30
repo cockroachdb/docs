@@ -124,10 +124,6 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
-
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-homebrew" class="install-option" style="display: none;">
@@ -164,10 +160,6 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
-
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source" class="install-option" style="display: none;">
@@ -230,10 +222,8 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
+
 <div id="use-docker" class="install-option" style="display: none;">
 <h2>Use Docker</h2>
 
@@ -275,9 +265,6 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>
 </div>
 
@@ -327,10 +314,6 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
-
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source-linux" class="install-option" style="display: none;">
@@ -393,10 +376,6 @@ $(document).ready(function(){
       </div>
     </li>
 </ol>
-
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-docker-linux" class="install-option" style="display: none;">
@@ -442,9 +421,6 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-<h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
 </div>
 </div>
 
@@ -489,8 +465,8 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
+</div>
 
 <h2 id="whats-next">What's Next?</h2>
 
-<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a cluster of CockroachDB nodes across multiple Docker containers.</p>
-</div>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>

@@ -38,11 +38,12 @@ Parameter | Description
 
 ### Insert a Single Row
 
-~~~
+~~~ sql
 > INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
-INSERT 1
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -52,17 +53,19 @@ INSERT 1
 
 If you don't list column names, the statement will use the columns of the table in their declared order:
 
-~~~
+~~~ sql
 > SHOW COLUMNS FROM accounts;
+~~~
+~~~
 +---------+---------+-------+----------------+
 |  Field  |  Type   | Null  |    Default     |
 +---------+---------+-------+----------------+
 | id      | INT     | false | unique_rowid() |
 | balance | DECIMAL | true  | NULL           |
 +---------+---------+-------+----------------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts VALUES (2, 20000.75);
-INSERT 1
 
 > SELECT * FROM accounts;
 +----+----------+
@@ -75,11 +78,12 @@ INSERT 1
 
 ### Insert Multiple Rows
 
-~~~ 
+~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
-INSERT 2
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -92,19 +96,23 @@ INSERT 2
 
 ### Insert from a `SELECT` Statement
 
-~~~
+~~~ sql
 > SHOW COLUMS FROM other_accounts;
+~~~
+~~~
 +--------+---------+-------+---------+
 | Field  |  Type   | Null  | Default |
 +--------+---------+-------+---------+
 | number | INT     | false | NULL    |
 | amount | DECIMAL | true  | NULL    |
 +--------+---------+-------+---------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
-INSERT 3
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +----+----------+
 | id | balance  |
 +----+----------+
@@ -120,25 +128,26 @@ INSERT 3
 
 ### Insert Default Values
 
-~~~
+~~~ sql
 > INSERT INTO accounts (id) VALUES (8);
-INSERT 1
-
 > INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
-INSERT 1
 
 > SELECT * FROM accounts WHERE id in (8, 9);
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+
 |  8 | NULL    |
 |  9 | NULL    |
 +----+---------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts DEFAULT VALUES;
-INSERT 1
 
 > SELECT * FROM accounts;
+~~~
+~~~
 +--------------------+----------+
 |         id         | balance  |
 +--------------------+----------+
@@ -157,22 +166,30 @@ INSERT 1
 
 ### Insert and Return Values
 
-~~~ 
+~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
+~~~
+~~~
 +--------------------+
 |         id         |
 +--------------------+
 | 142935769332121601 |
 +--------------------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
+~~~
+~~~
 +--------------------+---------+
 |         id         | balance |
 +--------------------+---------+
 | 142935982200750081 |  250000 |
 +--------------------+---------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
+~~~
+~~~ sql
 +-------------+
 | balance * 2 |
 +-------------+
@@ -184,14 +201,15 @@ INSERT 1
 
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called <code>excluded</code>. This example demonstrates how you use the columns in the temporary <code>excluded</code> table to apply updates on conflict:
 
-~~~ 
+~~~ sql
 > INSERT INTO accounts (id, balance) 
     VALUES (8, 500.50) 
     ON CONFLICT (id) 
     DO UPDATE SET balance = excluded.balance;
-INSERT 1
 
 > SELECT * FROM accounts WHERE id = 8;
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -203,28 +221,34 @@ INSERT 1
 
 In this example, we get an error from a uniqueness conflict:
 
-~~~
+~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+
 |  8 |   500.5 |
 +----+---------+
-
+~~~
+~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (8, 125.50);
+~~~
+~~~
 pq: duplicate key value (id)=(8) violates unique constraint "primary"
 ~~~
 
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
-~~~
+~~~ sql
 > INSERT INTO accounts (id, balance) 
     VALUES (8, 125.50) 
     ON CONFLICT (id) 
     DO NOTHING;
-INSERT 1
 
 > SELECT * FROM accounts WHERE id = 8;
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -234,14 +258,15 @@ INSERT 1
 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
-~~~
+~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 125.50), (10, 450)
     ON CONFLICT (id)
     DO NOTHING;
-INSERT 2
 
 > SELECT * FROM accounts WHERE id in (8, 10);
+~~~
+~~~
 +----+---------+
 | id | balance |
 +----+---------+

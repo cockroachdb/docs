@@ -38,20 +38,25 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 ## Examples
 
-~~~
-CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP);
+~~~ sql
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP);
 
-SHOW COLUMNS FROM timestamps;
+> SHOW COLUMNS FROM timestamps;
+~~~
+~~~
 +-------+-----------+-------+---------+
 | Field |   Type    | Null  | Default |
 +-------+-----------+-------+---------+
 | a     | INT       | false | NULL    |
 | b     | TIMESTAMP | true  | NULL    |
 +-------+-----------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO timestamps VALUES (1, TIMESTAMP '2016-03-26 10:10:10-05:00'), (2, TIMESTAMP '2016-03-26');
 
-INSERT INTO timestamps VALUES (1, TIMESTAMP '2016-03-26 10:10:10-05:00'), (2, TIMESTAMP '2016-03-26');
-
-SELECT * FROM timestamps;
+> SELECT * FROM timestamps;
+~~~
+~~~
 +------+---------------------------------+
 |  a   |                b                |
 +------+---------------------------------+

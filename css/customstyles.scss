@@ -16,6 +16,10 @@ p {
   }
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 40px;
+}
+
 h1 {
   @include adelle(40px);
   color: $cl_green;
@@ -37,6 +41,10 @@ h2 {
 h3 {
   @include avenir_h(20px);
   color: $cl_blue;
+
+  &.clickable-header {
+    cursor: pointer;
+  }
   
   text-transform: uppercase;
 
@@ -68,18 +76,16 @@ h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .breadcrumb > .active {color: #777 !important;}
 
 /* make room for the nav bar */
-h1[id]::before,
-h2[id]::before,
-h3[id]::before,
-h4[id]::before,
-h5[id]::before,
-h6[id]::before,
-dt[id]::before {
+h1:target:before,
+h2:target:before,
+h3:target:before,
+h4:target:before,
+h5:target:before,
+h6:target:before {
   content: '';
   display: block;
   height: 100px;
-  margin-top: -80px;
-}
+  margin-top: -100px; }
 
 .post-content {
   img {
@@ -625,9 +631,7 @@ a.accordion-toggle {
 @import "components/toc";
 @import "components/filtertabs";
 @import "components/newsletter";
+@import "components/codesamples";
 @import "syntax/sql";
 @import "syntax/syntax";
 @import "components/feedback-widget";
-
-
-

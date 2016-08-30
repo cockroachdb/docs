@@ -132,6 +132,9 @@ p {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
 
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 40px; }
+
 h1 {
   font-family: 'Adelle-Regular', serif;
   font-size: 40px;
@@ -162,6 +165,8 @@ h3 {
   -moz-osx-font-smoothing: grayscale;
   color: #142848;
   text-transform: uppercase; }
+  h3.clickable-header {
+    cursor: pointer; }
   h3 strong, h3 b {
     font-family: 'AvenirLTStd-Black', serif;
     font-size: 20px;
@@ -219,7 +224,7 @@ header {
   background: #fff;
   -webkit-transition: margin 0.4s;
   transition: margin 0.4s;
-  border-bottom: 1px solid #d9dbe2; }
+  border-bottom: 1px solid #D9DBE2; }
   header .logo {
     width: 160px;
     float: left;
@@ -314,8 +319,8 @@ header {
 
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #d9dbe2; }
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #D9DBE2; }
   @media screen and (min-width: 768px) {
     .col-sidebar {
       background-color: transparent;
@@ -398,7 +403,7 @@ header {
       color: #46a417; }
 
 .roach {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   margin-bottom: 20px;
   padding: 10px;
   text-align: center;
@@ -427,7 +432,7 @@ header {
     line-height: 20px; }
   .roach:hover {
     border-color: #46a417;
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   .roach.full-roach .catrina {
     height: 120px; }
   @media screen and (min-width: 992px) {
@@ -440,7 +445,7 @@ header {
         height: auto; } }
 
 .blog-post {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   padding: 10px 20px;
   border-bottom: none;
   overflow: auto; }
@@ -464,9 +469,9 @@ header {
     .blog-post .blog-meta .meta-emphasis {
       color: #46a417; }
   .blog-post.last-entry {
-    border-bottom: 1px solid #d9dbe2; }
+    border-bottom: 1px solid #D9DBE2; }
   .blog-post:hover {
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   @media screen and (min-width: 768px) {
     .blog-post .blog-title {
       float: left;
@@ -512,7 +517,7 @@ header {
     #content #main-content {
       min-height: 625px; }
       #content #main-content .content-col {
-        border-left: 1px solid #d9dbe2;
+        border-left: 1px solid #D9DBE2;
         min-height: 625px;
         padding-left: 55px; } }
 
@@ -791,17 +796,16 @@ section.footer {
   color: #777 !important; }
 
 /* make room for the nav bar */
-h1[id]::before,
-h2[id]::before,
-h3[id]::before,
-h4[id]::before,
-h5[id]::before,
-h6[id]::before,
-dt[id]::before {
+h1:target:before,
+h2:target:before,
+h3:target:before,
+h4:target:before,
+h5:target:before,
+h6:target:before {
   content: '';
   display: block;
   height: 100px;
-  margin-top: -80px; }
+  margin-top: -100px; }
 
 .post-content img {
   margin: 12px 0px 3px 0px; }
@@ -1329,32 +1333,35 @@ a.accordion-toggle {
   color: #428bca; }
 
 .bs-callout-success {
+  background-color: rgba(248, 245, 225, 0.4);
   border-left-color: #5cb85c; }
 
 .bs-callout-success h4 {
   color: #5cb85c; }
 
 .bs-callout-danger {
+  background-color: rgba(217, 83, 79, 0.07);
   border-left-color: #d9534f; }
 
 .bs-callout-danger h4 {
   color: #d9534f; }
 
 .bs-callout-warning {
-  border-left-color: #f0ad4e; }
+  border-left-color: #f0ad4e;
+  background-color: rgba(248, 245, 225, 0.4); }
 
 .bs-callout-warning h4 {
   color: #f0ad4e; }
 
 .bs-callout-info {
-  background-color: #ecf7ff;
-  border-left-color: #7fbeeb; }
+  background-color: #ECF7FF;
+  border-left-color: #7FBEEB; }
 
 .bs-callout-info h4 {
   color: #5bc0de; }
 
 #toc > ul {
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   padding: 20px 30px;
   margin: 0;
   width: 100%; }
@@ -1793,6 +1800,25 @@ a.accordion-toggle {
 
   .hubspot-install-form .install-form .hs_email input {
     width: 250px; } }
+/* Designed to make items marked as terminal prompts with Rouge syntax highlighter unselectable*/
+.noselect {
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none;
+  /* Likely future */ }
+
+/* Works in conjunction with /js/customscripts.js to make shell terminals prompts ($) totally unselectable */
+.shellterminal::before {
+  content: "$ "; }
+
+/* Works in conjunction with /js/customscripts.js to make SQL terminals prompts (>) totally unselectable */
+.sqlterminal::before {
+  content: "> "; }
+
 @namespace "http://www.w3.org/2000/svg";
 .line {
   fill: none;
@@ -1973,11 +1999,11 @@ polygon.regexp {
 
 /* Literal.String */
 .highlight .na {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Attribute */
 .highlight .nb {
-  color: #0086b3; }
+  color: #0086B3; }
 
 /* Name.Builtin */
 .highlight .nc {
@@ -1986,11 +2012,11 @@ polygon.regexp {
 
 /* Name.Class */
 .highlight .no {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Constant */
 .highlight .ni {
-  color: purple; }
+  color: #800080; }
 
 /* Name.Entity */
 .highlight .ne {
@@ -2007,11 +2033,11 @@ polygon.regexp {
 
 /* Name.Namespace */
 .highlight .nt {
-  color: navy; }
+  color: #000080; }
 
 /* Name.Tag */
 .highlight .nv {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable */
 /*.highlight .ow { font-weight: bold } /* Operator.Word */
@@ -2036,35 +2062,35 @@ polygon.regexp {
 
 /* Literal.Number.Oct */
 .highlight .sb {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Backtick */
 .highlight .sc {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Char */
 .highlight .sd {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Doc */
 .highlight .s2 {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Double */
 .highlight .se {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Escape */
 .highlight .sh {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Heredoc */
 .highlight .si {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Interpol */
 .highlight .sx {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Other */
 .highlight .sr {
@@ -2084,15 +2110,15 @@ polygon.regexp {
 
 /* Name.Builtin.Pseudo */
 .highlight .vc {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Class */
 .highlight .vg {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Global */
 .highlight .vi {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Instance */
 .highlight .il {
@@ -2103,7 +2129,7 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   font-size: 0; }
   #feedback-prompt form {
     display: inline-block;
@@ -2127,7 +2153,7 @@ polygon.regexp {
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   color: #142848 !important;
   font-family: 'AvenirLTStd-Book', serif;
   font-size: 16px;
@@ -2593,3 +2619,5 @@ img.mfp-img {
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
+
+/*# sourceMappingURL=customstyles.css.map */

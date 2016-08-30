@@ -35,15 +35,17 @@ To manually assign a column family on [table creation](create-table.html), use t
 
 For example, let's say we want to create a `users` table to store user IDs (`id INT`), date and time when users joined (`joined TIMESTAMP`), and user names (`name STRING`). We don't know how long a name will be, so we leave it unbounded. However, since names are generally short, we use the `FAMILY` keyword to group `name` with the other columns:
 
-~~~
-CREATE TABLE users (
+~~~ sql
+> CREATE TABLE users (
     id INT PRIMARY KEY, 
     joined TIMESTAMP,
     name STRING,
     FAMILY f1 (id, joined, name)
 );
 
-SHOW CREATE TABLE users;
+> SHOW CREATE TABLE users;
+~~~
+~~~
 +-------+---------------------------------------------+
 | Table |                 CreateTable                 |
 +-------+---------------------------------------------+
@@ -66,20 +68,20 @@ When using the [`ALTER TABLE`](alter-table.html) statement to add a column to a 
 
 - Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data BYTES` column to the `users` table above and assign it to a new column family: 
 
-  ~~~
-  ALTER TABLE users ADD COLUMN data BYTES CREATE FAMILY f2;
+  ~~~ sql
+  > ALTER TABLE users ADD COLUMN data BYTES CREATE FAMILY f2;
   ~~~
 
 - Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `data BYTES` colum to the `users` table above and assign it to family `f1`:
 
-  ~~~
-  ALTER TABLE users ADD COLUMN data BYTES FAMILY f1;
+  ~~~ sql
+  > ALTER TABLE users ADD COLUMN data BYTES FAMILY f1;
   ~~~
 
 - Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an **existing family or, if the family doesn't exist, to a new family**. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
 
-  ~~~
-  ALTER TABLE users ADD COLUMN data BYTES CREATE IF NOT EXISTS FAMILY f1;
+  ~~~ sql
+  > ALTER TABLE users ADD COLUMN data BYTES CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
 ## Compatibility with Past Releases

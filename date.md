@@ -22,20 +22,25 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 
 ## Examples
 
-~~~
-CREATE TABLE dates (a DATE PRIMARY KEY, b INT);
+~~~ sql
+> CREATE TABLE dates (a DATE PRIMARY KEY, b INT);
 
-SHOW COLUMNS FROM dates;
+> SHOW COLUMNS FROM dates;
+~~~
+~~~
 +-------+------+-------+---------+
 | Field | Type | Null  | Default |
 +-------+------+-------+---------+
 | a     | DATE | false | NULL    |
 | b     | INT  | true  | NULL    |
 +-------+------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
 
-INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
-
-SELECT * FROM dates;
+> SELECT * FROM dates;
+~~~
+~~~
 +---------------------------------+-------+
 |                a                |   b   |
 +---------------------------------+-------+

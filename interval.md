@@ -29,25 +29,27 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 
 ## Example
 
-~~~
+~~~ sql
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
-CREATE TABLE
 
 > SHOW COLUMNS FROM intervals;
+~~~
+~~~
 +-------+----------+-------+---------+
 | Field |   Type   | Null  | Default |
 +-------+----------+-------+---------+
 | a     | INT      | false | NULL    |
 | b     | INTERVAL | true  | NULL    |
 +-------+----------+-------+---------+
-
+~~~
+~~~ sql
 > INSERT INTO intervals VALUES 
     (1, INTERVAL '1h2m3s4ms5us6ns'), 
     (2, INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'), 
     (3, INTERVAL '4:5:6')
 ;
-INSERT 3
-
+~~~
+~~~
 +---+------------------+
 | a |        b         |
 +---+------------------+

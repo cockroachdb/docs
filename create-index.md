@@ -49,8 +49,8 @@ To create the most efficient indexes, we recommend reviewing:
 
 Single-column indexes sort the values of a single column.
 
-~~~sql
-CREATE INDEX ON products (price);
+~~~ sql
+> CREATE INDEX ON products (price);
 ~~~
 
 Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
@@ -59,8 +59,8 @@ Because each query can only use one index, single-column indexes are not typical
 
 Multiple-column indexes sort columns in the order you list them.
 
-~~~sql
-CREATE INDEX ON products (price, stock);
+~~~ sql
+> CREATE INDEX ON products (price, stock);
 ~~~
 
 To create the most useful multiple-column indexes, we recommend reviewing our [best practices](indexes.html#indexing-columns).
@@ -69,22 +69,22 @@ To create the most useful multiple-column indexes, we recommend reviewing our [b
 
 Unique indexes do not allow duplicate values among their columns.
 
-~~~sql
-CREATE UNIQUE INDEX ON products (name, manufacturer_id);
+~~~ sql
+> CREATE UNIQUE INDEX ON products (name, manufacturer_id);
 ~~~
 
 This also applies the [`UNIQUE`](constraints.html#unique) constraint at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
 
-~~~sql
-ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
+~~~ sql
+> ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
 ### Store Columns
 
 Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
 
-~~~sql
-CREATE INDEX ON products (price) STORING (name);
+~~~ sql
+> CREATE INDEX ON products (price) STORING (name);
 ~~~
 
 However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
@@ -93,8 +93,8 @@ However, to use stored columns, queries must filter another column in the same i
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
-~~~sql
-CREATE INDEX ON products (price DESC, stock);
+~~~ sql
+> CREATE INDEX ON products (price DESC, stock);
 ~~~
 
 How columns are sorted impacts the order of rows returned by queries using the index, which particularly affects queries using `LIMIT`.
@@ -103,8 +103,10 @@ How columns are sorted impacts the order of rows returned by queries using the i
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
 
-~~~sql
-SHOW INDEX FROM products;
+~~~ sql
+> SHOW INDEX FROM products;
+~~~
+~~~
 +----------+--------------------+--------+-----+--------+-----------+---------+
 |  Table   |        Name        | Unique | Seq | Column | Direction | Storing |
 +----------+--------------------+--------+-----+--------+-----------+---------+
@@ -112,8 +114,9 @@ SHOW INDEX FROM products;
 | products | products_price_idx | false  |   1 | name   | N/A       | true    |
 | products | products_price_idx | false  |   2 | price  | ASC       | false   |
 +----------+--------------------+--------+-----+--------+-----------+---------+
-
-SELECT name FROM products@products_price_idx WHERE price > 10;
+~~~
+~~~ sql
+> SELECT name FROM products@products_price_idx WHERE price > 10;
 ~~~
 
 ## See Also

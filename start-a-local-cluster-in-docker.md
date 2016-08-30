@@ -46,7 +46,9 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 ## Step 2. Start your first container/node
 
 ~~~ shell
-$ docker run -d --name=roach1 --hostname=roach1 --net=roachnet -p 26257:26257 -p 8080:8080 -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
+$ docker run -d --name=roach1 --hostname=roach1 --net=roachnet -p 26257:26257 -p 8080:8080  \
+-v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
 ~~~
 
 This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
@@ -63,8 +65,13 @@ This command creates a container and starts the first CockroachDB node inside it
 ## Step 3. Start additional containers/nodes
 
 ~~~ shell
-$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P -v "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
-$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v "${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
+$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P -v \
+"${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} \
+start --insecure --join=roach1
+
+$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v  \
+"${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} \
+start --insecure --join=roach1
 ~~~
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
@@ -92,20 +99,18 @@ root@roach1:/cockroach# ./cockroach sql --insecure
 
 Then run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-~~~ shell
-root@:26257> CREATE DATABASE bank;
-CREATE DATABASE
+~~~ sql
+> CREATE DATABASE bank;
 
-root@:26257> SET DATABASE = bank;
-SET
+> SET DATABASE = bank;
 
-root@:26257> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-CREATE TABLE
+> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
 
-root@26257> INSERT INTO accounts VALUES (1234, 10000.50);
-INSERT 1
+> INSERT INTO accounts VALUES (1234, 10000.50);
 
-root@26257> SELECT * FROM accounts;
+> SELECT * FROM accounts;
+~~~
+~~~
 +------+----------+
 |  id  | balance  |
 +------+----------+
@@ -123,7 +128,10 @@ root@roach1:/cockroach# ./cockroach sql --insecure
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
-root@:26257> SHOW DATABASES;
+~~~
+~~~ sql
+> SHOW DATABASES;
+~~~
 +----------+
 | Database |
 +----------+

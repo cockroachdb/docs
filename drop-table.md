@@ -21,19 +21,21 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 To remove one or more tables from a database, use the `DROP TABLE` statement followed by a comma-separated list of table names, each in `database.table` format:
 
 ~~~ sql
-DROP TABLE db1.table1, db1.table2;
+> DROP TABLE db1.table1, db1.table2;
 ~~~
 
 To avoid an error in case one or more of the tables do not exist, you can include `IF EXISTS`:
 
 ~~~ sql
-DROP TABLE IF EXISTS db1.table1, db1.table2;
+> DROP TABLE IF EXISTS db1.table1, db1.table2;
 ~~~
 
 ## Example
 
-~~~
+~~~ sql
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+
@@ -41,11 +43,13 @@ DROP TABLE IF EXISTS db1.table1, db1.table2;
 | table2 |
 | table3 |
 +--------+
-
+~~~
+~~~ sql
 > DROP TABLE db1.table1, db1.table2;
-DROP TABLE
 
 > SHOW TABLES FROM db1;
+~~~
+~~~
 +--------+
 | Table  |
 +--------+

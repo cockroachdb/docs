@@ -24,8 +24,10 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 
 ## Example
 
-~~~sql
+~~~ sql
 > SELECT * FROM tbl;
+~~~
+~~~
 +----+
 | id |
 +----+
@@ -33,11 +35,13 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 |  2 |
 |  3 |
 +----+
-
+~~~
+~~~ sql
 > TRUNCATE tbl;
-TRUNCATE
 
 > SELECT * FROM tbl;
+~~~
+~~~
 +----+
 | id |
 +----+

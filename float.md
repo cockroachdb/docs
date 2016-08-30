@@ -31,10 +31,12 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Examples
 
-~~~
-CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
+~~~ sql
+> CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
 
-SHOW COLUMNS FROM floats;
+> SHOW COLUMNS FROM floats;
+~~~
+~~~
 +-------+-------+-------+---------+
 | Field | Type  | Null  | Default |
 +-------+-------+-------+---------+
@@ -42,10 +44,13 @@ SHOW COLUMNS FROM floats;
 | b     | FLOAT | true  | NULL    |
 | C     | FLOAT | true  | NULL    |
 +-------+-------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
 
-INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
-
-SELECT * FROM floats;
+> SELECT * FROM floats;
+~~~
+~~~ 
 +----------------+--------------------+------+
 |       a        |         b          |  c   |
 +----------------+--------------------+------+

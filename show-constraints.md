@@ -44,7 +44,7 @@ Field | Description
 
 ## Example
 
-~~~ shell
+~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
     date TIMESTAMP NOT NULL,
@@ -57,6 +57,8 @@ Field | Description
 );
 
 > SHOW CONSTRAINTS FROM orders;
+~~~
+~~~
 +--------+------------------------+-------------+---------------+--------------------------------------------------------+
 | Table  |          Name          |    Type     |   Column(s)   |                        Details                         |
 +--------+------------------------+-------------+---------------+--------------------------------------------------------+

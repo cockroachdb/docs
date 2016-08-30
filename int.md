@@ -39,10 +39,12 @@ CockroachDB does not offer multiple integer types for different widths; instead,
 
 ## Examples
 
-~~~
-CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT, c INTEGER);
+~~~ sql
+> CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT, c INTEGER);
 
-SHOW COLUMNS FROM ints;
+> SHOW COLUMNS FROM ints;
+~~~
+~~~
 +-------+------+-------+---------+
 | Field | Type | Null  | Default |
 +-------+------+-------+---------+
@@ -50,10 +52,13 @@ SHOW COLUMNS FROM ints;
 | b     | INT  | true  | NULL    |
 | c     | INT  | true  | NULL    |
 +-------+------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO ints VALUES (11111, 22222, 33333);
 
-INSERT INTO ints VALUES (11111, 22222, 33333);
-
-SELECT * FROM ints;
+> SELECT * FROM ints;
+~~~
+~~~
 +-------+-------+-------+
 |   a   |   b   |   c   |
 +-------+-------+-------+

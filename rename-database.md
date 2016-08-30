@@ -26,8 +26,10 @@ Parameter | Description
 
 ### Rename a Database
 
-~~~
+~~~ sql
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+
@@ -35,11 +37,17 @@ Parameter | Description
 | db2      |
 | system   |
 +----------+
-
+~~~
+~~~ sql
 > ALTER DATABASE db1 RENAME TO db3;
+~~~
+~~~
 RENAME DATABASE
-
+~~~
+~~~ sql
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+
@@ -51,8 +59,10 @@ RENAME DATABASE
 
 ### Rename Fails (New Name Already In Use)
 
-~~~
+~~~ sql
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+
@@ -60,8 +70,11 @@ RENAME DATABASE
 | db3      |
 | system   |
 +----------+
-
+~~~
+~~~ sql
 > ALTER DATABASE db2 RENAME TO db3;
+~~~
+~~~
 pq: the new database name "db3" already exists
 ~~~
 

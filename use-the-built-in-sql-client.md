@@ -85,14 +85,14 @@ $ cockroach sql --url=postgresql://maxroach@roachnode1.com:26257/critterdb?sslmo
 
 This example assume that we have already started the SQL shell (see examples above).
 
-~~~ shell
+~~~ sql
 > CREATE TABLE animals (id SERIAL PRIMARY KEY, name STRING);
-CREATE TABLE
 
 > INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
-INSERT 3
 
 > SELECT * FROM animals;
+~~~
+~~~
 +--------------------+----------+
 |         id         |   name   |
 +--------------------+----------+
@@ -174,18 +174,21 @@ INSERT 2
 
 In this example, we use `\!` to look at the rows in a csv file before creating a table and then using `\|` to insert those rows into the table.
 
-~~~ shell
+~~~ sql
 > \! cat test.csv
+~~~
+~~~
 12, 13, 14
 10, 20, 30
-
+~~~
+~~~ sql
 > CREATE TABLE csv (x INT, y INT, z INT);
-CREATE TABLE
 
 > \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
-INSERT 1
 
 > SELECT * FROM csv;
+~~~
+~~~
 +----+----+----+
 | x  | y  | z  |
 +----+----+----+
@@ -196,14 +199,14 @@ INSERT 1
 
 In this example, we create a table and then use `\|` to programmatically insert values.
 
-~~~ shell
+~~~ sql
 > CREATE TABLE for_loop (x INT);
-CREATE TABLE
 
 > \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
-INSERT 1
 
 > SELECT * FROM for_loop;
+~~~
+~~~
 +---+
 | x |
 +---+

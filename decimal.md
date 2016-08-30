@@ -38,10 +38,12 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 
 ## Examples
 
-~~~
-create table decimals (a DECIMAL PRIMARY KEY, b DECIMAL(10,5), c NUMERIC);
+~~~ sql
+> CREATE TABLE decimals (a DECIMAL PRIMARY KEY, b DECIMAL(10,5), c NUMERIC);
 
-SHOW COLUMNS FROM decimals;
+> SHOW COLUMNS FROM decimals;
+~~~
+~~~
 +-------+---------------+-------+---------+
 | Field |     Type      | Null  | Default |
 +-------+---------------+-------+---------+
@@ -49,10 +51,13 @@ SHOW COLUMNS FROM decimals;
 | b     | DECIMAL(10,5) | true  | NULL    |
 | c     | DECIMAL       | true  | NULL    |
 +-------+---------------+-------+---------+
+~~~
+~~~ sql
+> INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, CAST(1.01234567890123456789 AS DECIMAL));
 
-INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, CAST(1.01234567890123456789 AS DECIMAL));
-
-SELECT * FROM decimals;
+> SELECT * FROM decimals;
+~~~
+~~~
 +------------------------+---------+--------------------+
 |           a            |    b    |         c          |
 +------------------------+---------+--------------------+

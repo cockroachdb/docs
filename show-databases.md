@@ -19,8 +19,10 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 
 ## Example
 
-~~~
+~~~ sql
 > SHOW DATABASES;
+~~~
+~~~
 +----------+
 | Database |
 +----------+

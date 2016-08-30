@@ -66,21 +66,24 @@ This command is the same as before, but now uses the additional `--ca-cert`, `--
 
 ## Step 5.  Run more [CockroachDB SQL statements](learn-cockroachdb-sql.html)
 
-~~~ shell
-root@:26257> SET DATABASE = bank;
-SET DATABASE
+~~~ sql
+> SET DATABASE = bank;
 
-root@26257> SELECT * FROM accounts;
+> SELECT * FROM accounts;
+~~~
+~~~
 +------+----------+
 |  id  | balance  |
 +------+----------+
 | 1234 | 10000.50 |
 +------+----------+
+~~~
+~~~ sql
+> INSERT INTO accounts VALUES (5678, 250.75);
 
-root@26257> INSERT INTO accounts VALUES (5678, 250.75);
-INSERT 1
-
-root@26257> SELECT * FROM accounts;
+> SELECT * FROM accounts;
+~~~
+~~~
 +------+----------+
 |  id  | balance  |
 +------+----------+
