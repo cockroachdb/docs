@@ -132,6 +132,7 @@ root@roach1:/cockroach# ./cockroach sql --insecure
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+~~~
 +----------+
 | Database |
 +----------+
