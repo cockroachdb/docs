@@ -41,20 +41,43 @@ constraints: [comma-separated constraint list]
 Field | Description
 ------|------------
 `range_min_bytes` | Not yet implemented.
-`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range surpasses this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
+`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `86400` (24 hours)
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3` 
-`constraints` | A comma-separated list of attributes from nodes and/or stores where replicas should be located.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node
+`constraints` | A comma-separated list of positive, required, and/or prohibited constraints influencing the location of replicas. See [Replica Constraints](#replication-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique rack, if possible.
+
+### Replication Constraints
+
+The location of replicas is based on the interplay between descriptive attributes assigned to nodes when they are started and constraints set in zone configurations. 
+
+{{site.data.alerts.callout_success}}For demonstrations of how to set node attributes and replication constraints in different scenarios, see <a href="#scenario-based-examples">Scenario-based Examples</a> below.{{site.data.alerts.end}}
+
+#### Descriptive Attributes Assigned to Nodes
+
+When starting a node with the [`cockroach start`](start-a-node.html) command, you can assign the following types of descriptive attributes:
+
+Attribute Type | Description
+---------------|------------
+**Node Locality** | Using the `--locality` flag, you can assign arbitrary key-value pairs that describe the locality of the node. Locality might include cloud provider, country, region, datacenter, rack, etc.<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. The keys themselves and the order of key-value pairs must be the same on all nodes, for example:<br><br>`--locality=cloud=gce,country=us,region=east,datacenter=us-east-1,rack=10`<br>`--locality=cloud=aws,country=us,region=west,datacenter=us-west-1,rack=12`
+**Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=gpu:x16c`
+**Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
+
+#### Constraints in Replication Zones
+
+The node- and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance: 
+
+- When locality is the only consideration for replication, it's recommended to set locality on nodes without specifying any constraints in zone configurations. In the absence of constraints, CockroachDB attempts to spread replicas evenly across the cluster based on locality.
+- When additional or different constraints are needed, positive constraints are generally sufficient. Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country.
+
+Constraint Type | Description | Syntax
+----------------|-------------|-------
+**Positive** | Replicas will be placed on nodes/stores with as many matching attributes as possible. When there are no matching nodes/stores with capacity, replicas will be added wherever there is capacity.<br><br>For example, `constraints: [ssd, datacenter=us-west-1a]` would cause replicas to be located on different `ssd` drives in the `us-west-1a` datacenter. When there's not sufficient capacity for a new replica on an `ssd` drive in the datacenter, the replica would get added on an available `ssd` drive elsewhere. When there's not sufficient capacity for a new replica on any `ssd` drive, the replica would get added on any other drive with capacity. | `[ssd]`
+**Required** | Replicas **must** be placed on nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added.<br><br>For example, `constraints: [+datacenter=us-west-1a]` would force replicas to be located on different racks in the `us-west-1a` datacenter. When there's not sufficient capacity for a new replica on a unique rack in the datacenter, the replica would get added on a rack already storing a replica. When there's not sufficient capacity for a new replica on any rack in the datacenter, the replica would not get added. | `[+ssd]`
+**Prohibited** | Replicas **must not** be placed on nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added.<br><br>For example, `constraints: [-mem, -us-west-1a]` would force replicas to be located on-disk on different racks outside the `us-west-1a` datacenter. When there's not sufficient on-disk capacity on a unique rack outside the datacenter, the replica would get added on a rack already storing a replica. When there's sufficient capacity for a new replica only in the `us-west-1a` datacenter, the replica would not get added. | `[-ssd]`
 
 ### Node/Replica Recommendations
 
-When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore: 
-
-- When running a cluster with more than one node, you should run at least three to ensure that a majority of replicas (2/3) remains available when a node goes down. 
-
-- Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a quorum (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
-
-- When replicating across datacenters, you should use datacenters on a single continent to ensure peformance (cross-continent scenarios will be better supported in the future). If the average network round-trip latency between your datacenters is greater than 200ms, you should adjust the [`raft-tick-interval`](start-a-node.html#flags) flag on each node. 
+See [Cluster Topography](recommended-production-settings.html#cluster-topology) recommendations for production deployments.
  
 ## Subcommands
 
@@ -121,12 +144,9 @@ Flag | Description
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>`<br><br>**Env Variable:** `COCKROACH_URL` 
 `--user`<br>`-u` | The user connecting to the database. Currently, only the `root` user can configure replication zones. <br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
-## Examples
+## Basic Examples
 
-- [View the Default Replication Zone](#view-the-default-replication-zone)
-- [Edit the Default Replication Zone](#edit-the-default-replication-zone)
-- [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database)
-- [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table)
+These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based Examples](#scenario-based-examples). 
 
 ###  View the Default Replication Zone
 
@@ -150,131 +170,202 @@ constraints: []
 
 ### Edit the Default Replication Zone
 
-Let's say you want to run a three-node cluster across three datacenters, two on the US east coast and one on the US west coast. You want data replicated three times by default, with each replica stored on a specific node in a specific datacenter. 
+To edit the default replication zone, create a YAML file with changes, and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
 
-1. Start each node with the relevant datacenter location specified in the `--attrs` field: 
+~~~ shell
+$ cat default_update.yaml
+~~~
 
-   ~~~ shell
-   # Start node in first US east coast datacenter:
-   $ cockroach start --host=node1-hostname --attrs=us-east-1a
+~~~
+num_replicas: 5
+~~~
 
-   # Start node in second US east coast datacenter:
-   $ cockroach start --host=node2-hostname --attrs=us-east-1b --join=node1-hostname:27257
+~~~ shell
+$ cockroach zone set .default -f default_update.yaml
+~~~
 
-   # Start node in US west coast datacenter:
-   $ cockroach start --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
-   ~~~
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+num_replicas: 5
+constraints: []
+~~~
 
-2. Create a YAML file with the node attributes listed as constraints:
+Alternately, you can pass the YAML content via the standard input:
 
-   ~~~ shell
-   $ cat default_update.yaml
-   ~~~
-
-   ~~~
-   constraints: [us-west-1a, us-east-1b, us-west-1a]
-   ~~~
-
-3. Use the file to update the default zone configuration:
- 
-   ~~~ shell
-   $ cockroach zone set .default -f default_update.yaml
-   ~~~
-
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
-     ttlseconds: 86400
-   num_replicas: 3
-   constraints: [us-west-1a, us-east-1b, us-west-1a]
-   ~~~
-
-   Alternately, you can pass the YAML content via the standard input:
-
-   ~~~ shell
-   $ echo 'constraints: [us-west-1a, us-east-1b, us-west-1a]' | cockroach zone set .default -f -
-   ~~~
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .default -f -
+~~~
 
 ### Create a Replication Zone for a Database
 
-Let's say you want to run a cluster across five nodes, three of which have ssd storage devices. You want data in the `bank` database replicated to these ssd devices. 
+To control replication for a specific database, create a YAML file with changes, and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags: 
 
-1. When starting the three nodes that have ssd storage, specify `ssd` as an attribute of the stores, and when starting the other two nodes, leave the attribute out:
+~~~ shell
+$ cat database_zone.yaml
+~~~
 
-   ~~~ shell
-   # Start nodes with ssd storage:
-   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attrs=ssd
-   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attrs=ssd --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attrs=ssd --join=node1-hostname:27257
+~~~
+num_replicas: 7
+~~~
 
-   # Start nodes without ssd storage:
-   $ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
-   ~~~
+~~~ shell
+$ cockroach zone set db1 -f database_zone.yaml
+~~~
 
-2. Create a YAML file with the `ssd` attribute listed as a constraint:
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+num_replicas: 5
+constraints: []
+~~~
 
-   ~~~ shell
-   $ cat bank_zone.yaml
-   ~~~
+Alternately, you can pass the YAML content via the standard input:
 
-   ~~~
-   constraints: [ssd]
-   ~~~
-
-3. Use the file to update the zone configuration for the `bank` database:
-
-   ~~~ shell
-   $ cockroach zone set bank -f bank_zone.yaml
-   ~~~
-
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
-     ttlseconds: 86400
-   num_replicas: 3
-   constraints: [ssd]
-   ~~~
-
-   Alternately, you can pass the YAML content via the standard input:
-
-   ~~~ shell
-   $ echo 'constraints: [ssd]' | cockroach zone set bank -f -
-   ~~~
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set db1 -f -
+~~~
 
 ### Create a Replication Zone for a Table
 
-Let's say you want to run a cluster across five nodes, three of which have ssd storage devices. You want data in the `bank.accounts` table replicated to these ssd devices. 
+To control replication for a specific table, create a YAML file with changes, and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags: 
 
-1. When starting the three nodes that have ssd storage, specify `ssd` as an attribute of the stores, and when starting the other two nodes, leave the attribute out: 
+~~~ shell
+$ cat table_zone.yaml
+~~~
+
+~~~
+num_replicas: 7
+~~~
+
+~~~ shell
+$ cockroach zone set db1.t1 -f table_zone.yaml
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+num_replicas: 7
+constraints: []
+~~~
+
+Alternately, you can pass the YAML content via the standard input:
+
+~~~ shell
+$ echo 'num_replicas: 7' | cockroach zone set db1.t1 -f -
+~~~
+ 
+## Scenario-based Examples
+
+### Even Replication Across Datacenters
+
+**Scenario:** 
+- You have a 6 nodes across 3 datacenters, 2 nodes in each datacenter. 
+- You want data replicated 3 times, with replicas balanced evenly across all three datacenters. 
+
+**Approach:** 
+
+Start each node with its datacenter location specified in the `--locality` flag: 
+
+~~~ shell
+# Start the two nodes in datacenter 1:
+$ cockroach start --host=<node1 hostname> --locality=datacenter=us-1 \
+--insecure 
+$ cockroach start --host=<node2 hostname> --locality=datacenter=us-1 \
+--join=<node1 hostname>:27257 --insecure
+
+# Start the two nodes in datacenter 2:
+$ cockroach start --host=<node3 hostname> --locality=datacenter=us-2 \
+--join=<node1 hostname>:27257 --insecure
+$ cockroach start --host=<node4 hostname> --locality=datacenter=us-2 \
+--join=<node1 hostname>:27257 --insecure
+
+# Start the two nodes in datacenter 3:
+$ cockroach start --host=<node5 hostname> --locality=datacenter=us-3 \
+--join=<node1 hostname>:27257 --insecure
+$ cockroach start --host=<node6 hostname> --locality=datacenter=us-3 \
+--join=<node1 hostname>:27257 --insecure
+~~~
+
+There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
+
+### Multiple Applications Writing to Different Databases
+
+**Scenario:** 
+- You have 2 independent applications connected to the same CockroachDB cluster, each application using a distinct database. 
+- You have 6 nodes across 2 datacenters, 3 nodes in each datacenter.  
+- You want the data for application 1 to be replicated 5 times, with replicas evenly balanced across both datacenters.
+- You want the data for application 2 to be replicated 3 times, with all replicas in a single datacenter.  
+
+**Aproach:**
+
+1. Start each node with its datacenter location specified in the `--locality` flag: 
 
    ~~~ shell
-   # Start nodes with ssd storage:
-   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attrs=ssd
-   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attrs=ssd --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attrs=ssd --join=node1-hostname:27257
+   # Start the three nodes in datacenter 1:
+   $ cockroach start --host=<node1 hostname> --locality=datacenter=us-1 \
+   --insecure
+   $ cockroach start --host=<node2 hostname> --locality=datacenter=us-1 \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node3 hostname> --locality=datacenter=us-1 \
+   --join=<node1 hostname>:27257 --insecure
 
-   # Start nodes without ssd storage:
-   $ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
+   # Start the three nodes in datacenter 2:
+   $ cockroach start --host=<node4 hostname> --locality=datacenter=us-2 \
+   --join=<node1 hostname>:27257 --insecure
+  $ cockroach start --host=<node5 hostname> --locality=datacenter=us-2 \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node6 hostname> --locality=datacenter=us-2 \
+   --join=<node1 hostname>:27257 --insecure
    ~~~
 
-2. Create a YAML file with the `ssd` attribute listed as a constraint:
+2. Configure a replication zone for the database used by application 1:
 
    ~~~ shell
-   $ cat accounts_zone.yaml
+   # Create a YAML file with the replica count set to 5:
+   $ cat app1_zone.yaml
    ~~~
 
    ~~~
-   constraints: [ssd]
+   num_replicas: 5
    ~~~
-
-3. Use the file to update the zone configuration for the `bank` database:
 
    ~~~ shell
-   $ cockroach zone set bank.accounts -f accounts_zone.yaml
+   # Apply the replication zone to the database used by application 1:
+   $ cockroach zone set app1_db -f app1_zone.yaml
+   ~~~
+
+   ~~~
+   range_min_bytes: 1048576
+   range_max_bytes: 67108864
+   gc:
+     ttlseconds: 86400
+   num_replicas: 5
+   constraints: []
+   ~~~
+
+   Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
+
+3. Configure a replication zone for the database used by application 2:
+
+   ~~~ shell
+   # Create a YAML file with 1 datacenter as a required constraint:
+   $ cat app2_zone.yaml
+   ~~~
+
+   ~~~
+   constraints: [+datacenter=us-2]
+   ~~~
+
+   ~~~ shell
+   # Apply the replication zone to the database used by application 2:
+   $ cockroach zone set app2_db -f app2_zone.yaml
    ~~~
 
    ~~~
@@ -283,14 +374,70 @@ Let's say you want to run a cluster across five nodes, three of which have ssd s
    gc:
      ttlseconds: 86400
    num_replicas: 3
+   constraints: [+datacenter=us-2]
+   ~~~
+
+   The required constraint will force application 2's data to be replicated only within the `us-2` datacenter. 
+
+### Stricter Replication for a Specific Table
+
+**Scenario:** 
+- You have a 7 nodes, 5 with SSD drives and 2 with HDD drives. 
+- You want data replicated 3 times by default.
+- Speed and availability are important for a specific table that is queried very frequently, however, so you want the data in that table to be replicated 5 times, preferrably on nodes with SSD drives. 
+
+**Aproach:**
+
+1. Start each node with `ssd` or `hdd` specified as store attributes:
+
+   ~~~ shell
+   # Start the 5 nodes with SSD storage:
+   $ cockroach start --host=<node1 hostname> --store=path=node1,attrs=ssd \
+   --insecure
+   $ cockroach start --host=<node2 hostname> --store=path=node2,attrs=ssd \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node3 hostname> --store=path=node3,attrs=ssd \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node4 hostname> --store=path=node4,attrs=ssd \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node5 hostname> --store=path=node5,attrs=ssd \
+   --join=<node1 hostname>:27257 --insecure
+
+   # Start the 2 nodes with HDD storage:
+   $ cockroach start --host=<node6 hostname> --store=path=node6,attrs=hdd \
+   --join=<node1 hostname>:27257 --insecure
+   $ cockroach start --host=<node7 hostname> --store=path=node2,attrs=hdd \
+   --join=<node1 hostname>:27257 --insecure
+   ~~~
+
+2. Configure a replication zone for the table that must be replicated more strictly:
+
+   ~~~ shell
+   # Create a YAML file with the replica count set to 5 
+   # and the ssd attribute as a positive constraint:
+   $ cat table_zone.yaml
+   ~~~
+
+   ~~~
+   num_replicas: 5
    constraints: [ssd]
    ~~~
 
-   Alternately, you can pass the YAML content via the standard input:
-
    ~~~ shell
-   $ echo 'constraints: [ssd]' | cockroach zone set bank.accounts -f -
+   # Apply the replication zone to the table:
+   $ cockroach zone set db.important_tablee -f table_zone.yaml
    ~~~
+
+   ~~~
+   range_min_bytes: 1048576
+   range_max_bytes: 67108864
+   gc:
+     ttlseconds: 86400
+   num_replicas: 5
+   constraints: [ssd]
+   ~~~
+
+   Data in the table will be replicated 5 times, and the positive constraint will place data in the table on nodes with `ssd` drives whenever possible. 
 
 ## See Also
 
