@@ -26,11 +26,7 @@ Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
-PostgreSQL wire protocol. To create a timestamp with nanoseconds, use the
-`parse_timestamp_ns(string)` [function](functions-and-operators.html),
-which creates a timestamp with nanoseconds from a string. To create a string
-with nanosecond precision, use `format_timestamp_ns(ts)`. The `extract`
-function supports nanoseconds as well: `extract(nanosecond from ts)`.
+PostgreSQL wire protocol. 
 
 ## Size
 
