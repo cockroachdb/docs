@@ -7,5 +7,6 @@ These features and changes are available only when you <a href="install-cockroac
 
 Feature | Merge Date
 --------|-----------
+`INT8` is treated as an alias for the [`INT`](int.html) data type. | [8/29/16](https://github.com/cockroachdb/cockroach/pull/8858) 
 [`TIMESTAMP`](timestamp.html) values can no longer be created with nanoseconds. | [8/29/16](https://github.com/cockroachdb/cockroach/pull/8864) 
 [`INTERVAL`](interval.html) columns accept the SQL Standard format. | [8/18/16](https://github.com/cockroachdb/cockroach/pull/8657)

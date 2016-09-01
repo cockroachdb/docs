@@ -15,7 +15,8 @@ The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, w
 In CockroachDB, the following are aliases for `INT`: 
 
 - `SMALLINT` 
-- `INTEGER` 
+- `INTEGER`
+- `INT8` (This alias is available only when you [build a CockroachDB binary](install-cockroachdb.html) from the code on our `develop` branch. For a list of other features available only when building from source, see [Features on the Develop Branch](develop-branch.html).) 
 - `INT64` 
 - `BIGINT`
 
