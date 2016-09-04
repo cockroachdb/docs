@@ -129,7 +129,7 @@ $ cockroach cert create-node <node3-hostname> <node3-other-hostname> <node3-yet-
 # Create a certificate and key for each client user, including root. 
 $ cockroach cert create-client root --ca-cert=ca.cert --ca-key=ca.key --cert=root.cert --key=root.key
 $ cockroach cert create-client <username1> --ca-cert=ca.cert --ca-key=ca.key --cert=username1.cert --key=username1.key
-$ cockroach cert create-client <username2> --ca-cert=ca.cert --ca-key=ca.key --cert=username2.cert --key=usename2.key
+$ cockroach cert create-client <username2> --ca-cert=ca.cert --ca-key=ca.key --cert=username2.cert --key=username2.key
 ~~~
 
 Store the CA key somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
