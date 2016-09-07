@@ -249,6 +249,8 @@ func main() {
 					match:  []*regexp.Regexp{regexp.MustCompile("'INSERT'")},
 				},
 				{name: "iso_level"},
+				{name: "interleave", stmt: "create_table_stmt", inline: []string{"opt_interleave"}, replace: map[string]string{"any_name": "table_name", "opt_table_elem_list" : "table_definition", "name_list" : "interleave_prefix", " name" : " parent_table"}, unlink: []string{"table_name", "table_definition", "parent_table", "child_columns"}},
+				{name: "opt_interleave", replace: map[string]string{"name_list": "interleave_prefix"}, unlink: []string{"interleave_prefix"}},
 				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
 				{name: "rename_column", stmt: "rename_stmt", inline: []string{"opt_column"}, match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' ('COLUMN'|name)")}, replace: map[string]string{"relation_expr": "table_name", "name 'TO'": "current_name 'TO'"}, unlink: []string{"table_name", "current_name"}},
 				{name: "rename_database", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'DATABASE'")}},
