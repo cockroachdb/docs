@@ -86,7 +86,7 @@ Parameter | Description
 
 ### Create a Table (No Primary Key Defined)
 
-In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_row(id)` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
+In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
