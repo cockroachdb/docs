@@ -1,16 +1,12 @@
-<!-- "Was this page helpful?" question with "Yes" and "No" buttons. Yes submits directly to hubspot via the forms api. No triggers a popup with an embedded hubspot form. -->
+<!-- "Was this page helpful?" question with "Yes" and "No" buttons. Yes and No trigger popups with different embedded hubspot forms. -->
 
 <div id="feedback-prompt">
   <p class="feedback-question">Was this page helpful?</p>
-  <form action='https://forms.hubspot.com/uploads/form/v2/1753393/6739d0dd-8ecb-40a6-a814-d6f84b05a6ee' method="post" target="hiddenFrame">
-    <input name="helpful" value="yes" type="hidden">
-    <input name="hs_context" value='{"pageUrl":"{{page.url}}", "pageTitle":"{{page.title}}"}' type="hidden">
-    <button class="yes-button">Yes</button>
-  </form>
-  <a href="#feedback-popup" class="no-button">No</a>
+  <a href="#feedback-popup-yes" class="yes-button">Yes</a>
+  <a href="#feedback-popup-no" class="no-button">No</a>
 </div>
 
-<div id="feedback-popup" class="white-popup mfp-hide">
+<div id="feedback-popup-yes" class="white-popup mfp-hide">
   <!--[if lte IE 8]>
   <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
   <![endif]-->
@@ -19,12 +15,24 @@
     hbspt.forms.create({ 
       css: '',
       portalId: '1753393',
-      formId: '6739d0dd-8ecb-40a6-a814-d6f84b05a6ee'
+      formId: '9f9673c8-f4f9-45d1-afa5-0927fb48bb87'
     });
   </script>
 </div>
 
-<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+<div id="feedback-popup-no" class="white-popup mfp-hide">
+  <!--[if lte IE 8]>
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+  <![endif]-->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+  <script>
+    hbspt.forms.create({ 
+      css: '',
+      portalId: '1753393',
+      formId: '90745362-7730-4dfd-83ff-dd64dc02a7ae'
+    });
+  </script>
+</div>
 
 <script>
   $(document).ready(function() {
@@ -33,20 +41,10 @@
       type:'inline',
       midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
     });
-
-    // Get hubspot cookie to send with Yes submissions.
-    // This code comes from: https://stackoverflow.com/questions/10730362/get-cookie-by-name
-    function getCookie(name) {
-      var value = "; " + document.cookie;
-      var parts = value.split("; " + name + "=");
-      if (parts.length == 2) return parts.pop().split(";").shift();
-    }
-
-    // Add form values for Yes submissions.
-    $("input[name=hs_context]").val(JSON.stringify({
-      "pageUrl":"{{page.url}}",
-      "pageTitle":"{{page.title}}",
-      "hutk": getCookie("hubspotutk")
-    }))
+    // Open popup for Yes submissions.
+    $('.yes-button').magnificPopup({
+      type:'inline',
+      midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+    });
   });
 </script>
