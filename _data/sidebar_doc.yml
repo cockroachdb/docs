@@ -179,6 +179,9 @@ entries:
                 - title: Indexes
                   url: /indexes.html
 
+                - title: Interleave Tables
+                  url: /interleave-in-parent.html
+
                 - title: <code>NULL</code> Handling
                   url: /null-handling.html
 

@@ -9,5 +9,6 @@ Click a topic for details.
 - [Keywords & Identifiers](keywords-and-identifiers.html)
 - [Constraints](constraints.html)
 - [Column Families](column-families.html)
-- [Indexes](indexes.html)  
+- [Indexes](indexes.html)
+- [Interleave Tables](interleave-in-parent.html)
 - [NULL Handling](null-handling.html)
