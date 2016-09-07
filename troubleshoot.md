@@ -4,9 +4,57 @@ summary: Troubleshooting issues with CockroachDB.
 toc: true
 ---
 
+## General Troubleshooting
+
+When you run into a problem, the best place to start is having CockroachDB logging its output to standard error (instead of log files in the storage directory):
+
+```shell
+$ cockroach start <flags> --logtostderr
+```
+
+You can also have the errors logged in addition to outputting to standard error:
+
+```shell
+$ cockroach start <flags> --logtostderr 2>&1 | tee error.log 
+```
+
+## Starting Clusters & Nodes
+
+### Node Won't Join Cluster
+
+**Description**: You specified the `--join` flag, but receive one of the following messages:
+
+~~~
+not connected to cluster; use --join to specify a connected node
+~~~
+~~~
+node 1 belongs to cluster {"cluster hash"} but is attempting to connect to a gossip network for cluster {"another cluster hash"}
+~~~
+
+**Solution**: Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:  
+
+- 	Choose a different directory to store the CockroachDB data:
+
+	~~~ shell
+	# Store this node's data in <new directory>
+	$ cockroach start <flags> --store=<new directory> --join=<cluster host>:26257
+	~~~
+
+- 	Remove the existing directory and start a node joining the cluster again.
+
+	~~~ shell
+	# Remove the directory
+	$ rm -r cockroach-data/
+
+	# Start a node joining the cluster
+	$ cockroach start <flags> --join=<cluster host>:26257
+	~~~
+
+**Explanation**: When you start a node, the directory you choose to store the data in also identifies the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit `cockroach`, and then try to start a "new" node to a different cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join.
+
 ## Replication
 
-### Replicas failing on a single-node cluster
+### Replicas Failing on a Single-Node Cluster
 
 When running a single-node CockroachDB cluster for testing, an error about replicas failing will eventually show up in the node's log files, for example:
 
@@ -17,15 +65,26 @@ E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing wit
 This error occurs because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by updating your default zone configuration to expect only one node as follows:
 
 ~~~ shell
-$ cockroach zone set .default 'replicas: [attrs: []]'
+$ echo 'replicas: [attrs: []]' | cockroach zone set .default -f -
 ~~~
 
 See [Configure Replication Zones](configure-replication-zones.html) for more details.
 
-### Replicas failing on a multi-node cluster
+### Replicas Failing on a Multi-Node Cluster
 
 When running a multi-node CockroachDB cluster, if you see an error like the one above about replicas failing, some nodes might not be able to talk to each other. Here are some recommended actions:
 
 1. Check to make sure that every node but the first was started with the `--join` flag set to the hostname and port of the first node. If the flag was not set correctly for a node, shut down the node and restart it with the `--join` flag set correctly. See [Stop a Node](stop-a-node.html) and [Start a Node](start-a-node.html) for more details. 
 
-2. If all `--join` flags were set correctly, look in the logs of each node for messages like “connection refused". If you see such messages, check your network or firewall configuration.
+2. If all `--join` flags were set correctly, look at the error logs for each node to determine what to do:
+	- `connection refused`: Check your network or firewall configuration.
+	- `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
+
+## Something Else? 
+
+If we don't have an solution here, you can try:
+
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
+- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
+- **Send Us Feedback**: In the **Was this page helpful?** section below, click **No**, and then send us details about your issue.
+
