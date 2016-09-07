@@ -33,12 +33,11 @@ The different types of constraints are:
 A NOT NULL constraint is specified using `NOT NULL` at the column level. It requires that the column's value is mandatory and must contain a value that is not *NULL*. You can also explicitly just say `NULL` which means the column's value is optional and the column may contain a *NULL* value. If nothing is specified, the default is `NULL`.
 
 ~~~ sql
-> CREATE TABLE customers
-(
-  customer_id INT         PRIMARY KEY,
-  cust_name   STRING(30)  NULL,
-  cust_email  STRING(100) NOT NULL
-);
+> CREATE TABLE customers (
+    customer_id INT         PRIMARY KEY,
+    cust_name   STRING(30)  NULL,
+    cust_email  STRING(100) NOT NULL
+  );
 
 > INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
 ~~~
@@ -59,26 +58,24 @@ The Primary Key for a table can only be specified in the [`CREATE TABLE`](create
 A Primary Key constraint can be specified at the column level if it has only one column.
 
 ~~~ sql
-> CREATE TABLE orders
-(
-  order_id        INT PRIMARY KEY NOT NULL,
-  order_date      TIMESTAMP NOT NULL,
-  order_mode      STRING(8),
-  customer_id     INT,
-  order_status    INT
- );
+> CREATE TABLE orders (
+    order_id        INT PRIMARY KEY NOT NULL,
+    order_date      TIMESTAMP NOT NULL,
+    order_mode      STRING(8),
+    customer_id     INT,
+    order_status    INT
+  );
 ~~~
 
 It needs to be specified at the table level if it has more than one column.
 
 ~~~ sql
-> CREATE TABLE inventories
-(
-  product_id        INT NOT NULL,
-  warehouse_id      INT NOT NULL,
-  quantity_on_hand  INT NOT NULL,
-  PRIMARY KEY (product_id, warehouse_id)
-);
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
 ~~~
 
 ### Unique
@@ -88,36 +85,33 @@ A Unique constraint is specified using `UNIQUE` at either the column or table le
 A Unique constraint can be specified at the column level if it has only one column.
 
 ~~~ sql
-> CREATE TABLE warehouses
-(
-  warehouse_id    INT        PRIMARY KEY NOT NULL,
-  warehouse_name  STRING(35) UNIQUE,
-  location_id     INT
-);
+> CREATE TABLE warehouses (
+    warehouse_id    INT        PRIMARY KEY NOT NULL,
+    warehouse_name  STRING(35) UNIQUE,
+    location_id     INT
+  );
 ~~~
 
 It needs to be specified at the table level if it has more than one column.
 
 ~~~ sql
-> CREATE TABLE logon
-(
-  login_id	INT PRIMARY KEY, 
-  customer_id   INT,
-  logon_date    TIMESTAMP,
-  UNIQUE (customer_id, logon_date)
-);
+> CREATE TABLE logon (
+    login_id	INT PRIMARY KEY, 
+    customer_id   INT,
+    logon_date    TIMESTAMP,
+    UNIQUE (customer_id, logon_date)
+  );
 ~~~
 
 Be aware that if a table has a `UNIQUE` constraint on column(s) that are optional (nullable), it is still possible to insert duplicate rows that appear to violate the constraint if they contain a *NULL* value in at least one of the columns. This is because *NULL*s are never considered equal and hence don't violate the uniqueness constraint.
 
 ~~~ sql
-> CREATE TABLE logon
-(
-  login_id INT PRIMARY KEY, 
-  customer_id   INT NOT NULL,
-  sales_id INT,
-  UNIQUE (customer_id, sales_id)
-);
+> CREATE TABLE logon (
+    login_id INT PRIMARY KEY, 
+    customer_id   INT NOT NULL,
+    sales_id INT,
+    UNIQUE (customer_id, sales_id)
+  );
 
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, NULL);
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (2, 2, NULL);
@@ -151,26 +145,24 @@ warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
 Check constraints that refer to multiple columns should be specified at the table level. 
 
 ~~~ sql
-> CREATE TABLE inventories
-(
-  product_id        INT NOT NULL,
-  warehouse_id      INT NOT NULL,
-  quantity_on_hand  INT NOT NULL,
-  PRIMARY KEY (product_id, warehouse_id),
-  CONSTRAINT ok_to_supply CHECK (quantity_on_hand > 0 AND warehouse_id BETWEEN 100 AND 200)
-);
+> CREATE TABLE inventories(
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id),
+    CONSTRAINT ok_to_supply CHECK (quantity_on_hand > 0 AND warehouse_id BETWEEN 100 AND 200)
+  );
 ~~~
 
 Check constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column level Check constrints are converted to table level constraints so they can be handled in a consistent fashion.
 
 ~~~ sql
-> CREATE TABLE inventories
-(
-  product_id        INT NOT NULL,
-  warehouse_id      INT NOT NULL,
-  quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
-  PRIMARY KEY (product_id, warehouse_id)
-);
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
+    PRIMARY KEY (product_id, warehouse_id)
+  );
 
 > INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, -20);
 ~~~
@@ -185,13 +177,12 @@ The Datatype of the DEFAULT value or expression should be the same as the Dataty
 The DEFAULT constraint only applies on insert if the column is not specified in the INSERT statement. You can still insert a *NULL* into an optional (nullable) column by explicitly stating the column and the *NULL* value.
 
 ~~~ sql
-> CREATE TABLE inventories
-(
-  product_id        INT NOT NULL,
-  warehouse_id      INT NOT NULL,
-  quantity_on_hand  INT DEFAULT 100,
-  PRIMARY KEY (product_id, warehouse_id)
-);
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT DEFAULT 100,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
 
 > INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
 
@@ -219,16 +210,19 @@ For example, if you create a foreign key on `orders.customer` that references `c
 - Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
 - Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ present in `orders.customer` can be.
 
+{{site.data.alerts.callout_success}}If you plan to use Foreign Keys in your schema, consider using <a href="interleave-in-parent.html">interleaved tables</a>, which can dramatically improve statement's performance.{{site.data.alerts.end}}
+
+
 #### Rules for Creating Foreign Keys
 
-__Foreign Key Columns__
+**Foreign Key Columns**
 
 - Only new tables created via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys) can use foreign keys. In a future release, we plan to add support for existing tables through `ALTER TABLE`.
 - You must [index](indexes.html) foreign key columns in the [`CREATE TABLE`](create-table.html) statement. You can do this explicitly using [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) or implicitly with [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique), which both automatically create indexes of their constrained columns. <br><br>Using the foreign key columns as the prefix of an index's columns also satisfies this requirement. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - Each column cannot belong to more than 1 Foreign Key constraint.
 
-__Referenced Columns__
+**Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](#unique) or [`PRIMARY KEY`](#primary-key) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
@@ -252,18 +246,19 @@ Because the Foreign Key constraint requires per-row checks on two tables, statem
 
 We're currently working to improve the performance of these statements, though.
 
+{{site.data.alerts.callout_success}}You can improve the performance of some statements that use Foreign Keys by also using <code><a href="interleave-in-parent.html">INTERLEAVE IN PARENT</a></code>.{{site.data.alerts.end}}
+
 #### Example
 
 ~~~ sql
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 
-> CREATE TABLE orders 
-(
-  id INT PRIMARY KEY,
-  customer INT NOT NULL REFERENCES customers (id),
-  orderTotal DECIMAL(9,2),
-  INDEX (customer)
-);
+> CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    customer INT NOT NULL REFERENCES customers (id),
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
+  );
 
 > INSERT INTO customers VALUES (1001, 'a@co.tld');
 
