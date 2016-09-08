@@ -176,7 +176,7 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+</p>
+        <p>Git 2.5+</p>
       </li>
       <li>
         <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
@@ -330,7 +330,7 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.6.2. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
-        <p>Git 1.8+</p>
+        <p>Git 2.5+</p>
       </li>
       <li>
         <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
