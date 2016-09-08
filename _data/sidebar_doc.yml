@@ -236,8 +236,18 @@ entries:
         - title: Manual Deployment
           url: /manual-deployment.html
 
-        - title: Cloud Deployment
-          url: /cloud-deployment.html
+          thirdlevel:
+            - title: Cloud Deployment
+              thirdlevelitems:
+
+                - title: Overview
+                  url: /cloud-deployment.html
+
+                - title: Google Cloud Platform GCE
+                  url: /deploy-cockroachdb-on-google-cloud-platform.html
+
+                - title: AWS
+                  url: /deploy-cockroachdb-on-aws.html
 
           thirdlevel:
             - title: Orchestration

@@ -7,7 +7,7 @@ toc_not_nested: true
 
 This page shows you how to manually deploy a multi-node CockroachDB cluster on multiple machines. 
 
-{{site.data.alerts.callout_info}} For testing and development, you can <a href="start-a-local-cluster.html">Start a Local Cluster</a> or <a href="cloud-deployment.html">Deploy on GCE or AWS using Terraform</a>. You can also <a href="http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html">Run CockroachDB inside a VirtualBox VM</a> (community-supported).{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} For testing and development, you can <a href="start-a-local-cluster.html">Start a Local Cluster</a> or <a href="cloud-deployment.html">Deploy to a Cloud Provider</a>. You can also <a href="http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html">Run CockroachDB inside a VirtualBox VM</a> (community-supported).{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -17,7 +17,9 @@ This process assumes the following:
 
 - You have the [CockroachDB binary](install-cockroachdb.html).
 - You have SSH access to each machine. This is necessary for distributing binaries and, in the case of a secure cluster, certificates. 
-- Your network configuration allows the machines to talk to each other and clients to talk to the machines.
+- Your network configuration allows TCP communication on the following ports:
+	- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster) and connecting with applications
+	- **8080** (`tcp:8080`) to expose your Admin UI
 
 ## Recommendations
 
