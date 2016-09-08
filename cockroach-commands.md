@@ -47,6 +47,7 @@ For many common `cockroach` flags, such as `--port` and `--user`, you can set en
 
 - To find out which flags support environment variables, see the documentation for each [command](#commands). 
 - To output the current configuration of CockroachDB and other environment variables, run `env`. 
+- When a node uses environment variables on [startup](start-a-node.html), the variable names are printed to the node's logs; however, the variable values are not.
 
 CockroachDB prioritizes command flags, environment variables, and defaults as follows:
 
