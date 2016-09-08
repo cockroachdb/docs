@@ -100,6 +100,18 @@ Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `ht
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
+## Step 7.  Stop the cluster
+
+When you're ready to stop the cluster, quit each node as follows:
+
+~~~ shell
+$ cockroach quit --host=localhost --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+$ cockroach quit --host=localhost --port=26258 --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+$ cockroach quit --host=localhost --port=26259 --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+
 ## What's Next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)

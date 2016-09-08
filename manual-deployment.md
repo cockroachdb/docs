@@ -62,7 +62,7 @@ For more information, see [Configure Replication Zones](configure-replication-zo
 Start the built-in SQL client from any machine with the `cockroach` binary. This could be one of the node machines or a different machine. 
 
 ~~~ shell
-$ cockroach sql --insecure --url=postgresql://root@<node-hostname>:26257/?sslmode=disable
+$ cockroach sql --url=postgresql://root@<node-hostname>:26257/?sslmode=disable
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -97,7 +97,7 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 
 For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
-### 7. Monitor your cluster
+### 7. Monitor the cluster
 
 The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to the URL in the `admin` field listed in the standard output of any node on startup, for example:
 
@@ -111,6 +111,18 @@ store[0]:  path=cockroach-data
 ~~~
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+### 8. Stop the cluster
+
+You can stop the nodes (and therefore the cluster) from any machine with the `cockroach` binary as follows: 
+
+~~~ shell
+$ cockroach quit --host=node1.example.com
+$ cockroach quit --host=node2.example.com
+$ cockroach quit --host=node3.example.com
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
 
 ## Deploy a Secure Cluster
 
@@ -168,7 +180,7 @@ For more information, see [Configure Replication Zones](configure-replication-zo
 
 ### 6. Use the built-in SQL client
 
-You can run the built-in SQL client from any machine with the `cockroach` binary, CA cert, client certificate, and client key. Make sure the machine you want to use has these files and then start the client:  
+You can run the built-in SQL client from any machine with the `cockroach` binary, the CA cert, and a client certificate and key. Make sure the machine you want to use has these files and then start the client:  
 
 ~~~ shell
 $ cockroach sql --url="postgresql://root@<node1-hostname>:26257/?sslcert=root.cert&sslkey=root.key&sslmode=verify-full&sslrootcert=ca.cert"
@@ -206,7 +218,7 @@ CockroachDB supports the PostgreSQL wire protocol, so you can use any available 
 
 For a list of recommended drivers that we've tested, see [Install Client Drivers](install-client-drivers.html). For some basic code samples, see [Build a Test App](build-a-test-app.html).  
 
-### 8. Monitor your cluster
+### 8. Monitor the cluster
 
 The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database-level metrics and events. To access the Admin UI, from the address specified by the `--http-addr` flag in steps 2 and 3, point a browser to the URL in the `admin` field listed in the standard output on startup, for example:
 
@@ -222,6 +234,18 @@ store[0]:  path=cockroach-data
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}In cases where you set <code>--http-addr</code> to <code>localhost</code> and need to access the Admin UI from a separate machine, you can use SSH to tunnel from the machine to a node.{{site.data.alerts.end}}  
+
+### 9. Stop the cluster
+
+You can stop the nodes (and therefore the cluster) from any machine with the `cockroach` binary, the CA cert, and a client certificate and key. Make sure the machine you want to use has these files and then stop the nodes:  
+
+~~~ shell
+$ cockroach quit --host=<node1-hostname> --ca-cert=ca.cert --cert=root.cert --key=root.key
+$ cockroach quit --host=<node2-hostname> --ca-cert=ca.cert --cert=root.cert --key=root.key
+$ cockroach quit --host=<node3-hostname> --ca-cert=ca.cert --cert=root.cert --key=root.key
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
 
 ## See Also
 
