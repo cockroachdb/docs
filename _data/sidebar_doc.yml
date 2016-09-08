@@ -249,7 +249,6 @@ entries:
                 - title: AWS
                   url: /deploy-cockroachdb-on-aws.html
 
-          thirdlevel:
             - title: Orchestration
               thirdlevelitems:
 
