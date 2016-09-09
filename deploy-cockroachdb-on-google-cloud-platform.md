@@ -17,12 +17,12 @@ You must have [SSH access](https://cloud.google.com/compute/docs/instances/conne
 
 ## Recommendations
 
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
-
-You should also decide how you want to access your Admin UI:
+Decide how you want to access your Admin UI:
 
 - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented here)*
 - Using an SSH tunnel, which requires you to use `--http-addr=localhost` when starting your nodes
+
+For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 {{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
 
@@ -163,6 +163,8 @@ To test your cluster (which is live at this point), access SQL and create a new 
 	
 	~~~ sql 
 	> SHOW DATABASE;
+	~~~
+	~~~
 	+------------------+
 	|     DATABASE     |
 	+------------------+
