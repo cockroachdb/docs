@@ -2619,5 +2619,21 @@ img.mfp-img {
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
+/* Back to top button */
+.scroll-to-top {
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  display: none; }
+
+.scroll-to-top > img {
+  width: 50px;
+  height: 50px; }
+
+@media (max-width: 768px) {
+  .scroll-to-top > img {
+    width: 45px;
+    height: 45px; } }
 
 /*# sourceMappingURL=customstyles.css.map */

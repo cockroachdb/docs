@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <html>
+
   <head>
 
- {% include head.html %}
+    {% include head.html %}
 
   </head>
 
 <body>
 
-{% include topnav.html %}
+  {% include topnav.html %}
 
-    <!-- Page Content -->
-    <div id="content">
-      <div id="main-content" class="container">
-        <div class="row">
-          {% include sidebar.html %}
-          <!-- Content Column -->
-          <div class="col-md-9 content-col">
-              {{content}}
-          </div>
+  <!-- Page Content -->
+  <div id="content">
+    <div id="main-content" class="container">
+      <div class="row">
+        {% include sidebar.html %}
+        <!-- Content Column -->
+        <div class="col-md-9 content-col">
+          {{content}}
         </div>
-        <!-- /.row -->
       </div>
-    </div>    <!-- /.container -->
-     {% include footer.html %}
+      <!-- /.row -->
+    </div>
+  </div>    <!-- /.container -->
 
-<script>
-$('.expandcollapse').on('click', function () {
-  $(this).next().toggle();
-});
-</script>
+  {% include footer.html %}
 
-{% include gitter-sidecar.html %}
+  <script>
+  $('.expandcollapse').on('click', function () {
+    $(this).next().toggle();
+  });
+  </script>
+
+  {% include back-to-top.html %}
+
+  {% include gitter-sidecar.html %}
 
 </body>
 
