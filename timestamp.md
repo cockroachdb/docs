@@ -20,9 +20,9 @@ When inserting into a `TIMESTAMP` column, use one of the following formats:
 - Date and Time: `TIMESTAMP '2016-01-25 10:10:10.555555'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-5:00'`
+When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
 
-Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'2016-01-25 10:10:10.555555-5:00'`, which CockroachDB will resolve into the `TIMESTAMP` or `TIMESTAMPTZ` type.
+Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'2016-01-25 10:10:10.555555-05:00'`, which CockroachDB will resolve into the `TIMESTAMP` or `TIMESTAMPTZ` type.
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
@@ -35,20 +35,21 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 ## Examples
 
 ~~~ sql
-> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP);
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
 
 > SHOW COLUMNS FROM timestamps;
 ~~~
 ~~~
-+-------+-----------+-------+---------+
-| Field |   Type    | Null  | Default |
-+-------+-----------+-------+---------+
-| a     | INT       | false | NULL    |
-| b     | TIMESTAMP | true  | NULL    |
-+-------+-----------+-------+---------+
++-------+--------------------------+-------+---------+
+| Field |           Type           | Null  | Default |
++-------+--------------------------+-------+---------+
+| a     | INT                      | false | NULL    |
+| b     | TIMESTAMP WITH TIME ZONE | true  | NULL    |
++-------+--------------------------+-------+---------+
+(2 rows)
 ~~~
 ~~~ sql
-> INSERT INTO timestamps VALUES (1, TIMESTAMP '2016-03-26 10:10:10-05:00'), (2, TIMESTAMP '2016-03-26');
+> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
 
 > SELECT * FROM timestamps;
 ~~~
