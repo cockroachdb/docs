@@ -56,6 +56,13 @@ Field | Description
 
 When you run `cockroach start`, some helpful details are printed to the standard output:
 
+<div id="step-three-filters" class="filters clearfix">
+  <button class="filter-button scope-button current" data-scope="beta">Beta</button>
+  <button class="filter-button scope-button" data-scope="develop">Develop</button>
+</div><p></p>
+
+<div class="filter-content current" markdown="1" data-scope="beta">
+
 ~~~ shell
 build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:     http://ROACHs-MBP:8080
@@ -71,6 +78,36 @@ Field | Description
 `sql` | The connection URL for your client.
 `logs` | The directory containing debug log data.
 `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="develop">
+
+{{site.data.alerts.callout_info}}When you <a href="install-cockroachdb.html">build a CockroachDB binary</a> from the code on our <a href="develop-branch.html"><code>develop</code> branch</a>, the standard output on node startup includes additional fields: <code>status</code>, <code>clusterID</code>, and <code>nodeID</code>. This change will eventually be included in an official beta release.{{site.data.alerts.end}}
+
+~~~ shell
+build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+admin:      http://ROACHs-MBP:8080
+sql:        postgresql://root@ROACHs-MBP:26257?sslmode=disable
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     initialized new cluster
+clusterID:  {4ef69723-92cc-44fa-a847-5a855b3532a7}
+nodeID:     1
+~~~
+
+Field | Description
+------|------------
+`build` | The version of CockroachDB you are running.
+`admin` | The URL for accessing the Admin UI.
+`sql` | The connection URL for your client.
+`logs` | The directory containing debug log data.
+`store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
+`status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
+`clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see [Troubleshooting](troubleshoot.html#node-wont-join-cluster). 
+`nodeID` | The ID of the node.
+
+</div>
 
 ## Examples
 
@@ -117,3 +154,23 @@ $ cockroach start --ca-cert=ca.cert --cert=node3.cert --key=node3.key --host=<no
 ## See Also
 
 [Other Cockroach Commands](cockroach-commands.html)
+
+<script>
+$(document).ready(function(){
+
+  var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+      var scope = $(this).data('scope'),
+      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+      //remove current class from tab and content
+      $current_tab.removeClass('current');
+      $current_content.removeClass('current');
+
+      //add current class to clicked button and corresponding content block
+      $('.filter-button[data-scope="'+scope+'"').addClass('current');
+      $('.filter-content[data-scope="'+scope+'"').addClass('current');
+    });
+});
+</script>

@@ -7,6 +7,7 @@ These features and changes are available only when you <a href="install-cockroac
 
 Feature | Merge Date
 --------|-----------
+On [node startup](start-a-node.html#standard-output), additional fields are printed to `stdout`: `clusterID`, `nodeID`, and `status`, which indicates whether the node started a new cluster, joined an existing cluster for the first time, or rejoined an existing cluster. | [9/7/16](https://github.com/cockroachdb/cockroach/pull/9066)
 `INT8` is treated as an alias for the [`INT`](int.html) data type. | [8/29/16](https://github.com/cockroachdb/cockroach/pull/8858) 
 [`TIMESTAMP`](timestamp.html) values can no longer be created with nanoseconds. | [8/29/16](https://github.com/cockroachdb/cockroach/pull/8864) 
 [`INTERVAL`](interval.html) columns accept the SQL Standard format. | [8/18/16](https://github.com/cockroachdb/cockroach/pull/8657)
