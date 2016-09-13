@@ -1,0 +1,24 @@
+<!-- This adds a "back to top" button. Code adapted from https://paulund.co.uk/how-to-create-an-animated-scroll-to-top-with-jquery -->
+
+<a href="#" class="scroll-to-top"><img src="images/back_to_top.png" alt="Scroll back to top" onmouseover="this.src='images/back_to_top_hover.png';" onmouseout="this.src='images/back_to_top.png';"/></a>
+
+<script>
+$(document).ready(function(){
+  
+  //Check to see if the window is top if not then display button
+  $(window).scroll(function(){
+    if ($(this).scrollTop() > 500) {
+      $('.scroll-to-top').fadeIn();
+    } else {
+      $('.scroll-to-top').fadeOut();
+    }
+  });
+  
+  //Click event to scroll to top
+  $('.scroll-to-top').click(function(){
+    $('html, body').animate({scrollTop : 0},400);
+    return false;
+  });
+  
+});
+</script>
