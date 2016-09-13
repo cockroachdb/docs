@@ -20,7 +20,9 @@ toc: false
   <a href="start-a-local-cluster-in-docker.html"><button class="filter-button scope-button">In <strong>Docker</strong></button></a>
 </div><p></p>
 
-Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port.
+Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. 
+
+{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -54,7 +56,9 @@ This command starts a node, accepting all [`cockroach start`](start-a-node.html)
 
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell. 
 
-- The standard output gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
+- The [standard output](start-a-node.html#standard-output) gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
+
+{{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one node per host. When running multiple nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
 ## Step 2. Join additional nodes to the cluster
    
