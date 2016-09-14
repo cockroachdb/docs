@@ -194,28 +194,9 @@ Alternately, if you'd rather keep the Kubernetes cluster running, run the follow
 $ kubectl delete petsets,pods,persistentvolumes,persistentvolumeclaims,services -l app=cockroachdb
 ~~~
 
-<script>
-$(document).ready(function(){
+## See Also
 
-  var $filter_button = $('.filter-button');
+- [Docker Swarm](orchestrate-cockroachdb-with-docker-swarm.html)
+- [Cloud Deployment](cloud-deployment.html)
+- [Manual Deployment](manual-deployment.html)
 
-    $filter_button.on('click', function(){
-      var scope = $(this).data('scope'),
-      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
-
-      //remove current class from tab and content
-      $current_tab.removeClass('current');
-      $current_content.removeClass('current');
-
-      //add current class to clicked button and corresponding content block
-      $('.filter-button[data-scope="'+scope+'"').addClass('current');
-      $('.filter-content[data-scope="'+scope+'"').addClass('current');
-    });
-});
-</script>
-
-<style>
-.filters .scope-button {
-  width: 15%;
-}
-</style>
