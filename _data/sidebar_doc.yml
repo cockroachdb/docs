@@ -249,8 +249,14 @@ entries:
             - title: Orchestration
               thirdlevelitems:
 
+                - title: Overview
+                  url: /orchestration.html
+                  
                 - title: Kubernetes
                   url: /orchestrate-cockroachdb-with-kubernetes.html
+
+                - title: Docker Swarm
+                  url: /orchestrate-cockroachdb-with-docker-swarm.html
 
         - title: Cockroach Commands
           url: /cockroach-commands.html
