@@ -92,7 +92,7 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
+      <p>Download the latest <a href="https://d3a3ys8r4slo6p.cloudfront.net/cockroach-latest.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
@@ -282,7 +282,7 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB tarball for Linux</a>.</p>
+      <p>Download the latest <a href="https://d3a3ys8r4slo6p.cloudfront.net/cockroach-latest.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB tarball for Linux</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
