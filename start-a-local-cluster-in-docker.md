@@ -49,7 +49,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 ~~~ shell
 $ docker run -d --name=roach1 --hostname=roach1 --net=roachnet -p 26257:26257 -p 8080:8080  \
--v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  
+-v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  \
 cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
 ~~~
 
