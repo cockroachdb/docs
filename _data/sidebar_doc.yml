@@ -115,7 +115,7 @@ entries:
                 - title: <code>SET DATABASE</code>
                   url: /set-database.html
 
-                - title: <code>SET TIMESZONE</code>
+                - title: <code>SET TIME ZONE</code>
                   url: /set-time-zone.html
 
                 - title: <code>SET TRANSACTION</code>
