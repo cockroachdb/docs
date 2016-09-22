@@ -169,10 +169,10 @@ func main() {
 				// TODO(mjibson): improve SET filtering
 				// TODO(mjibson): improve SELECT display
 				{name: "alter_table_stmt", inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data"}},
-				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority"}, match: regexp.MustCompile("'BEGIN'|'START'")},
+				{name: "begin_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"}, match: regexp.MustCompile("'BEGIN'"), replace: map[string]string{"'READ' 'UNCOMMITTED'": "","| 'READ' 'COMMITTED'": "", "| 'REPEATABLE' 'READ'": "", "| 'SNAPSHOT'": "'SNAPSHOT'"}},
 				{name: "column_def"},
 				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
-				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'|'END'")},
+				{name: "commit_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'COMMIT'")},
 				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
 				{
 					name:   "create_index_stmt",
@@ -197,18 +197,18 @@ func main() {
 				{name: "grant_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
 				{name: "index_def", inline: []string{"opt_storing", "storing", "index_params", "opt_name"}},
 				{name: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'INSERT'")},
-				{name: "iso_level"},
-				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
+				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}, replace: map[string]string{"name": "cockroach_restart"}, unlink: []string{"cockroach_restart"}},
+				{name: "iso_level", replace: map[string]string{"'READ' 'UNCOMMITTED'": "","| 'READ' 'COMMITTED'": "", "| 'REPEATABLE' 'READ'": "", "| 'SNAPSHOT'": "'SNAPSHOT'"}},
 				{name: "rename_column", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' opt_column")},
 				{name: "rename_database", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'DATABASE'")},
 				{name: "rename_index", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'INDEX'")},
 				{name: "rename_table", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")},
 				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
-				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'ROLLBACK'")},
-				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
+				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction", "opt_to_savepoint", "savepoint_name"}, match: regexp.MustCompile("'ROLLBACK'"), replace: map[string]string{"name": "cockroach_restart"}, unlink: []string{"cockroach_restart"}},
+				{name: "savepoint_stmt", replace: map[string]string{"savepoint_name": "cockroach_restart"}, unlink: []string{"cockroach_restart"}},
 				{name: "select_stmt", inline: []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit"}},
 				{name: "set_stmt", inline: []string{"set_rest", "set_rest_more", "generic_set"}, exclude: regexp.MustCompile("CHARACTERISTICS"), replace: map[string]string{"'TRANSACTION' transaction_mode_list | ": ""}},
-				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: regexp.MustCompile("'TRANSACTION'")},
+				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, exclude: regexp.MustCompile("SESSION"),replace: map[string]string{" | set_rest_more": "", "'LOCAL'": "", "'READ' 'UNCOMMITTED' | 'READ' 'COMMITTED' | 'SNAPSHOT'": "'SNAPSHOT'", " 'REPEATABLE' 'READ' | 'SERIALIZABLE'" : "'SERIALIZABLE'"}, match: regexp.MustCompile("'TRANSACTION'")},
 				{name: "show_columns", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'COLUMNS'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'CONSTRAINTS'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_create_table", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'CREATE' 'TABLE'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
@@ -237,6 +237,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
+					fmt.Println(s.name, string(g))
 					for from, to := range s.replace {
 						g = bytes.Replace(g, []byte(from), []byte(to), -1)
 					}
