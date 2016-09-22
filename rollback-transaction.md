@@ -1,12 +1,12 @@
 ---
 title: ROLLBACK
-summary: The ROLLBACK statement aborts the current transaction, discarding all updates made by statements included in the transaction.
+summary: Abort the current transaction, discarding all updates made by statements included in the transaction with the ROLLBACK statement in CockroachDB.
 toc: false
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.
 
-When using the CockroachDB-provided function for client-side transaction retries, the `ROLLBACK TO SAVEPOINT cockroach_restart` statement restarts the transaction if any included statement returns a retryable error (identified via the 40001 error code or retry transaction string in the error message). For more details, see [Transaction Retries](transactions.html#transaction-retries). 
+When using [client-side transaction retries](transactions.html#client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT cockroach_restart` to handle transaction that need to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements in the transaction.
 
 <div id="toc"></div>
 
@@ -22,11 +22,55 @@ No [privileges](privileges.html) are required to rollback a transaction. However
 
 | Parameter | Description |
 |-----------|-------------|
-|  |  |
+| `TO cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. |
+
+## Example
+
+### Rollback a Transaction
+
+Typically, your application conditionally executes rollbacks but you can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL.
+
+~~~ sql
+> SELECT * FROM accounts;
+~~~
+~~~
++----------+---------+
+|   name   | balance |
++----------+---------+
+| Marciela |    1000 |
++----------+---------+
+~~~
+~~~ sql
+> BEGIN;
+
+> UPDATE accounts SET balance = 2500 WHERE name = 'Marciela';
+
+> ROLLBACK;
+
+> SELECT * FROM accounts;
+~~~
+~~~
++----------+---------+
+|   name   | balance |
++----------+---------+
+| Marciela |    1000 |
++----------+---------+
+~~~
+
+### Retry a Transaction
+
+To use [client-side transaction retries](transactions.html#client-side-transaction-retries), your application must execute `ROLLBACK TO cockroach_restart` after detecting a `40001` / `retry transaction` error.
+
+~~~ sql
+> ROLLBACK TO cockroach_restart;
+~~~
+
+For examples of retrying transactions in your application, check out our [transaction code samples](build-a-test-app.html#step-4-execute-transactions-from-a-client).
 
 ## See Also
 
 - [Transactions](transactions.html)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
+- [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
