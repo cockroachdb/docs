@@ -205,7 +205,7 @@ func main() {
 				{name: "rename_table", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")},
 				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
 				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: regexp.MustCompile("'ROLLBACK'")},
-				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
+				{name: "savepoint_stmt", inline: []string{"savepoint_name"}, replace: map[string]string{"( 'SAVEPOINT' name | name )": "name", "name": "cockroach_restart"}, unlink: []string{"cockroach_restart"}},
 				{name: "select_stmt", inline: []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit"}},
 				{name: "set_stmt", inline: []string{"set_rest", "set_rest_more", "generic_set"}, exclude: regexp.MustCompile("CHARACTERISTICS"), replace: map[string]string{"'TRANSACTION' transaction_mode_list | ": ""}},
 				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: regexp.MustCompile("'TRANSACTION'")},
@@ -237,6 +237,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
+					fmt.Println(s.name, string(g))
 					for from, to := range s.replace {
 						g = bytes.Replace(g, []byte(from), []byte(to), -1)
 					}
