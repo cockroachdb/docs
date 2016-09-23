@@ -15,10 +15,37 @@ The `SHOW TIME ZONE` [statement](sql-statements.html) lists the default time zon
 
 ## Required Privileges
 
-No privileges are required to view the default time zone.
+No [privileges](privileges.html) are required to view the default time zone.
 
-## Parameters
+## Examples
 
-| Parameter | Description |
-|-----------|-------------|
-|  |  |
+~~~ sql
+> SET TIME ZONE 'EST';
+> SHOW TIME ZONE;
+~~~
+~~~ shell
++-----------+
+| TIME ZONE |
++-----------+
+| EST       |
++-----------+
+(1 row)
+~~~
+~~~ sql
+> SET TIME ZONE DEFAULT;
+> SHOW TIME ZONE;
+~~~
+~~~ shell
++-----------+
+| TIME ZONE |
++-----------+
+| UTC       |
++-----------+
+(1 row)
+~~~
+
+## See Also
+
+- [`SET TIME ZONE`](set-time-zone.html)
+- [`TIMESTAMP`](timestamp.html)
+- [`DATE`](date.html)

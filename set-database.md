@@ -6,7 +6,7 @@ toc: false
 
 The `SET DATABASE` [statement](sql-statements.html) sets the default database for the current session. When connected to the default database, you don't need to reference it explicitly in statements.
 
-{{site.data.alerts.callout_danger}}In rare cases, CockroachDB may reset the default database, so it's most reliable to set the database in the client's connection string. For examples in different languages, see <a href="build-a-test-app.html">Build a Test App</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}In rare cases, CockroachDB may reset session configurations, so it's most reliable to set the database in the client's connection string. For examples in different languages, see <a href="build-a-test-app.html">Build a Test App</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -20,16 +20,15 @@ No [privileges](privileges.html) are required to set the default database.
 
 ## Examples
 
-### Set the default database via `SET DATABASE`
+### Set the default database via the client connection (recommended)
 
 ~~~ shell
-$ cockroach sql
+$ cockroach sql --database=db1
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
 ~~~ sql
-> SET DATABASE = db1;
 > CREATE TABLE t3 (a INT PRIMARY KEY, b STRING(20)); 
 > SHOW TABLES;
 ~~~
@@ -44,15 +43,16 @@ $ cockroach sql
 (3 rows)
 ~~~
 
-### Set the default database via the client connection
+### Set the default database via `SET DATABASE`
 
 ~~~ shell
-$ cockroach sql --database=db1
+$ cockroach sql
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
 ~~~ sql
+> SET DATABASE = db1;
 > CREATE TABLE t3 (a INT PRIMARY KEY, b STRING(20)); 
 > SHOW TABLES;
 ~~~
