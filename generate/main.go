@@ -199,7 +199,7 @@ func main() {
 				{name: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: regexp.MustCompile("'INSERT'")},
 				{name: "iso_level"},
 				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
-				{name: "rename_column", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' opt_column")},
+				{name: "rename_column", stmt: "rename_stmt", inline: []string{"opt_column"}, match: regexp.MustCompile("'COLUMN'"), replace: map[string]string{"relation_expr": "table_name", "name 'TO'": "current_name 'TO'"}, unlink: []string{"table_name", "current_name"}},
 				{name: "rename_database", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'DATABASE'")},
 				{name: "rename_index", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'INDEX'")},
 				{name: "rename_table", stmt: "rename_stmt", match: regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")},
