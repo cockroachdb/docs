@@ -208,6 +208,7 @@ func main() {
 				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
 				{name: "select_stmt", inline: []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit"}},
 				{name: "set_stmt", inline: []string{"set_rest", "set_rest_more", "generic_set"}, exclude: regexp.MustCompile("CHARACTERISTICS"), replace: map[string]string{"'TRANSACTION' transaction_mode_list | ": ""}},
+				{name: "set_database", stmt: "set_stmt", inline: []string{"set_rest", "set_rest_more", "generic_set"}, exclude: regexp.MustCompile("CHARACTERISTICS"), replace: map[string]string{"var_name": "'DATABASE'", "'DEFAULT'": "var_list", "var_list": "database_name", "'LOCAL'": "", "'SESSION'": "", "'TRANSACTION' transaction_mode_list | ": ""," | 'TIME' 'ZONE' zone_value ": ""},unlink: []string{"database_name"}},
 				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: regexp.MustCompile("'TRANSACTION'")},
 				{name: "show_columns", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'COLUMNS'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: regexp.MustCompile("'SHOW' 'CONSTRAINTS'"), replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
