@@ -1,7 +1,7 @@
 section.footer {
 	background: $cl_blue;
 	padding-top:65px;
-	padding-bottom: 30px;
+	padding-bottom: 45px;
 	position: relative;
 	z-index: 1000;
 
@@ -293,6 +293,7 @@ section.footer {
 
 	@include at-query($min, $screen-md){
 		padding-top: 60px;
+		padding-bottom: 55px;
 	}
 
 	@include at-query($min, $screen-lg){
