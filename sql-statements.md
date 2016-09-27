@@ -45,6 +45,3 @@ Statement | Usage
 [`TRUNCATE`](truncate.html) | Deletes all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
 [`UPSERT`](upsert.html) | Insert rows that do not violate uniquenesss constraints; update rows that do.
-[`VALUES`](values.html) | Compute a row value or set of row values.
-
-
