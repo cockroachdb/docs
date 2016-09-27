@@ -157,9 +157,6 @@ entries:
                 - title: <code>UPSERT</code>
                   url: /upsert.html
 
-                - title: <code>VALUES</code>
-                  url: /values.html
-
         - title: SQL Grammar
           url: /sql-grammar.html
 
