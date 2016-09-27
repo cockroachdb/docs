@@ -528,6 +528,9 @@ header {
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -webkit-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
   #content #main-content .content-col {
     padding-bottom: 100px; }
