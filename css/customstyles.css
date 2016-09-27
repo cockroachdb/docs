@@ -251,13 +251,14 @@ header {
     width: 130px;
     margin-top: 5px;
     float: left;
-    line-height: 1.42857143; }
+    line-height: 19px; }
     @media screen and (min-width: 768px) {
       header .logo {
         width: 160px; } }
     @media screen and (min-width: 768px) and (max-width: 992px) {
       header .logo {
-        margin-top: 5px; } }
+        margin-top: 5px;
+        line-height: 23px; } }
     @media screen and (min-width: 1200px) {
       header .logo {
         width: 209px; } }

@@ -78,7 +78,7 @@ header {
 		width:130px;
 		margin-top:5px;
 		float: left;
-		line-height: 1.42857143;
+		line-height: 19px;
 
 		@include at-query($min, $screen-sm){
 			width: 160px;
@@ -86,6 +86,7 @@ header {
 
 		@include at-query($screen-sm, $screen-md){
 			margin-top: 5px;
+			line-height: 23px;
 		}
 
 		@include at-query($min, $screen-lg){
