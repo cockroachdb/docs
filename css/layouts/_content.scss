@@ -5,8 +5,7 @@
 	
 	width: 100%;
 	z-index: 1000;
-	-webkit-transition: margin 0.4s;
-			transition: margin 0.4s;
+	@include groovy(all);
 	overflow: auto;
 
 	#main-content {

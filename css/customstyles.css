@@ -250,7 +250,8 @@ header {
   header .logo {
     width: 130px;
     margin-top: 5px;
-    float: left; }
+    float: left;
+    line-height: 1.42857143; }
     @media screen and (min-width: 768px) {
       header .logo {
         width: 160px; } }
@@ -522,8 +523,10 @@ header {
   padding-top: 50px;
   width: 100%;
   z-index: 1000;
-  -webkit-transition: margin 0.4s;
-  transition: margin 0.4s;
+  -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   overflow: auto; }
   #content #main-content .content-col {
     padding-bottom: 100px; }

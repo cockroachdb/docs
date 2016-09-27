@@ -78,6 +78,7 @@ header {
 		width:130px;
 		margin-top:5px;
 		float: left;
+		line-height: 1.42857143;
 
 		@include at-query($min, $screen-sm){
 			width: 160px;
