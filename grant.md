@@ -38,124 +38,76 @@ Privilege | Levels
 `DELETE` | Table 
 `UPDATE` | Table 
 
-## Usage
+## Parameters
 
-### Grant Privileges on Databases
-
-To grant privileges on one or more databases, use the following syntax:
-
-~~~ sql
-> GRANT <privileges> ON DATABASE <databases> TO <users>;
-~~~
-
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names; and `<users>` is a comma-separated list of user names.
-
-The privileges will be inherited by any new tables created in the target databases.
-
-### Grant Privileges on Specific Tables in a Database
-
-To grant privileges on one or more tables in a database, use the following syntax:
-
-~~~ sql
-> GRANT <privileges> ON <tables> TO <users>
-~~~
-
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<tables>` is a comma-separated list of table names, each in `database.table` format; and `<users>` is a comma-separated list of user names.
-
-Alternately, you can add the `TABLE` keyword:
-
-~~~ sql
-> GRANT <privileges> on TABLE <tables> TO <users>
-~~~
-
-### Grant Privileges on All Tables in a Database
-
-To grant privileges on all current tables in one or more databases, use the following syntax:
-
-~~~ sql
-> GRANT <privileges> ON <databases>.* TO <users>
-~~~
-
-where `<privileges>` is a comma-separated list of [privileges](#supported-privileges); `<databases>` is a comma-separated list of database names, each with the `.*` suffix; and `<users>` is a comma-separated list of user names. 
+Parameter | Description
+----------|------------
+`table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. 
+`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases.
+`user_name` | A comma-separated list of grantees. 
 
 ## Examples
 
-Let's say you have an `animals` database containing two tables: 
-
-~~~ sql 
-> SHOW tables FROM animals;
-~~~
-~~~
-+-------------+
-|    Table    |
-+-------------+
-| aardvarks   |
-| baboons     |
-+-------------+
-~~~
-
-You want the `maxroach` user to have the `SELECT` privilege on both tables, and you want the `betsyroach` user to have `ALL` privileges on both tables as well as any new tables created in the database. 
-
-First, you grant the `maxroach` user the `SELECT` privilege on the two current tables:
+### Grant privileges on databases
 
 ~~~ sql
-> GRANT SELECT ON animals.* TO maxroach;
+> GRANT CREATE ON DATABASE db1, db2 TO maxroach, betsyroach;
 
-> SHOW GRANTS ON animals.* FOR maxroach;
-~~~
-~~~
-+-----------+----------+------------+
-|   Table   |   User   | Privileges |
-+-----------+----------+------------+
-| aardvarks | maxroach | SELECT     |
-| baboons   | maxroach | SELECT     |
-+-----------+----------+------------+
+> SHOW GRANTS ON DATABASE db1, db2;
 ~~~
 
-Next, you grant the `betsyroach` user the `ALL` privilege on the two current tables:
-
-~~~ sql
-> GRANT ALL ON animals.* TO betsyroach;
-
-> SHOW GRANTS ON animals.* FOR betsyroach;
-~~~
-~~~
-+-----------+------------+------------+
-|   Table   |    User    | Privileges |
-+-----------+------------+------------+
-| aardvarks | betsyroach | ALL        |
-| baboons   | betsyroach | ALL        |
-+-----------+------------+------------+
-~~~
-
-Finally, you grant the `betsyroach` user the `ALL` privilege on the `animals` database to ensure that the user retains the privilege for all new tables created in the database:
-
-~~~ sql
-> GRANT ALL ON DATABASE animals TO betsyroach;
-
-> SHOW GRANTS ON DATABASE animals FOR betsyroach;
-~~~
-~~~
+~~~ shell
 +----------+------------+------------+
 | Database |    User    | Privileges |
 +----------+------------+------------+
-| animals  | betsyroach | ALL        |
+| db1      | betsyroach | CREATE     |
+| db1      | maxroach   | CREATE     |
+| db1      | root       | ALL        |
+| db2      | betsyroach | CREATE     |
+| db2      | maxroach   | CREATE     |
+| db2      | root       | ALL        |
 +----------+------------+------------+
+(6 rows)
 ~~~
 
-Whenever a new table is created in the `animals` database, the `betsyroach` user will inherit the `ALL` privilege on the table:
+### Grant privileges on specific tables in a database
 
 ~~~ sql
-> CREATE TABLE animals.cockroaches (name STRING, count INT);
+> GRANT DELETE ON TABLE db1.t1, db1.t2 TO betsyroach;
 
-> SHOW GRANTS ON animals.cockroaches FOR betsyroach;
+> SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
+
+~~~ shell
++-------+------------+------------+
+| Table |    User    | Privileges |
++-------+------------+------------+
+| t1    | betsyroach | DELETE     |
+| t1    | root       | ALL        |
+| t2    | betsyroach | DELETE     |
+| t2    | root       | ALL        |
++-------+------------+------------+
+(4 rows)
 ~~~
-+-------------+------------+------------+
-|    Table    |    User    | Privileges |
-+-------------+------------+------------+
-| cockroaches | betsyroach | ALL        |
-+-------------+------------+------------+
+
+### Grant privileges on all tables in a database
+
+~~~ sql
+> GRANT SELECT ON TABLE db2.* TO henryroach;
+
+> SHOW GRANTS ON TABLE db2.*;
+~~~
+
+~~~ shell
++-------+------------+------------+
+| Table |    User    | Privileges |
++-------+------------+------------+
+| t1    | henryroach | SELECT     |
+| t1    | root       | ALL        |
+| t2    | henryroach | SELECT     |
+| t2    | root       | ALL        |
++-------+------------+------------+
+(4 rows)
 ~~~
 
 ## See Also
@@ -163,4 +115,3 @@ Whenever a new table is created in the `animals` database, the `betsyroach` user
 - [Privileges](privileges.html)
 - [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Other SQL Statements](sql-statements.html)
