@@ -1,43 +1,49 @@
 section.footer {
 	background: $cl_blue;
-	padding-top:65px;
-	padding-bottom: 45px;
-	position: relative;
-	z-index: 1000;
+	padding: 50px 15px 60px;
+
+	
+	.container { padding: 0; }
+	.row { margin: 0; }
+	
 
 	//Nav Items
 	.footer-nav {
 		list-style: none;
-		margin: 0;
 		padding: 0;
+		margin: 0;
+		margin-bottom: 30px;
 
 		li {
 			color:#FFFFFF;
 			text-transform: uppercase;
-			width:100%;
 			list-style:none;
-			text-align:center;
+			text-align: left;
 			padding:0;
-			margin:0;
+			margin:0 20px 0 0;
 			text-indent:0;
 			line-height:14px;
+			display: inline-block;
 
 			a {
 				color:#FFFFFF;
 				@include avenir_bk(14px);
+				line-height: 24px;
 				text-transform: none;
-				line-height: 26px;
-
-				@include at-query($min, $screen-sm){
-					@include avenir_bk(17px);
-					line-height: 30px;
-				}
+				@include groovy(color);
 
 				&:hover {
 					color: $cl_green;
 				}
+
+				@include at-query($min, $screen-md){
+					line-height: 30px;
+				}
 			}
 
+			@include at-query($min, $screen-sm){
+				width:100%;
+			}
 
 			@include at-query($min, $screen-md){
 				text-align: left;
@@ -46,11 +52,15 @@ section.footer {
 
 		li.header {
 			width:100%;
-			margin-bottom:10px;
-			@include avenir_bl(13px);
+			margin-bottom:5px;
+			@include avenir_h(12px);
+			line-height: 17px;
+			letter-spacing: 1.3px;
+			opacity: 0.5;
+			display: block;
 
 			@include at-query($min, $screen-sm){
-				@include avenir_bl(14px);
+				margin-bottom: 15px;
 			}
 		}
 		li:before {
@@ -61,25 +71,8 @@ section.footer {
 		}
 	}
 
-	.documentation-col { 
-		margin-top: 40px;
-
-		@include at-query($min, $screen-sm){
-			margin-top: 0;
-		}
-	}
-
-	.community-col, .social-col { 
-		margin-top: 40px;
-
-		@include at-query($min, $screen-md){
-			margin-top: 0;
-		}
-	}
-
 	//Footer Logo + Copyright
 	.footer-logo-wrap {
-		text-align: left;
 
 		.footer-logo {
 			text-align: center;
@@ -125,14 +118,12 @@ section.footer {
 
 		.form-header {
 			color: #FFFFFF;
-			@include avenir_m(14px);
-			line-height: 14px;
+			@include avenir_m(16px);
+			line-height: 20px;
 			text-align: center;
 			margin-bottom: 10px;
 
 			@include at-query($min, $screen-md){
-				font-size: 16px;
-				line-height: 16px;
 				text-align: left;
 				display: inline-block;
 				vertical-align: middle;
@@ -182,26 +173,26 @@ section.footer {
 				@include border-left-radius(38px);
 				width: 100%;
 				background-color: transparent;
-				border: 1px solid #FFFFFF;
+				border: 1px solid $cl_blue_pale;
 				border-right-width: 1px;
 				color: #FFFFFF;
 
 				&::-webkit-input-placeholder {
-			    color:    $cl_green;
+				    color: rgba(255, 255, 255, 0.3);
 				}
-				&:-moz-placeholder { 
-				   color:    $cl_green;
+				&:-moz-placeholder {
+				   color: rgba(255, 255, 255, 0.3);
 				   opacity:  1;
 				}
-				&::-moz-placeholder { 
-				   color:    $cl_green;
+				&::-moz-placeholder {
+				   color: rgba(255, 255, 255, 0.3);
 				   opacity:  1;
 				}
-				&:-ms-input-placeholder { 
-				   color:    $cl_green;
+				&:-ms-input-placeholder {
+				   color: rgba(255, 255, 255, 0.3);
 				}
 				&:placeholder-shown {
-				  color:    $cl_green;
+				  color: rgba(255, 255, 255, 0.3);
 				}
 
 				@include at-query($min, $screen-md){
@@ -216,24 +207,26 @@ section.footer {
 			.hs-button {
 				width: 110px;
 				text-align: center;
-				background-color: transparent;
+				background-color: $cl_green;
 				min-height: 40px;
 				color: #FFFFFF;
-				padding: 0;
-				line-height:40px;
-				@include avenir_bl(10px);
+				padding: 15px 0 14px;
+				line-height:11px;
+				@include avenir_bl(11px);
 				text-transform: uppercase;
-				letter-spacing: 0.75px;
+				letter-spacing: 1.3px;
 				@include border-right-radius(38px);
 				float: right;
-				border: 1px solid #FFFFFF;
-				border-left-width: 1px;
+				border: 1px solid $cl_blue_pale;
+				border-left-width: 0px;
 				position: relative;
 				outline: 0;
 				z-index: 5;
+				@include groovy(all);
 
 				&:hover {
 					color: $cl_green;
+					background-color: #FFFFFF;
 				}
 			}
 
