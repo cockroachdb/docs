@@ -3,7 +3,7 @@
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: $cl_light_green; 
+  background-color: $cl_green_light; 
   font-size: 0;
 
   form {
@@ -27,7 +27,7 @@
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: $cl_light_green;
+  background-color: $cl_green_light;
   color: $cl_blue !important;
   @include avenir_bk(16px);
   text-align: center;
