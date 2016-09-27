@@ -35,6 +35,7 @@ Statement | Usage
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a carbon copy of the specified table.
+[`SHOW DATABASE`](show-database.html) | List the default database for the session.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW INDEX`](show-index.html) | View index information for a table. 
