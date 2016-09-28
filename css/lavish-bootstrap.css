@@ -883,7 +883,7 @@ pre code {
 }
 @media (min-width: 544px) {
   .container {
-    max-width: 540px;
+    max-width: 100%;
   }
   .col-xsm-1,
   .col-xsm-2,
