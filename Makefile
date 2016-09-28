@@ -20,5 +20,5 @@ all: generate
 # next to an up-to-date copy of the main cockroach repo.
 .PHONY: generate
 generate:
-	cd generate && go run *.go
+	cd generate && go run main.go
 	cd generate && go run *.go funcs

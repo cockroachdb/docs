@@ -10,7 +10,18 @@ import (
 	"strings"
 
 	"github.com/cockroachdb/cockroach/sql/parser"
+	"github.com/spf13/cobra"
 )
+
+func init() {
+	cmdFuncs = &cobra.Command{
+		Use:   "funcs",
+		Short: "Generates functions.md and operators.md",
+		Run: func(cmd *cobra.Command, args []string) {
+			generateFuncs()
+		},
+	}
+}
 
 func generateFuncs() {
 	outDir := filepath.Join("..", "_includes", "sql")

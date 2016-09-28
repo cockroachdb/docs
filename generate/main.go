@@ -16,6 +16,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var cmdFuncs *cobra.Command
+
 func main() {
 	var (
 		inputPath  string
@@ -114,14 +116,6 @@ func main() {
 				log.Fatal(err)
 			}
 			write([]byte(s))
-		},
-	}
-
-	cmdFuncs := &cobra.Command{
-		Use:   "funcs",
-		Short: "Generates functions.md and operators.md",
-		Run: func(cmd *cobra.Command, args []string) {
-			generateFuncs()
 		},
 	}
 
@@ -374,7 +368,10 @@ func main() {
 	rootCmd.Flags().StringVar(&filter, "filter", "", "Filter statement names")
 	rootCmd.Flags().BoolVar(&printBNF, "bnf", false, "Print BNF only; don't generate railroad diagrams")
 
-	rootCmd.AddCommand(cmdBNF, cmdParse, cmdRR, cmdBody, cmdFuncs)
+	rootCmd.AddCommand(cmdBNF, cmdParse, cmdRR, cmdBody)
+	if cmdFuncs != nil {
+		rootCmd.AddCommand(cmdFuncs)
+	}
 	rootCmd.PersistentFlags().StringVar(&outputPath, "out", "", "Output path; stdout if empty.")
 	rootCmd.PersistentFlags().StringVar(&inputPath, "in", "", "Input path; stdin if empty.")
 	rootCmd.Execute()
