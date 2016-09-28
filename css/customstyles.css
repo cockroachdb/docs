@@ -521,7 +521,7 @@ header {
 #content {
   background: #fff;
   position: relative;
-  padding-top: 50px;
+  padding-top: 62px;
   width: 100%;
   z-index: 1000;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -534,12 +534,9 @@ header {
   overflow: auto; }
   #content #main-content .content-col {
     padding-bottom: 100px; }
-  @media screen and (min-width: 600px) {
-    #content {
-      padding-top: 60px; } }
   @media screen and (min-width: 768px) {
     #content {
-      padding-top: 75px; }
+      padding-top: 71px; }
       #content #main-content .content-col {
         padding-top: 25px; } }
   @media screen and (min-width: 992px) {

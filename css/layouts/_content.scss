@@ -1,7 +1,7 @@
 #content {
 	background: #fff;
 	position: relative;
-	padding-top: 50px;
+	padding-top: 62px;
 	
 	width: 100%;
 	z-index: 1000;
@@ -15,12 +15,8 @@
 		}
 	}
 
-	@include at-query($min, 600px){
-		padding-top: 60px;
-	}
-
 	@include at-query($min, $screen-sm){
-		padding-top: 75px;
+		padding-top: 71px;
 
 		#main-content {
 			.content-col {
