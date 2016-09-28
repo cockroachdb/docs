@@ -1,4 +1,5 @@
 @import "global/variables";
+@import "global/mixins";
 @import "global/fonts";
 
 body {
@@ -223,9 +224,6 @@ margin-top:10px;
 color: #248EC2;
 }
 
-footer {
-font-size: smaller;
-}
 
 /* FAQ page */
 #accordion .panel-heading {
@@ -264,20 +262,6 @@ span.projectTitle {
     font-family: 'Open Sans';
     /*font-family: Helvetica;*/
     /*font-weight: bold;*/
-}
-
-.footer {
-text-align: right;
-}
-
-.footerMeta {
-background-color: whitesmoke;
-padding: 10px;
-max-width: 250px;
-border-radius: 5px;
-margin-top: 50px;
-font-style:italic;
-font-size:12px;
 }
 
 @media (max-width: 767px) {
@@ -635,4 +619,5 @@ a.accordion-toggle {
 @import "syntax/sql";
 @import "syntax/syntax";
 @import "components/feedback-widget";
-@import "components/back-to-top"
+@import "components/back-to-top";
+@import "components/buttons";

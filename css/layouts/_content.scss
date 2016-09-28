@@ -1,12 +1,12 @@
 #content {
 	background: #fff;
 	position: relative;
-	padding-top: 50px;
+	padding-top: 62px;
 	
 	width: 100%;
 	z-index: 1000;
-	-webkit-transition: margin 0.4s;
-			transition: margin 0.4s;
+	@include groovy(all);
+	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	overflow: auto;
 
 	#main-content {
@@ -15,12 +15,8 @@
 		}
 	}
 
-	@include at-query($min, 600px){
-		padding-top: 60px;
-	}
-
 	@include at-query($min, $screen-sm){
-		padding-top: 75px;
+		padding-top: 71px;
 
 		#main-content {
 			.content-col {

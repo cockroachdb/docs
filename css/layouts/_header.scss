@@ -3,10 +3,34 @@ body.menu_open {
 
 	nav.mobile_expanded {
 		overflow-y:auto;
+		display: block;
 	}
+
 	header {
 		margin-left:-200px;
+
+		nav.mobile {
+			.hamburger {
+
+				span {
+					&:nth-child(1), &:nth-child(4) {
+					  top: 8px;
+					  width: 0%;
+					  left: 50%;
+					}
+
+					&:nth-child(2) {
+					  @include rotate(45deg);
+					}
+
+					&:nth-child(3) {
+					  @include rotate(-45deg);
+					}
+				}
+			}
+		}
 	}
+
 	#content {
 		margin-left:-200px;
 	}
@@ -17,19 +41,22 @@ nav.mobile_expanded {
 	right: 0;
 	top: 0;
 	z-index: 900;
-	width: 197px;
+	width: 200px;
 	overflow: auto;
 	visibility: hidden;
 
 	a {
-		border-bottom: 1px solid #cdcdcd;
-		@include avenir_bl(16px);
+		border-bottom: 1px solid $cl_border;
+		@include avenir_h(14px);
+		line-height: 19px;
 		text-transform: uppercase;
+		letter-spacing: 1.6px;
 		width: 100%;
 		float: left;
 		color: $cl_blue;
-		padding:18px 0 18px 20px;
+		padding:26px 0 30px 20px;
 		text-decoration: none;
+		@include groovy(color);
 	}
 	a:hover, a.current-menu-item {
 		color: $cl_green;
@@ -40,24 +67,30 @@ nav.mobile_expanded {
 }
 
 header {
-	height:50px;
 	width:100%;
-  	padding:8px 0 0;
-  	float:left;
-  	background:#fff;
-	-webkit-transition:margin 0.4s;
-    transition:margin 0.4s;
-    border-bottom:1px solid $cl_border;
+	float:left;
+	background:#fff;
+	padding: 15px;
+	border-bottom: 1px solid $cl_border;
+  @include groovy(all);
 
 	.logo {
-		width:160px;
-		float:left;
-		margin-left:8px;
+		width:130px;
 		margin-top:5px;
-		line-height: 23px;
+		float: left;
+		line-height: 19px;
 
-		@include at-query ($min, $screen-lg){
-			width: 209px;
+		@include at-query($min, $screen-sm){
+			width: 160px;
+		}
+
+		@include at-query($screen-sm, $screen-md){
+			margin-top: 5px;
+			line-height: 23px;
+		}
+
+		@include at-query($min, $screen-lg){
+			width:209px;
 		}
 	}
 
@@ -68,83 +101,69 @@ header {
 	nav.desktop {
 		display:none;
 
-		a {
-			@include avenir_bl(12px);
+		a:not(.button--header) {
+			@include avenir_h(12px);
 			color: $cl_blue;
+			letter-spacing: 1.3px;
 			text-transform:uppercase;
 			float:left;
 			margin:0 10px;
 			padding:0;
-			line-height:42px;
+			line-height: 40px;
 			text-decoration: none;
+			@include groovy(color);
 
-			@include at-query($min, $screen-md){
-				font-size: 14px;
+			&.current-menu-item, &:hover {
+				color: $cl_green;
+				text-decoration: none;
 			}
 		}
-		a.current-menu-item, a:hover {
-			color: $cl_green;
-			text-decoration: none;
-		}
-  	a.cl-btn {
-  		color:#fff;
-  	}
-  	a.cl-btn:hover {
-  		color: $cl_green;
-  	}
-  	a.github {
-  		margin-right:15px;
-			padding: 0px 13px;
-			line-height: 28px;
-			margin-top:4px;
-
-			@include at-query($min, $screen-md){
-				margin-right: 0;
-				padding:0 29px;
-				line-height:39px;
-				margin-top: 0;
-			}
-  	}
-
-  	@include at-query($min, $screen-sm){
-			display: inline-block;
-			float: right;
+		
+		@include at-query($min, $screen-sm){
+			display:inline-block;
+			float:right;
 		}
 	}
 
 	nav.mobile {
 		float:right;
-
-  	a.cl-btn {
-  		float:left;
-  		margin-right:0;
-  	}
-  	
-  	a.github {
-		margin-right:15px;	  		
-		padding: 1px 13px 0;
-		line-height: 28px;
-		margin-top:0px;
-		text-transform: uppercase;
-		font-size: 11px;
-  	}
   	
   	.hamburger {
   		width:21px;
+  		height: 20px;
   		float:right;
   		margin-right:6px;
   		margin-top:6px;
-  		padding-bottom:3px;
-			border-bottom:4px solid $cl_green;
+  		position: relative;
+  		@include rotate(0deg);
+  	 	@include groovy(all);
 
-  		.hamburger_inner {
-  			border:4px solid $cl_green;
-  			border-right:none;
-  			border-left:none;
-  			height:11px;
-  			width:100%;
-  		}
-  	}
+  	 	span {
+  	 		display: block;
+  	 		position: absolute;
+  	 		background-color: $cl_green;
+  	 		@include rounded(4px);
+  	 		height: 4px;
+  	 		width: 100%;
+  	 		opacity: 1;
+  	 		left: 0;
+  	 		@include rotate(0deg);
+  	 		@include groovy(all);
+
+  	 		&:nth-child(1) {
+		  		top: 0px;
+				}
+		 		
+		 		&:nth-child(2), &:nth-child(3) {
+		  		top: 8px;
+				}
+
+		 		&:nth-child(4) {
+		  		top: 16px;
+				}
+			}
+		}
+
   	.hamburger:hover {
   		border-color: $cl_green_hover;
 
@@ -156,15 +175,5 @@ header {
   	@include at-query($min, $screen-sm){
   		display: none;
   	}
-	}
-
-	@include at-query($min, 600px){
-		height:60px;
-	  padding:12px 0 0;
-	}
-
-	@include at-query($min, $screen-sm){
-		height:75px;
-		padding:18px 0;
 	}
 }

@@ -2,79 +2,25 @@
 $cl_green: #46a417;
 $cl_blue: #142848;
 $cl_gray: #F7F7F7;
+
 $cl_gray_text: #959797;
-$cl_green_hover: #37880f;
+
 $cl_blue_hover: #0e2b48;
-$cl_light_green: #F0FFE8;
-$cl_light_blue: #ECF7FF;
 $cl_blue_border: #7FBEEB;
+
 $cl_border: #D9DBE2;
 
-$screen-sm: 768px;
-$screen-md: 992px;
-$screen-lg: 1200px;
+$cl_green_hover: #37880f;
+$cl_green_dark: #4EB21D;
+$cl_green_light: #F0FFE8;
+$cl_green_pale: #FAFDF6;
+$cl_alternate_green: #41A600;
 
-//Mixins*
-@mixin rounded($val){ 
-	-webkit-border-radius: $val;
-	   -moz-border-radius: $val;
-	        border-radius: $val;  
-}
+$cl_blue_light: #ECF7FF;
+$cl_blue_pale: #A9AEC6;
+$cl_alternate_blue: #16274A;
 
-@mixin border-top-radius($radius) {
-  border-top-right-radius: $radius;
-   border-top-left-radius: $radius;
-}
-@mixin border-right-radius($radius) {
-  border-bottom-right-radius: $radius;
-     border-top-right-radius: $radius;
-}
-@mixin border-bottom-radius($radius) {
-  border-bottom-right-radius: $radius;
-   border-bottom-left-radius: $radius;
-}
-@mixin border-left-radius($radius) {
-  border-bottom-left-radius: $radius;
-     border-top-left-radius: $radius;
-}
-
-@mixin translate($x, $y) {
-	-webkit-transform: translate($x, $y);
-	    -ms-transform: translate($x, $y);
-	     -o-transform: translate($x, $y);
-	        transform: translate($x, $y);
-}
-
-@mixin groovy($opt){
-  -webkit-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
-     -moz-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
-       -o-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
-          transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
-}
-
-/*============================================================================
-  Dependency-free breakpoint mixin
-    - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
-    - Usage docs: http://shopify.github.io/Timber/#sass-mixins
-==============================================================================*/
-$min: min-width;
-$max: max-width;
-@mixin at-query ($constraint_, $viewport1_, $viewport2_:null) {
- $constraint: $constraint_; $viewport1: $viewport1_; $viewport2: $viewport2_;
-  @if type-of($constraint_) == number {
-    $viewport1 : $constraint_; $viewport2 : $viewport1_; $constraint : null;
-  }
-  @if $constraint == $min {
-    @media screen and ($min: $viewport1) {
-      @content;
-    }
-  } @else if $constraint == $max {
-    @media screen and ($max: $viewport1) {
-      @content;
-    }
-  } @else {
-    @media screen and ($min: $viewport1) and ($max: $viewport2) {
-      @content;
-    }
-  }
-}
+$screen-xsm: 544px;
+$screen-sm:  768px;
+$screen-md:  992px;
+$screen-lg:  1200px;
