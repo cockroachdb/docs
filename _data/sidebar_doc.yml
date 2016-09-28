@@ -97,9 +97,6 @@ entries:
                 - title: <code>RENAME TABLE</code>
                   url: /rename-table.html
 
-                - title: <code>ALTER TABLE</code>
-                  url: /alter-table.html
-
                 - title: <code>RELEASE SAVEPOINT</code>
                   url: /release-savepoint.html
 
