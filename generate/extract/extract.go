@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/cockroachdb/docs/generate/yacc"
@@ -22,10 +23,14 @@ const (
 var (
 	reIsExpr  = regexp.MustCompile("^[a-z_]+$")
 	reIsIdent = regexp.MustCompile("^[A-Z_0-9]+$")
+	rrLock    sync.Mutex
 )
 
 // generates the RR XHTML from a EBNF file
 func GenerateRR(bnf []byte) ([]byte, error) {
+	rrLock.Lock()
+	defer rrLock.Unlock()
+
 	v := url.Values{}
 	v.Add("color", "#ffffff")
 	v.Add("frame", "diagram")
@@ -214,9 +219,8 @@ type Grammar map[string]Productions
 
 // ExtractProduction extracts the named statement and all its dependencies,
 // in order, into a BNF file. If descend is false, only the named statement
-// is extracted. Inline contains a set of names to include directly where
-// they are used.
-func (g Grammar) ExtractProduction(name string, descend bool, match, exclude *regexp.Regexp) ([]byte, error) {
+// is extracted.
+func (g Grammar) ExtractProduction(name string, descend, nosplit bool, match, exclude []*regexp.Regexp) ([]byte, error) {
 	names := []Token{Token(name)}
 	b := new(bytes.Buffer)
 	done := map[Token]bool{Token(name): true}
@@ -236,7 +240,7 @@ func (g Grammar) ExtractProduction(name string, descend bool, match, exclude *re
 			}
 		})
 		fmt.Fprintf(b, "%s ::=\n", n)
-		b.WriteString(prods.Match(match, exclude).String())
+		b.WriteString(prods.Match(nosplit, match, exclude))
 	}
 	return b.Bytes(), nil
 }
@@ -382,18 +386,44 @@ func WalkToken(e Expression, f func(Token)) {
 
 type Productions []Expression
 
-func (p Productions) Match(match, exclude *regexp.Regexp) Productions {
-	var n []Expression
+func (p Productions) Match(nosplit bool, match, exclude []*regexp.Regexp) string {
+	b := new(bytes.Buffer)
+	first := true
 	for _, e := range p {
-		s := e.String()
-		if exclude != nil && exclude.MatchString(s) {
+		if nosplit {
+			b.WriteString("\t")
+			if !first {
+				b.WriteString("| ")
+			} else {
+				first = false
+			}
+			b.WriteString(e.String())
+			b.WriteString("\n")
 			continue
 		}
-		if match == nil || match.MatchString(s) {
-			n = append(n, e)
+	Loop:
+		for _, s := range split(e) {
+			for _, ex := range exclude {
+				if ex.MatchString(s) {
+					continue Loop
+				}
+			}
+			for _, ma := range match {
+				if !ma.MatchString(s) {
+					continue Loop
+				}
+			}
+			b.WriteString("\t")
+			if !first {
+				b.WriteString("| ")
+			} else {
+				first = false
+			}
+			b.WriteString(s)
+			b.WriteString("\n")
 		}
 	}
-	return n
+	return b.String()
 }
 
 func (p Productions) String() string {
@@ -438,7 +468,7 @@ func (l Literal) String() string {
 	return fmt.Sprintf("'%s'", string(l))
 }
 
-type Group Productions
+type Group []Expression
 
 func (g Group) String() string {
 	b := new(bytes.Buffer)
@@ -465,4 +495,40 @@ type Comment string
 
 func (c Comment) String() string {
 	return string(c)
+}
+
+func split(e Expression) []string {
+	appendRet := func(cur, add []string) []string {
+		if len(cur) == 0 {
+			if len(add) == 0 {
+				return []string{""}
+			}
+			return add
+		}
+		var next []string
+		for _, r := range cur {
+			for _, s := range add {
+				next = append(next, r+" "+s)
+			}
+		}
+		return next
+	}
+	var ret []string
+	switch e := e.(type) {
+	case Sequence:
+		for _, v := range e {
+			ret = appendRet(ret, split(v))
+		}
+	case Group:
+		var next []string
+		for _, v := range e {
+			next = append(next, appendRet(ret, split(v))...)
+		}
+		ret = next
+	case Literal, Comment, Repeat, Token:
+		ret = append(ret, e.String())
+	default:
+		panic(fmt.Errorf("unknown type: %T", e))
+	}
+	return ret
 }
