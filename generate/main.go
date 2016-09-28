@@ -192,7 +192,7 @@ func main() {
 				{name: "drop_index", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'INDEX'"), inline: []string{"opt_drop_behavior", "table_name_with_index_list", "table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
 				{name: "drop_stmt", inline: []string{"table_name_list", "any_name", "qualified_name_list", "qualified_name"}},
 				{name: "drop_table", stmt: "drop_stmt", match: regexp.MustCompile("'DROP' 'TABLE'")},
-				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
+				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}, replace: map[string]string{"select_stmt | create_stmt | drop_stmt | alter_table_stmt | insert_stmt | update_stmt | delete_stmt": "target_statement", "( explain_option_name ( ',' explain_option_name )* )":"( 'PLAN' | 'TYPES' | 'VERBOSE' )"}, unlink: []string{"target_statement"}},
 				{name: "family_def", inline: []string{"opt_name", "name_list"}},
 				{name: "grant_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list", "table_pattern_list", "name_list"}, replace:map[string]string{"table_pattern": "table_name", "'DATABASE' ( name ( ',' name )* )": "'DATABASE' ( database_name ( ',' database_name )* )","'TO' ( name ( ',' name )* )": "'TO' ( user_name ( ',' user_name )* )"}, unlink: []string{"table_name", "database_name", "user_name"}},
 				{name: "index_def", inline: []string{"opt_storing", "storing", "index_params", "opt_name"}},
