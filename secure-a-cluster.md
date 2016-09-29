@@ -27,7 +27,7 @@ $ cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.ke
 ## Step 2.  Restart the first node
 
 ~~~ shell
-$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-addr=localhost --background
+$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-host=localhost --background
 
 build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:     https://ROACHs-MBP:8080
@@ -39,19 +39,19 @@ store[0]:  path=cockroach-data
 This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions: 
 
 - The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
-- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-addr` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
+- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 3.  Restart additional nodes
 
 ~~~ shell
-$ cockroach start --store=node2 --port=26258 --http-port=8081 --http-addr=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
-$ cockroach start --store=node3 --port=26259 --http-port=8082 --http-addr=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+$ cockroach start --store=node2 --port=26258 --http-port=8081 --http-host=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+$ cockroach start --store=node3 --port=26259 --http-port=8082 --http-host=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
 ~~~
 
 These commands restart additional nodes with their existing data, but securely. The commands are the same as before with the following additions:
 
 - The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
-- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-addr` flags are therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
+- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flags are therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 4.  Restart the [built-in SQL client](use-the-built-in-sql-client.html) as an interactive shell
 
