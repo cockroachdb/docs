@@ -303,8 +303,33 @@ entries:
         - title: CockroachDB Architecture
           url: /cockroachdb-architecture.html
 
-        - title: CockroachDB Features
-          url: /cockroachdb-features.html
+          thirdlevel:
+            - title: CockroachDB Features
+              thirdlevelitems:
+
+                - title: Simplified Deployment
+                  url: /simplified-deployment.html
+
+                - title: Strong Consistency
+                  url: /strong-consistency.html
+
+                - title: SQL
+                  url: /sql.html
+                  
+                - title: Distributed Transactions
+                  url: /distributed-transactions.html
+
+                - title: Automated Scaling & Repair
+                  url: /automated-scaling-and-repair.html
+
+                - title: High Availability
+                  url: /high-availability.html
+
+                - title: Open Source
+                  url: /open-source.html
+
+                - title: Go Implementation
+                  url: /go-implementation.html
 
     - title: Contribute
       items:
