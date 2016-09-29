@@ -82,7 +82,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://d3a3ys8r4slo6p.cloudfront.net/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \
@@ -110,7 +110,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://d3a3ys8r4slo6p.cloudfront.net/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \
