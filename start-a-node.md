@@ -27,14 +27,16 @@ The `start` command supports the following flags, as well as [logging flags](coc
 
 Flag | Description
 -----|-----------
+`--advertise-host` | The hostname or IP address to advertise to other CockroachDB nodes. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.<br><br>When this flag is not set, the node advertises the address in the `--host` flag.
 `--attrs` | Arbitrary strings, separated by colons, relating to node-level attributes such as topography or machine capability. These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html) for full details.<br><br>Topography might include datacenter designation (e.g., `us-west-1a`, `us-west-1b`, `us-east-1c`). Machine capabilities might include specialized hardware or number of cores (e.g., `gpu`, `x16c`). The relative geographic proximity of two nodes is inferred from the common prefix of the attributes list, so topographic attributes should be specified first and in the same order for all nodes, for example: <br><br> `--attrs=us-west-1b:gpu`
 `--background` | Set this to start the node in the background. This is better than appending `&` to the command because control is returned to the shell only once the node is ready to accept requests.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be in any bytes-based unit, for example: <br><br>`--cache=1000000000  -> 1000000000 bytes`<br>`--cache=1GB         -> 1000000000 bytes`<br>`--cache=1GiB        -> 1073741824 bytes` <br><br>**Default:** Cache size is limited to 25% of available memory, calculated when the node starts.
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
 `--cert` | The path to the [node certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CERT`
-`--host` | The IP address or hostname to listen on for internal and client communication. The node also advertises itself to other nodes using this address. Therefore, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>**Defaults:** When starting a node without `--insecure` and without cert flags (i.e., a local cluster), the node listens on `localhost` only and cannot be changed. When starting a node with `--insecure` or with cert flags (i.e., a distributed cluster), the node listens on all interfaces by default but this flag can be set to listen on an external address. 
+`--host` | The hostname or IP address to listen on for intra-cluster and client communication. The node will also advertise itself to other nodes using this address only if `--advertise-host` is not specified; in this case, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>**Defaults:** When starting a node without `--insecure` and without cert flags (i.e., a local cluster), the node listens on `localhost` only and cannot be changed. When starting a node with `--insecure` or with cert flags (i.e., a distributed cluster), the node listens on all interfaces by default but this flag can be set to listen on an external address. 
+`--http-addr` | **Deprecated.** Use `--http-host` instead.
+`--http-host` | The hostname or IP address to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
 `--http-port` | The port to bind to for Admin UI HTTP requests. <br><br>**Default:** `8080`
-`--http-addr` | The IP address or hostname to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--join`<br>`-j` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node.<br><br>Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list, using multiple `--join` flags, or using a combination of these approaches, for example: <br><br>`--join=localhost:1234,localhost:2345`<br>`--join=localhost:1234 --join=localhost:2345`<br>`--join=localhost:1234,localhost:2345 --join=localhost:3456`
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
@@ -122,9 +124,9 @@ $ cockroach start --store=node2 --port=26258 --http-port=8081 --join=localhost:2
 $ cockroach start --store=node3 --port=26259 --http-port=8082 --join=localhost:26257
 
 # Secure:
-$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-addr=localhost --background
-$ cockroach start --store=node2 --port=26258 --http-port=8081 --http-addr=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
-$ cockroach start --store=node3 --port=26259 --http-port=8082 --http-addr=localhost --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+$ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-host=localhost --background
+$ cockroach start --store=node2 --port=26258 --http-host=localhost --http-port=8081 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
+$ cockroach start --store=node3 --port=26259 --http-host=localhost --http-port=8082 --join=localhost:26257 --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --background
 ~~~
 
 ### Start a distributed cluster
@@ -146,9 +148,9 @@ $ cockroach start --insecure --host=<node2-hostname> --join=<node1-hostname>:262
 $ cockroach start --insecure --host=<node3-hostname> --join=<node1-hostname>:26257
 
 # Secure:
-$ cockroach start --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname> --http-addr=<private-address>
-$ cockroach start --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257
-$ cockroach start --ca-cert=ca.cert --cert=node3.cert --key=node3.key --host=<node3-hostname> --http-addr=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node3.cert --key=node3.key
+$ cockroach start --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=<node1-hostname> --http-host=<private-address>
+$ cockroach start --ca-cert=ca.cert --cert=node2.cert --key=node2.key --host=<node2-hostname> --http-host=<private-address> --join=<node1-hostname>:26257
+$ cockroach start --ca-cert=ca.cert --cert=node3.cert --key=node3.key --host=<node3-hostname> --http-host=<private-address> --join=<node1-hostname>:26257 --ca-cert=ca.cert --cert=node3.cert --key=node3.key
 ~~~
 
 ## See Also

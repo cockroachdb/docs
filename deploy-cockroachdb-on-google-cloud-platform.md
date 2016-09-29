@@ -20,7 +20,7 @@ You must have [SSH access](https://cloud.google.com/compute/docs/instances/conne
 Decide how you want to access your Admin UI:
 
 - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented here)*
-- Using an SSH tunnel, which requires you to use `--http-addr=localhost` when starting your nodes
+- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
@@ -82,7 +82,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://d3a3ys8r4slo6p.cloudfront.net/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \
@@ -110,7 +110,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://d3a3ys8r4slo6p.cloudfront.net/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \

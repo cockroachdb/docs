@@ -20,7 +20,7 @@ You must have SSH access ([key pairs](http://docs.aws.amazon.com/AWSEC2/latest/U
 - All of the instances which you want to run CockroachDB should be members of the same Security Group.
 - Decide how you want to access your Admin UI:
 	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented here)*
-	- Using an SSH tunnel, which requires you to use `--http-addr=localhost` when starting your nodes
+	- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
