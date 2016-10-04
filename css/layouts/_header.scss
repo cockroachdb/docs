@@ -78,14 +78,14 @@ header {
 		width:130px;
 		margin-top:5px;
 		float: left;
-		line-height: 19px;
+		line-height: 20px;
+		font-size: 0;
 
 		@include at-query($min, $screen-sm){
 			width: 160px;
 		}
 
 		@include at-query($screen-sm, $screen-md){
-			margin-top: 5px;
 			line-height: 23px;
 		}
 
@@ -132,8 +132,8 @@ header {
   		width:21px;
   		height: 20px;
   		float:right;
-  		margin-right:6px;
-  		margin-top:6px;
+  		margin-right:5px;
+  		margin-top:5px;
   		position: relative;
   		@include rotate(0deg);
   	 	@include groovy(all);
