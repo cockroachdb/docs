@@ -87,7 +87,6 @@ $(document).ready(function(){
 </div>
 
 <div id="download-the-binary" class="install-option">
-<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
   <h2>Download the Binary</h2>
 
   <ol>

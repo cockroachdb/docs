@@ -4,111 +4,54 @@
     - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
     - Usage docs: http://shopify.github.io/Timber/#sass-mixins
 ==============================================================================*/
-@import url("//hello.myfonts.net/count/2e0219");
-@font-face {
-  font-family: 'Adelle-Bold';
-  src: url("../fonts/2E0219_0_0.eot");
-  src: url("../fonts/2E0219_0_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_0_0.woff2") format("woff2"), url("../fonts/2E0219_0_0.woff") format("woff"), url("../fonts/2E0219_0_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-BoldItalic';
-  src: url("../fonts/2E0219_1_0.eot");
-  src: url("../fonts/2E0219_1_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_1_0.woff2") format("woff2"), url("../fonts/2E0219_1_0.woff") format("woff"), url("../fonts/2E0219_1_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ExtraBold';
-  src: url("../fonts/2E0219_2_0.eot");
-  src: url("../fonts/2E0219_2_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_2_0.woff2") format("woff2"), url("../fonts/2E0219_2_0.woff") format("woff"), url("../fonts/2E0219_2_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ExtraBoldItalic';
-  src: url("../fonts/2E0219_3_0.eot");
-  src: url("../fonts/2E0219_3_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_3_0.woff2") format("woff2"), url("../fonts/2E0219_3_0.woff") format("woff"), url("../fonts/2E0219_3_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Heavy';
-  src: url("../fonts/2E0219_4_0.eot");
-  src: url("../fonts/2E0219_4_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_4_0.woff2") format("woff2"), url("../fonts/2E0219_4_0.woff") format("woff"), url("../fonts/2E0219_4_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-HeavyItalic';
-  src: url("../fonts/2E0219_5_0.eot");
-  src: url("../fonts/2E0219_5_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_5_0.woff2") format("woff2"), url("../fonts/2E0219_5_0.woff") format("woff"), url("../fonts/2E0219_5_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Italic';
-  src: url("../fonts/2E0219_6_0.eot");
-  src: url("../fonts/2E0219_6_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_6_0.woff2") format("woff2"), url("../fonts/2E0219_6_0.woff") format("woff"), url("../fonts/2E0219_6_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Light';
-  src: url("../fonts/2E0219_7_0.eot");
-  src: url("../fonts/2E0219_7_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_7_0.woff2") format("woff2"), url("../fonts/2E0219_7_0.woff") format("woff"), url("../fonts/2E0219_7_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-LightItalic';
-  src: url("../fonts/2E0219_8_0.eot");
-  src: url("../fonts/2E0219_8_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_8_0.woff2") format("woff2"), url("../fonts/2E0219_8_0.woff") format("woff"), url("../fonts/2E0219_8_0.ttf") format("truetype"); }
 @font-face {
   font-family: 'Adelle-Regular';
-  src: url("../fonts/2E0219_9_0.eot");
-  src: url("../fonts/2E0219_9_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_9_0.woff2") format("woff2"), url("../fonts/2E0219_9_0.woff") format("woff"), url("../fonts/2E0219_9_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-SemiBold';
-  src: url("../fonts/2E0219_A_0.eot");
-  src: url("../fonts/2E0219_A_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_A_0.woff2") format("woff2"), url("../fonts/2E0219_A_0.woff") format("woff"), url("../fonts/2E0219_A_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-SemiBoldItalic';
-  src: url("../fonts/2E0219_B_0.eot");
-  src: url("../fonts/2E0219_B_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_B_0.woff2") format("woff2"), url("../fonts/2E0219_B_0.woff") format("woff"), url("../fonts/2E0219_B_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Thin';
-  src: url("../fonts/2E0219_C_0.eot");
-  src: url("../fonts/2E0219_C_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_C_0.woff2") format("woff2"), url("../fonts/2E0219_C_0.woff") format("woff"), url("../fonts/2E0219_C_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ThinItalic';
-  src: url("../fonts/2E0219_D_0.eot");
-  src: url("../fonts/2E0219_D_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_D_0.woff2") format("woff2"), url("../fonts/2E0219_D_0.woff") format("woff"), url("../fonts/2E0219_D_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Book';
-  src: url("../fonts/2E0219_E_0.eot");
-  src: url("../fonts/2E0219_E_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_E_0.woff2") format("woff2"), url("../fonts/2E0219_E_0.woff") format("woff"), url("../fonts/2E0219_E_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-MediumOblique';
-  src: url("../fonts/2E0219_F_0.eot");
-  src: url("../fonts/2E0219_F_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_F_0.woff2") format("woff2"), url("../fonts/2E0219_F_0.woff") format("woff"), url("../fonts/2E0219_F_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-BookOblique';
-  src: url("../fonts/2E0219_10_0.eot");
-  src: url("../fonts/2E0219_10_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_10_0.woff2") format("woff2"), url("../fonts/2E0219_10_0.woff") format("woff"), url("../fonts/2E0219_10_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Medium';
-  src: url("../fonts/2E0219_11_0.eot");
-  src: url("../fonts/2E0219_11_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_11_0.woff2") format("woff2"), url("../fonts/2E0219_11_0.woff") format("woff"), url("../fonts/2E0219_11_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-BlackOblique';
-  src: url("../fonts/2E0219_12_0.eot");
-  src: url("../fonts/2E0219_12_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_12_0.woff2") format("woff2"), url("../fonts/2E0219_12_0.woff") format("woff"), url("../fonts/2E0219_12_0.ttf") format("truetype"); }
+  src: url("../fonts/Adelle-Regular.eot");
+  src: url("../fonts/Adelle-Regular.woff2") format("woff2"), url("../fonts/Adelle-Regular.woff") format("woff"), url("../fonts/Adelle-Regular.ttf") format("truetype"), url("../fonts/Adelle-Regular.svg#Adelle-Regular") format("svg"), url("../fonts/Adelle-Regular.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Black';
-  src: url("../fonts/2E0219_13_0.eot");
-  src: url("../fonts/2E0219_13_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_13_0.woff2") format("woff2"), url("../fonts/2E0219_13_0.woff") format("woff"), url("../fonts/2E0219_13_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Black.eot");
+  src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Light';
-  src: url("../fonts/2E0219_14_0.eot");
-  src: url("../fonts/2E0219_14_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_14_0.woff2") format("woff2"), url("../fonts/2E0219_14_0.woff") format("woff"), url("../fonts/2E0219_14_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-LightOblique';
-  src: url("../fonts/2E0219_15_0.eot");
-  src: url("../fonts/2E0219_15_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_15_0.woff2") format("woff2"), url("../fonts/2E0219_15_0.woff") format("woff"), url("../fonts/2E0219_15_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Oblique';
-  src: url("../fonts/2E0219_16_0.eot");
-  src: url("../fonts/2E0219_16_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_16_0.woff2") format("woff2"), url("../fonts/2E0219_16_0.woff") format("woff"), url("../fonts/2E0219_16_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Roman';
-  src: url("../fonts/2E0219_17_0.eot");
-  src: url("../fonts/2E0219_17_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_17_0.woff2") format("woff2"), url("../fonts/2E0219_17_0.woff") format("woff"), url("../fonts/2E0219_17_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-HeavyOblique';
-  src: url("../fonts/2E0219_18_0.eot");
-  src: url("../fonts/2E0219_18_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_18_0.woff2") format("woff2"), url("../fonts/2E0219_18_0.woff") format("woff"), url("../fonts/2E0219_18_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Light.eot");
+  src: url("../fonts/AvenirLTStd-Light.woff2") format("woff2"), url("../fonts/AvenirLTStd-Light.woff") format("woff"), url("../fonts/AvenirLTStd-Light.ttf") format("truetype"), url("../fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light") format("svg"), url("../fonts/AvenirLTStd-Light.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Heavy';
-  src: url("../fonts/2E0219_19_0.eot");
-  src: url("../fonts/2E0219_19_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_19_0.woff2") format("woff2"), url("../fonts/2E0219_19_0.woff") format("woff"), url("../fonts/2E0219_19_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Heavy.eot");
+  src: url("../fonts/AvenirLTStd-Heavy.woff2") format("woff2"), url("../fonts/AvenirLTStd-Heavy.woff") format("woff"), url("../fonts/AvenirLTStd-Heavy.ttf") format("truetype"), url("../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy") format("svg"), url("../fonts/AvenirLTStd-Heavy.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Book';
+  src: url("../fonts/AvenirLTStd-Book.eot");
+  src: url("../fonts/AvenirLTStd-Book.woff2") format("woff2"), url("../fonts/AvenirLTStd-Book.woff") format("woff"), url("../fonts/AvenirLTStd-Book.ttf") format("truetype"), url("../fonts/AvenirLTStd-Book.svg#AvenirLTStd-Book") format("svg"), url("../fonts/AvenirLTStd-Book.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Roman';
+  src: url("../fonts/AvenirLTStd-Roman.eot");
+  src: url("../fonts/AvenirLTStd-Roman.woff2") format("woff2"), url("../fonts/AvenirLTStd-Roman.woff") format("woff"), url("../fonts/AvenirLTStd-Roman.ttf") format("truetype"), url("../fonts/AvenirLTStd-Roman.svg#AvenirLTStd-Roman") format("svg"), url("../fonts/AvenirLTStd-Roman.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Oblique';
+  src: url("../fonts/AvenirLTStd-Oblique.eot");
+  src: url("../fonts/AvenirLTStd-Oblique.woff2") format("woff2"), url("../fonts/AvenirLTStd-Oblique.woff") format("woff"), url("../fonts/AvenirLTStd-Oblique.ttf") format("truetype"), url("../fonts/AvenirLTStd-Oblique.svg#AvenirLTStd-Oblique") format("svg"), url("../fonts/AvenirLTStd-Oblique.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Medium';
+  src: url("../fonts/AvenirLTStd-Medium.eot");
+  src: url("../fonts/AvenirLTStd-Medium.woff2") format("woff2"), url("../fonts/AvenirLTStd-Medium.woff") format("woff"), url("../fonts/AvenirLTStd-Medium.ttf") format("truetype"), url("../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium") format("svg"), url("../fonts/AvenirLTStd-Medium.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 body {
   color: #142848;
   font-family: 'AvenirLTStd-Book', serif;
@@ -214,7 +157,7 @@ nav.mobile_expanded {
   overflow: auto;
   visibility: hidden; }
   nav.mobile_expanded a {
-    border-bottom: 1px solid #d9dbe2;
+    border-bottom: 1px solid #D9DBE2;
     font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 14px;
     font-weight: normal;
@@ -242,7 +185,7 @@ header {
   float: left;
   background: #fff;
   padding: 15px;
-  border-bottom: 1px solid #d9dbe2;
+  border-bottom: 1px solid #D9DBE2;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -343,8 +286,8 @@ header {
 
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #d9dbe2; }
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #D9DBE2; }
   @media screen and (min-width: 768px) {
     .col-sidebar {
       background-color: transparent;
@@ -427,7 +370,7 @@ header {
       color: #46a417; }
 
 .roach {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   margin-bottom: 20px;
   padding: 10px;
   text-align: center;
@@ -456,7 +399,7 @@ header {
     line-height: 20px; }
   .roach:hover {
     border-color: #46a417;
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   .roach.full-roach .catrina {
     height: 120px; }
   @media screen and (min-width: 992px) {
@@ -469,7 +412,7 @@ header {
         height: auto; } }
 
 .blog-post {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   padding: 10px 20px;
   border-bottom: none;
   overflow: auto; }
@@ -493,9 +436,9 @@ header {
     .blog-post .blog-meta .meta-emphasis {
       color: #46a417; }
   .blog-post.last-entry {
-    border-bottom: 1px solid #d9dbe2; }
+    border-bottom: 1px solid #D9DBE2; }
   .blog-post:hover {
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   @media screen and (min-width: 768px) {
     .blog-post .blog-title {
       float: left;
@@ -543,7 +486,7 @@ header {
     #content #main-content {
       min-height: 625px; }
       #content #main-content .content-col {
-        border-left: 1px solid #d9dbe2;
+        border-left: 1px solid #D9DBE2;
         min-height: 625px;
         padding-left: 55px; } }
 
@@ -676,7 +619,7 @@ section.footer {
         width: calc(100% - 110px);
         float: left; }
         section.footer #hubspot-form .hbspt-form .hs_email:before {
-          background-image: url("https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png");
+          background-image: url("../images/mailinglist-icon.png");
           background-size: 19px 12px;
           background-repeat: no-repeat;
           width: 19px;
@@ -699,7 +642,7 @@ section.footer {
         border-top-left-radius: 38px;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #a9aec6;
+        border: 1px solid #A9AEC6;
         border-right-width: 1px;
         color: #FFFFFF; }
         section.footer #hubspot-form .hbspt-form .hs-input::-webkit-input-placeholder {
@@ -737,7 +680,7 @@ section.footer {
         border-bottom-right-radius: 38px;
         border-top-right-radius: 38px;
         float: right;
-        border: 1px solid #a9aec6;
+        border: 1px solid #A9AEC6;
         border-left-width: 0px;
         position: relative;
         outline: 0;
@@ -765,7 +708,7 @@ section.footer {
         color: #FFFFFF;
         position: relative; }
         section.footer #hubspot-form .hbspt-form .submitted-message:before {
-          background-image: url("https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png");
+          background-image: url("../images/mailinglist-icon.png");
           background-size: 19px 12px;
           background-repeat: no-repeat;
           width: 19px;
@@ -1361,14 +1304,14 @@ a.accordion-toggle {
   color: #f0ad4e; }
 
 .bs-callout-info {
-  background-color: #ecf7ff;
-  border-left-color: #7fbeeb; }
+  background-color: #ECF7FF;
+  border-left-color: #7FBEEB; }
 
 .bs-callout-info h4 {
   color: #5bc0de; }
 
 #toc > ul {
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   padding: 20px 30px;
   margin: 0;
   width: 100%; }
@@ -2006,11 +1949,11 @@ polygon.regexp {
 
 /* Literal.String */
 .highlight .na {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Attribute */
 .highlight .nb {
-  color: #0086b3; }
+  color: #0086B3; }
 
 /* Name.Builtin */
 .highlight .nc {
@@ -2019,11 +1962,11 @@ polygon.regexp {
 
 /* Name.Class */
 .highlight .no {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Constant */
 .highlight .ni {
-  color: purple; }
+  color: #800080; }
 
 /* Name.Entity */
 .highlight .ne {
@@ -2040,11 +1983,11 @@ polygon.regexp {
 
 /* Name.Namespace */
 .highlight .nt {
-  color: navy; }
+  color: #000080; }
 
 /* Name.Tag */
 .highlight .nv {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable */
 /*.highlight .ow { font-weight: bold } /* Operator.Word */
@@ -2069,35 +2012,35 @@ polygon.regexp {
 
 /* Literal.Number.Oct */
 .highlight .sb {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Backtick */
 .highlight .sc {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Char */
 .highlight .sd {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Doc */
 .highlight .s2 {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Double */
 .highlight .se {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Escape */
 .highlight .sh {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Heredoc */
 .highlight .si {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Interpol */
 .highlight .sx {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Other */
 .highlight .sr {
@@ -2117,15 +2060,15 @@ polygon.regexp {
 
 /* Name.Builtin.Pseudo */
 .highlight .vc {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Class */
 .highlight .vg {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Global */
 .highlight .vi {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Instance */
 .highlight .il {
@@ -2136,7 +2079,7 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   font-size: 0; }
   #feedback-prompt form {
     display: inline-block;
@@ -2160,7 +2103,7 @@ polygon.regexp {
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   color: #142848 !important;
   font-family: 'AvenirLTStd-Book', serif;
   font-size: 16px;
@@ -2662,7 +2605,7 @@ img.mfp-img {
   line-height: 12px;
   color: #FFFFFF;
   padding: 18px 25px 16px;
-  background-color: #41a600; }
+  background-color: #41A600; }
   .button--primary:focus {
     color: #FFFFFF; }
   .button--primary:hover {
@@ -2733,3 +2676,5 @@ img.mfp-img {
       line-height: 12px;
       margin-left: 10px;
       padding: 12px 30px; } }
+
+/*# sourceMappingURL=customstyles.css.map */

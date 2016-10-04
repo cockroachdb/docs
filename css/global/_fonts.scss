@@ -1,57 +1,106 @@
-@import url("//hello.myfonts.net/count/2e0219");
+@font-face {
+  font-family: 'Adelle-Regular';
+  src: url('../fonts/Adelle-Regular.eot');
+  src: url('../fonts/Adelle-Regular.woff2') format('woff2'),
+       url('../fonts/Adelle-Regular.woff') format('woff'),
+       url('../fonts/Adelle-Regular.ttf') format('truetype'),
+       url('../fonts/Adelle-Regular.svg#Adelle-Regular') format('svg'),
+       url('../fonts/Adelle-Regular.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-@font-face {font-family: 'Adelle-Bold';src: url('../fonts/2E0219_0_0.eot');src: url('../fonts/2E0219_0_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_0_0.woff2') format('woff2'),url('../fonts/2E0219_0_0.woff') format('woff'),url('../fonts/2E0219_0_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-BoldItalic';src: url('../fonts/2E0219_1_0.eot');src: url('../fonts/2E0219_1_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_1_0.woff2') format('woff2'),url('../fonts/2E0219_1_0.woff') format('woff'),url('../fonts/2E0219_1_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-ExtraBold';src: url('../fonts/2E0219_2_0.eot');src: url('../fonts/2E0219_2_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_2_0.woff2') format('woff2'),url('../fonts/2E0219_2_0.woff') format('woff'),url('../fonts/2E0219_2_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-ExtraBoldItalic';src: url('../fonts/2E0219_3_0.eot');src: url('../fonts/2E0219_3_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_3_0.woff2') format('woff2'),url('../fonts/2E0219_3_0.woff') format('woff'),url('../fonts/2E0219_3_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-Heavy';src: url('../fonts/2E0219_4_0.eot');src: url('../fonts/2E0219_4_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_4_0.woff2') format('woff2'),url('../fonts/2E0219_4_0.woff') format('woff'),url('../fonts/2E0219_4_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-HeavyItalic';src: url('../fonts/2E0219_5_0.eot');src: url('../fonts/2E0219_5_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_5_0.woff2') format('woff2'),url('../fonts/2E0219_5_0.woff') format('woff'),url('../fonts/2E0219_5_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-Italic';src: url('../fonts/2E0219_6_0.eot');src: url('../fonts/2E0219_6_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_6_0.woff2') format('woff2'),url('../fonts/2E0219_6_0.woff') format('woff'),url('../fonts/2E0219_6_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-Light';src: url('../fonts/2E0219_7_0.eot');src: url('../fonts/2E0219_7_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_7_0.woff2') format('woff2'),url('../fonts/2E0219_7_0.woff') format('woff'),url('../fonts/2E0219_7_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-LightItalic';src: url('../fonts/2E0219_8_0.eot');src: url('../fonts/2E0219_8_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_8_0.woff2') format('woff2'),url('../fonts/2E0219_8_0.woff') format('woff'),url('../fonts/2E0219_8_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-Regular';src: url('../fonts/2E0219_9_0.eot');src: url('../fonts/2E0219_9_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_9_0.woff2') format('woff2'),url('../fonts/2E0219_9_0.woff') format('woff'),url('../fonts/2E0219_9_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-SemiBold';src: url('../fonts/2E0219_A_0.eot');src: url('../fonts/2E0219_A_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_A_0.woff2') format('woff2'),url('../fonts/2E0219_A_0.woff') format('woff'),url('../fonts/2E0219_A_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-SemiBoldItalic';src: url('../fonts/2E0219_B_0.eot');src: url('../fonts/2E0219_B_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_B_0.woff2') format('woff2'),url('../fonts/2E0219_B_0.woff') format('woff'),url('../fonts/2E0219_B_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-Thin';src: url('../fonts/2E0219_C_0.eot');src: url('../fonts/2E0219_C_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_C_0.woff2') format('woff2'),url('../fonts/2E0219_C_0.woff') format('woff'),url('../fonts/2E0219_C_0.ttf') format('truetype');}
-@font-face {font-family: 'Adelle-ThinItalic';src: url('../fonts/2E0219_D_0.eot');src: url('../fonts/2E0219_D_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_D_0.woff2') format('woff2'),url('../fonts/2E0219_D_0.woff') format('woff'),url('../fonts/2E0219_D_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Book';src: url('../fonts/2E0219_E_0.eot');src: url('../fonts/2E0219_E_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_E_0.woff2') format('woff2'),url('../fonts/2E0219_E_0.woff') format('woff'),url('../fonts/2E0219_E_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-MediumOblique';src: url('../fonts/2E0219_F_0.eot');src: url('../fonts/2E0219_F_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_F_0.woff2') format('woff2'),url('../fonts/2E0219_F_0.woff') format('woff'),url('../fonts/2E0219_F_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-BookOblique';src: url('../fonts/2E0219_10_0.eot');src: url('../fonts/2E0219_10_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_10_0.woff2') format('woff2'),url('../fonts/2E0219_10_0.woff') format('woff'),url('../fonts/2E0219_10_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Medium';src: url('../fonts/2E0219_11_0.eot');src: url('../fonts/2E0219_11_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_11_0.woff2') format('woff2'),url('../fonts/2E0219_11_0.woff') format('woff'),url('../fonts/2E0219_11_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-BlackOblique';src: url('../fonts/2E0219_12_0.eot');src: url('../fonts/2E0219_12_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_12_0.woff2') format('woff2'),url('../fonts/2E0219_12_0.woff') format('woff'),url('../fonts/2E0219_12_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Black';src: url('../fonts/2E0219_13_0.eot');src: url('../fonts/2E0219_13_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_13_0.woff2') format('woff2'),url('../fonts/2E0219_13_0.woff') format('woff'),url('../fonts/2E0219_13_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Light';src: url('../fonts/2E0219_14_0.eot');src: url('../fonts/2E0219_14_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_14_0.woff2') format('woff2'),url('../fonts/2E0219_14_0.woff') format('woff'),url('../fonts/2E0219_14_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-LightOblique';src: url('../fonts/2E0219_15_0.eot');src: url('../fonts/2E0219_15_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_15_0.woff2') format('woff2'),url('../fonts/2E0219_15_0.woff') format('woff'),url('../fonts/2E0219_15_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Oblique';src: url('../fonts/2E0219_16_0.eot');src: url('../fonts/2E0219_16_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_16_0.woff2') format('woff2'),url('../fonts/2E0219_16_0.woff') format('woff'),url('../fonts/2E0219_16_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Roman';src: url('../fonts/2E0219_17_0.eot');src: url('../fonts/2E0219_17_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_17_0.woff2') format('woff2'),url('../fonts/2E0219_17_0.woff') format('woff'),url('../fonts/2E0219_17_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-HeavyOblique';src: url('../fonts/2E0219_18_0.eot');src: url('../fonts/2E0219_18_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_18_0.woff2') format('woff2'),url('../fonts/2E0219_18_0.woff') format('woff'),url('../fonts/2E0219_18_0.ttf') format('truetype');}
-@font-face {font-family: 'AvenirLTStd-Heavy';src: url('../fonts/2E0219_19_0.eot');src: url('../fonts/2E0219_19_0.eot?#iefix') format('embedded-opentype'),url('../fonts/2E0219_19_0.woff2') format('woff2'),url('../fonts/2E0219_19_0.woff') format('woff'),url('../fonts/2E0219_19_0.ttf') format('truetype');}
+@font-face {
+  font-family: 'AvenirLTStd-Black';
+  src: url('../fonts/AvenirLTStd-Black.eot');
+  src: url('../fonts/AvenirLTStd-Black.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Black.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Black.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black') format('svg'),
+       url('../fonts/AvenirLTStd-Black.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Light';
+  src: url('../fonts/AvenirLTStd-Light.eot');
+  src: url('../fonts/AvenirLTStd-Light.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Light.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Light.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light') format('svg'),
+       url('../fonts/AvenirLTStd-Light.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Heavy';
+  src: url('../fonts/AvenirLTStd-Heavy.eot');
+  src: url('../fonts/AvenirLTStd-Heavy.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Heavy.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Heavy.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy') format('svg'),
+       url('../fonts/AvenirLTStd-Heavy.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Book';
+  src: url('../fonts/AvenirLTStd-Book.eot');
+  src: url('../fonts/AvenirLTStd-Book.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Book.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Book.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Book.svg#AvenirLTStd-Book') format('svg'),
+       url('../fonts/AvenirLTStd-Book.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Roman';
+  src: url('../fonts/AvenirLTStd-Roman.eot');
+  src: url('../fonts/AvenirLTStd-Roman.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Roman.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Roman.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Roman.svg#AvenirLTStd-Roman') format('svg'),
+       url('../fonts/AvenirLTStd-Roman.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Oblique';
+  src: url('../fonts/AvenirLTStd-Oblique.eot');
+  src: url('../fonts/AvenirLTStd-Oblique.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Oblique.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Oblique.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Oblique.svg#AvenirLTStd-Oblique') format('svg'),
+       url('../fonts/AvenirLTStd-Oblique.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirLTStd-Medium';
+  src: url('../fonts/AvenirLTStd-Medium.eot');
+  src: url('../fonts/AvenirLTStd-Medium.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Medium.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Medium.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium') format('svg'),
+       url('../fonts/AvenirLTStd-Medium.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
-@mixin adelle_b($size) { font-family: 'Adelle-Bold', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_bi($size) { font-family: 'Adelle-BoldItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_xb($size) { font-family: 'Adelle-ExtraBold', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_xbi($size) { font-family: 'Adelle-ExtraBoldItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_h($size) { font-family: 'Adelle-Heavy', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_hi($size) { font-family: 'Adelle-HeavyItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_i($size) { font-family: 'Adelle-Italic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_l($size) { font-family: 'Adelle-Light', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_li($size) { font-family: 'Adelle-LightItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 @mixin adelle($size) { font-family: 'Adelle-Regular', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_sb($size) { font-family: 'Adelle-SemiBold', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_sbi($size) { font-family: 'Adelle-SemiBoldItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_t($size) { font-family: 'Adelle-Thin', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin adelle_ti($size) { font-family: 'Adelle-ThinItalic', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 
 @mixin avenir_bk($size) { font-family: 'AvenirLTStd-Book', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_mo($size) { font-family: 'AvenirLTStd-MediumOblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_bko($size) { font-family: 'AvenirLTStd-BookOblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_m($size) { font-family: 'AvenirLTStd-Medium', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_blo($size) { font-family: 'AvenirLTStd-BlackOblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 @mixin avenir_bl($size) { font-family: 'AvenirLTStd-Black', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
+@mixin avenir_h($size) { font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 @mixin avenir_l($size) { font-family: 'AvenirLTStd-Light', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_lo($size) { font-family: 'AvenirLTStd-LightOblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
+@mixin avenir_m($size) { font-family: 'AvenirLTStd-Medium', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 @mixin avenir_o($size) { font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
 @mixin avenir_r($size) { font-family: 'AvenirLTStd-Roman', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_ho($size) { font-family: 'AvenirLTStd-HeavyOblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_h($size) { font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
