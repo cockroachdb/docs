@@ -34,16 +34,16 @@ Kubectl is now configured to use the cluster.
 
 ## Step 2. Start the CockroachDB cluster
 
-1. Download the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/develop/cloud/kubernetes/minikube.sh) script:
+1. Download the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script:
 
    ~~~ shell
-   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/develop/cloud/kubernetes/minikube.sh
+   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/minikube.sh
    ~~~
  
-2. Download the [`cockroachdb-petset.yaml`](https://github.com/cockroachdb/cockroach/blob/develop/cloud/kubernetes/cockroachdb-petset.yaml) configuration file:
+2. Download the [`cockroachdb-petset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-petset.yaml) configuration file:
 
    ~~~ shell
-   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/develop/cloud/kubernetes/cockroachdb-petset.yaml
+   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-petset.yaml
    ~~~
  
 3. Run the script: 
