@@ -619,7 +619,7 @@ section.footer {
         width: calc(100% - 110px);
         float: left; }
         section.footer #hubspot-form .hbspt-form .hs_email:before {
-          background-image: url("https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png");
+          background-image: url("../images/mailinglist-icon.png");
           background-size: 19px 12px;
           background-repeat: no-repeat;
           width: 19px;
@@ -708,7 +708,7 @@ section.footer {
         color: #FFFFFF;
         position: relative; }
         section.footer #hubspot-form .hbspt-form .submitted-message:before {
-          background-image: url("https://www.cockroachlabs.com/wp-content/themes/cockroach-labs/images/mailinglist-icon.png");
+          background-image: url("../images/mailinglist-icon.png");
           background-size: 19px 12px;
           background-repeat: no-repeat;
           width: 19px;
