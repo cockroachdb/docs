@@ -4,111 +4,54 @@
     - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
     - Usage docs: http://shopify.github.io/Timber/#sass-mixins
 ==============================================================================*/
-@import url("//hello.myfonts.net/count/2e0219");
-@font-face {
-  font-family: 'Adelle-Bold';
-  src: url("../fonts/2E0219_0_0.eot");
-  src: url("../fonts/2E0219_0_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_0_0.woff2") format("woff2"), url("../fonts/2E0219_0_0.woff") format("woff"), url("../fonts/2E0219_0_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-BoldItalic';
-  src: url("../fonts/2E0219_1_0.eot");
-  src: url("../fonts/2E0219_1_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_1_0.woff2") format("woff2"), url("../fonts/2E0219_1_0.woff") format("woff"), url("../fonts/2E0219_1_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ExtraBold';
-  src: url("../fonts/2E0219_2_0.eot");
-  src: url("../fonts/2E0219_2_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_2_0.woff2") format("woff2"), url("../fonts/2E0219_2_0.woff") format("woff"), url("../fonts/2E0219_2_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ExtraBoldItalic';
-  src: url("../fonts/2E0219_3_0.eot");
-  src: url("../fonts/2E0219_3_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_3_0.woff2") format("woff2"), url("../fonts/2E0219_3_0.woff") format("woff"), url("../fonts/2E0219_3_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Heavy';
-  src: url("../fonts/2E0219_4_0.eot");
-  src: url("../fonts/2E0219_4_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_4_0.woff2") format("woff2"), url("../fonts/2E0219_4_0.woff") format("woff"), url("../fonts/2E0219_4_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-HeavyItalic';
-  src: url("../fonts/2E0219_5_0.eot");
-  src: url("../fonts/2E0219_5_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_5_0.woff2") format("woff2"), url("../fonts/2E0219_5_0.woff") format("woff"), url("../fonts/2E0219_5_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Italic';
-  src: url("../fonts/2E0219_6_0.eot");
-  src: url("../fonts/2E0219_6_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_6_0.woff2") format("woff2"), url("../fonts/2E0219_6_0.woff") format("woff"), url("../fonts/2E0219_6_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Light';
-  src: url("../fonts/2E0219_7_0.eot");
-  src: url("../fonts/2E0219_7_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_7_0.woff2") format("woff2"), url("../fonts/2E0219_7_0.woff") format("woff"), url("../fonts/2E0219_7_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-LightItalic';
-  src: url("../fonts/2E0219_8_0.eot");
-  src: url("../fonts/2E0219_8_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_8_0.woff2") format("woff2"), url("../fonts/2E0219_8_0.woff") format("woff"), url("../fonts/2E0219_8_0.ttf") format("truetype"); }
 @font-face {
   font-family: 'Adelle-Regular';
-  src: url("../fonts/2E0219_9_0.eot");
-  src: url("../fonts/2E0219_9_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_9_0.woff2") format("woff2"), url("../fonts/2E0219_9_0.woff") format("woff"), url("../fonts/2E0219_9_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-SemiBold';
-  src: url("../fonts/2E0219_A_0.eot");
-  src: url("../fonts/2E0219_A_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_A_0.woff2") format("woff2"), url("../fonts/2E0219_A_0.woff") format("woff"), url("../fonts/2E0219_A_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-SemiBoldItalic';
-  src: url("../fonts/2E0219_B_0.eot");
-  src: url("../fonts/2E0219_B_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_B_0.woff2") format("woff2"), url("../fonts/2E0219_B_0.woff") format("woff"), url("../fonts/2E0219_B_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-Thin';
-  src: url("../fonts/2E0219_C_0.eot");
-  src: url("../fonts/2E0219_C_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_C_0.woff2") format("woff2"), url("../fonts/2E0219_C_0.woff") format("woff"), url("../fonts/2E0219_C_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'Adelle-ThinItalic';
-  src: url("../fonts/2E0219_D_0.eot");
-  src: url("../fonts/2E0219_D_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_D_0.woff2") format("woff2"), url("../fonts/2E0219_D_0.woff") format("woff"), url("../fonts/2E0219_D_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Book';
-  src: url("../fonts/2E0219_E_0.eot");
-  src: url("../fonts/2E0219_E_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_E_0.woff2") format("woff2"), url("../fonts/2E0219_E_0.woff") format("woff"), url("../fonts/2E0219_E_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-MediumOblique';
-  src: url("../fonts/2E0219_F_0.eot");
-  src: url("../fonts/2E0219_F_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_F_0.woff2") format("woff2"), url("../fonts/2E0219_F_0.woff") format("woff"), url("../fonts/2E0219_F_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-BookOblique';
-  src: url("../fonts/2E0219_10_0.eot");
-  src: url("../fonts/2E0219_10_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_10_0.woff2") format("woff2"), url("../fonts/2E0219_10_0.woff") format("woff"), url("../fonts/2E0219_10_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Medium';
-  src: url("../fonts/2E0219_11_0.eot");
-  src: url("../fonts/2E0219_11_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_11_0.woff2") format("woff2"), url("../fonts/2E0219_11_0.woff") format("woff"), url("../fonts/2E0219_11_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-BlackOblique';
-  src: url("../fonts/2E0219_12_0.eot");
-  src: url("../fonts/2E0219_12_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_12_0.woff2") format("woff2"), url("../fonts/2E0219_12_0.woff") format("woff"), url("../fonts/2E0219_12_0.ttf") format("truetype"); }
+  src: url("../fonts/Adelle-Regular.eot");
+  src: url("../fonts/Adelle-Regular.woff2") format("woff2"), url("../fonts/Adelle-Regular.woff") format("woff"), url("../fonts/Adelle-Regular.ttf") format("truetype"), url("../fonts/Adelle-Regular.svg#Adelle-Regular") format("svg"), url("../fonts/Adelle-Regular.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Black';
-  src: url("../fonts/2E0219_13_0.eot");
-  src: url("../fonts/2E0219_13_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_13_0.woff2") format("woff2"), url("../fonts/2E0219_13_0.woff") format("woff"), url("../fonts/2E0219_13_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Black.eot");
+  src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Light';
-  src: url("../fonts/2E0219_14_0.eot");
-  src: url("../fonts/2E0219_14_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_14_0.woff2") format("woff2"), url("../fonts/2E0219_14_0.woff") format("woff"), url("../fonts/2E0219_14_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-LightOblique';
-  src: url("../fonts/2E0219_15_0.eot");
-  src: url("../fonts/2E0219_15_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_15_0.woff2") format("woff2"), url("../fonts/2E0219_15_0.woff") format("woff"), url("../fonts/2E0219_15_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Oblique';
-  src: url("../fonts/2E0219_16_0.eot");
-  src: url("../fonts/2E0219_16_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_16_0.woff2") format("woff2"), url("../fonts/2E0219_16_0.woff") format("woff"), url("../fonts/2E0219_16_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-Roman';
-  src: url("../fonts/2E0219_17_0.eot");
-  src: url("../fonts/2E0219_17_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_17_0.woff2") format("woff2"), url("../fonts/2E0219_17_0.woff") format("woff"), url("../fonts/2E0219_17_0.ttf") format("truetype"); }
-@font-face {
-  font-family: 'AvenirLTStd-HeavyOblique';
-  src: url("../fonts/2E0219_18_0.eot");
-  src: url("../fonts/2E0219_18_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_18_0.woff2") format("woff2"), url("../fonts/2E0219_18_0.woff") format("woff"), url("../fonts/2E0219_18_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Light.eot");
+  src: url("../fonts/AvenirLTStd-Light.woff2") format("woff2"), url("../fonts/AvenirLTStd-Light.woff") format("woff"), url("../fonts/AvenirLTStd-Light.ttf") format("truetype"), url("../fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light") format("svg"), url("../fonts/AvenirLTStd-Light.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 @font-face {
   font-family: 'AvenirLTStd-Heavy';
-  src: url("../fonts/2E0219_19_0.eot");
-  src: url("../fonts/2E0219_19_0.eot?#iefix") format("embedded-opentype"), url("../fonts/2E0219_19_0.woff2") format("woff2"), url("../fonts/2E0219_19_0.woff") format("woff"), url("../fonts/2E0219_19_0.ttf") format("truetype"); }
+  src: url("../fonts/AvenirLTStd-Heavy.eot");
+  src: url("../fonts/AvenirLTStd-Heavy.woff2") format("woff2"), url("../fonts/AvenirLTStd-Heavy.woff") format("woff"), url("../fonts/AvenirLTStd-Heavy.ttf") format("truetype"), url("../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy") format("svg"), url("../fonts/AvenirLTStd-Heavy.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Book';
+  src: url("../fonts/AvenirLTStd-Book.eot");
+  src: url("../fonts/AvenirLTStd-Book.woff2") format("woff2"), url("../fonts/AvenirLTStd-Book.woff") format("woff"), url("../fonts/AvenirLTStd-Book.ttf") format("truetype"), url("../fonts/AvenirLTStd-Book.svg#AvenirLTStd-Book") format("svg"), url("../fonts/AvenirLTStd-Book.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Roman';
+  src: url("../fonts/AvenirLTStd-Roman.eot");
+  src: url("../fonts/AvenirLTStd-Roman.woff2") format("woff2"), url("../fonts/AvenirLTStd-Roman.woff") format("woff"), url("../fonts/AvenirLTStd-Roman.ttf") format("truetype"), url("../fonts/AvenirLTStd-Roman.svg#AvenirLTStd-Roman") format("svg"), url("../fonts/AvenirLTStd-Roman.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Oblique';
+  src: url("../fonts/AvenirLTStd-Oblique.eot");
+  src: url("../fonts/AvenirLTStd-Oblique.woff2") format("woff2"), url("../fonts/AvenirLTStd-Oblique.woff") format("woff"), url("../fonts/AvenirLTStd-Oblique.ttf") format("truetype"), url("../fonts/AvenirLTStd-Oblique.svg#AvenirLTStd-Oblique") format("svg"), url("../fonts/AvenirLTStd-Oblique.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Medium';
+  src: url("../fonts/AvenirLTStd-Medium.eot");
+  src: url("../fonts/AvenirLTStd-Medium.woff2") format("woff2"), url("../fonts/AvenirLTStd-Medium.woff") format("woff"), url("../fonts/AvenirLTStd-Medium.ttf") format("truetype"), url("../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium") format("svg"), url("../fonts/AvenirLTStd-Medium.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
 body {
   color: #142848;
   font-family: 'AvenirLTStd-Book', serif;
