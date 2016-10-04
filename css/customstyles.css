@@ -157,7 +157,7 @@ nav.mobile_expanded {
   overflow: auto;
   visibility: hidden; }
   nav.mobile_expanded a {
-    border-bottom: 1px solid #d9dbe2;
+    border-bottom: 1px solid #D9DBE2;
     font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 14px;
     font-weight: normal;
@@ -185,7 +185,7 @@ header {
   float: left;
   background: #fff;
   padding: 15px;
-  border-bottom: 1px solid #d9dbe2;
+  border-bottom: 1px solid #D9DBE2;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -286,8 +286,8 @@ header {
 
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #d9dbe2; }
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #D9DBE2; }
   @media screen and (min-width: 768px) {
     .col-sidebar {
       background-color: transparent;
@@ -370,7 +370,7 @@ header {
       color: #46a417; }
 
 .roach {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   margin-bottom: 20px;
   padding: 10px;
   text-align: center;
@@ -399,7 +399,7 @@ header {
     line-height: 20px; }
   .roach:hover {
     border-color: #46a417;
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   .roach.full-roach .catrina {
     height: 120px; }
   @media screen and (min-width: 992px) {
@@ -412,7 +412,7 @@ header {
         height: auto; } }
 
 .blog-post {
-  border: 1px solid #d9dbe2;
+  border: 1px solid #D9DBE2;
   padding: 10px 20px;
   border-bottom: none;
   overflow: auto; }
@@ -436,9 +436,9 @@ header {
     .blog-post .blog-meta .meta-emphasis {
       color: #46a417; }
   .blog-post.last-entry {
-    border-bottom: 1px solid #d9dbe2; }
+    border-bottom: 1px solid #D9DBE2; }
   .blog-post:hover {
-    background-color: #f7f7f7; }
+    background-color: #F7F7F7; }
   @media screen and (min-width: 768px) {
     .blog-post .blog-title {
       float: left;
@@ -486,7 +486,7 @@ header {
     #content #main-content {
       min-height: 625px; }
       #content #main-content .content-col {
-        border-left: 1px solid #d9dbe2;
+        border-left: 1px solid #D9DBE2;
         min-height: 625px;
         padding-left: 55px; } }
 
@@ -642,7 +642,7 @@ section.footer {
         border-top-left-radius: 38px;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #a9aec6;
+        border: 1px solid #A9AEC6;
         border-right-width: 1px;
         color: #FFFFFF; }
         section.footer #hubspot-form .hbspt-form .hs-input::-webkit-input-placeholder {
@@ -680,7 +680,7 @@ section.footer {
         border-bottom-right-radius: 38px;
         border-top-right-radius: 38px;
         float: right;
-        border: 1px solid #a9aec6;
+        border: 1px solid #A9AEC6;
         border-left-width: 0px;
         position: relative;
         outline: 0;
@@ -1304,14 +1304,14 @@ a.accordion-toggle {
   color: #f0ad4e; }
 
 .bs-callout-info {
-  background-color: #ecf7ff;
-  border-left-color: #7fbeeb; }
+  background-color: #ECF7FF;
+  border-left-color: #7FBEEB; }
 
 .bs-callout-info h4 {
   color: #5bc0de; }
 
 #toc > ul {
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   padding: 20px 30px;
   margin: 0;
   width: 100%; }
@@ -1949,11 +1949,11 @@ polygon.regexp {
 
 /* Literal.String */
 .highlight .na {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Attribute */
 .highlight .nb {
-  color: #0086b3; }
+  color: #0086B3; }
 
 /* Name.Builtin */
 .highlight .nc {
@@ -1962,11 +1962,11 @@ polygon.regexp {
 
 /* Name.Class */
 .highlight .no {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Constant */
 .highlight .ni {
-  color: purple; }
+  color: #800080; }
 
 /* Name.Entity */
 .highlight .ne {
@@ -1983,11 +1983,11 @@ polygon.regexp {
 
 /* Name.Namespace */
 .highlight .nt {
-  color: navy; }
+  color: #000080; }
 
 /* Name.Tag */
 .highlight .nv {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable */
 /*.highlight .ow { font-weight: bold } /* Operator.Word */
@@ -2012,35 +2012,35 @@ polygon.regexp {
 
 /* Literal.Number.Oct */
 .highlight .sb {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Backtick */
 .highlight .sc {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Char */
 .highlight .sd {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Doc */
 .highlight .s2 {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Double */
 .highlight .se {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Escape */
 .highlight .sh {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Heredoc */
 .highlight .si {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Interpol */
 .highlight .sx {
-  color: #dd1144; }
+  color: #d14; }
 
 /* Literal.String.Other */
 .highlight .sr {
@@ -2060,15 +2060,15 @@ polygon.regexp {
 
 /* Name.Builtin.Pseudo */
 .highlight .vc {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Class */
 .highlight .vg {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Global */
 .highlight .vi {
-  color: teal; }
+  color: #008080; }
 
 /* Name.Variable.Instance */
 .highlight .il {
@@ -2079,7 +2079,7 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   font-size: 0; }
   #feedback-prompt form {
     display: inline-block;
@@ -2103,7 +2103,7 @@ polygon.regexp {
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #f0ffe8;
+  background-color: #F0FFE8;
   color: #142848 !important;
   font-family: 'AvenirLTStd-Book', serif;
   font-size: 16px;
@@ -2605,7 +2605,7 @@ img.mfp-img {
   line-height: 12px;
   color: #FFFFFF;
   padding: 18px 25px 16px;
-  background-color: #41a600; }
+  background-color: #41A600; }
   .button--primary:focus {
     color: #FFFFFF; }
   .button--primary:hover {
@@ -2676,3 +2676,5 @@ img.mfp-img {
       line-height: 12px;
       margin-left: 10px;
       padding: 12px 30px; } }
+
+/*# sourceMappingURL=customstyles.css.map */
