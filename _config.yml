@@ -6,7 +6,6 @@ google_analytics: UA-63775601-1
 
 baseurl: "/docs"
 
-theme_file: theme-blue.css
 highlighter: rouge
 markdown: kramdown
 
