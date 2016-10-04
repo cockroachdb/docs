@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
-
-  <head>
-
-    {% include head.html %}
-
-  </head>
-
+<head>
+  {% include head.html %}
+</head>
 <body>
-
   {% include topnav.html %}
-
-  <!-- Page Content -->
   <div id="content">
     <div id="main-content" class="container">
       <div class="row">
         {% include sidebar.html %}
-        <!-- Content Column -->
         <div class="col-md-9 content-col">
           {{content}}
         </div>
       </div>
-      <!-- /.row -->
     </div>
-    
     {% include footer.html %}
-
-  </div>    <!-- /.container -->
+  </div>
   
   <script>
   $('.expandcollapse').on('click', function () {
@@ -36,15 +24,9 @@
   </script>
 
   {% include back-to-top.html %}
-
   {% include gitter-sidecar.html %}
-
   {% include google_analytics.html %}
-
   {% include google_remarketing.html %}
-
   {% include hubspot_analytics.html %}
-
 </body>
-
 </html>
