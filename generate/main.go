@@ -354,6 +354,11 @@ func main() {
 						link := regexp.MustCompile(s)
 						body = link.ReplaceAllString(body, "$1")
 					}
+					for from, to := range s.relink {
+						replaceFrom := fmt.Sprintf(`<a xlink:href="sql-grammar.html#%s" xlink:title="%s">`, from, from)
+						replaceTo := fmt.Sprintf(`<a xlink:href="sql-grammar.html#%s" xlink:title="%s">`, to, to)
+						body = strings.Replace(body, replaceFrom, replaceTo, -1)
+					}
 					if err := ioutil.WriteFile(filepath.Join(baseDir, fmt.Sprintf("%s.html", name)), []byte(body), 0644); err != nil {
 						log.Fatal(s.name, err)
 					}
@@ -385,6 +390,7 @@ type stmtSpec struct {
 	regreplace     map[string]string
 	match, exclude []*regexp.Regexp
 	unlink         []string
+	relink         map[string]string
 	nosplit        bool
 }
 
