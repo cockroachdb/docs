@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os/exec"
 	"regexp"
 	"strings"
 	"sync"
@@ -26,8 +27,27 @@ var (
 	rrLock    sync.Mutex
 )
 
+func GenerateRRJar(jar string, bnf []byte) ([]byte, error) {
+	// JAR generation is enabled by placing Railroad.jar (ask mjibson for a link)
+	// in the generate directory.
+	cmd := exec.Command(
+		"java",
+		"-jar", jar,
+		"-suppressebnf",
+		"-color:#ffffff",
+		"-width:760",
+		"-")
+	cmd.Stdin = bytes.NewReader(bnf)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("%s: %s", err, out)
+	}
+	return out, nil
+}
+
 // generates the RR XHTML from a EBNF file
-func GenerateRR(bnf []byte) ([]byte, error) {
+func GenerateRRNet(bnf []byte) ([]byte, error) {
 	rrLock.Lock()
 	defer rrLock.Unlock()
 

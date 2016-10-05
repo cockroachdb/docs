@@ -99,7 +99,7 @@ func main() {
 		Use:   "rr",
 		Short: "Generate railroad diagram from stdin, writes to stdout",
 		Run: func(cmd *cobra.Command, args []string) {
-			b, err := runRR("", read())
+			b, err := runRR("", read(), "")
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -120,9 +120,10 @@ func main() {
 	}
 
 	var (
-		baseDir  string
-		filter   string
-		printBNF bool
+		baseDir     string
+		filter      string
+		printBNF    bool
+		railroadJar string
 	)
 
 	rootCmd := &cobra.Command{
@@ -153,7 +154,7 @@ func main() {
 					fmt.Printf("%s:\n\n%s\n", name, g)
 					return
 				}
-				rr, err := runRR("stmt_block", bytes.NewReader(g))
+				rr, err := runRR("stmt_block", bytes.NewReader(g), railroadJar)
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -339,7 +340,7 @@ func main() {
 						fmt.Printf("%s: (POST REPLACE)\n\n%s\n", s.name, g)
 						return
 					}
-					rr, err := runRR(s.name, bytes.NewReader(g))
+					rr, err := runRR(s.name, bytes.NewReader(g), railroadJar)
 					if err != nil {
 						log.Fatalf("%s: %s\n%s", s.name, err, g)
 					}
@@ -372,6 +373,7 @@ func main() {
 	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "diagrams"), "Base directory for html output.")
 	rootCmd.Flags().StringVar(&filter, "filter", "", "Filter statement names")
 	rootCmd.Flags().BoolVar(&printBNF, "bnf", false, "Print BNF only; don't generate railroad diagrams")
+	rootCmd.Flags().StringVar(&railroadJar, "railroad", "Railroad.jar", "Location of Railroad.jar; empty to use website")
 
 	rootCmd.AddCommand(cmdBNF, cmdParse, cmdRR, cmdBody)
 	if cmdFuncs != nil {
@@ -414,12 +416,17 @@ func runParse(r io.Reader, inline []string, topStmt string, descend, nosplit boo
 	return b, err
 }
 
-func runRR(name string, r io.Reader) ([]byte, error) {
+func runRR(name string, r io.Reader, railroadJar string) ([]byte, error) {
 	b, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
-	html, err := extract.GenerateRR(b)
+	var html []byte
+	if railroadJar == "" {
+		html, err = extract.GenerateRRNet(b)
+	} else {
+		html, err = extract.GenerateRRJar(railroadJar, b)
+	}
 	if err != nil {
 		return nil, err
 	}
