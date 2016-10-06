@@ -6,6 +6,7 @@ toc: false
 
 Release Date | Version
 -------------|--------
+Aug 29, 2016 | [beta-20160829](beta-20160829.html)
 Jul 28, 2016 | [beta-20160728](beta-20160728.html)
 Jul 21, 2016 | [beta-20160721](beta-20160721.html)
 Jul 14, 2016 | [beta-20160714](beta-20160714.html)
