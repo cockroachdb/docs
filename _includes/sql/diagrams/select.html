@@ -1,123 +1,112 @@
-<svg width="1078" height="540">
+<svg width="770" height="608">
          
-         <polygon points="9 17 1 13 1 21"></polygon>
-         <polygon points="17 17 9 13 9 21"></polygon>
-         <rect x="51" y="3" width="70" height="32" rx="10"></rect>
-         <rect x="49" y="1" width="70" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="59" y="21">SELECT</text>
-         <a xlink:href="sql-grammar.html#opt_all_clause" xlink:title="opt_all_clause">
-            <rect x="161" y="3" width="110" height="32"></rect>
-            <rect x="159" y="1" width="110" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="169" y="21">opt_all_clause</text>
+         <polygon points="11 61 3 57 3 65"></polygon>
+         <polygon points="19 61 11 57 11 65"></polygon>
+         <rect x="33" y="47" width="70" height="32" rx="10"></rect>
+         <rect x="31" y="45" width="70" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="41" y="65">SELECT</text>
+         <rect x="143" y="79" width="86" height="32" rx="10"></rect>
+         <rect x="141" y="77" width="86" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="151" y="97">DISTINCT</text>
+         <a xlink:href="sql-grammar.html#target_elem" xlink:title="target_elem">
+            <rect x="289" y="47" width="96" height="32"></rect>
+            <rect x="287" y="45" width="96" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="297" y="65">target_elem</text>
          </a>
-         <a xlink:href="sql-grammar.html#distinct_clause" xlink:title="distinct_clause">
-            <rect x="161" y="47" width="112" height="32"></rect>
-            <rect x="159" y="45" width="112" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="169" y="65">distinct_clause</text>
+         <rect x="425" y="79" width="38" height="32" rx="10"></rect>
+         <rect x="423" y="77" width="38" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="433" y="97">AS</text>
+         <a xlink:href="sql-grammar.html#col_label" xlink:title="col_label">
+            <rect x="483" y="79" width="74" height="32"></rect>
+            <rect x="481" y="77" width="74" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="491" y="97">col_label</text>
          </a>
-         <a xlink:href="sql-grammar.html#target_list" xlink:title="target_list">
-            <rect x="313" y="3" width="84" height="32"></rect>
-            <rect x="311" y="1" width="84" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="321" y="21">target_list</text>
+         <rect x="289" y="3" width="24" height="32" rx="10"></rect>
+         <rect x="287" y="1" width="24" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="297" y="21">,</text>
+         <rect x="617" y="47" width="58" height="32" rx="10"></rect>
+         <rect x="615" y="45" width="58" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="625" y="65">FROM</text>
+         <a xlink:href="sql-grammar.html#table_ref" xlink:title="table_ref">
+            <rect x="83" y="189" width="76" height="32"></rect>
+            <rect x="81" y="187" width="76" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="91" y="207">table_ref</text>
          </a>
-         <a xlink:href="sql-grammar.html#from_clause" xlink:title="from_clause">
-            <rect x="417" y="3" width="96" height="32"></rect>
-            <rect x="415" y="1" width="96" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="425" y="21">from_clause</text>
+         <rect x="83" y="145" width="24" height="32" rx="10"></rect>
+         <rect x="81" y="143" width="24" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="91" y="163">,</text>
+         <rect x="219" y="221" width="156" height="32" rx="10"></rect>
+         <rect x="217" y="219" width="156" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="227" y="239">AS OF SYSTEM TIME</text>
+         <a xlink:href="sql-grammar.html#timestamp" xlink:title="timestamp">
+            <rect x="395" y="221" width="86" height="32"></rect>
+            <rect x="393" y="219" width="86" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="403" y="239">timestamp</text>
          </a>
-         <a xlink:href="sql-grammar.html#where_clause" xlink:title="where_clause">
-            <rect x="533" y="3" width="108" height="32"></rect>
-            <rect x="531" y="1" width="108" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="541" y="21">where_clause</text>
+         <rect x="541" y="221" width="68" height="32" rx="10"></rect>
+         <rect x="539" y="219" width="68" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="549" y="239">WHERE</text>
+         <a xlink:href="sql-grammar.html#a_expr" xlink:title="a_expr">
+            <rect x="629" y="221" width="64" height="32"></rect>
+            <rect x="627" y="219" width="64" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="637" y="239">a_expr</text>
          </a>
-         <a xlink:href="sql-grammar.html#group_clause" xlink:title="group_clause">
-            <rect x="661" y="3" width="104" height="32"></rect>
-            <rect x="659" y="1" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="669" y="21">group_clause</text>
+         <rect x="186" y="303" width="92" height="32" rx="10"></rect>
+         <rect x="184" y="301" width="92" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="194" y="321">GROUP BY</text>
+         <a xlink:href="sql-grammar.html#expr_list" xlink:title="expr_list">
+            <rect x="298" y="303" width="74" height="32"></rect>
+            <rect x="296" y="301" width="74" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="306" y="321">expr_list</text>
          </a>
-         <a xlink:href="sql-grammar.html#having_clause" xlink:title="having_clause">
-            <rect x="785" y="3" width="110" height="32"></rect>
-            <rect x="783" y="1" width="110" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="793" y="21">having_clause</text>
+         <rect x="412" y="335" width="74" height="32" rx="10"></rect>
+         <rect x="410" y="333" width="74" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="420" y="353">HAVING</text>
+         <a xlink:href="sql-grammar.html#a_expr" xlink:title="a_expr">
+            <rect x="506" y="335" width="64" height="32"></rect>
+            <rect x="504" y="333" width="64" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="514" y="353">a_expr</text>
          </a>
-         <a xlink:href="sql-grammar.html#window_clause" xlink:title="window_clause">
-            <rect x="915" y="3" width="116" height="32"></rect>
-            <rect x="913" y="1" width="116" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="923" y="21">window_clause</text>
+         <rect x="65" y="421" width="66" height="32" rx="10"></rect>
+         <rect x="63" y="419" width="66" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="73" y="439">UNION</text>
+         <rect x="65" y="465" width="94" height="32" rx="10"></rect>
+         <rect x="63" y="463" width="94" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="73" y="483">INTERSECT</text>
+         <rect x="65" y="509" width="70" height="32" rx="10"></rect>
+         <rect x="63" y="507" width="70" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="73" y="527">EXCEPT</text>
+         <rect x="219" y="453" width="44" height="32" rx="10"></rect>
+         <rect x="217" y="451" width="44" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="227" y="471">ALL</text>
+         <rect x="303" y="421" width="86" height="32" rx="10"></rect>
+         <rect x="301" y="419" width="86" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="311" y="439">SELECT ...</text>
+         <rect x="65" y="575" width="90" height="32" rx="10"></rect>
+         <rect x="63" y="573" width="90" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="73" y="593">ORDER BY</text>
+         <a xlink:href="sql-grammar.html#sortby_list" xlink:title="sortby_list">
+            <rect x="175" y="575" width="86" height="32"></rect>
+            <rect x="173" y="573" width="86" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="183" y="593">sortby_list</text>
          </a>
-         <a xlink:href="sql-grammar.html#values_clause" xlink:title="values_clause">
-            <rect x="51" y="91" width="108" height="32"></rect>
-            <rect x="49" y="89" width="108" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="59" y="109">values_clause</text>
+         <rect x="321" y="575" width="58" height="32" rx="10"></rect>
+         <rect x="319" y="573" width="58" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="329" y="593">LIMIT</text>
+         <a xlink:href="sql-grammar.html#limit_val" xlink:title="limit_val">
+            <rect x="399" y="575" width="70" height="32"></rect>
+            <rect x="397" y="573" width="70" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="407" y="593">limit_val</text>
          </a>
-         <rect x="51" y="135" width="62" height="32" rx="10"></rect>
-         <rect x="49" y="133" width="62" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="59" y="153">TABLE</text>
-         <a xlink:href="sql-grammar.html#relation_expr" xlink:title="relation_expr">
-            <rect x="133" y="135" width="104" height="32"></rect>
-            <rect x="131" y="133" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="141" y="153">relation_expr</text>
+         <rect x="529" y="575" width="72" height="32" rx="10"></rect>
+         <rect x="527" y="573" width="72" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="537" y="593">OFFSET</text>
+         <a xlink:href="sql-grammar.html#offset_val" xlink:title="offset_val">
+            <rect x="621" y="575" width="82" height="32"></rect>
+            <rect x="619" y="573" width="82" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="629" y="593">offset_val</text>
          </a>
-         <a xlink:href="sql-grammar.html#select_clause" xlink:title="select_clause">
-            <rect x="51" y="179" width="104" height="32"></rect>
-            <rect x="49" y="177" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="59" y="197">select_clause</text>
-         </a>
-         <rect x="215" y="179" width="66" height="32" rx="10"></rect>
-         <rect x="213" y="177" width="66" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="223" y="197">UNION</text>
-         <rect x="215" y="223" width="94" height="32" rx="10"></rect>
-         <rect x="213" y="221" width="94" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="223" y="241">INTERSECT</text>
-         <rect x="215" y="267" width="70" height="32" rx="10"></rect>
-         <rect x="213" y="265" width="70" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="223" y="285">EXCEPT</text>
-         <a xlink:href="sql-grammar.html#all_or_distinct" xlink:title="all_or_distinct">
-            <rect x="349" y="179" width="108" height="32"></rect>
-            <rect x="347" y="177" width="108" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="357" y="197">all_or_distinct</text>
-         </a>
-         <a xlink:href="sql-grammar.html#select_clause" xlink:title="select_clause">
-            <rect x="477" y="179" width="104" height="32"></rect>
-            <rect x="475" y="177" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="485" y="197">select_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#sort_clause" xlink:title="sort_clause">
-            <rect x="195" y="311" width="92" height="32"></rect>
-            <rect x="193" y="309" width="92" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="203" y="329">sort_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#sort_clause" xlink:title="sort_clause">
-            <rect x="215" y="387" width="92" height="32"></rect>
-            <rect x="213" y="385" width="92" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="223" y="405">sort_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#limit_clause" xlink:title="limit_clause">
-            <rect x="367" y="355" width="92" height="32"></rect>
-            <rect x="365" y="353" width="92" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="375" y="373">limit_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#offset_clause" xlink:title="offset_clause">
-            <rect x="499" y="387" width="104" height="32"></rect>
-            <rect x="497" y="385" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="507" y="405">offset_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#offset_clause" xlink:title="offset_clause">
-            <rect x="367" y="431" width="104" height="32"></rect>
-            <rect x="365" y="429" width="104" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="375" y="449">offset_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#limit_clause" xlink:title="limit_clause">
-            <rect x="511" y="463" width="92" height="32"></rect>
-            <rect x="509" y="461" width="92" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="519" y="481">limit_clause</text>
-         </a>
-         <a xlink:href="sql-grammar.html#select_with_parens" xlink:title="select_with_parens">
-            <rect x="51" y="507" width="144" height="32"></rect>
-            <rect x="49" y="505" width="144" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="59" y="525">select_with_parens</text>
-         </a>
-         <path class="line" d="m17 17 h2 m20 0 h10 m70 0 h10 m20 0 h10 m110 0 h10 m0 0 h2 m-152 0 h20 m132 0 h20 m-172 0 q10 0 10 10 m152 0 q0 -10 10 -10 m-162 10 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m112 0 h10 m20 -44 h10 m84 0 h10 m0 0 h10 m96 0 h10 m0 0 h10 m108 0 h10 m0 0 h10 m104 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m116 0 h10 m-1020 0 h20 m1000 0 h20 m-1040 0 q10 0 10 10 m1020 0 q0 -10 10 -10 m-1030 10 v68 m1020 0 v-68 m-1020 68 q0 10 10 10 m1000 0 q10 0 10 -10 m-1010 10 h10 m108 0 h10 m0 0 h872 m-1010 -10 v20 m1020 0 v-20 m-1020 20 v24 m1020 0 v-24 m-1020 24 q0 10 10 10 m1000 0 q10 0 10 -10 m-1010 10 h10 m62 0 h10 m0 0 h10 m104 0 h10 m0 0 h794 m-1010 -10 v20 m1020 0 v-20 m-1020 20 v24 m1020 0 v-24 m-1020 24 q0 10 10 10 m1000 0 q10 0 10 -10 m-1010 10 h10 m104 0 h10 m40 0 h10 m66 0 h10 m0 0 h28 m-134 0 h20 m114 0 h20 m-154 0 q10 0 10 10 m134 0 q0 -10 10 -10 m-144 10 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m94 0 h10 m-124 -10 v20 m134 0 v-20 m-134 20 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m70 0 h10 m0 0 h24 m20 -88 h10 m108 0 h10 m0 0 h10 m104 0 h10 m0 0 h62 m-488 0 h20 m468 0 h20 m-508 0 q10 0 10 10 m488 0 q0 -10 10 -10 m-498 10 v112 m488 0 v-112 m-488 112 q0 10 10 10 m468 0 q10 0 10 -10 m-478 10 h10 m92 0 h10 m0 0 h356 m-478 -10 v20 m488 0 v-20 m-488 20 v24 m488 0 v-24 m-488 24 q0 10 10 10 m468 0 q10 0 10 -10 m-458 10 h10 m0 0 h102 m-132 0 h20 m112 0 h20 m-152 0 q10 0 10 10 m132 0 q0 -10 10 -10 m-142 10 v12 m132 0 v-12 m-132 12 q0 10 10 10 m112 0 q10 0 10 -10 m-122 10 h10 m92 0 h10 m40 -32 h10 m92 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m104 0 h10 m-276 -32 h20 m276 0 h20 m-316 0 q10 0 10 10 m296 0 q0 -10 10 -10 m-306 10 v56 m296 0 v-56 m-296 56 q0 10 10 10 m276 0 q10 0 10 -10 m-286 10 h10 m104 0 h10 m20 0 h10 m0 0 h102 m-132 0 h20 m112 0 h20 m-152 0 q10 0 10 10 m132 0 q0 -10 10 -10 m-142 10 v12 m132 0 v-12 m-132 12 q0 10 10 10 m112 0 q10 0 10 -10 m-122 10 h10 m92 0 h10 m60 -284 h368 m-1010 -10 v20 m1020 0 v-20 m-1020 20 v308 m1020 0 v-308 m-1020 308 q0 10 10 10 m1000 0 q10 0 10 -10 m-1010 10 h10 m144 0 h10 m0 0 h836 m23 -504 h-3"></path>
-         <polygon points="1069 17 1077 13 1077 21"></polygon>
-         <polygon points="1069 17 1061 13 1061 21"></polygon>
+         <path class="line" d="m19 61 h2 m0 0 h10 m70 0 h10 m20 0 h10 m0 0 h96 m-126 0 h20 m106 0 h20 m-146 0 q10 0 10 10 m126 0 q0 -10 10 -10 m-136 10 v12 m126 0 v-12 m-126 12 q0 10 10 10 m106 0 q10 0 10 -10 m-116 10 h10 m86 0 h10 m40 -32 h10 m96 0 h10 m20 0 h10 m0 0 h142 m-172 0 h20 m152 0 h20 m-192 0 q10 0 10 10 m172 0 q0 -10 10 -10 m-182 10 v12 m172 0 v-12 m-172 12 q0 10 10 10 m152 0 q10 0 10 -10 m-162 10 h10 m38 0 h10 m0 0 h10 m74 0 h10 m-308 -32 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m308 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-308 0 h10 m24 0 h10 m0 0 h264 m20 44 h10 m58 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-656 142 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m76 0 h10 m-116 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m96 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-96 0 h10 m24 0 h10 m0 0 h52 m40 44 h10 m0 0 h272 m-302 0 h20 m282 0 h20 m-322 0 q10 0 10 10 m302 0 q0 -10 10 -10 m-312 10 v12 m302 0 v-12 m-302 12 q0 10 10 10 m282 0 q10 0 10 -10 m-292 10 h10 m156 0 h10 m0 0 h10 m86 0 h10 m40 -32 h10 m0 0 h162 m-192 0 h20 m172 0 h20 m-212 0 q10 0 10 10 m192 0 q0 -10 10 -10 m-202 10 v12 m192 0 v-12 m-192 12 q0 10 10 10 m172 0 q10 0 10 -10 m-182 10 h10 m68 0 h10 m0 0 h10 m64 0 h10 m22 -32 l2 0 m2 0 l2 0 m2 0 l2 0 m-591 82 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h414 m-444 0 h20 m424 0 h20 m-464 0 q10 0 10 10 m444 0 q0 -10 10 -10 m-454 10 v12 m444 0 v-12 m-444 12 q0 10 10 10 m424 0 q10 0 10 -10 m-434 10 h10 m92 0 h10 m0 0 h10 m74 0 h10 m20 0 h10 m0 0 h168 m-198 0 h20 m178 0 h20 m-218 0 q10 0 10 10 m198 0 q0 -10 10 -10 m-208 10 v12 m198 0 v-12 m-198 12 q0 10 10 10 m178 0 q10 0 10 -10 m-188 10 h10 m74 0 h10 m0 0 h10 m64 0 h10 m42 -64 l2 0 m2 0 l2 0 m2 0 l2 0 m-629 118 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h688 m-718 0 h20 m698 0 h20 m-738 0 q10 0 10 10 m718 0 q0 -10 10 -10 m-728 10 v12 m718 0 v-12 m-718 12 q0 10 10 10 m698 0 q10 0 10 -10 m-688 10 h10 m66 0 h10 m0 0 h28 m-134 0 h20 m114 0 h20 m-154 0 q10 0 10 10 m134 0 q0 -10 10 -10 m-144 10 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m94 0 h10 m-124 -10 v20 m134 0 v-20 m-134 20 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m70 0 h10 m0 0 h24 m40 -88 h10 m0 0 h54 m-84 0 h20 m64 0 h20 m-104 0 q10 0 10 10 m84 0 q0 -10 10 -10 m-94 10 v12 m84 0 v-12 m-84 12 q0 10 10 10 m64 0 q10 0 10 -10 m-74 10 h10 m44 0 h10 m20 -32 h10 m86 0 h10 m0 0 h334 m-708 -10 v20 m718 0 v-20 m-718 20 v102 m718 0 v-102 m-718 102 q0 10 10 10 m698 0 q10 0 10 -10 m-688 10 h10 m0 0 h206 m-236 0 h20 m216 0 h20 m-256 0 q10 0 10 10 m236 0 q0 -10 10 -10 m-246 10 v12 m236 0 v-12 m-236 12 q0 10 10 10 m216 0 q10 0 10 -10 m-226 10 h10 m90 0 h10 m0 0 h10 m86 0 h10 m40 -32 h10 m0 0 h158 m-188 0 h20 m168 0 h20 m-208 0 q10 0 10 10 m188 0 q0 -10 10 -10 m-198 10 v12 m188 0 v-12 m-188 12 q0 10 10 10 m168 0 q10 0 10 -10 m-178 10 h10 m58 0 h10 m0 0 h10 m70 0 h10 m40 -32 h10 m0 0 h184 m-214 0 h20 m194 0 h20 m-234 0 q10 0 10 10 m214 0 q0 -10 10 -10 m-224 10 v12 m214 0 v-12 m-214 12 q0 10 10 10 m194 0 q10 0 10 -10 m-204 10 h10 m72 0 h10 m0 0 h10 m82 0 h10 m43 -186 h-3"></path>
+         <polygon points="761 403 769 399 769 407"></polygon>
+         <polygon points="761 403 753 399 753 407"></polygon>
       </svg>
