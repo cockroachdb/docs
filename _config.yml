@@ -4,6 +4,7 @@ homepage_title: CockroachDB Docs
 site_title: Cockroach Labs
 google_analytics: UA-63775601-1
 
+url: "https://www.cockroachlabs.com"
 baseurl: "/docs"
 
 highlighter: rouge
