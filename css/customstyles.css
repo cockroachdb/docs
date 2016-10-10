@@ -1176,7 +1176,8 @@ pre, table code {
   /* Internet Explorer 5.5+ */ }
 
 pre {
-  /*margin: 25px 0px;*/ }
+  /*margin: 25px 0px;*/
+  overflow: auto; }
 
 .panel-heading {
   font-family: 'AvenirLTStd-Heavy', sans-serif; }
