@@ -35,9 +35,9 @@ CockroachDB can use a large number of open file descriptors, often more than is 
 
 For each CockroachDB node:
 
-- At a **minimum**, the file descriptors limit must be 512 (256 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
-- The **recommended** file descriptors limit is at least 10000 (5000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth. 
-- When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 5000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores. 
+- At a **minimum**, the file descriptors limit must be 2256 (2000 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
+- It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth. 
+- When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 10000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores.
 
 ### Increase the File Descriptors Limit
 
@@ -122,7 +122,7 @@ $(document).ready(function(){
 
 To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create a property list configuration file with the hard limit set to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
-For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows: 
+For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows: 
 
 1.  Check the current limits:
 
@@ -133,7 +133,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
     The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
 
-2.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 20000:
+2.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 35000:
 
     ~~~ xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -147,8 +147,8 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
               <string>launchctl</string>
               <string>limit</string>
               <string>maxfiles</string>
-              <string>20000</string>
-              <string>20000</string>
+              <string>35000</string>
+              <string>35000</string>
             </array>
           <key>RunAtLoad</key>
             <true/>
@@ -166,14 +166,14 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    20000          20000      
+    maxfiles    35000          35000      
     ~~~
 
 #### Older versions
 
 To adjust the file descriptors limit for a single process in OS X versions earlier than Yosemite, edit `/etc/launchd.conf` and increase the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
-For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
+For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows:
 
 1.  Check the current limits:
 
@@ -187,7 +187,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 2.  Edit (or create) `/etc/launchd.conf` and add a line that looks like the following, with the last value set to the new hard limit:
 
     ~~~
-    limit maxfiles 20000 20000
+    limit maxfiles 35000 35000
     ~~~
 
 3.  Save the file, and restart the system for the new limits to take effect. 
@@ -196,7 +196,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    20000          20000      
+    maxfiles    35000          35000      
     ~~~
 
 </div>
@@ -210,7 +210,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 
 To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
-For example, for a node with 3 stores, we would set the hard limit to at least 20000 (5000 per store and 5000 for networking) as follows:
+For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows:
 
 1.  Make sure the following line is present in both `/etc/pam.d/common-session` and `/etc/pam.d/common-session-noninteractive`:
 
@@ -221,8 +221,8 @@ For example, for a node with 3 stores, we would set the hard limit to at least 2
 2.  Edit `/etc/security/limits.conf` and append the following lines to the file:
 
     ~~~ shell
-    *              soft     nofile          20000
-    *              hard     nofile          20000
+    *              soft     nofile          35000
+    *              hard     nofile          35000
     ~~~
 
     Note that `*` can be replaced with the username that will be running the CockroachDB server.
@@ -246,7 +246,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     ~~~ ini
     [Service]
     ...
-    LimitNOFILE=20000
+    LimitNOFILE=35000
     ~~~
 
 2.  Reload Systemd for the new limit to take effect:
