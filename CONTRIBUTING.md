@@ -122,6 +122,48 @@ SQL code samples are broken into two sections: commands and responses.
 - **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`.
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
 
+### Notes, Warnings, & Tips
+
+Our docs use three classes of highlighted text.
+
+**NOTE**: The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
+
+#### Notes
+
+Use notes to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
+
+For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point misguided users to the right place.
+
+To insert a note, use the following code:
+
+```
+{{site.data.alerts.callout_info}} <tip text goes here> {{site.data.alerts.end}}
+```
+
+#### Warnings
+
+Use warning to express that a piece of information is critical to understand to prevent unexpected things from happening.
+
+For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
+
+To insert a warning, use the following code:
+
+```
+{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
+```
+
+#### Tips
+
+Use tips to highlight nice-to-know pieces of information.
+
+For example, you might include a tip to our Github repo's Terraform scripts on the Google Cloud Engine deployment page. It's nice to know it's there, but doesn't clarify anything nor is it critical.
+
+To insert a tip, use the following code:
+
+```
+{{site.data.alerts.callout_success}}{{site.data.alerts.end}}
+```
+
 ## Build and Test the Docs Locally
 
 Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
