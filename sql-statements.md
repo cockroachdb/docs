@@ -14,6 +14,7 @@ Statement | Usage
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database. 
+[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement. 
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
