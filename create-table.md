@@ -69,6 +69,10 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **table_constraint ::=**
 {% include sql/diagrams/table_constraint.html %}
+
+**opt_interleave ::=**
+{% include sql/diagrams/opt_interleave.html %}
+
 </div>
 
 ## Parameters
@@ -81,6 +85,7 @@ Parameter | Description
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes](#create-a-table-with-secondary-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html). 
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
+`opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
 
 ## Examples
 
