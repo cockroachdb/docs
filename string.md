@@ -41,7 +41,7 @@ A `STRING` column accepts Unicode string literals, hexadecimal string literals, 
 
 ### String Literal
 
-When inserting a string literal into a `STRING` column, format the value as Unicode characters within single quotes, e.g., `'a1b2c3'`.
+When inserting a string literal into a `STRING` column, format the value as a valid UTF-8 character sequence within single quotes, e.g., `'a1b2c3'`.
 
 ### Hexadecimal-Encoded String Literal
 
