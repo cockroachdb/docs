@@ -83,7 +83,9 @@ These commands add two nodes to the cluster, but you can add as many as you like
 
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 
-If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replicas-failing-on-a-single-node-cluster) for more details.
+If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replication-error-in-a-single-node-cluster) for more details.
+
+Replication Error in on a Single-Node Cluster
 
 ## Step 3. Use the built-in SQL client
 
