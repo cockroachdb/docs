@@ -38,11 +38,14 @@ Make sure you have already:
 ~~~ shell
 $ cockroach start --background
 
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     http://localhost:8080
-sql:       postgresql://root@localhost:26257?sslmode=disable
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
+build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+admin:      http://localhost:8080
+sql:        postgresql://root@localhost:26257?sslmode=disable
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     initialized new cluster
+clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
+nodeID:     1
 ~~~
 
 This command starts a node, accepting all [`cockroach start`](start-a-node.html) defaults.
@@ -56,7 +59,7 @@ This command starts a node, accepting all [`cockroach start`](start-a-node.html)
 
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell. 
 
-- The [standard output](start-a-node.html#standard-output) gives you a helpful summary of the CockroachDB version, the URL for the admin UI, the SQL URL for your client code, and the storage locations for node and debug log data.
+- The [standard output](start-a-node.html#standard-output) gives you a helpful summary: the CockroachDB version; the URL for the admin UI; the SQL URL for your client code; the storage locations for node and debug log data; whether the node is the first in the cluster, joined an existing cluster for the first time, or rejoined an existing cluster; the cluster ID; and the node ID.
 
 {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one node per host. When running multiple nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 

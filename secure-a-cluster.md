@@ -29,11 +29,14 @@ $ cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.ke
 ~~~ shell
 $ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-host=localhost --background
 
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     https://ROACHs-MBP:8080
-sql:       postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
+build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+admin:      https://ROACHs-MBP:8080
+sql:        postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     restarted pre-existing node
+clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
+nodeID:     1
 ~~~
 
 This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions: 
