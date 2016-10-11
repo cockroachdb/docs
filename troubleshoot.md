@@ -54,7 +54,7 @@ node 1 belongs to cluster {"cluster hash"} but is attempting to connect to a gos
 
 ## Replication
 
-### Replicas Failing on a Single-Node Cluster
+### Replication Error in on a Single-Node Cluster
 
 When running a single-node CockroachDB cluster for testing, an error about replicas failing will eventually show up in the node's log files, for example:
 
@@ -62,7 +62,7 @@ When running a single-node CockroachDB cluster for testing, an error about repli
 E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"
 ~~~
 
-This error occurs because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by updating your default zone configuration to expect only one node as follows:
+This error occurs because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by updating your default zone configuration to expect only one node:
 
 ~~~ shell
 $ echo 'replicas: [attrs: []]' | cockroach zone set .default -f -
@@ -70,7 +70,7 @@ $ echo 'replicas: [attrs: []]' | cockroach zone set .default -f -
 
 See [Configure Replication Zones](configure-replication-zones.html) for more details.
 
-### Replicas Failing on a Multi-Node Cluster
+### Replication Error in a Multi-Node Cluster
 
 When running a multi-node CockroachDB cluster, if you see an error like the one above about replicas failing, some nodes might not be able to talk to each other. Here are some recommended actions:
 
