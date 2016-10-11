@@ -64,6 +64,9 @@ entries:
                 - title: <code>CREATE TABLE</code>
                   url: /create-table.html
 
+                - title: <code>CREATE TABLE AS</code>
+                  url: /create-table-as.html
+
                 - title: <code>DELETE</code>
                   url: /delete.html
 

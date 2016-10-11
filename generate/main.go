@@ -213,6 +213,7 @@ func main() {
 					unlink:  []string{"index_name", "table_name", "column_name"},
 					nosplit: true,
 				},
+				{name: "create_table_as_stmt", inline: []string{"opt_column_list", "name_list"}},
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{
