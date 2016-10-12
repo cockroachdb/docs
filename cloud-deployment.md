@@ -6,8 +6,9 @@ toc: false
 
 Use the following guides to deploy CockroachDB to popular cloud platforms:
 
-- [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
 - [Amazon Web Services (AWS)](deploy-cockroachdb-on-aws.html)
+- [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html)
+- [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
 
 ## General Deployment Steps (Insecure Clusters)
 
@@ -19,8 +20,8 @@ If we don't have a guide for your platform, you can deploy CockroachDB to any cl
 
 2. [Manually deploy CockroachDB](manual-deployment.html#deploy-an-insecure-cluster) to your VMs.
 
-
 ## See Also
 
 - [Manual Deployment](manual-deployment.html)
+- [Orchestration](orchestration.html)
 - [Start a Local Cluster](start-a-local-cluster.html)
