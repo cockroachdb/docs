@@ -285,6 +285,9 @@ entries:
         - title: Back Up and Restore Data
           url: /back-up-and-restore-data.html
 
+        - title: Generate CLI Utilities & Example Data
+          url: /generate-cli-utilities-and-example-data.html
+
         - title: Troubleshoot
           url: /troubleshoot.html
 

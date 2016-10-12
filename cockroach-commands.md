@@ -22,7 +22,7 @@ Command | Usage
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
 [`dump`](back-up-and-restore-data.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
-`gen` | Generate manpages and bash completion file (docs coming soon).
+[`gen`](generate-cli-utilities-and-example-data.html) | Generate manpages, a bash completion file, and example data.
 [`version`](view-version-details.html) | Output CockroachDB version and dependency details.
 
 ## Logging Flags
