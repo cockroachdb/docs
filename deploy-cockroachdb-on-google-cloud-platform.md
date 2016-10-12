@@ -191,6 +191,7 @@ Now that your deployment is working, you can:
 
 ## See Also
 
+- [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
 - [AWS Deployment](deploy-cockroachdb-on-aws.html)
 - [Manual Deployment](manual-deployment.html)
 - [Start a Local Cluster](start-a-local-cluster.html)

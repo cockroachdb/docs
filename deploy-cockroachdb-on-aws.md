@@ -193,5 +193,6 @@ Now that your deployment is working, you can:
 ## See Also
 
 - [Google Cloud Platform GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
+- [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
 - [Manual Deployment](manual-deployment.html)
 - [Start a Local Cluster](start-a-local-cluster.html)
