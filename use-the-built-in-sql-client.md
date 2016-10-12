@@ -48,7 +48,7 @@ Flag | Description
 
 ## SQL Shell Commands
 
-In addition to executing [SQL statements](sql-statements.html) within the shell, you can use the following commands:
+The following commands can be used within the interactive SQL shell:
 
 Command | Usage
 --------|------------
@@ -56,6 +56,10 @@ Command | Usage
 `\|` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
 `\?`<br>`help` | View this help within the shell.
+
+## SQL Shell Shortcuts
+
+The SQL shell supports many shortcuts, such as **CTRL + R** for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
 ## Examples
 
