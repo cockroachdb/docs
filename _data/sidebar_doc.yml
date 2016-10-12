@@ -285,6 +285,9 @@ entries:
         - title: Back Up and Restore Data
           url: /back-up-and-restore-data.html
 
+        - title: Generate Command Resources
+          url: /generate-cockroach-command-resources.html
+
         - title: Troubleshoot
           url: /troubleshoot.html
 
