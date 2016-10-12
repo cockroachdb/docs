@@ -52,10 +52,18 @@ The following commands can be used within the interactive SQL shell:
 
 Command | Usage
 --------|------------
+`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\|` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
+`\set <option>` | Enable a client-side option. See the table below for available options.<br><br>To see current settings, use `\set` without any options.
+`\unset <option>` | Disable a client-side option. See the table below for available options.
 `\?`<br>`help` | View this help within the shell.
+
+Client Options | Description
+---------------|------------
+`CHECK_SYNTAX` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset CHECK_SYNTAX`.
+`NORMALIZE_HISTORY` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `CHECK_SYNTAX` is enabled as well. To disable this option, run `\unset NORMALIZE_HISTORY`.
+`ERREXIT` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set ERREXIT`.
 
 ## SQL Shell Shortcuts
 
