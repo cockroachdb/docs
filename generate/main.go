@@ -70,7 +70,7 @@ func main() {
 		},
 	}
 
-	cmdBNF.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
+	cmdBNF.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
 
 	var (
 		topStmt string
@@ -372,7 +372,7 @@ func main() {
 		},
 	}
 
-	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
+	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
 	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "diagrams"), "Base directory for html output.")
 	rootCmd.Flags().StringVar(&filter, "filter", "", "Filter statement names")
 	rootCmd.Flags().BoolVar(&printBNF, "bnf", false, "Print BNF only; don't generate railroad diagrams")
