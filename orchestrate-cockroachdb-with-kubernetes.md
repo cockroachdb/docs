@@ -86,7 +86,7 @@ Kubectl is now configured to use the cluster.
 
 <div class="filter-content current" markdown="1" data-scope="cloud">
 
-2. From your local worstation, use our [`cockroachdb-petset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-petset.yaml) file to create the PetSet:
+2. From your local workstation, use our [`cockroachdb-petset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-petset.yaml) file to create the PetSet:
 
    ~~~ shell
    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-petset.yaml
@@ -289,21 +289,48 @@ To see this in action:
    cockroachdb-2   1/1       Running   0          1m
    ~~~
 
-## Step 6. Scale the cluster up or down
-
-To increase or decrease the number of pods/nodes in your cluster, use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to alter the `replicas: 3` configuration for your PetSet. 
+## Step 6. Scale the cluster
 
 <div class="filter-content current" markdown="1" data-scope="cloud">
 
-For example, since the Kubernetes script create 4 VMs, and only 3 of them are in use by pods, you can add a replica and safely assume that it will run on the final VM:
+The Kubernetes script created 4 nodes, one master and 3 workers. Pods only get placed on worker nodes, so to ensure that you don't have two pods on the same node, you need to add a new worker node and then edit your PetSet configuration to add an additional pod.
+
+1.  Add a worker node:
+
+    - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
+    - On AWS, resize your [Auto Scaling Group](http://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).  
+
+2.  Use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to add a pod to your PetSet:
+
+    ~~~ shell
+    $ kubectl patch petset cockroachdb -p '{"spec":{"replicas":4}}'
+    ~~~
+
+    ~~~
+    "cockroachdb" patched
+    ~~~ 
+
+3.  Verify that a fourth pod was added successfully: 
+
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          2h
+    cockroachdb-1   1/1       Running   0          2h
+    cockroachdb-2   1/1       Running   0          9m
+    cockroachdb-3   1/1       Running   0          46s
+    ~~~
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-For example, since the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script created four persistent volumes and volume claims, and only three of them are in use by pods, you can add a replica and safely assume that it will claim the final persistent volume:
+To increase the number of pods in your cluster, use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to alter the `replicas: 3` configuration for your PetSet. 
 
-</div>
+For example, since the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script created four persistent volumes and volume claims, and only three of them are in use by pods, you can add a replica and safely assume that it will claim the final persistent volume:
 
 ~~~ shell
 $ kubectl patch petset cockroachdb -p '{"spec":{"replicas":4}}'
@@ -326,6 +353,8 @@ cockroachdb-1   1/1       Running   0          2h
 cockroachdb-2   1/1       Running   0          9m
 cockroachdb-3   1/1       Running   0          46s
 ~~~
+
+</div>
 
 ## Step 7. Stop the cluster 
 
