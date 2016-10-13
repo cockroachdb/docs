@@ -184,7 +184,7 @@ $ sudo docker network create --driver overlay cockroachdb
    b135nrlxv2kq  cockroachdb-2  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-2 --join=cockroachdb-0:26257 --logtostderr --insecure
    ~~~
 
-## Step 7. Use the Built-in SQL Client
+## Step 7. Use the built-in SQL client
 
 1. On any instance, use the `sudo docker ps` command to get the ID of the container running the CockroachDB node:
 
@@ -284,6 +284,7 @@ $ sudo docker volume rm cockroachdb-0
 
 ## See Also
 
-- [Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+- [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
 - [Cloud Deployment](cloud-deployment.html)
 - [Manual Deployment](manual-deployment.html)
+- [Local Deployment](start-a-local-cluster.html)
