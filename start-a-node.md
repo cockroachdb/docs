@@ -34,12 +34,12 @@ Flag | Description
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
 `--cert` | The path to the [node certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--host` | The hostname or IP address to listen on for intra-cluster and client communication. The node will also advertise itself to other nodes using this address only if `--advertise-host` is not specified; in this case, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>**Defaults:** When starting a node without `--insecure` and without cert flags (i.e., a local cluster), the node listens on `localhost` only and cannot be changed. When starting a node with `--insecure` or with cert flags (i.e., a distributed cluster), the node listens on all interfaces by default but this flag can be set to listen on an external address. 
-`--http-addr` | **Deprecated.** Use `--http-host` instead.
 `--http-host` | The hostname or IP address to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
 `--http-port` | The port to bind to for Admin UI HTTP requests. <br><br>**Default:** `8080`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--join`<br>`-j` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node.<br><br>Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list, using multiple `--join` flags, or using a combination of these approaches, for example: <br><br>`--join=localhost:1234,localhost:2345`<br>`--join=localhost:1234 --join=localhost:2345`<br>`--join=localhost:1234,localhost:2345 --join=localhost:3456`
 `--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
+`--locality` | Not yet implemented.
 `--port`<br>`-p` | The port to bind to for internal and client communication. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--raft-tick-interval` | CockroachDB uses the [Raft consensus algorithm](https://raft.github.io/) to replicate data consistently according to your [replication zone configuration](configure-replication-zones.html). For each replica group, an elected leader heartbeats its followers and keeps their logs replicated. When followers fail to receive heartbeats, a new leader is elected. <br><br>This flag sets the interval at which the replica leader heartbeats followers. For high-latency deployments, set this flag to a value greater than the average latency between your nodes. Also, this flag should be set identically on all nodes in the cluster.<br><br>**Default:** 200ms 
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
@@ -57,35 +57,6 @@ Field | Description
 ## Standard Output
 
 When you run `cockroach start`, some helpful details are printed to the standard output:
-
-<div id="step-three-filters" class="filters clearfix">
-  <button class="filter-button scope-button current" data-scope="beta">Beta</button>
-  <button class="filter-button scope-button" data-scope="develop">Develop</button>
-</div><p></p>
-
-<div class="filter-content current" markdown="1" data-scope="beta">
-
-~~~ shell
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     http://ROACHs-MBP:8080
-sql:       postgresql://root@ROACHs-MBP:26257?sslmode=disable
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
-~~~
-
-Field | Description
-------|------------
-`build` | The version of CockroachDB you are running.
-`admin` | The URL for accessing the Admin UI.
-`sql` | The connection URL for your client.
-`logs` | The directory containing debug log data.
-`store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
-
-</div>
-
-<div class="filter-content" markdown="1" data-scope="develop">
-
-{{site.data.alerts.callout_info}}When you <a href="install-cockroachdb.html">build a CockroachDB binary</a> from the code on our <a href="develop-branch.html"><code>develop</code> branch</a>, the standard output on node startup includes additional fields: <code>status</code>, <code>clusterID</code>, and <code>nodeID</code>. This change will eventually be included in an official beta release.{{site.data.alerts.end}}
 
 ~~~ shell
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
@@ -108,8 +79,6 @@ Field | Description
 `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
 `clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see [Troubleshooting](troubleshoot.html#node-wont-join-cluster). 
 `nodeID` | The ID of the node.
-
-</div>
 
 ## Examples
 

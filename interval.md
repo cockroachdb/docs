@@ -17,7 +17,7 @@ Format | Description
 Golang | `INTERVAL '1h2m3s4ms5us6ns'`<br><br>Note that `ms` is milliseconds, `us` is microseconds, and `ns` is nanoseconds. Also, all fields support both integers and floats.
 Traditional Postgres | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'` 
 ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
-SQL Standard | {% include develop-paragraph.md %}<br><br>`INTERVAL 'H:M:S'`<br><br>Using a single field defines seconds only, and using two fields defines hours and minutes. Also, all fields support both integers and floats.
+SQL Standard | `INTERVAL 'H:M:S'`<br><br>Using a single field defines seconds only, and using two fields defines hours and minutes. Also, all fields support both integers and floats.
 
 Alternatively, you can use a string literal, e.g., `'1h2m3s4ms5us6ns'` or`'1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`, which CockroachDB will resolve into the `INTERVAL` type.
 

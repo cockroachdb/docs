@@ -103,11 +103,14 @@ The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database
 
 ~~~ shell
 $ cockroach start --insecure --host=node1.example.com
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     http://node1.example.com:8080 <-------------------------- USE THIS URL
-sql:       postgresql://root@node1.example.com:26257?sslmode=disable
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
+build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+admin:      http://node1.example.com:8080 <-------------------------- USE THIS URL
+sql:        postgresql://root@node1.example.com:26257?sslmode=disable
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     initialized new cluster
+clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
+nodeID:     1
 ~~~
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
@@ -224,11 +227,14 @@ The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database
 
 ~~~ shell
 $ cockroach start --http-host=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=node1.example.com
-build:     {{site.data.strings.version}} @ {{site.data.strings.build_time}}
-admin:     https://<private-address>:8080 <-------------- USE THIS URL
-sql:       postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...
-logs:      cockroach-data/logs
-store[0]:  path=cockroach-data
+build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+admin:      https://<private-address>:8080 <-------------- USE THIS URL
+sql:        postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     initialized new cluster
+clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
+nodeID:     1
 ~~~
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
