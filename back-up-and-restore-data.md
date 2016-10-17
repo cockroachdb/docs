@@ -26,7 +26,7 @@ $ cockroach dump <database> <table> <flags>
 $ cockroach dump <database> <table> <flags> > dump-file.sql
 
 # View help:
-$ cockroach help dump
+$ cockroach dump --help
 ~~~
 
 ## Flags

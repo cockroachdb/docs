@@ -31,10 +31,10 @@ $ cockroach cert create-node <node-hostname> <node-other-hostname> <node-yet-ano
 $ cockroach cert create-client <username> --ca-cert=<path-to-ca-cert> --ca-key=<path-to-ca-key> --cert=<path-to-client-cert> --key=<path-to-client-key>
 
 # View help:
-$ cockroach help cert
-$ cockroach help cert create-ca
-$ cockroach help cert create-node
-$ cockroach help cert create-client
+$ cockroach cert --help
+$ cockroach cert create-ca --help
+$ cockroach cert create-node --help
+$ cockroach cert create-client --help
 ~~~
 
 ## Flags

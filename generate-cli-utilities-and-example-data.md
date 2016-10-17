@@ -27,6 +27,12 @@ $ cockroach gen autocomplete
 
 # Generate example SQL data:
 $ cockroach gen example-data | cockroach sql
+
+# View help:
+$ cockroach gen --help
+$ cockroach gen man --help
+$ cockroach gen autocomplete --help
+$ cockroach gen example-data --help
 ~~~
 
 ## Flags

@@ -107,11 +107,11 @@ $ cockroach zone rm <database> <flags>
 $ cockroach zone rm <database.table> <flags>
 
 # View help:
-$ cockroach help zone
-$ cockroach help zone ls
-$ cockroach help zone get
-$ cockroach help zone set
-$ cockroach help zone rm
+$ cockroach zone --help
+$ cockroach zone ls --help
+$ cockroach zone get --help
+$ cockroach zone set --help
+$ cockroach zone rm --help
 ~~~
 
 ## Flags

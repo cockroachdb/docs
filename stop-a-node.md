@@ -17,7 +17,7 @@ The `quit` command allows in-flight requests to complete and then shuts down the
 $ cockroach quit <flags>
 
 # View help:
-$ cockroach help quit
+$ cockroach quit --help
 ~~~
 
 ## Flags

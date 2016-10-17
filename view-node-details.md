@@ -25,9 +25,9 @@ $ cockroach node ls <flags>
 $ cockroach node status <optional node ID> <flags>
 
 # View help:
-$ cockroach help node
-$ cockroach help node ls
-$ cockroach help node status
+$ cockroach node --help
+$ cockroach node ls --help
+$ cockroach node status --help
 ~~~
 
 ## Flags

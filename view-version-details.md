@@ -11,8 +11,8 @@ $ cockroach version
 Build Tag:   {{site.data.strings.version}}
 Build Time:  {{site.data.strings.build_time}}
 Platform:    darwin amd64
-Go Version:  go1.6.1
-C Compiler:  4.2.1 Compatible Ubuntu Clang 3.7.0 (tags/RELEASE_370/final)
+Go Version:  go1.7.1
+C Compiler:  4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)
 ~~~
 
 The `cockroach version` command outputs the following fields:
@@ -32,47 +32,56 @@ $ cockroach version --deps
 Build Tag:   {{site.data.strings.version}}
 Build Time:  {{site.data.strings.build_time}}
 Platform:    darwin amd64
-Go Version:  go1.6.1
-C Compiler:  4.2.1 Compatible Ubuntu Clang 3.7.0 (tags/RELEASE_370/final)
+Go Version:  go1.7.1
+C Compiler:  4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)
 Build Deps:
-  github.com/biogo/store                     3b4c041f52c224ee4a44f5c8b150d003a40643a0
-  github.com/chzyer/readline                 f2a9cba613d3b2f1eb435992201d5787e6551830
-  github.com/cockroachdb/cmux                112f0506e7743d64a6eb8fedbcff13d9979bbf92
-  github.com/cockroachdb/cockroach           e6880ae2bce8f2a391f6adc07f9945c783480e2b
-  github.com/cockroachdb/c-protobuf          4feb192131ea08dfbd7253a00868ad69cbb61b81
-  github.com/cockroachdb/c-rocksdb           b80d2efe8e544bbcc4b50dec8e89f9305f5da745
-  github.com/cockroachdb/c-snappy            5c6d0932e0adaffce4bfca7bdf2ac37f79952ccf
-  github.com/cockroachdb/pq                  3d7f893b32668bbf6dacfc59367d7a4c004457cc
-  github.com/codahale/hdrhistogram           360314142131c2043d1346f197f86435b287c6da
-  github.com/coreos/etcd                     6c8428c3939a7fa224ac8e97005b1967f3fd87f1
-  github.com/cpuguy83/go-md2man              2724a9c9051aa62e9cca11304e7dd518e9e41599
-  github.com/dustin/go-humanize              8929fe90cee4b2cb9deb468b51fb34eba64d1bf0
-  github.com/elastic/gosigar                 28809b70ab5790851083da5405c0e2ca2a80fe23
-  github.com/elazarl/go-bindata-assetfs      57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
-  github.com/gengo/grpc-gateway              965b62d83c33af1be34fd5d70ccf814c4029a319
-  github.com/gogo/protobuf                   4365f750fe246471f2a03ef5da5231c3565c5628
-  github.com/golang/protobuf                 dda510ac0fd43b39770f22ac6260eb91d377bce3
-  github.com/google/btree                    f06e229e679911bb31a04e07ac891115822e37c3
-  github.com/julienschmidt/httprouter        77366a47451a56bb3ba682481eed85b64fea14e8
-  github.com/kr/pretty                       add1dbc86daf0f983cd4a48ceb39deb95c729b67
-  github.com/kr/text                         bb797dc4fb8320488f47bf11de07a733d7233e1f
-  github.com/lib/pq                          3cd0097429be7d611bb644ef85b42bfb102ceea4
-  github.com/mattn/go-isatty                 56b76bdf51f7708750eac80fa38b952bb9f32639
-  github.com/mattn/go-runewidth              d6bea18f789704b5f83375793155289da36a3c7f
-  github.com/olekukonko/tablewriter          cca8bbc0798408af109aaaa239cbd2634846b340
-  github.com/opentracing/basictracer-go      8037d926355bd3bc9b503652580a71a030995575
-  github.com/opentracing/opentracing-go      01498abd158dfdbe8e251856bc7d14cb0f046fa3
-  github.com/rcrowley/go-metrics             eeba7bd0dd01ace6e690fa833b3f22aaec29af43
-  github.com/russross/blackfriday            b43df972fb5fdf3af8d2e90f38a69d374fe26dd0
-  github.com/satori/go.uuid                  f9ab0dce87d815821e221626b772e3475a0d2749
-  github.com/shurcooL/sanitized_anchor_name  10ef21a441db47d8b13ebcc5fd2310f636973c77
-  github.com/spf13/cobra                     4c05eb1145f16d0e6bb4a3e1b6d769f4713cb41f
-  github.com/spf13/pflag                     7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7
-  github.com/VividCortex/ewma                c34099b489e4ac33ca8d8c5f9d29d6eeaf69f2ed
-  golang.org/x/crypto                        b8a0f4bb4040f8d884435cff35b9691e362cf00c
-  golang.org/x/net                           e45385e9b226f570b1f086bf287b25d3d4117776
-  golang.org/x/text                          5ee49cfe751141f8017047bab800d1f528ee3be1
-  google.golang.org/grpc                     ecd00d52ac82a2cd37e17bf91d9c6ca228b71745
-  gopkg.in/inf.v0                            3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4
-  gopkg.in/yaml.v1                           9f9df34309c04878acc86042b16630b0f696e1de
+  github.com/VividCortex/ewma                       c595cd886c223c6c28fc9ae2727a61b5e4693d85
+  github.com/biogo/store                            913427a1d5e89604e50ea1db0f28f34966d61602
+  github.com/cenk/backoff                           8edc80b07f38c27352fb186d971c628a6c32552b
+  github.com/chzyer/readline                        25c2772d5fd908077927228597b084a1f1a0e66d
+  github.com/cockroachdb/c-jemalloc                 42e6a32cd7a4dff9c70d80323681d46d046181ef
+  github.com/cockroachdb/c-protobuf                 951f3e665896e7ba939fd1f2db9aeaae6ca988f8
+  github.com/cockroachdb/c-rocksdb                  b5ca031b93fde49bfa2ba99aba423136aebf3c06
+  github.com/cockroachdb/c-snappy                   d4e7b428fe7fc09e93573df3448567a62df8c9fa
+  github.com/cockroachdb/cmux                       b64f5908f4945f4b11ed4a0a9d3cc1e23350866d
+  github.com/cockroachdb/cockroach                  125aca089913f23d7d8d4d1711320e2dda25a145
+  github.com/cockroachdb/pq                         44a6473ebbc26e3af09fe57bbdf761475c2c9f7c
+  github.com/codahale/hdrhistogram                  3a0bb77429bd3a61596f5e8a3172445844342120
+  github.com/coreos/etcd                            33e4f2ea283c187cac459462994d084f44d7c9de
+  github.com/cpuguy83/go-md2man                     a65d4d2de4d5f7c74868dfa9b202a3c8be315aaa
+  github.com/dustin/go-humanize                     bd88f87ad3a420f7bcf05e90566fd1ceb351fa7f
+  github.com/elastic/gosigar                        2716c1fe855ee5c88eae707195e0688374458c92
+  github.com/elazarl/go-bindata-assetfs             9a6736ed45b44bf3835afeebb3034b57ed329f3e
+  github.com/facebookgo/clock                       600d898af40aa09a7a93ecb9265d87b0504b6f03
+  github.com/gogo/protobuf                          fdc14ac22689d09f8639e603614593811bc1d81c
+  github.com/golang/protobuf                        df1d3ca07d2d07bba352d5b73c4313b4e2a6203e
+  github.com/google/btree                           7364763242911ab6d418d2722e237194938ebad0
+  github.com/grpc-ecosystem/grpc-gateway            acebe0f9ff5993e130b141ee60e83e592839ca22
+  github.com/jeffjen/datefmt                        6688647cfa0439b86e09b097cac96ed328d5fa34
+  github.com/kr/pretty                              cfb55aafdaf3ec08f0db22699ab822c50091b1c4
+  github.com/kr/text                                7cafcd837844e784b526369c9bce262804aebc60
+  github.com/leekchan/timeutil                      28917288c48df3d2c1cfe468c273e0b2adda0aa5
+  github.com/lib/pq                                 fcb9ef54da7cae1ea08f0b5a92f236d83e59294a
+  github.com/lightstep/lightstep-tracer-go          7ec5005048fddb1fc15627e1bf58796ce01d919e
+  github.com/mattn/go-isatty                        66b8e73f3f5cda9f96b69efd03dd3d7fc4a5cdb8
+  github.com/mattn/go-runewidth                     d6bea18f789704b5f83375793155289da36a3c7f
+  github.com/matttproud/golang_protobuf_extensions  c12348ce28de40eed0136aa2b644d0ee0650e56c
+  github.com/olekukonko/tablewriter                 bdcc175572fd7abece6c831e643891b9331bc9e7
+  github.com/opentracing/basictracer-go             1b32af207119a14b1b231d451df3ed04a72efebf
+  github.com/opentracing/opentracing-go             30dda9350627161ff15581c0bdc504e32ec9a536
+  github.com/petermattis/goid                       ba001f8780f3bf978180f390ad7b5bac39fbf70a
+  github.com/pkg/errors                             839d9e913e063e28dfd0e6c7b7512793e0a48be9
+  github.com/prometheus/client_model                fa8ad6fec33561be4280a8f0514318c79d7f6cb6
+  github.com/prometheus/common                      85637ea67b04b5c3bb25e671dacded2977f8f9f6
+  github.com/rcrowley/go-metrics                    ab2277b1c5d15c3cba104e9cbddbdfc622df5ad8
+  github.com/rubyist/circuitbreaker                 7e3e7fbe9c62b943d487af023566a79d9eb22d3b
+  github.com/satori/go.uuid                         b061729afc07e77a8aa4fad0a2fd840958f1942a
+  github.com/spf13/cobra                            9c28e4bbd74e5c3ed7aacbc552b2cab7cfdfe744
+  github.com/spf13/pflag                            c7e63cf4530bcd3ba943729cee0efeff2ebea63f
+  golang.org/x/crypto                               484eb34681af59703e639b971bc307019182c41f
+  golang.org/x/net                                  f4b625ec9b21d620bb5ce57f2dfc3e08ca97fce6
+  golang.org/x/text                                 098f51fb687dbaba1f6efabeafbb6461203f9e21
+  google.golang.org/grpc                            79b7c349179cdd6efd8bac4a1ce7f01b98c16e9b
+  gopkg.in/inf.v0                                   3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4
+  gopkg.in/yaml.v2                                  a5b47d31c556af34a302ce5d659e6fea44d90de0
 ~~~
