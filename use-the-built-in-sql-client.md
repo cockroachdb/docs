@@ -22,7 +22,7 @@ $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
  
 # View help:
-$ cockroach help sql
+$ cockroach sql --help
 ~~~
 
 ## Flags

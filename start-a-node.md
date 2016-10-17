@@ -18,7 +18,7 @@ $ cockroach start <flags, excluding --join>
 $ cockroach start <flags, including --join>
 
 # View help:
-$ cockroach help start
+$ cockroach start --help
 ~~~
 
 ## Flags
