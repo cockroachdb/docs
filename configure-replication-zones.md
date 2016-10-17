@@ -214,9 +214,9 @@ Let's say you want to run a cluster across five nodes, three of which have ssd s
 
    ~~~ shell
    # Start nodes with ssd storage:
-   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
-   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
+   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attrs=ssd
+   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attrs=ssd --join=node1-hostname:27257
+   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attrs=ssd --join=node1-hostname:27257
 
    # Start nodes without ssd storage:
    $ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
@@ -263,9 +263,9 @@ Let's say you want to run a cluster across five nodes, three of which have ssd s
 
    ~~~ shell
    # Start nodes with ssd storage:
-   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attr=ssd
-   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attr=ssd --join=node1-hostname:27257
-   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attr=ssd --join=node1-hostname:27257
+   $ cockroach start --insecure --host=node1-hostname --store=path=node1-data,attrs=ssd
+   $ cockroach start --insecure --host=node2-hostname --store=path=node2-data,attrs=ssd --join=node1-hostname:27257
+   $ cockroach start --insecure --host=node3-hostname --store=path=node3-data,attrs=ssd --join=node1-hostname:27257
 
    # Start nodes without ssd storage:
    $ cockroach start --insecure --host=node4-hostname --store=path=node4-data --join=node1-hostname:27257
