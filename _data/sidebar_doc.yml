@@ -173,11 +173,14 @@ entries:
                 - title: Constraints
                   url: /constraints.html
 
-                - title: Column Families
-                  url: /column-families.html
-
                 - title: Indexes
                   url: /indexes.html
+
+                - title: Views
+                  url: /views.html
+
+                - title: Column Families
+                  url: /column-families.html
 
                 - title: Interleaved Tables
                   url: /interleave-in-parent.html
