@@ -261,8 +261,15 @@ func main() {
 				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")}},
 				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
 				{
-					name:    "select_stmt",
-					inline:  []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit"},
+					name: "select_stmt",
+					inline: []string{"select_no_parens", "simple_select", "opt_sort_clause", "select_limit", "opt_all_clause", "distinct_clause", "target_list", "from_clause", "where_clause", "group_clause", "having_clause"},
+					replace: map[string]string{"'SELECT' ( 'ALL' |  ) ( target_elem ( ',' target_elem )* ) ( 'FROM' from_list opt_as_of_clause |  ) ( 'WHERE' a_expr |  ) ( 'GROUP' 'BY' expr_list |  ) ( 'HAVING' a_expr |  ) window_clause | 'SELECT' ( 'DISTINCT' ) ( target_elem ( ',' target_elem )* ) ( 'FROM' from_list opt_as_of_clause |  ) ( 'WHERE' a_expr |  ) ( 'GROUP' 'BY' expr_list |  ) ( 'HAVING' a_expr |  ) window_clause | values_clause | 'TABLE' relation_expr | ": "",
+					  "select_clause 'UNION' all_or_distinct select_clause | select_clause 'INTERSECT' all_or_distinct select_clause | select_clause 'EXCEPT' all_or_distinct select_clause": "select_clause ( | ( ( 'UNION' | 'INTERSECT' | 'EXCEPT' ) all_or_distinct select_clause ) )", 
+					  "select_clause sort_clause | select_clause ( sort_clause |  ) ( limit_clause offset_clause | offset_clause limit_clause | limit_clause | offset_clause )" : "select_clause ( 'ORDER BY' sortby_list | ) ( 'LIMIT' limit_val | ) ( 'OFFSET' offset_val | )",
+					  "all_or_distinct select_clause" : "all_or_distinct 'SELECT ...'",
+					  "| select_with_parens":"",
+					  "all_or_distinct":"( 'ALL' | )",
+					  "select_clause": "'SELECT' ( 'DISTINCT' | ) ( target_elem ('AS' col_label | ) ( ',' target_elem ('AS' col_label | ) )* ) 'FROM' ( table_ref ( ',' table_ref )* ) ('AS OF SYSTEM TIME' timestamp | ) ( 'WHERE' a_expr |  ) ( 'GROUP BY' expr_list ( 'HAVING' a_expr |  ) |  ) "},
 					nosplit: true,
 				},
 				{
