@@ -246,11 +246,14 @@ entries:
                 - title: Overview
                   url: /cloud-deployment.html
 
-                - title: Google Cloud Platform GCE
-                  url: /deploy-cockroachdb-on-google-cloud-platform.html
-
                 - title: AWS
                   url: /deploy-cockroachdb-on-aws.html
+
+                - title: Digital Ocean
+                  url: /deploy-cockroachdb-on-digital-ocean.html
+
+                - title: Google Cloud Platform GCE
+                  url: /deploy-cockroachdb-on-google-cloud-platform.html
 
             - title: Orchestration
               thirdlevelitems:
