@@ -8,53 +8,112 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 <div id="toc"></div>
 
+## Required Privileges
+
+The user must have the `DROP` [privilege](privileges.html) on the specified table(s). 
+
 ## Synopsis
 
 {% include sql/diagrams/drop_table.html %}
 
-## Required Privileges
+## Parameters
 
-The user must have the `DROP` [privilege](privileges.html) on the table. 
+Parameter | Description
+----------|------------
+`IF EXISTS`   | Drop the table if it exists; if it does not exist, do not return an error.
+`table_name`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html.
+`CASCADE` | Drop all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints](constraints.html) and [views](views.html)) depend on it.
 
-## Usage
+## Examples
 
-To remove one or more tables from a database, use the `DROP TABLE` statement followed by a comma-separated list of table names, each in `database.table` format:
+### Remove a Table (No Dependencies)
 
-~~~ sql
-> DROP TABLE db1.table1, db1.table2;
-~~~
-
-To avoid an error in case one or more of the tables do not exist, you can include `IF EXISTS`:
-
-~~~ sql
-> DROP TABLE IF EXISTS db1.table1, db1.table2;
-~~~
-
-## Example
+In this example, other objects do not depend on the table being dropped.
 
 ~~~ sql
-> SHOW TABLES FROM db1;
+> SHOW TABLES FROM bank;
 ~~~
-~~~
-+--------+
-| Table  |
-+--------+
-| table1 |
-| table2 |
-| table3 |
-+--------+
-~~~
-~~~ sql
-> DROP TABLE db1.table1, db1.table2;
 
-> SHOW TABLES FROM db1;
 ~~~
++--------------------+
+|       Table        |
++--------------------+
+| accounts           |
+| branches           |
+| user_accounts_view |
++--------------------+
+(3 rows)
 ~~~
-+--------+
-| Table  |
-+--------+
-| table3 |
-+--------+
+
+~~~ sql
+> DROP TABLE bank.branches;
+~~~
+
+~~~ 
+DROP TABLE
+~~~
+
+~~~ sql
+> SHOW TABLES FROM bank;
+~~~
+
+~~~
++--------------------+
+|       Table        |
++--------------------+
+| accounts           |
+| user_accounts_view |
++--------------------+
+(2 rows)
+~~~
+
+### Remove a Table (With Dependencies)
+
+In this example, a view depends on the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent view using `CASCADE`.
+
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
+
+~~~ sql
+> SHOW TABLES FROM bank;
+~~~
+
+~~~
++--------------------+
+|       Table        |
++--------------------+
+| accounts           |
+| user_accounts_view |
++--------------------+
+(2 rows)
+~~~
+
+~~~ sql
+> DROP TABLE bank.accounts;
+~~~
+
+~~~
+pq: cannot drop table "accounts" because it is depended on by view "bank.user_accounts_view"
+~~~
+
+~~~sql
+> DROP TABLE bank.accounts CASCADE;
+~~~
+
+~~~
+DROP TABLE
+~~~
+
+~~~ sql
+> SHOW TABLES FROM bank;
+~~~
+
+~~~
++-------+
+| Table |
++-------+
++-------+
+(0 rows)
 ~~~
 
 ## See Also
@@ -66,4 +125,6 @@ To avoid an error in case one or more of the tables do not exist, you can includ
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW TABLES`](show-tables.html)
 - [`UPDATE`](update.html)
-- [Other SQL Statements](sql-statements.html)
+- [`DELETE`](delete.html)
+- [`DROP INDEX`](drop-index.html)
+- [`DROP VIEW`](drop-view.html)

@@ -212,6 +212,22 @@ The view is then represented as a table alongside other virtual and standard tab
 (2 rows)
 ~~~
 
+It's also possible to list views by querying `information_schema.tables`:
+
+~~~ sql
+> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
+~~~
+
+~~~ 
++---------------+-------------------+----------------------+------------+---------+
+| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      | TABLE_TYPE | VERSION |
++---------------+-------------------+----------------------+------------+---------+
+| def           | bank              | user_accounts        | VIEW       |       3 |
+| def           | startrek          | quotes_per_episode   | VIEW       |       1 |
++---------------+-------------------+----------------------+------------+---------+
+(2 rows)
+~~~
+
 ### Querying Views
 
 To query a view, target it with a [`SELECT`](select.html) statement just as you would a standard table:
@@ -288,7 +304,7 @@ There is an exception to the rule above, however: It is possible to drop a table
 DROP TABLE
 ~~~
 
-### Updating Views
+### Renaming Views
 
 To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 
