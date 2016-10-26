@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cockroachdb/cockroach/sql/parser"
+	"github.com/cockroachdb/cockroach/pkg/sql/parser"
 	"github.com/spf13/cobra"
 )
 
