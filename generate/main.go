@@ -223,8 +223,9 @@ func main() {
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
 				{
 					name:  "create_view_stmt",
-					replace: map[string]string{"any_name": "view_name"}, 
-					relink: map[string]string{"view_name": "any_name"},
+					inline: []string{"opt_column_list"},
+					replace: map[string]string{"any_name": "view_name", "name_list": "column_list"}, 
+					relink: map[string]string{"view_name": "any_name", "column_list": "name_list"},
 				},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{
