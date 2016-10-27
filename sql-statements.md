@@ -9,16 +9,19 @@ CockroachDB supports the following SQL statements. Click a statement for more de
 Statement | Usage 
 ----------|------------
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
+[`ALTER VIEW`](alter-view.html) | Rename a view.
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
 [`COMMIT`](commit-transaction.html) | Commit the current [transaction](transactions.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database. 
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement. 
+[`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP TABLE`](drop-table.html) | Remove a table.
+[`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
 [`GRANT`](grant.html) | Grant privileges to users. 
 [`INSERT`](insert.html) | Insert rows into a table.
@@ -36,6 +39,7 @@ Statement | Usage
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a carbon copy of the specified table.
+[`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a carbon copy of the specified view.
 [`SHOW DATABASE`](show-database.html) | List the default database for the session.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.

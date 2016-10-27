@@ -49,6 +49,9 @@ entries:
                 - title: <code>ALTER TABLE</code>
                   url: /alter-table.html
 
+                - title: <code>ALTER VIEW</code>
+                  url: /alter-view.html
+
                 - title: <code>BEGIN</code>
                   url: /begin-transaction.html
 
@@ -67,6 +70,9 @@ entries:
                 - title: <code>CREATE TABLE AS</code>
                   url: /create-table-as.html
 
+                - title: <code>CREATE VIEW</code>
+                  url: /create-view.html
+
                 - title: <code>DELETE</code>
                   url: /delete.html
 
@@ -79,6 +85,9 @@ entries:
                 - title: <code>DROP TABLE</code>
                   url: /drop-table.html
 
+                - title: <code>DROP VIEW</code>
+                  url: /drop-view.html
+              
                 - title: <code>EXPLAIN</code>
                   url: /explain.html
 
@@ -130,6 +139,9 @@ entries:
                 - title: <code>SHOW CREATE TABLE</code>
                   url: /show-create-table.html
 
+                - title: <code>SHOW CREATE VIEW</code>
+                  url: /show-create-view.html
+
                 - title: <code>SHOW DATABASE</code>
                   url: /show-database.html
 
@@ -173,11 +185,14 @@ entries:
                 - title: Constraints
                   url: /constraints.html
 
-                - title: Column Families
-                  url: /column-families.html
-
                 - title: Indexes
                   url: /indexes.html
+
+                - title: Views
+                  url: /views.html
+
+                - title: Column Families
+                  url: /column-families.html
 
                 - title: Interleaved Tables
                   url: /interleave-in-parent.html

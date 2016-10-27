@@ -186,6 +186,12 @@ func main() {
 					nosplit: true,
 				},
 				{
+					name:    "alter_view_stmt",
+					stmt:	 "rename_stmt",
+					match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'VIEW'")},
+					replace: map[string]string{"relation_expr": "view_name", "qualified_name": "name"}, unlink: []string{"view_name", "name"},
+				},				
+				{
 					name:   "begin_transaction",
 					stmt:   "transaction_stmt",
 					inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority"},
@@ -215,6 +221,12 @@ func main() {
 				},
 				{name: "create_table_as_stmt", inline: []string{"opt_column_list", "name_list"}},
 				{name: "create_table_stmt", inline: []string{"opt_table_elem_list", "table_elem_list", "table_elem"}},
+				{
+					name:  "create_view_stmt",
+					inline: []string{"opt_column_list"},
+					replace: map[string]string{"any_name": "view_name", "name_list": "column_list"}, 
+					relink: map[string]string{"view_name": "any_name", "column_list": "name_list"},
+				},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{
 					name:  "drop_database",
@@ -232,7 +244,18 @@ func main() {
 				{
 					name:  "drop_table",
 					stmt:  "drop_stmt",
+					inline: []string{"opt_drop_behavior", "table_name_list"},
 					match: []*regexp.Regexp{regexp.MustCompile("'DROP' 'TABLE'")},
+					replace: map[string]string{"any_name": "table_name"}, 
+					relink: map[string]string{"table_name": "any_name"},
+				},
+				{
+					name:  "drop_view",
+					stmt:  "drop_stmt",
+					inline: []string{"opt_drop_behavior", "table_name_list"},
+					match: []*regexp.Regexp{regexp.MustCompile("'DROP' 'VIEW'")},
+					replace: map[string]string{"any_name": "view_name"}, 
+					relink: map[string]string{"view_name": "any_name"},
 				},
 				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
 				{name: "family_def", inline: []string{"opt_name", "name_list"}},
@@ -290,6 +313,7 @@ func main() {
 				{name: "show_columns", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'COLUMNS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_create_table", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'TABLE'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
+				{name: "show_create_view", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'VIEW'")}, replace: map[string]string{"var_name": "view_name"}, unlink: []string{"view_name"}},
 				{name: "show_databases", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'DATABASES'")}},
 				{
 					name:   "show_grants",
