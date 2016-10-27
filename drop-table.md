@@ -10,7 +10,7 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 ## Required Privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified table(s). 
+The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
 
 ## Synopsis
 
@@ -21,7 +21,7 @@ The user must have the `DROP` [privilege](privileges.html) on the specified tabl
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the table if it exists; if it does not exist, do not return an error.
-`table_name`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html.
+`table_name`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html).
 `CASCADE` | Drop all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints](constraints.html) and [views](views.html)) depend on it.
 
@@ -93,7 +93,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 ~~~
 
 ~~~
-pq: cannot drop table "accounts" because it is depended on by view "bank.user_accounts_view"
+pq: cannot drop table "accounts" because view "user_accounts_view" depends on it
 ~~~
 
 ~~~sql

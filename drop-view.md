@@ -91,7 +91,7 @@ In this example, another view depends on the view being dropped. Therefore, it's
 ~~~
 
 ~~~ 
-pq: cannot drop view "user_accounts" because it is depended on by view "bank.user_emails"
+pq: cannot drop view "user_accounts" because view "user_emails" depends on it
 ~~~
 
 ~~~sql

@@ -49,7 +49,7 @@ Let's say you're using our [sample `startrek` database](generate-cli-utilities-a
 (3 rows)
 ~~~
 
-Alternately, to make it much easier to run this complex query, you could create a view:
+Alternatively, to make it much easier to run this complex query, you could create a view:
 
 ~~~ sql
 > CREATE VIEW startrek.quotes_per_episode 
