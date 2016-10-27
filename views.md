@@ -167,10 +167,10 @@ When you need to alter a table in a way that will break your application, and yo
 
 #### Example
 
-Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`. To ensure that your application continues uninterrupted, you could execute a transaction that renames the underlying table to `client_accounts` and creates a view with the old table name, `user_accounts`:
+Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`. To ensure that your application continues uninterrupted, you could execute a [transaction](transactions.html) that renames the underlying table to `client_accounts` and creates a view with the old table name, `user_accounts`:
 
 ~~~ sql
-BEGIN TRANSACTION;
+BEGIN;
 ALTER TABLE bank.user_accounts RENAME TO bank.client_accounts;
 CREATE VIEW bank.user_accounts 
   AS SELECT type, email
@@ -273,7 +273,7 @@ A view depends on the objects targeted by its `SELECT` statement. Attempting to 
 ~~~
 
 ~~~
-pq: cannot rename table "bank.accounts" because it is depended on by view "bank.user_accounts"
+pq: cannot rename table "bank.accounts" because view "user_accounts" depends on it
 ~~~
 
 Likewise, attempting to drop an object referenced in a view's `SELECT` statement results in an error:
@@ -283,7 +283,7 @@ Likewise, attempting to drop an object referenced in a view's `SELECT` statement
 ~~~
 
 ~~~
-pq: cannot drop table "accounts" because it is depended on by view "bank.user_accounts"
+pq: cannot drop table "accounts" because view "user_accounts" depends on it
 ~~~
 
 ~~~ sql
