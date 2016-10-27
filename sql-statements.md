@@ -36,6 +36,7 @@ Statement | Usage
 [`SET DATABASE`](set-database.html) | Set the default database for the session.
 [`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SHOW ALL`](show-all.html) | List all current run-time settings.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a carbon copy of the specified table.

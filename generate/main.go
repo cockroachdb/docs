@@ -310,6 +310,7 @@ func main() {
 					unlink:  []string{"database_name"},
 				},
 				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: []*regexp.Regexp{regexp.MustCompile("'TRANSACTION'")}},
+				{name: "show_all", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'ALL'")}},
 				{name: "show_columns", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'COLUMNS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_create_table", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'TABLE'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},

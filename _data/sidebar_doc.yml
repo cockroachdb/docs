@@ -130,6 +130,9 @@ entries:
                 - title: <code>SET TRANSACTION</code>
                   url: /set-transaction.html
 
+                - title: <code>SHOW ALL</code>
+                  url: /show-all.html
+
                 - title: <code>SHOW COLUMNS</code>
                   url: /show-columns.html
 
