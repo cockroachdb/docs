@@ -94,4 +94,3 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 - [`RENAME INDEX`](rename-index.html) 
 - [`SHOW INDEX`](show-index.html)
 - [SQL Statements](sql-statements.html)
-- [Data Definition](data-definition.html)
