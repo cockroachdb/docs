@@ -22,7 +22,7 @@ No [privileges](privileges.html) are required to set the default time zone.
 
 Parameter | Description
 ----------|------------
-`zone_value` | The time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or the keywords `DEFAULT` or `LOCAL`, both of which are equivalent to `UTC`. Also, once [issue 9558](https://github.com/cockroachdb/cockroach/issues/9558) is resolved, it will be possible to set the session time zone as a positive or negative offset from UTC (e.g., `-7`, `+7` ).
+`zone_value` | The time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
 
 ## Examples
 
