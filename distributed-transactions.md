@@ -8,7 +8,6 @@ CockroachDB distributes [transactions](transactions.html) across your cluster, w
 
 -   Easily build consistent applications
 -   Optimistic concurrency without locking
--   Efficient two phase commit
 -   Serializable default isolation level
 
 <img src="images/2distributed-transactions.png" alt="Distributed transactions in CockroachDB" style="width: 400px" />
