@@ -10,7 +10,7 @@ The `SHOW CREATE VIEW` [statement](sql-statements.html) shows the `CREATE VIEW` 
 
 ## Required Privileges
 
-The user must have any [privilege](privileges.html) on the target view as well as the `SELECT` privilege on any table(s) referenced by the view.
+The user must have any [privilege](privileges.html) on the target view.
 
 ## Synopsis
 
