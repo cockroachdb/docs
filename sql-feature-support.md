@@ -139,8 +139,8 @@ table tr td:nth-child(2) {
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
 | Column families | ✓ | CockroachDB Extension | [Column Families documentation](https://www.cockroachlabs.com/docs/column-families.html) |
-| Interleaved tables | ✓ | CockroachDB Extension | Increase performance by storing multiple tables' data in the same ranges |
-| Views | Planned | Standard | A virtual table created by a statement. |
+| Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html) |
+| Views | ✓ | Standard | [Views documentation](views.html) |
 | Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Window functions | Planned | Common Extension | Perform calculations related on a selected row. |
