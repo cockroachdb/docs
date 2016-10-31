@@ -194,8 +194,10 @@ func main() {
 				{
 					name:   "begin_transaction",
 					stmt:   "transaction_stmt",
-					inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority"},
-					match:  []*regexp.Regexp{regexp.MustCompile("'BEGIN'|'START'")},
+					inline: []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"},
+					match:  []*regexp.Regexp{regexp.MustCompile("'BEGIN'")},
+					exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")},
+					replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"},
 				},
 				{name: "column_def"},
 				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
@@ -309,7 +311,7 @@ func main() {
 					replace: map[string]string{"var_name": "'DATABASE'", "var_list": "database_name"},
 					unlink:  []string{"database_name"},
 				},
-				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority"}, replace: map[string]string{" | set_rest_more": ""}, match: []*regexp.Regexp{regexp.MustCompile("'TRANSACTION'")}},
+				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'" : "'ISOLATION LEVEL'"}},
 				{name: "show_all", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'ALL'")}},
 				{name: "show_columns", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'COLUMNS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
@@ -364,6 +366,7 @@ func main() {
 					if printBNF {
 						fmt.Printf("%s: (PRE REPLACE)\n\n%s\n", s.name, g)
 					}
+					fmt.Println(s.name, string(g))
 					for from, to := range s.replace {
 						g = bytes.Replace(g, []byte(from), []byte(to), -1)
 					}

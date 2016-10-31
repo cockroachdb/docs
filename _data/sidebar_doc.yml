@@ -118,6 +118,9 @@ entries:
                 - title: <code>ROLLBACK</code>
                   url: /rollback-transaction.html
 
+                - title: <code>SAVEPOINT</code>
+                  url: /savepoint.html
+
                 - title: <code>SELECT</code>
                   url: /select.html
 
