@@ -165,37 +165,257 @@ If you don't list column names, the statement will use the columns of the table 
 ~~~
 
 ### Insert and Return Values
+  
+In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `unique_rowid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
+{{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
+
+<div id="step-three-filters" class="filters clearfix">
+    <button class="filter-button current" data-language="shell">Shell</button>
+    <button class="filter-button" data-language="python">Python</button>
+    <button class="filter-button" data-language="ruby">Ruby</button>
+    <button class="filter-button" data-language="go">Go</button>
+    <button class="filter-button" data-language="js">Node.js</button>
+</div>
+
+<div class="filter-content current" markdown="1" data-language="shell">
+<p></p>
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
+> INSERT INTO accounts (id, balance) 
+  VALUES (DEFAULT, 1000), (DEFAULT, 250) 
+  RETURNING id;
 ~~~
+
 ~~~
 +--------------------+
 |         id         |
 +--------------------+
-| 142935769332121601 |
+| 190018410823680001 |
+| 190018410823712769 |
 +--------------------+
+(2 rows)
 ~~~
-~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
+
+</div>
+
+<div class="filter-content" markdown="1" data-language="python">
+<p></p>
+
+~~~ python
+# Import the driver.
+import psycopg2
+
+# Connect to the "bank" database.
+conn = psycopg2.connect(
+    database='bank', 
+    user='root', 
+    host='localhost', 
+    port=26257
+)
+
+# Make each statement commit immediately.
+conn.set_session(autocommit=True)
+
+# Open a cursor to perform database operations.
+cur = conn.cursor()
+
+# Insert two rows into the "accounts" table 
+# and return the "id" values generated server-side.
+cur.execute(
+    'INSERT INTO accounts (id, balance) '
+    'VALUES (DEFAULT, 1000), (DEFAULT, 250) '
+    'RETURNING id'
+)
+
+# Print out the returned values.
+rows = cur.fetchall()
+print('IDs:')
+for row in rows:
+    print([str(cell) for cell in row])
+
+# Close the database connection.
+cur.close()
+conn.close()
 ~~~
+
+The printed values would look like:
+
 ~~~
-+--------------------+---------+
-|         id         | balance |
-+--------------------+---------+
-| 142935982200750081 |  250000 |
-+--------------------+---------+
+IDs:
+['190019066706952193']
+['190019066706984961']
 ~~~
-~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
+
+</div>
+
+<div class="filter-content" markdown="1" data-language="ruby">
+<p></p>
+
+~~~ ruby
+# Import the driver.
+require 'pg'
+
+# Connect to the "bank" database.
+conn = PG.connect(
+    user: 'root', 
+    dbname: 'bank', 
+    host: 'localhost', 
+    port: 26257
+)
+
+# Insert two rows into the "accounts" table 
+# and return the "id" values generated server-side.
+conn.exec(
+    'INSERT INTO accounts (id, balance) '\
+    'VALUES (DEFAULT, 1000), (DEFAULT, 250) '\
+    'RETURNING id'
+) do |res|
+
+# Print out the returned values.
+puts "IDs:"
+    res.each do |row|
+        puts row
+    end
+end
+
+# Close communication with the database.
+conn.close()
 ~~~
-~~~ sql
-+-------------+
-| balance * 2 |
-+-------------+
-|        4000 |
-+-------------+
+
+The printed values would look like:
+
 ~~~
+IDs:
+{"id"=>"190019066706952193"}
+{"id"=>"190019066706984961"}
+~~~
+
+</div>
+<div class="filter-content" markdown="1" data-language="go">
+<p></p>
+
+~~~ go
+package main
+
+import (
+        "database/sql"
+        "fmt"
+        "log"
+
+        _ "github.com/lib/pq"
+)
+
+func main() {
+        //Connect to the "bank" database.
+        db, err := sql.Open(
+                "postgres", 
+                "postgresql://root@localhost:26257/bank?sslmode=disable"
+        )
+        if err != nil {
+                log.Fatalf("error connection to the database: %s", err)
+        }
+
+        // Insert two rows into the "accounts" table
+        // and return the "id" values generated server-side.
+        rows, err := db.Query(
+                "INSERT INTO accounts (id, balance) " +
+                "VALUES (DEFAULT, 1000), (DEFAULT, 250) " +
+                "RETURNING id",
+        )
+        if err != nil {
+                log.Fatal(err)
+        }
+
+        // Print out the returned values.
+        defer rows.Close()
+        fmt.Println("IDs:")
+        for rows.Next() {
+                var id int
+                if err := rows.Scan(&id); err != nil {
+                        log.Fatal(err)
+                }
+                fmt.Printf("%d\n", id)
+        }
+}
+~~~
+
+The printed values would look like:
+
+~~~
+IDs:
+190019066706952193
+190019066706984961
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-language="js">
+<p></p>
+
+~~~ js
+var async = require('async');
+
+// Require the driver.
+var pg = require('pg');
+
+// Connect to the "bank" database.
+var config = {
+  user: 'root',
+  host: 'localhost',
+  database: 'bank',
+  port: 26257
+};
+
+pg.connect(config, function (err, client, done) {
+  // Closes communication with the database and exits.
+  var finish = function () {
+    done();
+    process.exit();
+  };
+
+  if (err) {
+    console.error('could not connect to cockroachdb', err);
+    finish();
+  }
+  async.waterfall([
+    function (next) {
+      // Insert two rows into the "accounts" table
+      // and return the "id" values generated server-side.
+      client.query(
+        `INSERT INTO accounts (id, balance) 
+         VALUES (DEFAULT, 1000), (DEFAULT, 250) 
+         RETURNING id;`, 
+        next
+      );
+    }
+  ],
+  function (err, results) {
+    if (err) {
+      console.error('error inserting into and selecting from accounts', err);
+      finish();
+    }
+    // Print out the returned values.
+    console.log('IDs:');
+    results.rows.forEach(function (row) {
+      console.log(row);
+    });
+
+    finish();
+  });
+});
+~~~
+
+The printed values would like like:
+
+~~~
+IDs:
+{ id: '190019066706952193' }
+{ id: '190019066706984961' }
+~~~
+
+</div>
 
 ### Update Values `ON CONFLICT`
 
@@ -279,3 +499,23 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 - [`UPSERT`](upsert.html)
 - [Other SQL Statements](sql-statements.html)
+
+<script>
+$(document).ready(function(){
+    
+    var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+        var language = $(this).data('language'), 
+        $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+        //remove current class from tab and content
+        $current_tab.removeClass('current');
+        $current_content.removeClass('current');
+
+        //add current class to clicked button and corresponding content block
+        $('.filter-button[data-language="'+language+'"]').addClass('current');
+        $('.filter-content[data-language="'+language+'"]').addClass('current');
+    });
+});
+</script>
