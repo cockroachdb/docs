@@ -165,37 +165,126 @@ If you don't list column names, the statement will use the columns of the table 
 ~~~
 
 ### Insert and Return Values
+  
+In this example, the `RETURNING` clause returns the `id` and `balance` of the rows inserted. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html). 
+{{site.data.alerts.callout_success}}To mirror the behavior of MySQL's <code>LAST_INSERT_ID()</code> function, you would use <code>RETURNING</code> to return just the column containing the row ID.{{site.data.alerts.end}}
 
+<div id="step-three-filters" class="filters clearfix">
+    <button class="filter-button current" data-language="shell">Shell</button>
+    <button class="filter-button" data-language="python">Python</button>
+    <button class="filter-button" data-language="go">Go</button>
+</div>
+
+<div class="filter-content current" markdown="1" data-language="shell">
+<p></p>
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 5000.99) RETURNING id;
+> INSERT INTO accounts (id, balance) 
+  VALUES (1, 1000), (2, 250) 
+  RETURNING id, balance;
 ~~~
+
 ~~~
-+--------------------+
-|         id         |
-+--------------------+
-| 142935769332121601 |
-+--------------------+
++----+---------+
+| id | balance |
++----+---------+
+|  1 |    1000 |
+|  2 |     250 |
++----+---------+
+(2 rows)
 ~~~
-~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 250000) RETURNING *;
+
+</div>
+
+<div class="filter-content" markdown="1" data-language="python">
+<p></p>
+
+~~~ py
+# Import the driver.
+import psycopg2
+
+# Connect to the "bank" database.
+conn = psycopg2.connect(database='bank', user='root', host='localhost', port=26257)
+
+# Make each statement commit immediately.
+conn.set_session(autocommit=True)
+
+# Open a cursor to perform database operations.
+cur = conn.cursor()
+
+# Insert two rows into the "accounts" table and return the values inserted.
+cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250) RETURNING id, balance")
+
+# Print out the returned values.
+rows = cur.fetchall()
+print('Initial balances:')
+for row in rows:
+    print([str(cell) for cell in row])
+
+# Close the database connection.
+cur.close()
+conn.close()
 ~~~
+
+The printed values would look like:
+
 ~~~
-+--------------------+---------+
-|         id         | balance |
-+--------------------+---------+
-| 142935982200750081 |  250000 |
-+--------------------+---------+
+Initial balances:
+['1', '1000']
+['2', '250']
 ~~~
-~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (DEFAULT, 2000) RETURNING balance * 2;
+
+</div>
+
+<div class="filter-content" markdown="1" data-language="go">
+<p></P>
+
+~~~ go
+package main
+
+import (
+        "database/sql"
+        "fmt"
+        "log"
+
+        _ "github.com/lib/pq"
+)
+
+func main() {
+        db, err := sql.Open("postgres", "postgresql://root@localhost:26257/bank?sslmode=disable")
+        if err != nil {
+                log.Fatalf("error connection to the database: %s", err)
+        }
+
+        // Insert two rows into the "accounts" table and return the values inserted.
+        rows, err := db.Query(
+                "INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250) RETURNING id, balance",
+        )
+        if err != nil {
+                log.Fatal(err)
+        }
+
+        // Print out the returned values.
+        defer rows.Close()
+        fmt.Println("Initial balances:")
+        for rows.Next() {
+                var id, balance int
+                if err := rows.Scan(&id, &balance); err != nil {
+                        log.Fatal(err)
+                }
+                fmt.Printf("%d %d\n", id, balance)
+        }
+}
 ~~~
-~~~ sql
-+-------------+
-| balance * 2 |
-+-------------+
-|        4000 |
-+-------------+
+
+The printed values would look like:
+
 ~~~
+Initial balances:
+1 1000
+2 250
+~~~
+
+</div>
 
 ### Update Values `ON CONFLICT`
 
@@ -279,3 +368,23 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 - [`UPSERT`](upsert.html)
 - [Other SQL Statements](sql-statements.html)
+
+<script>
+$(document).ready(function(){
+    
+    var $filter_button = $('.filter-button');
+
+    $filter_button.on('click', function(){
+        var language = $(this).data('language'), 
+        $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+
+        //remove current class from tab and content
+        $current_tab.removeClass('current');
+        $current_content.removeClass('current');
+
+        //add current class to clicked button and corresponding content block
+        $('.filter-button[data-language="'+language+'"]').addClass('current');
+        $('.filter-content[data-language="'+language+'"]').addClass('current');
+    });
+});
+</script>
