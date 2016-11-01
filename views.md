@@ -196,7 +196,9 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 CREATE VIEW
 ~~~
 
-The view is then represented as a table alongside other virtual and standard tables in the database:
+### Listing Views
+
+Once created, views are represented as virtual tables alongside other virtual and standard tables in the database:
 
 ~~~ sql
 > SHOW TABLES FROM bank;
@@ -212,7 +214,23 @@ The view is then represented as a table alongside other virtual and standard tab
 (2 rows)
 ~~~
 
-It's also possible to list views by querying `information_schema.tables`:
+To list just views, you can query the `pg_views` table in the built-in `pg_catalog` database: 
+
+~~~ sql
+> SELECT * FROM pg_catalog.pg_views;
+~~~
+
+~~~
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    schemaname     |       viewname       | viewowner |                                                                                definition                                                                                 |
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
+| startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+(2 rows)
+~~~
+
+Alternatively, you can query the `tables` table in the built-in `information_schema` database and filter for views:
 
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
@@ -222,7 +240,7 @@ It's also possible to list views by querying `information_schema.tables`:
 +---------------+-------------------+----------------------+------------+---------+
 | TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      | TABLE_TYPE | VERSION |
 +---------------+-------------------+----------------------+------------+---------+
-| def           | bank              | user_accounts        | VIEW       |       3 |
+| def           | bank              | user_accounts        | VIEW       |       1 |
 | def           | startrek          | quotes_per_episode   | VIEW       |       1 |
 +---------------+-------------------+----------------------+------------+---------+
 (2 rows)
@@ -262,6 +280,22 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 | bank.user_accounts | CREATE VIEW "bank.user_accounts" AS SELECT type, email FROM bank.accounts |
 +--------------------+---------------------------------------------------------------------------+
 (1 row)
+~~~
+
+You can also inspect the `SELECT` statement executed by a view by querying `pg_views` table in the built-in `pg_catalog` database: 
+
+~~~ sql
+> SELECT * FROM pg_catalog.pg_views;
+~~~
+
+~~~
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    schemaname     |       viewname       | viewowner |                                                                                definition                                                                                 |
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
+| startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
++-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+(2 rows)
 ~~~
 
 ### View Dependencies

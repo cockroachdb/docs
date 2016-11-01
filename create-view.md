@@ -64,7 +64,24 @@ Alternatively, to make it much easier to run this complex query, you could creat
 CREATE VIEW
 ~~~
 
-Then, executing the query is as easy as `SELECT`ing from the view:
+The view is then represented as a virtual table alongside other tables in the database:
+
+~~~ sql
+> SHOW TABLES FROM startrek;
+~~~
+
+~~~
++-------------------+
+|       Table       |
++-------------------+
+| episodes          |
+| quotes            |
+| quotes_per_season |
++-------------------+
+(4 rows)
+~~~
+
+Executing the query is as easy as `SELECT`ing from the view, as you would from a standard table:
 
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
