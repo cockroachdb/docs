@@ -328,7 +328,7 @@ pq: cannot drop table "accounts" because view "user_accounts" depends on it
 pq: cannot drop column email because view "bank.user_accounts" depends on it
 ~~~
 
-There is an exception to the rule above, however: It is possible to drop a table or view referenced in a view's `SELECT` statement if you delete the view at the same time. To do so, use `DROP TABLE ... CASCADE` or `DROP VIEW ... CASCADE`:
+There is an exception to the rule above, however: When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
 ~~~ sql
 > DROP TABLE bank.accounts CASCADE;
@@ -337,6 +337,8 @@ There is an exception to the rule above, however: It is possible to drop a table
 ~~~
 DROP TABLE
 ~~~
+
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
 ### Renaming Views
 
