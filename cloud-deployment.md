@@ -10,7 +10,7 @@ Use the following guides to deploy CockroachDB to popular cloud platforms:
 - [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html)
 - [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
 
-## General Deployment Steps (Insecure Clusters)
+## General Deployment Steps
 
 If we don't have a guide for your platform, you can deploy CockroachDB to any cloud environment using the following steps:
 
@@ -18,7 +18,9 @@ If we don't have a guide for your platform, you can deploy CockroachDB to any cl
 	- **26257** (`tcp:26257`) for nodes to join clusters and connect with applications
 	- **8080** (`tcp:8080`) to expose your Admin UI
 
-2. [Manually deploy CockroachDB](manual-deployment.html#deploy-an-insecure-cluster) to your VMs.
+2. Manually deploy CockroachDB using one of the following steps:
+   - [Secure deployments](manual-deployment.html#deploy-a-secure-cluster)
+   - [Insecure deployments](manual-deployment.html#deploy-an-insecure-cluster) *(not recommended for production)*
 
 ## See Also
 
