@@ -60,50 +60,50 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/squashing-a-schroedinbug-with-strong-typing/">
+        <a href="https://www.cockroachlabs.com/blog/surviving-a-hackathon-as-a-sponsor/">
         <div class="blog-post">
-            <div class="blog-title">Squashing a Schrödinbug With Strong Typing</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">August 18</span></div>
+            <div class="blog-title">How to Survive a Hackathon as a Sponser</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Jessica Edwards</span> on <span class="meta-emphasis">November 1</span></div>
         </div>
         </a>  
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/cockroachdbs-first-join/">
+        <a href="https://www.cockroachlabs.com/blog/testing-random-valid-sql-in-cockroachdb/">
         <div class="blog-post">
-            <div class="blog-title">Modesty in Simplicity: CockroachDB’s JOIN</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">July 20</span></div>
+            <div class="blog-title">Testing Random, Valid SQL in CockroachDB</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Matt Jibson</span> on <span class="meta-emphasis">October 19</span></div>
         </div>
         </a>  
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/consensus-made-thrive/">
+        <a href="https://www.cockroachlabs.com/blog/running-cockroachdb-on-kubernetes/">
         <div class="blog-post">
-            <div class="blog-title">Consensus, Made Thrive</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Tobias Schottdorf</span> on <span class="meta-emphasis">July 14</span></div>
+            <div class="blog-title">Running CockroachDB on Kubernetes</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Alex Robinson</span> on <span class="meta-emphasis">October 11</span></div>
         </div>
         </a>  
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/critters-in-a-jar-running-cockroachdb-in-a-freebsd-jail/">
+        <a href="https://www.cockroachlabs.com/blog/sql-cockroachdb-column-families/">
         <div class="blog-post">
-            <div class="blog-title">Critters in a Jar: Running CockroachDB in a FreeBSD Jail</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">July 7</span></div>
+            <div class="blog-title">Implementing Column Families in CockroachDB</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Daniel Harrison</span> on <span class="meta-emphasis">September 29</span></div>
         </div>
         </a>  
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/">
+        <a href="https://www.cockroachlabs.com/blog/run-cockroachdb-on-a-raspberry-pi/">
         <div class="blog-post last-entry">
-            <div class="blog-title">Time-Travel Queries: SELECT witty_subtitle FROM THE FUTURE</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Matt Jibson</span> on <span class="meta-emphasis">June 22</span></div>
+            <div class="blog-title">How to Run CockroachDB on a Raspberry Pi</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Nathan VanBenschoten</span> on <span class="meta-emphasis">September 19</span></div>
         </div>
         </a>  
     </div>
