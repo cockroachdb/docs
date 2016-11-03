@@ -29,7 +29,9 @@ Field | Description
 `View` | The name of the view.
 `CreateView` | The [`CREATE VIEW`](create-view.html) statement for creating a carbon copy of the specified view. 
 
-## Example
+## Examples
+
+### Show the `CREATE VIEW` statement for a view
 
 ~~~ sql
 > SHOW CREATE VIEW bank.user_accounts;
@@ -41,6 +43,25 @@ Field | Description
 +--------------------+---------------------------------------------------------------------------+
 | bank.user_accounts | CREATE VIEW "bank.user_accounts" AS SELECT type, email FROM bank.accounts |
 +--------------------+---------------------------------------------------------------------------+
+(1 row)
+~~~
+
+### Show just a view's `SELECT` statement
+
+To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name: 
+
+~~~ sql
+> SELECT view_definition 
+  FROM information_schema.views 
+  WHERE table_name = 'user_accounts';
+~~~
+
+~~~
++---------------------------------------+
+|            view_definition            |
++---------------------------------------+
+| SELECT type, email FROM bank.accounts |
++---------------------------------------+
 (1 row)
 ~~~
 
