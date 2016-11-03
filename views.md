@@ -214,7 +214,23 @@ Once created, views are represented as virtual tables alongside other virtual an
 (2 rows)
 ~~~
 
-To list just views, you can query the `pg_views` table in the built-in `pg_catalog` database: 
+To list just views, you can query the `views` table in the built-in `information_schema` database: 
+
+~~~ sql
+> SELECT * FROM information_schema.views;
+~~~
+
+~~~
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
+| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+(2 rows)
+~~~
+
+Alternatively, you can query the `pg_views` table in the built-in `pg_catalog` database: 
 
 ~~~ sql
 > SELECT * FROM pg_catalog.pg_views;
@@ -227,22 +243,6 @@ To list just views, you can query the `pg_views` table in the built-in `pg_catal
 | bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
 | startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
 +-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-(2 rows)
-~~~
-
-Alternatively, you can query the `tables` table in the built-in `information_schema` database and filter for views:
-
-~~~ sql
-> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
-~~~
-
-~~~ 
-+---------------+-------------------+----------------------+------------+---------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      | TABLE_TYPE | VERSION |
-+---------------+-------------------+----------------------+------------+---------+
-| def           | bank              | user_accounts        | VIEW       |       1 |
-| def           | startrek          | quotes_per_episode   | VIEW       |       1 |
-+---------------+-------------------+----------------------+------------+---------+
 (2 rows)
 ~~~
 
@@ -282,19 +282,19 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying `pg_views` table in the built-in `pg_catalog` database: 
+You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in `information_schema` database: 
 
 ~~~ sql
-> SELECT * FROM pg_catalog.pg_views;
+> SELECT * FROM information_schema.views;
 ~~~
 
 ~~~
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|    schemaname     |       viewname       | viewowner |                                                                                definition                                                                                 |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
-| startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
+| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
++---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
 (2 rows)
 ~~~
 
