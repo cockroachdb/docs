@@ -2,6 +2,7 @@
 title: Start a Cluster
 summary: Run a multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: false
+toc_not_nested: true
 ---
 
 <style>
@@ -22,7 +23,7 @@ toc: false
 
 Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. 
 
-{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -37,7 +38,9 @@ Make sure you have already:
 
 ~~~ shell
 $ cockroach start --background
+~~~
 
+~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8080
@@ -64,14 +67,22 @@ This command starts a node, accepting all [`cockroach start`](start-a-node.html)
 
 {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one node per host. When running multiple nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
-## Step 2. Join additional nodes to the cluster
+## Step 2. Add nodes to the cluster
    
 ~~~ shell
-# Start your second node
-$ cockroach start --store=node2 --port=26258 --http-port=8081 --join=localhost:26257 --background
+# Start your second node:
+$ cockroach start --background \
+--store=node2 \
+--port=26258 \
+--http-port=8081 \
+--join=localhost:26257
 
-# Start your third node
-$ cockroach start --store=node3 --port=26259 --http-port=8082 --join=localhost:26257 --background
+# Start your third node:
+$ cockroach start --background \
+--store=node3 \
+--port=26259 \
+--http-port=8082 \
+--join=localhost:26257
 ~~~
 
 These commands add two nodes to the cluster, but you can add as many as you like. For each node:
@@ -84,13 +95,11 @@ These commands add two nodes to the cluster, but you can add as many as you like
 
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 
-If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default [replication zone](configure-replication-zones.html) to specify one node instead of three. See [here](troubleshoot.html#replication-error-in-a-single-node-cluster) for more details.
-
-Replication Error in on a Single-Node Cluster
+{{site.data.alerts.callout_success}}If you don't plan to use more than one node, you can avoid unnecessary log messages about replication by editing the default <a href="configure-replication-zones.html">replication zone</a> to specify one node instead of three. See <a href="troubleshoot.html#replication-error-in-a-single-node-cluster">here</a> for more details.{{site.data.alerts.end}}
 
 ## Step 3. Use the built-in SQL client
 
-Start the [built-in SQL client](use-the-built-in-sql-client.html) in interactive mode:
+Start the [built-in SQL shell](use-the-built-in-sql-client.html) on node 1:
 
 ~~~ shell
 $ cockroach sql
@@ -103,38 +112,61 @@ Then run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 ~~~ sql
 > CREATE DATABASE bank;
-
-> SET DATABASE = bank;
-
-> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-
-> INSERT INTO accounts VALUES (1234, 10000.50);
-
-> SELECT * FROM accounts;
-~~~
-~~~
-+------+----------+
-|  id  | balance  |
-+------+----------+
-| 1234 | 10000.50 |
-+------+----------+
 ~~~
 
-When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit.
+~~~
+CREATE DATABASE
+~~~
+
+~~~ sql
+> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
+
+~~~
+CREATE TABLE
+~~~
+
+~~~ sql
+> INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
+
+~~~
+INSERT 1
+~~~
+
+~~~ sql
+> SELECT * FROM bank.accounts;
+~~~
+
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  1 |  1000.5 |
++----+---------+
+(1 row)
+~~~
+
+When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 4. Open the Admin UI
 
-To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
+The CockroachDB [Admin UI](explore-the-admin-ui.html) lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5.  Stop the cluster
 
-Once you're done looking through the Admin UI, you can stop the nodes (and therefore the cluster):
+You can stop the nodes (and therefore the cluster) as follows:
 
 ~~~ shell
+# Stop node 1:
 $ cockroach quit
+
+# Stop node 2: 
 $ cockroach quit --port=26258
+
+# Stop node 3:
 $ cockroach quit --port=26259
 ~~~
 
@@ -146,4 +178,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 
 - [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
-- [Run CockroachDB inside a VirtualBox VM](http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html) (community-supported docs)
+- [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
