@@ -21,6 +21,7 @@ Make sure you have already:
 As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database and [grant privileges](grant.html) to the `maxroach` user. The privileges will enable the user to execute statements in the next steps.
 
 ~~~ shell
+$ cockroach users set maxroach
 $ cockroach sql -e 'CREATE DATABASE bank'
 $ cockroach sql -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~

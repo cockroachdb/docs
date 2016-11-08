@@ -19,7 +19,7 @@ Command | Usage
 `freeze-cluster` | Freeze the cluster in preparation for an upgrade (docs coming soon).
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
-`user` | Get, set, list, and remove users (docs coming soon).
+[`user`](create-users.html) | Get, set, list, and remove users.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
 [`dump`](back-up-and-restore-data.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
@@ -37,7 +37,7 @@ Flag | Description
 -----|------------
 `--alsologtostderr` | Copy log messages at or above this severity level to the standard error stream in addition to log files. Possible values: `info`, `warning`, `error`, `fatal`, and `none`. If this flag is set without a value, it uses the `info` level. <br><br>**Default:** `none`
 `--log-dir` | Write log files in this directory. <br><br> **Default:** `<first-store-dir>/logs` for the `start` command; `$TMPDIR` for all other commands  
-`--logtostderr` |  Write log messages of all severities to the standard error stream and not to log files. If this flag is set to `true`, `--log-dir` and `--alsologtostderr` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
+`--logtostderr` | Write log messages of all severities to the standard error stream and not to log files. If this flag is set to `true`, `--log-dir` and `--alsologtostderr` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
 `--no-color` | Do not colorize the standard error stream based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
 
 The `--log-backtrace-at`, `--verbosity`, and `--vmodule` flags are intended for internal debugging. 

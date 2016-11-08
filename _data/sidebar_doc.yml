@@ -300,6 +300,9 @@ entries:
         - title: Create Security Certificates
           url: /create-security-certificates.html
 
+        - title: Create & Manage Users
+          url: /create-users.html
+
         - title: Configure Replication Zones
           url: /configure-replication-zones.html
 
