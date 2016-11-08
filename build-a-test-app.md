@@ -223,6 +223,16 @@ Coming soon.
 ~~~
 </div>
 
+## What's Next?
+
+Use a local cluster to demonstrate the following core CockroachDB features:
+
+- [Data Replication](demo-data-replication.html)
+- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
+- [Strong Consistency](demo-strong-consistency.html)
+- [Scalability](demo-scalability.html)
+
+
 <script>
 $(document).ready(function(){
     

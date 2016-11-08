@@ -22,7 +22,7 @@ toc: false
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
-{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="cloud-deployment.html">Cloud Deployment</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -48,7 +48,11 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 ## Step 2. Start your first container/node
 
 ~~~ shell
-$ docker run -d --name=roach1 --hostname=roach1 --net=roachnet -p 26257:26257 -p 8080:8080  \
+$ docker run -d \
+--name=roach1 \
+--hostname=roach1 \
+--net=roachnet \
+-p 26257:26257 -p 8080:8080  \
 -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  \
 cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
 ~~~
@@ -69,13 +73,23 @@ This command creates a container and starts the first CockroachDB node inside it
 ## Step 3. Start additional containers/nodes
 
 ~~~ shell
-$ docker run -d --name=roach2 --hostname=roach2 --net=roachnet -P -v \
-"${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} \
-start --insecure --join=roach1
+# Start the second container/node:
+$ docker run -d \
+--name=roach2 \
+--hostname=roach2 \
+--net=roachnet \
+-P \
+-v "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" \
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
 
-$ docker run -d --name=roach3 --hostname=roach3 --net=roachnet -P -v  \
-"${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" cockroachdb/cockroach:{{site.data.strings.version}} \
-start --insecure --join=roach1
+# Start the third container/node:
+$ docker run -d \
+--name=roach3 \
+--hostname=roach3 \
+--net=roachnet \
+-P \
+-v "${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" \
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
 ~~~
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
@@ -105,24 +119,42 @@ Then run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 ~~~ sql
 > CREATE DATABASE bank;
-
-> SET DATABASE = bank;
-
-> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
-
-> INSERT INTO accounts VALUES (1234, 10000.50);
-
-> SELECT * FROM accounts;
-~~~
-~~~
-+------+----------+
-|  id  | balance  |
-+------+----------+
-| 1234 | 10000.50 |
-+------+----------+
 ~~~
 
-When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit. Then use **CTRL + D** to exit the Bash session.
+~~~
+CREATE DATABASE
+~~~
+
+~~~ sql
+> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
+
+~~~
+CREATE TABLE
+~~~
+
+~~~ sql
+> INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
+
+~~~
+INSERT 1
+~~~
+
+~~~ sql
+> SELECT * FROM bank.accounts;
+~~~
+
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  1 |  1000.5 |
++----+---------+
+(1 row)
+~~~
+
+When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell. Then use **CTRL + D** to exit the Bash session.
 
 If you want to verify that the containers/nodes are, in fact, part of a single cluster, you can start a Bash session in one of the other containers, start the SQL client in interactive mode, and check for the new `bank` database:
 
@@ -133,9 +165,11 @@ root@roach1:/cockroach# ./cockroach sql --insecure
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
+
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +----------+
 | Database |
@@ -151,14 +185,18 @@ When you started the first container/node, you mapped the node's default HTTP po
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-
 ## Step 6.  Stop the cluster
 
 Once you're done looking through the Admin UI, you can stop the nodes (and therefore the cluster):
 
 ~~~ shell
+# Stop node 1:
 $ cockroach quit
+
+# Stop node 2:
 $ cockroach quit --port=26258
+
+# Stop node 3:
 $ cockroach quit --port=26259
 ~~~
 
@@ -168,6 +206,6 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
 
-- **Run CockroachDB across Multiple Docker Hosts** (coming soon)
 - [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
+- [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
