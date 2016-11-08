@@ -15,7 +15,8 @@ Statement | Usage
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database. 
-[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement. 
+[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
+[`CREATE USER`](create-user.html) | Creates a SQL user, which lets you control [privileges](privileges.html) on your databases and tables.
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.

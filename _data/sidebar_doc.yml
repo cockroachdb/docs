@@ -87,6 +87,9 @@ entries:
                 - title: <code>CREATE TABLE AS</code>
                   url: /create-table-as.html
 
+                - title: <code>CREATE USER</code>
+                  url: /create-user.html
+
                 - title: <code>CREATE VIEW</code>
                   url: /create-view.html
 
@@ -319,6 +322,9 @@ entries:
 
         - title: Create Security Certificates
           url: /create-security-certificates.html
+
+        - title: Create & Manage Users
+          url: /create-and-manage-users.html
 
         - title: Configure Replication Zones
           url: /configure-replication-zones.html
