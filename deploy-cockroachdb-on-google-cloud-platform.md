@@ -292,7 +292,7 @@ On this page, go to the following tabs on the left:
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
-2. [Grant privileges to users](grant.html).
+2. [Create users](create-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html).
 
 ## See Also
