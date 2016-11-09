@@ -103,6 +103,7 @@ The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database
 
 ~~~ shell
 $ cockroach start --insecure --host=node1.example.com
+CockroachDB node starting at {{site.data.strings.start_time}}
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://node1.example.com:8080 <-------------------------- USE THIS URL
 sql:        postgresql://root@node1.example.com:26257?sslmode=disable
@@ -236,6 +237,7 @@ The CockroachDB Admin UI lets you monitor cluster-wide, node-level, and database
 
 ~~~ shell
 $ cockroach start --http-host=127.0.0.1 --ca-cert=ca.cert --cert=node1.cert --key=node1.key --host=node1.example.com
+CockroachDB node starting at {{site.data.strings.start_time}}
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      https://<private address>:8080 <-------------- USE THIS URL
 sql:        postgresql://root@node1.example.com:26257?sslcert=%2FUsers%2F...

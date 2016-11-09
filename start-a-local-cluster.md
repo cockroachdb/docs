@@ -38,6 +38,7 @@ Make sure you have already:
 ~~~ shell
 $ cockroach start --background
 
+CockroachDB node starting at {{site.data.strings.start_time}}
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8080
 sql:        postgresql://root@localhost:26257?sslmode=disable

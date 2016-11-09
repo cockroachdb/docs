@@ -29,6 +29,7 @@ $ cockroach cert create-client root --ca-cert=certs/ca.cert --ca-key=certs/ca.ke
 ~~~ shell
 $ cockroach start --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --http-host=localhost --background
 
+CockroachDB node starting at {{site.data.strings.start_time}}
 build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      https://ROACHs-MBP:8080
 sql:        postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
