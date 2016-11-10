@@ -1,5 +1,5 @@
 ---
-title: Demo Fault Tolerance & Recovery
+title: Fault Tolerance & Recovery
 summary: 
 toc: false
 ---
@@ -78,9 +78,9 @@ initiating graceful shutdown of server
 ok
 ~~~
 
-## Step 4. Verify that the cluster remains available
+## Step 3. Verify that the cluster remains available
 
-Open the built-in SQL shell on node 1 (port `26258`) or node 3 (port `26259`):
+Open the built-in SQL shell on node 1 (port `26257`) or node 3 (port `26259`):
 
 ~~~ shell
 $ cockroach sql --port=26259
@@ -109,7 +109,7 @@ As you see, despite one node being offline, the cluster remains available becaus
 
 Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-## Step 5. Add data while the node is offline
+## Step 4. Add data while the node is offline
 
 Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `startrek` database:
 
@@ -185,7 +185,7 @@ Once again, open the SQL shell on node 1 (port `26258`) or node 3 (port `26259`)
 
 Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-## Step 6. Rejoin the node to the cluster
+## Step 5. Rejoin the node to the cluster
 
 Rejoin node 2 to the cluster, using the same command that you used in step 1:
 
@@ -209,7 +209,7 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     2
 ~~~
 
-## Step 7. Verify that the rejoined node has caught up
+## Step 6. Verify that the rejoined node has caught up
 
 Open the SQL shell on the rejoined node 2 (port `26258`) and check for the `startrek` data that was added while the node was offline:
 
@@ -242,13 +242,13 @@ $ cockroach sql --port=26258
 (10 rows)
 ~~~
 
-As you see, despite being offline when the update happened, node 2 was updated soon after it rejoined the cluster.
+At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
 
-Open the Admin UI by pointing a browser to `http://localhost:8080`. Go to the **Nodes** tab and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated three times; there's a copy of every piece of data on each node.
+Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated three times; there's a copy of every piece of data on each node.
 
 <img src="images/recovery1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 8. Add another node
+## Step 7. Add another node
 
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
@@ -272,7 +272,7 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     4
 ~~~
 
-## Step 9. Remove a node permanently
+## Step 8. Remove a node permanently
 
 Again use the [`cockroach quit`](stop-a-node.html) command to stop node 2 (port `26258`):
 
@@ -285,7 +285,7 @@ initiating graceful shutdown of server
 ok
 ~~~
 
-## Step 10. Verify that the cluster re-replicates missing replicas
+## Step 9. Verify that the cluster re-replicates missing replicas
 
 Go back to the **Nodes** tab of the Admin UI and you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding. 
 
@@ -299,8 +299,7 @@ After about 10 minutes, the dot next to node 2 will turn red, indicating that th
 
 ## What's Next?
 
-Use a local cluster to demonstrate these other core CockroachDB features:
+Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
-- [Strong Consistency](demo-strong-consistency.html)
 - [Scalability](demo-scalability.html)
