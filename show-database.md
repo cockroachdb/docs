@@ -39,4 +39,5 @@ $ cockroach sql --database=test
 ## See Also
 
 - [`SET DATABASE`](set-database.html)
+- [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)

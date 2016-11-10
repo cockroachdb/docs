@@ -157,4 +157,5 @@ Parameter | Description
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
 - [Privileges](privileges.html)
+- [Information Schema](information-schema.html)
 

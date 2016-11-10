@@ -74,3 +74,5 @@ Field | Description
 
 - [Constraints](constraints.html)
 - [`CREATE TABLE`](create-table.html)
+- [Information Schema](information-schema.html)
+- [Other SQL Statements](sql-statements.html)

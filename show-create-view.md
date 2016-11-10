@@ -71,3 +71,5 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 - [`CREATE VIEW`](create-view.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)
+- [Information Schema](information-schema.html)
+- [Other SQL Statements](sql-statements.html)

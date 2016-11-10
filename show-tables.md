@@ -66,3 +66,4 @@ This example assumes that the `bank` database has been set as the default databa
 
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE VIEW`](create-view.html)
+- [Information Schema](information-schema.html)
