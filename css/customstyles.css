@@ -2122,6 +2122,15 @@ polygon.regexp {
     border-color: #46a417;
     color: #46a417 !important; }
 
+#yes-response, #no-response {
+  display: inline-block;
+  padding: 25px;
+  background-color: #F0FFE8;
+  line-height: 0; }
+
+#yes-response p, #no-response p {
+  line-height: 0; }
+
 /* Feedback popup and hubspot form 
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
 * http://dimsemenov.com/plugins/magnific-popup/

@@ -1,42 +1,32 @@
-<!-- "Was this page helpful?" question with "Yes" and "No" buttons. Yes and No trigger popups with different embedded hubspot forms. -->
-
 <div id="feedback-prompt">
   <p class="feedback-question">Was this page helpful?</p>
-  <a href="#feedback-popup-yes" class="yes-button">Yes</a>
-  <a href="#feedback-popup-no" class="no-button">No</a>
+  <a href="#yes-feedback" id="yes-button" class="yes-button" data-proofer-ignore>Yes</a>
+  <a href="#no-feedback" id="no-button" class="no-button" data-proofer-ignore>No</a>
 </div>
 
-<div id="feedback-popup-yes" class="white-popup mfp-hide">
-  <script>
-    hbspt.forms.create({ 
-      css: '',
-      portalId: '1753393',
-      formId: '9f9673c8-f4f9-45d1-afa5-0927fb48bb87'
-    });
-  </script>
+<div id="yes-response" class="feedback-question">
+  <p>Thanks for the feedback!</p>
 </div>
 
-<div id="feedback-popup-no" class="white-popup mfp-hide">
-  <script>
-    hbspt.forms.create({ 
-      css: '',
-      portalId: '1753393',
-      formId: '90745362-7730-4dfd-83ff-dd64dc02a7ae'
-    });
-  </script>
+<div id="no-response" class="feedback-question">
+  <p>Thank you! Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new" target="_blank">open an issue</a>.</p>
 </div>
 
 <script>
-  $(document).ready(function() {
-    // Open popup for No submissions.
-    $('.no-button').magnificPopup({
-      type:'inline',
-      midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
-    });
-    // Open popup for Yes submissions.
-    $('.yes-button').magnificPopup({
-      type:'inline',
-      midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
-    });
+  $(document).ready(function(){
+      $("#yes-response, #no-response").hide();
+      $("#yes-button, #no-button").bind("click", function () {
+        $("#yes-response, #no-response").hide();        
+        if ($(this).attr("id") == "yes-button")
+        {
+          $("#yes-response").show();
+          $("#feedback-prompt").hide();
+        }
+        if ($(this).attr("id") == "no-button")
+        {
+          $("#no-response").show();
+          $("#feedback-prompt").hide();
+        }
+      });
   });
 </script>
