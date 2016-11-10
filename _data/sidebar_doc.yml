@@ -38,7 +38,7 @@ entries:
           url: /build-a-test-app.html
 
           thirdlevel:
-            - title: Demo Core Features
+            - title: Explore Core Features
               thirdlevelitems:
 
                 - title: Data Replication
@@ -46,9 +46,6 @@ entries:
 
                 - title: Fault Toleranace and Recovery
                   url: /demo-fault-tolerance-and-recovery.html
-
-                - title: Strong Consistency
-                  url: /demo-strong-consistency.html
 
                 - title: Scalability
                   url: /demo-scalability.html
