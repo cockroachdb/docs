@@ -5,6 +5,7 @@
   padding: 25px;
   background-color: $cl_green_light; 
   font-size: 0;
+  line-height: 0
 
   form {
     display: inline-block;
@@ -12,6 +13,10 @@
   }
 }
 
+#feedback-prompt p {
+  line-height: 0
+}
+  
 .feedback-question {
   display: inline-block;
   line-height: 0;
