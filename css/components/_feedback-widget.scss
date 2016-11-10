@@ -5,6 +5,7 @@
   padding: 25px;
   background-color: $cl_green_light; 
   font-size: 0;
+  line-height: 0
 
   form {
     display: inline-block;
@@ -12,6 +13,10 @@
   }
 }
 
+#feedback-prompt p {
+  line-height: 0
+}
+  
 .feedback-question {
   display: inline-block;
   line-height: 0;
@@ -46,16 +51,6 @@
 
 .no-button:hover, .yes-button:hover, .no-button:focus, .yes-button:focus {
 
-}
-
-#yes-response, #no-response {
-  display: inline-block;
-  padding: 25px;
-  background-color: $cl_green_light;
-  line-height: 0;
-}
-#yes-response p, #no-response p {
-  line-height: 0;
 }
 
 /* Feedback popup and hubspot form 

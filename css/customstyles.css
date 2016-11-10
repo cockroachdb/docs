@@ -2081,10 +2081,13 @@ polygon.regexp {
   display: inline-block;
   padding: 25px;
   background-color: #F0FFE8;
-  font-size: 0; }
-  #feedback-prompt form {
-    display: inline-block;
-    vertical-align: bottom; }
+  font-size: 0;
+  line-height: 0 form;
+    line-height-display: inline-block;
+    line-height-vertical-align: bottom; }
+
+#feedback-prompt p {
+  line-height: 0; }
 
 .feedback-question {
   display: inline-block;
@@ -2121,15 +2124,6 @@ polygon.regexp {
   .yes-button:hover, .no-button:hover {
     border-color: #46a417;
     color: #46a417 !important; }
-
-#yes-response, #no-response {
-  display: inline-block;
-  padding: 25px;
-  background-color: #F0FFE8;
-  line-height: 0; }
-
-#yes-response p, #no-response p {
-  line-height: 0; }
 
 /* Feedback popup and hubspot form 
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
