@@ -2081,10 +2081,13 @@ polygon.regexp {
   display: inline-block;
   padding: 25px;
   background-color: #F0FFE8;
-  font-size: 0; }
-  #feedback-prompt form {
-    display: inline-block;
-    vertical-align: bottom; }
+  font-size: 0;
+  line-height: 0 form;
+    line-height-display: inline-block;
+    line-height-vertical-align: bottom; }
+
+#feedback-prompt p {
+  line-height: 0; }
 
 .feedback-question {
   display: inline-block;
