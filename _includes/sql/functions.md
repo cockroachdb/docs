@@ -2,25 +2,29 @@
 
 Function | Return
 --- | ---
-greatest(T, ...) | T
-least(T, ...) | T
+greatest(anyelement...) | anyelement
+least(anyelement...) | anyelement
 
 ### Date and Time Functions
 
 Function | Return
 --- | ---
-age([timestamp](timestamp.html)) | [interval](interval.html)
-age([timestamp](timestamp.html), [timestamp](timestamp.html)) | [interval](interval.html)
+age([timestamptz](timestamp.html)) | [interval](interval.html)
+age([timestamptz](timestamp.html), [timestamptz](timestamp.html)) | [interval](interval.html)
 clock_timestamp() | [timestamp](timestamp.html)
+clock_timestamp() | [timestamptz](timestamp.html)
 current_date() | [date](date.html)
 current_timestamp() | [timestamp](timestamp.html)
-current_timestamp_ns() | [timestamp](timestamp.html)
+current_timestamp() | [timestamptz](timestamp.html)
+experimental_strptime([string](string.html), [string](string.html)) | [timestamptz](timestamp.html)
 extract([string](string.html), [timestamp](timestamp.html)) | [int](int.html)
-format_timestamp_ns([timestamp](timestamp.html)) | [string](string.html)
+extract_duration([string](string.html), [interval](interval.html)) | [int](int.html)
 now() | [timestamp](timestamp.html)
-parse_timestamp_ns([string](string.html)) | [timestamp](timestamp.html)
+now() | [timestamptz](timestamp.html)
 statement_timestamp() | [timestamp](timestamp.html)
+statement_timestamp() | [timestamptz](timestamp.html)
 transaction_timestamp() | [timestamp](timestamp.html)
+transaction_timestamp() | [timestamptz](timestamp.html)
 
 ### ID Generation Functions
 
@@ -53,6 +57,7 @@ cot([float](float.html)) | [float](float.html)
 degrees([float](float.html)) | [float](float.html)
 div([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 div([float](float.html), [float](float.html)) | [float](float.html)
+div([int](int.html), [int](int.html)) | [int](int.html)
 exp([decimal](decimal.html)) | [decimal](decimal.html)
 exp([float](float.html)) | [float](float.html)
 floor([decimal](decimal.html)) | [decimal](decimal.html)
@@ -67,8 +72,10 @@ mod([int](int.html), [int](int.html)) | [int](int.html)
 pi() | [float](float.html)
 pow([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 pow([float](float.html), [float](float.html)) | [float](float.html)
+pow([int](int.html), [int](int.html)) | [int](int.html)
 power([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
 power([float](float.html), [float](float.html)) | [float](float.html)
+power([int](int.html), [int](int.html)) | [int](int.html)
 radians([float](float.html)) | [float](float.html)
 random() | [float](float.html)
 round([decimal](decimal.html)) | [decimal](decimal.html)
@@ -93,8 +100,13 @@ Function | Return
 ascii([string](string.html)) | [int](int.html)
 btrim([string](string.html)) | [string](string.html)
 btrim([string](string.html), [string](string.html)) | [string](string.html)
-concat(string, ...) | [string](string.html)
-concat_ws(string, ...) | [string](string.html)
+concat([string](string.html)...) | [string](string.html)
+concat_ws([string](string.html)...) | [string](string.html)
+experimental_strftime([date](date.html), [string](string.html)) | [string](string.html)
+experimental_strftime([timestamp](timestamp.html), [string](string.html)) | [string](string.html)
+experimental_strftime([timestamptz](timestamp.html), [string](string.html)) | [string](string.html)
+from_ip([bytes](bytes.html)) | [string](string.html)
+from_uuid([bytes](bytes.html)) | [string](string.html)
 initcap([string](string.html)) | [string](string.html)
 left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 left([string](string.html), [int](int.html)) | [string](string.html)
@@ -112,7 +124,7 @@ regexp_extract([string](string.html), [string](string.html)) | [string](string.h
 regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 repeat([string](string.html), [int](int.html)) | [string](string.html)
-replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+replace(input: [string](string.html), from: [string](string.html), to: [string](string.html)) | [string](string.html)
 reverse([string](string.html)) | [string](string.html)
 right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
 right([string](string.html), [int](int.html)) | [string](string.html)
@@ -130,13 +142,19 @@ substring([string](string.html), [int](int.html)) | [string](string.html)
 substring([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
 substring([string](string.html), [string](string.html)) | [string](string.html)
 substring([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-translate([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
+to_ip([string](string.html)) | [bytes](bytes.html)
+to_uuid([string](string.html)) | [bytes](bytes.html)
+translate(input: [string](string.html), from: [string](string.html), to: [string](string.html)) | [string](string.html)
 upper([string](string.html)) | [string](string.html)
 
 ### System Info Functions
 
 Function | Return
 --- | ---
+array_length([string](string.html)[], [int](int.html)) | [int](int.html)
+array_lower([string](string.html)[], [int](int.html)) | [int](int.html)
+array_upper([string](string.html)[], [int](int.html)) | [int](int.html)
 cluster_logical_timestamp() | [decimal](decimal.html)
+current_schemas([bool](bool.html)) | [string](string.html)[]
 version() | [string](string.html)
 
