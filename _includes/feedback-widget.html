@@ -9,11 +9,11 @@
       $("#yes-button, #no-button").bind("click", function () {
         if ($(this).attr("id") == "yes-button")
         {
-          $('#feedback-prompt').html('<p>Thanks for the feedback!</p>')
+          $('#feedback-prompt').html('<p class="feedback-response">Thanks for the feedback!</p>')
         }
         if ($(this).attr("id") == "no-button")
         {
-          $('#feedback-prompt').html('<p>Thank you! Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new" target="_blank">open an issue</a>.</p>')
+          $('#feedback-prompt').html('<p class="feedback-response">Thank you! Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new" target="_blank">open an issue</a>.</p>')
         }
       });
   });

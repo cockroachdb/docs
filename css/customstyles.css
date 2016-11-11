@@ -2082,9 +2082,10 @@ polygon.regexp {
   padding: 25px;
   background-color: #F0FFE8;
   font-size: 0;
-  line-height: 0 form;
-    line-height-display: inline-block;
-    line-height-vertical-align: bottom; }
+  line-height: 0; }
+  #feedback-prompt form {
+    display: inline-block;
+    vertical-align: bottom; }
 
 #feedback-prompt p {
   line-height: 0; }
@@ -2100,6 +2101,13 @@ polygon.regexp {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+@media screen and (max-width: 767px) {
+  .feedback-question {
+    font-size: 14px; }
+
+  #feedback-prompt p.feedback-response {
+    line-height: 20px;
+    font-size: 14px; } }
 .yes-button, .no-button {
   width: 40px;
   height: 40px;
