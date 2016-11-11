@@ -5,7 +5,7 @@
   padding: 25px;
   background-color: $cl_green_light; 
   font-size: 0;
-  line-height: 0
+  line-height: 0;
 
   form {
     display: inline-block;
@@ -14,7 +14,7 @@
 }
 
 #feedback-prompt p {
-  line-height: 0
+  line-height: 0;
 }
   
 .feedback-question {
@@ -23,6 +23,16 @@
   margin-right: 15px;
   vertical-align: bottom;
   @include avenir_bk(16px);
+}
+
+@media screen and (max-width: 767px){
+  .feedback-question {
+    font-size: 14px;
+  }
+  #feedback-prompt p.feedback-response {
+    line-height: 20px;
+    font-size: 14px;
+  }
 }
 
 .yes-button, .no-button {
