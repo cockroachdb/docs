@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
-	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -76,8 +76,8 @@ func GenerateOperators() []byte {
 		op := optyp.String()
 		for _, v := range overloads {
 			ops[op] = append(ops[op], operation{
-				left: v.Typ.Type(),
-				ret:  v.ReturnType.Type(),
+				left: v.Typ.String(),
+				ret:  v.ReturnType.String(),
 				op:   op,
 			})
 		}
@@ -85,12 +85,12 @@ func GenerateOperators() []byte {
 	for optyp, overloads := range parser.BinOps {
 		op := optyp.String()
 		for _, v := range overloads {
-			left := v.LeftType.Type()
-			right := v.RightType.Type()
+			left := v.LeftType.String()
+			right := v.RightType.String()
 			ops[op] = append(ops[op], operation{
 				left:  left,
 				right: right,
-				ret:   v.ReturnType.Type(),
+				ret:   v.ReturnType.String(),
 				op:    op,
 			})
 		}
@@ -98,8 +98,8 @@ func GenerateOperators() []byte {
 	for optyp, overloads := range parser.CmpOps {
 		op := optyp.String()
 		for _, v := range overloads {
-			left := v.LeftType.Type()
-			right := v.RightType.Type()
+			left := v.LeftType.String()
+			right := v.RightType.String()
 			ops[op] = append(ops[op], operation{
 				left:  left,
 				right: right,
@@ -127,21 +127,6 @@ func GenerateOperators() []byte {
 }
 
 func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte {
-	typePtrs := make(map[uintptr]string)
-	typeFns := map[string]interface{}{
-		"bool":      parser.TypeBool,
-		"bytes":     parser.TypeBytes,
-		"date":      parser.TypeDate,
-		"float":     parser.TypeFloat,
-		"decimal":   parser.TypeDecimal,
-		"int":       parser.TypeInt,
-		"interval":  parser.TypeInterval,
-		"string":    parser.TypeString,
-		"timestamp": parser.TypeTimestamp,
-	}
-	for name, v := range typeFns {
-		typePtrs[reflect.ValueOf(v).Pointer()] = name
-	}
 	functions := make(map[string][]string)
 	seen := make(map[string]struct{})
 	for name, fns := range from {
@@ -153,27 +138,11 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 		}
 		seen[name] = struct{}{}
 		for _, fn := range fns {
-			var args string
-			switch ft := fn.Types.(type) {
-			case parser.ArgTypes:
-				var typs []string
-				for _, typ := range ft {
-					typs = append(typs, linkType(typ.Type()))
-				}
-				args = strings.Join(typs, ", ")
-			case parser.AnyType:
-				args = "T, ..."
-			case parser.VariadicType:
-				args = fmt.Sprintf("%s, ...", ft.Typ.Type())
-			default:
-				panic(fmt.Sprintf("unknown type: %T", ft))
+			if categorize && fn.WindowFunc != nil {
+				continue
 			}
-			var fp uintptr
-			ret := "T"
-			if fn.ReturnType != nil {
-				fp = reflect.ValueOf(fn.ReturnType).Pointer()
-				ret = typePtrs[fp]
-			}
+			args := fn.Types.String()
+			ret := fn.ReturnType.String()
 			cat := ret
 			if c := fn.Category(); c != "" {
 				cat = c
@@ -181,7 +150,7 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			if !categorize {
 				cat = ""
 			}
-			s := fmt.Sprintf("%s(%s) | %s", name, args, linkType(ret))
+			s := fmt.Sprintf("%s(%s) | %s", name, linkType(args), linkType(ret))
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -204,10 +173,19 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 	return b.Bytes()
 }
 
+var linkRE = regexp.MustCompile("[a-z]+")
+
 func linkType(t string) string {
-	switch t {
-	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
-		return fmt.Sprintf("[%s](%s.html)", t, t)
-	}
-	return t
+	return linkRE.ReplaceAllStringFunc(t, func(s string) string {
+		name := s
+		switch s {
+		case "timestamptz":
+			s = "timestamp"
+		}
+		switch s {
+		case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
+			return fmt.Sprintf("[%s](%s.html)", name, s)
+		}
+		return s
+	})
 }

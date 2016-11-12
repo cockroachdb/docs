@@ -34,9 +34,9 @@
 [int](int.html) `+` [int](int.html) | [int](int.html)
 [interval](interval.html) `+` [interval](interval.html) | [interval](interval.html)
 [interval](interval.html) `+` [timestamp](timestamp.html) | [timestamp](timestamp.html)
-[interval](interval.html) `+` timestamptz | timestamptz
+[interval](interval.html) `+` [timestamptz](timestamp.html) | [timestamptz](timestamp.html)
 [timestamp](timestamp.html) `+` [interval](interval.html) | [timestamp](timestamp.html)
-timestamptz `+` [interval](interval.html) | timestamptz
+[timestamptz](timestamp.html) `+` [interval](interval.html) | [timestamptz](timestamp.html)
 
 `-` | Return
 --- | ---
@@ -53,8 +53,10 @@ timestamptz `+` [interval](interval.html) | timestamptz
 [interval](interval.html) `-` [interval](interval.html) | [interval](interval.html)
 [timestamp](timestamp.html) `-` [interval](interval.html) | [timestamp](timestamp.html)
 [timestamp](timestamp.html) `-` [timestamp](timestamp.html) | [interval](interval.html)
-timestamptz `-` [interval](interval.html) | timestamptz
-timestamptz `-` timestamptz | [interval](interval.html)
+[timestamp](timestamp.html) `-` [timestamptz](timestamp.html) | [interval](interval.html)
+[timestamptz](timestamp.html) `-` [interval](interval.html) | [timestamptz](timestamp.html)
+[timestamptz](timestamp.html) `-` [timestamp](timestamp.html) | [interval](interval.html)
+[timestamptz](timestamp.html) `-` [timestamptz](timestamp.html) | [interval](interval.html)
 
 `/` | Return
 --- | ---
@@ -90,7 +92,9 @@ timestamptz `-` timestamptz | [interval](interval.html)
 [interval](interval.html) `<` [interval](interval.html) | [bool](bool.html)
 [string](string.html) `<` [string](string.html) | [bool](bool.html)
 [timestamp](timestamp.html) `<` [timestamp](timestamp.html) | [bool](bool.html)
-timestamptz `<` timestamptz | [bool](bool.html)
+[timestamp](timestamp.html) `<` [timestamptz](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `<` [timestamp](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `<` [timestamptz](timestamp.html) | [bool](bool.html)
 tuple `<` tuple | [bool](bool.html)
 
 `<<` | Return
@@ -114,7 +118,9 @@ tuple `<` tuple | [bool](bool.html)
 [interval](interval.html) `<=` [interval](interval.html) | [bool](bool.html)
 [string](string.html) `<=` [string](string.html) | [bool](bool.html)
 [timestamp](timestamp.html) `<=` [timestamp](timestamp.html) | [bool](bool.html)
-timestamptz `<=` timestamptz | [bool](bool.html)
+[timestamp](timestamp.html) `<=` [timestamptz](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `<=` [timestamp](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `<=` [timestamptz](timestamp.html) | [bool](bool.html)
 tuple `<=` tuple | [bool](bool.html)
 
 `=` | Return
@@ -134,7 +140,9 @@ tuple `<=` tuple | [bool](bool.html)
 [interval](interval.html) `=` [interval](interval.html) | [bool](bool.html)
 [string](string.html) `=` [string](string.html) | [bool](bool.html)
 [timestamp](timestamp.html) `=` [timestamp](timestamp.html) | [bool](bool.html)
-timestamptz `=` timestamptz | [bool](bool.html)
+[timestamp](timestamp.html) `=` [timestamptz](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `=` [timestamp](timestamp.html) | [bool](bool.html)
+[timestamptz](timestamp.html) `=` [timestamptz](timestamp.html) | [bool](bool.html)
 tuple `=` tuple | [bool](bool.html)
 
 `>>` | Return
@@ -156,7 +164,7 @@ tuple `=` tuple | [bool](bool.html)
 [interval](interval.html) `IN` tuple | [bool](bool.html)
 [string](string.html) `IN` tuple | [bool](bool.html)
 [timestamp](timestamp.html) `IN` tuple | [bool](bool.html)
-timestamptz `IN` tuple | [bool](bool.html)
+[timestamptz](timestamp.html) `IN` tuple | [bool](bool.html)
 tuple `IN` tuple | [bool](bool.html)
 
 `LIKE` | Return
