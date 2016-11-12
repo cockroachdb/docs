@@ -1,10 +1,10 @@
 ---
 title: Fault Tolerance & Recovery
-summary: 
+summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
 toc: false
 ---
 
-This page demonstrates how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then add data while the third node is offline, rejoin the third node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove one of the others, and see how missing replicas eventually re-replicate to the new node.
+This page demonstrates how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then add data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
 
 <div id="toc"></div>
 
@@ -105,7 +105,7 @@ $ cockroach sql --port=26259
 (4 rows)
 ~~~
 
-As you see, despite one node being offline, the cluster remains available because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one live, the cluster would be unresponsive until another node was brought back online.
+As you see, despite one node being offline, the cluster continues uninterrupted because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one node live, the cluster would be unresponsive until another node was brought back online.
 
 Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
@@ -113,9 +113,9 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `startrek` database:
 
-~~~ shell
-$ cockroach gen example-data | cockroach sql
-~~~
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data | cockroach sql
+</code></pre>
+</div>
 
 ~~~
 CREATE DATABASE
@@ -244,7 +244,9 @@ $ cockroach sql --port=26258
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
 
-Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated three times; there's a copy of every piece of data on each node.
+Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+
+{{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
 
 <img src="images/recovery1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -252,13 +254,13 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
-~~~ shell
-$ cockroach start --background \
---store=node4 \
---port=26260 \
---http-port=8083 \
---join=localhost:26257
-~~~
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cockroach start --background <span class="se">\</span>
+--store<span class="o">=</span>node4 <span class="se">\</span>
+--port<span class="o">=</span>26260 <span class="se">\</span>
+--http-port<span class="o">=</span>8083 <span class="se">\</span>
+--join<span class="o">=</span>localhost:26257
+</code></pre>
+</div>
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
