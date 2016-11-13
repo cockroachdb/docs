@@ -13,7 +13,7 @@
         }
         if ($(this).attr("id") == "no-button")
         {
-          $('#feedback-prompt').html('<p class="feedback-response">Thank you! Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new" target="_blank">open an issue</a>.</p>')
+          $('#feedback-prompt').html('<p class="feedback-response">Thank you! Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new?title=Issue on docs for {{ page.title }}&body=Please include specific details about the section with the issue, as well as steps we can take to reproduce any problems you found." target="_blank">open an issue</a>.</p>')
         }
       });
   });
