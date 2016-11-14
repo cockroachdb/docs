@@ -24,14 +24,31 @@ entries:
         - title: Secure a Cluster
           url: /secure-a-cluster.html
 
-        - title: Learn CockroachDB SQL
-          url: /learn-cockroachdb-sql.html
+          thirdlevel:
+            - title: Learn CockroachDB SQL
+              thirdlevelitems:
 
-        - title: Use the Built-in SQL Client
-          url: /use-the-built-in-sql-client.html
+                - title: Essential SQL Statements
+                  url: /learn-cockroachdb-sql.html
+
+                - title: Use the Built-in SQL Client
+                  url: /use-the-built-in-sql-client.html
 
         - title: Build a Test App
           url: /build-a-test-app.html
+
+          thirdlevel:
+            - title: Explore Core Features
+              thirdlevelitems:
+
+                - title: Data Replication
+                  url: /demo-data-replication.html
+
+                - title: Fault Toleranace and Recovery
+                  url: /demo-fault-tolerance-and-recovery.html
+
+                - title: Scalability
+                  url: /demo-scalability.html
 
     - title: Develop
       items:
