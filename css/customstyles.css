@@ -2689,6 +2689,13 @@ img.mfp-img {
       margin-left: 10px;
       padding: 12px 30px; } }
 
+.play-button polygon, .play-button rect {
+  stroke: #46a417 !important;
+  fill: #46a417 !important; }
+
+.play-button polyline {
+  display: none; }
+
 .asciinema-player-wrapper {
   position: relative;
   text-align: center;

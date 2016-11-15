@@ -1,3 +1,12 @@
+.play-button polygon, .play-button rect {
+  stroke: $cl_green !important;
+  fill: $cl_green !important;
+}
+
+.play-button polyline {
+  display: none;  
+}
+
 .asciinema-player-wrapper {
   position: relative;
   text-align: center;
