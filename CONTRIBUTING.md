@@ -99,6 +99,18 @@ Some pages auto-include content from the [`_includes`](_includes) directory. For
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 
+## Asciicasts
+
+To include an [asciinema](https://asciinema.org/) asciicast on a page:
+
+- Place the `.json` asciicast file in the `/asciicasts` directory.
+- On the page, set `asciicast: true` in the front-matter.
+- On the page, include the following html where you want the asciicast to appear, changing the `src` filepath as relevant. For details about customizing the asciicast appearance, see the asciinema [README](https://github.com/asciinema/asciinema-player#asciinema-player-element-attributes).
+
+  ```
+  <asciinema-player src="asciicasts/start-a-local-cluster.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
+  ```
+
 ## Style Guide
 
 CockroachDB docs should be:
