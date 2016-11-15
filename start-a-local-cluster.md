@@ -3,6 +3,7 @@ title: Start a Cluster
 summary: Run a multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: false
 toc_not_nested: true
+asciicast: true
 ---
 
 <style>
@@ -27,12 +28,11 @@ Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's s
 
 <div id="toc"></div>
 
-## Before You Begin
+## Watch a Demo
 
-Make sure you have already:
+Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
-- Installed the [CockroachDB binary](install-cockroachdb.html)
-- Added the binary directory to your `PATH`
+<asciinema-player src="asciicasts/start-a-local-cluster.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
 
 ## Step 1. Start your first node
 
