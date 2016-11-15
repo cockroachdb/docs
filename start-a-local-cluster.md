@@ -32,7 +32,7 @@ Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's s
 
 Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
-<asciinema-player src="asciicasts/start-a-local-cluster.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
+<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
 
 ## Step 1. Start your first node
 
