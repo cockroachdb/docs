@@ -27,12 +27,11 @@ Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's s
 
 <div id="toc"></div>
 
-## Before You Begin
+## Watch a Demo
 
-Make sure you have already:
+Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands from the video.
 
-- Installed the [CockroachDB binary](install-cockroachdb.html)
-- Added the binary directory to your `PATH`
+<script src="https://asciinema.org/a/elxqq7fpmtmcoil5z99hdigk9.js" id="asciicast-elxqq7fpmtmcoil5z99hdigk9" async></script>
 
 ## Step 1. Start your first node
 
