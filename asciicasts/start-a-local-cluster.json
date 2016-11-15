@@ -1,0 +1,1506 @@
+{
+  "stdout": [
+    [
+      0.024787,
+      "\u001b[?1034h\u001b[32m~\u001b[m$ "
+    ],
+    [
+      1.883153,
+      "# Step"
+    ],
+    [
+      0.000132,
+      " 1. Start the c"
+    ],
+    [
+      2.7e-05,
+      "lust"
+    ],
+    [
+      2.2e-05,
+      "er"
+    ],
+    [
+      2.8e-05,
+      "."
+    ],
+    [
+      0.714353,
+      "\r\n"
+    ],
+    [
+      0.000183,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.460087,
+      "cockro"
+    ],
+    [
+      7.2e-05,
+      "ach start"
+    ],
+    [
+      4e-05,
+      " --b"
+    ],
+    [
+      3.8e-05,
+      "ac"
+    ],
+    [
+      4.3e-05,
+      "kg"
+    ],
+    [
+      4.1e-05,
+      "rou"
+    ],
+    [
+      4.5e-05,
+      "nd"
+    ],
+    [
+      2.026725,
+      "\r\n"
+    ],
+    [
+      0.184367,
+      "CockroachDB node starting at 2016-11-14 21:49:07.171698528 -0500 EST\r\nbuild:      beta-20161110-125-ge17cad3 @ 2016/11/14 14:57:57 (go1.7.1)\r\nadmin:      http://localhost:8080\r\nsql:        postgresql://root@localhost:26257?sslmode=disable\r\nlogs:       cockroach-data/logs\r\nstore[0]:   path=cockroach-data\r\nstatus:     initialized new cluster\r\nclusterID:  de9725b3-c218-44fc-9b4e-6f93578512c7\r\nnodeID:     1\r\n"
+    ],
+    [
+      0.003473,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.198054,
+      "\r\n"
+    ],
+    [
+      0.00011,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.09415,
+      "#"
+    ],
+    [
+      5.2e-05,
+      " Step "
+    ],
+    [
+      4e-05,
+      "2. Ad"
+    ],
+    [
+      5.3e-05,
+      "d "
+    ],
+    [
+      4e-05,
+      "a se"
+    ],
+    [
+      3.3e-05,
+      "co"
+    ],
+    [
+      4.5e-05,
+      "nd"
+    ],
+    [
+      2.1e-05,
+      " n"
+    ],
+    [
+      2e-05,
+      "od"
+    ],
+    [
+      2.2e-05,
+      "e."
+    ],
+    [
+      1.497071,
+      "\r\n"
+    ],
+    [
+      0.000268,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      6.282016,
+      "cock"
+    ],
+    [
+      6e-05,
+      "roach s"
+    ],
+    [
+      3.4e-05,
+      "t"
+    ],
+    [
+      2.8e-05,
+      "art"
+    ],
+    [
+      3e-05,
+      " --b"
+    ],
+    [
+      0.000149,
+      "ackground -"
+    ],
+    [
+      3.7e-05,
+      "-store"
+    ],
+    [
+      2.5e-05,
+      "=n"
+    ],
+    [
+      2.4e-05,
+      "od"
+    ],
+    [
+      2.4e-05,
+      "e2"
+    ],
+    [
+      2.7e-05,
+      " -"
+    ],
+    [
+      2.1e-05,
+      "-p"
+    ],
+    [
+      2.2e-05,
+      "or"
+    ],
+    [
+      1.9e-05,
+      "t="
+    ],
+    [
+      6e-05,
+      "2"
+    ],
+    [
+      3.4e-05,
+      "6258 "
+    ],
+    [
+      2.2e-05,
+      "--"
+    ],
+    [
+      2e-05,
+      "ht"
+    ],
+    [
+      3.4e-05,
+      "t"
+    ],
+    [
+      2.2e-05,
+      "p-"
+    ],
+    [
+      6.4e-05,
+      "p"
+    ],
+    [
+      2.7e-05,
+      "ort=8"
+    ],
+    [
+      2.4e-05,
+      "0"
+    ],
+    [
+      2e-05,
+      "8"
+    ],
+    [
+      2.1e-05,
+      "1 "
+    ],
+    [
+      0.000109,
+      "--j"
+    ],
+    [
+      3.2e-05,
+      "oin="
+    ],
+    [
+      2.7e-05,
+      "lo"
+    ],
+    [
+      2.4e-05,
+      "ca"
+    ],
+    [
+      5.3e-05,
+      "lh"
+    ],
+    [
+      2.7e-05,
+      "os"
+    ],
+    [
+      6e-05,
+      "t:"
+    ],
+    [
+      2.8e-05,
+      "26"
+    ],
+    [
+      2e-05,
+      "2"
+    ],
+    [
+      2.5e-05,
+      "5"
+    ],
+    [
+      1.8e-05,
+      "7"
+    ],
+    [
+      1.974285,
+      "\r\n"
+    ],
+    [
+      0.183343,
+      "CockroachDB node starting at 2016-11-14 21:49:25.405496704 -0500 EST\r\nbuild:      beta-20161110-125-ge17cad3 @ 2016/11/14 14:57:57 (go1.7.1)\r\nadmin:      http://localhost:8081\r\nsql:        postgresql://root@localhost:26258?sslmode=disable\r\nlogs:       node2/logs\r\nstore[0]:   path=node2\r\nstatus:     initialized new node, joined pre-existing cluster\r\nclusterID:  de9725b3-c218-44fc-9b4e-6f93578512c7\r\nnodeID:     2\r\n"
+    ],
+    [
+      0.002094,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.235433,
+      "\r\n"
+    ],
+    [
+      3.5e-05,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      3.963075,
+      "# S"
+    ],
+    [
+      4.7e-05,
+      "tep 3. "
+    ],
+    [
+      3.2e-05,
+      "Ad"
+    ],
+    [
+      2.3e-05,
+      "d a "
+    ],
+    [
+      2.7e-05,
+      "thi"
+    ],
+    [
+      2.1e-05,
+      "rd "
+    ],
+    [
+      4.8e-05,
+      "no"
+    ],
+    [
+      3.2e-05,
+      "de."
+    ],
+    [
+      1.487618,
+      "\r\n"
+    ],
+    [
+      6.4e-05,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.392267,
+      "c"
+    ],
+    [
+      8.3e-05,
+      "ockroach sta"
+    ],
+    [
+      4.4e-05,
+      "rt -"
+    ],
+    [
+      5.2e-05,
+      "-b"
+    ],
+    [
+      2.4e-05,
+      "ack"
+    ],
+    [
+      2.3e-05,
+      "gr"
+    ],
+    [
+      2.4e-05,
+      "ou"
+    ],
+    [
+      2.4e-05,
+      "nd"
+    ],
+    [
+      2e-05,
+      " -"
+    ],
+    [
+      2.4e-05,
+      "-s"
+    ],
+    [
+      2e-05,
+      "t"
+    ],
+    [
+      2.3e-05,
+      "or"
+    ],
+    [
+      2.1e-05,
+      "e="
+    ],
+    [
+      2.6e-05,
+      "n"
+    ],
+    [
+      2.2e-05,
+      "od"
+    ],
+    [
+      2.1e-05,
+      "e3"
+    ],
+    [
+      2e-05,
+      " "
+    ],
+    [
+      2e-05,
+      "-"
+    ],
+    [
+      2.1e-05,
+      "-p"
+    ],
+    [
+      2.9e-05,
+      "o"
+    ],
+    [
+      2.1e-05,
+      "rt"
+    ],
+    [
+      2.4e-05,
+      "="
+    ],
+    [
+      2.1e-05,
+      "26"
+    ],
+    [
+      2.1e-05,
+      "2"
+    ],
+    [
+      2.2e-05,
+      "5"
+    ],
+    [
+      2.1e-05,
+      "9 "
+    ],
+    [
+      5.3e-05,
+      "--"
+    ],
+    [
+      3.7e-05,
+      "htt"
+    ],
+    [
+      2.1e-05,
+      "p"
+    ],
+    [
+      1.9e-05,
+      "-"
+    ],
+    [
+      1.8e-05,
+      "p"
+    ],
+    [
+      1.9e-05,
+      "o"
+    ],
+    [
+      1.9e-05,
+      "r"
+    ],
+    [
+      1.8e-05,
+      "t"
+    ],
+    [
+      2.6e-05,
+      "="
+    ],
+    [
+      1.9e-05,
+      "8"
+    ],
+    [
+      1.8e-05,
+      "0"
+    ],
+    [
+      1.9e-05,
+      "8"
+    ],
+    [
+      1.8e-05,
+      "2"
+    ],
+    [
+      2.1e-05,
+      " "
+    ],
+    [
+      1.9e-05,
+      "-"
+    ],
+    [
+      1.9e-05,
+      "-"
+    ],
+    [
+      2.1e-05,
+      "j"
+    ],
+    [
+      2e-05,
+      "o"
+    ],
+    [
+      2.5e-05,
+      "i"
+    ],
+    [
+      1.8e-05,
+      "n"
+    ],
+    [
+      2.6e-05,
+      "=l"
+    ],
+    [
+      3.3e-05,
+      "o"
+    ],
+    [
+      1.9e-05,
+      "c"
+    ],
+    [
+      2.2e-05,
+      "a"
+    ],
+    [
+      2.2e-05,
+      "l"
+    ],
+    [
+      2.2e-05,
+      "h"
+    ],
+    [
+      2.8e-05,
+      "o"
+    ],
+    [
+      1.9e-05,
+      "s"
+    ],
+    [
+      2.4e-05,
+      "t"
+    ],
+    [
+      2.3e-05,
+      ":"
+    ],
+    [
+      2.3e-05,
+      "2"
+    ],
+    [
+      2.9e-05,
+      "6"
+    ],
+    [
+      1.8e-05,
+      "2"
+    ],
+    [
+      3.6e-05,
+      "5"
+    ],
+    [
+      2e-05,
+      "7"
+    ],
+    [
+      2.413921,
+      "\r\n"
+    ],
+    [
+      0.181175,
+      "CockroachDB node starting at 2016-11-14 21:49:42.084388003 -0500 EST\r\nbuild:      beta-20161110-125-ge17cad3 @ 2016/11/14 14:57:57 (go1.7.1)\r\nadmin:      http://localhost:8082\r\nsql:        postgresql://root@localhost:26259?sslmode=disable\r\nlogs:       node3/logs\r\nstore[0]:   path=node3\r\nstatus:     initialized new node, joined pre-existing cluster\r\nclusterID:"
+    ],
+    [
+      0.000138,
+      "  de9725b3-c218-44fc-9b4e-6f93578512c7\r\nnodeID:     3\r\n"
+    ],
+    [
+      0.004389,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.466503,
+      "\r\n\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.402927,
+      "# S"
+    ],
+    [
+      4.3e-05,
+      "tep 4. Use"
+    ],
+    [
+      0.000115,
+      " the"
+    ],
+    [
+      6e-05,
+      " built-i"
+    ],
+    [
+      2.9e-05,
+      "n SQL"
+    ],
+    [
+      5.3e-05,
+      " clien"
+    ],
+    [
+      2.2e-05,
+      "t "
+    ],
+    [
+      2.3e-05,
+      "to"
+    ],
+    [
+      1.9e-05,
+      " e"
+    ],
+    [
+      1.7e-05,
+      "xe"
+    ],
+    [
+      1.9e-05,
+      "c"
+    ],
+    [
+      1.8e-05,
+      "ut"
+    ],
+    [
+      1.8e-05,
+      "e"
+    ],
+    [
+      0.000156,
+      " statemen"
+    ],
+    [
+      2.7e-05,
+      "ts"
+    ],
+    [
+      1.9e-05,
+      "."
+    ],
+    [
+      1.525968,
+      "\r\n"
+    ],
+    [
+      0.000222,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      3.948275,
+      "cockroac"
+    ],
+    [
+      9.7e-05,
+      "h sql"
+    ],
+    [
+      1.768259,
+      "\r\n"
+    ],
+    [
+      0.033891,
+      "# Welcome to the cockroach SQL interface.\r\n# All statements must be terminated by a semicolon.\r\n# To exit: CTRL + D.\r\n"
+    ],
+    [
+      0.000655,
+      "\u001b[J\u001b[2K\rroot@:26257>  \b"
+    ],
+    [
+      5.028156,
+      "\u001b[J\u001b[2K\rroot@:26257> C"
+    ],
+    [
+      6.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CR\u001b[J\u001b[2K\rroot@:26257> CRE\u001b[J\u001b[2K\rroot@:26257> CREA\u001b[J\u001b[2K\rroot@:26257> CREAT"
+    ],
+    [
+      3.7e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE\u001b[J\u001b[2K\rroot@:26257> CREATE \u001b[J\u001b[2K\rroot@:26257> CREATE D\u001b[J\u001b[2K\rroot@:26257> CREATE DA\u001b[J\u001b[2K\rroot@:26257> CREATE DAT"
+    ],
+    [
+      6.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATA\u001b[J\u001b[2K\rroot@:26257> CREATE DATAB"
+    ],
+    [
+      3.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATABA\u001b[J\u001b[2K\rroot@:26257> CREATE DATABAS\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.4e-05,
+      "root@:26257> CREATE DATABASE \u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> CREATE DATABASE b\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.3e-05,
+      "root@:26257> CREATE DATABASE ba\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE ban"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE bank"
+    ],
+    [
+      3.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE bank;"
+    ],
+    [
+      1.772826,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE bank;"
+    ],
+    [
+      5.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE DATABASE bank;\r\n"
+    ],
+    [
+      0.010851,
+      "CREATE DATABASE\r\n\u001b[J\u001b[2K\rroot@:26257>  \b"
+    ],
+    [
+      5.13035,
+      "\u001b[J\u001b[2K\rroot@:26257> C"
+    ],
+    [
+      4.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CR\u001b[J\u001b[2K\rroot@:26257> CRE\u001b[J\u001b[2K\rroot@:26257> CREA"
+    ],
+    [
+      5.8e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREAT\u001b[J\u001b[2K\rroot@:26257> CREATE\u001b[J\u001b[2K\r"
+    ],
+    [
+      3.2e-05,
+      "root@:26257> CREATE \u001b[J\u001b[2K\rroot@:26257> CREATE T\u001b[J\u001b[2K\rroot@:26257> CREATE TA\u001b[J\u001b[2K\rroot@:26257> CREATE TAB\u001b[J\u001b[2K\rroot@:26257> CREATE TABL"
+    ],
+    [
+      1.8e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> CREATE TABLE \u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> CREATE TABLE b\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE ba"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE ban"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> CREATE TABLE bank.\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> CREATE TABLE bank.a\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.3e-05,
+      "root@:26257> CREATE TABLE bank.ac\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.acc"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.acco"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accou"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accoun"
+    ],
+    [
+      2.4e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.account"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.5e-05,
+      "root@:26257> CREATE TABLE bank.accounts \u001b[J\u001b[2K\r"
+    ],
+    [
+      3e-05,
+      "root@:26257> CREATE TABLE bank.accounts (\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (i"
+    ],
+    [
+      2.7e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id \u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id I\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id IN"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT "
+    ],
+    [
+      0.0001,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT P"
+    ],
+    [
+      3.3e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.5e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PR\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.3e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRI\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIM\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMA\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMAR\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.6e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY \u001b[J\u001b[2K\r"
+    ],
+    [
+      2.5e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY K\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KE\u001b[J\u001b[2K\r"
+    ],
+    [
+      6.8e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY,"
+    ],
+    [
+      3.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, \u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, b"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, ba"
+    ],
+    [
+      0.000137,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, bal\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, bala\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balan"
+    ],
+    [
+      2.8e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balanc\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance"
+    ],
+    [
+      0.000124,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance \u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance D\u001b[J\u001b[2K\r"
+    ],
+    [
+      4.1e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DE\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DEC\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECI"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.4e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIM"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMA"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      7.4e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL\u001b[J\u001b[2K\r"
+    ],
+    [
+      3.6e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL)\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);"
+    ],
+    [
+      1.843984,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      5.2e-05,
+      "root@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);\u001b[J\u001b[2K\rroot@:26257> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);\r\n"
+    ],
+    [
+      0.008513,
+      "CREATE TABLE\r\n\u001b[J\u001b[2K\rroot@:26257>  \b"
+    ],
+    [
+      5.103901,
+      "\u001b[J\u001b[2K\rroot@:26257> I"
+    ],
+    [
+      7.8e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> IN\u001b[J\u001b[2K\rroot@:26257> INS\u001b[J\u001b[2K\rroot@:26257> INSE\u001b[J\u001b[2K\rroot@:26257> INSER"
+    ],
+    [
+      2.5e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.6e-05,
+      "root@:26257> INSERT \u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> INSERT I\u001b[J\u001b[2K\rroot@:26257> INSERT IN"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INT"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO\u001b[J\u001b[2K\r"
+    ],
+    [
+      1.9e-05,
+      "root@:26257> INSERT INTO \u001b[J\u001b[2K\r"
+    ],
+    [
+      2.4e-05,
+      "root@:26257> INSERT INTO b\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> INSERT INTO ba\u001b[J\u001b[2K\rroot@:26257> INSERT INTO ban"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank."
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.a"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.ac"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.acc\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> INSERT INTO bank.acco\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accou"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accoun"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.account"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts "
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts V"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VA"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VAL"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALU"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUE\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES\u001b[J\u001b[2K\r"
+    ],
+    [
+      1.9e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES "
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES ("
+    ],
+    [
+      4.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1"
+    ],
+    [
+      2.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1,"
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, "
+    ],
+    [
+      2.1e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES (1, 1\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES (1, 10"
+    ],
+    [
+      2.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 100"
+    ],
+    [
+      2.4e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 1000"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 1000."
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES (1, 1000.5\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES (1, 1000.50"
+    ],
+    [
+      1.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 1000.50)"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> INSERT INTO bank.accounts VALUES (1, 1000.50);"
+    ],
+    [
+      2.015202,
+      "\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 1000.50);\u001b[J\u001b[2K\rroot@:26257> INSERT INTO bank.accounts VALUES (1, 1000.50);\r\n"
+    ],
+    [
+      0.014399,
+      "INSERT 1\r\n"
+    ],
+    [
+      2.9e-05,
+      "\u001b[J\u001b[2K\rroot@:26257>  \b"
+    ],
+    [
+      5.256049,
+      "\u001b[J\u001b[2K\rroot@:26257> S\u001b[J\u001b[2K\r"
+    ],
+    [
+      5.5e-05,
+      "root@:26257> SE\u001b[J\u001b[2K\rroot@:26257> SEL\u001b[J\u001b[2K\r"
+    ],
+    [
+      8.8e-05,
+      "root@:26257> SELE\u001b[J\u001b[2K\rroot@:26257> SELEC\u001b[J\u001b[2K\rroot@:26257> SELECT"
+    ],
+    [
+      6.1e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT "
+    ],
+    [
+      2.6e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT *\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.2e-05,
+      "root@:26257> SELECT * \u001b[J\u001b[2K\rroot@:26257> SELECT * F"
+    ],
+    [
+      2.7e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FR\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> SELECT * FRO\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM "
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM b\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> SELECT * FROM ba\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> SELECT * FROM ban\u001b[J\u001b[2K\r"
+    ],
+    [
+      2e-05,
+      "root@:26257> SELECT * FROM bank\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.8e-05,
+      "root@:26257> SELECT * FROM bank.\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.a"
+    ],
+    [
+      2.4e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.ac\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.1e-05,
+      "root@:26257> SELECT * FROM bank.acc\u001b[J\u001b[2K\r"
+    ],
+    [
+      1.9e-05,
+      "root@:26257> SELECT * FROM bank.acco\u001b[J\u001b[2K\r"
+    ],
+    [
+      2.7e-05,
+      "root@:26257> SELECT * FROM bank.accou\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.accoun"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.account"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.accounts"
+    ],
+    [
+      2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.accounts;"
+    ],
+    [
+      1.620905,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.accounts;"
+    ],
+    [
+      5.2e-05,
+      "\u001b[J\u001b[2K\rroot@:26257> SELECT * FROM bank.accounts;\r\n"
+    ],
+    [
+      0.001438,
+      "+----+---------+\r\n| id | balance |\r\n+----+"
+    ],
+    [
+      4.5e-05,
+      "---------+\r\n|  1 |  1000.5 |\r\n+"
+    ],
+    [
+      6.8e-05,
+      "----+---------+\r\n(1 row)\r\n"
+    ],
+    [
+      4.3e-05,
+      "\u001b[J\u001b[2K\rroot@:26257>  \b"
+    ],
+    [
+      2.953853,
+      "\u001b[J\u001b[2K\rroot@:26257> \\"
+    ],
+    [
+      0.524929,
+      "\u001b[J\u001b[2K\rroot@:26257> \\q"
+    ],
+    [
+      0.381229,
+      "\u001b[J\u001b[2K\rroot@:26257> \\q\u001b[J\u001b[2K\rroot@:26257> \\q\r\n"
+    ],
+    [
+      5.8e-05,
+      "\u001b[J\u001b[2K\r"
+    ],
+    [
+      0.003151,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      3.900115,
+      "\r\n"
+    ],
+    [
+      8.2e-05,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.079748,
+      "# S"
+    ],
+    [
+      4.2e-05,
+      "tep 5. When "
+    ],
+    [
+      2.8e-05,
+      "you'"
+    ],
+    [
+      2.3e-05,
+      "re "
+    ],
+    [
+      0.000144,
+      "finished, stop "
+    ],
+    [
+      2.6e-05,
+      "eac"
+    ],
+    [
+      1.8e-05,
+      "h "
+    ],
+    [
+      1.7e-05,
+      "n"
+    ],
+    [
+      1.6e-05,
+      "o"
+    ],
+    [
+      1.7e-05,
+      "de"
+    ],
+    [
+      1.8e-05,
+      "."
+    ],
+    [
+      1.438268,
+      "\r\n"
+    ],
+    [
+      0.000214,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      4.610304,
+      "co"
+    ],
+    [
+      0.000159,
+      "ckroach quit"
+    ],
+    [
+      1.676833,
+      "\r\n"
+    ],
+    [
+      6.149643,
+      "initiating graceful shutdown of server\r\n"
+    ],
+    [
+      0.001306,
+      "ok\r\n"
+    ],
+    [
+      0.000762,
+      "server drained and shutdown completed\r\n"
+    ],
+    [
+      0.002949,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      2.361599,
+      "\r\n"
+    ],
+    [
+      0.000162,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      1.510694,
+      "coc"
+    ],
+    [
+      6e-05,
+      "kroach "
+    ],
+    [
+      4.1e-05,
+      "qui"
+    ],
+    [
+      3.5e-05,
+      "t"
+    ],
+    [
+      4.3e-05,
+      " --"
+    ],
+    [
+      3.7e-05,
+      "po"
+    ],
+    [
+      4.6e-05,
+      "rt="
+    ],
+    [
+      3.7e-05,
+      "26"
+    ],
+    [
+      3.8e-05,
+      "25"
+    ],
+    [
+      3.9e-05,
+      "8"
+    ],
+    [
+      1.770387,
+      "\r\n"
+    ],
+    [
+      0.031183,
+      "initiating graceful shutdown of server\r\n"
+    ],
+    [
+      0.000922,
+      "ok\r\n"
+    ],
+    [
+      0.000536,
+      "server drained and shutdown completed\r\n"
+    ],
+    [
+      0.002729,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      5.885721,
+      "\r\n"
+    ],
+    [
+      4.7e-05,
+      "\u001b[32m~\u001b[m$ "
+    ],
+    [
+      1.034757,
+      "co"
+    ],
+    [
+      9.1e-05,
+      "ckroa"
+    ],
+    [
+      9.6e-05,
+      "ch"
+    ],
+    [
+      4.8e-05,
+      " qui"
+    ],
+    [
+      5.2e-05,
+      "t --"
+    ],
+    [
+      3.9e-05,
+      "po"
+    ],
+    [
+      3.7e-05,
+      "rt"
+    ],
+    [
+      3.4e-05,
+      "=2"
+    ],
+    [
+      3.5e-05,
+      "62"
+    ],
+    [
+      3.7e-05,
+      "5"
+    ],
+    [
+      4e-05,
+      "9"
+    ],
+    [
+      1.958228,
+      "\r\n"
+    ],
+    [
+      5.14306,
+      "ok\r\ninitiating graceful shutdown of server\r\n"
+    ],
+    [
+      0.0017,
+      "server drained and shutdown completed\r\n"
+    ],
+    [
+      0.001424,
+      "\u001b[32m~\u001b[m$ "
+    ]
+  ],
+  "title": null,
+  "duration": 133.598459,
+  "height": 31,
+  "width": 145,
+  "command": "/bin/bash -l",
+  "version": 1,
+  "env": {
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/bash"
+  }
+}
