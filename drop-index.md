@@ -28,7 +28,7 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 ## Examples
 
-### Remove an Index
+### Remove an Index (No Dependencies)
 ~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
@@ -53,7 +53,7 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 +-------+---------+--------+-----+--------+-----------+---------+
 ~~~
 
-### Remove Dependent Objects with `CASCADE`
+### Remove an Index and Dependent Objects with `CASCADE`
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
