@@ -1,6 +1,7 @@
 extern crate postgres;
 
-use postgres::{Connection, SslMode, Transaction, Result};
+use postgres::{Connection, TlsMode, Result};
+use postgres::transaction::Transaction;
 use postgres::error::{Error, SqlState};
 
 /// Runs op inside a transaction and retries it as needed.
@@ -39,7 +40,7 @@ fn transfer_funds(txn: &Transaction, from: i64, to: i64, amount: i64) -> Result<
 }
 
 fn main() {
-    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", SslMode::None)
+    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", TlsMode::None)
         .unwrap();
 
     // Run a transfer in a transaction.
