@@ -1,9 +1,9 @@
 extern crate postgres;
 
-use postgres::{Connection, SslMode};
+use postgres::{Connection, TlsMode};
 
 fn main() {
-    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", SslMode::None)
+    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", TlsMode::None)
         .unwrap();
 
     // Insert two rows into the "accounts" table.
