@@ -2,6 +2,7 @@
 title: Start a Cluster
 summary: Run a multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
+asciicast: true
 ---
 
 <style>
@@ -26,14 +27,11 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 <div id="toc"></div>
 
-## Before You Begin
+## Watch a Demo
 
-Make sure you have already:
+Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
-- Installed and started Docker
-- Pulled the official CockroachDB image from Docker Hub
-
-For full details, go to [Install CockroachDB](install-cockroachdb.html) and choose **Use Docker** for your OS. 
+<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
 
 ## Step 1. Create a bridge network
 
@@ -100,16 +98,10 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 
 ## Step 4. Use the built-in SQL client
 
-Use the `docker exec` command to start a Bash session in the first container:
+Use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
 ~~~ shell
-$ docker exec -it roach1 bash
-~~~
-
-Start the [built-in SQL client](use-the-built-in-sql-client.html) in interactive mode:
-
-~~~ shell
-root@roach1:/cockroach# ./cockroach sql --insecure
+$ docker exec -it roach1 ./cockroach sql
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -154,13 +146,12 @@ INSERT 1
 (1 row)
 ~~~
 
-When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell. Then use **CTRL + D** to exit the Bash session.
+When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-If you want to verify that the containers/nodes are, in fact, part of a single cluster, you can start a Bash session in one of the other containers, start the SQL client in interactive mode, and check for the new `bank` database:
+If you want to verify that the containers/nodes are, in fact, part of a single cluster, you can start the SQL shell in one of the other containers and check for the new `bank` database:
 
 ~~~ shell
-$ docker exec -it roach2 bash
-root@roach1:/cockroach# ./cockroach sql --insecure
+$ docker exec -it roach2 ./cockroach sql
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -187,20 +178,15 @@ When you started the first container/node, you mapped the node's default HTTP po
 
 ## Step 6.  Stop the cluster
 
-Once you're done looking through the Admin UI, you can stop the nodes (and therefore the cluster):
+Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
 ~~~ shell
-# Stop node 1:
-$ cockroach quit
+# Stop the containers:
+$ docker stop roach1 roach2 roach3
 
-# Stop node 2:
-$ cockroach quit --port=26258
-
-# Stop node 3:
-$ cockroach quit --port=26259
+# Remove the containers:
+$ docker rm roach1 roach2 roach3
 ~~~
-
-For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
 
 ## What's Next?
 
