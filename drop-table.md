@@ -68,7 +68,7 @@ DROP TABLE
 (2 rows)
 ~~~
 
-### Remove a Table (With Dependencies)
+### Remove a Table and Dependent Objects with `CASCADE`
 
 In this example, a view depends on the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent view using `CASCADE`.
 
