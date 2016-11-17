@@ -268,6 +268,9 @@ entries:
         - title: Transactions
           url: /transactions.html
 
+        - title: Information Schema
+          url: /information-schema.html
+
     - title: Deploy
       items:
 

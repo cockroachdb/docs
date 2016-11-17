@@ -34,4 +34,5 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 
 ## See Also
 
-[SQL Statements](sql-statements.html)
+- [Information Schema](information-schema.html)
+- [Other SQL Statements](sql-statements.html)

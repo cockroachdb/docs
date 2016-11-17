@@ -74,4 +74,5 @@ Field | Description
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
+- [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
