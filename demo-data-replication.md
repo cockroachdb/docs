@@ -1,8 +1,206 @@
 ---
 title: Data Replication
-summary: 
+summary: Use a local cluster to explore how CockroachDB replicates and distributes data.
 toc: false
-feedback: false
 ---
 
-Coming soon: Use a local cluster to observe how CockroachDB replicates and distributes data.
+This page walks you through a simple demonstratation of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes. 
+
+<div id="toc"></div>
+
+## Before You Begin
+
+Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+
+## Step 1. Start a 1-node cluster
+
+~~~ shell
+$ cockroach start --background \
+--store=repdemo-node1
+~~~
+
+## Step 2. Write data
+
+Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `intro` database:
+
+~~~ shell
+$ cockroach gen example-data intro | cockroach sql
+~~~
+
+~~~ 
+CREATE DATABASE
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 1
+INSERT 1
+INSERT 1
+INSERT 1
+...
+~~~
+
+Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
+
+~~~ shell
+$ cockroach sql
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+~~~
+
+~~~ sql
+> SHOW DATABASES;
+~~~
+
+~~~
++--------------------+
+|      Database      |
++--------------------+
+| information_schema |
+| pg_catalog         |
+| intro              |
+| system             |
++--------------------+
+(4 rows)
+~~~
+
+~~~ sql
+> SHOW TABLES FROM intro;
+~~~
+
+~~~
++---------+
+|  Table  |
++---------+
+| mytable |
++---------+
+(1 row)
+~~~
+
+~~~ sql
+> SELECT * FROM intro.mytable;
+~~~
+
+~~~
++----+-----------------------------------------------------+
+| l  |                          v                          |
++----+-----------------------------------------------------+
+|  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
+|  1 | !                                                   |
+|  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
+|  3 | !             !!       "Y##Y"-                      |
+|  4 | !                    "?##mW##?"-                    |
+|  5 | !                   -?$##m####Y'                    |
+|  6 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
+|  7 | !           T     -4##wu#mm#pw##7'                  |
+|  8 | !                 _ummY"    "9#ma,       A          |
+|  9 | !        D I     ?$#q%+|dmmmvnnm##!                 |
+| 10 | !                vm#Z(        )Xmms    Y            |
+| 11 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
+| 12 | !              .j####mmm#####mm#m##6.               |
+| 13 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
+| 14 | !   W O W !    jmm###mm######m#mmm##6               |
+| 15 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
+| 16 | !             ]#me*Xm#m#mm##m#m##SX##c              |
+| 17 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
+| 18 | !             dm#||+*$##m#mm#m#Svvn##m              |
+| 19 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
+| 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
+| 21 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
+| 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
+| 23 | !             dm#||+*$##m#mm#m#Svvn##m              |
+| 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
+| 25 | !             ]#me*Xm#m#mm##m#m##SX##c              |
+| 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
+| 27 | !   W O W !    jmm###mm######m#mmm##6               |
+| 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
+| 29 | !              .j####mmm#####mm#m##6.               |
+| 30 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
+| 31 | !                vm#Z(        )Xmms    Y            |
+| 32 | !        D I     ?$#q%+|dmmmvnnm##!                 |
+| 33 | !                 _ummY"    "9#ma,       A          |
+| 34 | !           T     -4##wu#mm#pw##7'                  |
+| 35 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
+| 36 | !                   -?$##m####Y'                    |
+| 37 | !                    "?##mW##?"-                    |
+| 38 | !             !!       "Y##Y"-                      |
+| 39 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
+| 40 | !                                                   |
+| 41 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
++----+-----------------------------------------------------+
+(42 rows)
+~~~
+
+Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+
+## Step 3. Add two nodes
+
+~~~ shell
+# Add node 2:
+$ cockroach start --background \
+--store=repdemo-node2 \
+--port=26258 \
+--http-port=8081 \
+--join=localhost:26257
+
+# Add node 3:
+$ cockroach start --background \
+--store=repdemo-node3 \
+--port=26259 \
+--http-port=8082 \
+--join=localhost:26257
+~~~
+
+## Step 4. Watch data replicate to the new nodes
+
+Open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+
+<img src="images/replication1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+## Step 5. Increase the replication factor
+
+As you just saw, CockroachDB replicates data 3 times by default. Now, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
+
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .default -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+num_replicas: 5
+constraints: []
+~~~
+
+## Step 6. Add two more nodes
+
+~~~ shell
+# Add node 2:
+$ cockroach start --background \
+--store=repdemo-node4 \
+--port=26260 \
+--http-port=8083 \
+--join=localhost:26257
+
+# Add node 3:
+$ cockroach start --background \
+--store=repdemo-node5 \
+--port=26261 \
+--http-port=8084 \
+--join=localhost:26257
+~~~
+
+## Step 7. Watch data replicate to the new nodes
+
+Go back to the **Nodes** tab in the Admin UI, and you'll see that there are now 5 nodes listed. Again, at first, the replica count will be lower for nodes 4 and 5. But because you changed the default replication factor to 5, very soon, the replica count will be identical across all 5 nodes, indicating that all data in the cluster has been replicated 5 times.
+
+<img src="images/replication2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+## What's Next?
+
+Use a local cluster to explore these other core CockroachDB features:
+
+- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
+- [Scalability](demo-scalability.html)
