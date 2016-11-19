@@ -23,9 +23,9 @@ $ cockroach start --background \
 
 Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `intro` database:
 
-~~~ shell
-$ cockroach gen example-data intro | cockroach sql
-~~~
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data intro | cockroach sql
+</code></pre>
+</div>
 
 ~~~ 
 CREATE DATABASE
@@ -161,9 +161,9 @@ Open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'l
 
 As you just saw, CockroachDB replicates data 3 times by default. Now, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
 
-~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default -f -
-~~~
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication2-zone-edit"><span class="gp noselect shellterminal"></span><span class="nb">echo</span> <span class="s1">'num_replicas: 5'</span> | cockroach zone <span class="nb">set</span> .default -f -
+</code></pre>
+</div>
 
 ~~~
 range_min_bytes: 1048576
