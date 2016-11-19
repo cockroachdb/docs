@@ -62,7 +62,7 @@ The project is currently in **Beta**. For details about upcoming features, see t
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/surviving-a-hackathon-as-a-sponsor/">
         <div class="blog-post">
-            <div class="blog-title">How to Survive a Hackathon as a Sponser</div>
+            <div class="blog-title">How to Survive a Hackathon as a Sponsor</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Jessica Edwards</span> on <span class="meta-emphasis">November 1</span></div>
         </div>
         </a>  
