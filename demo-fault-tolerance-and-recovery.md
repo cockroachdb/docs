@@ -4,35 +4,33 @@ summary: Use a local cluster to explore how CockroachDB remains available during
 toc: false
 ---
 
-This page demonstrates how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then add data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
+This page walks you through a simple demonstratation of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
 
 <div id="toc"></div>
 
 ## Before You Begin
 
-Make sure you have already:
+Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-- [Installed CockroachDB](install-cockroachdb.html) 
-- [Started a 3-node local cluster](start-a-local-cluster.html) in insecure mode
+## Step 1. Start a 3-node cluster
 
-## Step 1. Restart the local cluster
-
-If your [local cluster](start-a-local-cluster.html) isn't up and running already, restart the nodes:
+{{site.data.alerts.callout_success}}See <a href="start-a-local-cluster.html">Start a Local Cluster</a> for details about <code>cockroach start</code> options.{{site.data.alerts.end}}
 
 ~~~ shell
-# Restart node 1:
-$ cockroach start --background
-
-# Restart node 2:
+# Start node 1:
 $ cockroach start --background \
---store=node2 \
+--store=fault-node1
+
+# Start node 2:
+$ cockroach start --background \
+--store=fault-node2 \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
 
-# Restart node 3:
+# Start node 3:
 $ cockroach start --background \
---store=node3 \
+--store=fault-node3 \
 --port=26259 \
 --http-port=8082 \
 --join=localhost:26257
@@ -109,11 +107,11 @@ As you see, despite one node being offline, the cluster continues uninterrupted 
 
 Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-## Step 4. Add data while the node is offline
+## Step 4. Write data while the node is offline
 
 Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `startrek` database:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data | cockroach sql
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql
 </code></pre>
 </div>
 
@@ -191,7 +189,7 @@ Rejoin node 2 to the cluster, using the same command that you used in step 1:
 
 ~~~ shell
 $ cockroach start --background \
---store=node2 \
+--store=fault-node2 \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
@@ -203,7 +201,7 @@ build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
 admin:      http://localhost:8081
 sql:        postgresql://root@localhost:26258?sslmode=disable
 logs:       node2/logs
-store[0]:   path=node2
+store[0]:   path=fault-node2
 status:     restarted pre-existing node
 clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     2
@@ -255,7 +253,7 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
 <div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault2-add-node"><span class="gp noselect shellterminal"></span>cockroach start --background <span class="se">\</span>
---store<span class="o">=</span>node4 <span class="se">\</span>
+--store<span class="o">=</span>fault-node4 <span class="se">\</span>
 --port<span class="o">=</span>26260 <span class="se">\</span>
 --http-port<span class="o">=</span>8083 <span class="se">\</span>
 --join<span class="o">=</span>localhost:26257
@@ -268,7 +266,7 @@ build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
 admin:      http://localhost:8083
 sql:        postgresql://root@localhost:26260?sslmode=disable
 logs:       node4/logs
-store[0]:   path=node4
+store[0]:   path=fault-node4
 status:     initialized new node, joined pre-existing cluster
 clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     4
