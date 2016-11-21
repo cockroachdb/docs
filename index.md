@@ -56,8 +56,28 @@ The project is currently in **Beta**. For details about upcoming features, see t
     </div>
 </div>
 
-## Recent Blog Posts
+## [Recent Blog Posts](https://www.cockroachlabs.com/blog/)
 
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
+        <div class="blog-post">
+            <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">November 15</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/">
+        <div class="blog-post">
+            <div class="blog-title">Memory Usage in CockroachDB</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">November 10</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/surviving-a-hackathon-as-a-sponsor/">
@@ -81,29 +101,9 @@ The project is currently in **Beta**. For details about upcoming features, see t
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/running-cockroachdb-on-kubernetes/">
-        <div class="blog-post">
+        <div class="blog-post last-entry">
             <div class="blog-title">Running CockroachDB on Kubernetes</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Alex Robinson</span> on <span class="meta-emphasis">October 11</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/sql-cockroachdb-column-families/">
-        <div class="blog-post">
-            <div class="blog-title">Implementing Column Families in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Daniel Harrison</span> on <span class="meta-emphasis">September 29</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/run-cockroachdb-on-a-raspberry-pi/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">How to Run CockroachDB on a Raspberry Pi</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Nathan VanBenschoten</span> on <span class="meta-emphasis">September 19</span></div>
         </div>
         </a>  
     </div>
