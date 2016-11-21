@@ -7,7 +7,7 @@ toc_not_nested: true
 
 This page shows you how to manually deploy a multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE).
 
-If you plan to use CockroachDB in production, we recommend using a secure cluster *(documented here)*. However, if you are not concerned with protecting your data with SSL encryption, you can use the **Insecure** instructions below.
+If you plan to use CockroachDB in production, we recommend using a secure cluster *(documented on this page)*. However, if you are not concerned with protecting your data with SSL encryption, you can use the **Insecure** instructions below.
 
 <style>
 .filters .scope-button {
@@ -37,7 +37,7 @@ In GCE, you must have [SSH access](https://cloud.google.com/compute/docs/instanc
 
 Decide how you want to access your Admin UI:
 
-- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented here)*.
+- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
 - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
@@ -299,6 +299,7 @@ Now that your deployment is working, you can:
 
 - [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
 - [AWS Deployment](deploy-cockroachdb-on-aws.html)
+- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestration](orchestration.html)
 - [Start a Local Cluster](start-a-local-cluster.html)

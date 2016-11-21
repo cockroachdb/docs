@@ -1,11 +1,11 @@
 ---
-title: Deploy CockroachDB on Google Cloud Platform GCE (Insecure)
-summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engine.
+title: Deploy CockroachDB on Microsoft Azure (Insecure)
+summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: false
 toc_not_nested: true
 ---
 
-This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE).
+This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Microsoft Azure.
 
 If you plan to use CockroachDB in production, we recommend instead using the **Secure** instructions below.
 
@@ -29,7 +29,7 @@ If you plan to use CockroachDB in production, we recommend instead using the **S
 
 ## Requirements
 
-You must have [SSH access](https://cloud.google.com/compute/docs/instances/connecting-to-instance) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+You must have [SSH access](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 
@@ -49,48 +49,54 @@ CockroachDB requires TCP communication on two ports:
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster) and connecting with applications
 - **8080** (`tcp:8080`) for exposing your Admin UI
 
-Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to accept data from applications external to GCE and expose your admin UI, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/networking).
+To enable this in Azure, you must create a Resource Group, Virtual Network, and Network Security Group.
 
-### Creating Firewall Rules
+1. [Create a Resource Group](https://azure.microsoft.com/en-us/updates/create-empty-resource-groups/).
+2. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
+3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following rules to it:
+   
+   - **Admin UI support**:
 
-When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature, which lets you specify that you want to apply the rule only to instance that include the same tag.
+     | Field | Recommended Value |
+     |-------|-------------------|
+     | Name | **cockroachadmin** |
+     | Priority | Any value > 1000 |
+     | Source | **CIDR block** |
+     | IP address range | Your local network’s IP ranges |
+     | Service | **Custom** |
+     | Protocol | **TCP** |
+     | Port range | **8080** |
+     | Action | **Allow** |
 
-#### Admin UI
+   - **Application support**:
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Name | **cockroachadmin** |
-| Source filter | IP ranges |
-| Source IP ranges | Your local network's IP ranges |
-| Allowed protocols... | **tcp:8080** |
-| Target tags | **cockroachdb** |
+     {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure Virtual Network, you won't need to create a firewall rule for your application to communicate with your instances hosting CockroachDB.{{site.data.alerts.end}}
 
-#### Application Data
+     | Field | Recommended Value |
+     |-------|-------------------|
+     | Name | **cockroachapp** |
+     | Priority | Any value > 1000 |
+     | Source | **CIDR block** |
+     | IP address range | Your application’s IP ranges |
+     | Service | **Custom** |
+     | Protocol | **TCP** |
+     | Port range | **26257** |
+     | Action | **Allow** |
 
-{{site.data.alerts.callout_success}}If your application is also hosted on GCE, you won't need to create a firewall rule for your application to communicate with your instances hosting CockroachDB.{{site.data.alerts.end}}
+	To connect your application to CockroachDB, use a [PostgreSQL wire protocol driver](install-client-drivers.html).
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Name | **cockroachapp** |
-| Source filter | IP ranges |
-| Source IP ranges | Your application's IP ranges |
-| Allowed protocols... | **tcp:26257** |
-| Target tags | **cockroachdb** |
+## Step 2. Create VMs
 
-To connect your application to CockroachDB, use a [PostgreSQL wire protocol driver](install-client-drivers.html).
-
-## Step 2. Create Instances
-
-[Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster. We [recommend](https://www.cockroachlabs.com/docs/configure-replication-zones.html#nodereplica-recommendations):
+[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. We [recommend](https://www.cockroachlabs.com/docs/configure-replication-zones.html#nodereplica-recommendations):
 
 - Running at least 3 nodes to ensure survivability.
-- Selecting the same continent for all of your instances for best performance.
+- Selecting the same continent for all of your VMs for best performance.
 
-If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Management** tab, in the **Tags** field, enter **cockroachdb**.
+When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
 ## Step 3. Set up the First Node
 
-1. 	SSH to your instance:
+1. 	SSH to your VM:
 
 	~~~ shell
 	$ ssh <username>@<node1 external IP address>
@@ -100,11 +106,11 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{site.data.strings.version}}.linux-amd64/cockroach
+	$ tar -xf cockroach-latest.linux-amd64.tgz  \
+	--strip=1 cockroach-latest.linux-amd64/cockroach
 
 	# Move the binary.
 	$ sudo mv cockroach /usr/local/bin
@@ -113,14 +119,14 @@ If you used a tag for your firewall rules, when you create the instance, select 
 3. 	Start a new CockroachDB cluster with a single node:
 	
 	~~~ shell
-	$ cockroach start --insecure --background
+	$ cockroach start --insecure --background --advertise-host=<node1 internal IP address>
 	~~~
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
 
 ## Step 4. Set up Additional Nodes
 
-1. 	SSH to your instance:
+1. 	SSH to your VM:
 
 	~~~
 	$ ssh <username>@<additional node external IP address>
@@ -130,11 +136,11 @@ At this point, your cluster is live and operational but contains only a single n
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{site.data.strings.version}}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{site.data.strings.version}}.linux-amd64/cockroach
+	$ tar -xf cockroach-latest.linux-amd64.tgz  \
+	--strip=1 cockroach-latest.linux-amd64/cockroach
 
 	# Move the binary.
 	$ sudo mv cockroach /usr/local/bin
@@ -143,10 +149,12 @@ At this point, your cluster is live and operational but contains only a single n
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
 	
 	~~~ shell
-	$ cockroach start --insecure --background --join=<node1 internal IP address>:26257
+	$ cockroach start --insecure --background \
+	--advertise-host=<node internal IP address> \
+	--join=<node1 internal IP address>:26257
 	~~~
 
-Repeat these steps for each instance you want to use as a node.
+Repeat these steps for each VM you want to use as a node.
 
 ## Step 5. Test Your Cluster
 
@@ -211,8 +219,9 @@ Now that your deployment is working, you can:
 
 ## See Also
 
+- [GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
 - [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
 - [AWS Deployment](deploy-cockroachdb-on-aws.html)
-- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
 - [Manual Deployment](manual-deployment.html)
+- [Orchestration](orchestration.html)
 - [Start a Local Cluster](start-a-local-cluster.html)

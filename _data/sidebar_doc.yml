@@ -290,6 +290,9 @@ entries:
                 - title: AWS
                   url: /deploy-cockroachdb-on-aws.html
 
+                - title: Azure
+                  url: /deploy-cockroachdb-on-microsoft-azure.html
+
                 - title: Digital Ocean
                   url: /deploy-cockroachdb-on-digital-ocean.html
 
