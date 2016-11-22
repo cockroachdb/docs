@@ -2,11 +2,18 @@
 title: Secure a Cluster
 summary: Learn how to secure a CockroachDB cluster with authentication and encryption.
 toc: false
+asciicast: true
 ---
 
 Now that you've seen how easy it is to start, use, and stop a [local cluster](start-a-local-cluster.html), let's secure the cluster with authentication and encryption. This involves creating certificates and restarting nodes with a few additional flags.
 
 <div id="toc"></div>
+
+## Watch a Demo
+
+Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+
+<asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="150" speed="2" theme="monokai" poster="npt:0:54" title="Secure a Cluster"></asciinema-player>
 
 ## Step 1.  Create security certificates
 
@@ -46,10 +53,10 @@ $(hostname) \
 
 ~~~ shell
 $ cockroach start --background \
---http-host=localhost
+--http-host=localhost \
 --ca-cert=certs/ca.cert \
 --cert=certs/node.cert \
---key=certs/node.key \
+--key=certs/node.key
 ~~~
 
 ~~~
@@ -79,8 +86,8 @@ $ cockroach start --background \
 --http-host=localhost \
 --ca-cert=certs/ca.cert \
 --cert=certs/node.cert \
---key=certs/node.key
---join=localhost:26257 \
+--key=certs/node.key \
+--join=localhost:26257
 
 $ cockroach start --background \
 --store=node3 \
@@ -89,8 +96,8 @@ $ cockroach start --background \
 --http-host=localhost \
 --ca-cert=certs/ca.cert \
 --cert=certs/node.cert \
---key=certs/node.key 
---join=localhost:26257 \
+--key=certs/node.key \
+--join=localhost:26257
 ~~~
 
 These commands restart additional nodes with their existing data, but securely. The commands are the same as before with the following additions:
