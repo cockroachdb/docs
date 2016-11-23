@@ -78,7 +78,7 @@ $ cockroach sql
 ~~~
 
 ~~~ sql
-> SELECT * FROM intro.mytable;
+> SELECT * FROM intro.mytable WHERE (l % 2) = 0;
 ~~~
 
 ~~~
@@ -86,49 +86,28 @@ $ cockroach sql
 | l  |                          v                          |
 +----+-----------------------------------------------------+
 |  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
-|  1 | !                                                   |
 |  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
-|  3 | !             !!       "Y##Y"-                      |
 |  4 | !                    "?##mW##?"-                    |
-|  5 | !                   -?$##m####Y'                    |
 |  6 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
-|  7 | !           T     -4##wu#mm#pw##7'                  |
 |  8 | !                 _ummY"    "9#ma,       A          |
-|  9 | !        D I     ?$#q%+|dmmmvnnm##!                 |
 | 10 | !                vm#Z(        )Xmms    Y            |
-| 11 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
 | 12 | !              .j####mmm#####mm#m##6.               |
-| 13 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
 | 14 | !   W O W !    jmm###mm######m#mmm##6               |
-| 15 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
 | 16 | !             ]#me*Xm#m#mm##m#m##SX##c              |
-| 17 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
 | 18 | !             dm#||+*$##m#mm#m#Svvn##m              |
-| 19 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
 | 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
-| 21 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
 | 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
-| 23 | !             dm#||+*$##m#mm#m#Svvn##m              |
 | 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
-| 25 | !             ]#me*Xm#m#mm##m#m##SX##c              |
 | 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
-| 27 | !   W O W !    jmm###mm######m#mmm##6               |
 | 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
-| 29 | !              .j####mmm#####mm#m##6.               |
 | 30 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
-| 31 | !                vm#Z(        )Xmms    Y            |
 | 32 | !        D I     ?$#q%+|dmmmvnnm##!                 |
-| 33 | !                 _ummY"    "9#ma,       A          |
 | 34 | !           T     -4##wu#mm#pw##7'                  |
-| 35 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
 | 36 | !                   -?$##m####Y'                    |
-| 37 | !                    "?##mW##?"-                    |
 | 38 | !             !!       "Y##Y"-                      |
-| 39 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
 | 40 | !                                                   |
-| 41 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
 +----+-----------------------------------------------------+
-(42 rows)
+(21 rows)
 ~~~
 
 Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
