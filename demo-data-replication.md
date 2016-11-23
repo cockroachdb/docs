@@ -177,6 +177,29 @@ Go back to the **Nodes** tab in the Admin UI, and you'll see that there are now 
 
 <img src="images/replication2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
+## Step 8.  Stop the cluster
+
+You can stop the nodes (and therefore the cluster) as follows:
+
+~~~ shell
+# Stop node 1:
+$ cockroach quit
+
+# Stop node 2: 
+$ cockroach quit --port=26258
+
+# Stop node 3:
+$ cockroach quit --port=26259
+
+# Stop node 4: 
+$ cockroach quit --port=26260
+
+# Stop node 5:
+$ cockroach quit --port=26261
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+
 ## What's Next?
 
 Use a local cluster to explore these other core CockroachDB features:
