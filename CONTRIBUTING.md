@@ -99,16 +99,20 @@ Some pages auto-include content from the [`_includes`](_includes) directory. For
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 
-## Asciicasts
+### Asciicasts
 
-To include an [asciinema](https://asciinema.org/) asciicast on a page:
-
-- Place the `.json` asciicast file in the `/asciicasts` directory.
-- On the page, set `asciicast: true` in the front-matter.
-- On the page, include the following html where you want the asciicast to appear, changing the `src` filepath as relevant. For details about customizing the asciicast appearance, see the asciinema [README](https://github.com/asciinema/asciinema-player#asciinema-player-element-attributes).
+1. [Install asciinema](https://asciinema.org/docs/installation).
+2. Size your shell window to be a bit narrowing than our code blocks.
+3. Initiate an asciicast with `asciinema rec -c "/bin/bash -l"`. This makes the asciicast use your shell's appearance.
+4. Press **CTRL + D** to stop recording.
+5. Press **Enter** to upload the recording to asciinema. 
+6. Click **Download**.
+7. Rename the `.json` asciicast file and place it in the `/asciicasts` directory.
+8. On the page, set `asciicast: true` in the front-matter.
+9. On the page, include the following html where you want the asciicast to appear. Change the `src` filepath as relevant, and change `poster` to the time in the asciicast that you want to use as the static image. For other details about customizing the asciicast appearance, see the asciinema [README](https://github.com/asciinema/asciinema-player#asciinema-player-element-attributes).
 
   ```
-  <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="150" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
+  <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
   ```
 
 ## Style Guide
