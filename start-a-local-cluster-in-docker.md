@@ -31,7 +31,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
-<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="150" speed="2" theme="monokai" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
+<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="107" speed="2" theme="monokai" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
 
 ## Step 1. Create a bridge network
 
