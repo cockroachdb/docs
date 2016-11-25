@@ -25,7 +25,8 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | `DISTINCT` | Retrieve no more than one copy of a value. |
 | `target_elem` | The name of the column you want, `*` to retrieve all columns, or the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform. |
 | `AS col_label` | In the retrieved table, change the column label to `col_label`. |
-| `table_ref` | The name of the table you want to retrieve data from. |
+| `table_ref` | The name of the table you want to retrieve data from.|
+| `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/). |
 | `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/). |
 | `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).  |
 | `GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`. |
@@ -531,6 +532,37 @@ OFFSET 5;
 |  9 | Ricarda Moriarty |
 | 10 | Henrik Brankovic |
 +----+------------------+
+~~~
+
+### Force Index Selection (Index Hints)
+
+By using "index hints", you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for your `SELECT` statement.
+
+{{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a <code>SELECT</code> statement.{{site.data.alerts.end}}
+
+~~~ sql
+> SHOW INDEXES ON accounts;
+~~~
+~~~
++----------+-------------------+--------+-----+--------+-----------+---------+
+|  Table   |       Name        | Unique | Seq | Column | Direction | Storing |
++----------+-------------------+--------+-----+--------+-----------+---------+
+| accounts | primary           | true   |   1 | id     | ASC       | false   |
+| accounts | accounts_name_idx | false  |   1 | name   | ASC       | false   |
++----------+-------------------+--------+-----+--------+-----------+---------+
+~~~
+~~~ sql
+> SELECT name, balance 
+FROM accounts@accounts_name_idx
+WHERE name = 'Edna Barath';
+~~~
+~~~
++-------------+---------+
+|    name     | balance |
++-------------+---------+
+| Edna Barath |     750 |
+| Edna Barath |    2200 |
++-------------+---------+
 ~~~
 
 ### Select Historical Data (Time Travel)

@@ -294,7 +294,8 @@ func main() {
 					  "all_or_distinct select_clause" : "all_or_distinct 'SELECT ...'",
 					  "| select_with_parens":"",
 					  "all_or_distinct":"( 'ALL' | )",
-					  "select_clause": "'SELECT' ( 'DISTINCT' | ) ( target_elem ('AS' col_label | ) ( ',' target_elem ('AS' col_label | ) )* ) 'FROM' ( table_ref ( ',' table_ref )* ) ('AS OF SYSTEM TIME' timestamp | ) ( 'WHERE' a_expr |  ) ( 'GROUP BY' expr_list ( 'HAVING' a_expr |  ) |  ) "},
+					  "select_clause": "'SELECT' ( 'DISTINCT' | ) ( target_elem ('AS' col_label | ) ( ',' target_elem ('AS' col_label | ) )* ) 'FROM' ( table_ref ( '@' index_name | ) ( ',' table_ref ( '@' index_name | ) )* ) ('AS OF SYSTEM TIME' timestamp | ) ( 'WHERE' a_expr |  ) ( 'GROUP BY' expr_list ( 'HAVING' a_expr |  ) |  ) "},
+					unlink: []string{"index_name"},
 					nosplit: true,
 				},
 				{
