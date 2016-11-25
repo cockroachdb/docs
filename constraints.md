@@ -18,7 +18,6 @@ The order of the constraints within the table definition is not important and do
 
 The different types of constraints are:
 
-
 | Constraint Type | Description |
 |-----------------|-------------|
 | NOT NULL | Specifies the column **may not** contain *NULL* values. See [NOT NULL](#not-null) Constraint.  |
@@ -212,15 +211,20 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 {{site.data.alerts.callout_success}}If you plan to use Foreign Keys in your schema, consider using <a href="interleave-in-parent.html">interleaved tables</a>, which can dramatically improve query performance.{{site.data.alerts.end}}
 
-
 #### Rules for Creating Foreign Keys
 
 **Foreign Key Columns**
 
 - Only new tables created via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys) can use foreign keys. In a future release, we plan to add support for existing tables through `ALTER TABLE`.
-- You must [index](indexes.html) foreign key columns in the [`CREATE TABLE`](create-table.html) statement. You can do this explicitly using [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) or implicitly with [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique), which both automatically create indexes of their constrained columns. <br><br>Using the foreign key columns as the prefix of an index's columns also satisfies this requirement. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - Each column cannot belong to more than 1 Foreign Key constraint.
+- Foreign key columns must be [indexed](indexes.html) when the table is created. To meet this requirement, there are a few options:
+
+    - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) clause of `CREATE TABLE`.
+    - Rely on indexes created by [`PRIMARY KEY`](#primary-key) or [`UNIQUE`](#unique) constraints.
+    - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
+  
+  Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
 
 **Referenced Columns**
 
@@ -280,47 +284,6 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 ~~~
 ~~~
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
-~~~
-
-#### Remove the Foreign Key Constraint
-
-The Foreign Key constraint depends on [the index of foreign key columns](#rules-for-creating-foreign-keys). To remove the Foreign Key constraint you must [drop that index](drop-index.html) with the `CASCADE` clause, which also drops the constraint.
-
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> also drops any other objects that depend on the index.{{site.data.alerts.end}}
-
-~~~ sql
-> SHOW CONSTRAINTS FROM orders;
-~~~
-~~~
-+--------+---------------------------+-------------+------------+----------------+
-| Table  |           Name            |    Type     | Column(s)  |    Details     |
-+--------+---------------------------+-------------+------------+----------------+
-| orders | fk_customer_ref_customers | FOREIGN KEY | [customer] | customers.[id] |
-| orders | primary                   | PRIMARY KEY | [id]       | NULL           |
-+--------+---------------------------+-------------+------------+----------------+
-~~~
-~~~ sql
-> SHOW INDEX FROM orders;
-~~~
-~~~
-+--------+---------------------+--------+-----+----------+-----------+---------+
-| Table  |        Name         | Unique | Seq |  Column  | Direction | Storing |
-+--------+---------------------+--------+-----+----------+-----------+---------+
-| orders | primary             | true   |   1 | id       | ASC       | false   |
-| orders | orders_customer_idx | false  |   1 | customer | ASC       | false   |
-+--------+---------------------+--------+-----+----------+-----------+---------+
-~~~
-~~~ sql
-> DROP INDEX orders@orders_customer_idx CASCADE;
-
-> SHOW CONSTRAINTS FROM orders;
-~~~
-~~~
-+--------+---------+-------------+-----------+---------+
-| Table  |  Name   |    Type     | Column(s) | Details |
-+--------+---------+-------------+-----------+---------+
-| orders | primary | PRIMARY KEY | [id]      | NULL    |
-+--------+---------+-------------+-----------+---------+
 ~~~
 
 ## See Also
