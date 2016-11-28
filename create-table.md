@@ -91,7 +91,7 @@ Parameter | Description
 
 ### Create a Table (No Primary Key Defined)
 
-In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
+In CockroachDB, every table requires a [`PRIMARY KEY`](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
@@ -127,7 +127,7 @@ In CockroachDB, every table requires a [`PRIMARY KEY`](constraints.html#primary-
 
 ### Create a Table (Primary Key Defined)
 
-In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](constraints.html#primary-key), another is given the [`UNIQUE`](constraints.html#unique) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
+In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](primary-key.html), another is given the [`UNIQUE`](unique.html) constraint, and the third has no constraints. The primary key and column with the `UNIQUE` constraint are automatically indexed.
 
 By default, CockroachDB would assign the `user_id` and `logoff_date` columns to a single column family, since they're of a fixed size, and `user_email` to its own column family, since it's unbounded. We know that `user_email` will be relatively small, however, so we use the `FAMILY` keyword to group it with the other columns. As a result, each new row in the table would correspond to a single underlying key-value pair. For more deails about how columns are assigned to column families, see [Column Families](column-families.html).
 
@@ -210,12 +210,12 @@ We also have other resources on indexes:
 
 ### Create a Table with Foreign Keys
 
-[Foreign keys](constraints.html#foreign-keys) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+[Foreign keys](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
-There are a [number of rules](constraints.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
+There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
 
 - Foreign key columns must be [indexed](indexes.html) when creating the table using `INDEX`, `PRIMARY KEY`, or `UNIQUE`.
-- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](constraints.html#primary-key) or [`UNIQUE`](constraints.html#unique) constraint.
+- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraint.
 
 In this example, we'll show a series of tables using different formats of foreign keys.
 

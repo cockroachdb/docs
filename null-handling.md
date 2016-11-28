@@ -323,7 +323,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 ## NULLs and CHECK Constraints
 
-A [`CHECK`](constraints.html#check) constraint expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be
+A [`CHECK`](check.html) constraint expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be
 used along side a `CHECK` expression.
 
 

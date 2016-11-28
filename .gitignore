@@ -5,3 +5,4 @@ generate/generate
 Railroad.jar
 .sass-cache
 _site
+.jekyll-metadata
