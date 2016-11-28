@@ -166,7 +166,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     (4, 9400.10);
 ~~~
 
-[Defaults values](constraints.html#default-value) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES 
@@ -187,7 +187,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 ~~~
 
 ## Create an Index
-[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [`PRIMARY KEY`](constraints.html#primary-key) of a table and any columns with a [`UNIQUE`](constraints.html#unique) constraint.
+[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [`PRIMARY KEY`](primary-key.html) of a table and any columns with a [`UNIQUE`](unique.html) constraint.
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 

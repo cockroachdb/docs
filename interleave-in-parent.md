@@ -19,7 +19,7 @@ When tables are interleaved, data written to one table (known as the **child**) 
 
 For interleaved tables to have Primary Keys that can be matched, the child table must use the parent table's entire Primary Key as a prefix of its own Primary Key––these matching columns are referred to as the **interleave prefix**. It's easiest to think of these columns as representing the same data, which is usually implemented with Foreign Keys.
 
-{{site.data.alerts.callout_success}}To formally enforce the relationship between each table's interleave prefix columns, we recommend using <a href="constraints.html#foreign-keys">Foreign Key constraints</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}To formally enforce the relationship between each table's interleave prefix columns, we recommend using <a href="foreign-key.html">Foreign Key constraints</a>.{{site.data.alerts.end}}
 
 For example, if you want to interleave `orders` into `customers` and the Primary Key of customers is `id`, you need to create a column representing `customers.id` as the first column in the Primary Key of `orders`&mdash;e.g., with a column called `customer`. So the data representing `customers.id` is the interleave prefix, which exists in the `orders` table as the `customer` column.
 
@@ -85,13 +85,13 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 - You can only interleave tables when creating the child table.
 - Each child table's Primary Key must contain its parent table's Primary Key as a prefix (known as the **interleave prefix**).<br/><br/>For example, if the parent table's primary key is `(a INT, b STRING)`, the child table's primary key could be `(a INT, b STRING, c DECIMAL)`.
-  {{site.data.alerts.callout_info}}This requirement is enforced only by ensuring that the columns use the same data types. However, we recommend ensuring the columns refer to the same values by using the  <a href="constraints.html#foreign-keys">Foreign Key constraint</a>.{{site.data.alerts.end}}
+  {{site.data.alerts.callout_info}}This requirement is enforced only by ensuring that the columns use the same data types. However, we recommend ensuring the columns refer to the same values by using the  <a href="foreign-key.html">Foreign Key constraint</a>.{{site.data.alerts.end}}
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
 ## Recommendations
 
 - Use interleaved tables when your schema forms a hierarchy, and the Primary Key of the root table (for example, a "user ID" or "account ID") is a parameter to most of your queries.
-- To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](constraints.html#foreign-keys) on the child table.
+- To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](foreign-key.html) on the child table.
 - In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
 
 ## Examples
@@ -166,6 +166,6 @@ To better understand how CockroachDB writes key-value data, see our blog post [M
 ## See Also
 
 - [`CREATE TABLE`](create-table.html)
-- [Foreign Keys](constraints.html#foreign-keys)
+- [Foreign Keys](foreign-key.html)
 - [Column Families](column-families.html)
 
