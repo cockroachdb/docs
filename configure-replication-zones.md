@@ -25,37 +25,26 @@ There are three replication zone levels:
 
 When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses the replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone. 
 
-### Replicaton Zone Format
+### Replication Zone Format
 
 A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
 
 ~~~ yaml
-replicas: 
-- attrs: [comma-separated attribute list]
-- attrs: [comma-separated attribute list]
-- attrs: [comma-separated attribute list]
 range_min_bytes: <size-in-bytes>
 range_max_bytes: <size-in-bytes>
 gc:
   ttlseconds: <time-in-seconds>
-~~~
-
-Alternately, the `replicas` field can be simplified into a single line:
-
-~~~ yaml
-replicas: [attrs: [attribute list], attrs: [attribute list], attrs: [attribute list]]
-range_min_bytes: <size-in-bytes>
-range_max_bytes: <size-in-bytes>
-gc:
-  ttlseconds: <time-in-seconds>
+num_replicas: <number-of-replicas>
+constraints: [comma-separated constraint list]
 ~~~
 
 Field | Description
 ------|------------
-`replicas` | The number and location of replicas for the zone. Each `attrs` item equals one replica. See [Node/Replica Recommendations](#nodereplica-recommendations) below. <br><br>It's normal and sufficient to define the number of replicas by listing `attrs` without any specific attributes (i.e., `- attrs: []`). But if you do set specific attributes for a replica (i.e., `- attrs: [us-east-1a, ssd]`), the replica will be placed on the nodes/stores with the matching attributes.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** 3 replicas with no specific attributes 
-`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MB)
 `range_min_bytes` | Not yet implemented.
+`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MB)
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries. It is not recommended to set this below `600` (10 minutes).<br><br>**Default:** `86400` (24 hours)
+`num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3` 
+`constraints` | A comma-separated list of attributes from nodes and/or stores where replicas should be located.<br><br>Node-level and store-level attributes are arbitrary strings specified when starting a node. You must match these strings exactly here in order for replication to work as you intend, so be sure to check carefully. See [Start a Node](start-a-node.html) for more details about node and store attributes.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node
 
 ### Node/Replica Recommendations
 
@@ -123,6 +112,7 @@ Flag | Description
 `--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
 `--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--database`<br>`-d` | Not currently implemented. 
+`--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
 `--file`<br>`-f` | The path to the [YAML file](#replicaton-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
@@ -146,15 +136,16 @@ To view the default replication zone, use the `cockroach zone get .default` comm
 
 ~~~ shell
 $ cockroach zone get .default
+~~~
+
+~~~
 .default
-replicas:
-- attrs: []
-- attrs: []
-- attrs: []
 range_min_bytes: 1048576
 range_max_bytes: 67108864
 gc:
   ttlseconds: 86400
+num_replicas: 3
+constraints: []
 ~~~
 
 ### Edit the Default Replication Zone
@@ -174,36 +165,35 @@ Let's say you want to run a three-node cluster across three datacenters, two on 
    $ cockroach start --host=node3-hostname --attrs=us-west-1a --join=node1-hostname:27257
    ~~~
 
-2. Create a YAML file with one datacenter attribute set for each replica, and use the file to update the default zone configuration :
+2. Create a YAML file with the node attributes listed as constraints:
 
    ~~~ shell
    $ cat default_update.yaml
-   replicas:
-   - attrs: [us-east-1a] 
-   - attrs: [us-east-1b]
-   - attrs: [us-west-1a]
-   
+   ~~~
+
+   ~~~
+   constraints: [us-west-1a, us-east-1b, us-west-1a]
+   ~~~
+
+3. Use the file to update the default zone configuration:
+ 
+   ~~~ shell
    $ cockroach zone set .default -f default_update.yaml
-   UPDATE 1
-   replicas:
-   - attrs: [us-east-1a]
-   - attrs: [us-east-1b]
-   - attrs: [us-west-1a]
+   ~~~
+
+   ~~~
    range_min_bytes: 1048576
    range_max_bytes: 67108864
    gc:
      ttlseconds: 86400
+   num_replicas: 3
+   constraints: [us-west-1a, us-east-1b, us-west-1a]
    ~~~
 
    Alternately, you can pass the YAML content via the standard input:
 
    ~~~ shell
-   $ cockroach zone set .default -f - <<EOF
-   replicas:
-   - attrs: [us-east-1a] 
-   - attrs: [us-east-1b]
-   - attrs: [us-west-1a]
-   EOF
+   $ echo 'constraints: [us-west-1a, us-east-1b, us-west-1a]' | cockroach zone set .default -f -
    ~~~
 
 ### Create a Replication Zone for a Database
@@ -223,36 +213,35 @@ Let's say you want to run a cluster across five nodes, three of which have ssd s
    $ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
    ~~~
 
-2. Create a YAML file with `ssd` set as the attribute for each replica, and use the file to update the zone configuration for the `bank` database:
+2. Create a YAML file with the `ssd` attribute listed as a constraint:
 
    ~~~ shell
    $ cat bank_zone.yaml
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
+   ~~~
 
+   ~~~
+   constraints: [ssd]
+   ~~~
+
+3. Use the file to update the zone configuration for the `bank` database:
+
+   ~~~ shell
    $ cockroach zone set bank -f bank_zone.yaml
-   INSERT 1
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
+   ~~~
+
+   ~~~
    range_min_bytes: 1048576
    range_max_bytes: 67108864
    gc:
      ttlseconds: 86400
+   num_replicas: 3
+   constraints: [ssd]
    ~~~
 
    Alternately, you can pass the YAML content via the standard input:
 
    ~~~ shell
-   $ cockroach zone set bank -f - <<EOF
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
-   EOF
+   $ echo 'constraints: [ssd]' | cockroach zone set bank -f -
    ~~~
 
 ### Create a Replication Zone for a Table
@@ -272,36 +261,35 @@ Let's say you want to run a cluster across five nodes, three of which have ssd s
    $ cockroach start --insecure --host=node5-hostname --store=path=node5-data --join=node1-hostname:27257
    ~~~
 
-2. Create a YAML file with `ssd` set as the attribute for each replica, and use the file to update the zone configuration for the `bank.accounts` table:
+2. Create a YAML file with the `ssd` attribute listed as a constraint:
 
    ~~~ shell
    $ cat accounts_zone.yaml
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
+   ~~~
 
+   ~~~
+   constraints: [ssd]
+   ~~~
+
+3. Use the file to update the zone configuration for the `bank` database:
+
+   ~~~ shell
    $ cockroach zone set bank.accounts -f accounts_zone.yaml
-   INSERT 1
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
+   ~~~
+
+   ~~~
    range_min_bytes: 1048576
    range_max_bytes: 67108864
    gc:
-     ttlseconds: 86400   
+     ttlseconds: 86400
+   num_replicas: 3
+   constraints: [ssd]
    ~~~
 
    Alternately, you can pass the YAML content via the standard input:
 
    ~~~ shell
-   $ cockroach zone set bank -f - <<EOF
-   replicas:
-   - attrs: [ssd]
-   - attrs: [ssd]
-   - attrs: [ssd]
-   EOF
+   $ echo 'constraints: [ssd]' | cockroach zone set bank.accounts -f -
    ~~~
 
 ## See Also
