@@ -42,8 +42,6 @@ Decide how you want to access your Admin UI:
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
-
 ## Step 1. Configure Your Network
 
 CockroachDB requires TCP communication on two ports:
