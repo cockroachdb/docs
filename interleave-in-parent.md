@@ -67,7 +67,7 @@ In general, reads, writes, and joins of values related through the interleave pr
 ### Tradeoffs
 
 - In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.<br/><br/>However, an exception to this is performing operations on ranges of table values in the greatest descendent in the interleaved hierarchy that filters on all columns of the interleave prefix with constant values.<br/><br/>For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replicaton-zone-format) (64MB by default), the interleaved optimizations will be diminished.<br/><br/>For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
+- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.<br/><br/>For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
 ## Syntax
 
