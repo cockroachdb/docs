@@ -21,7 +21,7 @@ If you plan to use CockroachDB in production, we recommend instead using the **S
 </style>
 
 <div id="step-three-filters" class="filters clearfix">
-  <a href="deploy-cockroachdb-on-google-cloud-platform.html"><button class="filter-button scope-button"><strong>Secure</strong></button>
+  <a href="deploy-cockroachdb-on-microsoft-azure.html"><button class="filter-button scope-button"><strong>Secure</strong></button>
   <button class="filter-button scope-button current"><strong>Insecure</strong></button></a>
 </div><p></p>
 
@@ -39,8 +39,6 @@ Decide how you want to access your Admin UI:
 - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
-
-{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
 
 ## Step 1. Configure Your Network
 
