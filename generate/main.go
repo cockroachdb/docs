@@ -300,6 +300,14 @@ func main() {
 					nosplit: true,
 				},
 				{
+					name:   "set_application_name",
+					stmt:   "set_stmt",
+					inline:  []string{"set_rest", "set_rest_more", "generic_set"},
+					match:   []*regexp.Regexp{regexp.MustCompile("'SET' var_name .* var_list")},
+					replace: map[string]string{"var_name": "'APPLICATION_NAME'", "var_list": "application_name"},
+					unlink:  []string{"application_name"},
+				},
+				{
 					name:   "set_time_zone",
 					stmt:   "set_stmt",
 					inline: []string{"set_rest", "set_rest_more", "generic_set"},

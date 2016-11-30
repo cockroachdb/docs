@@ -1,3 +1,9 @@
+### ANYELEMENT Functions
+
+Function | Return
+--- | ---
+pg_catalog.pg_typeof(anyelement) | [string](string.html)
+
 ### Comparison Functions
 
 Function | Return
@@ -13,6 +19,7 @@ age([timestamptz](timestamp.html)) | [interval](interval.html)
 age([timestamptz](timestamp.html), [timestamptz](timestamp.html)) | [interval](interval.html)
 clock_timestamp() | [timestamp](timestamp.html)
 clock_timestamp() | [timestamptz](timestamp.html)
+crdb_internal.force_retry([interval](interval.html)) | [int](int.html)
 current_date() | [date](date.html)
 current_timestamp() | [timestamp](timestamp.html)
 current_timestamp() | [timestamptz](timestamp.html)
@@ -93,6 +100,13 @@ to_hex([int](int.html)) | [string](string.html)
 trunc([decimal](decimal.html)) | [decimal](decimal.html)
 trunc([float](float.html)) | [float](float.html)
 
+### SETOF TUPLE{INT} Functions
+
+Function | Return
+--- | ---
+pg_catalog.generate_series([int](int.html), [int](int.html)) | setof tuple{[int](int.html)}
+pg_catalog.generate_series([int](int.html), [int](int.html), [int](int.html)) | setof tuple{[int](int.html)}
+
 ### String and Byte Functions
 
 Function | Return
@@ -120,6 +134,8 @@ octet_length([bytes](bytes.html)) | [int](int.html)
 octet_length([string](string.html)) | [int](int.html)
 overlay([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
 overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
+pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html)) | [string](string.html)
+pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html), pretty_[bool](bool.html): [bool](bool.html)) | [string](string.html)
 regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
@@ -151,10 +167,11 @@ upper([string](string.html)) | [string](string.html)
 
 Function | Return
 --- | ---
-array_length([string](string.html)[], [int](int.html)) | [int](int.html)
-array_lower([string](string.html)[], [int](int.html)) | [int](int.html)
-array_upper([string](string.html)[], [int](int.html)) | [int](int.html)
+array_length(anyelement[], [int](int.html)) | [int](int.html)
+array_lower(anyelement[], [int](int.html)) | [int](int.html)
+array_upper(anyelement[], [int](int.html)) | [int](int.html)
 cluster_logical_timestamp() | [decimal](decimal.html)
+current_schema() | [string](string.html)
 current_schemas([bool](bool.html)) | [string](string.html)[]
 version() | [string](string.html)
 
