@@ -34,6 +34,7 @@ Statement | Usage
 [`REVOKE`](revoke.html) | Revoke privileges from users. 
 [`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.  
 [`SELECT`](select.html) | Select rows from a table.
+[`SET APPLICATION_NAME`](set-application-name.html) | Set the default applicaiton name for the session.
 [`SET DATABASE`](set-database.html) | Set the default database for the session.
 [`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
