@@ -399,6 +399,9 @@ entries:
     - title: Release Notes
       items:
 
+        - title: beta-20161201
+          url: /beta-20161201.html
+
         - title: beta-20161110
           url: /beta-20161110.html
 
