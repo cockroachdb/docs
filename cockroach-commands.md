@@ -19,7 +19,7 @@ Command | Usage
 `freeze-cluster` | Freeze the cluster in preparation for an upgrade (docs coming soon).
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
-`user` | Get, set, list, and remove users (docs coming soon).
+[`user`](create-and-manage-users.html) | Get, set, list, and remove users.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
 [`dump`](back-up-and-restore-data.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
