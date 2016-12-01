@@ -115,6 +115,14 @@ The syntax for including content is `{% include <filepath> %}`, for example, `{%
   <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
   ```
 
+### Feedback Widget
+
+"Yes/No" feedback buttons appear toward the bottom of every page by default. On any page for which we don't want feedback (e.g., stub pages), you can remove the feedback buttons by setting `feedback: false` in the page's front-matter.
+
+### A/B Testing
+
+We use [Optimizely](https://www.optimizely.com/) to A/B test changes across our website. To include a page in A/B testing, you must add the necessary JavaScript by setting `optimizely: true` in the page's front-matter.
+
 ## Style Guide
 
 CockroachDB docs should be:
