@@ -297,6 +297,23 @@ After about 10 minutes, the dot next to node 2 will turn red, indicating that th
 
 {{site.data.alerts.callout_info}}The <strong>Replicas</strong> count for node 2 should go down to 0, but there's currently a UI bug preventing this. Follow <a href="https://github.com/cockroachdb/cockroach/issues/5415">issue #5415</a> for more details.{{site.data.alerts.end}}
 
+## Step 10.  Stop the cluster
+
+You can stop the nodes (and therefore the cluster) as follows:
+
+~~~ shell
+# Stop node 1:
+$ cockroach quit
+
+# Stop node 3:
+$ cockroach quit --port=26259
+
+# Stop node 4: 
+$ cockroach quit --port=26260
+~~~
+
+For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+
 ## What's Next?
 
 Use a local cluster to explore these other core CockroachDB features:
