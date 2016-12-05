@@ -6,7 +6,7 @@ toc: false
 
 The `CREATE TABLE AS` statement creates a new table from the results of a [`SELECT`](select.html) statement.
 
-These tables are not designed for long-term use, as they do not support some common table features like [Primary Keys](constraints.html#primary-key) and [interleaving](interleave-in-parent.html). For similar functionality with more robust feature support, [create a table](create-table.html) and then use [`INSERT INTO SELECT`](insert.html#insert-from-a-select-statement).
+These tables are not designed for long-term use, as they do not support some common table features like [Primary Keys](primary-key.html) and [interleaving](interleave-in-parent.html). For similar functionality with more robust feature support, [create a table](create-table.html) and then use [`INSERT INTO SELECT`](insert.html#insert-from-a-select-statement).
 
 <div id="toc"></div>
 

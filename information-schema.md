@@ -42,7 +42,7 @@ Column | Description
 `COLUMN_NAME` | Name of the column.
 `ORDINAL_POSITION` | Ordinal position of the column in the table (begins at 1).
 `COLUMN_DEFAULT` | Default value for the column.
-`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g. it has the [`NOT NULL` constraint](constraints.html#not-null)).
+`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g. it has the [`NOT NULL` constraint](not-null.html)).
 `DATA_TYPE` | [Data type](data-types.html) of the column.
 `CHARACTER_MAXIMUM_LENGTH` |  If `DATA_TYPE` is `STRING`, the maximum length in characters of a value; otherwise *NULL*.
 `CHARACTER_OCTET_LENGTH` | If `DATA_TYPE` is `STRING`, the maximum length in octets (bytes) of a value; otherwise *NULL*.
@@ -52,7 +52,7 @@ Column | Description
 
 ### key_column_usage
 
-The `key_column_usage` view identifies columns with [`PRIMARY KEY`](constraints.html#primary-key), [`UNIQUE`](constraints.html#unique), or [`FOREIGN KEY`](constraints.html#foreign-keys) constraints.
+The `key_column_usage` view identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [`FOREIGN KEY`](foreign-key.html) constraints.
 
 Column | Description
 -------|-----------

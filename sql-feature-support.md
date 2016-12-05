@@ -46,12 +46,12 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| `NOT NULL` | ✓ | Standard | [`NOT NULL` documentation](constraints.html#not-null) |
-| `UNIQUE` | ✓ | Standard | [`UNIQUE` documentation](constraints.html#unique) |
-| `PRIMARY KEY` | ✓ | Standard | [`PRIMARY KEY` documentation](constraints.html#primary-key) |
-| `CHECK` | ✓ | Standard | [`CHECK` documentation](constraints.html#check) |
-| `FOREIGN KEY` | ✓ | Standard | [`FOREIGN KEY` documentation](constraints.html#foreign-keys) |
-| `DEFAULT VALUE` | ✓ | Standard | [`DEFAULT VALUE` documentation](constraints.html#default-value) |
+| `NOT NULL` | ✓ | Standard | [`NOT NULL` documentation](not-null.html) |
+| `UNIQUE` | ✓ | Standard | [`UNIQUE` documentation](unique.html) |
+| `PRIMARY KEY` | ✓ | Standard | [`PRIMARY KEY` documentation](primary-key.html) |
+| `CHECK` | ✓ | Standard | [`CHECK` documentation](check.html) |
+| `FOREIGN KEY` | ✓ | Standard | [`FOREIGN KEY` documentation](foreign-key.html) |
+| `DEFAULT VALUE` | ✓ | Standard | [`DEFAULT VALUE` documentation](default-value.html) |
 
 ### Transactions
 

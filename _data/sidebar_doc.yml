@@ -205,14 +205,35 @@ entries:
           url: /sql-grammar.html
 
           thirdlevel:
+            - title: Constraints
+              thirdlevelitems:
+
+                - title: Overview
+                  url: /constraints.html
+
+                - title: Check
+                  url: /check.html
+
+                - title: Default Value
+                  url: /default-value.html
+
+                - title: Foreign Keys
+                  url: /foreign-key.html
+
+                - title: Not Null
+                  url: /not-null.html
+
+                - title: Primary Key
+                  url: /primary-key.html
+
+                - title: Unique
+                  url: /unique.html
+
             - title: Data Definition
               thirdlevelitems:
 
                 - title: Keywords & Identifiers
                   url: /keywords-and-identifiers.html
-
-                - title: Constraints
-                  url: /constraints.html
 
                 - title: Indexes
                   url: /indexes.html

@@ -69,7 +69,7 @@ As you can see, one difference is that `TRUNCATE` does not return the number of 
 
 ### Delete Specific Rows
 
-When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using [`PRIMARY KEY`](constraints.html#primary-key)/[`UNIQUE`](constraints.html#unique) columns versus non-unique ones.
+When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using [`PRIMARY KEY`](primary-key.html)/[`UNIQUE`](unique.html) columns versus non-unique ones.
 
 #### Delete Rows Using Primary Key/Unique Columns
 
