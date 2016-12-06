@@ -7,9 +7,10 @@
             $footer = $('section.footer'),
             footertotop, scrolltop, difference;
 
-
-        $mobile_menu.css('visibility', 'visible');
-
+        if(_viewport_width <= 768) {
+            $mobile_menu.css('visibility', 'visible');
+        }
+        
         $('header nav.mobile').on('click', '.hamburger', function(e){
             e.preventDefault();
             if($('body').hasClass('menu_open')){
@@ -25,6 +26,9 @@
 
             if(_viewport_width > 768) {
                 $('body').removeClass('menu_open');     
+            }
+            else {
+                $mobile_menu.css('visibility', 'visible');
             }
 
             $(window).scroll();
