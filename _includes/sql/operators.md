@@ -43,6 +43,7 @@
 `-`[decimal](decimal.html) | [decimal](decimal.html)
 `-`[float](float.html) | [float](float.html)
 `-`[int](int.html) | [int](int.html)
+`-`[interval](interval.html) | [interval](interval.html)
 [date](date.html) `-` [date](date.html) | [int](int.html)
 [date](date.html) `-` [int](int.html) | [date](date.html)
 [decimal](decimal.html) `-` [decimal](decimal.html) | [decimal](decimal.html)

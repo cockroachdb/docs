@@ -33,7 +33,7 @@ By default, `cockroach start` logs all messages to files, and client commands lo
 Flag | Description
 -----|------------
 `--alsologtostderr` | Copy log messages at or above this severity level to `stderr` in addition to log files. Possible values: `info`, `warning`, `error`, `fatal`, and `none`. If this flag is set without a value, it uses the `info` level. <br><br>**Default:** `none`
-`--log-dir` | Write log files in this directory. <br><br> **Default:** For the `start` command, this defaults to `<first-store-dir>/logs`; for all client commands, if this flag is empty, CockroachDB logs to `stderr`. 
+`--log-dir` | Write log files in this directory. Log files are named as follows:<br><br>`cockroach.<host>.<user>.<start date/time + process ID>.<severity level>.log`<br><br> **Default:** For the `start` command, this defaults to `<first store dir>/logs`; for all client commands, if this flag is empty, CockroachDB logs to `stderr`. 
 `--logtostderr` |  Write log messages of all severities to `stderr` and not to log files. If this flag is set to `true`, `--log-dir` and `--alsologtostderr` are ignored. Possible values: `true` or `false`.<br><br>**Default:** `false`
 `--no-color` | Do not colorize `stderr` based on severity. Possible values: `true` or `false`. <br><br>**Default:** `false`   
 
