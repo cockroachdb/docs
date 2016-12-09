@@ -136,6 +136,7 @@ overlay([string](string.html), [string](string.html), [int](int.html)) | [string
 overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
 pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html)) | [string](string.html)
 pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html), pretty_[bool](bool.html): [bool](bool.html)) | [string](string.html)
+pg_catalog.pg_get_userbyid(role_oid: [int](int.html)) | [string](string.html)
 regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
 regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
