@@ -1770,6 +1770,10 @@ a.accordion-toggle {
 .sqlterminal::before {
   content: "> "; }
 
+span.funcdesc {
+  display: block;
+  padding: 2px; }
+
 @namespace "http://www.w3.org/2000/svg";
 .line {
   fill: none;
