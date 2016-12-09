@@ -1,5 +1,7 @@
 Function | Return
 --- | ---
+array_agg([int](int.html)) | [int](int.html)[]
+array_agg([string](string.html)) | [string](string.html)[]
 avg([decimal](decimal.html)) | [decimal](decimal.html)
 avg([float](float.html)) | [float](float.html)
 avg([int](int.html)) | [decimal](decimal.html)
