@@ -150,7 +150,11 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			if !categorize {
 				cat = ""
 			}
-			s := fmt.Sprintf("%s(%s) | %s", name, linkType(args), linkType(ret))
+			extra := ""
+			if fn.Info != "" {
+				extra = fmt.Sprintf(" <br />%s", fn.Info)
+			}
+			s := fmt.Sprintf("<code>%s(%s)</code>%s | %s", name, linkType(args), extra, linkType(ret))
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -184,7 +188,7 @@ func linkType(t string) string {
 		}
 		switch s {
 		case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
-			return fmt.Sprintf("[%s](%s.html)", name, s)
+			return fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
 		}
 		return s
 	})
