@@ -144,9 +144,6 @@ entries:
                 - title: <code>SELECT</code>
                   url: /select.html
 
-                - title: <code>SET APPLICATION_NAME</code>
-                  url: /set-application-name.html
-
                 - title: <code>SET DATABASE</code>
                   url: /set-database.html
 
