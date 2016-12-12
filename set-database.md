@@ -90,7 +90,6 @@ $ cockroach sql --database=db1
 
 ## See Also
 
-- [`SET APPLICATION_NAME`](set-application-name.html)
 - [`SET TIME ZONE`](set-time-zone.html)
 - [`SET TRANSACTION`](set-transaction.html)
  

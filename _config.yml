@@ -9,7 +9,7 @@ baseurl: "/docs"
 highlighter: rouge
 markdown: kramdown
 
-exclude: ["choose-a-deployment-profile.md", "recommended-environments.md", "vendor"]
+exclude: ["set-application-name.md", "vendor"]
 
 defaults:
   -
