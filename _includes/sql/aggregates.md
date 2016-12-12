@@ -1,52 +1,52 @@
 Function | Return
 --- | ---
-array_agg([int](int.html)) | [int](int.html)[]
-array_agg([string](string.html)) | [string](string.html)[]
-avg([decimal](decimal.html)) | [decimal](decimal.html)
-avg([float](float.html)) | [float](float.html)
-avg([int](int.html)) | [decimal](decimal.html)
-bool_and([bool](bool.html)) | [bool](bool.html)
-bool_or([bool](bool.html)) | [bool](bool.html)
-concat_agg([bytes](bytes.html)) | [bytes](bytes.html)
-concat_agg([string](string.html)) | [string](string.html)
-count([bool](bool.html)) | [int](int.html)
-count([bytes](bytes.html)) | [int](int.html)
-count([date](date.html)) | [int](int.html)
-count([decimal](decimal.html)) | [int](int.html)
-count([float](float.html)) | [int](int.html)
-count([int](int.html)) | [int](int.html)
-count([interval](interval.html)) | [int](int.html)
-count([string](string.html)) | [int](int.html)
-count([timestamp](timestamp.html)) | [int](int.html)
-count([timestamptz](timestamp.html)) | [int](int.html)
-count(tuple) | [int](int.html)
-max([bool](bool.html)) | [bool](bool.html)
-max([bytes](bytes.html)) | [bytes](bytes.html)
-max([date](date.html)) | [date](date.html)
-max([decimal](decimal.html)) | [decimal](decimal.html)
-max([float](float.html)) | [float](float.html)
-max([int](int.html)) | [int](int.html)
-max([interval](interval.html)) | [interval](interval.html)
-max([string](string.html)) | [string](string.html)
-max([timestamp](timestamp.html)) | [timestamp](timestamp.html)
-max([timestamptz](timestamp.html)) | [timestamptz](timestamp.html)
-min([bool](bool.html)) | [bool](bool.html)
-min([bytes](bytes.html)) | [bytes](bytes.html)
-min([date](date.html)) | [date](date.html)
-min([decimal](decimal.html)) | [decimal](decimal.html)
-min([float](float.html)) | [float](float.html)
-min([int](int.html)) | [int](int.html)
-min([interval](interval.html)) | [interval](interval.html)
-min([string](string.html)) | [string](string.html)
-min([timestamp](timestamp.html)) | [timestamp](timestamp.html)
-min([timestamptz](timestamp.html)) | [timestamptz](timestamp.html)
-stddev([decimal](decimal.html)) | [decimal](decimal.html)
-stddev([float](float.html)) | [float](float.html)
-stddev([int](int.html)) | [decimal](decimal.html)
-sum([decimal](decimal.html)) | [decimal](decimal.html)
-sum([float](float.html)) | [float](float.html)
-sum([int](int.html)) | [decimal](decimal.html)
-variance([decimal](decimal.html)) | [decimal](decimal.html)
-variance([float](float.html)) | [float](float.html)
-variance([int](int.html)) | [decimal](decimal.html)
+<code>array_agg(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>[]
+<code>array_agg(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>[]
+<code>avg(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>avg(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>avg(<a href="int.html">int</a>)</code> | <a href="decimal.html">decimal</a>
+<code>bool_and(<a href="bool.html">bool</a>)</code> | <a href="bool.html">bool</a>
+<code>bool_or(<a href="bool.html">bool</a>)</code> | <a href="bool.html">bool</a>
+<code>concat_agg(<a href="bytes.html">bytes</a>)</code> | <a href="bytes.html">bytes</a>
+<code>concat_agg(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>count(<a href="bool.html">bool</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="bytes.html">bytes</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="date.html">date</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="decimal.html">decimal</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="float.html">float</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="interval.html">interval</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="string.html">string</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="timestamp.html">timestamp</a>)</code> | <a href="int.html">int</a>
+<code>count(<a href="timestamp.html">timestamptz</a>)</code> | <a href="int.html">int</a>
+<code>count(tuple)</code> | <a href="int.html">int</a>
+<code>max(<a href="bool.html">bool</a>)</code> | <a href="bool.html">bool</a>
+<code>max(<a href="bytes.html">bytes</a>)</code> | <a href="bytes.html">bytes</a>
+<code>max(<a href="date.html">date</a>)</code> | <a href="date.html">date</a>
+<code>max(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>max(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>max(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>max(<a href="interval.html">interval</a>)</code> | <a href="interval.html">interval</a>
+<code>max(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>max(<a href="timestamp.html">timestamp</a>)</code> | <a href="timestamp.html">timestamp</a>
+<code>max(<a href="timestamp.html">timestamptz</a>)</code> | <a href="timestamp.html">timestamptz</a>
+<code>min(<a href="bool.html">bool</a>)</code> | <a href="bool.html">bool</a>
+<code>min(<a href="bytes.html">bytes</a>)</code> | <a href="bytes.html">bytes</a>
+<code>min(<a href="date.html">date</a>)</code> | <a href="date.html">date</a>
+<code>min(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>min(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>min(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>min(<a href="interval.html">interval</a>)</code> | <a href="interval.html">interval</a>
+<code>min(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>min(<a href="timestamp.html">timestamp</a>)</code> | <a href="timestamp.html">timestamp</a>
+<code>min(<a href="timestamp.html">timestamptz</a>)</code> | <a href="timestamp.html">timestamptz</a>
+<code>stddev(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>stddev(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>stddev(<a href="int.html">int</a>)</code> | <a href="decimal.html">decimal</a>
+<code>sum(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>sum(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>sum(<a href="int.html">int</a>)</code> | <a href="decimal.html">decimal</a>
+<code>variance(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>variance(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>variance(<a href="int.html">int</a>)</code> | <a href="decimal.html">decimal</a>
 

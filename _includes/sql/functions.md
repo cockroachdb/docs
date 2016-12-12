@@ -1,178 +1,173 @@
-### ANYELEMENT Functions
-
-Function | Return
---- | ---
-pg_catalog.pg_typeof(anyelement) | [string](string.html)
-
 ### Comparison Functions
 
 Function | Return
 --- | ---
-greatest(anyelement...) | anyelement
-least(anyelement...) | anyelement
+<code>greatest(anyelement...)</code> | anyelement
+<code>least(anyelement...)</code> | anyelement
 
 ### Date and Time Functions
 
 Function | Return
 --- | ---
-age([timestamptz](timestamp.html)) | [interval](interval.html)
-age([timestamptz](timestamp.html), [timestamptz](timestamp.html)) | [interval](interval.html)
-clock_timestamp() | [timestamp](timestamp.html)
-clock_timestamp() | [timestamptz](timestamp.html)
-crdb_internal.force_retry([interval](interval.html)) | [int](int.html)
-current_date() | [date](date.html)
-current_timestamp() | [timestamp](timestamp.html)
-current_timestamp() | [timestamptz](timestamp.html)
-experimental_strptime([string](string.html), [string](string.html)) | [timestamptz](timestamp.html)
-extract([string](string.html), [timestamp](timestamp.html)) | [int](int.html)
-extract_duration([string](string.html), [interval](interval.html)) | [int](int.html)
-now() | [timestamp](timestamp.html)
-now() | [timestamptz](timestamp.html)
-statement_timestamp() | [timestamp](timestamp.html)
-statement_timestamp() | [timestamptz](timestamp.html)
-transaction_timestamp() | [timestamp](timestamp.html)
-transaction_timestamp() | [timestamptz](timestamp.html)
+<code>age(<a href="timestamp.html">timestamptz</a>)</code> | <a href="interval.html">interval</a>
+<code>age(<a href="timestamp.html">timestamptz</a>, <a href="timestamp.html">timestamptz</a>)</code> | <a href="interval.html">interval</a>
+<code>clock_timestamp()</code> | <a href="timestamp.html">timestamp</a>
+<code>clock_timestamp()</code> | <a href="timestamp.html">timestamptz</a>
+<code>crdb_internal.force_retry(<a href="interval.html">interval</a>)</code> | <a href="int.html">int</a>
+<code>current_date()</code> | <a href="date.html">date</a>
+<code>current_timestamp()</code> | <a href="timestamp.html">timestamp</a>
+<code>current_timestamp()</code> | <a href="timestamp.html">timestamptz</a>
+<code>experimental_strptime(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="timestamp.html">timestamptz</a>
+<code>extract(<a href="string.html">string</a>, <a href="timestamp.html">timestamp</a>)</code> | <a href="int.html">int</a>
+<code>extract_duration(<a href="string.html">string</a>, <a href="interval.html">interval</a>)</code> | <a href="int.html">int</a>
+<code>now()</code> | <a href="timestamp.html">timestamp</a>
+<code>now()</code> | <a href="timestamp.html">timestamptz</a>
+<code>statement_timestamp()</code> | <a href="timestamp.html">timestamp</a>
+<code>statement_timestamp()</code> | <a href="timestamp.html">timestamptz</a>
+<code>transaction_timestamp()</code> | <a href="timestamp.html">timestamp</a>
+<code>transaction_timestamp()</code> | <a href="timestamp.html">timestamptz</a>
 
 ### ID Generation Functions
 
 Function | Return
 --- | ---
-experimental_unique_bytes() | [bytes](bytes.html)
-experimental_uuid_v4() | [bytes](bytes.html)
-unique_rowid() | [int](int.html)
-uuid_v4() | [bytes](bytes.html)
+<code>experimental_unique_bytes()</code> | <a href="bytes.html">bytes</a>
+<code>experimental_uuid_v4()</code> | <a href="bytes.html">bytes</a>
+<code>unique_rowid()</code> | <a href="int.html">int</a>
+<code>uuid_v4()</code> | <a href="bytes.html">bytes</a>
 
 ### Math and Numeric Functions
 
 Function | Return
 --- | ---
-abs([decimal](decimal.html)) | [decimal](decimal.html)
-abs([float](float.html)) | [float](float.html)
-abs([int](int.html)) | [int](int.html)
-acos([float](float.html)) | [float](float.html)
-asin([float](float.html)) | [float](float.html)
-atan([float](float.html)) | [float](float.html)
-atan2([float](float.html), [float](float.html)) | [float](float.html)
-cbrt([decimal](decimal.html)) | [decimal](decimal.html)
-cbrt([float](float.html)) | [float](float.html)
-ceil([decimal](decimal.html)) | [decimal](decimal.html)
-ceil([float](float.html)) | [float](float.html)
-ceiling([decimal](decimal.html)) | [decimal](decimal.html)
-ceiling([float](float.html)) | [float](float.html)
-cos([float](float.html)) | [float](float.html)
-cot([float](float.html)) | [float](float.html)
-degrees([float](float.html)) | [float](float.html)
-div([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
-div([float](float.html), [float](float.html)) | [float](float.html)
-div([int](int.html), [int](int.html)) | [int](int.html)
-exp([decimal](decimal.html)) | [decimal](decimal.html)
-exp([float](float.html)) | [float](float.html)
-floor([decimal](decimal.html)) | [decimal](decimal.html)
-floor([float](float.html)) | [float](float.html)
-ln([decimal](decimal.html)) | [decimal](decimal.html)
-ln([float](float.html)) | [float](float.html)
-log([decimal](decimal.html)) | [decimal](decimal.html)
-log([float](float.html)) | [float](float.html)
-mod([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
-mod([float](float.html), [float](float.html)) | [float](float.html)
-mod([int](int.html), [int](int.html)) | [int](int.html)
-pi() | [float](float.html)
-pow([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
-pow([float](float.html), [float](float.html)) | [float](float.html)
-pow([int](int.html), [int](int.html)) | [int](int.html)
-power([decimal](decimal.html), [decimal](decimal.html)) | [decimal](decimal.html)
-power([float](float.html), [float](float.html)) | [float](float.html)
-power([int](int.html), [int](int.html)) | [int](int.html)
-radians([float](float.html)) | [float](float.html)
-random() | [float](float.html)
-round([decimal](decimal.html)) | [decimal](decimal.html)
-round([decimal](decimal.html), [int](int.html)) | [decimal](decimal.html)
-round([float](float.html)) | [float](float.html)
-round([float](float.html), [int](int.html)) | [float](float.html)
-sign([decimal](decimal.html)) | [decimal](decimal.html)
-sign([float](float.html)) | [float](float.html)
-sign([int](int.html)) | [int](int.html)
-sin([float](float.html)) | [float](float.html)
-sqrt([decimal](decimal.html)) | [decimal](decimal.html)
-sqrt([float](float.html)) | [float](float.html)
-tan([float](float.html)) | [float](float.html)
-to_hex([int](int.html)) | [string](string.html)
-trunc([decimal](decimal.html)) | [decimal](decimal.html)
-trunc([float](float.html)) | [float](float.html)
-
-### SETOF TUPLE{INT} Functions
-
-Function | Return
---- | ---
-pg_catalog.generate_series([int](int.html), [int](int.html)) | setof tuple{[int](int.html)}
-pg_catalog.generate_series([int](int.html), [int](int.html), [int](int.html)) | setof tuple{[int](int.html)}
+<code>abs(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>abs(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>abs(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>acos(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>asin(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>atan(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>atan2(<a href="float.html">float</a>, <a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>cbrt(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>cbrt(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>ceil(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>ceil(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>ceiling(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>ceiling(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>cos(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>cot(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>degrees(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>div(<a href="decimal.html">decimal</a>, <a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>div(<a href="float.html">float</a>, <a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>div(<a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>exp(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>exp(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>floor(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>floor(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>ln(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>ln(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>log(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>log(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>mod(<a href="decimal.html">decimal</a>, <a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>mod(<a href="float.html">float</a>, <a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>mod(<a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>pi()</code> | <a href="float.html">float</a>
+<code>pow(<a href="decimal.html">decimal</a>, <a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>pow(<a href="float.html">float</a>, <a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>pow(<a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>power(<a href="decimal.html">decimal</a>, <a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>power(<a href="float.html">float</a>, <a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>power(<a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>radians(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>random()</code> | <a href="float.html">float</a>
+<code>round(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>round(<a href="decimal.html">decimal</a>, <a href="int.html">int</a>)</code> | <a href="decimal.html">decimal</a>
+<code>round(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>round(<a href="float.html">float</a>, <a href="int.html">int</a>)</code> | <a href="float.html">float</a>
+<code>sign(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>sign(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>sign(<a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>sin(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>sqrt(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>sqrt(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>tan(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
+<code>to_hex(<a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>trunc(<a href="decimal.html">decimal</a>)</code> | <a href="decimal.html">decimal</a>
+<code>trunc(<a href="float.html">float</a>)</code> | <a href="float.html">float</a>
 
 ### String and Byte Functions
 
 Function | Return
 --- | ---
-ascii([string](string.html)) | [int](int.html)
-btrim([string](string.html)) | [string](string.html)
-btrim([string](string.html), [string](string.html)) | [string](string.html)
-concat([string](string.html)...) | [string](string.html)
-concat_ws([string](string.html)...) | [string](string.html)
-experimental_strftime([date](date.html), [string](string.html)) | [string](string.html)
-experimental_strftime([timestamp](timestamp.html), [string](string.html)) | [string](string.html)
-experimental_strftime([timestamptz](timestamp.html), [string](string.html)) | [string](string.html)
-from_ip([bytes](bytes.html)) | [string](string.html)
-from_uuid([bytes](bytes.html)) | [string](string.html)
-initcap([string](string.html)) | [string](string.html)
-left([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
-left([string](string.html), [int](int.html)) | [string](string.html)
-length([bytes](bytes.html)) | [int](int.html)
-length([string](string.html)) | [int](int.html)
-lower([string](string.html)) | [string](string.html)
-ltrim([string](string.html)) | [string](string.html)
-ltrim([string](string.html), [string](string.html)) | [string](string.html)
-md5([string](string.html)) | [string](string.html)
-octet_length([bytes](bytes.html)) | [int](int.html)
-octet_length([string](string.html)) | [int](int.html)
-overlay([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
-overlay([string](string.html), [string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
-pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html)) | [string](string.html)
-pg_catalog.pg_get_expr(pg_node_tree: [string](string.html), relation_oid: [int](int.html), pretty_[bool](bool.html): [bool](bool.html)) | [string](string.html)
-pg_catalog.pg_get_userbyid(role_oid: [int](int.html)) | [string](string.html)
-regexp_extract([string](string.html), [string](string.html)) | [string](string.html)
-regexp_replace([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-regexp_replace([string](string.html), [string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-repeat([string](string.html), [int](int.html)) | [string](string.html)
-replace(input: [string](string.html), from: [string](string.html), to: [string](string.html)) | [string](string.html)
-reverse([string](string.html)) | [string](string.html)
-right([bytes](bytes.html), [int](int.html)) | [bytes](bytes.html)
-right([string](string.html), [int](int.html)) | [string](string.html)
-rtrim([string](string.html)) | [string](string.html)
-rtrim([string](string.html), [string](string.html)) | [string](string.html)
-sha1([string](string.html)) | [string](string.html)
-sha256([string](string.html)) | [string](string.html)
-split_part([string](string.html), [string](string.html), [int](int.html)) | [string](string.html)
-strpos([string](string.html), [string](string.html)) | [int](int.html)
-substr([string](string.html), [int](int.html)) | [string](string.html)
-substr([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
-substr([string](string.html), [string](string.html)) | [string](string.html)
-substr([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-substring([string](string.html), [int](int.html)) | [string](string.html)
-substring([string](string.html), [int](int.html), [int](int.html)) | [string](string.html)
-substring([string](string.html), [string](string.html)) | [string](string.html)
-substring([string](string.html), [string](string.html), [string](string.html)) | [string](string.html)
-to_ip([string](string.html)) | [bytes](bytes.html)
-to_uuid([string](string.html)) | [bytes](bytes.html)
-translate(input: [string](string.html), from: [string](string.html), to: [string](string.html)) | [string](string.html)
-upper([string](string.html)) | [string](string.html)
+<code>ascii(<a href="string.html">string</a>)</code> | <a href="int.html">int</a>
+<code>btrim(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>btrim(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>concat(<a href="string.html">string</a>...)</code> | <a href="string.html">string</a>
+<code>concat_ws(<a href="string.html">string</a>...)</code> | <a href="string.html">string</a>
+<code>experimental_strftime(<a href="date.html">date</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>experimental_strftime(<a href="timestamp.html">timestamp</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>experimental_strftime(<a href="timestamp.html">timestamptz</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>from_ip(<a href="bytes.html">bytes</a>)</code> | <a href="string.html">string</a>
+<code>from_uuid(<a href="bytes.html">bytes</a>)</code> | <a href="string.html">string</a>
+<code>initcap(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>left(<a href="bytes.html">bytes</a>, <a href="int.html">int</a>)</code> | <a href="bytes.html">bytes</a>
+<code>left(<a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>length(<a href="bytes.html">bytes</a>)</code> | <a href="int.html">int</a>
+<code>length(<a href="string.html">string</a>)</code> | <a href="int.html">int</a>
+<code>lower(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>ltrim(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>ltrim(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>md5(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>octet_length(<a href="bytes.html">bytes</a>)</code> | <a href="int.html">int</a>
+<code>octet_length(<a href="string.html">string</a>)</code> | <a href="int.html">int</a>
+<code>overlay(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>overlay(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>regexp_extract(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>regexp_replace(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>regexp_replace(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>repeat(<a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>replace(input: <a href="string.html">string</a>, from: <a href="string.html">string</a>, to: <a href="string.html">string</a>)</code><span class="funcdesc">Replace all occurrences of 'from' with 'to' in 'input'</span> | <a href="string.html">string</a>
+<code>reverse(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>right(<a href="bytes.html">bytes</a>, <a href="int.html">int</a>)</code> | <a href="bytes.html">bytes</a>
+<code>right(<a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>rtrim(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>rtrim(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>sha1(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>sha256(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>split_part(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>strpos(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="int.html">int</a>
+<code>substr(<a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>substr(<a href="string.html">string</a>, <a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>substr(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>substr(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>substring(<a href="string.html">string</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>substring(<a href="string.html">string</a>, <a href="int.html">int</a>, <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>substring(<a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>substring(<a href="string.html">string</a>, <a href="string.html">string</a>, <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>to_ip(<a href="string.html">string</a>)</code> | <a href="bytes.html">bytes</a>
+<code>to_uuid(<a href="string.html">string</a>)</code> | <a href="bytes.html">bytes</a>
+<code>translate(input: <a href="string.html">string</a>, from: <a href="string.html">string</a>, to: <a href="string.html">string</a>)</code> | <a href="string.html">string</a>
+<code>upper(<a href="string.html">string</a>)</code> | <a href="string.html">string</a>
 
 ### System Info Functions
 
 Function | Return
 --- | ---
-array_length(anyelement[], [int](int.html)) | [int](int.html)
-array_lower(anyelement[], [int](int.html)) | [int](int.html)
-array_upper(anyelement[], [int](int.html)) | [int](int.html)
-cluster_logical_timestamp() | [decimal](decimal.html)
-current_schema() | [string](string.html)
-current_schemas([bool](bool.html)) | [string](string.html)[]
-version() | [string](string.html)
+<code>array_length(anyelement[], <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>array_lower(anyelement[], <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>array_upper(anyelement[], <a href="int.html">int</a>)</code> | <a href="int.html">int</a>
+<code>cluster_logical_timestamp()</code> | <a href="decimal.html">decimal</a>
+<code>current_schema()</code> | <a href="string.html">string</a>
+<code>current_schemas(<a href="bool.html">bool</a>)</code> | <a href="string.html">string</a>[]
+<code>version()</code> | <a href="string.html">string</a>
+
+### Compatibility Functions
+
+Function | Return
+--- | ---
+<code>pg_catalog.generate_series(<a href="int.html">int</a>, <a href="int.html">int</a>)</code> | setof tuple{<a href="int.html">int</a>}
+<code>pg_catalog.generate_series(<a href="int.html">int</a>, <a href="int.html">int</a>, <a href="int.html">int</a>)</code> | setof tuple{<a href="int.html">int</a>}
+<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>, pretty_<a href="bool.html">bool</a>: <a href="bool.html">bool</a>)</code> | <a href="string.html">string</a>
+<code>pg_catalog.pg_get_userbyid(role_oid: <a href="int.html">int</a>)</code> | <a href="string.html">string</a>
+<code>pg_catalog.pg_typeof(anyelement)</code> | <a href="string.html">string</a>
 

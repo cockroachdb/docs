@@ -150,7 +150,11 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			if !categorize {
 				cat = ""
 			}
-			s := fmt.Sprintf("%s(%s) | %s", name, linkType(args), linkType(ret))
+			extra := ""
+			if fn.Info != "" {
+				extra = fmt.Sprintf("<span class=\"funcdesc\">%s</span>", fn.Info)
+			}
+			s := fmt.Sprintf("<code>%s(%s)</code>%s | %s", name, linkType(args), extra, linkType(ret))
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -160,12 +164,21 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 		cats = append(cats, k)
 	}
 	sort.Strings(cats)
+	// HACK: swap "Compatibility" to be last.
+	// TODO(dt): Break up generated list be one _include per category, to allow
+	// manually written copy on some sections.
+	for i, cat := range cats {
+		if cat == "Compatibility" {
+			cats = append(append(cats[:i], cats[i+1:]...), "Compatibility")
+			break
+		}
+	}
 	b := new(bytes.Buffer)
 	for _, cat := range cats {
 		if categorize {
 			fmt.Fprintf(b, "### %s Functions\n\n", cat)
 		}
-		fmt.Fprintln(b, "Function | Return")
+		b.WriteString("Function | Return\n")
 		b.WriteString("--- | ---\n")
 		b.WriteString(strings.Join(functions[cat], "\n"))
 		b.WriteString("\n\n")
@@ -184,7 +197,7 @@ func linkType(t string) string {
 		}
 		switch s {
 		case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
-			return fmt.Sprintf("[%s](%s.html)", name, s)
+			return fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
 		}
 		return s
 	})
