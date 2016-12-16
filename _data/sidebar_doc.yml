@@ -359,6 +359,9 @@ entries:
         - title: Explore the Admin UI
           url: /explore-the-admin-ui.html
 
+        - title: Monitor CockroachDB with Prometheus
+          url: /monitor-cockroachdb-with-prometheus.html
+
         - title: View Node Details
           url: /view-node-details.html
 

@@ -9,6 +9,7 @@ Use the following guides to deploy CockroachDB to popular cloud platforms:
 - [Amazon Web Services (AWS)](deploy-cockroachdb-on-aws.html)
 - [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html)
 - [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
+- [Microsoft Azure](deploy-cockroachdb-on-microsoft-azure.html)
 
 ## General Deployment Steps
 
@@ -26,4 +27,5 @@ If we don't have a guide for your platform, you can deploy CockroachDB to any cl
 
 - [Manual Deployment](manual-deployment.html)
 - [Orchestration](orchestration.html)
+- [Monitoring](monitor-cockroachdb-with-prometheus.html)
 - [Start a Local Cluster](start-a-local-cluster.html)

@@ -175,6 +175,8 @@ On this page, go to the following tabs on the left:
 - **Nodes** to ensure all of your nodes successfully joined the cluster.<br/><br/>Also check the **Replicas** column on this page. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
 - **Databases** to ensure `insecurenodetest` is listed.
 
+{% include prometheus-callout.html %}
+
 ## Use the Database
 
 Now that your deployment is working, you can:
