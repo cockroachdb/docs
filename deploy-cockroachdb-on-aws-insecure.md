@@ -200,6 +200,8 @@ On this page, go to the following tabs on the left:
 - **Nodes** to ensure all of your nodes successfully joined the cluster
 - **Databases** to ensure `insecurenodetest` is listed
 
+{% include prometheus-callout.html %}
+
 ## Use the Database
 
 Now that your deployment is working, you can:

@@ -153,6 +153,8 @@ When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 The CockroachDB [Admin UI](explore-the-admin-ui.html) lets you monitor cluster-wide, node-level, and database-level metrics and events. To start up the Admin UI, point your browser to `http://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
+{% include prometheus-callout.html %}
+
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5.  Stop the cluster
