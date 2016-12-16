@@ -60,6 +60,26 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <div class="row">
     <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/enriching-log-messages-using-go-contexts/">
+        <div class="blog-post">
+            <div class="blog-title">Enriching Log Messages Using Go Contexts</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">December 15</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/roaches-on-open-water-cockroachdb-on-digitalocean/">
+        <div class="blog-post">
+            <div class="blog-title">Roaches on Open Water! CockroachDB on Digital Ocean</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Sean Loiselle</span> on <span class="meta-emphasis">November 30</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
         <div class="blog-post">
             <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
@@ -81,29 +101,9 @@ The project is currently in **Beta**. For details about upcoming features, see t
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/surviving-a-hackathon-as-a-sponsor/">
-        <div class="blog-post">
+        <div class="blog-post last-entry">
             <div class="blog-title">How to Survive a Hackathon as a Sponsor</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Jessica Edwards</span> on <span class="meta-emphasis">November 1</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/testing-random-valid-sql-in-cockroachdb/">
-        <div class="blog-post">
-            <div class="blog-title">Testing Random, Valid SQL in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Matt Jibson</span> on <span class="meta-emphasis">October 19</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/running-cockroachdb-on-kubernetes/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">Running CockroachDB on Kubernetes</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Alex Robinson</span> on <span class="meta-emphasis">October 11</span></div>
         </div>
         </a>  
     </div>
