@@ -116,6 +116,8 @@ nodeID:     1
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
+{% include prometheus-callout.html %}
+
 ### 8. Stop the cluster
 
 You can stop the nodes (and therefore the cluster) from any machine with the `cockroach` binary as follows: 
@@ -252,6 +254,8 @@ nodeID:     1
 
 {{site.data.alerts.callout_info}}If your network setting preclude allowing traffic in on port <code>8080</code>, you can instead you can use SSH to tunnel from a local machine to a node.{{site.data.alerts.end}}
 
+{% include prometheus-callout.html %}
+
 ### 9. Stop the cluster
 
 You can stop the nodes (and therefore the cluster) from any machine with the `cockroach` binary, the CA cert, and a client certificate and key. Make sure the machine you want to use has these files and then stop the nodes:  
@@ -268,5 +272,6 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 
 - [Cloud Deployment](cloud-deployment.html)
 - [Orchestration](orchestration.html)
+- [Monitoring](monitor-cockroachdb-with-prometheus.html)
 - [Start a Local Cluster](start-a-local-cluster.html)
 - [Run CockroachDB in a VirtualBox VM](http://uptimedba.github.io/cockroach-vb-single/cockroach-vb-single/home.html) (community-supported)

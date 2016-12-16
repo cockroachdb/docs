@@ -15,5 +15,6 @@ Use the following guides to run CockroachDB with popular open-source orchestrati
 
 - [Cloud Deployment](cloud-deployment.html)
 - [Manual Deployment](manual-deployment.html)
+- [Monitoring](monitor-cockroachdb-with-prometheus.html)
 - [Start a Local Cluster](start-a-local-cluster.html)
 
