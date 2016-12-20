@@ -2,9 +2,10 @@
 title: Build a Test App
 summary: Follow this tutorial to quickly learn how to create a CockroachDB database and connect to it from a client application.
 toc: false
+asciicast: true
 ---
 
-This page is CockroachDB's **Hello, World!** tutorial. It walks you through creating a database, granting privileges on the database to a user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
+This page is CockroachDB's **Hello, World!** tutorial. It walks you through creating a user, creating a database, granting privileges on the database to the new user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
 
 <div id="toc"></div>
 
@@ -15,26 +16,57 @@ Make sure you have already:
 - [Installed CockroachDB](install-cockroachdb.html) 
 - [Started a local cluster](start-a-local-cluster.html) in insecure mode
 - [Installed a client driver](install-client-drivers.html)
+
+Feel free to watch this process in action before going through the steps yourself. Note that the demo video features Python code for executing basic statements (step 4), but the code for executing more complex transactions is not covered (step 5). Also note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+
+<asciinema-player class="asciinema-demo" src="asciicasts/build-a-test-app.json" cols="107" speed="2" theme="monokai" poster="npt:0:40" title="Build a Test App"></asciinema-player>
  
-## Step 1. Create a database and grant privileges
+## Step 1. Create a user
+
+As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
+
+~~~ shell
+$ cockroach user set maxroach
+~~~
+
+~~~
+INSERT 1
+~~~
+
+## Step 2. Create a database and grant privileges
 
 As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database and [grant privileges](grant.html) to the `maxroach` user. The privileges will enable the user to execute statements in the next steps.
 
 ~~~ shell
-$ cockroach user set maxroach
 $ cockroach sql -e 'CREATE DATABASE bank'
+~~~
+
+~~~
+CREATE DATABASE
+~~~
+
+~~~ shell
 $ cockroach sql -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~
 
-## Step 2. Create a table in the new database
+~~~
+GRANT
+~~~
+
+## Step 3. Create a table in the new database
 
 As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
 
 ~~~ shell
-$ cockroach sql --database=bank --user=maxroach -e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)' 
+$ cockroach sql --database=bank --user=maxroach -e \
+'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)' 
 ~~~
 
-## Step 3. Execute basic statements from a client
+~~~
+CREATE TABLE
+~~~
+
+## Step 4. Execute basic statements from a client
 
 As the `maxroach` user, connect from your preferred language, insert a few rows into the `accounts` table, and read and print the rows.
 
@@ -130,7 +162,7 @@ Initial balances:
 ~~~
 </div>
 
-## Step 4. Execute transactions from a client
+## Step 5. Execute transactions from a client
 
 As the `maxroach` user, connect again from your preferred language, but this time execute a batch of statements as an atomic transaction, where all included statements are either commited or aborted. 
 
