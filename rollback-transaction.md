@@ -65,7 +65,7 @@ To use [client-side transaction retries](transactions.html#client-side-transacti
 > ROLLBACK TO cockroach_restart;
 ~~~
 
-For examples of retrying transactions in your application, check out our [transaction code samples](build-a-test-app.html#step-4-execute-transactions-from-a-client).
+For examples of retrying transactions in your application, check out our [transaction code samples](build-a-test-app.html#step-5-execute-transactions-from-a-client).
 
 ## See Also
 

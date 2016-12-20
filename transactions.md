@@ -148,11 +148,11 @@ Implementing client-side retries requires three statements:
   
   You must also execute `COMMIT` afterward to clear the connection for the next transaction.
 
-You can find examples of this in the [Syntax](#syntax) section of this page or at our page [Build a Test App: Execute transaction from a client](build-a-test-app.html#step-4-execute-transactions-from-a-client).
+You can find examples of this in the [Syntax](#syntax) section of this page or at our page [Build a Test App: Execute transaction from a client](build-a-test-app.html#step-5-execute-transactions-from-a-client).
 
 {{site.data.alerts.callout_success}}If you're building an application in the following languages, we have packages to make client-side retries simpler:
 <ul>
-  <li><strong>Go</strong> developers can use the <code>crdb</code> package of the CockroachDB Go client. For more information, see the <strong>Go</strong> tab of <a href="build-a-test-app.html#step-4-execute-transactions-from-a-client">Build a Test App: Execute transaction from a client</a>.</li>
+  <li><strong>Go</strong> developers can use the <code>crdb</code> package of the CockroachDB Go client. For more information, see the <strong>Go</strong> tab of <a href="build-a-test-app.html#step-5-execute-transactions-from-a-client">Build a Test App: Execute transaction from a client</a>.</li>
   <li><strong>Python</strong> developers can use the <code>sqlalchemy</code> package. For more information, see our blog post <a href="https://www.cockroachlabs.com/blog/building-application-cockroachdb-sqlalchemy-2/">Building an Application With CockroachDB and SQLAlchemy</a>.</li>
 </ul>{{site.data.alerts.end}}
 
@@ -243,4 +243,4 @@ For more information about the relationship between these levels, see [this pape
 - [`ROLLBACK`](rollback-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
-- [Retryable function code samples](build-a-test-app.html#step-4-execute-transactions-from-a-client)
+- [Retryable function code samples](build-a-test-app.html#step-5-execute-transactions-from-a-client)
