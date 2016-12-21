@@ -49,6 +49,7 @@ Statement | Usage
 [`SHOW TABLES`](show-tables.html) | List tables in a database.
 [`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
 [`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SHOW USERS`](show-users.html) | List lists the users for all databases.
 [`TRUNCATE`](truncate.html) | Deletes all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
 [`UPSERT`](upsert.html) | Insert rows that do not violate uniquenesss constraints; update rows that do.
