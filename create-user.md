@@ -41,9 +41,9 @@ table td:first-child {
 Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
 
 - [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-- [Password authentication](#secure-clusters-with-passwords), which is available only to users with passwords. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. <br/><br/>You can use this password to authenticate users without supplying their client certificate and key; however, we recommend instead using client certificate and key authentication whenever possible. <br/><br/>To add a password to an existing user, use the [`cockroach user` command](create-and-manage-users.html#update-a-users-password).
+- [Password authentication](#secure-clusters-with-passwords), which is available only to users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. <br/><br/>You can use this password to authenticate users without supplying their client certificate and key; however, we recommend instead using client certificate and key authentication whenever possible. <br/><br/>To add a password to an existing user, use the [`cockroach user` command](create-and-manage-users.html#update-a-users-password).
 
-{{site.data.alerts.callout_info}}Insecure clusters do not support user authentication, but you can still create passwords for users through the <code>WITH PASSWORD</code> clause.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Insecure clusters do not support user authentication, but you can still create passwords for users (besides <code>root</code>) through the <code>WITH PASSWORD</code> clause.{{site.data.alerts.end}}
 
 ## Examples
 
