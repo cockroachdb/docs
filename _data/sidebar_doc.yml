@@ -189,6 +189,9 @@ entries:
                 - title: <code>SHOW TRANSACTION</code>
                   url: /show-transaction.html
 
+                - title: <code>SHOW USERS</code>
+                  url: /show-users.html
+
                 - title: <code>TRUNCATE</code>
                   url: /truncate.html
 

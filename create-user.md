@@ -98,6 +98,7 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ## See Also
 
 - [`cockroach user` command](create-and-manage-users.html)
+- [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
