@@ -174,15 +174,42 @@ func main() {
 				// TODO(mjibson): improve SET filtering
 				// TODO(mjibson): improve SELECT display
 				{
-					name:       "add_column",
-					stmt:       "alter_table_stmt",
-					inline:     []string{"alter_table_cmds", "alter_table_cmd"},
-					match:      []*regexp.Regexp{regexp.MustCompile(`'ADD' .* column_def \( ','`)},
-					regreplace: map[string]string{` \( ','.*\)\*`: ""},
+					name:   "add_column",
+					stmt:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def"},
+					match:  []*regexp.Regexp{regexp.MustCompile("'ADD' ('COLUMN')? ?('IF' 'NOT' 'EXISTS')? ?name")},
+					replace: map[string]string{
+						" | 'ALTER' opt_column name alter_column_default | 'ALTER' opt_column name 'DROP' 'NOT' 'NULL' | 'DROP' opt_column 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' opt_column name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior": "",
+						"relation_expr": "table_name",
+						"col_qual_list": "( col_qualification | )"},
+					unlink: []string{"table_name"},
 				},
 				{
-					name:    "alter_table_stmt",
-					inline:  []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data"},
+					name:   "add_constraint",
+					stmt:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd", "table_constraint"},
+					match:  []*regexp.Regexp{regexp.MustCompile("'ADD' 'CONSTRAINT' name constraint_elem")},
+					replace: map[string]string{"opt_validate_behavior ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' opt_column name alter_column_default | 'ALTER' opt_column name 'DROP' 'NOT' 'NULL' | 'DROP' opt_column 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' opt_column name opt_drop_behavior | 'ADD' ( 'CONSTRAINT' name constraint_elem | constraint_elem ) opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
+						"relation_expr": "table_name"},
+					unlink: []string{"table_name"},
+				},
+				{
+					name:   "alter_column",
+					stmt:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "alter_column_default"},
+					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'ALTER' ")},
+					replace: map[string]string{"( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name ( 'SET' 'DEFAULT' a_expr | 'DROP' 'DEFAULT' ) | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' ( 'COLUMN' |  ) name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
+						"relation_expr": "table_name"},
+					unlink: []string{"table_name"},
+				},
+				{
+					name:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data", "table_constraint"},
+					replace: map[string]string{
+						"'VALIDATE' 'CONSTRAINT' name": "",
+						"opt_validate_behavior":        "",
+						"relation_expr":                "table_name"},
+					unlink:  []string{"table_name"},
 					nosplit: true,
 				},
 				{
@@ -249,6 +276,28 @@ func main() {
 					unlink:  []string{"table_name", "column_name", "column_type", "default_value", "table_constraints"},
 				},
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
+				{
+					name:   "drop_column",
+					stmt:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "opt_drop_behavior"},
+					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'DROP' 'COLUMN'")},
+					replace: map[string]string{
+						"( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name alter_column_default | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' ( 'COLUMN' |  ) name ( 'CASCADE' | 'RESTRICT' |  ) | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' 'CONSTRAINT' name ( 'CASCADE' | 'RESTRICT' |  ) ) )*": "",
+						"'COLUMN'":      "( 'COLUMN' | )",
+						"relation_expr": "table_name"},
+					unlink: []string{"table_name"},
+				},
+				{
+					name:   "drop_constraint",
+					stmt:   "alter_table_stmt",
+					inline: []string{"alter_table_cmds", "alter_table_cmd"},
+					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'DROP' 'CONSTRAINT'")},
+					replace: map[string]string{
+						"opt_drop_behavior ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' opt_column name alter_column_default | 'ALTER' opt_column name 'DROP' 'NOT' 'NULL' | 'DROP' opt_column 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' opt_column name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
+						"'CONSTRAINT'":  "( 'CONSTRAINT' | )",
+						"relation_expr": "table_name"},
+					unlink: []string{"table_name"},
+				},
 				{
 					name:  "drop_database",
 					stmt:  "drop_stmt",
