@@ -317,8 +317,8 @@ To shut down the CockroachDB cluster:
 1. Use the [`kubectl delete`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_delete/) command to clean up all of the resources you created, including the logs and remote persistent volumes:
 
    ~~~ shell
-   $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes \
-   --selector app=cockroachdb
+   $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
+   -l app=cockroachdb
    ~~~
 
 2. Run the `cluster/kube-down.sh` script in the `kubernetes` directory to stop Kubernetes.
