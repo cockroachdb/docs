@@ -18,8 +18,14 @@ The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a 
 
 The user must have the `CREATE` [privilege](privileges.html) on the table. 
 
-## Parameters
+## Subcommands
 
-| Parameter | Description |
-|-----------|-------------|
-|  |  |
+For information on using `ALTER TABLE`, see the documents for its relevant subcommands.
+
+Subcommand | Description
+-----------|------------
+[`ADD COLUMN`](add-column.html) | Add columns to tables. 
+[`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns.
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
+[`DROP COLUMN`](drop-column.html) | Remove columns from tables.
+[`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns.
