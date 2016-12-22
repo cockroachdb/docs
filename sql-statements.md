@@ -8,6 +8,9 @@ CockroachDB supports the following SQL statements. Click a statement for more de
 
 Statement | Usage 
 ----------|------------
+[`ADD COLUMN`](add-column.html) | Add columns to a table.
+[`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
@@ -19,6 +22,8 @@ Statement | Usage
 [`CREATE USER`](create-user.html) | Creates a SQL user, which lets you control [privileges](privileges.html) on your databases and tables.
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DELETE`](delete.html) | Delete specific rows from a table.
+[`DROP COLUMN`](drop-column.html) | Remove columns from a table.
+[`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP TABLE`](drop-table.html) | Remove a table.
@@ -52,4 +57,4 @@ Statement | Usage
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
 [`TRUNCATE`](truncate.html) | Deletes all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
-[`UPSERT`](upsert.html) | Insert rows that do not violate uniquenesss constraints; update rows that do.
+[`UPSERT`](upsert.html) | Insert rows that do not violate uniqueness constraints; update rows that do.

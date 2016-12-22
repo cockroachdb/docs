@@ -63,6 +63,15 @@ entries:
                 - title: Overview
                   url: /sql-statements.html
 
+                - title: <code>ADD COLUMN</code>
+                  url: /add-column.html
+
+                - title: <code>ADD CONSTRAINT</code>
+                  url: /add-constraint.html
+
+                - title: <code>ALTER COLUMN</code>
+                  url: /alter-column.html
+
                 - title: <code>ALTER TABLE</code>
                   url: /alter-table.html
 
@@ -95,6 +104,12 @@ entries:
 
                 - title: <code>DELETE</code>
                   url: /delete.html
+
+                - title: <code>DROP COLUMN</code>
+                  url: /drop-column.html
+                  
+                - title: <code>DROP CONSTRAINT</code>
+                  url: /drop-constraint.html
 
                 - title: <code>DROP DATABASE</code>
                   url: /drop-database.html
