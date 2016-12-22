@@ -154,7 +154,7 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			if fn.Info != "" {
 				extra = fmt.Sprintf("<span class=\"funcdesc\">%s</span>", fn.Info)
 			}
-			s := fmt.Sprintf("<code>%s(%s)</code>%s | %s", name, linkType(args), extra, linkType(ret))
+			s := fmt.Sprintf("<code>%s(%s) &rarr; %s</code> | %s", name, linkType(args), linkType(ret), extra)
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -178,7 +178,7 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 		if categorize {
 			fmt.Fprintf(b, "### %s Functions\n\n", cat)
 		}
-		b.WriteString("Function | Return\n")
+		b.WriteString("Function &rarr; Returns | Description\n")
 		b.WriteString("--- | ---\n")
 		b.WriteString(strings.Join(functions[cat], "\n"))
 		b.WriteString("\n\n")
