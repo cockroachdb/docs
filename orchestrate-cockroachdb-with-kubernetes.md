@@ -252,14 +252,14 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
     - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
     - On AWS, resize your [Auto Scaling Group](http://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).  
 
-2.  Use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to add a pod to your StatefulSet:
+2.  Use the [`kubectl scale`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_scale/) command to add a pod to your StatefulSet:
 
     ~~~ shell
-    $ kubectl patch statefulset cockroachdb -p '{"spec":{"replicas":4}}'
+    $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
 
     ~~~
-    "cockroachdb" patched
+    statefulset "cockroachdb" scaled
     ~~~ 
 
 3.  Verify that a fourth pod was added successfully: 
@@ -280,16 +280,16 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-To increase the number of pods in your cluster, use the [`kubectl patch`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_patch/) command to alter the `replicas: 3` configuration for your StatefulSet. 
+To increase the number of pods in your cluster, use the [`kubectl scale`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_scale/) command to alter the `replicas: 3` configuration for your StatefulSet. 
 
 For example, since the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script created four persistent volumes and volume claims, and only three of them are in use by pods, you can add a replica and safely assume that it will claim the final persistent volume:
 
 ~~~ shell
-$ kubectl patch statefulset cockroachdb -p '{"spec":{"replicas":4}}'
+$ kubectl scale statefulset cockroachdb --replicas=4
 ~~~
 
 ~~~
-"cockroachdb" patched
+statefulset "cockroachdb" scaled
 ~~~ 
 
 Verify that a fourth pod was added successfully: 
