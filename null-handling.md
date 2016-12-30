@@ -300,7 +300,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 ## NULLs and Unique Constraints 
 
-`NULL` values are not considered unique. Therefore, if a table has a `UNIQUE` constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
+`NULL` values are not considered unique. Therefore, if a table has a Unique constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 
 ~~~ sql
 > CREATE TABLE t2(a INT, b INT UNIQUE);
@@ -323,9 +323,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 ## NULLs and CHECK Constraints
 
-A [`CHECK`](check.html) constraint expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be
-used along side a `CHECK` expression.
-
+A [Check constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual Not Null constraint can be used along side a Check constraint.
 
 ~~~ sql
 > CREATE TABLE products (id STRING PRIMARY KEY, price INT NOT NULL CHECK (price > 0), discount INT, CHECK (discount <= price));

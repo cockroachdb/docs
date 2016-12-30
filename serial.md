@@ -31,7 +31,7 @@ A `SERIAL` column supports values up to 8 bytes in width, but the total storage 
 
 ### Use `SERIAL` to Auto-Generate Primary Keys
 
-In this example, we create a table with the `SERIAL` column as the `PRIMARY KEY` so we can auto-generate unique IDs on insert.
+In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
 ~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING(30), c BOOL);

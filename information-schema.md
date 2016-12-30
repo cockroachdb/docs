@@ -41,8 +41,8 @@ Column | Description
 `TABLE_NAME` | Name of the table.
 `COLUMN_NAME` | Name of the column.
 `ORDINAL_POSITION` | Ordinal position of the column in the table (begins at 1).
-`COLUMN_DEFAULT` | Default value for the column.
-`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g. it has the [`NOT NULL` constraint](not-null.html)).
+`COLUMN_DEFAULT` | Default Value for the column.
+`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g. it has the [Not Null constraint](not-null.html)).
 `DATA_TYPE` | [Data type](data-types.html) of the column.
 `CHARACTER_MAXIMUM_LENGTH` |  If `DATA_TYPE` is `STRING`, the maximum length in characters of a value; otherwise *NULL*.
 `CHARACTER_OCTET_LENGTH` | If `DATA_TYPE` is `STRING`, the maximum length in octets (bytes) of a value; otherwise *NULL*.
@@ -52,7 +52,7 @@ Column | Description
 
 ### key_column_usage
 
-The `key_column_usage` view identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [`FOREIGN KEY`](foreign-key.html) constraints.
+The `key_column_usage` view identifies columns with [Primary Key](primary-key.html), [Unique](unique.html), or [Foreign Key](foreign-key.html) constraints.
 
 Column | Description
 -------|-----------
@@ -64,7 +64,7 @@ Column | Description
 `TABLE_NAME` | Name of the constrained table.
 `COLUMN_NAME` | Name of the constrained column.
 `ORDINAL_POSITION` | Ordinal position of the column within the constraint (begins at 1).
-`POSITION_IN_UNIQUE_CONSTRAINT` | For Foreign Key constraints, ordinal position of the referenced column within its `UNIQUE` constraint (begins at 1).
+`POSITION_IN_UNIQUE_CONSTRAINT` | For Foreign Key constraints, ordinal position of the referenced column within its Unique constraint (begins at 1).
 
 ### schema_privileges
 
@@ -98,7 +98,7 @@ Column | Description
 `TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
 `TABLE_SCHEMA` | Name of the database that contains the constrained table.
 `TABLE_NAME` | Name of the table	 .
-`NON_UNIQUE` | `false` if the index was created by a `UNIQUE` constraint; `true` if the index was not created by a `UNIQUE` constraint.
+`NON_UNIQUE` | `false` if the index was created by a Unique constraint; `true` if the index was not created by a Unique constraint.
 `INDEX_SCHEMA` | Name of the database that contains the index.
 `INDEX_NAME` | Name of the index.
 `SEQ_IN_INDEX` | Ordinal position of the column within the index (begins at 1).

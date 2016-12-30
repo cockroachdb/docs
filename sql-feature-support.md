@@ -46,12 +46,12 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| `NOT NULL` | ✓ | Standard | [`NOT NULL` documentation](not-null.html) |
-| `UNIQUE` | ✓ | Standard | [`UNIQUE` documentation](unique.html) |
-| `PRIMARY KEY` | ✓ | Standard | [`PRIMARY KEY` documentation](primary-key.html) |
-| `CHECK` | ✓ | Standard | [`CHECK` documentation](check.html) |
-| `FOREIGN KEY` | ✓ | Standard | [`FOREIGN KEY` documentation](foreign-key.html) |
-| `DEFAULT VALUE` | ✓ | Standard | [`DEFAULT VALUE` documentation](default-value.html) |
+| Not Null | ✓ | Standard | [Not Null documentation](not-null.html) |
+| Unique | ✓ | Standard | [Unique documentation](unique.html) |
+| Primary Key | ✓ | Standard | [Primary Key documentation](primary-key.html) |
+| Check | ✓ | Standard | [Check documentation](check.html) |
+| Foreign Key | ✓ | Standard | [Foreign Key documentation](foreign-key.html) |
+| Default Value | ✓ | Standard | [Default Value documentation](default-value.html) |
 
 ### Transactions
 
