@@ -232,7 +232,7 @@ entries:
                 - title: Default Value
                   url: /default-value.html
 
-                - title: Foreign Keys
+                - title: Foreign Key
                   url: /foreign-key.html
 
                 - title: Not Null

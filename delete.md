@@ -69,13 +69,13 @@ As you can see, one difference is that `TRUNCATE` does not return the number of 
 
 ### Delete Specific Rows
 
-When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using [`PRIMARY KEY`](primary-key.html)/[`UNIQUE`](unique.html) columns versus non-unique ones.
+When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using columns with the [Primary Key](primary-key.html)/[Unique](unique.html) constraints (both of which enforce uniqueness) versus those that are not unique.
 
 #### Delete Rows Using Primary Key/Unique Columns
 
-Using your table's `PRIMARY KEY` or `UNIQUE` columns to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
+Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
 
-In this example, `account_id` is our `PRIMARY KEY` and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
+In this example, `account_id` is our primary key and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
 
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;

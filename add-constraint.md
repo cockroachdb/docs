@@ -11,8 +11,7 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 - [Unique](unique.html)
 
 {{site.data.alerts.callout_info}}
-The <a href="primary-key.html">Primary Key</a> constraint can only be applied through <a href="create-table.html"><code>CREATE TABLE</code></a>. The <a href="default-value.html">Default</a> constraint is managed through <a href="alter-column.html"><code>ALTER COLUMN</code>.</a>
-{{site.data.alerts.end}}
+The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not Null</a> constraints can only be applied through <a href="create-table.html"><code>CREATE TABLE</code></a>. The <a href="default-value.html">Default</a> constraint is managed through <a href="alter-column.html"><code>ALTER COLUMN</code>.</a>{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

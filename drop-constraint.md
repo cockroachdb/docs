@@ -4,7 +4,9 @@ summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
 toc: false
 ---
 
-The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes constraints from columns.
+The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes Check and Foreign Key constraints from columns.
+
+{{site.data.alerts.callout_info}}For information about removing other constraints, see <a href="constraints.html#remove-constraints">Constraints: Remove Constraints</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -22,7 +24,6 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 |-----------|-------------|
 | `table_name` | The name of the table with the constraint you want to drop. |
 | `name` | The name of the constraint you want to drop. |
-
 
 ## Example
 

@@ -6,7 +6,7 @@ toc: false
 
 The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints. 
 
-Note that `UPSERT` considers uniqueness only for [`PRIMARY KEY`](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
+Note that `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
 
 <div id="toc"></div>
 
@@ -30,7 +30,7 @@ Parameter | Description
 
 ## How `UPSERT` Transforms into `INSERT ON CONFLICT`
 
-`UPSERT` considers uniqueness only for [`PRIMARY KEY`](primary-key.html) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
+`UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
 ~~~ sql
 > UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
@@ -108,7 +108,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 ### Upsert that Fails (Conflict on Non-Primay Key)
 
-`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE`](unique.html) constraint. Because the inserted `b` value is not unique, the `UPSERT` fails.
+`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
 ~~~ sql
 > SELECT * FROM unique_test;
@@ -129,7 +129,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 ~~~
 
-In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the `UNIQUE` constraint.
+In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the Unique constraint.
 
 ~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;

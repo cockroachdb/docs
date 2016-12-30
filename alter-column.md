@@ -22,15 +22,15 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 | Parameter | Description |
 |-----------|-------------|
-| `table_name` | The name of the table with the column whose Default value you want to modify. |
+| `table_name` | The name of the table with the column whose Default Value you want to modify. |
 | `name` | The name of the column you want to modify. |
-| `a_expr` | The new Default value you want to use. |
+| `a_expr` | The new Default Value you want to use. |
 
 ## Examples
 
 ### Set or Change a Default Value
 
-Setting the [Default value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a Default value set, you can use this statement to change it.
+Setting the [Default Value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a Default Value set, you can use this statement to change it.
 
 The below example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
@@ -40,7 +40,7 @@ The below example inserts the Boolean value `true` whenever you inserted data to
 
 ### Remove Default Constraint
 
-If the column has a defined [Default value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
+If the column has a defined [Default Value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
 ``` sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
