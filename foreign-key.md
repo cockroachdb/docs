@@ -4,7 +4,7 @@ summary: The Foreign Key constraint specifies a column can contain only values e
 toc: false
 ---
 
-The Foreign Key [constraints](constraints.html) specifies a column can contain only values exactly matching existing values from the column it references, enforcing referential integrity.
+The Foreign Key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
 
 For example, if you create a foreign key on `orders.customer` that references `customers.id`:
 
@@ -27,14 +27,14 @@ For example, if you create a foreign key on `orders.customer` that references `c
 - Foreign key columns must be [indexed](indexes.html) when the table is created. To meet this requirement, there are a few options:
 
     - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) clause of `CREATE TABLE`.
-    - Rely on indexes created by [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
+    - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
     - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
   
   Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
 
 **Referenced Columns**
 
-- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [Unique](unique.html) or [Primary Key](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
 
 ### _NULL_ Values
@@ -48,7 +48,7 @@ Multiple-column foreign keys only accept _NULL_ values in these scenarios:
 
 For example, if you have a Foreign Key constraint on columns `(A, B)` and try to insert `(1, NULL)`, the write would fail unless the row with the value `1` for `(A)` contained a _NULL_ value for `(B)`. However, inserting `(NULL, NULL)` would succeed.
 
-However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use [`NOT NULL`](not-null.html) on both sets of columns when [creating your tables](create-table.html). (`NOT NULL` cannot be added to existing tables.)
+However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
 ### Performance
 
@@ -60,7 +60,11 @@ We're currently working to improve the performance of these statements, though.
 
 ## Syntax
 
-### Single Column (Column Level)
+The syntax of the Foreign Key constraint depends on whether you want the constraint to use a [single column](#single-column-column-level) or [multiple columns](#multiple-column-table-level).
+
+{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+
+### Single Column (Column-Level)
 
 {% include sql/diagrams/foreign_key_column_level.html %}
 
@@ -71,7 +75,7 @@ We're currently working to improve the performance of these statements, though.
 | `column_type` | The foreign key column's [data type](data-types.html). |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `ref_column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply. |
+| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. |
 | `column_def` | Definitions for any other columns in the table. |
 | `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
 
@@ -86,7 +90,7 @@ We're currently working to improve the performance of these statements, though.
   );
 ~~~
 
-### Multiple Column (Table Level)
+### Multiple Column (Table-Level)
 
 {% include sql/diagrams/foreign_key_table_level.html %}
 
@@ -98,7 +102,7 @@ We're currently working to improve the performance of these statements, though.
 | `fk_column_name` | The name of the foreign key column. |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
+| `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply. |
 
 **Example**
 
@@ -153,6 +157,7 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 ## See Also
 
 - [Constraints](constraints.html)
+- [`DROP CONSTRAINTS`](drop-constraint.html)
 - [Check constraint](check.html)
 - [Default Value constraint](default-value.html)
 - [Not Null constraint](not-null.html)

@@ -57,7 +57,7 @@ To handle errors in transactions, you should listen for the following types of s
 
   For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.
 
-- **SQL Errors**: All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.
+- **SQL Errors**: All other errors, which indicate that a statement in the transaction failed. For example, violating the Unique constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.
 
   If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
