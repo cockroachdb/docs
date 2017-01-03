@@ -1,10 +1,10 @@
 ---
 title: Primary Key Constraint
-summary: The Primary Key constraint specifics that the columns can be used to uniquely identify rows in a table; this means it combines both the Unique and Not Null constraints.
+summary: The Primary Key constraint specifies that the columns can be used to uniquely identify rows in a table.
 toc: false
 ---
 
-The Primary Key [constraints](constraints.html) specifics that the columns can be used to uniquely identify rows in a table; this means it combines both the Unique and Not Null constraints.
+The Primary Key [constraints](constraints.html) specifies that the columns can be used to uniquely identify rows in a table; this means it combines both the Unique and Not Null constraints.
 
 {{site.data.alerts.callout_info}}The Primary Key for a table can only be specified in the <a href="create-table.html"><code>CREATE TABLE</code></a> statement. It can't be changed later using <code>ALTER TABLE</code>.{{site.data.alerts.end}}
 

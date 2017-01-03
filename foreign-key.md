@@ -1,10 +1,10 @@
 ---
 title: Foreign Key Constraint
-summary: The Foreign Key constraint specifies a column can only contain values exactly matching existing values from the column it references, enforcing referential integrity.
+summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
 toc: false
 ---
 
-The Foreign Key [constraints](constraints.html) specifies a column can only contain values exactly matching existing values from the column it references, enforcing referential integrity.
+The Foreign Key [constraints](constraints.html) specifies a column can contain only values exactly matching existing values from the column it references, enforcing referential integrity.
 
 For example, if you create a foreign key on `orders.customer` that references `customers.id`:
 
