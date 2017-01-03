@@ -1,6 +1,6 @@
 ---
 title: Constraints
-summary: Constraints offer additional data integrity by enforcing conditions on the data within a column or row. They are checked during DML operations and restrict the data values within a column to those specified within the constraint.
+summary: Constraints offer additional data integrity by enforcing conditions on the data within a column or row. 
 toc: false
 ---
 
