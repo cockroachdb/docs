@@ -169,10 +169,10 @@ $(document).ready(function(){
 
     <ul>
       <li>
-        <p>A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work). On Mac OS X, Xcode should suffice.</p>
+        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On Mac OS X, Xcode should suffice.</p>
       </li>
       <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.7.1. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
+        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
         <p>Git 1.8+</p>
@@ -321,10 +321,10 @@ $(document).ready(function(){
 
     <ul>
       <li>
-        <p>A C++ compiler that supports C++11 (GCC 4.9+ and clang 3.6+ are known to work).</p>
+        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>.</p>
       </li>
       <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.7.1. You can download the <a href="https://golang.org/dl/">Go binary</a> directly from the official site. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
+        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
       </li>
       <li>
         <p>Git 1.8+</p>
