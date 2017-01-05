@@ -37,7 +37,7 @@ When inserting a string:
 
 ## Formats
 
-A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings. 
+A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings.
 
 ### String Literal
 
@@ -66,6 +66,10 @@ Backslash Escape Sequence | Interpretation
 For example, the `e'x61\141\u0061'` escape string represents the hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character values equivalent to the `'aaa'` string literal. 
 
 Note that any character not in the table above is taken literally in an escape string. Also, when continuing an escape string across lines, write `e` or `E` only before the first opening quote.
+
+### Collations
+
+`STRING` values accept [collations](collate.html), which lets you control the alphabetic sorting of ASCII characters.
 
 ## Size
 

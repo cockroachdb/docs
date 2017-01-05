@@ -298,6 +298,9 @@ entries:
                 - title: <code>STRING</code>
                   url: /string.html
 
+                - title: <code>COLLATE</code>
+                  url: /collate.html
+
                 - title: <code>BYTES</code>
                   url: /bytes.html
 

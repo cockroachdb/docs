@@ -31,6 +31,7 @@ table tr td:nth-child(2) {
 | `BOOLEAN` | ✓ | Standard | [`BOOL` documentation](bool.html) |
 | `DECIMAL`, `NUMERIC` | ✓ | Standard | [`DECIMAL` documentation](decimal.html) |
 | `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html) |
+| `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html) |
 | `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html) |
 | `BYTES` | ✓ | CockroachDB Extension | [`BYTES` documentation](bytes.html) |
 | Automatic key generation | ✓ | Common Extension | [`SERIAL` documentation](serial.html) |
@@ -110,7 +111,6 @@ table tr td:nth-child(2) {
 | `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect. |
 | Subqueries | Partial | Standard | Non-correlated subqueries are supported; correlated are not. Currently works only with small data sets. |
 | `EXISTS` | Partial | Standard | Non-correlated subqueries are supported; correlated are not. Currently works only with small data sets. |
-| `COLLATE` | Planned | Standard | Collations offer different modes of ASCII sorting. |
 
 ### Functions
 
