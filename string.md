@@ -6,6 +6,8 @@ toc: false
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
+{{site.data.alerts.callout_danger}}You cannot current use collated strings in indexes or primary keys; doing so causes CockroachDB to crash. If you're interested in using collated strings in these contexts, you can follow <a href="https://github.com/cockroachdb/cockroach/issues/2473">this issue on GitHub</a> to be notified when it's resolved.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Aliases
@@ -22,12 +24,12 @@ And the following are aliases for `STRING(n)`:
 - `CHARACTER(n)`
 - `CHARACTER VARYING(n)`
 - `CHAR(n)`
-- `CHAR VARYING(n)` 
+- `CHAR VARYING(n)`
 - `VARCHAR(n)`  
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of characters allowed. 
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. 
 
 When inserting a string: 
 
@@ -37,7 +39,7 @@ When inserting a string:
 
 ## Formats
 
-A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings. 
+A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings.
 
 ### String Literal
 
@@ -49,7 +51,7 @@ When inserting a hexadecimal-encoded string literal into a `STRING` column, form
 
 ### Escape String
 
-When inserting an escape string into a `STRING` column, format the value as `e` or `E` followed by one or more of the following backslash escape sequences within single quotes:   
+When inserting an escape string into a `STRING` column, format the value as `e` or `E` followed by one or more of the following backslash escape sequences within single quotes:
 
 Backslash Escape Sequence | Interpretation
 --------------------------|---------------
@@ -66,6 +68,10 @@ Backslash Escape Sequence | Interpretation
 For example, the `e'x61\141\u0061'` escape string represents the hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character values equivalent to the `'aaa'` string literal. 
 
 Note that any character not in the table above is taken literally in an escape string. Also, when continuing an escape string across lines, write `e` or `E` only before the first opening quote.
+
+### Collations
+
+`STRING` values accept [collations](collate.html), which lets you sort strings according to language- and country-specific rules.
 
 ## Size
 
