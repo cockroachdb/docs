@@ -274,6 +274,21 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 +--------------+
 ~~~
 
+#### Filter Columns Fed into Aggregate Functions
+
+You can use a `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by the aggregate function; those that return `FALSE` for the `FILTER` clause's Boolean expression are not fed into the aggregate function. You can also think of this as a shorthand for generating subqueries.
+
+~~~ sql
+> SELECT count(*) FILTER (WHERE balance > 1500) AS "balance > 1500" FROM bank.accounts;
+~~~
+~~~
++----------------+
+| balance > 1500 |
++----------------+
+|             14 |
++----------------+
+~~~
+
 #### Create Aggregate Groups
 
 Instead of performing aggregate functions on an the entire set of retrieved rows, you can split the rows into groups and then perform the aggregate function on each of them.
