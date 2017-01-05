@@ -276,7 +276,7 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 
 #### Filter Columns Fed into Aggregate Functions
 
-You can use a `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function.
+You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function.
 
 ~~~ sql
 > SELECT count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered FROM accounts;
