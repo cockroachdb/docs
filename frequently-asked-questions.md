@@ -160,7 +160,7 @@ Not currently, but [we plan to offer JSON/Protobuf datatypes](https://github.com
 
 ## Can I use CockroachDB as a key-value store?
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. At this time, it is not possible to access the key-value store directly. As an alternative, you can [create a SQL table](create-table.html) with two columns, `k` and `v`, and set `k` as the primary key. Note that if you group these columns into a single [column family](column-families.html), each row will be stored as a single key-value pair in the underlying key-value store.
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. At this time, it is not possible to access the key-value store directly. As an alternative, you can [create a SQL table](create-table.html) with two columns, `k` and `v`, and set `k` as the primary key.
 
 ## Have questions that weren’t answered? 
 
