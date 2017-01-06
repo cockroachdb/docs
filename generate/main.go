@@ -486,7 +486,6 @@ func main() {
 					if printBNF {
 						fmt.Printf("%s: (PRE REPLACE)\n\n%s\n", s.name, g)
 					}
-					fmt.Println(s.name, string(g))
 					for from, to := range s.replace {
 						g = bytes.Replace(g, []byte(from), []byte(to), -1)
 					}
