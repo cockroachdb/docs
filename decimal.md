@@ -68,6 +68,19 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 # The value in "c" has been limited to 17 digits.
 ~~~
 
+## Supported Casting & Conversion
+
+`DECIMAL` values can be cast to any of the following data types:
+
+Type | Details
+-----|--------
+`INT` | Truncates decimal precision
+`FLOAT` | Loses precision and may round up to +/- infinity if the value is too large in magnitude, or to +/-0 if the value is too small in magnitude
+`BOOL` |  **0** converts to `false`; all other values convert to `true`
+`STRING` | ––
+
+{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
+
 ## See Also
 
 [Data Types](data-types.html)
