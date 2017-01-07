@@ -67,6 +67,22 @@ CockroachDB does not offer multiple integer types for different widths; instead,
 +-------+-------+-------+
 ~~~
 
+## Supported Casting & Conversion
+
+`INT` values can be cast to any of the following data types:
+
+Type | Details
+-----|--------
+`DECIMAL` | ––
+`FLOAT` | ––
+`BOOL` | **0** converts to `false`; all other values convert to `true`
+`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970)
+`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970)
+`INTERVAL` | Converts to microseconds
+`STRING` | ––
+
+{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
+
 ## See Also
 
 [Data Types](data-types.html)
