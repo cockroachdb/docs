@@ -54,6 +54,23 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 +-------+------+-------+
 ~~~
 
+## Supported Casting & Conversion
+
+`BOOL` values support the following [data-type casting](data-types.html#type-casting--conversion):
+
+Type | Supported? | Details
+-----|---------|--------
+`INT` | ✓ | Converts `true` to `1`, `false` to `0`
+`DECIMAL` | ✓ | Converts `true` to `1`, `false` to `0`
+`FLOAT` | ✓ | Converts `true` to `1`, `false` to `0`
+`DATE` | ✗ | ––
+`TIMESTAMP` | ✗ | ––
+`INTERVAL` | ✗ | ––
+`STRING` | ✓ | ––
+`BYTES`  | ✗ | ––
+
+{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
+
 ## See Also
 
 [Data Types](data-types.html)

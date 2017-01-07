@@ -48,6 +48,23 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 +---------------------------------+-------+
 ~~~
 
+## Supported Casting & Conversion
+
+`DATE` values support the following [data-type casting](data-types.html#type-casting--conversion):
+
+Type | Supported? | Details
+-----|---------|--------
+`INT` | ✓ | Converts to number of days since the Unix epoch (Jan. 1, 1970)
+`DECIMAL` | ✓ | Converts to number of days since the Unix epoch (Jan. 1, 1970)
+`FLOAT` | ✓ | Converts to number of days since the Unix epoch (Jan. 1, 1970)
+`BOOL` | ✗ | ––
+`TIMESTAMP` | ✓ | ––
+`INTERVAL` | ✗ | ––
+`STRING` | ✓ | ––
+`BYTES` | ✗ | ––
+
+{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
+
 ## See Also
 
 [Data Types](data-types.html)

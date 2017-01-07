@@ -50,6 +50,22 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 (4 rows)
 ~~~
 
+## Supported Casting & Conversion 
+
+`BYTES` values support the following [data-type casting](data-types.html#type-casting--conversion):
+
+Type | Supported?
+-----|---------
+`INT` | ✗
+`SERIAL` | ✗
+`DECIMAL` | ✗
+`FLOAT` | ✗
+`BOOL` | ✗
+`DATE` | ✗
+`TIMESTAMP` | ✗
+`INTERVAL` | ✗
+`STRING` | ✓
+
 ## See Also
 
 [Data Types](data-types.html)

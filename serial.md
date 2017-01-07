@@ -106,6 +106,9 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. 
 
+## Supported Casting & Conversion
+
+Because the `SERIAL` data type represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as `SERIAL`.
 
 ## See Also
 

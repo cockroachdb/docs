@@ -59,6 +59,23 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 # Note that the value in "b" has been limited to 17 digits.
 ~~~
 
+## Supported Casting & Conversion
+
+`DECIMAL` values support the following [data-type casting](data-types.html#type-casting--conversion):
+
+Type | Supported? | Details
+-----|---------|--------
+`INT` | ✓ | Truncates decimal precision
+`DECIMAL` | ✓ | ––
+`BOOL` |  ✓ | **0** converts to `false`; all other values convert to `true`
+`DATE` | ✗ | ––
+`TIMESTAMP` | ✗ | ––
+`INTERVAL` | ✗ | ––
+`STRING` | ✗ | ––
+`BYTES` | ✗ | ––
+
+{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
+
 ## See Also
 
 [Data Types](data-types.html)
