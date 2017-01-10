@@ -108,7 +108,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
-      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
           hbspt.forms.create({ 
@@ -144,7 +144,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
-      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-2 clearfix">
         <script>
           hbspt.forms.create({ 
@@ -204,7 +204,7 @@ $(document).ready(function(){
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
-    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-3 clearfix">
       <script>
         hbspt.forms.create({ 
@@ -247,7 +247,7 @@ $(document).ready(function(){
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
-    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-4 clearfix">
       <script>
         hbspt.forms.create({ 
@@ -296,7 +296,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
-      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
         <script>
           hbspt.forms.create({ 
@@ -356,7 +356,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
-      <p>Keep up-to-date with software releases and usage best practices:</p>
+      <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
         <script>
           hbspt.forms.create({ 
@@ -401,7 +401,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
-    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-7 clearfix">
       <script>
         hbspt.forms.create({ 
@@ -445,7 +445,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="gp" data-eventcategory="win-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
   <li>
-    <p>Keep up-to-date with software releases and usage best practices:</p>
+    <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-8 clearfix">
       <script>
         hbspt.forms.create({ 
