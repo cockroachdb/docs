@@ -51,7 +51,6 @@
             font-size: 18px;
             line-height: 44px;
             width: 90px;
-            line-height: 44px;
         }
     }
 
@@ -62,6 +61,12 @@
         &.button-over {
             opacity: 1;
             @include translate(0, -15px);
+        }
+    }
+
+    .cockroach-forum {
+        &:hover, &:active, &:focus {
+            color: $cl_blue !important;
         }
     }
 }
