@@ -2696,7 +2696,7 @@ img.mfp-img {
 #help-widgets {
   z-index: 1000;
   position: fixed;
-  bottom: 10px;
+  bottom: 25px;
   right: 10px; }
 
 .help-widget {
@@ -2751,16 +2751,15 @@ img.mfp-img {
     -moz-border-radius: 100px;
     border-radius: 100px;
     width: 75px;
-    background-color: #FAFDF6;
+    background-color: #FFFFFF;
+    border: 2px solid #EBEBEB;
     text-align: center;
     padding: 0;
-    border: none;
-    display: block;
-    -webkit-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
-    -moz-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
-    box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19); }
+    display: block; }
     .help-widget__button:hover, .help-widget__button:active, .help-widget__button:focus {
       color: #142848 !important; }
+    .help-widget__button:hover {
+      border-color: #142848; }
     @media screen and (min-width: 768px) {
       .help-widget__button {
         font-size: 18px;
@@ -2768,7 +2767,6 @@ img.mfp-img {
         width: 90px; } }
   .help-widget.help-forum {
     opacity: 0;
-    pointer-events: none;
     -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2778,8 +2776,7 @@ img.mfp-img {
       -webkit-transform: translate(0, -15px);
       -ms-transform: translate(0, -15px);
       -o-transform: translate(0, -15px);
-      transform: translate(0, -15px);
-      pointer-events: auto; }
+      transform: translate(0, -15px); }
 
 .gitter-chat-embed {
   z-index: 9999; }

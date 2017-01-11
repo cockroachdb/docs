@@ -1,7 +1,7 @@
 #help-widgets {
     z-index: 1000;
     position: fixed;
-    bottom: 10px;
+    bottom: 25px;
     right: 10px;
 }
 
@@ -41,15 +41,18 @@
         line-height: 36px;
         @include rounded(100px);
         width: 75px;
-        background-color: $cl_green_pale;
+        background-color: #FFFFFF;
+        border: 2px solid #EBEBEB;
         text-align: center;
         padding: 0;
-        border: none;
         display: block;
-        @include box-shadow(3px, 3px, 5px, 0, rgba(0,0,0,0.19));
 
         &:hover, &:active, &:focus {
             color: $cl_blue !important;
+        }
+
+        &:hover {
+            border-color: $cl_blue;
         }
 
         @include at-query($min, $screen-sm){
@@ -61,13 +64,11 @@
 
     &.help-forum {
         opacity: 0;
-        pointer-events: none;
         @include groovy(all);
 
         &.button-over {
             opacity: 1;
             @include translate(0, -15px);
-            pointer-events: auto;
         }
     }
 }
