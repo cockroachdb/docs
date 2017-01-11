@@ -23,6 +23,7 @@
         opacity: 0;
         @include groovy(all);
         pointer-events: none;
+        display: none;
     
         &.hover-over {
             @include translate(0, -50%);
@@ -31,6 +32,7 @@
 
         @include at-query($min, $screen-sm){
             @include translate(15px, -50%);
+            display: block;
         }
     }
 
@@ -44,8 +46,11 @@
         padding: 0;
         border: none;
         display: block;
-
         @include box-shadow(3px, 3px, 5px, 0, rgba(0,0,0,0.19));
+
+        &:hover, &:active, &:focus {
+            color: $cl_blue !important;
+        }
 
         @include at-query($min, $screen-sm){
             font-size: 18px;
@@ -63,12 +68,6 @@
             opacity: 1;
             @include translate(0, -15px);
             pointer-events: auto;
-        }
-    }
-
-    .cockroach-forum {
-        &:hover, &:active, &:focus {
-            color: $cl_blue !important;
         }
     }
 }

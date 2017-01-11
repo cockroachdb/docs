@@ -6,43 +6,84 @@
 	</div>
 	<div class="help-widget help-gitter">
 		<div class="help-widget__tooltip">Live chat with our developers</div>
-		<button class="help-widget__button cockroach-gitter">Help</button>
+		<a href="https://gitter.im/cockroachdb/cockroach" class="help-widget__button cockroach-gitter">Help</a>
 	</div>
 </div>
 
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'cockroachdb/cockroach',
-      activationElement: '.cockroach-gitter'
-    };
-</script>
 <script>
 (function($){
 	$(document).ready(function(){
 		var $help_widgets = $('#help-widgets');
 		var $help_forum = $('.help-forum');
+		var $help_button = $('.cockroach-gitter');
 		var $buttons = $('.help-widget__button');
+		var $window = $(window);
+		var mobile = false, clicked = false;
 
-		$help_widgets.on({
-			'mouseover': function(){ 
-				$(this).find('.cockroach-gitter').html('Gitter');
-				$help_forum.addClass('button-over');
-			},
-			'mouseout': function(){ 
-				$(this).find('.cockroach-gitter').html('Help');
+		var addHoverStates = function(){
+			$help_widgets.on({
+				'mouseover': function(){ 
+					$help_button.html('Gitter');
+					$help_forum.addClass('button-over');
+				},
+				'mouseout': function(){ 
+					$help_button.html('Help');
+					$help_forum.removeClass('button-over'); 
+				}
+			}, '');
+
+			$buttons.on({
+				'mouseover': function(){
+					$(this).siblings('.help-widget__tooltip').addClass('hover-over');
+				},
+				'mouseout': function(){
+					$(this).siblings('.help-widget__tooltip').removeClass('hover-over');
+				}
+			}, '');
+		};
+
+		var removeHoverStates = function(){
+			$help_widgets.off('mouseover').off('mouseout');
+			$buttons.off('mouseover').off('mouseout');
+		};
+
+
+		if($window.width() < 992){
+			mobile = true;
+			removeHoverStates();
+		}else{
+			addHoverStates();
+		}
+
+		$help_button.on('click', function(e){
+			e.preventDefault();
+			var link = $(this).attr('href');
+
+			if(mobile){
+				if(!clicked){
+					clicked = true;
+					$help_forum.addClass('button-over'); 
+					$help_button.html('Gitter');
+				}else{
+					window.open(link, '_blank');
+				}
+			}else{
+				window.open(link, '_blank');
+			}
+		});
+
+		$window.on('resize', function(){
+			if($window.width() < 992){
+				mobile = true;
+				removeHoverStates();
+			}else{
+				mobile = false;
+				clicked = false;
 				$help_forum.removeClass('button-over'); 
+				$help_button.html('Help');
+				addHoverStates();
 			}
-		}, '');
-
-		$buttons.on({
-			'mouseover': function(){
-				$(this).siblings('.help-widget__tooltip').addClass('hover-over');
-			},
-			'mouseout': function(){
-				$(this).siblings('.help-widget__tooltip').removeClass('hover-over');
-			}
-		}, '');
+		});
 	});
 })(jQuery)
 </script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>

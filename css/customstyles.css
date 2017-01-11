@@ -2725,7 +2725,8 @@ img.mfp-img {
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-    pointer-events: none; }
+    pointer-events: none;
+    display: none; }
     .help-widget__tooltip.hover-over {
       -webkit-transform: translate(0, -50%);
       -ms-transform: translate(0, -50%);
@@ -2737,7 +2738,8 @@ img.mfp-img {
         -webkit-transform: translate(15px, -50%);
         -ms-transform: translate(15px, -50%);
         -o-transform: translate(15px, -50%);
-        transform: translate(15px, -50%); } }
+        transform: translate(15px, -50%);
+        display: block; } }
   .help-widget__button {
     font-family: 'AvenirLTStd-Medium', serif;
     font-size: 14px;
@@ -2757,6 +2759,8 @@ img.mfp-img {
     -webkit-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
     box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19); }
+    .help-widget__button:hover, .help-widget__button:active, .help-widget__button:focus {
+      color: #142848 !important; }
     @media screen and (min-width: 768px) {
       .help-widget__button {
         font-size: 18px;
@@ -2776,8 +2780,6 @@ img.mfp-img {
       -o-transform: translate(0, -15px);
       transform: translate(0, -15px);
       pointer-events: auto; }
-  .help-widget .cockroach-forum:hover, .help-widget .cockroach-forum:active, .help-widget .cockroach-forum:focus {
-    color: #142848 !important; }
 
 .gitter-chat-embed {
   z-index: 9999; }
