@@ -2790,7 +2790,8 @@ img.mfp-img {
     -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    pointer-events: none; }
     .help-widget__close svg {
       width: 47px;
       height: 47px;
@@ -2804,6 +2805,7 @@ img.mfp-img {
         transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
     .help-widget__close.close-visible {
       opacity: 1;
+      pointer-events: auto;
       -webkit-transform: translate(0, -15px);
       -ms-transform: translate(0, -15px);
       -o-transform: translate(0, -15px);

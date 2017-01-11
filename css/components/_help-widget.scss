@@ -83,6 +83,7 @@
         top: -62px;
         opacity: 0;
         @include groovy(all);
+        pointer-events: none;
 
         svg {
             width: 47px;
@@ -98,6 +99,7 @@
 
         &.close-visible {
             opacity: 1;
+            pointer-events: auto;
             @include translate(0, -15px);
         }
 
