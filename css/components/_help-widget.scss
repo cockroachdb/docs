@@ -1,0 +1,71 @@
+#help-widgets {
+    z-index: 1000;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.help-widget {
+    position: relative;
+    
+    &__tooltip {
+        @include avenir_bk(14px);
+        line-height: 25px;
+        color: #FFFFFF;
+        white-space: nowrap;
+        padding: 0 10px;
+        position: absolute;
+        top: 50%;
+        right: calc(100% + 15px);
+        background-color: $cl_blue;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        @include translate(10px, -50%);
+        opacity: 0;
+        @include groovy(all);
+        pointer-events: none;
+    
+        &.hover-over {
+            @include translate(0, -50%);
+            opacity: 1;
+        }
+
+        @include at-query($min, $screen-sm){
+            @include translate(15px, -50%);
+        }
+    }
+
+    &__button {
+        @include avenir_m(14px);
+        line-height: 36px;
+        @include rounded(100px);
+        width: 75px;
+        background-color: $cl_green_pale;
+        text-align: center;
+        padding: 0;
+        border: none;
+        display: block;
+
+        @include box-shadow(3px, 3px, 5px, 0, rgba(0,0,0,0.19));
+
+        @include at-query($min, $screen-sm){
+            font-size: 18px;
+            line-height: 44px;
+            width: 90px;
+            line-height: 44px;
+        }
+    }
+
+    &.help-forum {
+        opacity: 0;
+        @include groovy(all);
+
+        &.button-over {
+            opacity: 1;
+            @include translate(0, -15px);
+        }
+    }
+}
+
+.gitter-chat-embed {
+  z-index: 9999;
+}

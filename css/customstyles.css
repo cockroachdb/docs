@@ -2693,4 +2693,90 @@ img.mfp-img {
       margin-left: 10px;
       padding: 12px 30px; } }
 
+#help-widgets {
+  z-index: 1000;
+  position: fixed;
+  bottom: 10px;
+  right: 10px; }
+
+.help-widget {
+  position: relative; }
+  .help-widget__tooltip {
+    font-family: 'AvenirLTStd-Book', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 25px;
+    color: #FFFFFF;
+    white-space: nowrap;
+    padding: 0 10px;
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 15px);
+    background-color: #142848;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    -webkit-transform: translate(10px, -50%);
+    -ms-transform: translate(10px, -50%);
+    -o-transform: translate(10px, -50%);
+    transform: translate(10px, -50%);
+    opacity: 0;
+    -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    pointer-events: none; }
+    .help-widget__tooltip.hover-over {
+      -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+      -o-transform: translate(0, -50%);
+      transform: translate(0, -50%);
+      opacity: 1; }
+    @media screen and (min-width: 768px) {
+      .help-widget__tooltip {
+        -webkit-transform: translate(15px, -50%);
+        -ms-transform: translate(15px, -50%);
+        -o-transform: translate(15px, -50%);
+        transform: translate(15px, -50%); } }
+  .help-widget__button {
+    font-family: 'AvenirLTStd-Medium', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 36px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    width: 75px;
+    background-color: #FAFDF6;
+    text-align: center;
+    padding: 0;
+    border: none;
+    display: block;
+    -webkit-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.19); }
+    @media screen and (min-width: 768px) {
+      .help-widget__button {
+        font-size: 18px;
+        line-height: 44px;
+        width: 90px;
+        line-height: 44px; } }
+  .help-widget.help-forum {
+    opacity: 0;
+    -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    .help-widget.help-forum.button-over {
+      opacity: 1;
+      -webkit-transform: translate(0, -15px);
+      -ms-transform: translate(0, -15px);
+      -o-transform: translate(0, -15px);
+      transform: translate(0, -15px); }
+
+.gitter-chat-embed {
+  z-index: 9999; }
+
 /*# sourceMappingURL=customstyles.css.map */

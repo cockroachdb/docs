@@ -1,0 +1,48 @@
+<!-- Gitter & Forum buttons -->
+<div id="help-widgets">
+	<div class="help-widget help-forum">
+		<div class="help-widget__tooltip">Get in-depth answers from the community</div>
+		<a href="https://forum.cockroachlabs.com/" class="help-widget__button cockroach-forum">Food</a>
+	</div>
+	<div class="help-widget help-gitter">
+		<div class="help-widget__tooltip">Live chat with our developers</div>
+		<button class="help-widget__button cockroach-gitter">Help</button>
+	</div>
+</div>
+
+<script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'cockroachdb/cockroach',
+      activationElement: '.cockroach-gitter'
+    };
+</script>
+<script>
+(function($){
+	$(document).ready(function(){
+		var $help_widgets = $('#help-widgets');
+		var $help_forum = $('.help-forum');
+		var $buttons = $('.help-widget__button');
+
+		$help_widgets.on({
+			'mouseover': function(){ 
+				$(this).find('.cockroach-gitter').html('Gitter');
+				$help_forum.addClass('button-over');
+			},
+			'mouseout': function(){ 
+				$(this).find('.cockroach-gitter').html('Help');
+				$help_forum.removeClass('button-over'); 
+			}
+		}, '');
+
+		$buttons.on({
+			'mouseover': function(){
+				$(this).siblings('.help-widget__tooltip').addClass('hover-over');
+			},
+			'mouseout': function(){
+				$(this).siblings('.help-widget__tooltip').removeClass('hover-over');
+			}
+		}, '');
+	});
+})(jQuery)
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
