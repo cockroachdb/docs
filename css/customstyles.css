@@ -2764,6 +2764,7 @@ img.mfp-img {
         width: 90px; } }
   .help-widget.help-forum {
     opacity: 0;
+    pointer-events: none;
     -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2773,7 +2774,8 @@ img.mfp-img {
       -webkit-transform: translate(0, -15px);
       -ms-transform: translate(0, -15px);
       -o-transform: translate(0, -15px);
-      transform: translate(0, -15px); }
+      transform: translate(0, -15px);
+      pointer-events: auto; }
   .help-widget .cockroach-forum:hover, .help-widget .cockroach-forum:active, .help-widget .cockroach-forum:focus {
     color: #142848 !important; }
 
