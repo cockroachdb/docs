@@ -3,6 +3,7 @@
     position: fixed;
     bottom: 25px;
     right: 10px;
+    font-size: 0;
 }
 
 .help-widget {
@@ -69,6 +70,47 @@
         &.button-over {
             opacity: 1;
             @include translate(0, -15px);
+        }
+    }
+
+    &__close {
+        cursor: pointer;
+        display: inline-block;
+        height: 47px;
+        width: 47px;
+        position: absolute;
+        right: 0;
+        top: -62px;
+        opacity: 0;
+        @include groovy(all);
+
+        svg {
+            width: 47px;
+            height: 47px;
+            display: block;
+
+            circle {
+                stroke: #E6E6E6 !important;
+                fill: #FFFFFF !important;
+                @include groovy(all);
+            }
+        }
+
+        &.close-visible {
+            opacity: 1;
+            @include translate(0, -15px);
+        }
+
+        &:hover {
+            svg {
+                circle {
+                    stroke: $cl_blue !important;
+                }
+            }
+        }
+
+        @include at-query($min, $screen-md){
+            display: none;
         }
     }
 }
