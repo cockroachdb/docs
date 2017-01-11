@@ -2590,7 +2590,7 @@ img.mfp-img {
   z-index: 1000;
   position: fixed;
   top: 50%;
-  right: 30px;
+  right: 10px;
   display: none; }
 
 .scroll-to-top > img {
