@@ -69,12 +69,12 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 Type | Details
 -----|--------
-`INT | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`SERIAL | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`DECIMAL | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`FLOAT | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`DATE | ––
-`STRING | ––
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`DATE` | ––
+`STRING` | ––
 
 {{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
 
