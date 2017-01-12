@@ -8,6 +8,7 @@ $(document).ready(function(){
   var $scroll_to_top = $('.scroll-to-top');
   var footer_top = $(".footer").offset().top;
   var right_position = $window.width() - ($('.content-col')[0].getBoundingClientRect().right  + $window.scrollLeft()) + 15;
+  var visible = false;
   
   $window.on('resize', function(){
     //update footer_top && right position of content-col
@@ -19,12 +20,18 @@ $(document).ready(function(){
   $window.on('scroll', function(){
     //check to see if the window is top if not then display button
     var next = $window.scrollTop();
-    var up = next < last;
+    var going_up = next < last;
 
-    if (up && next > 2000) {
-      $scroll_to_top.fadeIn();
+    if ((going_up && next > 2000)) {
+      if(!visible){
+        $scroll_to_top.stop().fadeIn();
+      }
+      visible = true;
     } else {
-      $scroll_to_top.fadeOut();
+      if(visible){
+        $scroll_to_top.stop().fadeOut();
+        visible = false;
+      }
     }
     
     last = next;
