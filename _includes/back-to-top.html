@@ -1,25 +1,45 @@
-<!-- This adds a "back to top" button. Code adapted from https://paulund.co.uk/how-to-create-an-animated-scroll-to-top-with-jquery -->
-
-<a href="#" class="scroll-to-top"><img src="images/back_to_top.png" alt="Scroll back to top" onmouseover="this.src='images/back_to_top_hover.png';" onmouseout="this.src='images/back_to_top.png';"/></a>
+<!-- back to top button -->
+<div class="scroll-to-top"><img src="images/back_to_top.png" alt="Scroll back to top" onmouseover="this.src='images/back_to_top_hover.png';" onmouseout="this.src='images/back_to_top.png';"/></div>
 
 <script>
 $(document).ready(function(){
   var last = 0;
+  var $window = $(window);
+  var $scroll_to_top = $('.scroll-to-top');
+  var footer_top = $(".footer").offset().top;
+  var right_position = $window.width() - ($('.content-col')[0].getBoundingClientRect().right  + $window.scrollLeft()) + 15;
   
-  //Check to see if the window is top if not then display button
-  $(window).scroll(function(){
-    var next = document.body.scrollTop;
+  $window.on('resize', function(){
+    //update footer_top && right position of content-col
+    footer_top = $(".footer").offset().top;
+    right_position = $window.width() - ($('.content-col')[0].getBoundingClientRect().right  + $window.scrollLeft()) + 15;
+  });
+
+
+  $window.on('scroll', function(){
+    //check to see if the window is top if not then display button
+    var next = $window.scrollTop();
     var up = next < last;
+
     if (up && next > 2000) {
-      $('.scroll-to-top').fadeIn();
+      $scroll_to_top.fadeIn();
     } else {
-      $('.scroll-to-top').fadeOut();
+      $scroll_to_top.fadeOut();
     }
+    
     last = next;
+
+    //keep scroll back to top above help buttons + footer
+    var window_bottom = $(this).scrollTop() + $window.height();        
+    if (window_bottom >= footer_top) {
+      $scroll_to_top.removeClass("fixed").css('right', '15px');
+    }else {
+      $scroll_to_top.addClass("fixed").css('right', right_position + 'px');
+    }
   });
   
-  //Click event to scroll to top
-  $('.scroll-to-top').click(function(){
+  //click event to scroll to top
+  $scroll_to_top.on('click', function(){
     $('html, body').animate({scrollTop : 0}, 100);
     return false;
   });
