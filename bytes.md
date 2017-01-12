@@ -50,6 +50,14 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 (4 rows)
 ~~~
 
+## Supported Casting & Conversion 
+
+`BYTES` values can be cast to any of the following data types:
+
+Type | Details
+-----|--------
+`STRING` | Requires the byte array to contain only valid UTF-8 character encodings.
+
 ## See Also
 
 [Data Types](data-types.html)

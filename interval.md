@@ -76,6 +76,17 @@ INSERT 3
 (3 rows)
 ~~~
 
+## Supported Casting & Conversion
+
+`INTERVAL` values can be cast to any of the following data types:
+
+Type | Details
+-----|--------
+`INT` | Converts to number of seconds (second precision)
+`DECIMAL` | Converts to number of seconds (nanosecond precision)
+`FLOAT` | Converts to number of picoseconds
+`STRING` | Converts to `h-m-s` format (nanosecond precision)
+
 ## See Also
 
 [Data Types](data-types.html)
