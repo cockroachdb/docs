@@ -1,9 +1,13 @@
 #help-widgets {
     z-index: 1000;
-    position: fixed;
+    position: absolute;
     bottom: 25px;
-    right: 10px;
-    font-size: 0;
+    right: 15px;
+
+    &.fixed {
+        position: fixed;
+        bottom: 25px;
+    }
 }
 
 .help-widget {
@@ -19,7 +23,6 @@
         top: 50%;
         right: calc(100% + 15px);
         background-color: $cl_blue;
-        border: 1px solid rgba(255, 255, 255, 0.5);
         @include translate(10px, -50%);
         opacity: 0;
         @include groovy(all);

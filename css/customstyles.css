@@ -476,7 +476,8 @@ header {
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
   #content #main-content .content-col {
-    padding-bottom: 100px; }
+    padding-bottom: 100px;
+    position: relative; }
   @media screen and (min-width: 768px) {
     #content {
       padding-top: 71px; }
@@ -2695,10 +2696,12 @@ img.mfp-img {
 
 #help-widgets {
   z-index: 1000;
-  position: fixed;
+  position: absolute;
   bottom: 25px;
-  right: 10px;
-  font-size: 0; }
+  right: 15px; }
+  #help-widgets.fixed {
+    position: fixed;
+    bottom: 25px; }
 
 .help-widget {
   position: relative; }
@@ -2716,7 +2719,6 @@ img.mfp-img {
     top: 50%;
     right: calc(100% + 15px);
     background-color: #142848;
-    border: 1px solid rgba(255, 255, 255, 0.5);
     -webkit-transform: translate(10px, -50%);
     -ms-transform: translate(10px, -50%);
     -o-transform: translate(10px, -50%);
