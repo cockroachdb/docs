@@ -69,7 +69,7 @@ CockroachDB does not offer multiple integer types for different widths; instead,
 
 ## Supported Casting & Conversion
 
-`INT` values can be cast to any of the following data types:
+`INT` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
 
 Type | Details
 -----|--------

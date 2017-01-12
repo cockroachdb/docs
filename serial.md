@@ -108,7 +108,7 @@ In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCRE
 
 ## Supported Casting & Conversion
 
-Because the `SERIAL` data type represents `INT` values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast or convert `SERIAL` into other data types. If you do, its casting and conversion behavior is the same as [`INT`](int.html#supported-casting--conversion).
+Because the `SERIAL` data type represents `INT` values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully [cast](data-types.html#data-type-conversions--casts) or convert `SERIAL` into other data types. If you do, its casting and conversion behavior is the same as [`INT`](int.html#supported-casting--conversion).
 
 ## See Also
 
