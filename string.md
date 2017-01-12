@@ -52,7 +52,7 @@ When inserting a hexadecimal-encoded string literal into a `STRING` column, form
 When inserting an escape string into a `STRING` column, format the value as `e` or `E` followed by one or more of the following backslash escape sequences within single quotes:   
 
 Backslash Escape Sequence | Interpretation
---------------------------------
+--------------------------|---------------
 `\b` | backspace
 `\f` | form feed
 `\n` | newline
@@ -102,7 +102,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Supported Casting & Conversion
 
-`STRING` values can be cast to any of the following data types:
+`STRING` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
 
 Type | Details
 -----|--------

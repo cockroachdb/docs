@@ -52,7 +52,7 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 
 ## Supported Casting & Conversion 
 
-`BYTES` values can be cast to any of the following data types:
+`BYTES` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
 
 Type | Details
 -----|--------
