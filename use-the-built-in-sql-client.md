@@ -42,7 +42,7 @@ Flag | Description
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--pretty` | When this flag is used in conjunction with `--execute`, table rows printed to the standard output are formatted using ASCII art and look the same as within the interactive SQL shell. Also, special characters are printed unescaped.<br><br>When `--execute` is used without the `--pretty` flag, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.
+`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
@@ -148,25 +148,49 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --user=maxroach --h
 +-----------------------+---------------+
 ~~~
 
-In these examples, we show tables and special characters printed with and without the `--pretty` flag. Note that when not using `--pretty`, table rows are printed as tab-separated values, and special characters are escaped; thus, the output is easy to parse by other programs.
+### Print with or without pretty output
+
+In these examples, we show tables and special characters printed with and without pretty output. When pretty output is enabled, tables are printed with ASCII art and special characters are not escaped for easy human consumption. When pretty output is disabled, table rows are printed as tab-separated values, and special characters are escaped; thus, the output is easy to parse by other programs.
+
+When the standard output is a terminal, pretty output is enabled by default, but you can explicitly disable it with `--pretty=false`:
 
 ~~~ shell
-# Using the --pretty flag in conjunction with --execute:
-$ cockroach sql --pretty --execute="INSERT INTO emojis VALUES ('🐥 '), ('🐢 ') RETURNING *;"
-+----+
-| a  |
-+----+
-| 🐥  |
-| 🐢  |
-+----+
+# Using the default pretty output:
+$ cockroach sql --pretty --execute="SELECT '🐥' AS chick, '🐢' AS turtle"
++-------+--------+
+| chick | turtle |
++-------+--------+
+| 🐥    | 🐢     |
++-------+--------+
 
-# Using --execute without the --pretty flag:
-$ cockroach sql --execute="INSERT INTO emojis VALUES ('🐥 '), ('🐢 ') RETURNING *;"
-2 rows
-a
-"\U0001f425 "
-"\U0001f422 "
+# Explicitly disabling pretty output:
+$ cockroach sql --pretty=false --execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+1 row
+chick turtle
+"\U0001f425"  "\U0001f422"
 ~~~
+
+When piping output to another command or a file, the default is reversed. Pretty output is disabled by default, but you can explicitly request it with `--pretty`:
+
+~~~ shell
+# Using the default non-pretty output:
+$ cockroach sql --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt
+$ cat out.txt
+1 row
+chick turtle
+"\U0001f425"  "\U0001f422"
+
+# Explicitly requesting pretty output:
+$ cockroach sql --pretty --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt
+$ cat out.txt
++-------+--------+
+| chick | turtle |
++-------+--------+
+| 🐥    | 🐢     |
++-------+--------+
+~~~
+
+If `--pretty` is specified without `--execute`, it will apply to the format of every table's output in the resulting interactive SQL shell.
 
 ### Execute SQL statements from a file
 
