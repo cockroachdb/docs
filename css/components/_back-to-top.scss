@@ -1,12 +1,12 @@
-/* Back to top button */
-
 .scroll-to-top {
   z-index: 1000;
   position: absolute;
-  bottom: 225px;
   right: 15px;
+  bottom: auto;
   display:none;
   cursor: pointer;
+  opacity: 0;
+  @include groovy(opacity);
 
   img {
     width: 45px;
@@ -19,6 +19,12 @@
   }
 
   &.fixed {
-      position: fixed;
+    position: fixed;
+    bottom: 225px;
+    top: auto;
+  }
+
+  &.loaded {
+    opacity: 1;
   }
 }

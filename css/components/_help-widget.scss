@@ -1,12 +1,18 @@
 #help-widgets {
     z-index: 1000;
     position: absolute;
-    bottom: 25px;
     right: 15px;
+    bottom: auto;
+    opacity: 0;
+    @include groovy(opacity);
 
     &.fixed {
         position: fixed;
         bottom: 25px;
+    }
+
+    &.loaded {
+        opacity: 1;
     }
 }
 

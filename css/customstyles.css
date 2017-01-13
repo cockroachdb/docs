@@ -476,8 +476,7 @@ header {
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
   #content #main-content .content-col {
-    padding-bottom: 100px;
-    position: relative; }
+    padding-bottom: 100px; }
   @media screen and (min-width: 768px) {
     #content {
       padding-top: 71px; }
@@ -493,7 +492,8 @@ header {
 
 section.footer {
   background: #142848;
-  padding: 50px 15px 60px; }
+  padding: 50px 15px 60px;
+  position: relative; }
   section.footer .container {
     padding: 0; }
   section.footer .row {
@@ -2586,14 +2586,18 @@ img.mfp-img {
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
-/* Back to top button */
 .scroll-to-top {
   z-index: 1000;
   position: absolute;
-  bottom: 225px;
   right: 15px;
+  bottom: auto;
   display: none;
-  cursor: pointer; }
+  cursor: pointer;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   .scroll-to-top img {
     width: 45px;
     height: 45px; }
@@ -2602,7 +2606,11 @@ img.mfp-img {
         width: 50px;
         height: 50px; } }
   .scroll-to-top.fixed {
-    position: fixed; }
+    position: fixed;
+    bottom: 225px;
+    top: auto; }
+  .scroll-to-top.loaded {
+    opacity: 1; }
 
 .button--primary {
   text-transform: uppercase;
@@ -2699,11 +2707,18 @@ img.mfp-img {
 #help-widgets {
   z-index: 1000;
   position: absolute;
-  bottom: 25px;
-  right: 15px; }
+  right: 15px;
+  bottom: auto;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   #help-widgets.fixed {
     position: fixed;
     bottom: 25px; }
+  #help-widgets.loaded {
+    opacity: 1; }
 
 .help-widget {
   position: relative; }

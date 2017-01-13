@@ -27,9 +27,9 @@
 		var $buttons = $('.help-widget__button');
 		var $close = $('.help-widget__close');
 		var $window = $(window);
-		var mobile = false, clicked = false;
+		var mobile = false, clicked = false, loaded = false;
+		var widget_height = $help_widgets.height();
 		var footer_top = $(".footer").offset().top;
-		var right_position = $window.width() - ($('.content-col')[0].getBoundingClientRect().right  + $window.scrollLeft()) + 15;
 
 		var addHoverStates = function(){
 			$help_widgets.on({
@@ -104,18 +104,23 @@
 				addHoverStates();
 			}
 
-			//update footer_top && right position of content-col
+			//get new footer_top & widget_height values
 			footer_top = $(".footer").offset().top;
-			right_position = $window.width() - ($('.content-col')[0].getBoundingClientRect().right  + $window.scrollLeft()) + 15;
+			widget_height = $help_widgets.height();
 		});
 
 		$window.scroll(function (event) {
-    var window_bottom = $(this).scrollTop() + $window.height();        
+    	var window_bottom = $(this).scrollTop() + $window.height();        
 	    if (window_bottom >= footer_top) {
-	        $help_widgets.removeClass("fixed").css('right', '15px');
+	        $help_widgets.removeClass('fixed').css('top', (-widget_height - 25) + 'px');
 	    } else {
-	        $help_widgets.addClass("fixed").css('right', right_position + 'px');
+	        $help_widgets.addClass('fixed').css('top', 'auto');
 	    }
+
+	    if(!loaded){
+    		$help_widgets.addClass('loaded');
+    		loaded = true;
+    	}
 		});
 	});
 })(jQuery)
