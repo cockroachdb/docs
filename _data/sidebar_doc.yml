@@ -44,7 +44,7 @@ entries:
                 - title: Data Replication
                   url: /demo-data-replication.html
 
-                - title: Fault Toleranace & Recovery
+                - title: Fault Tolerance & Recovery
                   url: /demo-fault-tolerance-and-recovery.html
 
                 - title: Scalability
