@@ -6,8 +6,6 @@ toc: false
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
-{{site.data.alerts.callout_danger}}You cannot current use collated strings in indexes or primary keys; doing so causes CockroachDB to crash. If you're interested in using collated strings in these contexts, you can follow <a href="https://github.com/cockroachdb/cockroach/issues/2473">this issue on GitHub</a> to be notified when it's resolved.{{site.data.alerts.end}}
-
 <div id="toc"></div>
 
 ## Aliases

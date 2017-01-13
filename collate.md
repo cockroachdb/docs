@@ -4,15 +4,21 @@ summary: The COLLATE feature lets you sort strings according to language- and co
 toc: false
 ---
 
-The `COLLATE` feature lets you lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.
-
-{{site.data.alerts.callout_danger}}You cannot currently use collated strings in indexes, which includes table's primary keys; doing so will crash CockroachDB. You can follow our work to resolve this issue on <a href="https://github.com/cockroachdb/cockroach/issues/2473">GitHub</a>.{{site.data.alerts.end}}
+The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.
 
 Collated strings are important because different languages have [different rules for alphabetic order](https://en.wikipedia.org/wiki/Alphabetical_order#Language-specific_conventions), especially with respect to accented letters. For example, in German accented letters are sorted with their unaccented counterparts, while in Swedish they are placed at the end of the alphabet. A collation is a set of rules used for ordering and usually corresponds to a language, though some languages have multiple collations with different rules for sorting; for example Portuguese has separate collations for Brazilian and European dialects (`pt-BR` and `pt-PT` respectively).
 
-{{site.data.alerts.callout_info}}Operations on collated strings cannot involve strings with a different collation or strings with no collation. However, it is possible to <a href="#ad-hoc-collation-casting">add or overwrite a collation on the fly</a>.{{site.data.alerts.end}}
-
 <div id="toc"></div>
+
+## Special Considerations
+
+- You cannot current use collated strings in indexes or primary keys; doing so causes CockroachDB to crash. If you're interested in using collated strings in these contexts, you can follow [this issue on GitHub](https://github.com/cockroachdb/cockroach/issues/2473) to be notified when it's resolved.
+
+- Operations on collated strings cannot involve strings with a different collation or strings with no collation. However, it is possible to [add or overwrite a collation on the fly](#ad-hoc-collation-casting).
+
+- Collated strings are stored on disk in the same way as [`STRING`](string.html) values, i.e., the `COLLATE` feature does not require additional disk space.
+  
+  However, every time a collated string is constructed or loaded into memory, CockroachDB computes its collation key, whose size is linear in relationship to the length of the collated string. For optimal performance, prefer non-collated strings unless you need the special ordering.
 
 ## Supported Collations
 
@@ -35,12 +41,6 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
   ~~~ sql
   > INSERT INTO foo VALUES ('dog' COLLATE en);
   ~~~
-
-## Size & Performance
-
-Collated strings are stored on disk in the same way as [`STRING`](string.html) values, i.e., the `COLLATE` feature does not require additional disk space.
-
-However, every time a collated string is constructed or loaded into memory, CockroachDB computes its collation key, whose size is linear in relationship to the length of the collated string. For optimal performance, prefer non-collated strings unless you need the special ordering.
 
 ## Examples
 
@@ -77,7 +77,7 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
 
 ### Order by Non-Default Collation
 
-You can sort a column using a specific collation instead of its default (which also lets you run ad-hoc collation-based sorts on non-collated columns).
+You can sort a column using a specific collation instead of its default.
 
 For example, you receive different results if you order results by German (`de`) and Swedish (`sv`) collations:
 
