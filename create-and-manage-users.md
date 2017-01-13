@@ -58,7 +58,7 @@ Flag | Description
 `--key` | Path to the [client key](create-security-certificates.html) protecting the client certificate of the user *issuing the command* (not the user you're creating). This flag is required if the cluster is secure. <br/><br/>**Env Variable:** `COCKROACH_KEY`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
-`--pretty` | Format tables using ASCII. When not specified, table rows are printed as tab-separated values (TSV). <br/><br/>**Default**: `true`
+`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | Connect to the cluster on the provided URL, e.g., `postgresql://myuser@localhost:26257/mydb`. If left blank, the connection flags are used (`host`, `port`, `user`, `database`, `insecure`, `certs`). <br/><br/>**Env Variable:** `COCKROACH_URL`
 `-u`, `--user` | _Deprecated_: Only the `root` user can create users, so you cannot pass any other usernames into this flag. <br/><br/>**Env Variable:** `COCKROACH_USER` <br/>**Default**: `root`
 
