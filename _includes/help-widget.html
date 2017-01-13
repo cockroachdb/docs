@@ -1,0 +1,127 @@
+<!-- Gitter & Forum buttons -->
+<div id="help-widgets">
+	<div class="help-widget__close">
+		<svg width="47" height="47" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+		  <g transform="translate(1 1)" fill="none" fill-rule="evenodd">
+		    <circle stroke-width="2" cx="22.5" cy="22.5" r="22.5"/>
+		    <path d="M27.06 17.237c-.315-.316-.837-.316-1.167 0l-3.737 3.737-3.75-3.737c-.317-.316-.84-.316-1.17 0-.315.316-.315.838 0 1.168l3.752 3.737-3.736 3.75c-.317.317-.317.84 0 1.17.164.163.37.246.576.246.206 0 .426-.082.577-.247l3.75-3.75 3.752 3.75c.165.165.37.248.577.248.206 0 .426-.082.577-.247.317-.316.317-.837 0-1.167l-3.736-3.75 3.75-3.752c.317-.315.317-.837-.013-1.153z" fill="#142848"/>
+		  </g>
+		</svg>
+	</div>
+	<div class="help-widget help-forum">
+		<div class="help-widget__tooltip">Get in-depth answers from the community</div>
+		<a href="https://forum.cockroachlabs.com/" class="help-widget__button cockroach-forum" target="_blank">Forum</a>
+	</div>
+	<div class="help-widget help-gitter">
+		<div class="help-widget__tooltip">Live chat with our developers</div>
+		<a href="https://gitter.im/cockroachdb/cockroach" class="help-widget__button cockroach-gitter" target="_blank">Help</a>
+	</div>
+</div>
+
+<script>
+(function($){
+	$(document).ready(function(){
+		var $help_widgets = $('#help-widgets');
+		var $help_forum = $('.help-forum');
+		var $help_button = $('.cockroach-gitter');
+		var $buttons = $('.help-widget__button');
+		var $close = $('.help-widget__close');
+		var $window = $(window);
+		var mobile = false, clicked = false, loaded = false;
+		var widget_height = $help_widgets.height();
+		var footer_top = $(".footer").offset().top;
+
+		var addHoverStates = function(){
+			$help_widgets.on({
+				'mouseover': function(){ 
+					$help_button.html('Gitter');
+					$help_forum.addClass('button-over');
+				},
+				'mouseout': function(){ 
+					$help_button.html('Help');
+					$help_forum.removeClass('button-over'); 
+				}
+			}, '');
+
+			$buttons.on({
+				'mouseover': function(){
+					$(this).siblings('.help-widget__tooltip').addClass('hover-over');
+				},
+				'mouseout': function(){
+					$(this).siblings('.help-widget__tooltip').removeClass('hover-over');
+				}
+			}, '');
+		};
+
+		var removeHoverStates = function(){
+			$help_widgets.off('mouseover').off('mouseout');
+			$buttons.off('mouseover').off('mouseout');
+		};
+
+
+		if($window.width() < 992){
+			mobile = true;
+			removeHoverStates();
+		}else{
+			addHoverStates();
+		}
+
+		$help_button.on('click', function(e){
+			e.preventDefault();
+			var link = $(this).attr('href');
+
+			if(mobile){
+				if(!clicked){
+					clicked = true;
+					$help_forum.addClass('button-over'); 
+					$close.addClass('close-visible');
+					$help_button.html('Gitter');
+				}else{
+					window.open(link, '_blank');
+				}
+			}else{
+				window.open(link, '_blank');
+			}
+		});
+
+		$close.on('click', function(){
+			clicked = false;
+			$help_button.html('Help');
+			$(this).removeClass('close-visible');
+			$help_forum.removeClass('button-over'); 
+		});
+
+		$window.on('resize', function(){
+			if($window.width() < 992){
+				mobile = true;
+				removeHoverStates();
+			}else{
+				mobile = false;
+				clicked = false;
+				$help_button.html('Help');
+				$help_forum.removeClass('button-over'); 
+				$close.removeClass('close-visible');
+				addHoverStates();
+			}
+
+			//get new footer_top & widget_height values
+			footer_top = $(".footer").offset().top;
+			widget_height = $help_widgets.height();
+		});
+
+		$window.scroll(function (event) {
+    	var window_bottom = $(this).scrollTop() + $window.height();        
+	    if (window_bottom >= footer_top) {
+	        $help_widgets.removeClass('fixed').css('top', (-widget_height - 25) + 'px');
+	    } else {
+	        $help_widgets.addClass('fixed').css('top', 'auto');
+	    }
+
+	    if(!loaded){
+    		$help_widgets.addClass('loaded');
+    		loaded = true;
+    	}
+		});
+	});
+})(jQuery)
+</script>

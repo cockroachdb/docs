@@ -492,7 +492,8 @@ header {
 
 section.footer {
   background: #142848;
-  padding: 50px 15px 60px; }
+  padding: 50px 15px 60px;
+  position: relative; }
   section.footer .container {
     padding: 0; }
   section.footer .row {
@@ -2585,22 +2586,32 @@ img.mfp-img {
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
-/* Back to top button */
 .scroll-to-top {
   z-index: 1000;
-  position: fixed;
-  top: 50%;
-  right: 30px;
-  display: none; }
-
-.scroll-to-top > img {
-  width: 50px;
-  height: 50px; }
-
-@media (max-width: 768px) {
-  .scroll-to-top > img {
+  position: absolute;
+  right: 15px;
+  bottom: auto;
+  display: none;
+  cursor: pointer;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  .scroll-to-top img {
     width: 45px;
-    height: 45px; } }
+    height: 45px; }
+    @media screen and (min-width: 992px) {
+      .scroll-to-top img {
+        width: 50px;
+        height: 50px; } }
+  .scroll-to-top.fixed {
+    position: fixed;
+    bottom: 225px;
+    top: auto; }
+  .scroll-to-top.loaded {
+    opacity: 1; }
+
 .button--primary {
   text-transform: uppercase;
   letter-spacing: 1.3px;
@@ -2692,5 +2703,139 @@ img.mfp-img {
       line-height: 12px;
       margin-left: 10px;
       padding: 12px 30px; } }
+
+#help-widgets {
+  z-index: 1000;
+  position: absolute;
+  right: 15px;
+  bottom: auto;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  #help-widgets.fixed {
+    position: fixed;
+    bottom: 25px; }
+  #help-widgets.loaded {
+    opacity: 1; }
+
+.help-widget {
+  position: relative; }
+  .help-widget__tooltip {
+    font-family: 'AvenirLTStd-Book', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 25px;
+    color: #FFFFFF;
+    white-space: nowrap;
+    padding: 0 10px;
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 15px);
+    background-color: #142848;
+    -webkit-transform: translate(10px, -50%);
+    -ms-transform: translate(10px, -50%);
+    -o-transform: translate(10px, -50%);
+    transform: translate(10px, -50%);
+    opacity: 0;
+    -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    pointer-events: none;
+    display: none; }
+    .help-widget__tooltip.hover-over {
+      -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+      -o-transform: translate(0, -50%);
+      transform: translate(0, -50%);
+      opacity: 1; }
+    @media screen and (min-width: 768px) {
+      .help-widget__tooltip {
+        -webkit-transform: translate(15px, -50%);
+        -ms-transform: translate(15px, -50%);
+        -o-transform: translate(15px, -50%);
+        transform: translate(15px, -50%);
+        display: block; } }
+  .help-widget__button {
+    font-family: 'AvenirLTStd-Medium', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 36px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    width: 75px;
+    background-color: #FFFFFF;
+    border: 2px solid #EBEBEB;
+    text-align: center;
+    padding: 0;
+    display: block; }
+    .help-widget__button:hover, .help-widget__button:active, .help-widget__button:focus {
+      color: #142848 !important; }
+    .help-widget__button:hover {
+      border-color: #142848; }
+    @media screen and (min-width: 768px) {
+      .help-widget__button {
+        font-size: 18px;
+        line-height: 44px;
+        width: 90px; } }
+  .help-widget.help-forum {
+    opacity: 0;
+    -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    .help-widget.help-forum.button-over {
+      opacity: 1;
+      -webkit-transform: translate(0, -15px);
+      -ms-transform: translate(0, -15px);
+      -o-transform: translate(0, -15px);
+      transform: translate(0, -15px); }
+  .help-widget__close {
+    cursor: pointer;
+    display: inline-block;
+    height: 47px;
+    width: 47px;
+    position: absolute;
+    right: 0;
+    top: -62px;
+    opacity: 0;
+    -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    pointer-events: none; }
+    .help-widget__close svg {
+      width: 47px;
+      height: 47px;
+      display: block; }
+      .help-widget__close svg circle {
+        stroke: #E6E6E6 !important;
+        fill: #FFFFFF !important;
+        -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+        -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+        -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+        transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    .help-widget__close.close-visible {
+      opacity: 1;
+      pointer-events: auto;
+      -webkit-transform: translate(0, -15px);
+      -ms-transform: translate(0, -15px);
+      -o-transform: translate(0, -15px);
+      transform: translate(0, -15px); }
+    .help-widget__close:hover svg circle {
+      stroke: #142848 !important; }
+    @media screen and (min-width: 992px) {
+      .help-widget__close {
+        display: none; } }
+
+.gitter-chat-embed {
+  z-index: 9999; }
 
 /*# sourceMappingURL=customstyles.css.map */
