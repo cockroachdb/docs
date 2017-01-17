@@ -4,9 +4,25 @@ summary: The SERIAL data type defaults to a unique 64-bit signed integer that is
 toc: false
 ---
 
-The `SERIAL` [data type](data-types.html) defaults to a unique 64-bit signed integer. The default value is the combination of the insert timestamp and the ID of the node executing the insert. This combination is guaranteed to be globally unique. Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
+The `SERIAL` [data type](data-types.html) is a column data type which
+generates new integer values on each default insert. The default value
+is the combination of the insert timestamp and the ID of the node
+executing the insert. This combination is guaranteed to be globally
+unique. Also, because value generation does not require talking to
+other nodes, it is much faster than sequentially auto-incrementing a
+value, which requires distributed coordination.
 
-{{site.data.alerts.callout_info}}This data type is <strong>experimental</strong>. We believe it is a better solution than PostgeSQL's <code>SERIAL</code> and MySQL's <code>AUTO_INCREMENT</code> types, both of which auto-increment integers but not necessarily in a strictly sequential fashion (see the <a href="#auto-incrementing-is-not-always-sequential">Auto-Incrementing Is Not Always Sequential</a> example below). However, if you find that this feature is incompatible with your application, please <a href="https://github.com/cockroachdb/cockroach/issues">open an issue</a> or <a href="https://gitter.im/cockroachdb/cockroach">chat with us on Gitter</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+This data type is **experimental**. We believe it is a better solution
+than PostgeSQL's `SERIAL` and MySQL's `AUTO_INCREMENT`> types, both of
+which auto-increment integers but not necessarily in a strictly
+sequential fashion (see the
+[Auto-Incrementing Is Not Always Sequential](#auto-incrementing-is-not-always-sequential)
+example below). However, if you find that this feature is incompatible
+with your application, please [open an
+issue](https://github.com/cockroachdb/cockroach/issues) or [chat
+with us on Gitter](https://gitter.im/cockroachdb/cockroach).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -19,13 +35,15 @@ In CockroachDB, the following are aliases for `SERIAL`:
 - `SMALLSERIAL`
 - `BIGSERIAL`
 
-## Format
+## Syntax
 
-The `SERIAL` type is generally used to default to a unique ID. When inserting into a `SERIAL` column, you therefore do not manually specify a value. 
+Any `INT` value is a valid `SERIAL` value; in particular constant
+`SERIAL` values can be expressed using
+[numeric literals](sql-constants.html#numeric-literals).
 
 ## Size
 
-A `SERIAL` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+[Same as `INT`](int.html#size).
 
 ## Examples
 
@@ -37,7 +55,7 @@ In this example, we create a table with the `SERIAL` column as the `PRIMARY KEY`
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING(30), c BOOL);
 ~~~
 
-The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default. 
+The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
 
 ~~~ sql
 > SHOW COLUMNS FROM serial;
@@ -52,10 +70,13 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 +-------+------------+-------+----------------+
 ~~~
 
-When we insert 3 rows without values in column `a` and return the new rows, we see that each row has defaulted to a unique value in column `a`. 
+When we insert rows without values in column `a` and display the new
+rows, we see that each row has defaulted to a unique value in column
+`a`.
 
 ~~~ sql
-> INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true) RETURNING *;
+> INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
+> INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
 ~~~
 ~~~
 +--------------------+--------+-------+
@@ -64,29 +85,30 @@ When we insert 3 rows without values in column `a` and return the new rows, we s
 | 148656994422095873 | red    | true  |
 | 148656994422161409 | yellow | false |
 | 148656994422194177 | pink   | true  |
+|                123 | white  | false |
 +--------------------+--------+-------+
 ~~~
 
 ### Auto-Incrementing Is Not Always Sequential
 
-It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence. 
+It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence.
 
-To experience this for yourself, run through the following example in PostgreSQL: 
+To experience this for yourself, run through the following example in PostgreSQL:
 
 1. Create a table with a `SERIAL` column.
 
    ~~~ sql
    > CREATE TABLE increment (a SERIAL PRIMARY KEY);
-   ~~~ 
+   ~~~
 
-2. Run four transactions for inserting rows. 
+2. Run four transactions for inserting rows.
 
    ~~~ sql
    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
-   ~~~ 
+   ~~~
 
 3. View the rows created.
 
@@ -102,13 +124,13 @@ To experience this for yourself, run through the following example in PostgreSQL
    +---+
    ~~~
 
-   Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table. 
+   Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
-In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. 
+In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster.
 
 ## Supported Casting & Conversion
 
-Because the `SERIAL` data type represents `INT` values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully [cast](data-types.html#data-type-conversions--casts) or convert `SERIAL` into other data types. If you do, its casting and conversion behavior is the same as [`INT`](int.html#supported-casting--conversion).
+[Values of type `SERIAL` can be converted to other types like any `INT` values](int.html#supported-casting--conversion).
 
 ## See Also
 

@@ -8,7 +8,9 @@ CockroachDB represents your cluster's schema in a database called `information_s
 
 This notion of an information schema is part of the SQL standard, which means it is portable and will remain stable. This contrasts with other objects like `pg_catalog`, which is not part of the SQL standard and handles specific implementation issues.
 
-{{site.data.alerts.callout_info}}The <code>information_schema</code> views typically represent objects that the current user has privilege to access. To ensure you can view your cluster's entire schema, access it as the <code>root</code> user.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view your cluster's entire schema, access it as the `root` user.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

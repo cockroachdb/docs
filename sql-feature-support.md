@@ -40,7 +40,7 @@ table tr td:nth-child(2) {
 | JSON | Planned | Common Extension | [GitHub Issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
-| `SET`, `ENUM` | ✗ | MySQL, Postgres Extension | Only allow rows to contain values from a defined set of terms. |
+| `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
 
 ### Constraints
 
@@ -95,9 +95,8 @@ table tr td:nth-child(2) {
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
 | Common statements | ✓ | Standard | [SQL Statements documentation](sql-statements.html) |
-| `UPSERT` | ✓ | Postgres, MSSQL Extension | [`UPSERT` documentation](upsert.html) |
+| `UPSERT` | ✓ | PostgreSQL, MSSQL Extension | [`UPSERT` documentation](upsert.html) |
 | `EXPLAIN` | ✓ | Common Extension | [`EXPLAIN` documentation](explain.html) |
-| `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | Functional | Standard | Currently works only with small data sets; find more info in our [blog post](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/) |
 | `SELECT INTO` | Alternative | Common Extension | You can replicate similar functionality using [`CREATE TABLE`](create-table.html) and then `INSERT INTO ... SELECT ...`. |
 
 ### Clauses
@@ -108,26 +107,39 @@ table tr td:nth-child(2) {
 | `LIMIT` | ✓ | Common Extension | Limit the number of rows a statement returns. |
 | `LIMIT` with `OFFSET` | ✓ | Common Extension | Skip a number of rows, and then limit the size of the return set. |
 | `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect. |
-| Subqueries | Partial | Standard | Non-correlated subqueries are supported; correlated are not. Currently works only with small data sets. |
-| `EXISTS` | Partial | Standard | Non-correlated subqueries are supported; correlated are not. Currently works only with small data sets. |
-| `COLLATE` | Planned | Standard | Collations offer different modes of ASCII sorting. |
 
-### Functions
+### Table Expressions
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| Common functions | ✓ | Standard | [Functions documentation](functions-and-operators.html#built-in-functions) |
-| Common operators | ✓ | Standard | [Operators documentation](functions-and-operators.html#operators) |
+| Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-or-view-names) |
+| `AS` in table expressions | ✓ | Standard | [Aliased table expressions documentation](table-expressions.html#aliased-table-expressions) |
+| `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | Functional | Standard | [Join expressions documentation](table-expressions.html#join-expressions) |
+| Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions); correlated are not. |
+| Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions) |
+| `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation) |
 
-### Conditional Expressions
+### Value Expressions and Boolean Formulas
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| `CASE` | ✓ | Standard | Return values based on if/then cases. |
-| `NULLIF` | ✓ | Standard | Return *NULL* if values are equal. |
-| `COALESCE` | ✓ | Standard | Return the first non-<em>NULL</em> column. |
+| Common functions | ✓ | Standard | [Functions calls and SQL special forms documentation](sql-expressions.html#function-calls-and-sql-special-forms)
+| Common operators | ✓ | Standard | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
+| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `AND`/`OR` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](sql-expressions.html#string-pattern-matching) |
+| `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](sql-expressions.html#string-matching-using-sql-regular-expressions) |
+| Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](sql-expressions.html#string-matching-using-posix-regular-expressions) |
+| `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](sql-expressions.html#existence-test-on-the-result-of-subqueries); correlated are not. Currently works only with small data sets. |
+| Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](sql-expressions.html#scalar-subqueries); correlated are not. Currently works only with small data sets. |
+| Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
+| Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](sql-expressions.html#array-constructors) and [Subscripting](sql-expressions.html#subscripted-expressions) |
+| `COLLATE`| Partial | Standard | [Collation expressions documentation](sql-expressions.html#collation-expressions) |
+| Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](sql-expressions.html#column-references) |
+| Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](sql-expressions.html#explicitly-typed-expressions) |
 
-### Permissions
+## Permissions
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
@@ -142,9 +154,9 @@ table tr td:nth-child(2) {
 | Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html) |
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
+| Window functions | Partial | Common Extension | Perform calculations related on a selected row. |
 | Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
-| Window functions | Planned | Common Extension | Perform calculations related on a selected row. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |
 | Sequences | ✗ | Common Extension | Create a numeric sequence. Given CockroachDB's distributed architecture, sequences are not viable. |

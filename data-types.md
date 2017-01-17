@@ -25,12 +25,20 @@ Type | Description | Example
 
 CockroachDB supports explicit type conversions using the following methods:
 
-- `<value>::<data type>`, or its equivalent longer form `CAST(<value> AS <data type>)`, which converts an arbitrary expression of one built-in type to another (this is also known as "casting"). For example:
-`NOW()::DECIMAL`, `VARIANCE(a+2)::INT`.
-
 - `<type> 'string literal'`, to convert from the literal representation of a value to a value of that type. For example:
-`DATE '2008-12-21'`, `INT '123'`, or `BOOL 'true'`.
+  `DATE '2008-12-21'`, `INT '123'`, or `BOOL 'true'`.
+
+- `<value>::<data type>`, or its equivalent longer form `CAST(<value> AS <data type>)`, which converts an arbitrary expression of one built-in type to another (this is also known as type coercion or "casting"). For example:
+  `NOW()::DECIMAL`, `VARIANCE(a+2)::INT`.
+
+  {{site.data.alerts.callout_success}}
+  To create constant values, consider using a
+  [type annotation](sql-expressions.html#explicitly-typed-expressions)
+  instead of a cast, as it provides more predictable results.
+  {{site.data.alerts.end}}
 
 - Other [built-in conversion functions](functions-and-operators.html) when the type is not a SQL type, for example `from_ip()`, `to_ip()` to convert IP addresses between `STRING` and `BYTES` values.
 
-You can find each data type's supported converstion and casting on its respective page in the **Supported Casting & Conversion** section.
+
+You can find each data type's supported converstion and casting on its
+respective page in its section **Supported Casting & Conversion**.

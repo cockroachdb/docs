@@ -8,13 +8,21 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 <div id="toc"></div>
 
-## Format
+## Syntax
 
-When inserting into a `DATE` column, format the value as `DATE '2016-01-25'`.
+A constant value of type `DATE` can be expressed using an
+[interpreted literal](sql-constants.html#interpreted-literals), or a
+string literal
+[annotated with](sql-expressions.html#explicitly-typed-expressions)
+type `DATE` or
+[coerced to](sql-expressions.html#explicit-type-coercions) type
+`DATE`.
 
-Alternatively, you can use a string literal, e.g., `'2016-01-25'`, which CockroachDB will resolve into the `DATE` type.
+The string format for dates is `YYYY-MM-DD`. For example: `DATE '2016-12-23'`.
 
-Note that in some contexts, dates may be displayed with hours, minutes, seconds, and timezone set to 0.
+CockroachDB also supports using uninterpreted
+[string literals](sql-constants.html#string-literals) in contexts
+where a `DATE` value is otherwise expected.
 
 ## Size
 
@@ -36,7 +44,11 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 +-------+------+-------+---------+
 ~~~
 ~~~ sql
+> -- explicitely typed DATE literal
 > INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
+
+> -- string literal implicitly typed as DATE
+> INSERT INTO dates VALUES ('2016-03-27', 12345);
 
 > SELECT * FROM dates;
 ~~~
@@ -45,6 +57,7 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 |             a             |   b   |
 +---------------------------+-------+
 | 2016-03-26 00:00:00+00:00 | 12345 |
+| 2016-03-27 00:00:00+00:00 | 12345 |
 +---------------------------+-------+
 ~~~
 

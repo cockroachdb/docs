@@ -4,7 +4,7 @@ summary: The INT data type stores 64-bit signed integers, that is, whole numbers
 toc: false
 ---
 
-The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. 
+The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807.
 
 {{site.data.alerts.callout_info}}To auto-generate globally unique integers, use the <a href="serial.html"><code>SERIAL</code></a> data type.{{site.data.alerts.end}}
 
@@ -12,31 +12,24 @@ The `INT` [data type](data-types.html) stores 64-bit signed integers, that is, w
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `INT`: 
+In CockroachDB, the following are aliases for `INT`:
 
-- `SMALLINT` 
+- `SMALLINT`
 - `INTEGER`
-- `INT8` 
-- `INT64` 
+- `INT8`
+- `INT64`
 - `BIGINT`
 
-## Formats
+## Syntax
 
-An `INT` column accepts numeric literals and hexadecimal-encoded numeric literals.
-
-### Numeric Literal
-
-When inserting a numeric literal into an `INT` column, format the value as `12345`.
-
-### Hexadecimal-Encoded Numeric Literal
-
-When inserting a hexadecimal-encoded numeric literal into a `INT` column, format the value as hexadecimal digits preceded by `0x`. For example, `0xcafe1111` corresponds to the numeric literal `3405648145`.
+A constant value of type `INT` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
+For example: `42`, `-1234` or `0xCAFE`.
 
 ## Size
 
-An `INT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+An `INT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
-CockroachDB does not offer multiple integer types for different widths; instead, our compression ensures that smaller integers use less disk space than larger integers. 
+CockroachDB does not offer multiple integer types for different widths; instead, our compression ensures that smaller integers use less disk space than larger integers.
 
 ## Examples
 
@@ -74,14 +67,12 @@ CockroachDB does not offer multiple integer types for different widths; instead,
 Type | Details
 -----|--------
 `DECIMAL` | ––
-`FLOAT` | Requires `INT` value to be less than 2^53
+`FLOAT` | Loses precision if the `INT` value is larger than 2^53 in magnitude
 `BOOL` | **0** converts to `false`; all other values convert to `true`
 `DATE` | Converts to days since the Unix epoch (Jan. 1, 1970)
 `TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970)
 `INTERVAL` | Converts to microseconds
 `STRING` | ––
-
-{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
 
 ## See Also
 

@@ -11,7 +11,10 @@ When creating users, it's also important to note:
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, users must [authenticate their access to the cluster](#user-authentication).
 
-{{site.data.alerts.callout_info}}You can also create and manage users through the <a href="create-and-manage-users.html"><code>cockroach user</code></a> command. Notably, this is the most efficient way to <a href="create-and-manage-users.html#remove-a-user">remove users</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+You can also create and manage users through the [`cockroach user`](create-and-manage-users.html) command. 
+Notably, this is the most efficient way to [remove users](create-and-manage-users.html#remove-a-user).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
