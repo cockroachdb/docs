@@ -402,7 +402,7 @@ entries:
           url: /frequently-asked-questions.html
 
         - title: Tech Talks
-          url: /tech-talks.html
+          external_url: https://www.cockroachlabs.com/community/tech-talks/
 
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
