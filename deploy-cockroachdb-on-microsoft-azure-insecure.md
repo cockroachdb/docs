@@ -104,7 +104,7 @@ When creating the VMs, make sure to select the **Resource Group**, **Virtual Net
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-latest.linux-amd64.tgz  \

@@ -178,7 +178,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
 	# Extract the binary.
 	$ tar -xf cockroach-latest.linux-amd64.tgz  \
