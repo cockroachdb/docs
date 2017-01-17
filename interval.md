@@ -10,16 +10,25 @@ The `INTERVAL` [data type](data-types.html) stores a value that represents a spa
 
 ## Formats
 
-When inserting into an `INTERVAL` column, use one of the following formats:
+Constant values of type `INTERVAL` must be expressed using an
+[interpreted literal](sql-constants.html#interpreted-literals) or a
+string literal
+[annotated with](sql-expressions.html#explicitly-typed-expressions)
+type `INTERVAL` or
+[coerced to](sql-expressions.html#explicit-type-coercions) type
+`INTERVAL`.
+
+`INTERVAL` constants can be expressed using the following string literal formats:
 
 Format | Description
 -------|--------
-Golang | `INTERVAL '1h2m3s4ms5us6ns'`<br><br>Note that `ms` is milliseconds, `us` is microseconds, and `ns` is nanoseconds. Also, all fields support both integers and floats.
-Traditional Postgres | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'` 
-ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
 SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>`Y-M D`: Using a single value defines days only; using two values defines years and months. Values must be integers.<br><br>`H:M:S`: Using a single value defines seconds only; using two values defines hours and minutes. Values can be integers or floats.<br><br>Note that each side is optional.
+ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
+Traditional PostgreSQL | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'` 
+Golang | `INTERVAL '1h2m3s4ms5us6ns'`<br><br>Note that `ms` is milliseconds, `us` is microseconds, and `ns` is nanoseconds. Also, all fields support both integers and floats.
 
-Alternatively, you can use a string literal, e.g., `'1h2m3s4ms5us6ns'` or`'1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`, which CockroachDB will resolve into the `INTERVAL` type.
+When it is unambiguous, a simple unannotated string literal can also
+be automatically interpreted as type `INTERVAL`.
 
 Intervals are stored internally as months, days, and nanoseconds.
 

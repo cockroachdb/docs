@@ -14,19 +14,30 @@ In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `T
 
 ## Formats
 
-When inserting into a `TIMESTAMP` column, use one of the following formats:
+Constant values of type `TIMESTAMP`/`TIMESTAMPTZ` must be expressed using an
+[interpreted literal](sql-constants.html#interpreted-literals) or a
+string literal
+[annotated with](sql-expressions.html#explicitly-typed-expressions)
+type `TIMESTAMP`/`TIMESTAMPTZ` or
+[coerced to](sql-expressions.html#explicit-type-coercions) type
+`TIMESTAMP`/`TIMESTAMPTZ`.
+
+`TIMESTAMP` constants can be expressed using the
+following string literal formats:
 
 - Date only: `TIMESTAMP '2016-01-25'`
 - Date and Time: `TIMESTAMP '2016-01-25 10:10:10.555555'`
 - ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
+To express `TIMESTAMPTZ` value (with time zone offset from UTC), use
+the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
 
-Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'2016-01-25 10:10:10.555555-05:00'`, which CockroachDB will resolve into the `TIMESTAMP` or `TIMESTAMPTZ` type.
+When it is unambiguous, a simple unannotated string literal can also
+be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
-PostgreSQL wire protocol. 
+PostgreSQL wire protocol.
 
 ## Size
 

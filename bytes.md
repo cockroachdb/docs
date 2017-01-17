@@ -17,13 +17,12 @@ In CockroachDB, the following are aliases for `BYTES`:
 
 ## Formats
 
-When inserting into a `BYTES` column, use any of the following formats:
+To express a byte array constant, see the section on
+[byte array literals](sql-constants.html#byte-array-literals) for more
+details.
 
-- 1 octet per byte: `b'\141\061\142\062\143\063'`
-- 2 hexadecimal digits per byte: `b'\x61\x31\x62\x32\x63\x33'`. 
-- String literal: `'a1b2c3'`
-
-You can also use these in combination, for example, `b'\141\061\x62\x32\c3'`.
+When it is not ambiguous, a string literal can also be automatically
+interpreted as a byte array.
 
 ## Size
 

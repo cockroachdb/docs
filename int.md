@@ -24,13 +24,7 @@ In CockroachDB, the following are aliases for `INT`:
 
 An `INT` column accepts numeric literals and hexadecimal-encoded numeric literals.
 
-### Numeric Literal
-
-When inserting a numeric literal into an `INT` column, format the value as `12345`.
-
-### Hexadecimal-Encoded Numeric Literal
-
-When inserting a hexadecimal-encoded numeric literal into a `INT` column, format the value as hexadecimal digits preceded by `0x`. For example, `0xcafe1111` corresponds to the numeric literal `3405648145`.
+See the section on [numeric literals](sql-constants.html#numeric-literals) for more details.
 
 ## Size
 

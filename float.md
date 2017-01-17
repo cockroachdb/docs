@@ -6,6 +6,9 @@ toc: false
 
 The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point. 
 
+They are handled internally using the [standard double-precision
+(64-bit binary-encoded) IEEE754 format](https://en.wikipedia.org/wiki/IEEE_floating_point).
+
 <div id="toc"></div>
 
 ## Aliases
@@ -19,10 +22,15 @@ In CockroachDB, the following are aliases for `FLOAT`:
 
 When inserting into a `FLOAT` column, format the value as a numeric literal, e.g., `1.2345` or `1`.
 
-Alternately, you can cast `+Inf` (positive infinity), `-Inf` (negative infinity), or `NaN` (not a number) as a float:
+For more details about `FLOAT` numeric formats,
+see the section on [SQL constants](sql-constants.html).
 
-- `CAST('+Inf' AS FLOAT)`
-- `CAST('-Inf' AS FLOAT)`
+The special IEEE754 values for positive infinity, negative infinity
+and Not A Number (NaN) cannot be entered using numeric literals directly and
+must be converted using an interpreted literal instead. For example:
+
+- `FLOAT '+Inf'`
+- `'-Inf':::FLOAT`
 - `CAST('NaN' AS FLOAT)`
 
 ## Size

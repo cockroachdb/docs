@@ -4,7 +4,13 @@ summary: The SERIAL data type defaults to a unique 64-bit signed integer that is
 toc: false
 ---
 
-The `SERIAL` [data type](data-types.html) defaults to a unique 64-bit signed integer. The default value is the combination of the insert timestamp and the ID of the node executing the insert. This combination is guaranteed to be globally unique. Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
+The `SERIAL` [data type](data-types.html) is a column data type which
+generates new integer values on each default insert. The default value
+is the combination of the insert timestamp and the ID of the node
+executing the insert. This combination is guaranteed to be globally
+unique. Also, because value generation does not require talking to
+other nodes, it is much faster than sequentially auto-incrementing a
+value, which requires distributed coordination.
 
 {{site.data.alerts.callout_info}}This data type is <strong>experimental</strong>. We believe it is a better solution than PostgeSQL's <code>SERIAL</code> and MySQL's <code>AUTO_INCREMENT</code> types, both of which auto-increment integers but not necessarily in a strictly sequential fashion (see the <a href="#auto-incrementing-is-not-always-sequential">Auto-Incrementing Is Not Always Sequential</a> example below). However, if you find that this feature is incompatible with your application, please <a href="https://github.com/cockroachdb/cockroach/issues">open an issue</a> or <a href="https://gitter.im/cockroachdb/cockroach">chat with us on Gitter</a>.{{site.data.alerts.end}}
 

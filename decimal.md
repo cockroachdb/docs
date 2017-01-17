@@ -30,7 +30,7 @@ When inserting a decimal value:
 
 When inserting into a `DECIMAL` column, format the value as a numeric literal, e.g., `1.2345` or `1`. 
 
-Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that the precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
+See the section on [numeric literals](sql-constants.html#numeric-literals) for more details.
 
 ## Size
 
