@@ -150,7 +150,7 @@ SQL code samples are broken into two sections: commands and responses.
 
 Our docs use three classes of highlighted text.
 
-**NOTE**: The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
+**NOTE**: You can use either HTML or Markdown formatting within notes, warnings, and tips. However, if you use Markdown, it's necessary to put the opening and closing Liquid tags on their own lines, as shown in the examples below.
 
 #### Notes
 
@@ -161,7 +161,9 @@ For example, you might use a note to let users know that the `DELETE` statement 
 To insert a note, use the following code:
 
 ```
-{{site.data.alerts.callout_info}} <tip text goes here> {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<tip text goes here>
+{{site.data.alerts.end}}
 ```
 
 #### Warnings
@@ -173,7 +175,9 @@ For example, you might include a warning that using `CASCADE` in `DROP INDEX` dr
 To insert a warning, use the following code:
 
 ```
-{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+<warning text goes here>
+{{site.data.alerts.end}}
 ```
 
 #### Tips
@@ -185,7 +189,9 @@ For example, you might include a tip to our Github repo's Terraform scripts on t
 To insert a tip, use the following code:
 
 ```
-{{site.data.alerts.callout_success}}{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+<tip text goes hear>
+{{site.data.alerts.end}}
 ```
 
 ## Build and Test the Docs Locally
