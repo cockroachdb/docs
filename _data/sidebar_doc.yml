@@ -57,198 +57,62 @@ entries:
           url: /install-client-drivers.html
 
           thirdlevel:
-            - title: SQL Statements
+            - title: Program SQL queries
+              thirdlevelitems:
+
+                - title: Query and Update Statements
+                  url: /sql-statements.html#query-and-update-statements
+
+                - title: Table Expressions
+                  url: /table-expressions.html
+
+                - title: Constant Values
+                  url: /sql-constants.html
+
+                - title: Value Expressions
+                  url: /sql-expressions.html
+
+                - title: Built-in Functions and Operators
+                  url: /functions-and-operators.html
+
+                - title: Data Types
+                  url: /data-types.html
+
+                - title: Information Schema
+                  url: /information-schema.html
+
+                - title: Keywords & Identifiers
+                  url: /keywords-and-identifiers.html
+
+                - title: SQL Grammar
+                  url: /sql-grammar.html
+
+            - title: Use Transactions
               thirdlevelitems:
 
                 - title: Overview
-                  url: /sql-statements.html
+                  url: /transactions.html
 
-                - title: <code>ADD COLUMN</code>
-                  url: /add-column.html
+                - title: Transaction Management Statements
+                  url: /sql-statements.html#transaction-management-statements
 
-                - title: <code>ADD CONSTRAINT</code>
-                  url: /add-constraint.html
+                - title: Automatic and Manual Retries
+                  url: /transactions.html#transaction-retries
 
-                - title: <code>ALTER COLUMN</code>
-                  url: /alter-column.html
+                - title: Priorities
+                  url: /transactions.html#transaction-priorities
 
-                - title: <code>ALTER TABLE</code>
-                  url: /alter-table.html
-
-                - title: <code>ALTER VIEW</code>
-                  url: /alter-view.html
-
-                - title: <code>BEGIN</code>
-                  url: /begin-transaction.html
-
-                - title: <code>COMMIT</code>
-                  url: /commit-transaction.html
-
-                - title: <code>CREATE DATABASE</code>
-                  url: /create-database.html
-
-                - title: <code>CREATE INDEX</code>
-                  url: /create-index.html
-
-                - title: <code>CREATE TABLE</code>
-                  url: /create-table.html
-
-                - title: <code>CREATE TABLE AS</code>
-                  url: /create-table-as.html
-
-                - title: <code>CREATE USER</code>
-                  url: /create-user.html
-
-                - title: <code>CREATE VIEW</code>
-                  url: /create-view.html
-
-                - title: <code>DELETE</code>
-                  url: /delete.html
-
-                - title: <code>DROP COLUMN</code>
-                  url: /drop-column.html
-                  
-                - title: <code>DROP CONSTRAINT</code>
-                  url: /drop-constraint.html
-
-                - title: <code>DROP DATABASE</code>
-                  url: /drop-database.html
-
-                - title: <code>DROP INDEX</code>
-                  url: /drop-index.html
-
-                - title: <code>DROP TABLE</code>
-                  url: /drop-table.html
-
-                - title: <code>DROP VIEW</code>
-                  url: /drop-view.html
-              
-                - title: <code>EXPLAIN</code>
-                  url: /explain.html
-
-                - title: <code>GRANT</code>
-                  url: /grant.html
-
-                - title: <code>INSERT</code>
-                  url: /insert.html
-
-                - title: <code>RENAME COLUMN</code>
-                  url: /rename-column.html
-
-                - title: <code>RENAME DATABASE</code>
-                  url: /rename-database.html
-
-                - title: <code>RENAME INDEX</code>
-                  url: /rename-index.html
-
-                - title: <code>RENAME TABLE</code>
-                  url: /rename-table.html
-
-                - title: <code>RELEASE SAVEPOINT</code>
-                  url: /release-savepoint.html
-
-                - title: <code>REVOKE</code>
-                  url: /revoke.html
-
-                - title: <code>ROLLBACK</code>
-                  url: /rollback-transaction.html
-
-                - title: <code>SAVEPOINT</code>
-                  url: /savepoint.html
-
-                - title: <code>SELECT</code>
-                  url: /select.html
-
-                - title: <code>SET DATABASE</code>
-                  url: /set-database.html
-
-                - title: <code>SET TIME ZONE</code>
-                  url: /set-time-zone.html
-
-                - title: <code>SET TRANSACTION</code>
-                  url: /set-transaction.html
-
-                - title: <code>SHOW ALL</code>
-                  url: /show-all.html
-
-                - title: <code>SHOW COLUMNS</code>
-                  url: /show-columns.html
-
-                - title: <code>SHOW CONSTRAINTS</code>
-                  url: /show-constraints.html
-
-                - title: <code>SHOW CREATE TABLE</code>
-                  url: /show-create-table.html
-
-                - title: <code>SHOW CREATE VIEW</code>
-                  url: /show-create-view.html
-
-                - title: <code>SHOW DATABASE</code>
-                  url: /show-database.html
-
-                - title: <code>SHOW DATABASES</code>
-                  url: /show-databases.html
-
-                - title: <code>SHOW GRANTS</code>
-                  url: /show-grants.html
-
-                - title: <code>SHOW INDEX</code>
-                  url: /show-index.html
-
-                - title: <code>SHOW TABLES</code>
-                  url: /show-tables.html
-
-                - title: <code>SHOW TIME ZONE</code>
-                  url: /show-time-zone.html
-
-                - title: <code>SHOW TRANSACTION</code>
-                  url: /show-transaction.html
-
-                - title: <code>SHOW USERS</code>
-                  url: /show-users.html
-
-                - title: <code>TRUNCATE</code>
-                  url: /truncate.html
-
-                - title: <code>UPDATE</code>
-                  url: /update.html
-
-                - title: <code>UPSERT</code>
-                  url: /upsert.html
-
-        - title: SQL Grammar
-          url: /sql-grammar.html
-
-          thirdlevel:
-            - title: Constraints
-              thirdlevelitems:
-
-                - title: Overview
-                  url: /constraints.html
-
-                - title: Check
-                  url: /check.html
-
-                - title: Default Value
-                  url: /default-value.html
-
-                - title: Foreign Keys
-                  url: /foreign-key.html
-
-                - title: Not Null
-                  url: /not-null.html
-
-                - title: Primary Key
-                  url: /primary-key.html
-
-                - title: Unique
-                  url: /unique.html
+                - title: Isolation Levels
+                  url: /transactions.html#isolation-levels
 
             - title: Data Definition
               thirdlevelitems:
 
-                - title: Keywords & Identifiers
-                  url: /keywords-and-identifiers.html
+                - title: Data Definition Statements
+                  url: /sql-statements.html#data-definition-statements
+
+                - title: Column Constraints
+                  url: /constraints.html
 
                 - title: Indexes
                   url: /indexes.html
@@ -265,56 +129,20 @@ entries:
                 - title: <code>NULL</code> Handling
                   url: /null-handling.html
 
-            - title: Data Types
+                - title: Information Schema
+                  url: /information-schema.html
+
+            - title: Privileges
               thirdlevelitems:
 
                 - title: Overview
-                  url: /data-types.html
+                  url: /privileges.html
 
-                - title: <code>INT</code>
-                  url: /int.html
+                - title: Privilege Management Statements
+                  url: /sql-statements.html#privilege-management-statements
 
-                - title: <code>SERIAL</code>
-                  url: /serial.html
-
-                - title: <code>DECIMAL</code>
-                  url: /decimal.html
-
-                - title: <code>FLOAT</code>
-                  url: /float.html
-
-                - title: <code>BOOL</code>
-                  url: /bool.html
-
-                - title: <code>DATE</code>
-                  url: /date.html
-
-                - title: <code>TIMESTAMP</code>
-                  url: /timestamp.html
-
-                - title: <code>INTERVAL</code>
-                  url: /interval.html
-
-                - title: <code>STRING</code>
-                  url: /string.html
-
-                - title: <code>COLLATE</code>
-                  url: /collate.html
-
-                - title: <code>BYTES</code>
-                  url: /bytes.html
-
-        - title: Privileges
-          url: /privileges.html
-          
-        - title: Functions and Operators
-          url: /functions-and-operators.html
-
-        - title: Transactions
-          url: /transactions.html
-
-        - title: Information Schema
-          url: /information-schema.html
+                - title: Create and Manage Users
+                  url: /create-and-manage-users.html
 
     - title: Deploy
       items:
@@ -349,7 +177,7 @@ entries:
 
                 - title: Overview
                   url: /orchestration.html
-                  
+
                 - title: Kubernetes
                   url: /orchestrate-cockroachdb-with-kubernetes.html
 
@@ -428,7 +256,7 @@ entries:
 
                 - title: SQL
                   url: /sql.html
-                  
+
                 - title: Distributed Transactions
                   url: /distributed-transactions.html
 
