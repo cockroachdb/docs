@@ -12,14 +12,17 @@ The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `tr
 
 In CockroachDB, `BOOLEAN` is an alias for `BOOL`. 
 
-## Format
+## Syntax
 
-When inserting into a `BOOL` column, format the value as `false` or `true` (case-insensitive).
+There are two predefined
+[named constants](sql-constants.html#named-constants) for `BOOL`:
+`TRUE` and `FALSE` (the names are case-insensitive).
 
-Alternately, you can cast `0` or `1` as a `BOOL`:
+Alternately, a boolean value can be obtained by coercing a numeric
+value: zero is coerced to `FALSE`, and any non-zero value to `TRUE`.
 
 - `CAST(0 AS BOOL)` (false)
-- `CAST(1 AS BOOL)` (true)
+- `CAST(123 AS BOOL)` (true)
 
 ## Size
 

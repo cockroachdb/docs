@@ -20,17 +20,10 @@ In CockroachDB, the following are aliases for `INT`:
 - `INT64` 
 - `BIGINT`
 
-## Formats
+## Syntax
 
-An `INT` column accepts numeric literals and hexadecimal-encoded numeric literals.
-
-### Numeric Literal
-
-When inserting a numeric literal into an `INT` column, format the value as `12345`.
-
-### Hexadecimal-Encoded Numeric Literal
-
-When inserting a hexadecimal-encoded numeric literal into a `INT` column, format the value as hexadecimal digits preceded by `0x`. For example, `0xcafe1111` corresponds to the numeric literal `3405648145`.
+A constant value of type `INT` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
+For example: `42`, `-1234` or `0xCAFE`.
 
 ## Size
 
@@ -74,14 +67,12 @@ CockroachDB does not offer multiple integer types for different widths; instead,
 Type | Details
 -----|--------
 `DECIMAL` | ––
-`FLOAT` | Requires `INT` value to be less than 2^53
+`FLOAT` | Loses precision if the `INT` value is larger than 2^53 in magnitude
 `BOOL` | **0** converts to `false`; all other values convert to `true`
 `DATE` | Converts to days since the Unix epoch (Jan. 1, 1970)
 `TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970)
 `INTERVAL` | Converts to microseconds
 `STRING` | ––
-
-{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
 
 ## See Also
 

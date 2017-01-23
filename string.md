@@ -37,37 +37,14 @@ When inserting a string:
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
 - If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
 
-## Formats
+## Syntax
 
-A `STRING` column accepts Unicode string literals, hexadecimal string literals, and escape strings.
+A value of type `STRING` can be expressed using a variety of formats.
+See [string literals](sql-constants.html#string-literals) for more details.
 
-### String Literal
-
-When inserting a string literal into a `STRING` column, format the value as a valid UTF-8 character sequence within single quotes, e.g., `'a1b2c3'`.
-
-### Hexadecimal-Encoded String Literal
-
-When inserting a hexadecimal-encoded string literal into a `STRING` column, format the value as `x` or `X` followed by hexadecimal digits in single quotes. For example, `x'636174'` or `X'636174'` correspond to the Unicode string literal `'cat'`.
-
-### Escape String
-
-When inserting an escape string into a `STRING` column, format the value as `e` or `E` followed by one or more of the following backslash escape sequences within single quotes:
-
-Backslash Escape Sequence | Interpretation
---------------------------|---------------
-`\b` | backspace
-`\f` | form feed
-`\n` | newline
-`\r` | carriage return
-`\t` | tab
-`\xHH` | hexadecimal byte value
-`\ooo` | octal byte value
-`\uXXXX` | 16-bit hexadecimal Unicode character value
-`\UXXXXXXXX` | 32-bit hexadecimal Unicode character value
-
-For example, the `e'x61\141\u0061'` escape string represents the hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character values equivalent to the `'aaa'` string literal. 
-
-Note that any character not in the table above is taken literally in an escape string. Also, when continuing an escape string across lines, write `e` or `E` only before the first opening quote.
+When printing out a `STRING` value in the [SQL shell](use-the-built-in-sql-client.html), the shell uses the simple
+SQL string literal format if the value doesn't contain special character,
+or the escaped format otherwise.
 
 ### Collations
 
