@@ -19,6 +19,7 @@ Type | Description | Example
 [`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
+[`COLLATE`](collate.html) | The `COLLATE` feature lets you lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
 
 ## Data Type Conversions & Casts
