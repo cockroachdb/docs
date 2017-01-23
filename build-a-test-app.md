@@ -3,7 +3,6 @@ title: Build a Test App
 summary: Follow this tutorial to quickly learn how to create a CockroachDB database and connect to it from a client application.
 toc: false
 asciicast: true
-optimizely: true
 ---
 
 This page is CockroachDB's **Hello, World!** tutorial. It walks you through creating a user, creating a database, granting privileges on the database to the new user, and then connecting with that user from your preferred language to execute basic statements as well as more complex transactions.
