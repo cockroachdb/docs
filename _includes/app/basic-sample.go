@@ -9,9 +9,16 @@ import (
 )
 
 func main() {
+	// Connect to the "bank" database.
 	db, err := sql.Open("postgres", "postgresql://maxroach@localhost:26257/bank?sslmode=disable")
 	if err != nil {
 		log.Fatalf("error connection to the database: %s", err)
+	}
+
+	// Create the "accounts" table.
+	if _, err := db.Exec(
+		"CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)"); err != nil {
+		log.Fatal(err)
 	}
 
 	// Insert two rows into the "accounts" table.
