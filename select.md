@@ -122,7 +122,7 @@ WHERE balance > 2500 AND NOT type = 'checking';
 
 #### Select Distinct Rows
 
-Columns without the [`UNIQUE`](unique.html) constraint can have multiple instances of the same value.
+Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value.
 
 ~~~ sql
 > SELECT name 

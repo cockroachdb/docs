@@ -121,7 +121,7 @@ See [Install Client Drivers](install-client-drivers.html) for more details.
 
 You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
 
-Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table levels. 
+Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels. 
 
 For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.   
 

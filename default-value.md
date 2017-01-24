@@ -4,16 +4,20 @@ summary: The Default Value constraint specifies a value to populate a column wit
 toc: false
 ---
 
-The Default Value [constraints](constraints.html) specifies a value to populate a column with if none is provided. It supplies a value to a column if one is not provided on insert. The value may be a hard-coded literal or an expression that is evaluated at the time the row is inserted.
+The Default Value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
 
 <div id="toc"></div>
 
 ## Details
 
-- The [data type](data-types.html) of the Default Value or expression should be the same as the data type of the column.
-- The Default Value constraint only applies on insert if the column is not specified in the [`INSERT`](insert.html) statement. You can still insert a *NULL* into an optional (nullable) column by explicitly stating the column and the *NULL* value.
+- The [data type](data-types.html) of the Default Value must be the same as the data type of the column.
+- The Default Value constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a *NULL* into an optional (nullable) column by explicitly inserting *NULL*. For example, `INSERT INTO foo VALUES (1, NULL);`.
 
 ## Syntax
+
+You can only apply the Default Value constraint to individual columns.
+
+{{site.data.alerts.callout_info}}You can also add the Default Value constraint to an existing table through <a href="alter-column.html#set-or-change-a-default-value"><code>ALTER COLUMN</code></a>. {{site.data.alerts.end}}
 
 {% include sql/diagrams/default_value_column_level.html %}
 
@@ -23,22 +27,9 @@ The Default Value [constraints](constraints.html) specifies a value to populate 
 | `column_name` | The name of the constrained column. |
 | `column_type` | The constrained column's [data type](data-types.html). |
 | `default_value` | The value you want to insert by default, which must evaluate to the same [data type](data-types.html) as the `column_type`.|
-| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply. |
+| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. |
 | `column_def` | Definitions for any other columns in the table. |
 | `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
-
-**Example**
-
-~~~ sql
-> CREATE TABLE inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT DEFAULT 100,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
-~~~
-
-{{site.data.alerts.callout_info}}You cannot apply the Default constraint to multiple columns (i.e. at the table level).{{site.data.alerts.end}}
 
 ## Usage Example
 
@@ -65,11 +56,12 @@ The Default Value [constraints](constraints.html) specifies a value to populate 
 +------------+--------------+------------------+
 ~~~
 
-If no `DEFAULT` constraint is specified and an explicit value is not given, a value of *NULL* is assigned to the column. This may cause an error if the column has a `NOT NULL` constraint.
+If the Default Value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
 
 ## See Also
 
 - [Constraints](constraints.html)
+- [`ALTER COLUMN`](alter-column.html)
 - [Check constraint](check.html)
 - [Foreign Key constraint](foreign-key.html)
 - [Not Null constraint](not-null.html)
