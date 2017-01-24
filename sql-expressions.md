@@ -106,11 +106,11 @@ All comparisons accept any combination of argument types and result in type `BOO
 Syntax:
 
 ~~~
-	<expr> IN <expr>
-	<expr> IN ( ... subquery ... )
+<expr> IN <expr>
+<expr> IN ( ... subquery ... )
 
-	<expr> NOT IN <expr>
-	<expr> NOT IN ( ... subquery ... )
+<expr> NOT IN <expr>
+<expr> NOT IN ( ... subquery ... )
 ~~~
 
 Returns `TRUE` if and only if the value of the left operand is part of
@@ -134,10 +134,10 @@ to match the tuple element type. The result has type `BOOL`.
 Syntax:
 
 ~~~
-	<expr> LIKE <expr>
-	<expr> ILIKE <expr>
-	<expr> NOT LIKE <expr>
-	<expr> NOT ILIKE <expr>
+<expr> LIKE <expr>
+<expr> ILIKE <expr>
+<expr> NOT LIKE <expr>
+<expr> NOT ILIKE <expr>
 ~~~
 
 Evaluates both expressions as strings, then tests whether the string	 on the left
@@ -170,10 +170,10 @@ The operands must be either both `STRING` or both `BYTES`. The result has type `
 Syntax:
 
 ~~~
-	<expr> ~ <expr>
-	<expr> ~* <expr>
-	<expr> !~ <expr>
-	<expr> !~* <expr>
+<expr> ~ <expr>
+<expr> ~* <expr>
+<expr> !~ <expr>
+<expr> !~* <expr>
 ~~~
 
 Evaluates both expressions as strings, then tests whether the string	 on the left
@@ -207,8 +207,8 @@ The operands must be either both `STRING` or both `BYTES`. The result has type `
 Syntax:
 
 ~~~
-	<expr> SIMILAR TO <expr>
-	<expr> NOT SIMILAR TO <expr>
+<expr> SIMILAR TO <expr>
+<expr> NOT SIMILAR TO <expr>
 ~~~
 
 Evaluates both expressions as strings, then tests whether the string	 on the left
@@ -266,7 +266,7 @@ operators in expressions:
 General syntax:
 
 ~~~
-	<name> ( <arguments...> )
+<name> ( <arguments...> )
 ~~~
 
 A built-in function name followed by an opening parenthesis, followed
@@ -299,7 +299,7 @@ In addition, the following SQL special forms are also supported:
 | `CURRENT_DATE`                                             | `current_date()` |
 | `CURRENT_TIMESTAMP`                                        | `current_timestamp()` |
 
-### Typing rule
+#### Typing rule
 
 In general, a function call requires the arguments to be of the types
 accepted by the function, and returns a value of the type determined
@@ -319,7 +319,7 @@ values, `a[3]` will retrieve the 3rd value. The first value has index
 If the index is smaller or equal to 0, or larger than the size of the array, then
 the result of the subscripted expression is `NULL`.
 
-### Typing rule
+#### Typing rule
 
 The subscripted expression must have an array type; the index expression
 must have type `INT`.  The result has the element type of the
@@ -341,7 +341,7 @@ especially when an operand would be invalid otherwise. For example,
 Syntax:
 
 ~~~
-   IF ( <cond>, <expr1>, <expr2> )
+IF ( <cond>, <expr1>, <expr2> )
 ~~~
 
 Evaluates `<cond>`, then evaluates `<expr1>` if the condition is true,
@@ -358,11 +358,11 @@ expression that was evaluated.
 Syntax:
 
 ~~~
-	  CASE <cond>
-		 WHEN <condval1> THEN <expr1>
-	   [ WHEN <condvalx> THEN <exprx> ] ...
-	   [ ELSE <expr2> ]
-	  END
+CASE <cond>
+    WHEN <condval1> THEN <expr1>
+  [ WHEN <condvalx> THEN <exprx> ] ...
+  [ ELSE <expr2> ]
+END
 ~~~
 
 Evaluates `<cond>`, then picks the `WHEN` branch where `<condval>` is
@@ -381,7 +381,7 @@ The result has the same type as the `THEN`/`ELSE` expressions.
 Syntax:
 
 ~~~
-   NULLIF ( <expr1>, <expr2> )
+NULLIF ( <expr1>, <expr2> )
 ~~~
 
 Equivalent to: `IF ( <expr1> = <expr2>, NULL, <expr1> )`
@@ -395,8 +395,8 @@ Both operands must have the same type, which is also the type of the result.
 Syntax:
 
 ~~~
-	IFNULL ( <expr1>, <expr2> )
-	COALESCE ( <expr1> [, <expr2> [, <expr3> ] ...] )
+IFNULL ( <expr1>, <expr2> )
+COALESCE ( <expr1> [, <expr2> [, <expr3> ] ...] )
 ~~~
 
 `COALESCE` evaluates the first expression first. If its value is not
@@ -415,8 +415,8 @@ The operands must have the same type, which is also the type of the result.
 Syntax:
 
 ~~~
-	<expr1> AND <expr2>
-	<expr1> OR <expr2>
+<expr1> AND <expr2>
+<expr1> OR <expr2>
 ~~~
 
 These operators compute the boolean AND or OR function of their
@@ -430,7 +430,7 @@ operands, using short-circuit evaluation:
   returns `FALSE` directly and does not evaluate its right operand,
   whereas `OR` evaluates and returns the value of the right operand.
 
-### Typing rule
+#### Typing rule
 
 The operands must have type `BOOL`. The result has type `BOOL`.
 
@@ -440,8 +440,8 @@ An aggregate expression has the same syntax as a function call, with a special
 case for `COUNT`:
 
 ~~~
-	<name> ( <arguments...> )
-	COUNT ( * )
+<name> ( <arguments...> )
+COUNT ( * )
 ~~~
 
 The difference between aggregate expressions and function calls is
@@ -454,7 +454,7 @@ An aggregate expression computes a combined value, depending on
 which aggregate function is used, across all the rows currently
 selected.
 
-### Typing rule
+#### Typing rule
 
 [The operand and return types are determined like for regular function calls](#function-calls-and-sql-special-forms).
 
@@ -463,14 +463,14 @@ selected.
 A window function call has the syntax of a function call followed by an `OVER` clause:
 
 ~~~
-	<name> ( <arguments...> ) OVER <window>
-	<name> ( * ) OVER <window>
+<name> ( <arguments...> ) OVER <window>
+<name> ( * ) OVER <window>
 ~~~
 
 It represents the application of a window or aggregate function over a
 subset ("window") of the rows selected by a query.
 
-### Typing rule
+#### Typing rule
 
 [The operand and return types are determined like for regular function calls](#function-calls-and-sql-special-forms).
 
@@ -479,8 +479,8 @@ subset ("window") of the rows selected by a query.
 Syntax:
 
 ~~~
-	 <expr> :: <type>
-	 CAST (<expr> AS <type>)
+<expr> :: <type>
+CAST (<expr> AS <type>)
 ~~~
 
 Evaluates the expression and converts the resulting value to the
@@ -493,7 +493,7 @@ coercion. See the section on
 [type annotations](#explicitly-typed-expressions) below for more
 details.
 
-### Typing rule
+#### Typing rule
 
 The operand can have any type.
 The result has the type specified in the `CAST` expression.
@@ -507,7 +507,7 @@ operand. [See our blog post for more details](https://www.cockroachlabs.com/blog
 Syntax:
 
 ~~~
-	<expr> COLLATE <collation>
+<expr> COLLATE <collation>
 ~~~
 
 Evaluates the expression and converts its result to a collated string
@@ -515,7 +515,7 @@ with the specified collation.
 
 For example: `'a' COLLATE de`
 
-### Typing rule
+#### Typing rule
 
 The operand must have type `STRING`. The result has type `COLLATEDSTRING`.
 
@@ -524,15 +524,15 @@ The operand must have type `STRING`. The result has type `COLLATEDSTRING`.
 Syntax:
 
 ~~~
-	 EXISTS ( ... subquery ... )
-	 NOT EXISTS ( ... subquery ... )
+EXISTS ( ... subquery ... )
+NOT EXISTS ( ... subquery ... )
 ~~~
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
 any row (for `NOT EXISTS`).
 
-### Typing rule
+#### Typing rule
 
 The operand can have any table type. The result has type `BOOL`.
 
@@ -541,7 +541,7 @@ The operand can have any table type. The result has type `BOOL`.
 Syntax:
 
 ~~~
-	 ( ... subquery ... )
+( ... subquery ... )
 ~~~
 
 Evaluates the subquery, asserts that it returns a single row and single column,
@@ -556,7 +556,7 @@ For example:
 returns `TRUE` if there are more rows in table `users` than in table
 `admins`.
 
-### Typing rule
+#### Typing rule
 
 The operand must have a table type with only one column.
 The result has the type of that single column.
@@ -566,7 +566,7 @@ The result has the type of that single column.
 Syntax:
 
 ~~~
-	 ARRAY[ <expr>, <expr>, ... ]
+ARRAY[ <expr>, <expr>, ... ]
 ~~~
 
 Evaluates to an array containing the specified values.
@@ -595,7 +595,7 @@ specified explicitly using a type annotation. For example:
 > SELECT ARRAY[]:::int[];
 ~~~
 
-### Typing rule
+#### Typing rule
 
 The operands must all have the same type.
 The result has the array type with the operand type as element type.
@@ -605,8 +605,8 @@ The result has the array type with the operand type as element type.
 Syntax:
 
 ~~~
-	(<expr>, <expr>, ...)
-	ROW (<expr>, <expr>, ...)
+(<expr>, <expr>, ...)
+ROW (<expr>, <expr>, ...)
 ~~~
 
 Evaluates to a tuple containing the values of the provided expressions.
@@ -627,7 +627,7 @@ For example:
 The data type of the resulting tuple is inferred from the values.
 Each position in a tuple can have a distinct data type.
 
-### Typing rule
+#### Typing rule
 
 The operands can have any type.
 The result has a tuple type whose item types are the types of the operands.
@@ -637,8 +637,8 @@ The result has a tuple type whose item types are the types of the operands.
 Syntax:
 
 ~~~
-	<expr>:::<type>
-	ANNOTATE_TYPE(<expr>, <type>)
+<expr>:::<type>
+ANNOTATE_TYPE(<expr>, <type>)
 ~~~
 
 Evaluates to the given expression, requiring the expression to have
@@ -663,7 +663,13 @@ message (that `now()` does not have type `DATE`).
 Check our blog for
 [more information about context-dependent typing](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/).
 
-### Typing rule
+#### Typing rule
 
 The operand must be implicitly coercible to the given type.
 The result has the given type.
+
+## See Also
+
+- [Constants](sql-constants.html)
+- [Table Expressions](table-expressions.html)
+- [Data Types](data-types.html)

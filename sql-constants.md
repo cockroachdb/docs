@@ -121,22 +121,22 @@ values equivalent to the `'aaa'` string literal.
 Numeric literals can have the following forms:
 
 ~~~
-  [+-]9999
-  [+-]9999.[9999][e[+-]999]
-  [+-][9999].9999[e[+-]999]
-  [+-]9999e[+-]999
-  [+-]0xAAAA
+[+-]9999
+[+-]9999.[9999][e[+-]999]
+[+-][9999].9999[e[+-]999]
+[+-]9999e[+-]999
+[+-]0xAAAA
 ~~~
 
 Some examples:
 
 ~~~
-   +4269
-   3.1415
-   -.001
-   6.626e-34
-   50e6
-   0xcafe111
++4269
+3.1415
+-.001
+6.626e-34
+50e6
+0xcafe111
 ~~~
 
 The actual data type of a numeric constant depends both on the context
@@ -193,8 +193,8 @@ This feature is inspired from MySQL.
 A constant of any data type can be formed using either of the following formats:
 
 ~~~
-   type 'string'
-   'string':::type
+type 'string'
+'string':::type
 ~~~
 
 The value of the string part is used as input for the conversion function to the
@@ -203,11 +203,11 @@ specified data type, and the result is used as a constant with that data type.
 Examples:
 
 ~~~
-   DATE '2013-12-23'
-   BOOL 'FALSE'
-   '42.69':::INT
-   'TRUE':::BOOL
-   '3 days':::INTERVAL
+DATE '2013-12-23'
+BOOL 'FALSE'
+'42.69':::INT
+'TRUE':::BOOL
+'3 days':::INTERVAL
 ~~~
 
 Additionally, for compatibility with PostgreSQL, the notation
@@ -232,5 +232,5 @@ type during expression evaluation is determined based on context.
 
 ## See Also
 
-- [Expressions](sql-expressions.html)
+- [Value Expressions](sql-expressions.html)
 - [Data Types](data-types.html)

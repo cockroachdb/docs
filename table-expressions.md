@@ -14,8 +14,8 @@ Table expressions define a data source in the `FROM` clause of
 Table expressions are used prominently in the `SELECT` clause:
 
 ~~~sql
-	SELECT ... FROM <table expr>, <table expr>, ...
-	INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
+> SELECT ... FROM <table expr>, <table expr>, ...
+> INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
 ~~~
 
 CockroachDB recognizes the following table expressions:
@@ -40,8 +40,8 @@ the `JOIN` syntax below.
 Syntax:
 
 ~~~
-	 identifier
-	 identifier.identifier
+identifier
+identifier.identifier
 ~~~
 
 A single SQL identifier in a table expression context designates
@@ -54,8 +54,8 @@ is searched in the database with that name.
 For example:
 
 ~~~sql
-	SELECT * FROM users -- uses table `users` in the current database;
-	SELECT * FROM mydb.users -- uses table `users` in database `mydb`;
+> SELECT * FROM users -- uses table `users` in the current database;
+> SELECT * FROM mydb.users -- uses table `users` in database `mydb`;
 ~~~
 
 ## Table Generator Functions
@@ -63,7 +63,7 @@ For example:
 Syntax:
 
 ~~~
-	 name ( arguments... )
+name ( arguments... )
 ~~~
 
 The name of a table generator function, followed by an opening
@@ -97,7 +97,7 @@ For example:
 Syntax:
 
 ~~~
-	( ... subquery ... )
+( ... subquery ... )
 ~~~
 
 The subquery can be expressed either as a `SELECT` or `VALUES` clause.
@@ -106,8 +106,8 @@ The parentheses around the subquery are mandatory.
 For example:
 
 ~~~sql
-	SELECT * FROM (VALUES(1), (2), (3));
-	SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT * FROM (VALUES(1), (2), (3));
+> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
 ~~~
 
 ## Aliased Table Expressions
@@ -115,8 +115,8 @@ For example:
 Syntax:
 
 ~~~
-	 <table expr> AS <name>
-	 <table expr> AS <name>(<colname>, <colname>, ...)
+<table expr> AS <name>
+<table expr> AS <name>(<colname>, <colname>, ...)
 ~~~
 
 In the first form, the table expression is equivalent to its left operand
@@ -127,30 +127,30 @@ In the second form, the columns are also renamed.
 For example:
 
 ~~~sql
-	SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
-	SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
+> SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
+> SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
 ~~~
 
 ## Join Expressions
 
 Syntax:
 
-~~~
-	-- Inner joins:
-	<table expr> [ INNER ] JOIN <table expr> ON <val expr>
-	<table expr> [ INNER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-	<table expr> NATURAL [ INNER ] JOIN <table expr>
-	<table expr> CROSS JOIN <table expr>
+~~~ shell
+# Inner joins:
+<table expr> [ INNER ] JOIN <table expr> ON <val expr>
+<table expr> [ INNER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL [ INNER ] JOIN <table expr>
+<table expr> CROSS JOIN <table expr>
 
-	-- Left outer joins:
-	<table expr> LEFT [ OUTER ] JOIN <table expr> ON <val expr>
-	<table expr> LEFT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-	<table expr> NATURAL LEFT [ OUTER ] JOIN <table expr>
+# Left outer joins:
+<table expr> LEFT [ OUTER ] JOIN <table expr> ON <val expr>
+<table expr> LEFT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL LEFT [ OUTER ] JOIN <table expr>
 
-	-- Right outer joins:
-	<table expr> RIGHT [ OUTER ] JOIN <table expr> ON <val expr>
-	<table expr> RIGHT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-	<table expr> NATURAL RIGHT [ OUTER ] JOIN <table expr>
+# Right outer joins:
+<table expr> RIGHT [ OUTER ] JOIN <table expr> ON <val expr>
+<table expr> RIGHT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL RIGHT [ OUTER ] JOIN <table expr>
 ~~~
 
 These expressions designate the
@@ -164,7 +164,7 @@ Currently works only with small data sets; find more info in our [blog post](htt
 Syntax:
 
 ~~~
-	<table expr> WITH ORDINALITY
+<table expr> WITH ORDINALITY
 ~~~
 
 Designates a data source equivalent to the table expression operand with
@@ -203,3 +203,9 @@ For example:
 surrounding query. Use it sparingly if performance is a concern, and
 always check the output of <a href="explain.html">EXPLAIN</a> in case of doubt.
 {{site.data.alerts.end}}
+
+## See Also
+
+- [Constants](sql-constants.html)
+- [Value Expressions](sql-expressions.html)
+- [Data Types](data-types.html)
