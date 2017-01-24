@@ -6,7 +6,9 @@ toc: false
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-## Query and Update Statements
+<div id="toc"></div>
+
+## Data Manipulation Statements
 
 Statement | Usage
 ----------|------------
