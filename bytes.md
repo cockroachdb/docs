@@ -15,15 +15,17 @@ In CockroachDB, the following are aliases for `BYTES`:
 - `BYTEA` 
 - `BLOB` 
 
-## Formats
+## Syntax
 
-When inserting into a `BYTES` column, use any of the following formats:
+To express a byte array constant, see the section on
+[byte array literals](sql-constants.html#byte-array-literals) for more
+details. For example, the following three are equivalent literals for the same
+byte array: `b'abc'`, `b'\141\142\143'`, `b'\x61\x62\x63'`.
 
-- 1 octet per byte: `b'\141\061\142\062\143\063'`
-- 2 hexadecimal digits per byte: `b'\x61\x31\x62\x32\x63\x33'`. 
-- String literal: `'a1b2c3'`
-
-You can also use these in combination, for example, `b'\141\061\x62\x32\c3'`.
+In addition to this syntax, CockroachDB also supports using
+[string literals](sql-constants.html#string-literals), including the
+syntax `'...'`, `e'...'` and `x'....'` in contexts where a byte array
+is otherwise expected.
 
 ## Size
 
@@ -34,7 +36,12 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 ~~~ sql
 > CREATE TABLE bytes (a INT PRIMARY KEY, b BYTES);
 
-> INSERT INTO bytes VALUES (1, 'abc'), (2, b'\141\142\143'), (3, b'\x61\x62\x63'), (4, b'\141\x62\c');
+> -- explicitly typed BYTES literals
+> INSERT INTO bytes VALUES (1, b'\141\142\143'), (2, b'\x61\x62\x63'), (3, b'\141\x62\c');
+
+> -- string literal implicitly typed as BYTES
+> INSERT INTO bytes VALUES (4, 'abc');
+
 
 > SELECT * FROM bytes;
 ~~~
@@ -50,13 +57,15 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 (4 rows)
 ~~~
 
-## Supported Casting & Conversion 
+## Supported Conversions
 
-`BYTES` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
+`BYTES` values can be
+[cast](data-types.html#data-type-conversions--casts) explicitly to
+`STRING`. The conversion verifies that the byte array contains only
+valid UTF-8 byte sequences; an error is reported otherwise.
 
-Type | Details
------|--------
-`STRING` | Requires the byte array to contain only valid UTF-8 character encodings.
+`STRING` values can be cast explicitly to `BYTES`. This conversion
+always succeeds.
 
 ## See Also
 

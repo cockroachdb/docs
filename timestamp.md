@@ -12,17 +12,30 @@ The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC,
 
 In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `TIMESTAMP WITH TIME ZONE` is an alias for `TIMESTAMPTZ`.
 
-## Formats
+## Syntax
 
-When inserting into a `TIMESTAMP` column, use one of the following formats:
+A constant value of type `TIMESTAMP`/`TIMESTAMPTZ` can be expressed using an
+[interpreted literal](sql-constants.html#interpreted-literals), or a
+string literal
+[annotated with](sql-expressions.html#explicitly-typed-expressions)
+type `TIMESTAMP`/`TIMESTAMPTZ` or
+[coerced to](sql-expressions.html#explicit-type-coercions) type
+`TIMESTAMP`/`TIMESTAMPTZ`.
 
-- Date only: `TIMESTAMP '2016-01-25'`
-- Date and Time: `TIMESTAMP '2016-01-25 10:10:10.555555'`
-- ISO 8601: `TIMESTAMP '2016-01-25T10:10:10.555555'`
+`TIMESTAMP` constants can be expressed using the
+following string literal formats:
 
-When inserting into a `TIMESTAMPTZ` column (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
+Format | Example
+-------|--------
+Date only | `TIMESTAMP '2016-01-25'`
+Date and Time | `TIMESTAMP '2016-01-25 10:10:10.555555'`
+ISO 8601 | `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-Alternatively, you can use a string literal, e.g., `'2016-01-25T10:10:10'` or `'2016-01-25 10:10:10.555555-05:00'`, which CockroachDB will resolve into the `TIMESTAMP` or `TIMESTAMPTZ` type.
+To express a `TIMESTAMPTZ` value (with time zone offset from UTC), use
+the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
+
+When it is unambiguous, a simple unannotated string literal can also
+be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the

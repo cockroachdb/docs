@@ -26,11 +26,10 @@ When inserting a decimal value:
 - If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.  
 - If the column's `precision` and `scale` are identical, the inserted value must round to less than 1.
 
-## Format
+## Syntax
 
-When inserting into a `DECIMAL` column, format the value as a numeric literal, e.g., `1.2345` or `1`. 
-
-Alternately, you can cast a float as a decimal: `CAST(1.2345 AS DECIMAL)`. However, note that the precision will be limited to 17 digits in total (both to the left and right of the decimal point). 
+A constant value of type `DECIMAL` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
+For example: `1.414` or `-1234`.
 
 ## Size
 
@@ -53,19 +52,19 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 +-------+---------------+-------+---------+
 ~~~
 ~~~ sql
-> INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, CAST(1.01234567890123456789 AS DECIMAL));
+> INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
 
 > SELECT * FROM decimals;
 ~~~
 ~~~
-+------------------------+---------+--------------------+
-|           a            |    b    |         c          |
-+------------------------+---------+--------------------+
-| 1.01234567890123456789 | 1.01235 | 1.0123456789012346 |
-+------------------------+---------+--------------------+
++------------------------+---------+-----------------------+
+|           a            |    b    |         c             |
++------------------------+---------+-----------------------+
+| 1.01234567890123456789 | 1.01235 | 1.0123456789012346789 |
++------------------------+---------+-----------------------+
 # The value in "a" matches what was inserted exactly.
 # The value in "b" has been rounded to the column's scale.
-# The value in "c" has been limited to 17 digits.
+# The value in "c" is handled like "a" because NUMERIC is an alias.
 ~~~
 
 ## Supported Casting & Conversion
@@ -78,8 +77,6 @@ Type | Details
 `FLOAT` | Loses precision and may round up to +/- infinity if the value is too large in magnitude, or to +/-0 if the value is too small in magnitude
 `BOOL` |  **0** converts to `false`; all other values convert to `true`
 `STRING` | ––
-
-{{site.data.alerts.callout_info}}Because the <a href="serial.html"><code>SERIAL</code> data type</a> represents values automatically generated CockroachDB to uniquely identify rows, you cannot meaningfully cast other data types as <code>SERIAL</code> values.{{site.data.alerts.end}}
 
 ## See Also
 
