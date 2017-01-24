@@ -250,6 +250,9 @@ entries:
                 - title: Keywords & Identifiers
                   url: /keywords-and-identifiers.html
 
+                - title: Constants
+                  url: /sql-constants.html
+
                 - title: Indexes
                   url: /indexes.html
 
@@ -303,6 +306,15 @@ entries:
 
                 - title: <code>BYTES</code>
                   url: /bytes.html
+
+            - title: Expressions
+              thirdlevelitems:
+
+                - title: Value Expressions
+                  url: /sql-expressions.html
+
+                - title: Table Expressions
+                  url: /table-expressions.html
 
         - title: Privileges
           url: /privileges.html
