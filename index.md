@@ -9,7 +9,7 @@ optimizely: true
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports strongly-consistent ACID transactions; and provides a familiar SQL API for structuring, manipulating, and querying data. 
 
-The project is currently in **Beta**. For details about upcoming features, see the [Roadmap](https://github.com/cockroachdb/cockroach/wiki).
+The project is currently in **Beta**. For details about upcoming features, see the [1.0 Roadmap](https://github.com/cockroachdb/cockroach/issues/12854).
 
 <br>
 <div class="row">
@@ -61,10 +61,20 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <div class="row">
     <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">
+        <div class="blog-post">
+            <div class="blog-title">How We're Building a Business to Last</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Jan 19, 2017</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/enriching-log-messages-using-go-contexts/">
         <div class="blog-post">
             <div class="blog-title">Enriching Log Messages Using Go Contexts</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">December 15</span></div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">Dec 15, 2016</span></div>
         </div>
         </a>  
     </div>
@@ -74,7 +84,7 @@ The project is currently in **Beta**. For details about upcoming features, see t
         <a href="https://www.cockroachlabs.com/blog/roaches-on-open-water-cockroachdb-on-digitalocean/">
         <div class="blog-post">
             <div class="blog-title">Roaches on Open Water! CockroachDB on Digital Ocean</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Sean Loiselle</span> on <span class="meta-emphasis">November 30</span></div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Sean Loiselle</span> on <span class="meta-emphasis">Nov 30, 2016</span></div>
         </div>
         </a>  
     </div>
@@ -84,7 +94,7 @@ The project is currently in **Beta**. For details about upcoming features, see t
         <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
         <div class="blog-post">
             <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">November 15</span></div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Nov 15, 2016</span></div>
         </div>
         </a>  
     </div>
@@ -92,19 +102,9 @@ The project is currently in **Beta**. For details about upcoming features, see t
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/">
-        <div class="blog-post">
-            <div class="blog-title">Memory Usage in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">November 10</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/surviving-a-hackathon-as-a-sponsor/">
         <div class="blog-post last-entry">
-            <div class="blog-title">How to Survive a Hackathon as a Sponsor</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Jessica Edwards</span> on <span class="meta-emphasis">November 1</span></div>
+            <div class="blog-title">Memory Usage in CockroachDB</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Nov 10, 2016</span></div>
         </div>
         </a>  
     </div>
