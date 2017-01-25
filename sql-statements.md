@@ -86,3 +86,16 @@ Statement | Usage
 [`SHOW DATABASE`](show-database.html) | List the default database for the session.
 [`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
 [`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
+
+## Backup & Restore (Enterprise)
+
+The following statements are availably only to [enterprise license](https://www.cockroachlabs.com/pricing/) users.
+
+{{site.data.alerts.callout_info}}For non-entperise backup/restore details, see <a href="back-up-and-restore-data.html">Back up & Restore</a>.{{site.data.alerts.end}}
+
+Statement | Usage
+----------|------------
+[`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
+[`RESTORE`](restore.html) | Restore databases and tables using your backups.
+
+
