@@ -115,6 +115,9 @@ entries:
                 - title: <code>ALTER VIEW</code>
                   url: /alter-view.html
 
+                - title: <code>BACKUP</code> (Enterprise)
+                  url: /backup.html
+
                 - title: <code>BEGIN</code>
                   url: /begin-transaction.html
 
@@ -183,6 +186,9 @@ entries:
 
                 - title: <code>RELEASE SAVEPOINT</code>
                   url: /release-savepoint.html
+
+                - title: <code>RESTORE</code> (Enterprise)
+                  url: /restore.html
 
                 - title: <code>REVOKE</code>
                   url: /revoke.html
@@ -446,8 +452,14 @@ entries:
         - title: View Version Details
           url: /view-version-details.html
 
-        - title: Back Up and Restore Data
-          url: /back-up-and-restore-data.html
+        - title: Back up Data
+          url: /back-up-data.html
+
+        - title: Restore Data
+          url: /restore-data.html
+
+        - title: Dump/Export Schema or Data
+          url: /sql-dump.html
 
         - title: Import Data
           url: /import-data.html
