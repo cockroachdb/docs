@@ -266,6 +266,7 @@ $ echo 'num_replicas: 7' | cockroach zone set db1.t1 -f -
 ### Even Replication Across Datacenters
 
 **Scenario:** 
+
 - You have a 6 nodes across 3 datacenters, 2 nodes in each datacenter. 
 - You want data replicated 3 times, with replicas balanced evenly across all three datacenters. 
 
@@ -298,12 +299,13 @@ There's no need to make zone configuration changes; by default, the cluster is c
 ### Multiple Applications Writing to Different Databases
 
 **Scenario:** 
+
 - You have 2 independent applications connected to the same CockroachDB cluster, each application using a distinct database. 
 - You have 6 nodes across 2 datacenters, 3 nodes in each datacenter.  
 - You want the data for application 1 to be replicated 5 times, with replicas evenly balanced across both datacenters.
 - You want the data for application 2 to be replicated 3 times, with all replicas in a single datacenter.  
 
-**Aproach:**
+**Approach:**
 
 1. Start each node with its datacenter location specified in the `--locality` flag: 
 
@@ -382,11 +384,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
 ### Stricter Replication for a Specific Table
 
 **Scenario:** 
+
 - You have a 7 nodes, 5 with SSD drives and 2 with HDD drives. 
 - You want data replicated 3 times by default.
 - Speed and availability are important for a specific table that is queried very frequently, however, so you want the data in that table to be replicated 5 times, preferrably on nodes with SSD drives. 
 
-**Aproach:**
+**Approach:**
 
 1. Start each node with `ssd` or `hdd` specified as store attributes:
 
