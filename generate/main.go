@@ -327,7 +327,11 @@ func main() {
 					replace: map[string]string{"any_name": "view_name"},
 					relink:  map[string]string{"view_name": "any_name"},
 				},
-				{name: "explain_stmt", inline: []string{"explainable_stmt", "explain_option_list"}},
+				{
+					name:    "explain_stmt",
+					inline:  []string{"explain_option_list"},
+					replace: map[string]string{"explain_option_name": "( | 'PLAN' | 'TYPES' | 'EXPRS' | 'METADATA' | 'QUALIFY' | 'VERBOSE' )"},
+				},
 				{name: "family_def", inline: []string{"opt_name", "name_list"}},
 				{
 					name:    "grant_stmt",
