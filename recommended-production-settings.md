@@ -21,7 +21,7 @@ When running a cluster with more than one node, each replica will be on a differ
 
 - Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a quorum (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
 
-- When replicating across datacenters, you should use datacenters on a single continent to ensure peformance (cross-continent scenarios will be better supported in the future).
+- When replicating across datacenters, it's recommended to use datacenters on a single continent to ensure performance. Inter-continent scenarios will improve in performance soon.
 
 For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 
