@@ -5,7 +5,7 @@ keywords: ttl, time to live, availability zone
 toc: false
 ---
 
-In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
 This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
 
@@ -44,11 +44,11 @@ Field | Description
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `86400` (24 hours)
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3` 
-`constraints` | A comma-separated list of positive, required, and/or prohibited constraints influencing the location of replicas. See [Replica Constraints](#replication-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique rack, if possible.
+`constraints` | A comma-separated list of positive, required, and/or prohibited constraints influencing the location of replicas. See [Replica Constraints](#replication-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node, if possible.
 
 ### Replication Constraints
 
-The location of replicas is based on the interplay between descriptive attributes assigned to nodes when they are started and constraints set in zone configurations. 
+The location of replicas, both when they are first added and when they are rebalanced to maintain cluster equilibrium, is based on the interplay between descriptive attributes assigned to nodes and constraints set in zone configurations.
 
 {{site.data.alerts.callout_success}}For demonstrations of how to set node attributes and replication constraints in different scenarios, see <a href="#scenario-based-examples">Scenario-based Examples</a> below.{{site.data.alerts.end}}
 
@@ -58,22 +58,22 @@ When starting a node with the [`cockroach start`](start-a-node.html) command, yo
 
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | Using the `--locality` flag, you can assign arbitrary key-value pairs that describe the locality of the node. Locality might include cloud provider, country, region, datacenter, rack, etc.<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. The keys themselves and the order of key-value pairs must be the same on all nodes, for example:<br><br>`--locality=cloud=gce,country=us,region=east,datacenter=us-east-1,rack=10`<br>`--locality=cloud=aws,country=us,region=west,datacenter=us-west-1,rack=12`
-**Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=gpu:x16c`
+**Node Locality** | Using the `--locality` flag, you can assign arbitrary key-value pairs that describe the locality of the node. Locality might include country, region, datacenter, rack, etc.<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. The keys themselves and the order of key-value pairs must be the same on all nodes, for example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=west,datacenter=us-west-1`
+**Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
 #### Constraints in Replication Zones
 
-The node- and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance: 
+The node-level and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance: 
 
 - When locality is the only consideration for replication, it's recommended to set locality on nodes without specifying any constraints in zone configurations. In the absence of constraints, CockroachDB attempts to spread replicas evenly across the cluster based on locality.
-- When additional or different constraints are needed, positive constraints are generally sufficient. Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country.
+- When additional or different constraints are needed, positive constraints are generally sufficient. Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country or on a specific type of machine.
 
 Constraint Type | Description | Syntax
 ----------------|-------------|-------
-**Positive** | Replicas will be placed on nodes/stores with as many matching attributes as possible. When there are no matching nodes/stores with capacity, replicas will be added wherever there is capacity.<br><br>For example, `constraints: [ssd, datacenter=us-west-1a]` would cause replicas to be located on different `ssd` drives in the `us-west-1a` datacenter. When there's not sufficient capacity for a new replica on an `ssd` drive in the datacenter, the replica would get added on an available `ssd` drive elsewhere. When there's not sufficient capacity for a new replica on any `ssd` drive, the replica would get added on any other drive with capacity. | `[ssd]`
-**Required** | Replicas **must** be placed on nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added.<br><br>For example, `constraints: [+datacenter=us-west-1a]` would force replicas to be located on different racks in the `us-west-1a` datacenter. When there's not sufficient capacity for a new replica on a unique rack in the datacenter, the replica would get added on a rack already storing a replica. When there's not sufficient capacity for a new replica on any rack in the datacenter, the replica would not get added. | `[+ssd]`
-**Prohibited** | Replicas **must not** be placed on nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added.<br><br>For example, `constraints: [-mem, -us-west-1a]` would force replicas to be located on-disk on different racks outside the `us-west-1a` datacenter. When there's not sufficient on-disk capacity on a unique rack outside the datacenter, the replica would get added on a rack already storing a replica. When there's sufficient capacity for a new replica only in the `us-west-1a` datacenter, the replica would not get added. | `[-ssd]`
+**Positive** | When placing replicas, the cluster will prefer nodes/stores with as many matching attributes as possible. When there are no matching nodes/stores with capacity, replicas will be placed wherever there is capacity. | `[ssd]`
+**Required** | When placing replicas, the cluster will only consider nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added. | `[+ssd]`
+**Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added. | `[-ssd]`
 
 ### Node/Replica Recommendations
 
@@ -170,7 +170,7 @@ constraints: []
 
 ### Edit the Default Replication Zone
 
-To edit the default replication zone, create a YAML file with changes, and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
+To edit the default replication zone, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
 
 ~~~ shell
 $ cat default_update.yaml
@@ -201,7 +201,7 @@ $ echo 'num_replicas: 5' | cockroach zone set .default -f -
 
 ### Create a Replication Zone for a Database
 
-To control replication for a specific database, create a YAML file with changes, and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags: 
+To control replication for a specific database, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags: 
 
 ~~~ shell
 $ cat database_zone.yaml
@@ -232,7 +232,7 @@ $ echo 'num_replicas: 5' | cockroach zone set db1 -f -
 
 ### Create a Replication Zone for a Table
 
-To control replication for a specific table, create a YAML file with changes, and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags: 
+To control replication for a specific table, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags: 
 
 ~~~ shell
 $ cat table_zone.yaml
