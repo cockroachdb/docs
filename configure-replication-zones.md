@@ -72,7 +72,7 @@ The node-level and store-level descriptive attributes mentioned above can be use
 Constraint Type | Description | Syntax
 ----------------|-------------|-------
 **Positive** | When placing replicas, the cluster will prefer nodes/stores with as many matching attributes as possible. When there are no matching nodes/stores with capacity, replicas will be placed wherever there is capacity. | `[ssd]`
-**Required** | When placing replicas, the cluster will only consider nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added. | `[+ssd]`
+**Required** | When placing replicas, the cluster will consider only nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added. | `[+ssd]`
 **Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added. | `[-ssd]`
 
 ### Node/Replica Recommendations
