@@ -11,9 +11,17 @@ This page provides recommended settings for production deployments.
 
 ## Cluster Topology
 
-- Run one node per machine. Since CockroachDB [replicates](configure-replication-zones.html) across nodes, running more than one node per machine increases the risk of data unavailability if a machine fails.
+When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
 
-- If a machine has multiple disks or SSDs, it's better to run one node with multiple `--store` flags instead of one node per disk, because this informs CockroachDB about the relationship between the stores and ensures that data will be replicated across different machines instead of being assigned to different disks of the same machine. For more details about stores, see [Start a Node](start-a-node.html).
+- Run at least three nodes to ensure that a majority of replicas (2/3) remains available if a node fails. 
+ 
+- Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
+
+- Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
+
+- When replicating across datacenters, it's recommended to use datacenters on a single continent to ensure performance (inter-continent scenarios will improve in performance soon). Also, to ensure even replication across datacenters, it's recommended to specify datacenter as a `--locality` at the node-level (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). 
+
+For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 
 ## Clock Synchronization
 
