@@ -13,7 +13,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         <div class="roach">
             <a href="start-a-local-cluster.html">
                 <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
-                <h3>Start</h3>
+                <h3>Start a Cluster</h3>
                 <p>Scale from one to many nodes in seconds.</p>
             </a>
         </div>
@@ -22,8 +22,8 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         <div class="roach">
             <a href="build-a-test-app.html">
                 <img src="images/builder_craig.png" alt="Build a Test App"/>
-                <h3>Connect</h3>
-                <p>Use any compatible PostgreSQL driver.</p>
+                <h3>Build an App</h3>
+                <p>Connect using any compatible PostgreSQL driver.</p>
             </a>
         </div>
     </div>
@@ -31,8 +31,8 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         <div class="roach">
             <a href="demo-data-replication.html">
                 <img src="images/scientist_catrina.png" alt="Examine Core Benefits"/>
-                <h3>Examine</h3>
-                <p>Data replication, easy scaling, and fault-resistance.</p>
+                <h3>Explore Benefits</h3>
+                <p>See replication, easy scaling, and fault-resistance in real-time.</p>
             </a>
         </div>
     </div>
