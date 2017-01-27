@@ -6,7 +6,7 @@ homepage: true
 toc: false
 ---
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives failures with minimal latency disruption and no manual intervention; supports ACID transactions; and provides a familiar SQL API.
 
 <div class="row">
     <div class="col-md-4">
@@ -53,7 +53,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <a href="orchestration.html">
                 <img src="images/sleeping_craig.png" alt="Orchestrate CockroachDB"/>
                 <h3>Orchestrate</h3>
-                <p>Reduce operator overhead even more.</p>
+                <p>Reduce operator overhead to almost nothing.</p>
             </a>
         </div>
     </div>
