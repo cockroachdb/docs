@@ -384,10 +384,11 @@ header {
     -moz-osx-font-smoothing: grayscale;
     line-height: 40px;
     color: #46a417;
+    margin-top: 20px;
     margin-bottom: 5px;
     text-transform: initial; }
   .roach a img {
-    height: 120px; }
+    height: 80px; }
   .roach p {
     padding: 5px 0 10px;
     margin: 0;
