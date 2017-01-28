@@ -57,10 +57,10 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 
 ## Step 2. Create Droplets
 
-[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](https://www.cockroachlabs.com/docs/configure-replication-zones.html#nodereplica-recommendations):
+[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
 
 - Running at least 3 nodes to ensure survivability.
-- Selecting the same continent for all of your Droplet for best performance.
+- Selecting the same continent for all of your Droplets for best performance.
 
 ## Step 3. Generate Your Certificates
 
