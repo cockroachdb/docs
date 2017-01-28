@@ -331,7 +331,7 @@ func main() {
 				{name: "family_def", inline: []string{"opt_name", "name_list"}},
 				{
 					name:    "grant_stmt",
-					inline:  []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list", "table_pattern_list", "name_list"},
+					inline:  []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list", "table_pattern_list", "name_list"},
 					replace: map[string]string{"table_pattern": "table_name", "'DATABASE' ( name ( ',' name )* )": "'DATABASE' ( database_name ( ',' database_name )* )", "'TO' ( name ( ',' name )* )": "'TO' ( user_name ( ',' user_name )* )"},
 					unlink:  []string{"table_name", "database_name", "user_name"},
 					nosplit: true,
@@ -380,7 +380,7 @@ func main() {
 				{name: "rename_database", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'DATABASE'")}},
 				{name: "rename_index", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'INDEX'")}, inline: []string{"table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
 				{name: "rename_table", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}},
-				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "privilege_target", "grantee_list"}},
+				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"}},
 				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")}},
 				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
 				{
@@ -428,7 +428,7 @@ func main() {
 				{
 					name:   "show_grants",
 					stmt:   "show_stmt",
-					inline: []string{"on_privilege_target_clause", "privilege_target", "for_grantee_clause", "grantee_list", "table_pattern_list", "name_list"},
+					inline: []string{"on_privilege_target_clause", "targets", "for_grantee_clause", "grantee_list", "table_pattern_list", "name_list"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'SHOW' 'GRANTS'")},
 					replace: map[string]string{
 						"table_pattern":                 "table_name",
