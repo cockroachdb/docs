@@ -87,7 +87,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 ## Step 2. Create VMs
 
-[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. We [recommend](https://www.cockroachlabs.com/docs/configure-replication-zones.html#nodereplica-recommendations):
+[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
 
 - Running at least 3 nodes to ensure survivability.
 - Selecting the same continent for all of your VMs for best performance.

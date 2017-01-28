@@ -27,8 +27,8 @@ instance | A physical or virtual machine. In this tutorial, you'll use three, on
   
 Create three instances, one for each node of your cluster.
 
-- For GCE-specific instructions, read through step 2 of [Deploy CockroachDB on GCE](deploy-cockroachdb-on-google-cloud-platform.html).
-- For AWS-specific instructions, read through step 2 of [Deploy CockroachDB on AWS](deploy-cockroachdb-on-aws.html).
+- For GCE-specific instructions, read through step 2 of [Deploy CockroachDB on GCE](deploy-cockroachdb-on-google-cloud-platform-insecure.html).
+- For AWS-specific instructions, read through step 2 of [Deploy CockroachDB on AWS](deploy-cockroachdb-on-aws-insecure.html).
 
 Be sure to configure your network to allow TCP communication on these ports: 
 
@@ -69,7 +69,7 @@ On each instance:
    To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
    ~~~
 
-2. On the other two instances, [create a worker node joined to to the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/) by running the `docker swarm join` command in the output from step 1, for example:
+2. On the other two instances, [create a worker node joined to the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/) by running the `docker swarm join` command in the output from step 1, for example:
 
    ~~~ shell
    $ sudo docker swarm join \
