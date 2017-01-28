@@ -353,7 +353,7 @@ The condition must have type `BOOL`, and the two remaining expressions
 must have the same type. The result has the same type as the
 expression that was evaluated.
 
-### `CASE` Expressions
+### Simple `CASE` Expressions
 
 Syntax:
 
@@ -373,6 +373,29 @@ evaluated and returned, if any. Otherwise, `NULL` is returned.
 #### Typing rule
 
 The condition and the `WHEN` expressions must have the same type.
+The `THEN` expressions and the `ELSE` expression, if any, must have the same type.
+The result has the same type as the `THEN`/`ELSE` expressions.
+
+### Searched `CASE` Expressions
+
+Syntax:
+
+~~~
+CASE WHEN <cond1> THEN <expr1>
+   [ WHEN <cond2> THEN <expr2> ] ...
+   [ ELSE <expr> ]
+END
+~~~
+
+In order, evaluates each `<cond>` expression; at the first `<cond>`
+expression that evaluates to `TRUE`, returns the result of evaluating the
+corresponding `THEN` expression.  If none of the `<cond>` expressions
+evaluates to true, then evaluates and returns the value of the `ELSE`
+expression, if any, or `NULL` otherwise.
+
+#### Typing rule
+
+All the `WHEN` expressions must have type `BOOL`.
 The `THEN` expressions and the `ELSE` expression, if any, must have the same type.
 The result has the same type as the `THEN`/`ELSE` expressions.
 
