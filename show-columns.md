@@ -32,6 +32,7 @@ Field | Description
 `Type` | The [data type](data-types.html) of the column. 
 `Null` | Whether or not the column accepts `NULL`. Possible values: `true` or `false`.
 `Default` | The default value for the column, or an expression that evaluates to a default value.
+`Indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
 
 ## Example
 
@@ -49,16 +50,17 @@ Field | Description
 
 > SHOW COLUMNS FROM orders;
 ~~~
+
 ~~~
-+-------------+-----------+-------+----------------+
-|    Field    |   Type    | Null  |    Default     |
-+-------------+-----------+-------+----------------+
-| id          | INT       | false | unique_rowid() |
-| date        | TIMESTAMP | false | NULL           |
-| priority    | INT       | true  |              1 |
-| customer_id | INT       | true  | NULL           |
-| status      | STRING    | true  | 'open'         |
-+-------------+-----------+-------+----------------+
++-------------+-----------+-------+----------------+----------------------------------+
+|    Field    |   Type    | Null  |    Default     |             Indices              |
++-------------+-----------+-------+----------------+----------------------------------+
+| id          | INT       | false | unique_rowid() | {primary,orders_customer_id_key} |
+| date        | TIMESTAMP | false | NULL           | {}                               |
+| priority    | INT       | true  |              1 | {}                               |
+| customer_id | INT       | true  | NULL           | {orders_customer_id_key}         |
+| status      | STRING    | true  | 'open'         | {}                               |
++-------------+-----------+-------+----------------+----------------------------------+
 (5 rows)
 ~~~
 
