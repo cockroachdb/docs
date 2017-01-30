@@ -54,6 +54,66 @@
   }
 }
 
+.roach-test {
+  border: 1px solid $cl_border;
+  margin-bottom: 20px;
+  padding: 10px;
+  text-align: center;
+  top: 0px;
+  position: relative; 
+
+  h3 {
+    @include adelle(26px);
+    line-height: 40px;
+    color: $cl_green;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-transform: initial;
+  }
+  
+  a {
+    img {
+      height: 80px;
+    }
+    &:hover {
+      border-bottom: none;
+    }
+  }
+
+  p {
+    padding: 5px 0 10px;
+    margin: 0;
+    @include avenir_bk(14px);
+    line-height: 20px;
+  }
+
+  &:hover {
+    border-color: $cl_green;
+    background-color: $cl_gray;
+  }
+
+  &.full-roach {
+    .catrina {
+      height: 120px;
+    }
+  }
+
+  @include at-query($min, $screen-md){
+    //min-height: 350px;
+
+    &.full-roach {
+      text-align: left;
+      min-height: 0;
+
+      .catrina {
+        width: 100%;
+        max-width: 270px;
+        height: auto;
+      }
+    }
+  }
+}
+
 .blog-post {
   border: 1px solid $cl_border;
   padding: 10px 20px;
