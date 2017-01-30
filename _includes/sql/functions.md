@@ -55,6 +55,7 @@ Function &rarr; Returns | Description
 <code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the smallest integer greater than `val`.</span>
 <code>cos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the cosine of `val`.</span>
 <code>cot(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the cotangent of `val`.</span>
+<code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>, txnID: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>degrees(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Converts `val` as a radian value to a degree value.</span>
 <code>div(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the integer quotient of `x`/`y`.</span>
 <code>div(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the integer quotient of `x`/`y`.</span>
@@ -164,11 +165,19 @@ Function &rarr; Returns | Description
 
 Function &rarr; Returns | Description
 --- | ---
-<code>pg_catalog.generate_series(<a href="int.html">int</a>, <a href="int.html">int</a>) &rarr; setof tuple{<a href="int.html">int</a>}</code> | <span class="funcdesc">Not usable; supported only for ORM compatibility.</span>
-<code>pg_catalog.generate_series(<a href="int.html">int</a>, <a href="int.html">int</a>, <a href="int.html">int</a>) &rarr; setof tuple{<a href="int.html">int</a>}</code> | <span class="funcdesc">Not usable; supported only for ORM compatibility.</span>
-<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; supported only for ORM compatibility</span>
-<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>, pretty_<a href="bool.html">bool</a>: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; supported only for ORM compatibility</span>
-<code>pg_catalog.pg_get_indexdef(index_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; supported only for ORM compatibility</span>
-<code>pg_catalog.pg_get_userbyid(role_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; supported only for ORM compatibility</span>
-<code>pg_catalog.pg_typeof(val: anyelement) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; supported only for ORM compatibility</span>
+<code>pg_catalog.array_in(<a href="string.html">string</a>: <a href="string.html">string</a>, element_oid: <a href="int.html">int</a>, element_typmod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.col_description(table_oid: <a href="int.html">int</a>, column_number: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.format_type(type_oid: <a href="int.html">int</a>, typemod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns the SQL name of a data type that is identified by its type OID and possibly a type modifier. Currently, the type modifier is ignored.</span>
+<code>pg_catalog.generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>) &rarr; setof tuple{<a href="int.html">int</a>}</code> | <span class="funcdesc">Produces a virtual table containing the integer values from `start` to `end`, inclusive.</span>
+<code>pg_catalog.generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>, step: <a href="int.html">int</a>) &rarr; setof tuple{<a href="int.html">int</a>}</code> | <span class="funcdesc">Produces a virtual table containing the integer values from `start` to `end`, inclusive, by increment of `step`.</span>
+<code>pg_catalog.obj_description(object_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_backend_pid() &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: <a href="int.html">int</a>, pretty_<a href="bool.html">bool</a>: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_get_indexdef(index_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_get_userbyid(role_oid: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.pg_typeof(val: anyelement) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>pg_catalog.shobj_description(object_oid: <a href="int.html">int</a>, catalog_name: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
+<code>unnest(input: <a href="int.html">int</a>[]) &rarr; setof tuple{<a href="int.html">int</a>}</code> | <span class="funcdesc">Returns the input array as a set of rows</span>
+<code>unnest(input: <a href="string.html">string</a>[]) &rarr; setof tuple{<a href="string.html">string</a>}</code> | <span class="funcdesc">Returns the input array as a set of rows</span>
 
