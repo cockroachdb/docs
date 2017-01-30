@@ -61,6 +61,16 @@ The project is currently in **Beta**. For details about upcoming features, see t
 
 <div class="row">
     <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/fighting-unconscious-bias-cockroach-labs/">
+        <div class="blog-post">
+            <div class="blog-title">How We're Fighting Unconscious Bias</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Lindsay Grenawalt</span> on <span class="meta-emphasis">Jan 26, 2017</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">
         <div class="blog-post">
             <div class="blog-title">How We're Building a Business to Last</div>
@@ -92,19 +102,9 @@ The project is currently in **Beta**. For details about upcoming features, see t
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
-        <div class="blog-post">
+        <div class="blog-post last-entry">
             <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Nov 15, 2016</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">Memory Usage in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Nov 10, 2016</span></div>
         </div>
         </a>  
     </div>

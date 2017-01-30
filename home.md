@@ -11,7 +11,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 <div class="row">
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="start-a-local-cluster.html">
                 <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
                 <h3>Start a Cluster</h3>
@@ -20,7 +20,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         </div>
     </div>
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="build-a-test-app.html">
                 <img src="images/builder_craig.png" alt="Build a Test App"/>
                 <h3>Build an App</h3>
@@ -29,7 +29,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         </div>
     </div>
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="demo-data-replication.html">
                 <img src="images/scientist_catrina.png" alt="Examine Core Benefits"/>
                 <h3>Explore Benefits</h3>
@@ -41,7 +41,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 <div class="row">
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="cloud-deployment.html">
                 <img src="images/craig_crossfit.png" alt="Deploy CockroachDB in the Cloud"/>
                 <h3>Deploy</h3>
@@ -50,7 +50,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         </div>
     </div>
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="orchestration.html">
                 <img src="images/sleeping_craig.png" alt="Orchestrate CockroachDB"/>
                 <h3>Orchestrate</h3>
@@ -59,7 +59,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         </div>
     </div>
     <div class="col-md-4">
-        <div class="roach">
+        <div class="roach-test">
             <a href="monitor-cockroachdb-with-prometheus.html">
                 <img src="images/announcement_catrina.png" alt="Monitor with Third-Party Tools"/>
                 <h3>Monitor</h3>
@@ -71,6 +71,16 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 ## [Recent Blog Posts](https://www.cockroachlabs.com/blog/)
 
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/fighting-unconscious-bias-cockroach-labs/">
+        <div class="blog-post">
+            <div class="blog-title">How We're Fighting Unconscious Bias</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Lindsay Grenawalt</span> on <span class="meta-emphasis">Jan 26, 2017</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">
@@ -104,19 +114,9 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
-        <div class="blog-post">
+        <div class="blog-post last-entry">
             <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Nov 15, 2016</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">Memory Usage in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Nov 10, 2016</span></div>
         </div>
         </a>  
     </div>
