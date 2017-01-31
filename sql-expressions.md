@@ -33,6 +33,11 @@ An expression in a query can refer to columns in the current data source in two 
   be appropriately quoted. For example: `SELECT "Default" FROM
   configuration`.
 
+  In case the column name is ambiguous (e.g. when joining across
+  multiple tables), it is possible to disambiguate by prefixing the
+  column name by the table name. For example, `SELECT items.price FROM
+  items`.
+
 - Using the ordinal position of the column. For example, `SELECT @1 FROM items` selects
   the first column in `items`.
 
@@ -274,7 +279,10 @@ by a comma-separated list of expressions, followed by a closing
 parenthesis.
 
 This applies the named function to the arguments between the parentheses.
-See [the separate section on supported built-in functions](functions-and-operators.html).
+
+Which function is called depending on the name used is determined using
+the regular [name resolution](sql-name-resolution.html) rules.
+See also [the separate section on supported built-in functions](functions-and-operators.html).
 
 In addition, the following SQL special forms are also supported:
 

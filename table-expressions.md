@@ -48,8 +48,9 @@ A single SQL identifier in a table expression context designates
 the contents of the table or [view](views.html) with that name
 in the current database, as configured by [`SET DATABASE`](set-database.html).
 
-If the name is prefixed by another identifier and a period, the table or view
-is searched in the database with that name.
+If the name is prefixed by another identifier and a period, the table
+or view is searched in the database with that name. See the section on
+[name resolution](sql-name-resolution.html) for more details.
 
 For example:
 
