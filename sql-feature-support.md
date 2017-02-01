@@ -82,14 +82,17 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| `ALTER TABLE` | ✓ | Standard | [`ALTER TABLE documentation`](alter-table.html) |
-| Database renames | ✓ | Standard | [`RENAME DATABASE documentation`](rename-database.html) |
-| Table renames | ✓ | Standard | [`RENAME TABLE documentation`](rename-table.html) |
-| Column renames | ✓ | Standard | [`RENAME COLUMN documentation`](rename-column.html) |
-| Adding columns | ✓ | Standard | [`ALTER TABLE documentation`](alter-table.html) |
-| Removing columns | ✓ | Standard | [`ALTER TABLE documentation`](alter-table.html) |
-| Adding indexes | ✓ | Standard | [`CREATE INDEX documentation`](create-index.html) |
-| Removing indexes | ✓ | Standard | [`DROP INDEX documentation`](drop-index.html) |
+| `ALTER TABLE` | ✓ | Standard | [`ALTER TABLE` documentation](alter-table.html) |
+| Database renames | ✓ | Standard | [`RENAME DATABASE` documentation](rename-database.html) |
+| Table renames | ✓ | Standard | [`RENAME TABLE` documentation](rename-table.html) |
+| Column renames | ✓ | Standard | [`RENAME COLUMN` documentation](rename-column.html) |
+| Adding columns | ✓ | Standard | [`ADD COLUMN` documentation](add-column.html) |
+| Removing columns | ✓ | Standard | [`DROP COLUMN` documentation](drop-column.html) |
+| Adding constraints | ✓ | Standard | [`ADD CONSTRAINT` documentation](add-constraint.html) |
+| Removing constraints | ✓ | Standard | [`DROP CONSTRAINT` documentation](drop-constraint.html) |
+| Index renames | ✓ | Standard | [`RENAME INDEX` documentation](rename-index.html) |
+| Adding indexes | ✓ | Standard | [`CREATE INDEX` documentation](create-index.html) |
+| Removing indexes | ✓ | Standard | [`DROP INDEX` documentation](drop-index.html) |
 
 ### Statements
 
