@@ -25,7 +25,7 @@ Variable | Description
 `DATABASE` | The default database for the current session, as set by [`SET DATABASE`](set-database.html) or the client's connection string. This variable can be viewed with [`SHOW DATABASE`](show-database.html) as well. 
 `DEFAULT_TRANSACTION_ISOLATION` | The default transaction isolation level for the current session, as set by `SET DEFAULT_TRANSACTION_ISOLATION` or the client's connection string. 
 `MAX_INDEX_KEYS` | Not usable; exposed only for ORM compatibility.
-`SEARCH_PATH` | A list of databases or namespaces that will be searched to resolve unqualified table or function names.
+`SEARCH_PATH` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html).
 `SERVER_VERSION` | The version of PostgreSQL that CockroachDB emulates.
 `SYNTAX` | The default SQL syntax for the current session, as set by `SET SYNTAX`. This variable can be viewed with `SHOW SYNTAX` as well.
 `TIME ZONE` | The default time zone for the current session, as set by [`SET TIME ZONE`](set-time-zone.html). This variable can be viewed with [`SHOW TIME ZONE`](show-time-zone.html) as well.

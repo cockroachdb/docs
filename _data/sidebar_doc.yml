@@ -234,6 +234,9 @@ entries:
                 - title: Table Expressions
                   url: /table-expressions.html
 
+                - title: Name Resolution
+                  url: /sql-name-resolution.html
+
                 - title: Full SQL Grammar
                   url: /sql-grammar.html
 
