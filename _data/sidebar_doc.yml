@@ -386,6 +386,9 @@ entries:
         - title: Configure Replication Zones
           url: /configure-replication-zones.html
 
+        - title: Import Data
+          url: /import-data.html
+
     - title: Manage
       items:
 
