@@ -12,49 +12,41 @@ This page explains how CockroachDB organizes columns into families as well as ca
 
 ## Default Behavior
 
-When a table is created, CockroachDB automatically groups columns into families as follows:
+When a table is created, all columns are stored as a single column family.  
 
-- Fixed-size columns are stored as a single column family: `INT`, `DECIMAL` with precision, `FLOAT`, `BOOL`, `DATE`, `TIMESTAMP`, `INTERVAL`, and `STRING` with length limit. 
-- Each unbounded column is stored as its own column family: `STRING` without length limit, `DECIMAL` without precision, and `BYTES`.
-
-This default approach ensures efficient key-value storage and performance in most cases. However, in special cases, you may want to manually override this logic.
+This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family
 
 ## Manual Override
-
-### Reasons to Manually Assign Column Families
-
-There are are few cases when you might want to manually group columns into column families:
-
-- As mentioned above, `STRING` columns with no length limit, `DECIMAL` columns with no precision, and `BYTES` columns are assigned to their own families by default. When you know that such columns will be small, it's best to assign them to families with other columns to reduce the number of underlying keys. 
-
-- When frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. It's therefore more performant to split frequently updated columns into a distinct family. 
 
 ### Assign Column Families on Table Creation
 
 To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
 
-For example, let's say we want to create a `users` table to store user IDs (`id INT`), date and time when users joined (`joined TIMESTAMP`), and user names (`name STRING`). We don't know how long a name will be, so we leave it unbounded. However, since names are generally short, we use the `FAMILY` keyword to group `name` with the other columns:
+For example, let's say we want to create a table to store a large, immutable blob of data (`data BYTES`) with a last accessed timestamp (`last_accessed TIMESTAMP`). Because we know that the blob of data will never get updated, we use the `FAMILY` keyword to break it into a separate column family:
 
 ~~~ sql
-> CREATE TABLE users (
+> CREATE TABLE test (
     id INT PRIMARY KEY, 
-    joined TIMESTAMP,
-    name STRING,
-    FAMILY f1 (id, joined, name)
+    last_accessed TIMESTAMP,
+    data BYTES,
+    FAMILY f1(id, last_accessed),
+    FAMILY f2 (data)
 );
 
 > SHOW CREATE TABLE users;
 ~~~
+
 ~~~
 +-------+---------------------------------------------+
 | Table |                 CreateTable                 |
 +-------+---------------------------------------------+
-| users | CREATE TABLE users (␤                       |
+| test  | CREATE TABLE test (␤                       |
 |       |     id INT NOT NULL,␤                       |
-|       |     joined TIMESTAMP NULL,␤                 |
-|       |     name STRING NULL,␤                      |
+|       |     last_accessed TIMESTAMP NULL,␤          |
+|       |     data BYTES NULL,␤                       |
 |       |     CONSTRAINT "primary" PRIMARY KEY (id),␤ |
-|       |     FAMILY f1 (id, joined, name)␤           |
+|       |     FAMILY f1 (id, last_accessed),␤         |
+|       |     FAMILY f2 (data)␤                       |
 |       | )                                           |
 +-------+---------------------------------------------+
 (1 row)
@@ -64,24 +56,24 @@ For example, let's say we want to create a `users` table to store user IDs (`id 
 
 ### Assign Column Families When Adding Columns
 
-When using the [`ALTER TABLE`](alter-table.html) statement to add a column to a table, you can assign the column to a new or existing column family. 
+When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family. 
 
-- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data BYTES` column to the `users` table above and assign it to a new column family: 
+- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family: 
 
   ~~~ sql
-  > ALTER TABLE users ADD COLUMN data BYTES CREATE FAMILY f2;
+  > ALTER TABLE test ADD COLUMN data2 BYTES CREATE FAMILY f3;
   ~~~
 
-- Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `data BYTES` colum to the `users` table above and assign it to family `f1`:
+- Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `name STRING` column to the `test` table above and assign it to family `f1`:
 
   ~~~ sql
-  > ALTER TABLE users ADD COLUMN data BYTES FAMILY f1;
+  > ALTER TABLE test ADD COLUMN name STRING FAMILY f1;
   ~~~
 
 - Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an **existing family or, if the family doesn't exist, to a new family**. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
 
   ~~~ sql
-  > ALTER TABLE users ADD COLUMN data BYTES CREATE IF NOT EXISTS FAMILY f1;
+  > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
 ## Compatibility with Past Releases
@@ -91,4 +83,5 @@ Using the [`beta-20160714`](beta-20160714.html) release makes your data incompat
 ## See Also
 
 - [`CREATE TABLE`](create-table.html)
+- [`ADD COLUMN`](add-column.html)
 - [Other SQL Statements](sql-statements.html)
