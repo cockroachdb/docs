@@ -70,6 +70,21 @@ CockroachDB guarantees the SQL isolation level "serializable", the highest defin
 It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
 See our description of [strong consistency](strong-consistency.html) for more details.
 
+## How is CockroachDB both highly availability and strongly consistent?
+
+The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: 
+
+- Consistency
+- Availability
+- Partition Tolerance
+
+CockroachDB is a CP (consistent and partition tolerant) system. This means
+that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgements from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
+
+Separately, CockroachDB is also Highly Available, although "available" here means something a bit different than the way that term is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
+
+So being both CP and HA means that whenever a majority of replicas can talk to each other, they should be able to make progress. For example, if you deploy CockroachDB to three datacenters and the network link to one of them fails, the other two datacenters should be able to operate normally with only a few seconds' disruption. We do this by attempting to detect partitions and failures quickly and efficiently, transferring leadership to nodes that are able to communicate with the majority, and routing internal traffic away from nodes that are partitioned away.
+
 ## Why is CockroachDB SQL?
 
 At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is Standard SQL with extensions. This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your [PostgreSQL language-specific driver](install-client-drivers.html) and start building.  
