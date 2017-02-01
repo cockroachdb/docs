@@ -27,14 +27,21 @@ They are described further in section [SQL Constants](sql-constants.html).
 
 An expression in a query can refer to columns in the current data source in two ways:
 
-- Using the name of the column, e.g. "`price`" in `SELECT price FROM
-  items`. If the name of a column is also a
-  [SQL keyword](keywords-and-identifiers.html#keywords), the name must
-  be appropriately quoted. For example: `SELECT "Default" FROM
-  configuration`.
+- Using the name of the column, e.g., `price` in `SELECT price FROM
+  items`.
 
-- Using the ordinal position of the column. For example, `SELECT @1 FROM items` selects
-  the first column in `items`.
+  - If the name of a column is also a
+	[SQL keyword](keywords-and-identifiers.html#keywords), the name
+	must be appropriately quoted. For example: `SELECT "Default" FROM
+	configuration`.
+
+  - If the name is ambiguous (e.g., when joining across multiple
+	tables), it is possible to disambiguate by prefixing the column
+	name by the table name. For example, `SELECT items.price FROM
+	items`.
+
+- Using the ordinal position of the column. For example, `SELECT @1
+  FROM items` selects the first column in `items`.
 
   *This is a CockroachDB SQL extension.*
 
@@ -273,8 +280,12 @@ A built-in function name followed by an opening parenthesis, followed
 by a comma-separated list of expressions, followed by a closing
 parenthesis.
 
-This applies the named function to the arguments between the parentheses.
-See [the separate section on supported built-in functions](functions-and-operators.html).
+This applies the named function to the arguments between
+parentheses. When the function's namespace is not prefixed, the
+[name resolution rules](sql-name-resolution.html) determine which
+function is called.
+
+See also [the separate section on supported built-in functions](functions-and-operators.html).
 
 In addition, the following SQL special forms are also supported:
 
@@ -359,7 +370,7 @@ Syntax:
 
 ~~~
 CASE <cond>
-    WHEN <condval1> THEN <expr1>
+	WHEN <condval1> THEN <expr1>
   [ WHEN <condvalx> THEN <exprx> ] ...
   [ ELSE <expr2> ]
 END
