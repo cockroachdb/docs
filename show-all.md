@@ -24,6 +24,9 @@ Variable | Description
 ------|------------
 `DATABASE` | The default database for the current session, as set by [`SET DATABASE`](set-database.html) or the client's connection string. This variable can be viewed with [`SHOW DATABASE`](show-database.html) as well. 
 `DEFAULT_TRANSACTION_ISOLATION` | The default transaction isolation level for the current session, as set by `SET DEFAULT_TRANSACTION_ISOLATION` or the client's connection string. 
+`MAX_INDEX_KEYS` | Not usable; exposed only for ORM compatibility.
+`SEARCH_PATH` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html).
+`SERVER_VERSION` | The version of PostgreSQL that CockroachDB emulates.
 `SYNTAX` | The default SQL syntax for the current session, as set by `SET SYNTAX`. This variable can be viewed with `SHOW SYNTAX` as well.
 `TIME ZONE` | The default time zone for the current session, as set by [`SET TIME ZONE`](set-time-zone.html). This variable can be viewed with [`SHOW TIME ZONE`](show-time-zone.html) as well.
 `TRANSACTION ISOLATION LEVEL` | The isolation level of the current transaction, as set by [`SET TRANSACTION ISOLATION LEVEL`](set-transaction.html). When run in the context of a transaction, [`SHOW TRANSACTION ISOLATION LEVEL`](show-transaction.html) returns this variable as well.<br><br>This will differ from `DEFAULT_TRANSACTION_ISOLATION` only when `SHOW ALL` is run in the context of a transaction and `SET TRANSACTION ISOLATION LEVEL` has been used to set a non-default isolation level for the specific transaction.
@@ -34,18 +37,22 @@ Variable | Description
 ~~~ sql
 > SHOW ALL;
 ~~~
+
 ~~~
 +-------------------------------+--------------+
 |           Variable            |    Value     |
 +-------------------------------+--------------+
-| DATABASE                      | bank         |
+| DATABASE                      | test         |
 | DEFAULT_TRANSACTION_ISOLATION | SERIALIZABLE |
+| MAX_INDEX_KEYS                |           32 |
+| SEARCH_PATH                   | pg_catalog   |
+| SERVER_VERSION                | 9.5.0        |
 | SYNTAX                        | Traditional  |
 | TIME ZONE                     | UTC          |
 | TRANSACTION ISOLATION LEVEL   | SERIALIZABLE |
 | TRANSACTION PRIORITY          | NORMAL       |
 +-------------------------------+--------------+
-(6 rows)
+(9 rows)
 ~~~
 
 ## See Also
