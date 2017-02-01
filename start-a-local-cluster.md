@@ -182,3 +182,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 - [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
 - [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
+- [Import Data](import-data.html): How to import data from your application's current database

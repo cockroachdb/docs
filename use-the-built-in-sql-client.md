@@ -266,3 +266,4 @@ In this example, we create a table and then use `\|` to programmatically insert 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
+- [Import Data](import-data.html)
