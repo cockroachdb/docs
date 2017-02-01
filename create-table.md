@@ -100,9 +100,16 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
     user_id INT, 
     logon_date DATE
 );
+~~~
 
+~~~
+CREATE TABLE
+~~~
+
+~~~ sql
 > SHOW COLUMNS FROM logon;
 ~~~
+
 ~~~
 +------------+------+-------+----------------+
 |   Field    | Type | Null  |    Default     |
@@ -129,39 +136,46 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 In this example, we create a table with three columns. One column is the [primary key](primary-key.html), another is given the [Unique constraint](unique.html), and the third has no constraints. The primary key and column with the Unique constraint are automatically indexed.
 
-By default, CockroachDB would assign the `user_id` and `logoff_date` columns to a single column family, since they're of a fixed size, and `user_email` to its own column family, since it's unbounded. We know that `user_email` will be relatively small, however, so we use the `FAMILY` keyword to group it with the other columns. As a result, each new row in the table would correspond to a single underlying key-value pair. For more deails about how columns are assigned to column families, see [Column Families](column-families.html).
-
 ~~~ sql
 CREATE TABLE logoff (
     user_id INT PRIMARY KEY, 
     user_email STRING UNIQUE, 
-    logoff_date DATE,
-    FAMILY f1 (user_id, user_email, logoff_date)
+    logoff_date DATE
 );
+~~~
 
+~~~
+CREATE TABLE
+~~~
+
+~~~ sql
 > SHOW COLUMNS FROM logoff;
 ~~~
+
 ~~~
-+-------------+------------+-------+---------+
-|    Field    |    Type    | Null  | Default |
-+-------------+------------+-------+---------+
-| user_id     | INT        | false | NULL    |
-| user_email  | STRING     | true  | NULL    |
-| logoff_date | DATE       | true  | NULL    |
-+-------------+------------+-------+---------+
++-------------+--------+-------+---------+---------------------------------+
+|    Field    |  Type  | Null  | Default |             Indices             |
++-------------+--------+-------+---------+---------------------------------+
+| user_id     | INT    | false | NULL    | {primary,logoff_user_email_key} |
+| user_email  | STRING | true  | NULL    | {logoff_user_email_key}         |
+| logoff_date | DATE   | true  | NULL    | {}                              |
++-------------+--------+-------+---------+---------------------------------+
 (3 rows)
 ~~~
+
 ~~~ sql
 > SHOW INDEX FROM logoff;
 ~~~
+
 ~~~
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing |
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-| logoff | primary               | true   |   1 | user_id    | ASC       | false   |
-| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   |
-+--------+-----------------------+--------+-----+------------+-----------+---------+
-(2 rows)
++--------+-----------------------+--------+-----+------------+-----------+---------+----------+
+| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing | Implicit |
++--------+-----------------------+--------+-----+------------+-----------+---------+----------+
+| logoff | primary               | true   |   1 | user_id    | ASC       | false   | false    |
+| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   | false    |
+| logoff | logoff_user_email_key | true   |   2 | user_id    | ASC       | false   | true     |
++--------+-----------------------+--------+-----+------------+-----------+---------+----------+
+(3 rows)
 ~~~
 
 ### Create a Table With Secondary Indexes
