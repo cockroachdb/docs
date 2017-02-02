@@ -15,12 +15,11 @@ CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive
 
 ## When is CockroachDB a good choice?
 
-CockroachDB is especially well suited for applications that require:
+CockroachDB is well suited for applications that require reliable, available, and correct data regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
 
-- Horizontal scalability
-- Business continuity (survivability) 
-- High levels of consistency 
-- Support for distributed ACID transactions 
+- Distributed or replicated OLTP
+- Multi-datacenter deployments
+- Cloud-native infrastructure initiatives
 
 ## When is CockroachDB not a good choice?
 
@@ -28,9 +27,8 @@ CockroachDB is not a good choice when very low latency reads and writes are crit
 
 Also, CockroachDB is not yet suitable for: 
 
-- Use cases requiring SQL joins ([the feature still needs optimization](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/))
-- Use cases requiring JSON/Protobuf data ([slated for an upcoming release](https://github.com/cockroachdb/cockroach/issues/2969))
-- Real-time analytics (on our long-term roadmap)
+- Complex SQL JOINS ([the feature still needs optimization](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/))
+- Heavy analytics / OLAP
 
 ## How easy is it to install CockroachDB?
 
@@ -69,6 +67,21 @@ For short-term failures, such as a server restart, CockroachDB uses Raft to cont
 CockroachDB guarantees the SQL isolation level "serializable", the highest defined by the SQL standard.
 It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
 See our description of [strong consistency](strong-consistency.html) for more details.
+
+## How is CockroachDB both highly availability and strongly consistent?
+
+The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: 
+
+- Consistency
+- Availability
+- Partition Tolerance
+
+CockroachDB is a CP (consistent and partition tolerant) system. This means
+that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgements from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
+
+Separately, CockroachDB is also Highly Available, although "available" here means something different than the way it is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
+
+Being both CP and HA means that whenever a majority of replicas can talk to each other, they should be able to make progress. For example, if you deploy CockroachDB to three datacenters and the network link to one of them fails, the other two datacenters should be able to operate normally with only a few seconds' disruption. We do this by attempting to detect partitions and failures quickly and efficiently, transferring leadership to nodes that are able to communicate with the majority, and routing internal traffic away from nodes that are partitioned away.
 
 ## Why is CockroachDB SQL?
 
