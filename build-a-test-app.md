@@ -192,7 +192,9 @@ As the `maxroach` user, connect again from your preferred language, but this tim
 <div class="filter-content" markdown="1" data-language="ruby">
 **Ruby**
 
-Coming soon.
+~~~ ruby
+{% include app/txn-sample.rb %}
+~~~
 </div>
 
 <div class="filter-content" markdown="1" data-language="go">
