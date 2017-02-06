@@ -44,7 +44,7 @@ entries:
                   url: /build-a-python-app-with-cockroachdb.html
 
                 - title: Ruby
-                  url: /build-a-test-app.html
+                  url: /build-a-ruby-app-with-cockroachdb.html
 
                 - title: Java
                   url: /build-a-test-app.html
