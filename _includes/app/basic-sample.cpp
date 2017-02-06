@@ -16,6 +16,9 @@ int main() {
 
     pqxx::nontransaction w(c);
 
+    // Create the "accounts" table.
+    w.exec("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)");
+
     // Insert two rows into the "accounts" table.
     w.exec("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
 

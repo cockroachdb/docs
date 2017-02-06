@@ -53,7 +53,7 @@ entries:
                   url: /build-a-nodejs-app-with-cockroachdb.html
 
                 - title: C++
-                  url: /build-a-test-app.html
+                  url: /build-a-c++-app-with-cockroachdb.html
 
                 - title: Closure
                   url: /build-a-test-app.html
