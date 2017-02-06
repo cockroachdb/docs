@@ -62,7 +62,7 @@ entries:
                   url: /build-a-php-app-with-cockroachdb.html
 
                 - title: Rust
-                  url: /build-a-test-app.html
+                  url: /build-a-rust-app-with-cockroachdb.html
 
             - title: Explore Core Features
               thirdlevelitems:
