@@ -50,7 +50,7 @@ entries:
                   url: /build-a-java-app-with-cockroachdb.html
 
                 - title: Node.js
-                  url: /build-a-test-app.html
+                  url: /build-a-nodejs-app-with-cockroachdb.html
 
                 - title: C++
                   url: /build-a-test-app.html
