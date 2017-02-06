@@ -41,7 +41,7 @@ entries:
                   url: /build-a-go-app-with-cockroachdb.html
 
                 - title: Python
-                  url: /build-a-test-app.html
+                  url: /build-a-python-app-with-cockroachdb.html
 
                 - title: Ruby
                   url: /build-a-test-app.html
