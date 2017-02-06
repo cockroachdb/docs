@@ -14,6 +14,9 @@ public class BasicSample {
         Connection db = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:26257/bank?sslmode=disable", "maxroach", "");
 
         try {
+            // Create the "accounts" table.
+            db.createStatement().execute("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)");
+
             // Insert two rows into the "accounts" table.
             db.createStatement().execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
 
