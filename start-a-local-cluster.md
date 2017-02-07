@@ -11,7 +11,7 @@ optimizely: true
 .filters .scope-button {
   width: 20%;
   height: 65px;
-  margin: 30px 15px 10px 0px;
+  margin: 15px 15px 10px 0px;
 }
 .filters a:hover {
   border-bottom: none;

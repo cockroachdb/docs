@@ -21,10 +21,10 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
     </div>
     <div class="col-md-4">
         <div class="roach-test">
-            <a href="build-a-test-app.html">
-                <img src="images/builder_craig.png" alt="Build a Test App"/>
+            <a href="build-an-app-with-cockroachdb.html">
+                <img src="images/builder_craig.png" alt="Build an App"/>
                 <h3>Build an App</h3>
-                <p>Connect using any compatible PostgreSQL driver.</p>
+                <p>Use any compatible PostgreSQL driver or ORM.</p>
             </a>
         </div>
     </div>

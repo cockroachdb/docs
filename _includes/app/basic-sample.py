@@ -10,6 +10,9 @@ conn.set_session(autocommit=True)
 # Open a cursor to perform database operations.
 cur = conn.cursor()
 
+# Create the "accounts" table.
+cur.execute("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)")
+
 # Insert two rows into the "accounts" table.
 cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
 

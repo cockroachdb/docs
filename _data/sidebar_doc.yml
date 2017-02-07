@@ -34,10 +34,39 @@ entries:
                 - title: Use the Built-in SQL Client
                   url: /use-the-built-in-sql-client.html
 
-        - title: Build a Test App
-          url: /build-a-test-app.html
+            - title: Build an App
+              thirdlevelitems:
 
-          thirdlevel:
+                - title: Overview
+                  url: /build-an-app-with-cockroachdb.html
+
+                - title: Go
+                  url: /build-a-go-app-with-cockroachdb.html
+
+                - title: Python
+                  url: /build-a-python-app-with-cockroachdb.html
+
+                - title: Ruby
+                  url: /build-a-ruby-app-with-cockroachdb.html
+
+                - title: Java
+                  url: /build-a-java-app-with-cockroachdb.html
+
+                - title: Node.js
+                  url: /build-a-nodejs-app-with-cockroachdb.html
+
+                - title: C++
+                  url: /build-a-c++-app-with-cockroachdb.html
+
+                - title: Clojure
+                  url: /build-a-clojure-app-with-cockroachdb.html
+
+                - title: PHP
+                  url: /build-a-php-app-with-cockroachdb.html
+
+                - title: Rust
+                  url: /build-a-rust-app-with-cockroachdb.html
+
             - title: Explore Core Features
               thirdlevelitems:
 
