@@ -384,10 +384,13 @@ header {
     -moz-osx-font-smoothing: grayscale;
     line-height: 40px;
     color: #46a417;
+    margin-top: 20px;
     margin-bottom: 5px;
     text-transform: initial; }
   .roach a img {
-    height: 120px; }
+    height: 80px; }
+  .roach a:hover {
+    border-bottom: none; }
   .roach p {
     padding: 5px 0 10px;
     margin: 0;
@@ -407,51 +410,6 @@ header {
       text-align: left;
       min-height: 0; }
       .roach.full-roach .catrina {
-        width: 100%;
-        max-width: 270px;
-        height: auto; } }
-
-.roach-test {
-  border: 1px solid #D9DBE2;
-  margin-bottom: 20px;
-  padding: 10px;
-  text-align: center;
-  top: 0px;
-  position: relative; }
-  .roach-test h3 {
-    font-family: 'Adelle-Regular', serif;
-    font-size: 26px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 40px;
-    color: #46a417;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    text-transform: initial; }
-  .roach-test a img {
-    height: 80px; }
-  .roach-test a:hover {
-    border-bottom: none; }
-  .roach-test p {
-    padding: 5px 0 10px;
-    margin: 0;
-    font-family: 'AvenirLTStd-Book', serif;
-    font-size: 14px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 20px; }
-  .roach-test:hover {
-    border-color: #46a417;
-    background-color: #F7F7F7; }
-  .roach-test.full-roach .catrina {
-    height: 120px; }
-  @media screen and (min-width: 992px) {
-    .roach-test.full-roach {
-      text-align: left;
-      min-height: 0; }
-      .roach-test.full-roach .catrina {
         width: 100%;
         max-width: 270px;
         height: auto; } }

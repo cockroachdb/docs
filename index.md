@@ -7,53 +7,65 @@ toc: false
 optimizely: true
 ---
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports strongly-consistent ACID transactions; and provides a familiar SQL API for structuring, manipulating, and querying data. 
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives failures with minimal latency disruption and no manual intervention; supports ACID transactions; and provides a familiar SQL API.
 
-The project is currently in **Beta**. For details about upcoming features, see the [1.0 Roadmap](https://github.com/cockroachdb/cockroach/issues/12854).
-
-<br>
 <div class="row">
     <div class="col-md-4">
         <div class="roach">
             <a href="start-a-local-cluster.html">
                 <img src="images/SCENE_superhero_profile_craig.png" alt="Quickstart CockroachDB"/>
-                <h3>Quickstart</h3>
-                <p>Start CockroachDB locally and try out the built-in SQL client.</p>
+                <h3>Start a Cluster</h3>
+                <p>Scale from one to many nodes in seconds.</p>
             </a>
         </div>
     </div>
     <div class="col-md-4">
         <div class="roach">
-            <a href="install-cockroachdb.html">
-                <img src="images/builder_craig.png" alt="Install CockroachDB"/>
-                <h3>Install</h3>
-                <p>Run a multi-node cluster across multiple machines.</p>
+            <a href="build-an-app-with-cockroachdb.html">
+                <img src="images/builder_craig.png" alt="Build an App"/>
+                <h3>Build an App</h3>
+                <p>Use any compatible PostgreSQL driver or ORM.</p>
             </a>
         </div>
     </div>
     <div class="col-md-4">
         <div class="roach">
-            <a href="frequently-asked-questions.html">
-                <img src="images/fireside_catrina.png" alt="Frequently asked questions about CockroachDB"/>
-                <h3>FAQ</h3>
-                <p>Get answers to frequently asked questions about CockroachDB.</p>
+            <a href="demo-data-replication.html">
+                <img src="images/scientist_catrina.png" alt="Examine Core Benefits"/>
+                <h3>Explore Benefits</h3>
+                <p>See replication, easy scaling, and fault-resistance in real-time.</p>
             </a>
         </div>
     </div>
 </div>
+
 <div class="row">
-    <div class="col-xs-12">
-        <a href="https://forum.cockroachlabs.com/">
-        <div class="roach full-roach">
-            <div class="row">
-                <div class="col-md-4"><img src="images/catrina_desk.png" class="catrina" alt="Join the CockroachDB Community Forum"/></div>
-                <div class="col-md-8">
-                    <h3>Need help? Join the CockroachDB Community Forum</h3>
-                    <p>Looking for answers about how to use CockroachDB? Head to the CockroachDB Community Forum, where you can find answers, ask questions, and help out fellow CockroachDB users.</p>
-                </div>
-            </div>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="cloud-deployment.html">
+                <img src="images/craig_crossfit.png" alt="Deploy CockroachDB in the Cloud"/>
+                <h3>Deploy</h3>
+                <p>Cloud-agnostic, with no vendor lock-in.</p>
+            </a>
         </div>
-        </a>
+    </div>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="orchestration.html">
+                <img src="images/sleeping_craig.png" alt="Orchestrate CockroachDB"/>
+                <h3>Orchestrate</h3>
+                <p>Reduce operator overhead to almost nothing.</p>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="roach">
+            <a href="monitor-cockroachdb-with-prometheus.html">
+                <img src="images/announcement_catrina.png" alt="Monitor with Third-Party Tools"/>
+                <h3>Monitor</h3>
+                <p>Feed our time series metrics into third-party tools.</p>
+            </a>
+        </div>
     </div>
 </div>
 
