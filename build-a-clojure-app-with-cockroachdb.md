@@ -1,11 +1,11 @@
 ---
-title: Build a Closure App with CockroachDB
-summary: Learn how to use CockroachDB from a simple Closure application with a low-level client driver.
+title: Build a Clojure App with CockroachDB
+summary: Learn how to use CockroachDB from a simple Clojure application with a low-level client driver.
 toc: false
 asciicast: true
 ---
 
-This tutorial shows you how to use CockroachDB from a simple Closure application. You can use any PostgreSQL-compatible drivers, but we've tested and can recommend the [Closure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html), so that driver is featured here.
+This tutorial shows you how to use CockroachDB from a simple Clojure application. You can use any PostgreSQL-compatible drivers, but we've tested and can recommend the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html), so that driver is featured here.
 
 <div id="toc"></div>
 
@@ -15,7 +15,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Install the client driver
 
-Install the Closure java.jdbc driver as described in the [official documentation](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
+Install the Clojure java.jdbc driver as described in the [official documentation](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
 
 {% include app/common-steps.md %}
 
@@ -32,7 +32,7 @@ $ cockroach sql --database=bank --user=maxroach -e \
 CREATE TABLE
 ~~~
 
-## Step 6. Run the Closure code
+## Step 6. Run the Clojure code
 
 ### Basic Statements
 
@@ -41,7 +41,7 @@ The following code connects as the `maxroach` user and executes some basic SQL s
 Copy the code or 
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/basic-sample.clj" download>download it directly</a>.
 
-~~~ closure
+~~~ clojure
 {% include app/basic-sample.clj %}
 ~~~
 
@@ -54,7 +54,7 @@ Copy the code or
 
 {{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code. For more details, see <a href="https://www.cockroachlabs.com/docs/transactions.html#transaction-retries">Transaction Retries</a>.{{site.data.alerts.end}}
 
-~~~ closure
+~~~ clojure
 {% include app/txn-sample.clj %}
 ~~~
 
@@ -76,7 +76,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-Read more about using the [Closure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
+Read more about using the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
 
 You might also be interested in using a local cluster to explore the following core CockroachDB features:
 

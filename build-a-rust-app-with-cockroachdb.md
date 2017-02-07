@@ -5,7 +5,7 @@ toc: false
 asciicast: true
 ---
 
-This tutorial shows you how to use CockroachDB from a simple Rust application. You can use any PostgreSQL-compatible drivers, but we've tested and can recommend the [Rust postgres driver](https://crates.io/crates/postgres/), so that driver is featured here.
+This tutorial shows you how to use CockroachDB from a simple Rust application. You can use any PostgreSQL-compatible drivers, but we've tested and can recommend the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust postgres driver</a>, so that driver is featured here.
 
 <div id="toc"></div>
 
@@ -15,7 +15,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Install the client driver
 
-Install the Rust posgres driver as described in the [official documentation](https://crates.io/crates/postgres/).
+Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 {% include app/common-steps.md %}
 
@@ -76,7 +76,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-Read more about using the [Rust postgres driver](https://crates.io/crates/postgres/).
+Read more about using the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust postgres driver</a>.
 
 You might also be interested in using a local cluster to explore the following core CockroachDB features:
 

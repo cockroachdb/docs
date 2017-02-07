@@ -95,7 +95,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-Read more about using the [Python psycop2 driver](http://initd.org/psycopg/docs/q).
+Read more about using the [Python psycop2 driver](http://initd.org/psycopg/docs/).
 
 You might also be interested in using a local cluster to explore the following core CockroachDB features:
 

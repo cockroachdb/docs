@@ -37,6 +37,9 @@ entries:
             - title: Build an App
               thirdlevelitems:
 
+                - title: Overview
+                  url: /build-an-app-with-cockroachdb.html
+
                 - title: Go
                   url: /build-a-go-app-with-cockroachdb.html
 
@@ -55,8 +58,8 @@ entries:
                 - title: C++
                   url: /build-a-c++-app-with-cockroachdb.html
 
-                - title: Closure
-                  url: /build-a-closure-app-with-cockroachdb.html
+                - title: Clojure
+                  url: /build-a-clojure-app-with-cockroachdb.html
 
                 - title: PHP
                   url: /build-a-php-app-with-cockroachdb.html
