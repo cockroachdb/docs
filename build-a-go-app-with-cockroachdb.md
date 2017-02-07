@@ -17,19 +17,19 @@ asciicast: true
 </style>
 
 <div id="tool-filters" class="filters clearfix">
-    <button class="filter-button current" data-tool="driver" >Use a <strong>Driver</strong></button>
+    <button class="filter-button" data-tool="driver" >Use a <strong>Driver</strong></button>
     <button class="filter-button" data-tool="orm">Use an <strong>ORM</strong></button>
 </div>
 
 This tutorial shows you how to use CockroachDB from a simple Go application. You can use any PostgreSQL-compatible drivers or ORMs, but we've tested and can recommend the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/), so those are featured here.
 
-<div id="toc"></div>
+<div id="toc" style="display: none"></div>
 
 ## Before You Begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-<div class="filter-content current" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-tool="driver">
 ## Step 1. Install the client driver
 
 To install the [Go pq driver](https://godoc.org/github.com/lib/pq), run the following command:
@@ -51,7 +51,7 @@ $ go get -u github.com/jinzhu/gorm
 
 {% include app/common-steps.md %}
 
-<div class="filter-content current" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-tool="driver">
 ## Step 5. Run the Go code
 
 ### Basic Statements
@@ -185,7 +185,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-<div class="filter-content current" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-tool="driver">
 Read more about using the [Go pq driver](https://godoc.org/github.com/lib/pq).
 </div>
 
@@ -200,30 +200,38 @@ You might also be interested in using a local cluster to explore the following c
 - [Scalability](demo-scalability.html)
 
 <script>
-$(document).ready(function() {
-    // Generate toc of h2 and h3 headers currently visible on page.
-    function renderTOC() {
-        $('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2:not(.filter-content:not(.current) h2),h3:not(.filter-content:not(.current) h3)' });
-    }
+(function() {
+	// Generate toc of h2 and h3 headers currently visible on page.
+	function renderTOC() {
+		var toc = $('#toc');
+		toc.show();
+		toc.toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2:not(.filter-content:not(.current) h2),h3:not(.filter-content:not(.current) h3)' });
+	}
 
-    renderTOC();
+	function selectTool(tool) {
+		var current_tab = $('.filter-button.current');
+		var current_content = $('.filter-content.current');
 
-    // Show and hide content blocks with buttons.
-    var $filter_button = $('.filter-button');
+		// Remove current class from tab and content blocks.
+		current_tab.removeClass('current');
+		current_content.removeClass('current');
 
-    $filter_button.on('click', function(){
-        var tool = $(this).data('tool'),
-        $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
+		// Add current class to clicked button and corresponding content blocks.
+		$('.filter-button[data-tool="'+tool+'"]').addClass('current');
+		$('.filter-content[data-tool="'+tool+'"]').addClass('current');
+	}
 
-        // Remove current class from tab and content blocks.
-        $current_tab.removeClass('current');
-        $current_content.removeClass('current');
+	var hash = window.location.hash.split('#')[1] == 'orm' ? 'orm' : 'driver';
+	selectTool(hash);
 
-        // Add current class to clicked button and corresponding content blocks.
-        $('.filter-button[data-tool="'+tool+'"]').addClass('current');
-        $('.filter-content[data-tool="'+tool+'"]').addClass('current');
+	$(document).ready(function() {
+		renderTOC();
 
-        renderTOC();
-    });
-});
+		// Show and hide content blocks with buttons.
+		$('.filter-button').on('click', function(){
+			selectTool($(this).data('tool'));
+			renderTOC();
+		});
+	});
+})();
 </script>
