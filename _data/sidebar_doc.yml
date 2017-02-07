@@ -37,6 +37,9 @@ entries:
             - title: Build an App
               thirdlevelitems:
 
+                - title: Overview
+                  url: /build-an-app-with-cockroachdb.html
+
                 - title: Go
                   url: /build-a-go-app-with-cockroachdb.html
 

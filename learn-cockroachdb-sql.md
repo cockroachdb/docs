@@ -340,6 +340,6 @@ Just as with the `UPDATE` statement, if a table has a primary key, you can use t
 
 ## What's Next?
 
+- Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
-- [Install the client driver](install-client-drivers.html) for your preferred language and [build a test app](build-a-test-app.html)
-- Explore our full [SQL grammar](sql-grammar.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)

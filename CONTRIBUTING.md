@@ -95,7 +95,7 @@ The [`_data/sidebar_doc.yml`](_data/sidebar_doc.yml) file controls which pages a
 
 ### Auto-Included Content
 
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and [build-a-test-app.md](build-a-test-app.md) includes code samples from `_includes/app`.
+Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 

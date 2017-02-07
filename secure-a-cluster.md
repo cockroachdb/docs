@@ -203,4 +203,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build a test app](build-a-test-app.html)
+- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
