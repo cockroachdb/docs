@@ -51,9 +51,9 @@ $ go get -u github.com/jinzhu/gorm
 
 {% include app/common-steps.md %}
 
-<div class="filter-content" markdown="1" data-tool="driver">
 ## Step 5. Run the Go code
 
+<div class="filter-content" markdown="1" data-tool="driver">
 ### Basic Statements
 
 The following code connects as the `maxroach` user and executes some basic SQL statements, creating a table, inserting rows, and reading and printing the rows. 
@@ -71,7 +71,7 @@ Then run the code:
 $ go run basic-sample.go
 ~~~
 
-The balance printout should look like this:
+The output should be:
 
 ~~~ shell
 Initial balances:
@@ -128,8 +128,6 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 </div>
 
 <div class="filter-content" markdown="1" data-tool="orm">
-## Step 5. Run the Go code
-
 The following code uses the [GORM](http://jinzhu.me/gorm/) ORM to map Go-specific objects to SQL operations. Specifically, `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model, `db.Create(&Account{})` inserts rows into the table, and `db.Find(&accounts)` selects from the table so that balances can be printed.
 
 Copy the code or 
@@ -145,7 +143,7 @@ Then run the code:
 $ go run gorm-basic-sample.go
 ~~~
 
-The balance printout should look like this:
+The output should be:
 
 ~~~ shell
 Initial balances:

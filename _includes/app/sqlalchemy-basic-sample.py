@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-# The Account class corresponds to the database table "accounts".
+# The Account class corresponds to the "accounts" database table.
 class Account(Base):
     __tablename__ = 'accounts'
     id = Column(Integer, primary_key=True)
