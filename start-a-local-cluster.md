@@ -4,7 +4,6 @@ summary: Run a multi-node CockroachDB cluster locally with each node listening o
 toc: false
 toc_not_nested: true
 asciicast: true
-optimizely: true
 ---
 
 <style>
