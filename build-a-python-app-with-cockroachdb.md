@@ -30,9 +30,9 @@ This tutorial shows you how to use CockroachDB from a simple Python application.
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 <div class="filter-content" markdown="1" data-tool="driver">
-Also, feel free to watch this process in action before going through the steps yourself. Note that the demo video features Python code for executing basic statements (step 4), but the code for executing more complex transactions is not covered (step 5). Also note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+Also, feel free to watch this process in action before going through the steps yourself. Note that the demo video does not show installation of the driver (step 1). Also note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
-<asciinema-player class="asciinema-demo" src="asciicasts/build-a-test-app.json" cols="107" speed="2" theme="monokai" poster="npt:0:40" title="Build a Test App"></asciinema-player>
+<asciinema-player class="asciinema-demo" src="asciicasts/build-a-python-app-with-driver.json" cols="107" speed="2" theme="monokai" poster="npt:0:24" title="Build a Python App - Client Driver"></asciinema-player>
 </div>
 
 <div class="filter-content" markdown="1" data-tool="driver">
