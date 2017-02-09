@@ -9,7 +9,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// Account is our model, which corresponds to a database table.
+// Account is our model, which corresponds to the "accounts" database table.
 type Account struct {
 	ID      int `gorm:"primary_key"`
 	Balance int

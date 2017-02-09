@@ -2,7 +2,6 @@
 title: Build a Go App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Go application with either a low-level client driver or an ORM.
 toc: false
-asciicast: true
 ---
 
 <style>
@@ -17,11 +16,11 @@ asciicast: true
 </style>
 
 <div id="tool-filters" class="filters clearfix">
-    <button class="filter-button" data-tool="driver" >Use a <strong>Driver</strong></button>
-    <button class="filter-button" data-tool="orm">Use an <strong>ORM</strong></button>
+    <button class="filter-button" data-tool="driver" >Use <strong>pq</strong></button>
+    <button class="filter-button" data-tool="orm">Use <strong>GORM</strong></button>
 </div>
 
-This tutorial shows you how to use CockroachDB from a simple Go application. You can use any PostgreSQL-compatible drivers or ORMs, but we've tested and can recommend the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/), so those are featured here.
+This tutorial shows you how build a simple Go application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/), so those are featured here.
 
 <div id="toc" style="display: none"></div>
 
@@ -30,7 +29,7 @@ This tutorial shows you how to use CockroachDB from a simple Go application. You
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 <div class="filter-content" markdown="1" data-tool="driver">
-## Step 1. Install the client driver
+## Step 1. Install the Go pq driver
 
 To install the [Go pq driver](https://godoc.org/github.com/lib/pq), run the following command:
 
@@ -40,7 +39,7 @@ $ go get -u github.com/lib/pq
 </div>
 
 <div class="filter-content" markdown="1" data-tool="orm">
-## Step 1. Install the ORM
+## Step 1. Install the GORM ORM
 
 To install [GORM](http://jinzhu.me/gorm/), run the following command:
 
@@ -51,9 +50,9 @@ $ go get -u github.com/jinzhu/gorm
 
 {% include app/common-steps.md %}
 
-<div class="filter-content" markdown="1" data-tool="driver">
 ## Step 5. Run the Go code
 
+<div class="filter-content" markdown="1" data-tool="driver">
 ### Basic Statements
 
 The following code connects as the `maxroach` user and executes some basic SQL statements, creating a table, inserting rows, and reading and printing the rows. 
@@ -71,7 +70,7 @@ Then run the code:
 $ go run basic-sample.go
 ~~~
 
-The balance printout should look like this:
+The output should be:
 
 ~~~ shell
 Initial balances:
@@ -128,8 +127,6 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 </div>
 
 <div class="filter-content" markdown="1" data-tool="orm">
-## Step 5. Run the Go code
-
 The following code uses the [GORM](http://jinzhu.me/gorm/) ORM to map Go-specific objects to SQL operations. Specifically, `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model, `db.Create(&Account{})` inserts rows into the table, and `db.Find(&accounts)` selects from the table so that balances can be printed.
 
 Copy the code or 
@@ -145,7 +142,7 @@ Then run the code:
 $ go run gorm-basic-sample.go
 ~~~
 
-The balance printout should look like this:
+The output should be:
 
 ~~~ shell
 Initial balances:
