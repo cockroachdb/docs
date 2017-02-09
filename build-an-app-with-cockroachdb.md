@@ -4,7 +4,7 @@ summary: The tutorials in this section show you how to build a simple applicatio
 toc: false
 ---
  
-The tutorials in this section show you how to build a simple application with CockroachDB, using PostgreSQL-compatible client drivers and ORMs that we have tested and can recommend.
+The tutorials in this section show you how to build a simple application with CockroachDB using PostgreSQL-compatible client drivers and ORMs that we have tested and can recommend.
 
 {{site.data.alerts.callout_info}}CockroachDB is actively working on ORM support across various languages, as indicated below. If you have problems with a recommended ORM, please <a href="https://github.com/cockroachdb/cockroach/issues/new">open an issue</a> with details. If you would like us to support additional ORMs, please let us know <a href="https://forum.cockroachlabs.com/t/orm-compatibility/49">here</a>.{{site.data.alerts.end}}
 

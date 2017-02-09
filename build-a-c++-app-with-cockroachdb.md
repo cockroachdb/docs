@@ -2,10 +2,9 @@
 title: Build a C++ App with CockroachDB
 summary: Learn how to use CockroachDB from a simple C++ application with a low-level client driver.
 toc: false
-asciicast: true
 ---
 
-This tutorial shows you how to use CockroachDB from a simple C++ application. You can use any PostgreSQL-compatible drivers, but we've tested and can recommend the [C++ libpqxx driver](http://pqxx.org/development/libpqxx/), so that driver is featured here.
+This tutorial shows you how build a simple C++ application with CockroachDB using a PostgreSQL-compatible driver. We've tested and can recommend the [C++ libpqxx driver](http://pqxx.org/development/libpqxx/), so that driver is featured here.
 
 <div id="toc"></div>
 
@@ -13,7 +12,7 @@ This tutorial shows you how to use CockroachDB from a simple C++ application. Yo
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-## Step 1. Install the client driver
+## Step 1. Install the libpqxx driver
 
 Install the C++ libpqxx driver as described in the [official documentation](http://pqxx.org/development/libpqxx/).
 

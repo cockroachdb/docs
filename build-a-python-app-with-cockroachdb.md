@@ -17,11 +17,11 @@ asciicast: true
 </style>
 
 <div id="tool-filters" class="filters clearfix">
-    <button class="filter-button current" data-tool="driver" >Use a <strong>Driver</strong></button>
-    <button class="filter-button" data-tool="orm">Use an <strong>ORM</strong></button>
+    <button class="filter-button current" data-tool="driver" >Use <strong>psycopg2</strong></button>
+    <button class="filter-button" data-tool="orm">Use <strong>SQLAlchemy</strong></button>
 </div>
 
-This tutorial shows you how to use CockroachDB from a simple Python application. You can use any PostgreSQL-compatible drivers or ORMs, but we've tested and can recommend the [Python psycopg2 driver](http://initd.org/psycopg/docs/) the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/), so those are featured here.
+This tutorial shows you how build a simple Python application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/), so those are featured here.
 
 <div id="toc" style="display: none"></div>
 
@@ -36,7 +36,7 @@ Also, feel free to watch this process in action before going through the steps y
 </div>
 
 <div class="filter-content" markdown="1" data-tool="driver">
-## Step 1. Install the client driver
+## Step 1. Install the psycopg2 driver
 
 To install the Python psycopg2 driver, run the following command:
 
@@ -48,7 +48,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
 </div>
 
 <div class="filter-content" markdown="1" data-tool="orm">
-## Step 1. Install the ORM
+## Step 1. Install the SQLAlchemy ORM
 
 To install SQLAlchemy, as well as a [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
@@ -140,7 +140,7 @@ The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/late
 Copy the code or 
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
-~~~ go
+~~~ python
 {% include app/sqlalchemy-basic-sample.py %}
 ~~~
 
