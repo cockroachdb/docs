@@ -43,7 +43,7 @@ CockroachDB can use a large number of open file descriptors, often more than is 
 
 For each CockroachDB node:
 
-- At a **minimum**, the file descriptors limit must be 2256 (2000 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
+- At a **minimum**, the file descriptors limit must be 1956 (1700 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
 - It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth. 
 - When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 10000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores.
 
