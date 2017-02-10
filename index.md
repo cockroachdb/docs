@@ -24,7 +24,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <a href="build-an-app-with-cockroachdb.html">
                 <img src="images/builder_craig.png" alt="Build an App"/>
                 <h3>Build an App</h3>
-                <p>Use any compatible PostgreSQL driver or ORM.</p>
+                <p>Use a compatible PostgreSQL driver or ORM.</p>
             </a>
         </div>
     </div>
@@ -33,7 +33,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <a href="demo-data-replication.html">
                 <img src="images/scientist_catrina.png" alt="Examine Core Benefits"/>
                 <h3>Explore Benefits</h3>
-                <p>See replication, easy scaling, and fault-resistance in real-time.</p>
+                <p>See replication, easy scaling, and fault-tolerance in real-time.</p>
             </a>
         </div>
     </div>
@@ -73,6 +73,26 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 
 <div class="row">
     <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/">
+        <div class="blog-post">
+            <div class="blog-title">On the Way to Better SQL Joins in CockroachDB</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Feb 9, 2017</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="https://www.cockroachlabs.com/blog/journey-to-design-for-enterprise/">
+        <div class="blog-post">
+            <div class="blog-title">Journey to Design for Enterprise</div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Kuan Lo</span> on <span class="meta-emphasis">Feb 2, 2017</span></div>
+        </div>
+        </a>  
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/fighting-unconscious-bias-cockroach-labs/">
         <div class="blog-post">
             <div class="blog-title">How We're Fighting Unconscious Bias</div>
@@ -94,29 +114,9 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 <div class="row">
     <div class="col-xs-12">
         <a href="https://www.cockroachlabs.com/blog/enriching-log-messages-using-go-contexts/">
-        <div class="blog-post">
+        <div class="blog-post last-entry">
             <div class="blog-title">Enriching Log Messages Using Go Contexts</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">Dec 15, 2016</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/roaches-on-open-water-cockroachdb-on-digitalocean/">
-        <div class="blog-post">
-            <div class="blog-title">Roaches on Open Water! CockroachDB on Digital Ocean</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Sean Loiselle</span> on <span class="meta-emphasis">Nov 30, 2016</span></div>
-        </div>
-        </a>  
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/cockroachdb-stability-from-1-node-to-100-nodes/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">CockroachDB Stability Post-Mortem: From 1 Node to 100 Nodes</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Nov 15, 2016</span></div>
         </div>
         </a>  
     </div>
