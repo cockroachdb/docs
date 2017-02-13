@@ -96,9 +96,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks. 
 
-~~~ powershell
-PS C:\Users\username> docker network create -d bridge roachnet
-~~~
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker network create -d bridge roachnet</code></pre></div>
 
 We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
 
@@ -106,15 +104,13 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 {{site.data.alerts.callout_info}}Be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
-~~~ powershell
-PS C:\Users\username> docker run -d \
---name=roach1 \
---hostname=roach1 \
---net=roachnet \
--p 26257:26257 -p 8080:8080 \
--v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data" \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
-~~~
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker run -d <span class="sb">`</span>
+--name<span class="o">=</span>roach1 <span class="sb">`</span>
+--hostname<span class="o">=</span>roach1 <span class="sb">`</span>
+--net<span class="o">=</span>roachnet <span class="sb">`</span>
+-p 26257:26257 -p 8080:8080 <span class="sb">`</span>
+-v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach1:/cockroach/cockroach-data"</span> <span class="sb">`</span>
+cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure</code></pre></div>
 
 This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
 
@@ -133,25 +129,23 @@ This command creates a container and starts the first CockroachDB node inside it
 
 {{site.data.alerts.callout_info}}Again, be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
-~~~ powershell
-# Start the second container/node:
-PS C:\Users\username> docker run -d \
---name=roach2 \
---hostname=roach2 \
---net=roachnet \
--P \
--v "//c/Users/<username>/cockroach-data/roach2:/cockroach/cockroach-data" \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="c1"># Start the second container/node:</span>
+<span class="nb">PS </span>C:\Users\username&gt; docker run -d <span class="sb">`</span>
+--name<span class="o">=</span>roach2 <span class="sb">`</span>
+--hostname<span class="o">=</span>roach2 <span class="sb">`</span>
+--net<span class="o">=</span>roachnet <span class="sb">`</span>
+-P <span class="sb">`</span>
+-v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach2:/cockroach/cockroach-data"</span> <span class="sb">`</span>
+cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
 
-# Start the third container/node:
-PS C:\Users\username> docker run -d \
---name=roach3 \
---hostname=roach3 \
---net=roachnet \
--P \
--v "//c/Users/<username>/cockroach-data/roach3:/cockroach/cockroach-data" \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
-~~~
+<span class="c1"># Start the third container/node:</span>
+<span class="nb">PS </span>C:\Users\username&gt; docker run -d <span class="sb">`</span>
+--name<span class="o">=</span>roach3 <span class="sb">`</span>
+--hostname<span class="o">=</span>roach3 <span class="sb">`</span>
+--net<span class="o">=</span>roachnet <span class="sb">`</span>
+-P <span class="sb">`</span>
+-v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach3:/cockroach/cockroach-data"</span> <span class="sb">`</span>
+cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
@@ -163,12 +157,10 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 
 Use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
-~~~ powershell
-PS C:\Users\username> docker exec -it roach1 ./cockroach sql
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
-~~~
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach1 ./cockroach sql
+<span class="c1"># Welcome to the cockroach SQL interface.</span>
+<span class="c1"># All statements must be terminated by a semicolon.</span>
+<span class="c1"># To exit: CTRL + D.</span></code></pre></div>
 
 Then run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
@@ -213,12 +205,10 @@ When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 If you want to verify that the containers/nodes are, in fact, part of a single cluster, you can start the SQL shell in one of the other containers and check for the new `bank` database:
 
-~~~ powershell
-PS C:\Users\username> docker exec -it roach2 ./cockroach sql
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
-~~~
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach2 ./cockroach sql
+<span class="c1"># Welcome to the cockroach SQL interface.</span>
+<span class="c1"># All statements must be terminated by a semicolon.</span>
+<span class="c1"># To exit: CTRL + D.</span></code></pre></div>
 
 ~~~ sql
 > SHOW DATABASES;
@@ -242,6 +232,12 @@ When you started the first container/node, you mapped the node's default HTTP po
 ## Step 6.  Stop the cluster
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
+
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="c1"># Stop the containers:</span>
+<span class="nb">PS </span>C:\Users\username&gt; docker stop roach1 roach2 roach3
+
+<span class="c1"># Remove the containers:</span>
+<span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">rm </span>roach1 roach2 roach3</code></pre></div>
 
 ~~~ powershell
 # Stop the containers:

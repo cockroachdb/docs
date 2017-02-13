@@ -224,11 +224,11 @@ $(document).ready(function(){
 <div id="use-docker" class="install-option" style="display: none;">
 <h2>Use Docker</h2>
 
-{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experience with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
   </li>
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
@@ -385,7 +385,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker for Linux</a>.</p>
+    <p>Install <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker for Linux</a>. Please carefully check that you meet all prerequisites.</p>
   </li>
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
@@ -431,7 +431,7 @@ $(document).ready(function(){
 
 <div id="windowsinstall" style="display: none;" markdown="1">
 
-<p>At this time, it's possible to run CockroachDB on Windows only from within a Docker virtual environment. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version of CockroachDB.</p>
+<p>At this time, it's only possible to run CockroachDB on Windows in a Docker virtual environment. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version of CockroachDB.</p>
 
 {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See <a href="orchestration.html">Orchestration</a> for more details.{{site.data.alerts.end}}
 
@@ -442,19 +442,19 @@ $(document).ready(function(){
   <li>
     <p>Open PowerShell and confirm that the Docker daemon is running in the background:</p>
 
-    <div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:<span class="se">\U</span>sers<span class="se">\u</span>sername&gt; docker version</code></pre></div>
+    <div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker version</code></pre></div>
 
-    <p>If you don't see the server listed, start the <strong>Docker</strong> application.</p>
+    <p>If you don't see the server listed, start <strong>Docker for Windows</strong>.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
-    <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:<span class="se">\U</span>sers<span class="se">\u</span>sername&gt; docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre></div>
+    <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre></div>
   </li>
   <li>
       <p>Make sure CockroachDB installed successfully:</p>
 
-      <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="nb" data-eventcategory="win-docker-step4">PS </span>C:<span class="se">\U</span>sers<span class="se">\u</span>sername&gt; docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
+      <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="nb" data-eventcategory="win-docker-step4">PS </span>C:\Users\username&gt; docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
 
   </li>
   <li>
