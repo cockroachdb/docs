@@ -6,22 +6,6 @@ toc_not_nested: true
 asciicast: true
 ---
 
-<style>
-.filters .scope-button {
-  width: 20%;
-  height: 65px;
-  margin: 15px 15px 10px 0px;
-}
-.filters a:hover {
-  border-bottom: none;
-}
-</style>
-
-<div id="step-three-filters" class="filters clearfix">
-  <button class="filter-button scope-button current">From <strong>Binary</strong></button>
-  <a href="start-a-local-cluster-in-docker.html"><button class="filter-button scope-button">In <strong>Docker</strong></button></a>
-</div><p></p>
-
 Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. 
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
