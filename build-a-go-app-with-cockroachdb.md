@@ -16,8 +16,8 @@ toc: false
 </style>
 
 <div id="tool-filters" class="filters clearfix">
-    <button class="filter-button" data-tool="driver" >Use <strong>pq</strong></button>
-    <button class="filter-button" data-tool="orm">Use <strong>GORM</strong></button>
+    <button class="filter-button" data-tool="driver">Use <strong data-tool="driver">pq</strong></button>
+    <button class="filter-button" data-tool="orm">Use <strong data-tool="orm">GORM</strong></button>
 </div>
 
 This tutorial shows you how build a simple Go application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/), so those are featured here.
