@@ -447,6 +447,9 @@ $(document).ready(function(){
     <p>If you don't see the server listed, start <strong>Docker for Windows</strong>.</p>
   </li>
   <li>
+    <p><a href="https://docs.docker.com/docker-for-windows/#/shared-drives">Share your local drives</a>. This makes it possible to mount local directories as data volumes to persist node data after containers are stopped or deleted.</p>
+  </li>
+  <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
     <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre></div>
