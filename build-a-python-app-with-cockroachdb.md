@@ -17,8 +17,8 @@ asciicast: true
 </style>
 
 <div id="tool-filters" class="filters clearfix">
-    <button class="filter-button current" data-tool="driver" >Use <strong>psycopg2</strong></button>
-    <button class="filter-button" data-tool="orm">Use <strong>SQLAlchemy</strong></button>
+    <button class="filter-button current" data-tool="driver" >Use <strong data-tool="driver">psycopg2</strong></button>
+    <button class="filter-button" data-tool="orm">Use <strong data-tool="orm">SQLAlchemy</strong></button>
 </div>
 
 This tutorial shows you how build a simple Python application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/), so those are featured here.
