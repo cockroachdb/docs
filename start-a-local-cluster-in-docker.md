@@ -5,93 +5,31 @@ toc: false
 asciicast: true
 ---
 
-<script>
-$(document).ready(function(){
-    
-    //detect os and display corresponding tab by default
-    if (navigator.appVersion.indexOf("Mac")!=-1) { 
-        $('#os-tabs').find('button').removeClass('current');
-        $('#mac').addClass('current');
-        toggleMac(); 
-    }
-    if (navigator.appVersion.indexOf("Linux")!=-1) { 
-        $('#os-tabs').find('button').removeClass('current');
-        $('#linux').addClass('current');
-        toggleLinux(); 
-    }
-    if (navigator.appVersion.indexOf("Win")!=-1) { 
-        $('#os-tabs').find('button').removeClass('current');
-        $('#windows').addClass('current');
-        toggleWindows(); 
-    }
-
-    var install_option = $('.install-option'), 
-        install_button = $('.install-button');
-
-    install_button.on('click', function(e){
-      e.preventDefault();
-      var hash = $(this).prop("hash");
-
-      install_button.removeClass('current');
-      $(this).addClass('current');
-      install_option.hide();
-      $(hash).show();
-
-    });
-
-    //handle click event for os-tab buttons
-    $('#os-tabs').on('click', 'button', function(){
-        $('#os-tabs').find('button').removeClass('current');
-        $(this).addClass('current');
-
-        if($(this).is('#mac')){ toggleMac(); }
-        if($(this).is('#linux')){ toggleLinux(); }
-        if($(this).is('#windows')){ toggleWindows(); }
-    });
-
-    function toggleMac(){
-        $(".mac-button:first").trigger('click');
-        $("#macinstall").show();
-        $("#linuxinstall").hide();
-        $("#windowsinstall").hide();
-    }
-
-    function toggleLinux(){
-        $(".linux-button:first").trigger('click');
-        $("#linuxinstall").show();
-        $("#macinstall").hide();
-        $("#windowsinstall").hide();
-    }
-
-    function toggleWindows(){
-        $("#windowsinstall").show();
-        $("#macinstall").hide();
-        $("#linuxinstall").hide(); 
-    }
-});
-</script>
+<!-- 
+To link directly to the linux or windows tab, append #os-linux or #os-windows to the url.
+-->
 
 <div id="os-tabs" class="clearfix">
-    <button id="mac" class="current">Mac</button>
-    <button id="linux">Linux</button>
-    <button id="windows">Windows</button>
+    <button id="mac" class="filter-button current" data-os="os-mac">Mac</button>
+    <button id="linux" class="filter-button" data-os="os-linux">Linux</button>
+    <button id="windows" class="filter-button" data-os="os-windows">Windows</button>
 </div>
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
 {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See <a href="orchestration.html">Orchestration</a> for more details.{{site.data.alerts.end}}
 
-<!--<div id="toc"></div>-->
+<div id="toc" style="display: none"></div>
 
-<div id="macinstall" markdown="1">
+<div class="filter-content current" markdown="1" data-os="os-mac">
 {% include start_in_docker/mac-linux-steps.md %}
 </div>
 
-<div id="linuxinstall" markdown="1">
+<div class="filter-content" markdown="1" data-os="os-linux">
 {% include start_in_docker/mac-linux-steps.md %}
 </div>
 
-<div id="windowsinstall" markdown="1">
+<div class="filter-content" markdown="1" data-os="os-windows">
 ## Step 1. Create a bridge network
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks. 
@@ -248,3 +186,41 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 - [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
 - [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
+
+<script>
+(function() {
+    // Generate toc of h2 and h3 headers currently visible on page.
+    function renderTOC() {
+        var toc = $('#toc');
+        toc.show();
+        toc.toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2:not(.filter-content:not(.current) h2),h3:not(.filter-content:not(.current) h3)' });
+    }
+
+    function selectOS(os) {
+        var current_tab = $('.filter-button.current');
+        var current_content = $('.filter-content.current');
+
+        // Remove current class from tab and content blocks.
+        current_tab.removeClass('current');
+        current_content.removeClass('current');
+
+        // Add current class to clicked button and corresponding content blocks.
+        $('.filter-button[data-os="'+os+'"]').addClass('current');
+        $('.filter-content[data-os="'+os+'"]').addClass('current');
+    }
+    
+    var hash = window.location.hash.split('#')[1];
+    if (hash != 'os-linux' && hash != 'os-windows') { hash = 'os-mac'; }
+    selectOS(hash);
+
+    $(document).ready(function() {
+        renderTOC();
+
+        // Show and hide content blocks with buttons.
+        $('.filter-button').on('click', function(){
+            selectOS($(this).data('os'));
+            renderTOC();
+        });
+    });
+})();
+</script>
