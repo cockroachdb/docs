@@ -163,4 +163,4 @@ table tr td:nth-child(2) {
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |
-| Sequences | ✗ | Common Extension | Create a numeric sequence. Given CockroachDB's distributed architecture, sequences are not viable. |
+| Sequences | ✗ | Common Extension | Create a numeric sequence. Given CockroachDB's distributed architecture, sequences would be expensive. For fast, globally unique key generation, see [`SERIAL`](serial.html). |
