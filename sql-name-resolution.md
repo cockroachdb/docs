@@ -35,7 +35,7 @@ In addition to the default database configurable via [`SET DATABASE`](set-databa
 The search path is a session variable containing a list of databases,
 or *namespaces*, where names are looked up.
 
-The current search path can be inspected using the statement `SHOW SEARCH_PATH`, or [`SHOW ALL`](show-all.html).
+The current search path can set using `SET SEARCH_PATH` and can be inspected using `SHOW SEARCH_PATH` or [`SHOW ALL`](show-all.html).
 
 By default, the search path for new columns includes just
 `pg_catalog`, so that queries can use PostgreSQL compatibility
@@ -45,3 +45,4 @@ prefix them with "`pg_catalog.`" every time.
 ## See Also
 
 - [`SET DATABASE`](set-database.html)
+- [`SHOW ALL`](show-all.html)
