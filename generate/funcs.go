@@ -142,7 +142,14 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 				continue
 			}
 			args := fn.Types.String()
-			ret := fn.ReturnType.String()
+			retType := fn.ReturnType(nil)
+			// TODO(bdarnell): ReturnType(nil) returns nil for some functions.
+			// Empirically, these should be "anyelement", but is there a better way
+			// to handle this?
+			ret := "anyelement"
+			if retType != nil {
+				ret = retType.String()
+			}
 			cat := ret
 			if c := fn.Category(); c != "" {
 				cat = c
