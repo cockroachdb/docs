@@ -13,7 +13,7 @@ App Language | Featured Driver | Featured ORM
 [Go](build-a-go-app-with-cockroachdb.html) | pq | GORM
 [Python](build-a-python-app-with-cockroachdb.html) | psycopg2 | SQLAlchemy
 [Ruby](build-a-ruby-app-with-cockroachdb.html) | pg | Active Record support coming soon
-[Java](build-a-java-app-with-cockroachdb.html) | jdbc | Hibernate support coming soon
+[Java](build-a-java-app-with-cockroachdb.html) | jdbc | Hibernate
 [Node.js](build-a-nodejs-app-with-cockroachdb.html) | pg | Sequelize support coming soon
 [C++](build-a-c++-app-with-cockroachdb.html) | libpqxx | No ORMs tested 
 [Clojure](build-a-clojure-app-with-cockroachdb.html) | java.jdbc | Nor ORMs tested
