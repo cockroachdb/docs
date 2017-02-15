@@ -142,7 +142,7 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 				continue
 			}
 			args := fn.Types.String()
-			ret := fn.ReturnType.String()
+			ret := fn.FixedReturnType().String()
 			cat := ret
 			if c := fn.Category(); c != "" {
 				cat = c
