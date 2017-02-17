@@ -147,7 +147,7 @@ Copy the code or
 Then run the code:
 
 ~~~ shell
-$ python sqlalchemy-basic-sample.go
+$ python sqlalchemy-basic-sample.py
 ~~~
 
 The output should be:
