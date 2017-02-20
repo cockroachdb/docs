@@ -78,7 +78,8 @@ You can also set the default isolation level for all transactions in the client'
 
 ## See Also
 
-- [Transactions](transactions.html)
+- [`SET` (session variables)](set-vars.html)
+- [Transaction parameters](transactions.html#transaction-parameters)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 - [`SAVEPOINT`](savepoint.html)

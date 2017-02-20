@@ -69,5 +69,5 @@ pq: database "db2" does not exist
 - [`CREATE DATABASE`](create-database.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [`RENAME DATABASE`](rename-database.html)
-- [`SET DATABASE`](set-database.html)
+- [`SET DATABASE`](set-vars.html)
 - [Other SQL Statements](sql-statements.html)
