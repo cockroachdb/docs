@@ -502,6 +502,9 @@ entries:
     - title: Release Notes
       items:
 
+        - title: beta-20170223
+          url: /beta-20170223.html
+
         - title: beta-20170216
           url: /beta-20170216.html
 
@@ -513,9 +516,6 @@ entries:
 
         - title: beta-20170112
           url: /beta-20170112.html
-
-        - title: beta-20170105
-          url: /beta-20170105.html
 
         - title: Older Beta Versions
           url: /older-versions.html
