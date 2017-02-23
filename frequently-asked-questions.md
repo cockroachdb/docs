@@ -68,7 +68,7 @@ CockroachDB guarantees the SQL isolation level "serializable", the highest defin
 It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
 See our description of [strong consistency](strong-consistency.html) for more details.
 
-## How is CockroachDB both highly availability and strongly consistent?
+## How is CockroachDB both highly availabile and strongly consistent?
 
 The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: 
 
