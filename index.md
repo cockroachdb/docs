@@ -86,7 +86,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
         <a href="https://www.cockroachlabs.com/blog/journey-to-design-for-enterprise/">
         <div class="blog-post">
             <div class="blog-title">Journey to Design for Enterprise</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Kuan Lo</span> on <span class="meta-emphasis">Feb 2, 2017</span></div>
+            <div class="blog-meta">Written by <span class="meta-emphasis">Kuan Luo</span> on <span class="meta-emphasis">Feb 2, 2017</span></div>
         </div>
         </a>  
     </div>
