@@ -18,8 +18,8 @@ $(document).ready(function(){
       $current_content.removeClass('current');
 
       //add current class to clicked button and corresponding content block
-      $('.filter-button[data-scope="'+scope+'"').addClass('current');
-      $('.filter-content[data-scope="'+scope+'"').addClass('current');
+      $('.filter-button[data-scope="'+scope+'"]').addClass('current');
+      $('.filter-content[data-scope="'+scope+'"]').addClass('current');
     });
 });
 </script>
