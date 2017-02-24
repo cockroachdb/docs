@@ -127,23 +127,3 @@ $ cockroach start --ca-cert=ca.cert --cert=node3.cert --key=node3.key --host=<no
 ## See Also
 
 [Other Cockroach Commands](cockroach-commands.html)
-
-<script>
-$(document).ready(function(){
-
-  var $filter_button = $('.filter-button');
-
-    $filter_button.on('click', function(){
-      var scope = $(this).data('scope'),
-      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
-
-      //remove current class from tab and content
-      $current_tab.removeClass('current');
-      $current_content.removeClass('current');
-
-      //add current class to clicked button and corresponding content block
-      $('.filter-button[data-scope="'+scope+'"]').addClass('current');
-      $('.filter-content[data-scope="'+scope+']"').addClass('current');
-    });
-});
-</script>

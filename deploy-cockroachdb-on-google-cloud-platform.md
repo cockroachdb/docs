@@ -9,20 +9,9 @@ This page shows you how to manually deploy a multi-node CockroachDB cluster on G
 
 If you plan to use CockroachDB in production, we recommend using a secure cluster *(documented on this page)*. However, if you are not concerned with protecting your data with SSL encryption, you can use the **Insecure** instructions below.
 
-<style>
-.filters .scope-button {
-  width: 20%;
-  height: 65px;
-  margin: 30px 15px 10px 0px;
-}
-.filters a:hover {
-  border-bottom: none;
-}
-</style>
-
-<div id="step-three-filters" class="filters clearfix">
-  <button class="filter-button scope-button current"><strong>Secure</strong></button>
-  <a href="deploy-cockroachdb-on-google-cloud-platform-insecure.html"><button class="filter-button scope-button"><strong>Insecure</strong></button></a>
+<div class="filters filters-big clearfix">
+  <button class="filter-button current"><strong>Secure</strong></button>
+  <a href="deploy-cockroachdb-on-google-cloud-platform-insecure.html"><button class="filter-button"><strong>Insecure</strong></button></a>
 </div><p></p>
 
 <div id="toc"></div>

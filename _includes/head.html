@@ -13,6 +13,12 @@
 <link rel="stylesheet" type="text/css" href="css/theme-blue.css">
 {% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="css/asciinema-player.css">{% endif %}
 
+<script>
+var pageConfig = {
+    tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
+};
+</script>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.min.js"></script>
 <script src="js/jquery.navgoco.min.js"></script>
