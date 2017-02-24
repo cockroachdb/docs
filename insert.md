@@ -172,15 +172,15 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 {{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
-<div id="step-three-filters" class="filters clearfix">
-    <button class="filter-button current" data-language="shell">Shell</button>
-    <button class="filter-button" data-language="python">Python</button>
-    <button class="filter-button" data-language="ruby">Ruby</button>
-    <button class="filter-button" data-language="go">Go</button>
-    <button class="filter-button" data-language="js">Node.js</button>
+<div class="filters clearfix">
+    <button class="filter-button" data-scope="shell">Shell</button>
+    <button class="filter-button" data-scope="python">Python</button>
+    <button class="filter-button" data-scope="ruby">Ruby</button>
+    <button class="filter-button" data-scope="go">Go</button>
+    <button class="filter-button" data-scope="js">Node.js</button>
 </div>
 
-<div class="filter-content current" markdown="1" data-language="shell">
+<div class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 ~~~ sql
 > INSERT INTO accounts (id, balance) 
@@ -200,7 +200,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 </div>
 
-<div class="filter-content" markdown="1" data-language="python">
+<div class="filter-content" markdown="1" data-scope="python">
 <p></p>
 
 ~~~ python
@@ -250,7 +250,7 @@ IDs:
 
 </div>
 
-<div class="filter-content" markdown="1" data-language="ruby">
+<div class="filter-content" markdown="1" data-scope="ruby">
 <p></p>
 
 ~~~ ruby
@@ -293,7 +293,7 @@ IDs:
 ~~~
 
 </div>
-<div class="filter-content" markdown="1" data-language="go">
+<div class="filter-content" markdown="1" data-scope="go">
 <p></p>
 
 ~~~ go
@@ -351,7 +351,7 @@ IDs:
 
 </div>
 
-<div class="filter-content" markdown="1" data-language="js">
+<div class="filter-content" markdown="1" data-scope="js">
 <p></p>
 
 ~~~ js
@@ -499,23 +499,3 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 - [`UPSERT`](upsert.html)
 - [Other SQL Statements](sql-statements.html)
-
-<script>
-$(document).ready(function(){
-    
-    var $filter_button = $('.filter-button');
-
-    $filter_button.on('click', function(){
-        var language = $(this).data('language'), 
-        $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
-
-        //remove current class from tab and content
-        $current_tab.removeClass('current');
-        $current_content.removeClass('current');
-
-        //add current class to clicked button and corresponding content block
-        $('.filter-button[data-language="'+language+'"]').addClass('current');
-        $('.filter-content[data-language="'+language+'"]').addClass('current');
-    });
-});
-</script>

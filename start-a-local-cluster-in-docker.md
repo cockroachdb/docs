@@ -9,10 +9,10 @@ asciicast: true
 To link directly to the linux or windows tab, append #os-linux or #os-windows to the url.
 -->
 
-<div id="os-tabs" class="clearfix">
-    <button id="mac" class="filter-button current" data-os="os-mac">Mac</button>
-    <button id="linux" class="filter-button" data-os="os-linux">Linux</button>
-    <button id="windows" class="filter-button" data-os="os-windows">Windows</button>
+<div id="os-tabs" class="filters clearfix">
+    <button id="mac" class="filter-button" data-scope="os-mac">Mac</button>
+    <button id="linux" class="filter-button" data-scope="os-linux">Linux</button>
+    <button id="windows" class="filter-button" data-scope="os-windows">Windows</button>
 </div>
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
@@ -21,15 +21,15 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 <div id="toc" style="display: none"></div>
 
-<div class="filter-content current" markdown="1" data-os="os-mac">
+<div class="filter-content current" markdown="1" data-scope="os-mac">
 {% include start_in_docker/mac-linux-steps.md %}
 </div>
 
-<div class="filter-content" markdown="1" data-os="os-linux">
+<div class="filter-content" markdown="1" data-scope="os-linux">
 {% include start_in_docker/mac-linux-steps.md %}
 </div>
 
-<div class="filter-content" markdown="1" data-os="os-windows">
+<div class="filter-content" markdown="1" data-scope="os-windows">
 ## Step 1. Create a bridge network
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks. 
@@ -183,41 +183,3 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 - [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
 - [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
 - [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
-
-<script>
-(function() {
-    // Generate toc of h2 and h3 headers currently visible on page.
-    function renderTOC() {
-        var toc = $('#toc');
-        toc.show();
-        toc.toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2:not(.filter-content:not(.current) h2),h3:not(.filter-content:not(.current) h3)' });
-    }
-
-    function selectOS(os) {
-        var current_tab = $('.filter-button.current');
-        var current_content = $('.filter-content.current');
-
-        // Remove current class from tab and content blocks.
-        current_tab.removeClass('current');
-        current_content.removeClass('current');
-
-        // Add current class to clicked button and corresponding content blocks.
-        $('.filter-button[data-os="'+os+'"]').addClass('current');
-        $('.filter-content[data-os="'+os+'"]').addClass('current');
-    }
-    
-    var hash = window.location.hash.split('#')[1];
-    if (hash != 'os-linux' && hash != 'os-windows') { hash = 'os-mac'; }
-    selectOS(hash);
-
-    $(document).ready(function() {
-        renderTOC();
-
-        // Show and hide content blocks with buttons.
-        $('.filter-button').on('click', function(){
-            selectOS($(this).data('os'));
-            renderTOC();
-        });
-    });
-})();
-</script>

@@ -9,20 +9,9 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 If you plan to use CockroachDB in production, we recommend instead using the **Secure** instructions below.
 
-<style>
-.filters .scope-button {
-  width: 20%;
-  height: 65px;
-  margin: 30px 15px 10px 0px;
-}
-.filters a:hover {
-  border-bottom: none;
-}
-</style>
-
-<div id="step-three-filters" class="filters clearfix">
-  <a href="deploy-cockroachdb-on-microsoft-azure.html"><button class="filter-button scope-button"><strong>Secure</strong></button>
-  <button class="filter-button scope-button current"><strong>Insecure</strong></button></a>
+<div class="filters filters-big clearfix">
+  <a href="deploy-cockroachdb-on-microsoft-azure.html"><button class="filter-button"><strong>Secure</strong></button>
+  <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div><p></p>
 
 <div id="toc"></div>

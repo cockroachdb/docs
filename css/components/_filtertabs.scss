@@ -117,8 +117,7 @@
 		line-height: 12px;
 		color: $cl_blue !important;
 		text-decoration: none !important;
-		padding: 15px 0;
-		width: 23%;
+		padding: 15px;
 		margin: 1%;
 		outline: none;
 
@@ -130,6 +129,10 @@
 			border: 1px solid $cl_green;
 			background-color: #F0FFE8;
 		}
+	}
+
+	a:hover {
+		border-bottom: none;
 	}
 }
 
@@ -171,10 +174,19 @@
 
 	.filters {
 		.filter-button {
-			width: 10%;
 			margin: 0 0.5%;
 			@include avenir_l(16px);
 			line-height: 16px;
 		}
+	}
+}
+
+.filters-big {
+	.filter-button {
+		height: 65px;
+		margin: 15px 15px 10px 0px;
+		padding-left: 20px;
+		padding-right: 20px;
+		width: 20%;
 	}
 }

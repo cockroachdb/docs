@@ -1,3 +1,18 @@
+// Render the table of contents (TOC) based on the currently-visible headers.
+//
+// This function is called automatically on DOM ready, but can be called later
+// to regenerate the TOC when the visible headers change. Whether <h3>s are
+// included in the TOC is determined by the `toc_not_nested` page variable,
+// which is propagated to JavaScript in _includes/head.html.
+function renderTOC() {
+    $('#toc').toc({
+        minimumHeaders: 0,
+        listType: 'ul',
+        showSpeed: 0,
+        headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
+    });
+}
+
 (function($) {
     $(window).load(function() {
 
@@ -10,14 +25,14 @@
         if(_viewport_width <= 768) {
             $mobile_menu.css('visibility', 'visible');
         }
-        
+
         $('header nav.mobile').on('click', '.hamburger', function(e){
             e.preventDefault();
             if($('body').hasClass('menu_open')){
                 $('body').removeClass('menu_open');
             }
             else {
-                $('body').addClass('menu_open');    
+                $('body').addClass('menu_open');
             }
         });
 
@@ -25,7 +40,7 @@
             _viewport_width = $(window).width();
 
             if(_viewport_width > 768) {
-                $('body').removeClass('menu_open');     
+                $('body').removeClass('menu_open');
             }
             else {
                 $mobile_menu.css('visibility', 'visible');
@@ -58,7 +73,7 @@
 
         // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
         terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp
-        
+
         for(var i = 0; i < terminalMarkers.length; i++){
             terminalMarkers[i].innerText="";    // Remove the existing on-page terminal marker
             terminalMarkers[i].className += " noselect shellterminal"; // Add shellterminal class, which then displays the terminal marker as a ::before element
@@ -74,5 +89,39 @@
             }
         }
 
+        // Render the TOC on DOM ready by default.
+        renderTOC();
+
+        // Activate a new filter scope by setting the `current` class on only
+        // elements with the desired scope and re-rendering the TOC to reflect any
+        // changes in visibility.
+        function setFilterScope(scope) {
+            ['.filter-button', '.filter-content'].forEach(function (selector) {
+                $(selector + '[data-scope].current').removeClass('current');
+                $(selector + '[data-scope="' + scope + '"]').addClass('current');
+            })
+            renderTOC();
+        }
+
+        // Handle clicks on filter buttons by activating the scope named by that
+        // button and updating the URL hash.
+        $('.filter-button').on('click', function() {
+            var scope = $(this).data('scope');
+            var url = window.location.pathname + window.location.search +
+                ($(this).is(':first-child') ? '' : '#' + scope);
+            setFilterScope(scope);
+            history && history.pushState(null, null, url);
+        });
+
+        // Handle URL hash changes by attempting to activate the scope named in the
+        // hash. If no such scope exists, instead activate the scope named by the
+        // button that appears first in DOM order.
+        $(window).on('hashchange', function () {
+            var scope = window.location.hash.substring(1);
+            if ($('.filter-button[data-scope="' + scope + '"]').length == 0) {
+                scope = $('.filter-button[data-scope]').first().data('scope');
+            }
+            setFilterScope(scope);
+        }).trigger('hashchange');
     });
 })(jQuery);
