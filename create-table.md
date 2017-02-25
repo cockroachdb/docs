@@ -38,7 +38,7 @@ By default, tables are created in the default replication zone but can be placed
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database. 
+The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
 ## Synopsis
 
@@ -83,7 +83,7 @@ Parameter | Description
 `any_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any Primary Key, Unique, and Check [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE TABLE`](show-create-table.html) statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes](#create-a-table-with-secondary-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
-`family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html). 
+`family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
 
@@ -91,13 +91,13 @@ Parameter | Description
 
 ### Create a Table (No Primary Key Defined)
 
-In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed. 
+In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
 ~~~ sql
 > CREATE TABLE logon (
-    user_id INT, 
+    user_id INT,
     logon_date DATE
 );
 ~~~
@@ -137,9 +137,9 @@ CREATE TABLE
 In this example, we create a table with three columns. One column is the [primary key](primary-key.html), another is given the [Unique constraint](unique.html), and the third has no constraints. The primary key and column with the Unique constraint are automatically indexed.
 
 ~~~ sql
-CREATE TABLE logoff (
-    user_id INT PRIMARY KEY, 
-    user_email STRING UNIQUE, 
+> CREATE TABLE logoff (
+    user_id INT PRIMARY KEY,
+    user_email STRING UNIQUE,
     logoff_date DATE
 );
 ~~~
@@ -285,6 +285,10 @@ In this example, we'll show a series of tables using different formats of foreig
   INDEX ("order", customer)
 );
 ~~~
+
+### Create a Table that Mirrors Key-Value Storage
+
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key. See this [FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) for more details.
 
 ### Show the Definition of a Table
 
