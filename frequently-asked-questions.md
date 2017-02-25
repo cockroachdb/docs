@@ -56,7 +56,7 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
 - Different servers in different datacenters to tolerate large scale network or power outages 
 
-When replicating across datacenters, we recommend using datacenters on a single continent to ensure better peformance. Cross-continent and other high-latency scenarios will be better supported in the future. 
+When replicating across datacenters, we recommend using datacenters on a single continent to ensure better performance. Cross-continent and other high-latency scenarios will be better supported in the future. 
 
 **Automated Repair**
 
@@ -68,7 +68,7 @@ CockroachDB guarantees the SQL isolation level "serializable", the highest defin
 It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
 See our description of [strong consistency](strong-consistency.html) for more details.
 
-## How is CockroachDB both highly availability and strongly consistent?
+## How is CockroachDB both highly available and strongly consistent?
 
 The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: 
 
@@ -152,7 +152,7 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 ## Can a MySQL or PostgreSQL application be migrated to CockroachDB?
 
-The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncracies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
+The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncrasies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
