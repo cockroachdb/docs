@@ -138,6 +138,16 @@ func main() {
 			br := func() io.Reader {
 				return bytes.NewReader(bnf)
 			}
+
+			if railroadJar != "" {
+				_, err := os.Stat(railroadJar)
+				if err != nil {
+					log.Printf("%s not found, falling back to website\n", railroadJar)
+					log.Println("Cockroach Labs employees can find it on the Google Drive.")
+					railroadJar = ""
+				}
+			}
+
 			var wg sync.WaitGroup
 			wg.Add(1)
 			go func() {
