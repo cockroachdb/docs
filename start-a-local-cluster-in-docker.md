@@ -57,7 +57,7 @@ This command creates a container and starts the first CockroachDB node inside it
 - `--name`: The name for the container. This is optional, but a custom name makes it significantly easier to reference the container in other commands, for example, when opening a Bash session in the container or stopping the container. 
 - `--hostname`: The hostname for the container. You will use this to join other containers/nodes to the cluster.
 - `--net`: The bridge network for the container to join. See step 1 for more details.
-- `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port of HTTP requests from the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
+- `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port for HTTP requests to the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
 - `-v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `Users/<username>/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume">Mount a host directory as a data volume</a> topic.
 - `cockroachdb/cockroach:{{site.data.strings.version}} start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode. 
 
@@ -72,7 +72,6 @@ This command creates a container and starts the first CockroachDB node inside it
 --name<span class="o">=</span>roach2 <span class="sb">`</span>
 --hostname<span class="o">=</span>roach2 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
--P <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach2:/cockroach/cockroach-data"</span> <span class="sb">`</span>
 cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
 
@@ -81,13 +80,11 @@ cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --j
 --name<span class="o">=</span>roach3 <span class="sb">`</span>
 --hostname<span class="o">=</span>roach3 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
--P <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach3:/cockroach/cockroach-data"</span> <span class="sb">`</span>
 cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
-- `-P`: This flag maps exposed ports to random ports on the host. This random mapping is fine since we've already mapped the relevant ports for the first container.
 - `-v`: This flag mounts a host directory as a data volume. Data and logs for these nodes will be stored in `Users/<username>/cockroach-data/roach2` and `Users/<username>/cockroach-data/roach3` on the host and will persist after the containers are stopped or deleted.
 - `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
