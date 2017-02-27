@@ -16,6 +16,6 @@ App Language | Featured Driver | Featured ORM
 [Java](build-a-java-app-with-cockroachdb.html) | jdbc | Hibernate
 [Node.js](build-a-nodejs-app-with-cockroachdb.html) | pg | Sequelize support coming soon
 [C++](build-a-c++-app-with-cockroachdb.html) | libpqxx | No ORMs tested 
-[Clojure](build-a-clojure-app-with-cockroachdb.html) | java.jdbc | Nor ORMs tested
+[Clojure](build-a-clojure-app-with-cockroachdb.html) | java.jdbc | No ORMs tested
 [PHP](build-a-php-app-with-cockroachdb.html) | php-pgsql | No ORMs tested
 [Rust](build-a-rust-app-with-cockroachdb.html) | postgres | No ORMs tested
