@@ -380,15 +380,19 @@ entries:
 
                 - title: AWS
                   url: /deploy-cockroachdb-on-aws.html
+                  alternate_urls: [/deploy-cockroachdb-on-aws-insecure.html]
 
                 - title: Azure
                   url: /deploy-cockroachdb-on-microsoft-azure.html
+                  alternate_urls: [/deploy-cockroachdb-on-microsoft-azure-insecure.html]
 
                 - title: Digital Ocean
                   url: /deploy-cockroachdb-on-digital-ocean.html
+                  alternate_urls: [/deploy-cockroachdb-on-digital-ocean-insecure.html]
 
                 - title: Google Cloud Platform GCE
                   url: /deploy-cockroachdb-on-google-cloud-platform.html
+                  alternate_urls: [/deploy-cockroachdb-on-google-cloud-platform-insecure.html]
 
             - title: Orchestration
               thirdlevelitems:
