@@ -146,7 +146,7 @@ where it is used, its literal format, and its numeric value.
 |--------|---------------------|
 | Contains a decimal separator | `FLOAT`, `DECIMAL` |
 | Contains an exponent | `FLOAT`, `DECIMAL` |
-| Contains a value larger than 2^64 in magnitude | `FLOAT`, `DECIMAL` |
+| Contains a value outside of the range -2^63...(2^63)-1 | `FLOAT`, `DECIMAL` |
 | Otherwise | `INT`, `DECIMAL`, `FLOAT` |
 
 Of the possible data types, which one is actually used is then further
