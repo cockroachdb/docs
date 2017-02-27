@@ -178,7 +178,7 @@ CREATE TABLE
 (3 rows)
 ~~~
 
-### Create a Table With Secondary Indexes
+### Create a Table with Secondary Indexes
 
 In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
@@ -221,6 +221,28 @@ We also have other resources on indexes:
 
 - Create indexes for existing tables using [`CREATE INDEX`](create-index.html).
 - [Learn more about indexes](indexes.html).
+
+### Create a Table with Auto-Generated Row IDs
+
+To auto-generate unique row IDs, use an [`INT`](int.html) column with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the column default:
+
+~~~ sql
+> CREATE TABLE test (
+    id INT PRIMARY KEY DEFAULT unique_rowid(), 
+    name STRING
+);
+~~~
+
+On insert, the `unique_rowid()` function will generate a default value from the insert timestamp and the ID of the node executing the insert, a combination that is guaranteed to be globally unique. 
+
+Alternately, you can use the CockroachDB-specific [`SERIAL`](serial.html) data type, which is simply an alias for the `INT` usage above:
+
+~~~ sql
+> CREATE TABLE test (
+    id SERIAL PRIMARY KEY, 
+    name STRING
+);
+~~~
 
 ### Create a Table with Foreign Keys
 

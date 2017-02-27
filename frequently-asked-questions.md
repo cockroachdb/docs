@@ -160,13 +160,27 @@ Not yet, but this is on our long-term roadmap.
 
 ## How do I bulk insert data into CockroachDB?
 
-Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best.
+Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best. For more details, see [Import Data](https://www.cockroachlabs.com/docs/import-data.html).
+
+## How do I auto-generate unique row IDs in CockroachDB?
+
+To auto-generate unique row IDs, use an [`INT`](int.html) column with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the column default:
+
+~~~ sql
+> CREATE TABLE test (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+~~~
+
+On insert, the `unique_rowid()` function will generate a default value from the insert timestamp and the ID of the node executing the insert, a combination that is guaranteed to be globally unique. 
+
+Alternately, you can use the CockroachDB-specific [`SERIAL`](serial.html) data type, which is simply an alias for the `INT` usage above.
 
 ## Does CockroachDB support `JOIN`?
 
 CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
 
-To learn more, see our blog post on [CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+To learn more, see our blog posts on CockroachDB's JOINs:
+- [Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+- [On the Way to Better SQL Joins](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
