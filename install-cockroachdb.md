@@ -193,7 +193,7 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+    <p><div class="bs-callout bs-callout-info">The <code class="highlighter-rouge">make install</code> command builds a binary covered by the CockroachDB Community License. To build a pure open-source (APL2) version instead, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details. Also, note that the first time you run <code>make</code>, it can take awhile to download and install various dependencies.</div></p>
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
@@ -350,7 +350,7 @@ $(document).ready(function(){
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code class="highlighter-rouge">make install</code>, it can take awhile to download and install various dependencies.</p>
+    <p><div class="bs-callout bs-callout-info">The <code class="highlighter-rouge">make install</code> command builds a binary covered by the CockroachDB Community License. To build a pure open-source (APL2) version instead, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details. Also, note that the first time you run <code>make</code>, it can take awhile to download and install various dependencies.</div></p>
   </li>
   <li>
     <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
