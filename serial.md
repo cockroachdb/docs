@@ -4,26 +4,11 @@ summary: The SERIAL data type defaults to a unique 64-bit signed integer that is
 toc: false
 ---
 
-The `SERIAL` [data type](data-types.html) is a column data type which
-generates new integer values on each default insert. The default value
-is the combination of the insert timestamp and the ID of the node
-executing the insert. This combination is guaranteed to be globally
-unique. Also, because value generation does not require talking to
-other nodes, it is much faster than sequentially auto-incrementing a
-value, which requires distributed coordination.
+The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a default integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
 
 {{site.data.alerts.callout_info}}
-This data type is <strong>experimental</strong>. We believe it is a better solution
-than PostgeSQL's <code>SERIAL</code> and MySQL's <code>AUTO_INCREMENT</code> types, both of
-which auto-increment integers but not necessarily in a strictly
-sequential fashion (see the
-<a href="#auto-incrementing-is-not-always-sequential">
-Auto-Incrementing Is Not Always Sequential
-</a> example below). However, if you find that this feature is incompatible
-with your application, please
-<a href="https://github.com/cockroachdb/cockroach/issues">open an
-issue</a> or
-<a href="https://gitter.im/cockroachdb/cockroach">chat
+This data type is <strong>experimental</strong>. We believe it is a better solution than PostgeSQL's <code>SERIAL</code> and MySQL's <code>AUTO_INCREMENT</code> types, both of which auto-increment integers but not necessarily in a strictly sequential fashion (see the <a href="#auto-incrementing-is-not-always-sequential"> Auto-Incrementing Is Not Always Sequential </a> example below). However, if you find that this feature is incompatible with your application, please <a href="https://github.com/cockroachdb/cockroach/issues">open an
+issue</a> or <a href="https://gitter.im/cockroachdb/cockroach">chat
 with us on Gitter</a>.
 {{site.data.alerts.end}}
 
@@ -40,9 +25,7 @@ In CockroachDB, the following are aliases for `SERIAL`:
 
 ## Syntax
 
-Any `INT` value is a valid `SERIAL` value; in particular constant
-`SERIAL` values can be expressed using
-[numeric literals](sql-constants.html#numeric-literals).
+Any `INT` value is a valid `SERIAL` value; in particular constant `SERIAL` values can be expressed using [numeric literals](sql-constants.html#numeric-literals).
 
 ## Size
 
@@ -55,7 +38,7 @@ Any `INT` value is a valid `SERIAL` value; in particular constant
 In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
 ~~~ sql
-> CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING(30), c BOOL);
+> CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING, c BOOL);
 ~~~
 
 The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
@@ -63,24 +46,25 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 ~~~ sql
 > SHOW COLUMNS FROM serial;
 ~~~
+
 ~~~
 +-------+------------+-------+----------------+
 | Field |    Type    | Null  |    Default     |
 +-------+------------+-------+----------------+
 | a     | INT        | false | unique_rowid() |
-| b     | STRING(30) | true  | NULL           |
+| b     | STRING     | true  | NULL           |
 | c     | BOOL       | true  | NULL           |
 +-------+------------+-------+----------------+
 ~~~
 
-When we insert rows without values in column `a` and display the new
-rows, we see that each row has defaulted to a unique value in column
-`a`.
+When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
 ~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
 > INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
+> SELECT * FROM serial;
 ~~~
+
 ~~~
 +--------------------+--------+-------+
 |         a          |   b    |   c   |
