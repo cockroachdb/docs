@@ -29,7 +29,7 @@ You must have SSH access ([key pairs](http://docs.aws.amazon.com/AWSEC2/latest/U
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/aws">configuration files and instructions in the our GitHub repo's <code>aws</code>directory</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/aws">configuration files and instructions in our GitHub repo's <code>aws</code>directory</a>.{{site.data.alerts.end}}
 
 ## Step 1. Configure Your Network
 
@@ -85,7 +85,7 @@ To connect your application to CockroachDB, use a [PostgreSQL wire protocol driv
 	~~~
 
 2.	Install the latest CockroachDB binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -99,7 +99,7 @@ To connect your application to CockroachDB, use a [PostgreSQL wire protocol driv
 	~~~
 
 3. 	Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background
 	~~~
@@ -115,7 +115,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 2.	Install CockroachDB from our latest binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -129,7 +129,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background --join=<node1 internal IP address>:26257
 	~~~
@@ -147,7 +147,7 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
@@ -162,27 +162,32 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 4.	Launch the built-in SQL client:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
 
 5.	View the cluster's databases, which will include `insecurenodetest`:
-	
-	~~~ sql 
-	> SHOW DATABASE;
+
+	~~~ sql
+	> SHOW DATABASES;
 	~~~
 	~~~
-	+------------------+
-	|     DATABASE     |
-	+------------------+
-	| insecurenodetest |
-	+------------------+
+	+--------------------+
+	|      Database      |
+	+--------------------+
+	| crdb_internal      |
+	| information_schema |
+	| insecurenodetest   |
+	| pg_catalog         |
+	| system             |
+	+--------------------+
+	(5 rows)
 	~~~
 
 ## Step 6. View the Admin UI
 
-View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`. 
+View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
 
 On this page, go to the following tabs on the left:
 
