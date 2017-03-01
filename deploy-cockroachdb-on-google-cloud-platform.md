@@ -5,14 +5,14 @@ toc: false
 toc_not_nested: true
 ---
 
-This page shows you how to manually deploy a multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE).
-
-If you plan to use CockroachDB in production, we recommend using a secure cluster *(documented on this page)*. However, if you are not concerned with protecting your data with SSL encryption, you can use the **Insecure** instructions below.
-
 <div class="filters filters-big clearfix">
   <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="deploy-cockroachdb-on-google-cloud-platform-insecure.html"><button class="filter-button"><strong>Insecure</strong></button></a>
-</div><p></p>
+  <a href="deploy-cockroachdb-on-google-cloud-platform-insecure.html"><button class="filter-button">Insecure</button></a>
+</div>
+
+This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE).
+
+If you are not concerned with protecting your data with SSL encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
 <div id="toc"></div>
 
