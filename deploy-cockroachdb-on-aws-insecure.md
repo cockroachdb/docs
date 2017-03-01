@@ -181,14 +181,19 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 5.	View the cluster's databases, which will include `insecurenodetest`:
 
 	~~~ sql
-	> SHOW DATABASE;
+	> SHOW DATABASES;
 	~~~
 	~~~
-	+------------------+
-	|     DATABASE     |
-	+------------------+
-	| insecurenodetest |
-	+------------------+
+	+--------------------+
+	|      Database      |
+	+--------------------+
+	| crdb_internal      |
+	| information_schema |
+	| insecurenodetest   |
+	| pg_catalog         |
+	| system             |
+	+--------------------+
+	(5 rows)
 	~~~
 
 ## Step 6. View the Admin UI

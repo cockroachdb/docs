@@ -71,7 +71,7 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 	~~~
 
 2.	Install CockroachDB from our latest binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball:
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -85,7 +85,7 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 	~~~
 
 3. 	Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background --advertise-host=<node1 internal IP address>
 	~~~
@@ -99,7 +99,7 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 	~~~
 
 2.	Install CockroachDB from our latest binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball:
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -113,7 +113,7 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 	~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background   \
 	--advertise-host=<this node’s internal IP address>  \
@@ -133,7 +133,7 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
@@ -148,27 +148,32 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 	~~~
 
 4.	Launch the built-in SQL client:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
 
 5.	View the cluster's databases, which will include `insecurenodetest`:
-	
-	~~~ sql 
-	> SHOW DATABASE;
+
+	~~~ sql
+	> SHOW DATABASES;
 	~~~
 	~~~
-	+------------------+
-	|     DATABASE     |
-	+------------------+
-	| insecurenodetest |
-	+------------------+
+	+--------------------+
+	|      Database      |
+	+--------------------+
+	| crdb_internal      |
+	| information_schema |
+	| insecurenodetest   |
+	| pg_catalog         |
+	| system             |
+	+--------------------+
+	(5 rows)
 	~~~
 
 ## Step 6. View the Admin UI
 
-View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`. 
+View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
 
 On this page, go to the following tabs on the left:
 

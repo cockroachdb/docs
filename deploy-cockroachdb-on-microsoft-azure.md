@@ -54,7 +54,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 1. [Create a Resource Group](https://azure.microsoft.com/en-us/updates/create-empty-resource-groups/).
 2. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
 3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following rules to it:
-   
+
    - **Admin UI support**:
 
      | Field | Recommended Value |
@@ -175,7 +175,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	~~~
 
 2.	Install the latest CockroachDB binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -189,7 +189,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	~~~
 
 3. 	Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
-	
+
 	~~~ shell
 	$ cockroach start --background \
 	--ca-cert=certs/ca.cert \
@@ -209,7 +209,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 2.	Install the latest CockroachDB binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -223,7 +223,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --background  \
 	--ca-cert=certs/ca.cert \
@@ -246,7 +246,7 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
-	
+
 	~~~ shell
 	$ cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
 	~~~
@@ -262,22 +262,27 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 	~~~
 
 4.	Launch the built-in SQL client:
-	
+
 	~~~ shell
 	$ cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
-	
-	~~~ sql 
+
+	~~~ sql
 	> SHOW DATABASE;
 	~~~
 	~~~
-	+----------------+
-	|    DATABASE    |
-	+----------------+
-	| securenodetest |
-	+----------------+
+  +--------------------+
+  |      Database      |
+  +--------------------+
+  | crdb_internal      |
+  | information_schema |
+  | securenodetest     |
+  | pg_catalog         |
+  | system             |
+  +--------------------+
+  (5 rows)
 	~~~
 
 ## Step 7. View the Admin UI

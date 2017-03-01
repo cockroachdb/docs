@@ -97,7 +97,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	~~~
 
 2.	Install the latest CockroachDB binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
@@ -111,7 +111,7 @@ If you used a tag for your firewall rules, when you create the instance, select 
 	~~~
 
 3. 	Start a new CockroachDB cluster with a single node:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background
 	~~~
@@ -127,7 +127,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 2.	Install CockroachDB from our latest binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
@@ -141,7 +141,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --insecure --background --join=<node1 internal IP address>:26257
 	~~~
@@ -159,7 +159,7 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
@@ -174,27 +174,32 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 4.	Launch the built-in SQL client:
-	
+
 	~~~ shell
 	$ cockroach sql
 	~~~
 
 5.	View the cluster's databases, which will include `insecurenodetest`:
-	
-	~~~ sql 
+
+	~~~ sql
 	> SHOW DATABASE;
 	~~~
 	~~~
-	+------------------+
-	|     DATABASE     |
-	+------------------+
-	| insecurenodetest |
-	+------------------+
+	+--------------------+
+	|      Database      |
+	+--------------------+
+	| crdb_internal      |
+	| information_schema |
+	| insecurenodetest   |
+	| pg_catalog         |
+	| system             |
+	+--------------------+
+	(5 rows)
 	~~~
 
 ## Step 6. View the Admin UI
 
-View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`. 
+View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
 
 On this page, go to the following tabs on the left:
 
