@@ -42,7 +42,7 @@ In AWS, you must have SSH access ([key pairs](http://docs.aws.amazon.com/AWSEC2/
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/aws">configuration files and instructions in the our GitHub repo's <code>aws</code>directory</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/aws">configuration files and instructions in our GitHub repo's <code>aws</code>directory</a>.{{site.data.alerts.end}}
 
 ## Step 1. Configure Your Network
 
@@ -171,7 +171,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	~~~
 
 2.	Install the latest CockroachDB binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -185,7 +185,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	~~~
 
 3. 	Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
-	
+
 	~~~ shell
 	$ cockroach start --background \
 	--ca-cert=certs/ca.cert \
@@ -205,7 +205,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 2.	Install CockroachDB from our latest binary:
-	
+
 	~~~ shell
 	# Get the latest CockroachDB tarball.
 	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
@@ -219,7 +219,7 @@ At this point, your cluster is live and operational but contains only a single n
 	~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
-	
+
 	~~~ shell
 	$ cockroach start --background  \
 	--ca-cert=certs/ca.cert \
@@ -242,7 +242,7 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
-	
+
 	~~~ shell
 	$ cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
 	~~~
@@ -258,14 +258,14 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 	~~~
 
 4.	Launch the built-in SQL client:
-	
+
 	~~~ shell
 	$ cockroach sql --ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
-	
-	~~~ sql 
+
+	~~~ sql
 	> SHOW DATABASE;
 	~~~
 	~~~
@@ -278,7 +278,7 @@ To test your distributed, multi-node cluster, access SQL and create a new databa
 
 ## Step 7. View the Admin UI
 
-View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`. 
+View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
 
 On this page, go to the following tabs on the left:
 
