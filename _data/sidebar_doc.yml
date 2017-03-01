@@ -42,15 +42,18 @@ entries:
 
                 - title: Go
                   url: /build-a-go-app-with-cockroachdb.html
+                  alternate_urls: [/build-a-go-app-with-cockroachdb-gorm.html]
 
                 - title: Python
                   url: /build-a-python-app-with-cockroachdb.html
+                  alternate_urls: [/build-a-python-app-with-cockroachdb-sqlalchemy.html]
 
                 - title: Ruby
                   url: /build-a-ruby-app-with-cockroachdb.html
 
                 - title: Java
                   url: /build-a-java-app-with-cockroachdb.html
+                  alternate_urls: [/build-a-java-app-with-cockroachdb-hibernate.html]
 
                 - title: Node.js
                   url: /build-a-nodejs-app-with-cockroachdb.html
@@ -139,7 +142,7 @@ entries:
 
                 - title: <code>DROP COLUMN</code>
                   url: /drop-column.html
-                  
+
                 - title: <code>DROP CONSTRAINT</code>
                   url: /drop-constraint.html
 
@@ -154,7 +157,7 @@ entries:
 
                 - title: <code>DROP VIEW</code>
                   url: /drop-view.html
-              
+
                 - title: <code>EXPLAIN</code>
                   url: /explain.html
 
@@ -352,7 +355,7 @@ entries:
 
         - title: Privileges
           url: /privileges.html
-          
+
         - title: Functions and Operators
           url: /functions-and-operators.html
 
@@ -370,6 +373,7 @@ entries:
 
         - title: Manual Deployment
           url: /manual-deployment.html
+          alternate_urls: [/manual-deployment-insecure.html]
 
           thirdlevel:
             - title: Cloud Deployment
@@ -399,7 +403,7 @@ entries:
 
                 - title: Overview
                   url: /orchestration.html
-                  
+
                 - title: Kubernetes
                   url: /orchestrate-cockroachdb-with-kubernetes.html
 
@@ -478,7 +482,7 @@ entries:
 
                 - title: SQL
                   url: /sql.html
-                  
+
                 - title: Distributed Transactions
                   url: /distributed-transactions.html
 
