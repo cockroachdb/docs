@@ -4,37 +4,26 @@ summary: Learn how to use CockroachDB from a simple Java application with either
 toc: false
 ---
 
-<style>
-.filters .filter-button {
-  width: 20%;
-  height: 65px;
-  margin: 15px 15px 10px 0px;
-}
-.filters a:hover {
-  border-bottom: none;
-}
-</style>
-
-<div id="tool-filters" class="filters clearfix">
-    <button class="filter-button current" data-tool="driver" >Use <strong>jdbc</strong></button>
-    <button class="filter-button" data-tool="orm">Use <strong>Hibernate</strong></button>
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="driver">Use <strong>jdbc</strong></button>
+    <button class="filter-button" data-scope="orm">Use <strong>Hibernate</strong></button>
 </div>
 
 This tutorial shows you how build a simple Java application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hibernate ORM](http://hibernate.org/), so those are featured here.
 
-<div id="toc" style="display: none"></div>
+<div id="toc"></div>
 
 ## Before You Begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-<div class="filter-content" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-scope="driver">
 ## Step 1. Install the Java jdbc driver
 
 Download and set up the Java jdbc driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
 </div>
 
-<div class="filter-content" markdown="1" data-tool="orm">
+<div class="filter-content" markdown="1" data-scope="orm">
 ## Step 1. Install the Gradle build tool
 
 This tutorial uses the [Gradle build tool](https://gradle.org/) to get all dependencies for your application, including the Hibernate ORM. To install Gradle, run the following command:
@@ -54,7 +43,7 @@ For other ways to install Gradle, see the [official documentation](https://gradl
 
 ## Step 5. Run the Java code
 
-<div class="filter-content" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-scope="driver">
 ### Basic Statements
 
 The following code connects as the `maxroach` user and executes some basic SQL statements, creating a table, inserting rows, and reading and printing the rows. 
@@ -96,7 +85,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 </div>
 
-<div class="filter-content" markdown="1" data-tool="orm">
+<div class="filter-content" markdown="1" data-scope="orm">
 
 [Downlod and extract this tarball](https://github.com/cockroachdb/docs/raw/gh-pages/_includes/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which includes three files that work together:
 
@@ -157,11 +146,11 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-<div class="filter-content" markdown="1" data-tool="driver">
+<div class="filter-content" markdown="1" data-scope="driver">
 Read more about using the [Java jdbc driver](https://jdbc.postgresql.org/).
 </div>
 
-<div class="filter-content" markdown="1" data-tool="orm">
+<div class="filter-content" markdown="1" data-scope="orm">
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/).
 </div>
 
@@ -170,41 +159,3 @@ You might also be interested in using a local cluster to explore the following c
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Scalability](demo-scalability.html)
-
-<script>
-(function() {
-    // Generate toc of h2 and h3 headers currently visible on page.
-    function renderTOC() {
-        var toc = $('#toc');
-        toc.show();
-        toc.toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2:not(.filter-content:not(.current) h2),h3:not(.filter-content:not(.current) h3)' });
-    }
-
-    function selectTool(tool) {
-        var current_tab = $('.filter-button.current');
-        var current_content = $('.filter-content.current');
-
-        // Remove current class from tab and content blocks.
-        current_tab.removeClass('current');
-        current_content.removeClass('current');
-
-        // Add current class to clicked button and corresponding content blocks.
-        $('.filter-button[data-tool="'+tool+'"]').addClass('current');
-        $('.filter-content[data-tool="'+tool+'"]').addClass('current');
-    }
-
-    var hash = window.location.hash.split('#')[1] == 'orm' ? 'orm' : 'driver';
-    selectTool(hash);
-
-    $(document).ready(function() {
-        renderTOC();
-
-        // Show and hide content blocks with buttons.
-        $('.filter-button').on('click', function(){
-            selectTool($(this).data('tool'));
-            renderTOC();
-        });
-    });
-})();
-</script>
-

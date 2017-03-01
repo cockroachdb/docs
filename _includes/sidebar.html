@@ -77,7 +77,7 @@
                                     {% for deeplevel in thirdlevel.thirdlevelitems %}
                                         {% if deeplevel.external_url %}
                                         <li><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
-                                        {% elsif page.url == deeplevel.url %}
+                                        {% elsif page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
                                         <li class="active"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
                                         {% else %}
                                         <li><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>

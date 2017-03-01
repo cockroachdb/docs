@@ -16,25 +16,14 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 Choose the environment where you will run CockroachDB with Kubernetes. The instructions below will adjust based on your choice. 
 
-<style>
-.filters .scope-button {
-  width: 20%;
-  height: 65px;
-  margin: 15px 15px 10px 0px;
-}
-.filters a:hover {
-  border-bottom: none;
-}
-</style>
-
-<div class="filters clearfix">
-  <button class="filter-button scope-button current" data-scope="cloud">Cloud</button>
-  <button class="filter-button scope-button" data-scope="local">Local</button>
+<div class="filters filters-big clearfix">
+  <button class="filter-button" data-scope="cloud">Cloud</button>
+  <button class="filter-button" data-scope="local">Local</button>
 </div><p></p>
 
 It might also be helpful to review some Kubernetes-specific terminology:
 
-<div class="filter-content current" markdown="1" data-scope="cloud">
+<div class="filter-content" markdown="1" data-scope="cloud">
 
 Feature | Description
 --------|------------
@@ -59,7 +48,7 @@ Feature | Description
 
 ## Step 2. Install and start Kubernetes
 
-<div class="filter-content current" markdown="1" data-scope="cloud">
+<div class="filter-content" markdown="1" data-scope="cloud">
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the Kubernetes documentation:
 
@@ -84,7 +73,7 @@ Kubectl is now configured to use the cluster.
 
 ## Step 3. Start the CockroachDB cluster
 
-<div class="filter-content current" markdown="1" data-scope="cloud">
+<div class="filter-content" markdown="1" data-scope="cloud">
 
 2. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
 
@@ -243,7 +232,7 @@ To see this in action:
 
 ## Step 6. Scale the cluster
 
-<div class="filter-content current" markdown="1" data-scope="cloud">
+<div class="filter-content" markdown="1" data-scope="cloud">
 
 The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
@@ -310,7 +299,7 @@ cockroachdb-3   1/1       Running   0          46s
 
 ## Step 7. Stop the cluster 
 
-<div class="filter-content current" markdown="1" data-scope="cloud">
+<div class="filter-content" markdown="1" data-scope="cloud">
 
 To shut down the CockroachDB cluster:
 
@@ -363,24 +352,3 @@ To shut down the CockroachDB cluster:
 - [Cloud Deployment](cloud-deployment.html)
 - [Manual Deployment](manual-deployment.html)
 - [Local Deployment](start-a-local-cluster.html)
-
-<script>
-$(document).ready(function(){
-
-  var $filter_button = $('.filter-button');
-
-    $filter_button.on('click', function(){
-      var scope = $(this).data('scope'),
-      $current_tab = $('.filter-button.current'), $current_content = $('.filter-content.current');
-
-      //remove current class from tab and content
-      $current_tab.removeClass('current');
-      $current_content.removeClass('current');
-
-      //add current class to clicked button and corresponding content block
-      $('.filter-button[data-scope="'+scope+'"').addClass('current');
-      $('.filter-content[data-scope="'+scope+'"').addClass('current');
-    });
-});
-</script>
-
