@@ -4,7 +4,7 @@ summary: How to orchestrate the deployment and management of an insecure three-n
 toc: false
 ---
 
-This page shows you how to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a [swarm of Docker Engines](https://docs.docker.com/engine/swarm/). 
+This page shows you how to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a [swarm of Docker Engines](https://docs.docker.com/engine/swarm/).
 
 {{site.data.alerts.callout_danger}}Deploying an <strong>insecure</strong> cluster is not recommended for data in production. We'll update this page after improving the process to deploy secure clusters.{{site.data.alerts.end}}
 
@@ -17,39 +17,39 @@ Before you begin, it's helpful to review some terminology:
 Feature | Description
 --------|------------
 instance | A physical or virtual machine. In this tutorial, you'll use three, one per CockroachDB node.
-[Docker Engine](https://docs.docker.com/engine/) | This is the core Docker application that creates and runs containers. In this tutorial, you'll install and start Docker Engine on each of your three instances.  
-[swarm](https://docs.docker.com/engine/swarm/key-concepts/#/swarm) | A swarm is a group of Docker Engines joined into a single, virtual host.  
+[Docker Engine](https://docs.docker.com/engine/) | This is the core Docker application that creates and runs containers. In this tutorial, you'll install and start Docker Engine on each of your three instances.
+[swarm](https://docs.docker.com/engine/swarm/key-concepts/#/swarm) | A swarm is a group of Docker Engines joined into a single, virtual host.
 [swarm node](https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/) | Each member of a swarm is considered a node. In this tutorial, each instance will be a swarm node, one as the master node and the two others as worker nodes. You'll submit service definitions to the master node, which will dispatch work to the worker nodes.
 [service](https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/) | A service is the definition of the tasks to execute on swarm nodes. In this tutorial, you'll define three services, each starting a CockrochDB node inside a container and joining it into a single cluster. Each service also ensures a stable network identity on restart via a resolvable DNS name.
-[overlay network](https://docs.docker.com/engine/userguide/networking/#/an-overlay-network-with-docker-engine-swarm-mode) | An overlay network enables communication between the nodes of a swarm. In this tutorial, you'll create an overlay network and use it in each of your services. 
+[overlay network](https://docs.docker.com/engine/userguide/networking/#/an-overlay-network-with-docker-engine-swarm-mode) | An overlay network enables communication between the nodes of a swarm. In this tutorial, you'll create an overlay network and use it in each of your services.
 
 ## Step 1. Create instances
-  
+
 Create three instances, one for each node of your cluster.
 
 - For GCE-specific instructions, read through step 2 of [Deploy CockroachDB on GCE](deploy-cockroachdb-on-google-cloud-platform-insecure.html).
 - For AWS-specific instructions, read through step 2 of [Deploy CockroachDB on AWS](deploy-cockroachdb-on-aws-insecure.html).
 
-Be sure to configure your network to allow TCP communication on these ports: 
+Be sure to configure your network to allow TCP communication on these ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and connecting with applications
 - `8080` for exposing your Admin UI
 
 ## Step 2. Install Docker Engine
 
-On each instance: 
+On each instance:
 
-1. [Install and start Docker Engine](https://docs.docker.com/engine/installation/). 
+1. [Install and start Docker Engine](https://docs.docker.com/engine/installation/).
 
 2. Confirm that the Docker daemon is running in the background:
 
    ~~~ shell
    $ sudo docker version
-   ~~~ 
+   ~~~
 
 ## Step 3. Start the swarm
 
-1. On the instance where you want to run your manager node, [initialize the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/). 
+1. On the instance where you want to run your manager node, [initialize the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/).
 
    Take note of the output for `docker swarm init` as it includes the command you'll use in the next step. It should look like this:
 
@@ -116,7 +116,7 @@ $ sudo docker network create --driver overlay cockroachdb
    This command creates a service that starts a container, joins it to the overlay network, and starts the first CockroachDB node inside the container mounted to a local volume for persistent storage. Let's look at each part:
 
    - `sudo docker service create`: The Docker command to create a new service.
-   - `--replicas`: The number of containers controlled by the service. Since each service will control one container running one CockroachDB node, this will always be `1`.  
+   - `--replicas`: The number of containers controlled by the service. Since each service will control one container running one CockroachDB node, this will always be `1`.
    - `--name`: The name for the service.
    - `--network`: The overlay network for the container to join. See [Step 4. Create an overlay network](#step-4-create-an-overlay-network) for more details.
    - `--mount`: This flag mounts a local volume called `cockroachdb-0`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
@@ -142,7 +142,7 @@ $ sudo docker network create --driver overlay cockroachdb
 
    There are only a few differences when creating the second two services:
 
-   - The `--name` is unique for each service. 
+   - The `--name` is unique for each service.
    - The CockroachDB command to [`start`](start-a-node.html) each node uses the the `--join` flag to connect it to the cluster.
 
 3. Verify that all three services were created successfully:
@@ -171,7 +171,7 @@ $ sudo docker network create --driver overlay cockroachdb
    cockroachdb/cockroach:{{site.data.strings.version}} start --advertise-host=cockroachdb-0 --join=cockroachdb-1:26257 --logtostderr --insecure
    ~~~
 
-   When you list the services, the start command for the first node, `cockroachdb-0`, should now include the `--join` flag:  
+   When you list the services, the start command for the first node, `cockroachdb-0`, should now include the `--join` flag:
 
    ~~~ shell
    $ sudo docker service ls
@@ -223,11 +223,11 @@ $ sudo docker network create --driver overlay cockroachdb
    (1 row)
    ~~~
 
-4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit. 
+4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit.
 
 ## Step 8. Simulate node failure
 
-Since we have three service definitions, one for each node, Docker Swarm will ensure that there are three nodes running at all times. If a node fails, Docker Swarm will automatically create another node with the same network identity and storage. 
+Since we have three service definitions, one for each node, Docker Swarm will ensure that there are three nodes running at all times. If a node fails, Docker Swarm will automatically create another node with the same network identity and storage.
 
 To see this in action:
 
@@ -260,7 +260,7 @@ To increase the number of nodes in your CockroachDB cluster:
 3. Join the instance to the swarm as a worker node (see [Step 3.2](#step-3-start-the-swarm)).
 4. Create a new service to start another node and join it to the CockroachDB cluster (see [Step 5.2](#step-5-start-the-cockroachdb-cluster)).
 
-## Step 10. Stop the cluster 
+## Step 10. Stop the cluster
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
@@ -271,7 +271,7 @@ cockroachdb-1
 cockroachdb-2
 ~~~
 
-You may want to remove the persistent volumes used by service as well. To do this, on each instance:
+You may want to remove the persistent volumes used by the services as well. To do this, on each instance:
 
 ~~~ shell
 # Identify the name of the local volume:
@@ -280,7 +280,7 @@ cockroachdb-0
 
 # Remove the local volume:
 $ sudo docker volume rm cockroachdb-0
-~~~ 
+~~~
 
 ## See Also
 
