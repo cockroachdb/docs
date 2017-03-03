@@ -68,9 +68,9 @@ lein run
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
 Copy the code below to `myapp/src/test/test.clj` or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.clj" download>download it directly</a>. Again, preserve the file name "`test.clj`".
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.clj" download>download it directly</a>. Again, preserve the file name `test.clj`.
 
-{{site.data.alerts.callout_info}}Because the CockroachDB transaction model requires the client to initiate retries in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can reuse the code from <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/util.clj">util.clj</a> or copy it into your code. For more details, see <a href="https://www.cockroachlabs.com/docs/transactions.html#transaction-retries">Transaction Retries</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
 ~~~ clojure
 {% include app/txn-sample.clj %}
