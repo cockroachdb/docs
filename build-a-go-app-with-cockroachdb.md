@@ -80,16 +80,16 @@ Initial balances:
 
 ### Transaction (with retry logic)
 
-The following code again connects as the `maxroach` user but this time executes a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted. 
+The following code again connects as the `maxroach` user but this time executes a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Copy the code or 
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.go" download>download it directly</a>. 
+Copy the code or
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.go" download>download it directly</a>.
 
 ~~~ go
 {% include app/txn-sample.go %}
 ~~~
 
-Because the CockroachDB transaction model requires the [client to initiate retries](transactions.html#transaction-retries) in the case of contention, CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. Clone the library into your `$GOPATH` as follows:
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. Clone the library into your `$GOPATH` as follows:
 
 ~~~ shell
 $ mkdir -p $GOPATH/github.com/cockroachdb
