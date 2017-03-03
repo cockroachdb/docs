@@ -6,7 +6,7 @@ toc: false
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
 
-{{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions that fail because another concurrent or recent transaction accessed the same values</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions that are aborted to break a dependency cycle between concurrent transactions leading to deadlock</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -22,7 +22,7 @@ No [privileges](privileges.html) are required to initiate a transaction. However
 
 In CockroachDB, the following are aliases for the `BEGIN` statement:
 
-- `BEGIN TRANSACTION` 
+- `BEGIN TRANSACTION`
 - `START TRANSACTION`
 
 The following aliases also exist for [isolation levels](transactions.html#isolation-levels):
