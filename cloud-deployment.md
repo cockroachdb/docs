@@ -20,8 +20,8 @@ If we don't have a guide for your platform, you can deploy CockroachDB to any cl
 	- **8080** (`tcp:8080`) to expose your Admin UI
 
 2. Manually deploy CockroachDB using one of the following steps:
-   - [Secure deployments](manual-deployment.html#deploy-a-secure-cluster)
-   - [Insecure deployments](manual-deployment.html#deploy-an-insecure-cluster) *(not recommended for production)*
+   - [Secure deployments](manual-deployment.html)
+   - [Insecure deployments](manual-deployment-insecure.html) *(not recommended for production)*
 
 ## See Also
 
