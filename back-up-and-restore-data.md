@@ -8,8 +8,8 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 
 When `cockroach dump` is executed:
 
-- Table schema and data are dumped as they appears at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail. 
+- Table schema and data are dumped as they appear at the time that the command is started, or at the time specified in the `--as-of` flag. Any changes after the command starts, or after the timestamp specified in `--as-of`, will not be included in the dump.
+- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress.
 
 {{site.data.alerts.callout_info}}The user must have the <code>SELECT</code> privilege on the target table(s).{{site.data.alerts.end}}
@@ -48,9 +48,10 @@ $ cockroach dump --help
 
 The `cockroach dump` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-Flag | Description 
+Flag | Description
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
+`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
 `--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
 `--database`<br>`-d` | Not valid for the `dump` command. This flag will eventually be removed.
 `--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
@@ -63,7 +64,7 @@ Flag | Description
 
 ## Examples
 
-{{site.data.alerts.callout_info}}These examples use our sample startrek database, which you can add to a cluster via the <a href="generate-cli-utilities-and-example-data.html#generate-example-data"><code>cockroach gen</code></a> command. Also, the examples assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}All but the last example use our sample startrek database and assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. You can add the sample startrek database to a cluster via the <a href="generate-cli-utilities-and-example-data.html#generate-example-data"><code>cockroach gen</code></a> command.{{site.data.alerts.end}}
 
 ### Dump a table's schema and data
 
@@ -196,7 +197,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 ### Dump fails (user does not have `SELECT` privilege)
 
-In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table. 
+In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
 
 ~~~ shell
 $ cockroach dump startrek episodes --user=leslieroach > backup.sql
@@ -209,7 +210,7 @@ Failed running "dump"
 
 ### Restore a table from a backup file
 
-In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command. 
+In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
 
 ~~~ shell
 $ cat backup.sql
@@ -241,6 +242,82 @@ CREATE TABLE
 INSERT 100
 INSERT 100
 ~~~
+
+### Dump table data as of a specific time
+
+In this example, we assume there were several inserts into a table both before and after `2017-03-07 19:55:00`.
+
+First, let's use the built-in SQL client to view the table at the current time:
+
+~~~ shell
+$ cockroach sql --execute="SELECT * FROM db1.dump_test"
+~~~
+
+~~~
++--------------------+------+
+|         id         | name |
++--------------------+------+
+| 225594758537183233 | a    |
+| 225594758537248769 | b    |
+| 225594758537281537 | c    |
+| 225594758537314305 | d    |
+| 225594758537347073 | e    |
+| 225594758537379841 | f    |
+| 225594758537412609 | g    |
+| 225594758537445377 | h    |
+| 225594991654174721 | i    |
+| 225594991654240257 | j    |
+| 225594991654273025 | k    |
+| 225594991654305793 | l    |
+| 225594991654338561 | m    |
+| 225594991654371329 | n    |
+| 225594991654404097 | o    |
+| 225594991654436865 | p    |
++--------------------+------+
+(16 rows)
+~~~
+
+Next, let's use a [time-travel query](select.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
+
+~~~ shell
+$ cockroach sql --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
+~~~
+
+~~~
++--------------------+------+
+|         id         | name |
++--------------------+------+
+| 225594758537183233 | a    |
+| 225594758537248769 | b    |
+| 225594758537281537 | c    |
+| 225594758537314305 | d    |
+| 225594758537347073 | e    |
+| 225594758537379841 | f    |
+| 225594758537412609 | g    |
+| 225594758537445377 | h    |
++--------------------+------+
+(8 rows)
+~~~
+
+Finally, let's use `cockroach dump` with the `--as-of` flag set to dump the contents of the table as of `2017-03-07 19:55:00`.
+
+~~~ shell
+$ cockroach dump db1 dump_test --dump-mode=data --as-of='2017-03-07 19:55:00'
+~~~
+
+~~~
+INSERT INTO dump_test (id, name) VALUES
+    (225594758537183233, 'a'),
+    (225594758537248769, 'b'),
+    (225594758537281537, 'c'),
+    (225594758537314305, 'd'),
+    (225594758537347073, 'e'),
+    (225594758537379841, 'f'),
+    (225594758537412609, 'g'),
+    (225594758537445377, 'h');
+~~~
+
+As you can see, the results of the dump are identical to the earlier time-travel query.
 
 ## See Also
 
