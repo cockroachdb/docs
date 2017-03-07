@@ -4,7 +4,7 @@ summary: To start a new CockroachDB cluster, or add a node to an existing cluste
 toc: false
 ---
 
-To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags. 
+To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags.
 
 <div id="toc"></div>
 
@@ -31,29 +31,29 @@ Flag | Description
 `--attrs` | Arbitray strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--background` | Set this to start the node in the background. This is better than appending `&` to the command because control is returned to the shell only once the node is ready to accept requests.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be in any bytes-based unit, for example: <br><br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br>**Default:** 25% of total system memory (excluding swap), or 512MiB if the memory size cannot be determined
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
+`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
 `--cert` | The path to the [node certificate](create-security-certificates.html). This flag is required to start a secure node.<br><br>**Env Variable:** `COCKROACH_CERT`
-`--host` | The hostname or IP address to listen on for intra-cluster and client communication. The node will also advertise itself to other nodes using this address only if `--advertise-host` is not specified; in this case, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>**Defaults:** When starting a node without `--insecure` and without cert flags (i.e., a local cluster), the node listens on `localhost` only and cannot be changed. When starting a node with `--insecure` or with cert flags (i.e., a distributed cluster), the node listens on all interfaces by default but this flag can be set to listen on an external address. 
+`--host` | The hostname or IP address to listen on for intra-cluster and client communication. The node will also advertise itself to other nodes using this address only if `--advertise-host` is not specified; in this case, if it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>**Defaults:** When starting a node without `--insecure` and without cert flags (i.e., a local cluster), the node listens on `localhost` only and cannot be changed. When starting a node with `--insecure` or with cert flags (i.e., a distributed cluster), the node listens on all interfaces by default but this flag can be set to listen on an external address.
 `--http-host` | The hostname or IP address to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
 `--http-port` | The port to bind to for Admin UI HTTP requests. <br><br>**Default:** `8080`
 `--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--join`<br>`-j` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node.<br><br>Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list, using multiple `--join` flags, or using a combination of these approaches, for example: <br><br>`--join=localhost:1234,localhost:2345`<br>`--join=localhost:1234 --join=localhost:2345`<br>`--join=localhost:1234,localhost:2345 --join=localhost:3456`
-`--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node. 
+`--key` | The path to the [node key](create-security-certificates.html) protecting the node certificate. This flag is required to start a secure node.
 `--locality` | Arbitrary key-value pairs that describe the locality of the node. Locality might include country, region, datacenter, rack, etc.<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. The keys themselves and the order of key-value pairs must be the same on all nodes, for example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=west,datacenter=us-west-1`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--max-sql-memory` | The total size for storage of temporary data for SQL clients, including prepared queries and intermediate data rows during query execution. This can be in any bytes-based unit, for example:<br><br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** 25% of total system memory (excluding swap), or 512MiB if the memory size cannot be determined
 `--port`<br>`-p` | The port to bind to for internal and client communication. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--raft-tick-interval` | CockroachDB uses the [Raft consensus algorithm](https://raft.github.io/) to replicate data consistently according to your [replication zone configuration](configure-replication-zones.html). For each replica group, an elected leader heartbeats its followers and keeps their logs replicated. When followers fail to receive heartbeats, a new leader is elected. <br><br>This flag is factored into defining the interval at which replica leaders heartbeat followers. It is not recommended to change the default, but if changed, every node in the cluster must be stopped and restarted with the identical value.<br><br>**Default:** 200ms 
-`--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below. 
+`--raft-tick-interval` | CockroachDB uses the [Raft consensus algorithm](https://raft.github.io/) to replicate data consistently according to your [replication zone configuration](configure-replication-zones.html). For each replica group, an elected leader heartbeats its followers and keeps their logs replicated. When followers fail to receive heartbeats, a new leader is elected. <br><br>This flag is factored into defining the interval at which replica leaders heartbeat followers. It is not recommended to change the default, but if changed, every node in the cluster must be stopped and restarted with the identical value.<br><br>**Default:** 200ms
+`--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below.
 
 #### `store`
 
-The `store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values. 
+The `store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
 Field | Description
 ------|------------
 `path` | The file path to the storage device. When not setting `attr` or `size`, the `path` field label can be left out: <br><br>`--store=/mnt/ssd01` <br><br>When either of those fields are set, however, the `path` field label must be used: <br><br>`--store=path=/mnt/ssd01,size=20GB` <br><br> **Default:** `cockroach-data`
 `attrs` | Arbitrary strings, separated by colons, specifying disk type or capability. These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.<br><br>In most cases, node-level `--locality` or `--attrs` are preferable to store-level attributes, but this field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (`ssd`), spinny disk (`hdd`), or in-memory (`mem`), as well as speeds and other specs, for example:<br><br> `--store=path=/mnt/hda1,attrs=hdd:7200rpm`
-`size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When there's no capacity elsewhere, this limit will be exceeded. Also, data may be written to the node faster than the cluster can rebalance it away; in this case, as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space, for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000 ----> 10000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GB ----> 20000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GiB ----> 21474836480 bytes`<br>`--store-path=/mnt/ssd01,size=0.02TiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20% ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2 ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2 ----> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory. In addition, an extra `type` field must be set to `mem`, and the `path` field must be left out, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%` 
+`size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When there's no capacity elsewhere, this limit will be exceeded. Also, data may be written to the node faster than the cluster can rebalance it away; in this case, as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space, for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000 ----> 10000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GB ----> 20000000000 bytes`<br>`--store-path=/mnt/ssd01,size=20GiB ----> 21474836480 bytes`<br>`--store-path=/mnt/ssd01,size=0.02TiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20% ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2 ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2 ----> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory. In addition, an extra `type` field must be set to `mem`, and the `path` field must be left out, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%`
 
 ## Standard Output
 
@@ -61,15 +61,19 @@ When you run `cockroach start`, some helpful details are printed to the standard
 
 ~~~ shell
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://ROACHs-MBP:8080
 sql:        postgresql://root@ROACHs-MBP:26257?sslmode=disable
-logs:       cockroach-data/logs
-store[0]:   path=cockroach-data
+logs:       node1/logs
+attrs:      ram:64gb
+locality:   datacenter=us-east1
+store[0]:   path=node1,attrs=ssd
 status:     initialized new cluster
-clusterID:  {4ef69723-92cc-44fa-a847-5a855b3532a7}
+clusterID:  7b9329d0-580d-4035-8319-53ba8b74b213
 nodeID:     1
 ~~~
+
+{{site.data.alerts.callout_success}}These details are also written to the <code>INFO</code> log in the <code>/logs</code> directory in case you need to refer to them at a later time.{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
@@ -77,9 +81,11 @@ Field | Description
 `admin` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
 `logs` | The directory containing debug log data.
-`store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
+`attrs` | If node-level attributes were specified in the `--attrs` flag, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
+`locality` | If values describing the locality of the node were specified in the `--locality` field, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
+`store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.<br><br>If store-level attributes were specified in the `attrs` field of the [`--store`](#store) flag, they are listed in this field as well. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
-`clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see [Troubleshooting](troubleshoot.html#node-wont-join-cluster). 
+`clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see [Troubleshooting](troubleshoot.html#node-wont-join-cluster).
 `nodeID` | The ID of the node.
 
 ## Examples
