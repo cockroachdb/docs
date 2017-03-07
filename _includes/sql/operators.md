@@ -155,6 +155,7 @@ collatedstring{} `=` collatedstring{} | <a href="bool.html">bool</a>
 <a href="int.html">int</a> `=` <a href="float.html">float</a> | <a href="bool.html">bool</a>
 <a href="int.html">int</a> `=` <a href="int.html">int</a> | <a href="bool.html">bool</a>
 <a href="interval.html">interval</a> `=` <a href="interval.html">interval</a> | <a href="bool.html">bool</a>
+oid `=` oid | <a href="bool.html">bool</a>
 <a href="string.html">string</a> `=` <a href="string.html">string</a> | <a href="bool.html">bool</a>
 <a href="timestamp.html">timestamp</a> `=` <a href="date.html">date</a> | <a href="bool.html">bool</a>
 <a href="timestamp.html">timestamp</a> `=` <a href="timestamp.html">timestamp</a> | <a href="bool.html">bool</a>
