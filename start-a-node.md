@@ -73,6 +73,8 @@ clusterID:  7b9329d0-580d-4035-8319-53ba8b74b213
 nodeID:     1
 ~~~
 
+{{site.data.alerts.callout_success}}These details are also written to the <code>INFO</code> log in the <code>/logs</code> directory in case you need to refer to them at a later time.{{site.data.alerts.end}}
+
 Field | Description
 ------|------------
 `build` | The version of CockroachDB you are running.
