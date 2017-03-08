@@ -19,6 +19,7 @@ Function &rarr; Returns | Description
 <code>max(arg: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Identifies the maximum selected value.</span>
 <code>max(arg: <a href="timestamp.html">timestamp</a>) &rarr; <a href="timestamp.html">timestamp</a></code> | <span class="funcdesc">Identifies the maximum selected value.</span>
 <code>max(arg: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a></code> | <span class="funcdesc">Identifies the maximum selected value.</span>
+<code>max(arg: oid) &rarr; oid</code> | <span class="funcdesc">Identifies the maximum selected value.</span>
 <code>min(arg: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
 <code>min(arg: <a href="bytes.html">bytes</a>) &rarr; <a href="bytes.html">bytes</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
 <code>min(arg: <a href="date.html">date</a>) &rarr; <a href="date.html">date</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
@@ -29,6 +30,7 @@ Function &rarr; Returns | Description
 <code>min(arg: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
 <code>min(arg: <a href="timestamp.html">timestamp</a>) &rarr; <a href="timestamp.html">timestamp</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
 <code>min(arg: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a></code> | <span class="funcdesc">Identifies the minimum selected value.</span>
+<code>min(arg: oid) &rarr; oid</code> | <span class="funcdesc">Identifies the minimum selected value.</span>
 <code>stddev(arg: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the standard deviation of the selected values.</span>
 <code>stddev(arg: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the standard deviation of the selected values.</span>
 <code>stddev(arg: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the standard deviation of the selected values.</span>
