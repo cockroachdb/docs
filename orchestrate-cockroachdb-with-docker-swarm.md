@@ -256,7 +256,7 @@ To see this in action:
 To increase the number of nodes in your CockroachDB cluster:
 
 1. Create an additional instance (see [Step 1](#step-1-create-instances)).
-2. Install Docker Enginer on the instance (see [Step 2](#step-2-install-docker-engine)).
+2. Install Docker Engine on the instance (see [Step 2](#step-2-install-docker-engine)).
 3. Join the instance to the swarm as a worker node (see [Step 3.2](#step-3-start-the-swarm)).
 4. Create a new service to start another node and join it to the CockroachDB cluster (see [Step 5.2](#step-5-start-the-cockroachdb-cluster)).
 
