@@ -12,7 +12,7 @@ toc_not_nested: true
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Digital Ocean.
 
-If you are not concerned with protecting your data with SSL encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
+If you are not concerned with protecting your data with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
 <div id="toc"></div>
 

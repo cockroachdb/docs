@@ -409,6 +409,7 @@ entries:
 
                 - title: Docker Swarm
                   url: /orchestrate-cockroachdb-with-docker-swarm.html
+                  alternate_urls: [/orchestrate-cockroachdb-with-docker-swarm-insecure.html]
 
         - title: Cockroach Commands
           url: /cockroach-commands.html
