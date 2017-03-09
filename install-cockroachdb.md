@@ -123,6 +123,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-homebrew" class="install-option" style="display: none;">
@@ -159,6 +161,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source" class="install-option" style="display: none;">
@@ -221,6 +225,8 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-docker" class="install-option" style="display: none;">
@@ -230,7 +236,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
   </li>
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
@@ -266,10 +272,9 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+</div>
 </div>
 
 <div id="linuxinstall" style="display: none;">
@@ -318,6 +323,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source-linux" class="install-option" style="display: none;">
@@ -380,6 +387,8 @@ $(document).ready(function(){
       </div>
     </li>
 </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-docker-linux" class="install-option" style="display: none;">
@@ -427,10 +436,9 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html#os-linux">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+</div>
 </div>
 
 <div id="windowsinstall" style="display: none;" markdown="1">
@@ -482,6 +490,5 @@ $(document).ready(function(){
   </li>
 </ol>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+<p><a href="start-a-local-cluster-in-docker.html#os-windows">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
 </div>
