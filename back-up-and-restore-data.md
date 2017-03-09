@@ -4,6 +4,8 @@ summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
 ---
 
+{{site.data.alerts.callout_danger}}The feature described here is a simple form of backup and restore that writes to and reads from a local flat file. A production-suitable solution that uses cloud storage and efficiently manages the time and load on the nodes of the cluster is under development for our 1.0 release. For more details about the upcoming solution, see the original <a href="https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/backup_restore.md">RFC</a>.{{site.data.alerts.end}}
+
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate one or more tables and all their rows. This command can be used to back up each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
 When `cockroach dump` is executed:
