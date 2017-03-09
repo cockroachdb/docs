@@ -6,25 +6,25 @@ toc: false
 
 <script>
 $(document).ready(function(){
-    
+
     //detect os and display corresponding tab by default
-    if (navigator.appVersion.indexOf("Mac")!=-1) { 
+    if (navigator.appVersion.indexOf("Mac")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#mac').addClass('current');
-        toggleMac(); 
+        toggleMac();
     }
-    if (navigator.appVersion.indexOf("Linux")!=-1) { 
+    if (navigator.appVersion.indexOf("Linux")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#linux').addClass('current');
-        toggleLinux(); 
+        toggleLinux();
     }
-    if (navigator.appVersion.indexOf("Win")!=-1) { 
+    if (navigator.appVersion.indexOf("Win")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#windows').addClass('current');
-        toggleWindows(); 
+        toggleWindows();
     }
 
-    var install_option = $('.install-option'), 
+    var install_option = $('.install-option'),
         install_button = $('.install-button');
 
     install_button.on('click', function(e){
@@ -65,7 +65,7 @@ $(document).ready(function(){
     function toggleWindows(){
         $("#windowsinstall").show();
         $("#macinstall").hide();
-        $("#linuxinstall").hide(); 
+        $("#linuxinstall").hide();
     }
 });
 </script>
@@ -104,14 +104,14 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
-    
+
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -140,14 +140,14 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
-    
+
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-2 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -209,7 +209,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-3 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -254,7 +254,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-4 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -275,13 +275,13 @@ $(document).ready(function(){
 <div id="linuxinstall" style="display: none;">
 <p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
-<div id="linux-installs" class="clearfix">    
+<div id="linux-installs" class="clearfix">
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
 <a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-source">Build from <div class="c2a">Source</div></a>
 <a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
-<div id="download-the-binary-linux" class="install-option"> 
+<div id="download-the-binary-linux" class="install-option">
   <h2>Download the Binary</h2>
 
   <ol>
@@ -306,7 +306,7 @@ $(document).ready(function(){
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -368,7 +368,7 @@ $(document).ready(function(){
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -415,7 +415,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-7 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -441,7 +441,8 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>. Please carefully check that you meet all prerequisites.</p> 
+    <p>Install <a href="https://docs.docker.com/docker-for-windows/install/">Docker for Windows</a>.</p>
+    <div class="bs-callout bs-callout-info">Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. Please see the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.</div>
   </li>
   <li>
     <p>Open PowerShell and confirm that the Docker daemon is running in the background:</p>
@@ -468,7 +469,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-8 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
