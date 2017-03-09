@@ -6,25 +6,25 @@ toc: false
 
 <script>
 $(document).ready(function(){
-    
+
     //detect os and display corresponding tab by default
-    if (navigator.appVersion.indexOf("Mac")!=-1) { 
+    if (navigator.appVersion.indexOf("Mac")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#mac').addClass('current');
-        toggleMac(); 
+        toggleMac();
     }
-    if (navigator.appVersion.indexOf("Linux")!=-1) { 
+    if (navigator.appVersion.indexOf("Linux")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#linux').addClass('current');
-        toggleLinux(); 
+        toggleLinux();
     }
-    if (navigator.appVersion.indexOf("Win")!=-1) { 
+    if (navigator.appVersion.indexOf("Win")!=-1) {
         $('#os-tabs').find('button').removeClass('current');
         $('#windows').addClass('current');
-        toggleWindows(); 
+        toggleWindows();
     }
 
-    var install_option = $('.install-option'), 
+    var install_option = $('.install-option'),
         install_button = $('.install-button');
 
     install_button.on('click', function(e){
@@ -65,7 +65,7 @@ $(document).ready(function(){
     function toggleWindows(){
         $("#windowsinstall").show();
         $("#macinstall").hide();
-        $("#linuxinstall").hide(); 
+        $("#linuxinstall").hide();
     }
 });
 </script>
@@ -104,14 +104,14 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
-    
+
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-1 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -123,6 +123,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-homebrew" class="install-option" style="display: none;">
@@ -140,14 +142,14 @@ $(document).ready(function(){
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
-    
+
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-2 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -159,6 +161,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source" class="install-option" style="display: none;">
@@ -209,7 +213,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-3 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -221,6 +225,8 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-docker" class="install-option" style="display: none;">
@@ -230,7 +236,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
+    <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
   </li>
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
@@ -254,7 +260,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-4 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -266,22 +272,21 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+</div>
 </div>
 
 <div id="linuxinstall" style="display: none;">
 <p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
 
-<div id="linux-installs" class="clearfix">    
+<div id="linux-installs" class="clearfix">
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
 <a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-source">Build from <div class="c2a">Source</div></a>
 <a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
-<div id="download-the-binary-linux" class="install-option"> 
+<div id="download-the-binary-linux" class="install-option">
   <h2>Download the Binary</h2>
 
   <ol>
@@ -306,7 +311,7 @@ $(document).ready(function(){
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-5 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -318,6 +323,8 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="build-from-source-linux" class="install-option" style="display: none;">
@@ -368,7 +375,7 @@ $(document).ready(function(){
       <p>Get future release notes emailed to you:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
         <script>
-          hbspt.forms.create({ 
+          hbspt.forms.create({
             css: '',
             cssClass: 'install-form',
             portalId: '1753393',
@@ -380,6 +387,8 @@ $(document).ready(function(){
       </div>
     </li>
 </ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 </div>
 
 <div id="use-docker-linux" class="install-option" style="display: none;">
@@ -415,7 +424,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-7 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -427,10 +436,9 @@ $(document).ready(function(){
     </div>
   </li>
 </ol>
-</div>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="start-a-local-cluster-in-docker.html#os-linux">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+</div>
 </div>
 
 <div id="windowsinstall" style="display: none;" markdown="1">
@@ -441,7 +449,8 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Install <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>. Please carefully check that you meet all prerequisites.</p> 
+    <p>Install <a href="https://docs.docker.com/docker-for-windows/install/">Docker for Windows</a>.</p>
+    <div class="bs-callout bs-callout-info">Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. Please see the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.</div>
   </li>
   <li>
     <p>Open PowerShell and confirm that the Docker daemon is running in the background:</p>
@@ -468,7 +477,7 @@ $(document).ready(function(){
     <p>Get future release notes emailed to you:</p>
     <div class="hubspot-install-form install-form-8 clearfix">
       <script>
-        hbspt.forms.create({ 
+        hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
@@ -481,6 +490,5 @@ $(document).ready(function(){
   </li>
 </ol>
 <h2 id="whats-next">What's Next?</h2>
-
-<p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+<p><a href="start-a-local-cluster-in-docker.html#os-windows">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
 </div>
