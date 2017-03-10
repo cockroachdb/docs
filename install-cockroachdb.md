@@ -138,7 +138,7 @@ $(document).ready(function(){
     <li>
       <p>Run our brew recipe to get the CockroachDB code and build the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install https://raw.githubusercontent.com/cockroachdb/cockroach/master/build/cockroach.rb</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/cockroach/cockroach</code></pre>
       </div>
     </li>
     <li>
