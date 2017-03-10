@@ -45,9 +45,9 @@ type operation struct {
 
 func (o operation) String() string {
 	if o.right == "" {
-		return fmt.Sprintf("`%s`%s", o.op, linkType(o.left))
+		return fmt.Sprintf("`%s`%s", o.op, linkTypeName(o.left))
 	}
-	return fmt.Sprintf("%s `%s` %s", linkType(o.left), o.op, linkType(o.right))
+	return fmt.Sprintf("%s `%s` %s", linkTypeName(o.left), o.op, linkTypeName(o.right))
 }
 
 type operations []operation
@@ -119,7 +119,7 @@ func GenerateOperators() []byte {
 		fmt.Fprintf(b, "`%s` | Return\n", op)
 		fmt.Fprintf(b, "--- | ---\n")
 		for _, v := range ops[op] {
-			fmt.Fprintf(b, "%s | %s\n", v.String(), linkType(v.ret))
+			fmt.Fprintf(b, "%s | %s\n", v.String(), linkTypeName(v.ret))
 		}
 		fmt.Fprintln(b)
 	}
@@ -154,7 +154,7 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			if fn.Info != "" {
 				extra = fmt.Sprintf("<span class=\"funcdesc\">%s</span>", fn.Info)
 			}
-			s := fmt.Sprintf("<code>%s(%s) &rarr; %s</code> | %s", name, linkType(args), linkType(ret), extra)
+			s := fmt.Sprintf("<code>%s(%s) &rarr; %s</code> | %s", name, linkArguments(args), linkArguments(ret), extra)
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -186,19 +186,29 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 	return b.Bytes()
 }
 
-var linkRE = regexp.MustCompile("[a-z]+")
+var linkRE = regexp.MustCompile(`([a-z]+)([\.\[\]]*)$`)
 
-func linkType(t string) string {
-	return linkRE.ReplaceAllStringFunc(t, func(s string) string {
-		name := s
-		switch s {
-		case "timestamptz":
-			s = "timestamp"
-		}
-		switch s {
-		case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
-			return fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
-		}
-		return s
-	})
+func linkArguments(t string) string {
+	sp := strings.Split(t, ", ")
+	for i, s := range sp {
+		sp[i] = linkRE.ReplaceAllStringFunc(s, func(s string) string {
+			match := linkRE.FindStringSubmatch(s)
+			s = linkTypeName(match[1])
+			return s + match[2]
+		})
+	}
+	return strings.Join(sp, ", ")
+}
+
+func linkTypeName(s string) string {
+	name := s
+	switch s {
+	case "timestamptz":
+		s = "timestamp"
+	}
+	switch s {
+	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
+		s = fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
+	}
+	return s
 }
