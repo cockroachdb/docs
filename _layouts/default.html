@@ -4,6 +4,9 @@
   {% include head.html %}
 </head>
 <body>
+  {% for hash in page.allowed_hashes %}
+    <a id="{{ hash }}" style="display: none"></a>
+  {% endfor %}
   {% include topnav.html %}
   <div id="content">
     <div id="main-content" class="container">
