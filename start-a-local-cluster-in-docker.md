@@ -3,9 +3,10 @@ title: Start a Cluster in Docker
 summary: Run a multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
 asciicast: true
+allowed_hashes: [os-mac, os-linux, os-windows]
 ---
 
-<!-- 
+<!--
 To link directly to the linux or windows tab, append #os-linux or #os-windows to the url.
 -->
 

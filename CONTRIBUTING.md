@@ -69,6 +69,22 @@ toc: false
 - `summary`: Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar.
 - `toc`: Adds an auto-generated table of contents to the page. See [Page TOC](#page-toc) for full details.
 
+Optionally, you can specify in the front-matter a list of allowed hashes
+that don't correspond to a section heading on the page. This is
+currently used for pages with JavaScript toggle buttons, where the
+toggle to activate by default can be specified in the URL hash. If you
+attempt to link to e.g. `page-with-toggles.html#toggle-id` without
+listing `toggle-id` in `allowed_hashes`, our HTML proofer will complain
+that `toggle-id` does not exist on the page. Listing a hash in
+`allowed_hashes` will generate a dummy element with that ID at the top
+of the page, which keeps our HTML proofer happy.
+
+Here's an example from a page with OS toggles:
+
+```
+allowed_hashes: [os-mac, os-linux, os-windows]
+```
+
 ### Page TOC
 
 The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 headers or all h2 and h3 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.

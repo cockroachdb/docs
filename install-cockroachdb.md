@@ -2,6 +2,7 @@
 title: Install CockroachDB
 summary: Simple instructions for installing CockroachDB on Mac, Linux, or Windows.
 toc: false
+allowed_hashes: [os-mac, os-linux, os-windows]
 ---
 
 <script>
