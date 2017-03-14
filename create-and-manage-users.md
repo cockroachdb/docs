@@ -9,7 +9,7 @@ To create and manage your cluster's users (which lets you control SQL-level [pri
 When creating users, it's also important to note:
 
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
-- On secure clusters, users must [authenticate their access to the cluster](#user-authentication).
+- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
 {{site.data.alerts.callout_info}}You can also create users through the <a href="create-user.html"><code>CREATE USER</code></a> statement.{{site.data.alerts.end}}
 
@@ -87,12 +87,17 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 ~~~ shell
 $ cockroach user set jpointsman \
---ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key --password
+--ca-cert=certs/ca.cert \
+--cert=certs/root.cert \
+--key=certs/root.key
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
 
-After creating users, you must [grant them privileges to databases](grant.html).
+After creating users, you must:
+
+- [Create their client certificates](create-security-certificates.html#create-the-certificate-and-key-for-a-client).
+- [Grant them privileges to databases](grant.html).
 
 ### Authenticate as a Specific User
 
@@ -107,7 +112,10 @@ $ cockroach sql --user=jpointsman
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman --ca-cert=certs/ca.cert --cert=jpointsman.cert --key=jpointsman.key
+$ cockroach sql --user=jpointsman \
+--ca-cert=certs/ca.cert \
+--cert=jpointsman.cert \
+--key=jpointsman.key
 ~~~
 
 #### Secure Clusters with Passwords
@@ -125,7 +133,9 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ~~~ shell
 $ cockroach user set jpointsman \
 --password \
---ca-cert=certs/ca.cert --cert=certs/root.cert --key=certs/root.key
+--ca-cert=certs/ca.cert \
+--cert=certs/root.cert \
+--key=certs/root.key
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
