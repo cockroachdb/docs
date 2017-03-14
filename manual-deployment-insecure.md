@@ -9,7 +9,7 @@ toc: false
   <a href="manual-deployment-insecure.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
-This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines.
+This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using HAProxy to balance client connections evenly across nodes.
 
 If you plan to use CockroachDB in production, we recommend using a secure cluster instead. Select **Secure** above for instructions.
 
