@@ -22,19 +22,19 @@ Parameter | Description
 ----------|------------
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `column_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
-`AS select_stmt` | The [`SELECT`](select.html) statement to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns. 
+`AS select_stmt` | The [`SELECT`](select.html) statement to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
 
 ## Example
 
 {{site.data.alerts.callout_success}}This example highlights one key benefit to using views: simplifying complex queries. For additional benefits and examples, see <a href="views.html">Views</a>.{{site.data.alerts.end}}
 
-Let's say you're using our [sample `startrek` database](generate-cli-utilities-and-example-data.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following `JOIN`:
+Let's say you're using our [sample `startrek` database](generate-cockroachdb-resources.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following `JOIN`:
 
 ~~~ sql
-> SELECT startrek.episodes.season, count(*) 
-  FROM startrek.quotes 
-  JOIN startrek.episodes 
-  ON startrek.quotes.episode = startrek.episodes.id 
+> SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 
@@ -52,11 +52,11 @@ Let's say you're using our [sample `startrek` database](generate-cli-utilities-a
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
 ~~~ sql
-> CREATE VIEW startrek.quotes_per_season (season, quotes) 
-  AS SELECT startrek.episodes.season, count(*) 
-  FROM startrek.quotes 
-  JOIN startrek.episodes 
-  ON startrek.quotes.episode = startrek.episodes.id 
+> CREATE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 

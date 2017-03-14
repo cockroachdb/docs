@@ -10,9 +10,9 @@ toc_not_nested: true
   <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
-This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Digital Ocean.
+This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 
-If you plan to use CockroachDB in production, we recommend using a secure cluster instead. Select **Secure** above for instructions.
+{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -29,14 +29,38 @@ You must have [SSH access](https://www.digitalocean.com/community/tutorials/how-
 
 For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-## Step 1. Configure Your Network
+## Step 1. Create Droplets
 
-CockroachDB requires TCP communication on two ports:
+[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
 
-- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster) and connecting with applications.
-- **8080** (`tcp:8080`) for exposing your Admin UI.
+- Running at least 3 nodes to ensure survivability.
+- Selecting the same continent for all of your Droplets for best performance.
 
-To control access to these ports, you'll need to modify each of your Droplet's firewalls. For guidance, you can use Digital Ocean's guide to configuring firewalls based on the Droplet's OS:
+## Step 2. Set up load balancing
+
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+
+- **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
+
+- **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
+
+Digital Ocean offers fully-managed Load Balancers to distribute traffic between Droplets.
+
+1. 	[Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
+	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
+	- Configure health checks to use HTTP port **8080** and path `/health`.
+2. 	Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+
+{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
+
+## Step 3. Configure your network
+
+Set up a firewall for each of your Droplets, allowing TCP communication on the following two ports:
+
+- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
+- **8080** (`tcp:8080`) for exposing your Admin UI
+
+For guidance, you can use Digital Ocean's guide to configuring firewalls based on the Droplet's OS:
 
 - Ubuntu and Debian can use [`ufw`](https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server).
 - FreeBSD can use [`ipfw`](https://www.digitalocean.com/community/tutorials/recommended-steps-for-new-freebsd-10-1-servers).
@@ -44,14 +68,7 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 - CoreOS can use [`iptables`](https://www.digitalocean.com/community/tutorials/how-to-secure-your-coreos-cluster-with-tls-ssl-and-firewall-rules).
 - CentOS can use [`firewalld`](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7).
 
-## Step 2. Create Droplets
-
-[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
-
-- Running at least 3 nodes to ensure survivability.
-- Selecting the same continent for all of your Droplets for best performance.
-
-## Step 3. Set up the First Node
+## Step 4. Start the first node
 
 1. 	SSH to your Droplet:
 
@@ -76,10 +93,15 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 3. 	Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
 
 	~~~ shell
-	$ cockroach start --insecure --background --advertise-host=<node1 internal IP address>
+	$ cockroach start \
+	--insecure \
+	--background \
+	--advertise-host=<node1 internal IP address>
 	~~~
 
-## Step 4. Set up Additional Nodes
+## Step 5. Add nodes to the cluster
+
+At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
 
 1. 	SSH to your Droplet:
 
@@ -104,21 +126,24 @@ To control access to these ports, you'll need to modify each of your Droplet's f
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
 
 	~~~ shell
-	$ cockroach start --insecure --background   \
+	$ cockroach start --insecure \
+	--background   \
 	--advertise-host=<this node’s internal IP address>  \
 	--join=<node1 internal IP address>:26257
 	~~~
 
-Repeat these steps for each Droplet you want to use as a node.
+4.	Repeat these steps for each Droplet you want to use as a node.
 
-## Step 5. Test Your Cluster
+## Step 6. Test your cluster
 
-To test your distributed, multi-node cluster, access the built-in SQL client and create a new database. That database will then be accessible from all of the nodes in your cluster.
+CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
+
+To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
 1. 	SSH to your first node:
 
 	~~~ shell
-	$ ssh <username>@<node2 external IP address>
+	$ ssh <username>@<node1 external IP address>
 	~~~
 
 2.	Launch the built-in SQL client and create a database:
@@ -133,7 +158,7 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 3. 	In another terminal window, SSH to another node:
 
 	~~~ shell
-	$ ssh <username>@<node3 external IP address>
+	$ ssh <username>@<node2 external IP address>
 	~~~
 
 4.	Launch the built-in SQL client:
@@ -160,24 +185,82 @@ To test your distributed, multi-node cluster, access the built-in SQL client and
 	(5 rows)
 	~~~
 
-## Step 6. View the Admin UI
+6.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+
+## Step 7. Test load balancing
+
+The Digital Ocean Load Balancer created in [step 2](#step-2-set-up-load-balancing) can serve as the client gateway to the cluster. Instead of connecting directly to a CockroachDB node, clients can connect to the load balancer, which will then redirect the connection to a CockroachDB node.
+
+To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
+
+1.	[Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
+
+2.	Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
+
+	~~~ shell
+	$ cockroach sql \
+	--host=<load balancer IP address> \
+	--port=26257 \
+	--insecure
+	~~~
+
+3.	View the cluster's databases:
+
+	~~~ sql
+	> SHOW DATABASES;
+	~~~
+	~~~
+	+--------------------+
+	|      Database      |
+	+--------------------+
+	| crdb_internal      |
+	| information_schema |
+	| insecurenodetest   |
+	| pg_catalog         |
+	| system             |
+	+--------------------+
+	(5 rows)
+	~~~
+
+	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
+
+4. 	Check which node you were redirected to:
+
+	~~~ sql
+	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
+	~~~
+	~~~
+	+---------+
+	| node_id |
+	+---------+
+	|       3 |
+	+---------+
+	(1 row)
+	~~~
+
+5.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+
+## Step 8. Monitor the cluster
 
 View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
 
-On this page, go to the following tabs on the left:
+On this page, verify that the cluster is running as expected:
 
-- **Nodes** to ensure all of your nodes successfully joined the cluster.<br/><br/>Also check the **Replicas** column on this page. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
-- **Databases** to ensure `insecurenodetest` is listed.
+1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
+
+   Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
+
+2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
 {% include prometheus-callout.html %}
 
-## Use the Database
+## Step 9. Use the database
 
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
-3. [Connect your application](install-client-drivers.html).
+3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
 
 ## See Also
 

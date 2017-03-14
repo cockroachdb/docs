@@ -66,7 +66,7 @@ Flag | Description
 
 ## Examples
 
-{{site.data.alerts.callout_info}}All but the last example use our sample startrek database and assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. You can add the sample startrek database to a cluster via the <a href="generate-cli-utilities-and-example-data.html#generate-example-data"><code>cockroach gen</code></a> command.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}All but the last example use our sample startrek database and assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. You can add the sample startrek database to a cluster via the <a href="generate-cockroachdb-resources.html#generate-example-data"><code>cockroach gen</code></a> command.{{site.data.alerts.end}}
 
 ### Dump a table's schema and data
 
