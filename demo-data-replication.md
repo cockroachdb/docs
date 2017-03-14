@@ -4,7 +4,7 @@ summary: Use a local cluster to explore how CockroachDB replicates and distribut
 toc: false
 ---
 
-This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes. 
+This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
 
 <div id="toc"></div>
 
@@ -21,13 +21,13 @@ $ cockroach start --background \
 
 ## Step 2. Write data
 
-Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `intro` database:
+Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
 
 <div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data intro | cockroach sql
 </code></pre>
 </div>
 
-~~~ 
+~~~
 CREATE DATABASE
 SET
 DROP TABLE
@@ -185,13 +185,13 @@ You can stop the nodes (and therefore the cluster) as follows:
 # Stop node 1:
 $ cockroach quit
 
-# Stop node 2: 
+# Stop node 2:
 $ cockroach quit --port=26258
 
 # Stop node 3:
 $ cockroach quit --port=26259
 
-# Stop node 4: 
+# Stop node 4:
 $ cockroach quit --port=26260
 
 # Stop node 5:

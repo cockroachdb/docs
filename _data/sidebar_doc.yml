@@ -451,8 +451,8 @@ entries:
         - title: Import Data
           url: /import-data.html
 
-        - title: Generate CLI Utilities & Example Data
-          url: /generate-cli-utilities-and-example-data.html
+        - title: Generate CockroachDB Resources
+          url: /generate-cockroachdb-resources.html
 
         - title: Troubleshoot
           url: /troubleshoot.html

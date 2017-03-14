@@ -49,7 +49,7 @@ $ cockroach sql
 > SHOW DATABASES;
 ~~~
 
-~~~ 
+~~~
 +--------------------+
 |      Database      |
 +--------------------+
@@ -91,7 +91,7 @@ $ cockroach sql --port=26259
 > SHOW DATABASES;
 ~~~
 
-~~~ 
+~~~
 +--------------------+
 |      Database      |
 +--------------------+
@@ -109,7 +109,7 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 4. Write data while the node is offline
 
-Use the [`cockroach gen`](generate-cli-utilities-and-example-data.html) command to generate an example `startrek` database:
+Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
 <div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql
 </code></pre>
@@ -287,7 +287,7 @@ ok
 
 ## Step 9. Verify that the cluster re-replicates missing replicas
 
-Go back to the **Nodes** tab of the Admin UI and you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding. 
+Go back to the **Nodes** tab of the Admin UI and you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
 <img src="images/recovery2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -308,7 +308,7 @@ $ cockroach quit
 # Stop node 3:
 $ cockroach quit --port=26259
 
-# Stop node 4: 
+# Stop node 4:
 $ cockroach quit --port=26260
 ~~~
 
