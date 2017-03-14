@@ -112,10 +112,16 @@ $ sudo docker network create --driver overlay cockroachdb
 1. On the instance running your manager node, create the first service that the others will join to:
 
    ~~~ shell
-   $ sudo docker service create --replicas 1 --name cockroachdb-0 --network cockroachdb \
-   --mount type=volume,source=cockroachdb-0,target=/cockroach/cockroach-data,volume-driver=local \
+   $ sudo docker service create \
+   --replicas 1 \
+   --name cockroachdb-1 \
+   --network cockroachdb \
+   --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   cockroachdb/cockroach:{{site.data.strings.version}} start --advertise-host=cockroachdb-0 --logtostderr --insecure
+   cockroachdb/cockroach:{{site.data.strings.version}} start \
+   --advertise-host=cockroachdb-1 \
+   --logtostderr \
+   --insecure
    ~~~
 
    This command creates a service that starts a container, joins it to the overlay network, and starts the first CockroachDB node inside the container mounted to a local volume for persistent storage. Let's look at each part:
@@ -124,31 +130,45 @@ $ sudo docker network create --driver overlay cockroachdb
    - `--replicas`: The number of containers controlled by the service. Since each service will control one container running one CockroachDB node, this will always be `1`.
    - `--name`: The name for the service.
    - `--network`: The overlay network for the container to join. See [Step 4. Create an overlay network](#step-4-create-an-overlay-network) for more details.
-   - `--mount`: This flag mounts a local volume called `cockroachdb-0`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
+   - `--mount`: This flag mounts a local volume called `cockroachdb-1`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
      {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.
    - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
-   - `cockroachdb/cockroach:{{site.data.strings.version}} start ...`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode and instruct other cluster members to talk to it using its persistent network address, `cockroachdb-0`.
+   - `cockroachdb/cockroach:{{site.data.strings.version}} start ...`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode and instruct other cluster members to talk to it using its persistent network address, `cockroachdb-1`.
 
 2. On the same instance, create the services to start two other CockroachDB nodes and join them to the cluster:
 
    ~~~ shell
-   $ sudo docker service create --replicas 1 --name cockroachdb-1 --network cockroachdb \
-   --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
-   --stop-grace-period 60s \
-   cockroachdb/cockroach:{{site.data.strings.version}} start --advertise-host=cockroachdb-1 \
-   --join=cockroachdb-0:26257 --logtostderr --insecure
-
-   $ sudo docker service create --replicas 1 --name cockroachdb-2 --network cockroachdb \
+   # Start the second service:
+   $ sudo docker service create \
+   --replicas 1 \
+   --name cockroachdb-2 \
+   --network cockroachdb \
    --mount type=volume,source=cockroachdb-2,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   cockroachdb/cockroach:{{site.data.strings.version}} start --advertise-host=cockroachdb-2 \
-   --join=cockroachdb-0:26257 --logtostderr --insecure
+   cockroachdb/cockroach:{{site.data.strings.version}} start \
+   --advertise-host=cockroachdb-2 \
+   --join=cockroachdb-1:26257 \
+   --logtostderr \
+   --insecure
+
+   # Start the third service:
+   $ sudo docker service create \
+   --replicas 1 \
+   --name cockroachdb-3 \
+   --network cockroachdb \
+   --mount type=volume,source=cockroachdb-3,target=/cockroach/cockroach-data,volume-driver=local \
+   --stop-grace-period 60s \
+   cockroachdb/cockroach:{{site.data.strings.version}} start \
+   --advertise-host=cockroachdb-3 \
+   --join=cockroachdb-1:26257 \
+   --logtostderr \
+   --insecure
    ~~~
 
    There are only a few differences when creating the second two services:
 
    - The `--name` is unique for each service.
-   - The CockroachDB command to [`start`](start-a-node.html) each node uses the the `--join` flag to connect it to the cluster.
+   - The CockroachDB command to [`start`](start-a-node.html) each node uses the the `--join` flag to connect it to the cluster via the name of the first service and its default port, `cockroachdb-1:26257`.
 
 3. Verify that all three services were created successfully:
 
@@ -157,36 +177,30 @@ $ sudo docker network create --driver overlay cockroachdb
    ~~~
 
    ~~~
-   ID            NAME           REPLICAS  IMAGE                                COMMAND
-   6d534f6mw1jc  cockroachdb-0  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-0 --logtostderr --insecure
-   a6vb0gljlxx0  cockroachdb-1  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-1 --join=cockroachdb-0:26257 --logtostderr --insecure
-   b135nrlxv2kq  cockroachdb-2  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-2 --join=cockroachdb-0:26257 --logtostderr --insecure
+   ID            NAME           MODE        REPLICAS  IMAGE
+   a6g0ur6857j6  cockroachdb-1  replicated  1/1       cockroachdb/cockroach:{{site.data.strings.version}}
+   dr81a756gaa6  cockroachdb-2  replicated  1/1       cockroachdb/cockroach:{{site.data.strings.version}}
+   il4m7op1afg9  cockroachdb-3  replicated  1/1       cockroachdb/cockroach:{{site.data.strings.version}}
    ~~~
 
    {{site.data.alerts.callout_success}}The service definitions tell the CockroachDB nodes to log to <code>stderr</code>, so if you ever need access to a node's logs for troubleshooting, use <a href="https://docs.docker.com/engine/reference/commandline/logs/"><code>sudo docker logs &lt;container id&gt;</code></a> from the instance on which the container is running.{{site.data.alerts.end}}
 
-4. Remove the first service and recreate it again with the `--join` flag to ensure that, if the first node restarts, it will rejoin the original cluster instead of initiating a new cluster:
+4. Remove the first service and recreate it again with the `--join` flag to ensure that, if the first node restarts, it will rejoin the original cluster via the the second service, `cockroachdb-2`, instead of initiating a new cluster:
 
    ~~~ shell
-   $ sudo docker service rm cockroachdb-0
+   $ sudo docker service rm cockroachdb-1
 
-   $ sudo docker service create --replicas 1 --name cockroachdb-0 --network cockroachdb \
-   --mount type=volume,source=cockroachdb-0,target=/cockroach/cockroach-data,volume-driver=local \
+   $ sudo docker service create \
+   --replicas 1 \
+   --name cockroachdb-1 \
+   --network cockroachdb \
+   --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   cockroachdb/cockroach:{{site.data.strings.version}} start --advertise-host=cockroachdb-0 --join=cockroachdb-1:26257 --logtostderr --insecure
-   ~~~
-
-   When you list the services, the start command for the first node, `cockroachdb-0`, should now include the `--join` flag:
-
-   ~~~ shell
-   $ sudo docker service ls
-   ~~~
-
-   ~~~ shell
-   ID            NAME           REPLICAS  IMAGE                                COMMAND
-   6d534f6mw1jc  cockroachdb-0  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-0 --join=cockroachdb-1:26257 --logtostderr --insecure
-   a6vb0gljlxx0  cockroachdb-1  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-1 --join=cockroachdb-0:26257 --logtostderr --insecure
-   b135nrlxv2kq  cockroachdb-2  1/1       cockroachdb/cockroach:beta-20161006  start --advertise-host=cockroachdb-2 --join=cockroachdb-0:26257 --logtostderr --insecure
+   cockroachdb/cockroach:{{site.data.strings.version}} start \
+   --advertise-host=cockroachdb-1 \
+   --join=cockroachdb-2:26257 \
+   --logtostderr \
+   --insecure
    ~~~
 
 ## Step 7. Use the built-in SQL client
@@ -198,7 +212,7 @@ $ sudo docker network create --driver overlay cockroachdb
    ~~~
 
    ~~~ shell
-   9539871cc769        cockroachdb/cockroach:beta-20160908   "/cockroach/cockroach"   18 hours ago        Up 18 hours         8080/tcp, 26257/tcp   cockroachdb-0.1.0wigdh8lx0ylhuzm4on9bbldq
+   9539871cc769        cockroachdb/cockroach:{{site.data.strings.version}}   "/cockroach/cockroach"   2 minutes ago        Up 2 minutes         8080/tcp, 26257/tcp   cockroachdb-1.1.0wigdh8lx0ylhuzm4on9bbldq
    ~~~
 
 2. Use the `sudo docker exec` command to open the built-in SQL shell in interactive mode inside the container:
@@ -240,7 +254,7 @@ To see this in action:
 
    ~~~ shell
    $ sudo docker ps | grep cockroachdb
-   9539871cc769        cockroachdb/cockroach:beta-20160908   "/cockroach/cockroach"   18 hours ago        Up 18 hours         8080/tcp, 26257/tcp   cockroachdb-0.1.0wigdh8lx0ylhuzm4on9bbldq
+   9539871cc769        cockroachdb/cockroach:beta-20160908   "/cockroach/cockroach"   10 minutes ago        Up 10 minutes         8080/tcp, 26257/tcp   cockroachdb-0.1.0wigdh8lx0ylhuzm4on9bbldq
    ~~~
 
 2. Stop the CockroachDB node running in the container:
@@ -253,6 +267,9 @@ To see this in action:
 
    ~~~ shell
    $ sudo docker ps | grep cockroachdb
+   ~~~
+
+   ~~~
    4a58f86e3ced        cockroachdb/cockroach:beta-20160908   "/cockroach/cockroach"   7 seconds ago       Up 1 seconds        8080/tcp, 26257/tcp   cockroachdb-0.1.cph86kmhhcp8xzq6a1nxtk9ng
    ~~~
 
