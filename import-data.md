@@ -4,7 +4,7 @@ summary: Learn how to import data into a CockroachDB cluster.
 toc: false
 ---
 
-CockroachDB supports importing data from from `.sql` and some `.csv` files.
+CockroachDB supports importing data from `.sql` and some `.csv` files.
 
 {{site.data.alerts.callout_info}}We're also working to develop more robust ways to import data, such as from PostgreSQL and from backups stored on cloud hosting providers.{{site.data.alerts.end}}
 
@@ -50,7 +50,7 @@ For more detail, see PostgreSQL's documentation on [`pg_dump`](https://www.postg
 
 After generating the `.sql` file, you need to perform a few editing steps before importing it:
 
-1. Manually add the table's `PRIMARY KEY` constraint to the `CREATE TABLE` statement. 
+1. Manually add the table's `PRIMARY KEY` constraint to the `CREATE TABLE` statement.
 
    This has to be done manually because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
 2. Review any other [constraints](constraints.html) to ensure they're properly listed on the table.
