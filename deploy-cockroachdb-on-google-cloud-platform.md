@@ -12,7 +12,7 @@ toc_not_nested: true
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE).
 
-If you are not concerned with protecting your data with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
+If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
 <div id="toc"></div>
 
