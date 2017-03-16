@@ -89,7 +89,6 @@ $(document).ready(function(){
 
 <div id="download-the-binary" class="install-option">
   <h2>Download the Binary</h2>
-
   <ol>
     <li>
       <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB tarball for OS X</a>.</p>
@@ -97,11 +96,12 @@ $(document).ready(function(){
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-latest.darwin-10.9-amd64.tgz</code></pre>
-      </div>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-latest.darwin-10.9-amd64.tgz</code></pre></div>
     </li>
     <li>
-      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+
+      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>sudo cp -i cockroach-latest.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
@@ -138,8 +138,8 @@ $(document).ready(function(){
     <li>
       <p>Run our brew recipe to get the CockroachDB code and build the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/cockroach/cockroach</code></pre>
-      </div>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/cockroach/cockroach</code></pre></div>
+      <p>The build process can take 10+ minutes, so please be patient.</p>
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
@@ -194,11 +194,11 @@ $(document).ready(function(){
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step2"><span class="gp" data-eventcategory="mac-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
   </li>
   <li>
-    <p>Compile the CockroachDB binary:</p>
+    <p>Build the CockroachDB binary:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p>
+    <p>The build process can take 10+ minutes, so please be patient. The first time you run <code>make</code>, it can take even longer to download and install various dependencies.</p>
 
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
@@ -301,7 +301,9 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
-      <p>Add the directory containing the binary to your <code>PATH</code>. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+
+      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>sudo cp -i cockroach-latest.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
     </li>
     <li>
       <p>Make sure CockroachDB installed successfully:</p>
@@ -356,11 +358,11 @@ $(document).ready(function(){
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step2"><span class="gp" data-eventcategory="linux-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
   </li>
   <li>
-    <p>Compile the CockroachDB binary:</p>
+    <p>Build the CockroachDB binary:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
 
-    <p>The first time you run <code>make</code>, it can take awhile to download and install various dependencies.</p>
+    <p>The build process can take 10+ minutes, so please be patient. The first time you run <code>make</code>, it can take even longer to download and install various dependencies.</p>
 
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
