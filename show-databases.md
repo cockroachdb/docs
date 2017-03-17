@@ -23,13 +23,16 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 > SHOW DATABASES;
 ~~~
 ~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
-(2 rows)
++--------------------+
+|      Database      |
++--------------------+
+| bank               |
+| crdb_internal      |
+| information_schema |
+| pg_catalog         |
+| system             |
++--------------------+
+(5 rows)
 ~~~
 
 ## See Also
