@@ -38,12 +38,16 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 > SHOW DATABASES;
 ~~~
 ~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
++--------------------+
+|      Database      |
++--------------------+
+| bank               |
+| crdb_internal      |
+| information_schema |
+| pg_catalog         |
+| system             |
++--------------------+
+(5 rows)
 ~~~
 
 ## Set the Default Database
@@ -61,10 +65,11 @@ When working with the default database, you don't need to reference it explicitl
 ~~~
 ~~~
 +----------+
-| DATABASE |
+| database |
 +----------+
 | bank     |
 +----------+
+(1 row)
 ~~~
 
 ## Create a Table
@@ -95,12 +100,13 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 > SHOW COLUMNS FROM accounts;
 ~~~
 ~~~
-+---------+---------+-------+---------+
-|  Field  |  Type   | Null  | Default |
-+---------+---------+-------+---------+
-| id      | INT     | false | NULL    |
-| balance | DECIMAL | true  | NULL    |
-+---------+---------+-------+---------+
++---------+---------+-------+---------+-----------+
+|  Field  |  Type   | Null  | Default |  Indices  |
++---------+---------+-------+---------+-----------+
+| id      | INT     | false | NULL    | {primary} |
+| balance | DECIMAL | true  | NULL    | {}        |
++---------+---------+-------+---------+-----------+
+(2 rows)
 ~~~
 
 When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by the table name to remove the table and all its data:
@@ -123,6 +129,7 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 | accounts |
 | users    |
 +----------+
+(2 rows)
 ~~~
 
 To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
@@ -131,16 +138,17 @@ To view tables in a database that's not active, use `SHOW TABLES FROM` followed 
 > SHOW TABLES FROM animals;
 ~~~
 ~~~
-+------------+
-|   Table    |
-+------------+
-| aardvarks  |
-| elephants  |
-| frogs      |
-| moles      |
-| pandas     |
-| turtles    |
-+------------+
++-----------+
+|   Table   |
++-----------+
+| aardvarks |
+| elephants |
+| frogs     |
+| moles     |
+| pandas    |
+| turtles   |
++-----------+
+(6 rows)
 ~~~
 
 ## Insert Rows into a Table
@@ -154,14 +162,14 @@ To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the t
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:
 
 ~~~ sql
-> INSERT INTO accounts (balance, id) VALUES 
+> INSERT INTO accounts (balance, id) VALUES
     (25000.00, 2);
 ~~~
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 ~~~ sql
-> INSERT INTO accounts VALUES 
+> INSERT INTO accounts VALUES
     (3, 8100.73),
     (4, 9400.10);
 ~~~
@@ -169,10 +177,10 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 [Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES 
+> INSERT INTO accounts (id, balance) VALUES
     (5);
 
-> INSERT INTO accounts (id, balance) VALUES 
+> INSERT INTO accounts (id, balance) VALUES
     (6, DEFAULT);
 
 > SELECT * FROM accounts WHERE id in (5, 6);
@@ -184,6 +192,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 |  5 | NULL    |
 |  6 | NULL    |
 +----+---------+
+(2 rows)
 ~~~
 
 ## Create an Index
@@ -213,12 +222,14 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 > SHOW INDEX FROM accounts;
 ~~~
 ~~~
-+----------+-------------+--------+-----+---------+-----------+---------+
-|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing |
-+----------+-------------+--------+-----+---------+-----------+---------+
-| accounts | primary     | true   |   1 | id      | ASC       | false   |
-| accounts | balance_idx | false  |   1 | balance | DESC      | false   |
-+----------+-------------+--------+-----+---------+-----------+---------+
++----------+-------------+--------+-----+---------+-----------+---------+----------+
+|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing | Implicit |
++----------+-------------+--------+-----+---------+-----------+---------+----------+
+| accounts | primary     | true   |   1 | id      | ASC       | false   | false    |
+| accounts | balance_idx | false  |   1 | balance | DESC      | false   | false    |
+| accounts | balance_idx | false  |   2 | id      | ASC       | false   | true     |
++----------+-------------+--------+-----+---------+-----------+---------+----------+
+(3 rows)
 ~~~
 
 ## Query a Table
@@ -239,6 +250,7 @@ To query a table, use [`SELECT`](select.html) followed by a comma-separated list
 | NULL     |
 | NULL     |
 +----------+
+(6 rows)
 ~~~
 
 To retrieve all columns, use the `*` wildcard:
@@ -257,21 +269,23 @@ To retrieve all columns, use the `*` wildcard:
 |  5 | NULL     |
 |  6 | NULL     |
 +----+----------+
+(6 rows)
 ~~~
 
-To filter the results, add a `WHERE` clause identifying the columns and values to filter on: 
+To filter the results, add a `WHERE` clause identifying the columns and values to filter on:
 
 ~~~ sql
 > SELECT id, balance FROM accounts WHERE balance > 9000;
 ~~~
 ~~~
-+----+----------+
-| id | balance  |
-+----+----------+
-|  4 |  9400.10 |
-|  1 | 10000.50 |
-|  2 |    25000 |
-+----+----------+
++----+---------+
+| id | balance |
++----+---------+
+|  2 |   25000 |
+|  1 | 10000.5 |
+|  4 |  9400.1 |
++----+---------+
+(3 rows)
 ~~~
 
 To sort the results, add an `ORDER BY` clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
@@ -280,17 +294,18 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 > SELECT id, balance FROM accounts ORDER BY balance DESC;
 ~~~
 ~~~
-+----+----------+
-| id | balance  |
-+----+----------+
-|  2 |    25000 |
-|  1 | 10000.50 |
-|  4 |  9400.10 |
-|  3 |  8100.73 |
-|  6 | NULL     |
-|  5 | NULL     |
-+----+----------+
-~~~ 
++----+---------+
+| id | balance |
++----+---------+
+|  2 |   25000 |
+|  1 | 10000.5 |
+|  4 |  9400.1 |
+|  3 | 8100.73 |
+|  5 | NULL    |
+|  6 | NULL    |
++----+---------+
+(6 rows)
+~~~
 
 ## Update Rows in a Table
 
@@ -312,13 +327,14 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 |  5 | NULL     |
 |  6 | NULL     |
 +----+----------+
+(6 rows)
 ~~~
 
-If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated. 
+If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated.
 
 ## Delete Rows in a Table
 
-To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete: 
+To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
 ~~~ sql
 > DELETE FROM accounts WHERE id in (5, 6);
@@ -334,9 +350,10 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 |  3 |  8095.23 |
 |  4 |  9394.60 |
 +----+----------+
+(4 rows)
 ~~~
 
-Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. 
+Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
 ## What's Next?
 
