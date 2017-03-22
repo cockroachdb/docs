@@ -23,9 +23,9 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | Parameter | Description |
 |-----------|-------------|
 | `DISTINCT` | Retrieve no more than one copy of a value. |
-| `target_elem` | The name of the column you want, `*` to retrieve all columns, or the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform. |
+| `target_elem` | The name of the column you want select (`*` to retrieve all columns), the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use. |
 | `AS col_label` | In the retrieved table, change the column label to `col_label`. |
-| `table_ref` | The name of the table you want to retrieve data from.|
+| `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.|
 | `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/). |
 | `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/). |
 | `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).  |
