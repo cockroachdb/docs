@@ -17,13 +17,20 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-## Step 1. Install the Node.js pg driver
+## Step 1. Install Node.js packages
 
-To install the [Node.js pg driver](https://www.npmjs.com/package/pg), run the following command:
+To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
 ~~~ shell
 $ npm install pg
 ~~~
+
+The example app on this page also requires [`async`](https://www.npmjs.com/package/async):
+
+~~~ shell
+$ npm install async
+~~~
+
 
 {% include app/common-steps.md %}
 
