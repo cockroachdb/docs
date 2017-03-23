@@ -35,14 +35,15 @@ For guidance on cluster topology, clock synchronization, and file descriptor lim
 
 - Running at least 3 nodes to ensure survivability.
 - Running HAProxy on its own droplet. This ensures that when a CockroachDB node fails, HAProxy continues uninterrupted.
+  {{site.data.alerts.callout_success}}When using a single instance of HAProxy, if the instance fails, clients will not be able to connect to your cluster. You may therefore want to run multiple instances and use DNS to select HAproxy instances for clients. Alternatively, you can use <a href="https://www.digitalocean.com/community/tutorials/how-to-balance-tcp-traffic-with-digitalocean-load-balancers">Digital Ocean's paid load balancing service</a>. {{site.data.alerts.end}}
 - Selecting the same continent for all of your Droplets for best performance.
 
 ## Step 2. Configure your network
 
 Set up a firewall for each of your Droplets, allowing TCP communication on the following two ports:
 
-- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster) and connecting with applications.
-- **8080** (`tcp:8080`) for exposing your Admin UI.
+- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster) and for clients to connect to HAProxy
+- **8080** (`tcp:8080`) for exposing your Admin UI
 
 For guidance, you can use Digital Ocean's guide to configuring firewalls based on the Droplet's OS:
 
@@ -116,7 +117,7 @@ Repeat these steps for each Droplet you want to use as a node.
 
 ## Step 5. Test your cluster
 
-CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to guarantee that each node can locate data across the cluster. To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
+CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
 1. 	SSH to your first node:
 
@@ -195,7 +196,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster. Howeve
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-4. 	Run the `cockroach gen haproxy` command, specifying the interal IP address of any instance running a CockroachDB node:
+4. 	Run the `cockroach gen haproxy` command, specifying the internal IP address of any instance running a CockroachDB node:
 
 	~~~ shell
 	$ cockroach gen haproxy \
@@ -227,9 +228,12 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster. Howeve
 
 	The file is preset with the minimal configurations needed to work with your running cluster:
 
-	- For each node in the cluster, the `server` field specifies the interface that the node listens on, i.e., the address passed in the `--advertise-host` flag on node startup.
-	- The `timout` fields specify timeout values that should be suitable for most deployments.
-	- The `balance` field is set to the `roundrobin` balancing algorithm to ensure that traffic is spread as evenly as possible across nodes.
+	Field | Description
+	------|------------
+	`timout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
+	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by the firewall (in [Step 2](#step-2-configure-your-network)).<br><br>This tutorial assumes HAProxy is running on a separate Droplet from the CockroachDB nodes. If you run HAProxy on the same Droplet as a node (not recommended), you'll need to change this port, as `26257` is also used for inter-node communication.
+	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.).<br><br>If you have heterogenous loads (e.g., some long-lived connections and lots of short-lived connections), consider using the `leastconn` option to ensure that new connections get assigned to nodes with the least number of open connections.
+	`server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--advertise-host` flag on node startup.
 
 	For more details about these and other configuration settings, see the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html).
 
