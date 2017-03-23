@@ -13,7 +13,6 @@ Function &rarr; Returns | Description
 <code>age(val: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="interval.html">interval</a></code> | <span class="funcdesc">Calculates the interval between `val` and the current time.</span>
 <code>clock_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code> | <span class="funcdesc">Returns the current wallclock time.</span>
 <code>clock_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code> | <span class="funcdesc">Returns the current wallclock time.</span>
-<code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>current_date() &rarr; <a href="date.html">date</a></code> | <span class="funcdesc">Returns the current date.</span>
 <code>current_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code> | <span class="funcdesc">Returns the current transaction's timestamp.</span>
 <code>current_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code> | <span class="funcdesc">Returns the current transaction's timestamp.</span>
@@ -55,7 +54,6 @@ Function &rarr; Returns | Description
 <code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the smallest integer greater than `val`.</span>
 <code>cos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the cosine of `val`.</span>
 <code>cot(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the cotangent of `val`.</span>
-<code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>, txnID: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>degrees(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Converts `val` as a radian value to a degree value.</span>
 <code>div(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the integer quotient of `x`/`y`.</span>
 <code>div(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the integer quotient of `x`/`y`.</span>
@@ -64,6 +62,7 @@ Function &rarr; Returns | Description
 <code>exp(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates *e* ^ `val`.</span>
 <code>floor(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the largest integer not greater than `val`.</span>
 <code>floor(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the largest integer not greater than `val`.</span>
+<code>isnan(val: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Returns true if `val` is NaN, false otherwise.</span>
 <code>ln(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the natural log of `val`.</span>
 <code>ln(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the natural log of `val`.</span>
 <code>log(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the base 10 log of `val`.</span>
@@ -157,6 +156,8 @@ Function &rarr; Returns | Description
 <code>array_lower(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Calculates the minimum value of `input` on the provided `array_dimension`. However, because CockroachDB doesn't yet support multi-dimensional arrays, the only supported `array_dimension` is **1**.</span>
 <code>array_upper(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Calculates the maximum value of `input` on the provided `array_dimension`. However, because CockroachDB doesn't yet support multi-dimensional arrays, the only supported `array_dimension` is **1**.</span>
 <code>cluster_logical_timestamp() &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
+<code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
+<code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>, txnID: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>current_database() &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns the current database.</span>
 <code>current_schema() &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns the current schema. This function is provided for compatibility with PostgreSQL. For a new CockroachDB application, consider using current_database() instead.</span>
 <code>current_schemas(include_pg_catalog: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a>[]</code> | <span class="funcdesc">Returns the current search path for unqualified names.</span>
