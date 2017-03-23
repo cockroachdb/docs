@@ -12,12 +12,10 @@ Collated strings are important because different languages have [different rules
 
 ## Details
 
-- You cannot currently use collated strings in indexes or primary keys; doing so causes CockroachDB to crash. If you're interested in using collated strings in these contexts, you can follow <a href="https://github.com/cockroachdb/cockroach/issues/2473">this issue on GitHub</a> to be notified when it's resolved.
-
 - Operations on collated strings cannot involve strings with a different collation or strings with no collation. However, it is possible to <a href="#ad-hoc-collation-casting">add or overwrite a collation on the fly</a>.
 
 - Only use the collation feature when you need to sort strings by a specific collation. We recommend this because every time a collated string is constructed or loaded into memory, CockroachDB computes its collation key, whose size is linear in relationship to the length of the collated string, which requires additional resources.
-  
+
   However, the `COLLATE` feature does not require additional disk space because collated strings are stored on disk in the same way as [`STRING`](string.html) values, i.e.,
 
 ## Supported Collations
@@ -31,7 +29,7 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 - **Column syntax**: `STRING COLLATE <collation>`. For example:
 
   ~~~ sql
-  > CREATE TABLE foo (a STRING COLLATE en);
+  > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
   ~~~
 
   {{site.data.alerts.callout_info}}You can also use any of the <a href="string.html#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
@@ -51,7 +49,7 @@ You can set a default collation for all values in a `STRING` column.
 For example, you can set a column's default collation to German (`de`):
 
 ~~~ sql
-> CREATE TABLE de_names (name STRING COLLATE de);
+> CREATE TABLE de_names (name STRING COLLATE de PRIMARY KEY);
 ~~~
 
 When inserting values into this column, you must specify the collation for every value:
