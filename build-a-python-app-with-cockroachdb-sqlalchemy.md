@@ -19,7 +19,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Install the SQLAlchemy ORM
 
-To install SQLAlchemy, as well as a [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
+To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
 ~~~ shell
 $ pip install sqlalchemy cockroachdb

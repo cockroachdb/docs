@@ -57,6 +57,7 @@ entries:
 
                 - title: Node.js
                   url: /build-a-nodejs-app-with-cockroachdb.html
+                  alternate_urls: [/build-a-nodejs-app-with-cockroachdb-sequelize.html]
 
                 - title: C++
                   url: /build-a-c++-app-with-cockroachdb.html
