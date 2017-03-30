@@ -12,7 +12,7 @@ This page walks you through a simple demonstration of how CockroachDB automatica
 
 In this tutorial, you'll use an example Go program to quickly insert data into a CockroachDB cluster. To run the example program, you must have a [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.7.1.
 
-- You can download the [Go binary](http://golang.org/doc/code.html) directly from the official site. 
+- You can download the [Go binary](http://golang.org/doc/code.html) directly from the official site.
 - Be sure to set the `$GOPATH` and `$PATH` environment variables as described [here](https://golang.org/doc/code.html#GOPATH).
 
 ## Step 1. Start a 3-node cluster
@@ -52,16 +52,19 @@ $ cockroach sql
 > SHOW DATABASES;
 ~~~
 
-~~~ 
+~~~
 +--------------------+
 |      Database      |
 +--------------------+
+| crdb_internal      |
 | information_schema |
 | pg_catalog         |
 | system             |
 +--------------------+
-(3 rows)
+(4 rows)
 ~~~
+
+Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 2. Lower the max range size
 
@@ -84,7 +87,7 @@ constraints: []
 
 ## Step 3. Download and run the `block_writer` program
 
-CockroachDB provides a number of [example programs in Go](https://github.com/cockroachdb/examples-go) for simulating client workloads. The program you'll use for this demonstration is called [`block_writer`](https://github.com/cockroachdb/examples-go/tree/master/block_writer). It will simulate multiple clients inserting data into the cluster. 
+CockroachDB provides a number of [example programs in Go](https://github.com/cockroachdb/examples-go) for simulating client workloads. The program you'll use for this demonstration is called [`block_writer`](https://github.com/cockroachdb/examples-go/tree/master/block_writer). It will simulate multiple clients inserting data into the cluster.
 
 Download and install the program:
 
@@ -94,7 +97,7 @@ $ go get github.com/cockroachdb/examples-go/block_writer
 
 Then run the program for 1 minute, long enough to generate plenty of ranges:
 
-~~~ shell 
+~~~ shell
 $ block_writer -duration 1m
 ~~~
 
@@ -115,13 +118,13 @@ Once it's running, `block_writer` will output the number of rows written per sec
 
 ## Step 4. Watch the replica count increase
 
-Open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data. 
+Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
 
 <img src="images/scalability1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Add 2 more nodes
 
-Adding capacity is as simple as starting more nodes and joining them to the running cluster: 
+Adding capacity is as simple as starting more nodes and joining them to the running cluster:
 
 ~~~ shell
 # Start node 4:
@@ -141,7 +144,7 @@ $ cockroach start --background \
 
 ## Step 6. Watch data rebalance across all 5 nodes
 
-Back in the Admin UI, on the **Nodes** tab, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
+Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
 
 <img src="images/scalability2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -153,13 +156,13 @@ You can stop the nodes (and therefore the cluster) as follows:
 # Stop node 1:
 $ cockroach quit
 
-# Stop node 2: 
+# Stop node 2:
 $ cockroach quit --port=26258
 
 # Stop node 3:
 $ cockroach quit --port=26259
 
-# Stop node 4: 
+# Stop node 4:
 $ cockroach quit --port=26260
 
 # Stop node 5:
