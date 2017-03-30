@@ -366,9 +366,10 @@ func main() {
 				},
 				{name: "index_def", inline: []string{"opt_storing", "storing", "index_params", "opt_name"}},
 				{
-					name:   "insert_stmt",
-					inline: []string{"insert_target", "insert_rest", "returning_clause"},
-					match:  []*regexp.Regexp{regexp.MustCompile("'INSERT'")},
+					name:    "insert_stmt",
+					inline:  []string{"insert_target", "insert_rest", "returning_clause"},
+					match:   []*regexp.Regexp{regexp.MustCompile("'INSERT'")},
+					replace: map[string]string{"select_stmt": "'VALUES' select_stmt"},
 				},
 				{name: "iso_level"},
 				{name: "interleave", stmt: "create_table_stmt", inline: []string{"opt_interleave"}, replace: map[string]string{"any_name": "table_name", "opt_table_elem_list": "table_definition", "name_list": "interleave_prefix", " name": " parent_table"}, unlink: []string{"table_name", "table_definition", "parent_table", "child_columns"}},
