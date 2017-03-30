@@ -62,6 +62,7 @@ Function &rarr; Returns | Description
 <code>exp(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates *e* ^ `val`.</span>
 <code>floor(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the largest integer not greater than `val`.</span>
 <code>floor(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the largest integer not greater than `val`.</span>
+<code>isnan(val: <a href="decimal.html">decimal</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Returns true if `val` is NaN, false otherwise.</span>
 <code>isnan(val: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Returns true if `val` is NaN, false otherwise.</span>
 <code>ln(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">Calculates the natural log of `val`.</span>
 <code>ln(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code> | <span class="funcdesc">Calculates the natural log of `val`.</span>
