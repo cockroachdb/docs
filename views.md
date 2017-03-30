@@ -1,10 +1,10 @@
 ---
 title: Views
-summary: 
+summary:
 toc: false
 ---
 
-A view is a stored `SELECT` query represented as a virtual table. Unlike a standard table, a view is not part of the physical schema; instead, it is a virtual table that forms dynamically when requested. 
+A view is a stored `SELECT` query represented as a virtual table. Unlike a standard table, a view is not part of the physical schema; instead, it is a virtual table that forms dynamically when requested.
 
 <div id="toc"></div>
 
@@ -16,19 +16,19 @@ There are various reasons to use views, including:
 - [Limit access to underlying data](#limit-access-to-underlying-data)
 - [Simplify supporting legacy code](#simplify-supporting-legacy-code)
 
-### Hide query complexity  
+### Hide query complexity
 
 When you have a complex query that, for example, joins several tables, or performs complex calculations, you can store the query as a view and then select from the view as you would from a standard table.
 
 #### Example
 
-Let's say you're using our [sample `startrek` database](generate-cli-utilities-and-example-data.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following `JOIN`:
+Let's say you're using our [sample `startrek` database](generate-cockroachdb-resources.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following `JOIN`:
 
 ~~~ sql
-> SELECT startrek.episodes.season, count(*) 
-  FROM startrek.quotes 
-  JOIN startrek.episodes 
-  ON startrek.quotes.episode = startrek.episodes.id 
+> SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 
@@ -46,11 +46,11 @@ Let's say you're using our [sample `startrek` database](generate-cli-utilities-a
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
 ~~~ sql
-> CREATE VIEW startrek.quotes_per_season (season, quotes) 
+> CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes 
-  JOIN startrek.episodes 
-  ON startrek.quotes.episode = startrek.episodes.id 
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 
@@ -75,9 +75,9 @@ Then, executing the query is as easy as `SELECT`ing from the view:
 (3 rows)
 ~~~
 
-### Limit access to underlying data  
+### Limit access to underlying data
 
-When you do not want to grant a user access to all the data in one or more standard tables, you can create a view that contains only the columns and/or rows that the user should have access to and then grant the user permissions on the view. 
+When you do not want to grant a user access to all the data in one or more standard tables, you can create a view that contains only the columns and/or rows that the user should have access to and then grant the user permissions on the view.
 
 #### Example
 
@@ -106,13 +106,13 @@ You want a particular user, `bob`, to be able to see the types of accounts each 
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.accounts;
-~~~ 
+~~~
 
 ~~~
 CREATE VIEW
 ~~~
 
-You then make sure `bob` does not have privileges on the underlying `bank.accounts` table: 
+You then make sure `bob` does not have privileges on the underlying `bank.accounts` table:
 
 ~~~ sql
 > SHOW GRANTS ON bank.accounts;
@@ -163,7 +163,7 @@ pq: user bob does not have SELECT privilege on table accounts
 
 ### Simplify supporting legacy code
 
-When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. During and after changes to the original table, your application will continue uninterrupted, and you can update the legacy code at your leisure. 
+When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. During and after changes to the original table, your application will continue uninterrupted, and you can update the legacy code at your leisure.
 
 #### Example
 
@@ -172,7 +172,7 @@ Let's say you have a table called `user_accounts` that you want to rename to `cl
 ~~~ sql
 BEGIN;
 ALTER TABLE bank.user_accounts RENAME TO bank.client_accounts;
-CREATE VIEW bank.user_accounts 
+CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.client_accounts;
 COMMIT;
@@ -190,7 +190,7 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.accounts;
-~~~ 
+~~~
 
 ~~~
 CREATE VIEW
@@ -214,7 +214,7 @@ Once created, views are represented as virtual tables alongside other virtual an
 (2 rows)
 ~~~
 
-To list just views, you can query the `views` table in the built-in `information_schema` database: 
+To list just views, you can query the `views` table in the built-in `information_schema` database:
 
 ~~~ sql
 > SELECT * FROM information_schema.views;
@@ -230,7 +230,7 @@ To list just views, you can query the `views` table in the built-in `information
 (2 rows)
 ~~~
 
-Alternatively, you can query the `pg_views` table in the built-in `pg_catalog` database: 
+Alternatively, you can query the `pg_views` table in the built-in `pg_catalog` database:
 
 ~~~ sql
 > SELECT * FROM pg_catalog.pg_views;
@@ -282,7 +282,7 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in `information_schema` database: 
+You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in `information_schema` database:
 
 ~~~ sql
 > SELECT * FROM information_schema.views;

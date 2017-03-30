@@ -14,7 +14,7 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 ## Step 1. Choose your deployment environment
 
-Choose the environment where you will run CockroachDB with Kubernetes. The instructions below will adjust based on your choice. 
+Choose the environment where you will run CockroachDB with Kubernetes. The instructions below will adjust based on your choice.
 
 <div class="filters filters-big clearfix">
   <button class="filter-button" data-scope="cloud">Cloud</button>
@@ -27,7 +27,7 @@ It might also be helpful to review some Kubernetes-specific terminology:
 
 Feature | Description
 --------|------------
-instance | A physical or virtual machine. In this tutorial, you'll run a Kubernetes script from your local workstation that will create 4 GCE or AWS instances and join them into a single Kubernetes cluster. 
+instance | A physical or virtual machine. In this tutorial, you'll run a Kubernetes script from your local workstation that will create 4 GCE or AWS instances and join them into a single Kubernetes cluster.
 [pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually. See our [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script for the necessary steps.
@@ -80,13 +80,13 @@ Kubectl is now configured to use the cluster.
    ~~~ shell
    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
    ~~~
- 
-2. Use the [`kubectl get`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_get/) command to verify that the persistent volumes and corresponding claims were created successfully:
+
+2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
    ~~~ shell
    $ kubectl get persistentvolumes
    ~~~
-   
+
    ~~~
    NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
    pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
@@ -129,9 +129,9 @@ Kubectl is now configured to use the cluster.
    $ sh minikube.sh
    ~~~
 
-   The script automates the process of creating [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) and [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims). It also runs the [`kubectl create`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_create/) command against the `cockroachdb-statefulset.yaml` file to create the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/).
+   The script automates the process of creating [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) and [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims). It also runs the `kubectl create` command against the `cockroachdb-statefulset.yaml` file to create the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/).
 
-3. Use the [`kubectl get`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_get/) command to verify that the persistent volumes and corresponding claims were created successfully:
+3. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
    ~~~ shell
    $ kubectl get persistentvolumes
@@ -149,7 +149,7 @@ Kubectl is now configured to use the cluster.
    ~~~ shell
    $ kubectl get pods
    ~~~
-   
+
    ~~~
    NAME            READY     STATUS    RESTARTS   AGE
    cockroachdb-0   1/1       Running   0          2m
@@ -161,7 +161,7 @@ Kubectl is now configured to use the cluster.
 
 {{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the pod itself.{{site.data.alerts.end}}
 
-## Step 4. Use the built-in SQL client 
+## Step 4. Use the built-in SQL client
 
 1. Start the [built-in SQL client](use-the-built-in-sql-client.html) in a one-off interactive pod, using the `cockroachdb-public` hostname to access the CockroachDB cluster:
 
@@ -174,11 +174,11 @@ Kubectl is now configured to use the cluster.
 
    ~~~ sql
    > CREATE DATABASE bank;
-   
+
    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-   
+
    > INSERT INTO bank.accounts VALUES (1234, 10000.50);
-   
+
    > SELECT * FROM bank.accounts;
    ~~~
 
@@ -239,9 +239,9 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 1.  Add a worker node:
 
     - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
-    - On AWS, resize your [Auto Scaling Group](http://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).  
+    - On AWS, resize your [Auto Scaling Group](http://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
 
-2.  Use the [`kubectl scale`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_scale/) command to add a pod to your StatefulSet:
+2.  Use the `kubectl scale` command to add a pod to your StatefulSet:
 
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -249,9 +249,9 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
     ~~~
     statefulset "cockroachdb" scaled
-    ~~~ 
+    ~~~
 
-3.  Verify that a fourth pod was added successfully: 
+3.  Verify that a fourth pod was added successfully:
 
     ~~~ shell
     $ kubectl get pods
@@ -269,7 +269,7 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-To increase the number of pods in your cluster, use the [`kubectl scale`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_scale/) command to alter the `replicas: 3` configuration for your StatefulSet. 
+To increase the number of pods in your cluster, use the `kubectl scale` command to alter the `replicas: 3` configuration for your StatefulSet.
 
 For example, since the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script created four persistent volumes and volume claims, and only three of them are in use by pods, you can add a replica and safely assume that it will claim the final persistent volume:
 
@@ -279,9 +279,9 @@ $ kubectl scale statefulset cockroachdb --replicas=4
 
 ~~~
 statefulset "cockroachdb" scaled
-~~~ 
+~~~
 
-Verify that a fourth pod was added successfully: 
+Verify that a fourth pod was added successfully:
 
 ~~~ shell
 $ kubectl get pods
@@ -297,13 +297,13 @@ cockroachdb-3   1/1       Running   0          46s
 
 </div>
 
-## Step 7. Stop the cluster 
+## Step 7. Stop the cluster
 
 <div class="filter-content" markdown="1" data-scope="cloud">
 
 To shut down the CockroachDB cluster:
 
-1. Use the [`kubectl delete`](http://kubernetes.io/docs/user-guide/kubectl/kubectl_delete/) command to clean up all of the resources you created, including the logs and remote persistent volumes:
+1. Use the `kubectl delete` command to clean up all of the resources you created, including the logs and remote persistent volumes:
 
    ~~~ shell
    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
