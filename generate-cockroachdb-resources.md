@@ -27,7 +27,8 @@ $ cockroach gen man
 $ cockroach gen autocomplete
 
 # Generate example SQL data:
-$ cockroach gen example-data | cockroach sql
+$ cockroach gen example-data intro | cockroach sql
+$ cockroach gen example-data startrek | cockroach sql
 
 # Generate an HAProxy config file for a running cluster:
 $ cockroach gen haproxy
@@ -102,15 +103,29 @@ You can now use `tab` to autocomplete `cockroach` commands.
 
 ### Generate Example Data
 
-To test out CockroachDB, you can generate an example database, `startrek`, that contains 2 tables, `episodes` and `quotes`.
+To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
 ~~~ shell
-# Generate example SQL data:
-$ cockroach gen example-data | cockroach sql
+# Generate example `startrek` database:
+$ cockroach gen example-data startrek | cockroach sql
+~~~
 
+~~~
+CREATE DATABASE
+SET
+DROP TABLE
+DROP TABLE
+CREATE TABLE
+INSERT 79
+CREATE TABLE
+INSERT 200
+~~~
+
+~~~ shell
 # Launch the built-in SQL client to view it:
 $ cockroach sql
 ~~~
+
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -121,9 +136,78 @@ $ cockroach sql
 | episodes |
 | quotes   |
 +----------+
+(2 rows)
 ~~~
 
-{{site.data.alerts.callout_success}}You can find example databases by using <code>cockroach gen example-data --help</code>.{{site.data.alerts.end}}
+You can also generate an example `intro` database, which contains 1 table, `mytable`, with a hidden message:
+
+~~~ shell
+# Generate example `intro` database:
+$ cockroach gen example-data intro | cockroach sql
+~~~
+
+~~~
+CREATE DATABASE
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 1
+INSERT 1
+INSERT 1
+INSERT 1
+...
+~~~
+
+~~~ shell
+# Launch the built-in SQL client to view it:
+$ cockroach sql
+~~~
+
+~~~ sql
+> SHOW TABLES FROM intro;
+~~~
+
+~~~
++---------+
+|  Table  |
++---------+
+| mytable |
++---------+
+(1 row)
+~~~
+
+~~~ sql
+> SELECT * FROM intro.mytable WHERE (l % 2) = 0;
+~~~
+
+~~~
++----+------------------------------------------------------+
+| l  |                          v                           |
++----+------------------------------------------------------+
+|  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,  |
+|  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^  |
+|  4 | !                    "?##mW##?"-                     |
+|  6 | !  C O N G R A T S  _am#Z??A#ma,           Y         |
+|  8 | !                 _ummY"    "9#ma,       A           |
+| 10 | !                vm#Z(        )Xmms    Y             |
+| 12 | !              .j####mmm#####mm#m##6.                |
+| 14 | !   W O W !    jmm###mm######m#mmm##6                |
+| 16 | !             ]#me*Xm#m#mm##m#m##SX##c               |
+| 18 | !             dm#||+*$##m#mm#m#Svvn##m               |
+| 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A        |
+| 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M        |
+| 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A        |
+| 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z        |
+| 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E        |
+| 30 | !       I       4#ma+|++]mmhvnnvq##P`       !        |
+| 32 | !        D I     ?$#q%+|dmmmvnnm##!                  |
+| 34 | !           T     -4##wu#mm#pw##7'                   |
+| 36 | !                   -?$##m####Y'                     |
+| 38 | !             !!       "Y##Y"-                       |
+| 40 | !                                                    |
++----+------------------------------------------------------+
+(21 rows)
+~~~
 
 ### Generate an HAProxy Configuration File
 
