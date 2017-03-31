@@ -205,4 +205,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 Use a local cluster to explore these other core CockroachDB features:
 
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Scalability](demo-scalability.html)
+- [Automatic Rebalancing](demo-automatic-rebalancing.html)
