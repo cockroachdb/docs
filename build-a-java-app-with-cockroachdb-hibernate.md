@@ -11,6 +11,8 @@ toc: false
 
 This tutorial shows you how build a simple Java application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hibernate ORM](http://hibernate.org/), so those are featured here.
 
+{{site.data.alerts.callout_success}}For a more realistic use of Hibernate with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Before You Begin
@@ -93,7 +95,7 @@ $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-Read more about using the [Hibernate ORM](http://hibernate.org/orm/).
+Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 You might also be interested in using a local cluster to explore the following core CockroachDB features:
 
