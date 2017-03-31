@@ -50,6 +50,7 @@ entries:
 
                 - title: Ruby
                   url: /build-a-ruby-app-with-cockroachdb.html
+                  alternate_urls: [/build-a-ruby-app-with-cockroachdb-activerecord.html]
 
                 - title: Java
                   url: /build-a-java-app-with-cockroachdb.html
