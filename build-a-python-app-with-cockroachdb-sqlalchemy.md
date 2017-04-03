@@ -2,6 +2,7 @@
 title: Build a Python App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Python application with the SQLAlchemy ORM.
 toc: false
+twitter: true
 ---
 
 <div class="filters filters-big clearfix">

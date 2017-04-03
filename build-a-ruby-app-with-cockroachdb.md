@@ -2,6 +2,7 @@
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the pg client driver.
 toc: false
+twitter: true
 ---
 
 <div class="filters filters-big clearfix">
