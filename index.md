@@ -5,6 +5,7 @@ type: first_page
 homepage: true
 toc: false
 optimizely: true
+twitter: true
 ---
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives failures with minimal latency disruption and no manual intervention; supports ACID transactions; and provides a familiar SQL API.
@@ -78,7 +79,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <div class="blog-title">On the Way to Better SQL Joins in CockroachDB</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Feb 9, 2017</span></div>
         </div>
-        </a>  
+        </a>
     </div>
 </div>
 <div class="row">
@@ -88,7 +89,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <div class="blog-title">Journey to Design for Enterprise</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Kuan Luo</span> on <span class="meta-emphasis">Feb 2, 2017</span></div>
         </div>
-        </a>  
+        </a>
     </div>
 </div>
 <div class="row">
@@ -98,7 +99,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <div class="blog-title">How We're Fighting Unconscious Bias</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Lindsay Grenawalt</span> on <span class="meta-emphasis">Jan 26, 2017</span></div>
         </div>
-        </a>  
+        </a>
     </div>
 </div>
 <div class="row">
@@ -108,7 +109,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <div class="blog-title">How We're Building a Business to Last</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Jan 19, 2017</span></div>
         </div>
-        </a>  
+        </a>
     </div>
 </div>
 <div class="row">
@@ -118,7 +119,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
             <div class="blog-title">Enriching Log Messages Using Go Contexts</div>
             <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">Dec 15, 2016</span></div>
         </div>
-        </a>  
+        </a>
     </div>
 </div>
 <div class="row">

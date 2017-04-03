@@ -2,6 +2,7 @@
 title: Build a Java App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Java application with the Hibernate ORM.
 toc: false
+twitter: true
 ---
 
 <div class="filters filters-big clearfix">

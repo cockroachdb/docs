@@ -22,5 +22,9 @@
   {% include google_tag_manager.html %}
   {% include google_remarketing.html %}
   {% include hubspot_analytics.html %}
+  {% if page.twitter == true %}
+    {% include twitter_analytics.html %}
+  {% endif %}
+
 </body>
 </html>

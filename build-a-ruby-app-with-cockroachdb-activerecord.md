@@ -2,6 +2,7 @@
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
 toc: false
+twitter: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -92,4 +93,4 @@ You might also be interested in using a local cluster to explore the following c
 
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Scalability](demo-scalability.html)
+- [Automatic Rebalancing](demo-automatic-rebalancing.html)
