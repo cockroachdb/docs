@@ -81,8 +81,8 @@ entries:
                 - title: Fault Tolerance & Recovery
                   url: /demo-fault-tolerance-and-recovery.html
 
-                - title: Scalability
-                  url: /demo-scalability.html
+                - title: Automatic Rebalancing
+                  url: /demo-automatic-rebalancing.html
 
     - title: Develop
       items:

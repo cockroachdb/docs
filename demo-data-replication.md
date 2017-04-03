@@ -132,7 +132,7 @@ $ cockroach start --background \
 
 ## Step 4. Watch data replicate to the new nodes
 
-Open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Open the Admin UI at `http://localhost:8080` and click **View nodes list** on the right. You'll see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 <img src="images/replication1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -156,14 +156,14 @@ constraints: []
 ## Step 6. Add two more nodes
 
 ~~~ shell
-# Add node 2:
+# Add node 4:
 $ cockroach start --background \
 --store=repdemo-node4 \
 --port=26260 \
 --http-port=8083 \
 --join=localhost:26257
 
-# Add node 3:
+# Add node 5:
 $ cockroach start --background \
 --store=repdemo-node5 \
 --port=26261 \
@@ -173,7 +173,7 @@ $ cockroach start --background \
 
 ## Step 7. Watch data replicate to the new nodes
 
-Go back to the **Nodes** tab in the Admin UI, and you'll see that there are now 5 nodes listed. Again, at first, the replica count will be lower for nodes 4 and 5. But because you changed the default replication factor to 5, very soon, the replica count will be identical across all 5 nodes, indicating that all data in the cluster has been replicated 5 times.
+Back in the Admin UI, you'll see that there are now 5 nodes listed. Again, at first, the replica count will be lower for nodes 4 and 5. But because you changed the default replication factor to 5, very soon, the replica count will be identical across all 5 nodes, indicating that all data in the cluster has been replicated 5 times.
 
 <img src="images/replication2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -205,4 +205,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 Use a local cluster to explore these other core CockroachDB features:
 
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Scalability](demo-scalability.html)
+- [Automatic Rebalancing](demo-automatic-rebalancing.html)

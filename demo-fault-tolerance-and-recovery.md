@@ -53,9 +53,9 @@ $ cockroach sql
 +--------------------+
 |      Database      |
 +--------------------+
+| crdb_internal      |
 | information_schema |
 | pg_catalog         |
-| bank               |
 | system             |
 +--------------------+
 (4 rows)
@@ -126,7 +126,7 @@ CREATE TABLE
 INSERT 200
 ~~~
 
-Once again, open the SQL shell on node 1 (port `26258`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
+Once again, open the SQL shell on node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
 
 ~~~ sql
 > SHOW DATABASES;
@@ -136,9 +136,9 @@ Once again, open the SQL shell on node 1 (port `26258`) or node 3 (port `26259`)
 +--------------------+
 |      Database      |
 +--------------------+
+| crdb_internal      |
 | information_schema |
 | pg_catalog         |
-| bank               |
 | startrek           |
 | system             |
 +--------------------+
@@ -242,7 +242,7 @@ $ cockroach sql --port=26258
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
 
-Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, go to the **Nodes** tab, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 {{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
 
@@ -283,19 +283,18 @@ $ cockroach quit --port=26258
 ~~~
 initiating graceful shutdown of server
 ok
+server drained and shutdown completed
 ~~~
 
 ## Step 9. Verify that the cluster re-replicates missing replicas
 
-Go back to the **Nodes** tab of the Admin UI and you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
+Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
 <img src="images/recovery2.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-After about 10 minutes, the dot next to node 2 will turn red, indicating that the node is dead and not expected to come back. At this point, you should also see that the **Replicas** count for node 4 matches the count for node 1 and 3, the other live nodes. This indicates that all missing replicas (those that were on node 2) have been re-replicated to node 4.
+After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicating that the node is not expected to come back. At this point, in the **Live Nodes** section, you should also see that the **Replicas** count for node 4 matches the count for node 1 and 3, the other live nodes. This indicates that all missing replicas (those that were on node 2) have been re-replicated to node 4.
 
 <img src="images/recovery3.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-{{site.data.alerts.callout_info}}The <strong>Replicas</strong> count for node 2 should go down to 0, but there's currently a UI bug preventing this. Follow <a href="https://github.com/cockroachdb/cockroach/issues/5415">issue #5415</a> for more details.{{site.data.alerts.end}}
 
 ## Step 10.  Stop the cluster
 
@@ -319,4 +318,4 @@ For more details about the `cockroach quit` command, see [Stop a Node](stop-a-no
 Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
-- [Scalability](demo-scalability.html)
+- [Automatic Rebalancing](demo-automatic-rebalancing.html)
