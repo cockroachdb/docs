@@ -99,7 +99,7 @@ $(document).ready(function(){
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-latest.darwin-10.9-amd64.tgz</code></pre></div>
     </li>
     <li>
-      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+      <p>Move the binary onto your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
       <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-latest.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
@@ -178,7 +178,7 @@ $(document).ready(function(){
         <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On Mac OS X, Xcode should suffice.</p>
       </li>
       <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
+        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently.</p>
       </li>
       <li>
         <p>Git 1.8+</p>
@@ -190,21 +190,25 @@ $(document).ready(function(){
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Get the CockroachDB code:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step2"><span class="gp" data-eventcategory="mac-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
   </li>
   <li>
-    <p>Build the CockroachDB binary:</p>
+    <p>Extract the sources:</p>
+    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
+  </li>
+  <li><p>In the extracted directory, run <code>make</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step3"><span class="gp" data-eventcategory="mac-source-step3">$ </span><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient. The first time you run <code>make</code>, it can take even longer to download and install various dependencies.</p>
 
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
   <li>
-    <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+  <p>Move the binary onto your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
     <p>Make sure CockroachDB installed successfully:</p>
@@ -302,7 +306,7 @@ $(document).ready(function(){
       </div>
     </li>
     <li>
-      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+      <p>Move the binary onto your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
       <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-latest.linux-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
@@ -340,10 +344,10 @@ $(document).ready(function(){
 
     <ul>
       <li>
-        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>.</p>
+        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On Mac OS X, Xcode should suffice.</p>
       </li>
       <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently. Be sure to set the <code class="highlighter-rouge">$GOPATH</code> and <code class="highlighter-rouge">$PATH</code> environment variables as described <a href="https://golang.org/doc/code.html#GOPATH">here</a>.</p>
+        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a recent 64-bit version of the toolchain. The Makefile enforces the specific version required, as it is updated frequently.</p>
       </li>
       <li>
         <p>Git 1.8+</p>
@@ -355,21 +359,25 @@ $(document).ready(function(){
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Get the CockroachDB code:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step2"><span class="gp" data-eventcategory="linux-source-step2">$ </span>go get -d github.com/cockroachdb/cockroach</code></pre></div>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
   </li>
   <li>
-    <p>Build the CockroachDB binary:</p>
+    <p>Extract the sources:</p>
+    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
+  </li>
+  <li><p>In the extracted directory, run <code>make</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step3"><span class="gp" data-eventcategory="linux-source-step3">$ </span><span class="nb" data-eventcategory="linux-source-step3">cd</span> <span class="nv" data-eventcategory="linux-source-step3">$GOPATH</span>/src/github.com/cockroachdb/cockroach<br>$ git checkout {{site.data.strings.version}}<br><span class="gp">$ </span>make install</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient. The first time you run <code>make</code>, it can take even longer to download and install various dependencies.</p>
 
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
   <li>
-    <p>The <code class="highlighter-rouge">make install</code> command puts the binary in <code class="highlighter-rouge"><span class="nv">$GOPATH</span>/bin</code>. Add this directory to your <code class="highlighter-rouge">PATH</code>, if it isn't already there. This makes it easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell.</p>
+  <p>Move the binary onto your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
       <p>Make sure CockroachDB installed successfully:</p>
