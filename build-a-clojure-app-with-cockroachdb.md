@@ -34,9 +34,11 @@ CREATE TABLE
 
 ## Step 6. Run the Clojure code
 
+Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+
 ### Basic Statements
 
-The following code connects as the `maxroach` user and executes some basic SQL statements, inserting rows and reading and printing the rows.
+First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, inserting rows and reading and printing the rows.
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/basic-sample.clj" download>download it directly</a>.
@@ -47,7 +49,7 @@ Copy the code or
 
 ### Transaction (with retry logic)
 
-The following code again connects as the `maxroach` user but this time executes a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
+Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.clj" download>download it directly</a>.
@@ -58,7 +60,7 @@ Copy the code or
 {% include app/txn-sample.clj %}
 ~~~
 
-After running the code, to verify that funds were, in fact, transferred from one account to another, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
+After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
 
 ~~~ shell
 $ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
