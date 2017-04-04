@@ -11,12 +11,12 @@ The tutorials in this section show you how to build a simple application with Co
 
 App Language | Featured Driver | Featured ORM
 -------------|-----------------|-------------
-[Go](build-a-go-app-with-cockroachdb.html) | pq | GORM
-[Python](build-a-python-app-with-cockroachdb.html) | psycopg2 | SQLAlchemy
-[Ruby](build-a-ruby-app-with-cockroachdb.html) | pg | ActiveRecord
-[Java](build-a-java-app-with-cockroachdb.html) | jdbc | Hibernate
-[Node.js](build-a-nodejs-app-with-cockroachdb.html) | pg | Sequelize
-[C++](build-a-c++-app-with-cockroachdb.html) | libpqxx | No ORMs tested
-[Clojure](build-a-clojure-app-with-cockroachdb.html) | java.jdbc | No ORMs tested
-[PHP](build-a-php-app-with-cockroachdb.html) | php-pgsql | No ORMs tested
-[Rust](build-a-rust-app-with-cockroachdb.html) | postgres | No ORMs tested
+Go | [pq](build-a-go-app-with-cockroachdb.html) | [GORM](build-a-go-app-with-cockroachdb-gorm.html)
+Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html)
+Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html)
+Java | [jdbc](build-a-java-app-with-cockroachdb.html) | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)
+Node.js | [pg](build-a-nodejs-app-with-cockroachdb.html) | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html)
+C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | No ORMs tested
+Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | No ORMs tested
+PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | No ORMs tested
+Rust | [postgres](build-a-rust-app-with-cockroachdb.html) | No ORMs tested
