@@ -54,26 +54,31 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 You can also set the default isolation level for all transactions in the client's current session using `SET DEFAULT_TRANSACTION_ISOLATION TO <isolation level>`.
 
 ~~~ sql
-> SHOW TRANSACTION ISOLATION LEVEL;
+> SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
-~~~
-+-----------------------------+
-| TRANSACTION ISOLATION LEVEL |
-+-----------------------------+
-| SERIALIZABLE                |
-+-----------------------------+
-~~~
-~~~ sql
-> SET DEFAULT_TRANSACTION_ISOLATION TO SNAPSHOT
 
-> SHOW TRANSACTION ISOLATION LEVEL;
 ~~~
++-------------------------------+
+| default_transaction_isolation |
++-------------------------------+
+| SERIALIZABLE                  |
++-------------------------------+
+(1 row)
 ~~~
-+-----------------------------+
-| TRANSACTION ISOLATION LEVEL |
-+-----------------------------+
-| SNAPSHOT                    |
-+-----------------------------+
+
+~~~ sql
+> SET DEFAULT_TRANSACTION_ISOLATION TO SNAPSHOT;
+
+> SHOW DEFAULT_TRANSACTION_ISOLATION;
+~~~
+
+~~~
++-------------------------------+
+| default_transaction_isolation |
++-------------------------------+
+| SNAPSHOT                      |
++-------------------------------+
+(1 row)
 ~~~
 
 ## See Also
