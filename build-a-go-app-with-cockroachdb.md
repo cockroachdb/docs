@@ -38,6 +38,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/basic-sample.go" download>download it directly</a>.
+
 ~~~ go
 {% include app/basic-sample.go %}
 ~~~
