@@ -43,7 +43,7 @@ Since you'll be running multiple Docker containers on a single host, with one Co
 
 We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
 
-## Step 2. Start your first container/node
+## Step 2. Start the first node
 
 {{site.data.alerts.callout_info}}Be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
@@ -68,7 +68,11 @@ This command creates a container and starts the first CockroachDB node inside it
 
   {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one container/node per host. When running multiple containers/nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
-## Step 3. Start additional containers/nodes
+## Step 3. Add nodes to the cluster
+
+At this point, your cluster is live and operational. With just one node, you can already connect a SQL client and start building out your database. In real deployments, however, you'll always want 3 or more nodes to take advantage of CockroachDB's [automatic replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), and [fault tolerance](demo-fault-tolerance-and-recovery.html) capabilities.
+
+To simulate a real deployment, scale your cluster by adding two more nodes:
 
 {{site.data.alerts.callout_info}}Again, be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
@@ -93,40 +97,50 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 - `-v`: This flag mounts a host directory as a data volume. Data and logs for these nodes will be stored in `Users/<username>/cockroach-data/roach2` and `Users/<username>/cockroach-data/roach3` on the host and will persist after the containers are stopped or deleted.
 - `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
-## Step 4. Use the built-in SQL client
+## Step 4. Test the cluster
 
-Use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
+Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
 <div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach1 ./cockroach sql
 <span class="c1"># Welcome to the cockroach SQL interface.</span>
 <span class="c1"># All statements must be terminated by a semicolon.</span>
 <span class="c1"># To exit: CTRL + D.</span></code></pre></div>
 
-Then run some [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 ~~~ sql
 > CREATE DATABASE bank;
-~~~
 
-~~~
-CREATE DATABASE
-~~~
-
-~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+
+> INSERT INTO bank.accounts VALUES (1, 1000.50);
+
+> SELECT * FROM bank.accounts;
 ~~~
 
 ~~~
-CREATE TABLE
++----+---------+
+| id | balance |
++----+---------+
+|  1 |  1000.5 |
++----+---------+
+(1 row)
 ~~~
+
+Exit the SQL shell on node 1:
 
 ~~~ sql
-> INSERT INTO bank.accounts VALUES (1, 1000.50);
+> \q
 ~~~
 
-~~~
-INSERT 1
-~~~
+Then start the SQL shell in the second container:
+
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach2 ./cockroach sql
+<span class="c1"># Welcome to the cockroach SQL interface.</span>
+<span class="c1"># All statements must be terminated by a semicolon.</span>
+<span class="c1"># To exit: CTRL + D.</span></code></pre></div>
+
+Now run the same `SELECT` query:
 
 ~~~ sql
 > SELECT * FROM bank.accounts;
@@ -141,33 +155,27 @@ INSERT 1
 (1 row)
 ~~~
 
-When you're done, use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-If you want to verify that the containers/nodes are, in fact, part of a single cluster, you can start the SQL shell in one of the other containers and check for the new `bank` database:
-
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach2 ./cockroach sql
-<span class="c1"># Welcome to the cockroach SQL interface.</span>
-<span class="c1"># All statements must be terminated by a semicolon.</span>
-<span class="c1"># To exit: CTRL + D.</span></code></pre></div>
+When you're done, exit the SQL shell on node 2:
 
 ~~~ sql
-> SHOW DATABASES;
+> \q
 ~~~
 
-~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
-~~~
-
-## Step 5. Open the Admin UI
+## Step 5. Monitor the cluster
 
 When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
+
+<img src="images/admin_ui_replicas.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
+
+{{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
 ## Step 6.  Stop the cluster
 
@@ -185,6 +193,8 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
 
-- [Manual Deployment](manual-deployment.html): How to run CockroachDB across multiple machines
-- [Cloud Deployment](cloud-deployment.html): How to run CockroachDB in the cloud
-- [Orchestration](orchestration.html): How to further automate CockroachDB with orchestration tools
+- [Explore Core Feature](demo-data-replication.html)
+- [Manual Deployment](manual-deployment.html)
+- [Cloud Deployment](cloud-deployment.html)
+- [Orchestration](orchestration.html)
+- [Import Data](import-data.html)

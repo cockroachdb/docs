@@ -11,7 +11,7 @@ Now that you've seen how easy it is to [start, use, and stop a local cluster](st
 
 ## Before You Begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+Make sure you have already [installed CockroachDB](install-cockroachdb.html) and [started and stopped a local insecure cluster](start-a-local-cluster.html).
 
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
@@ -189,17 +189,23 @@ $ cockroach quit \
 --ca-cert=certs/ca.cert \
 --cert=certs/root.cert \
 --key=certs/root.key
-
-# Stop node 3:
-$ cockroach quit \
---host=localhost \
---port=26259 \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
 ~~~
 
-For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+With only 1 node online, a majority of replicas are no longer available, and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
+
+~~~ shell
+# Get the process ID for node 3:
+$ ps | grep cockroach
+~~~
+
+~~~
+12897 ttys001    0:00.48 cockroach start --store=node3 --port=26259 --http-port=8082 --http-host=localhost --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --join=localhost:26257
+~~~
+
+~~~ shell
+# Force quit the process:
+$ kill -9 12897
+~~~
 
 ## What's Next?
 
