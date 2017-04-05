@@ -6,15 +6,17 @@ toc_not_nested: true
 asciicast: true
 ---
 
-Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port. 
+Once you've [installed the CockroachDB binary](install-cockroachdb.html), it's simple to start a multi-node cluster locally with each node listening on a different port.
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Watch a Demo
+## Before You Begin
 
-Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+
+Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
 
@@ -38,21 +40,21 @@ nodeID:     1
 
 This command starts a node, accepting all [`cockroach start`](start-a-node.html) defaults.
 
-- Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI. 
-   - To bind to different ports, set `--port=<port>` and `--http-port=<port>`. 
+- Communication is insecure, with the server listening only on `localhost` on port `26257` for internal and client communication and on port `8080` for HTTP requests from the Admin UI.
+   - To bind to different ports, set `--port=<port>` and `--http-port=<port>`.
    - To bind the Admin UI to a private IP address or host, set `--http-host=<private-addr>`.
-   - To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. For a demonstration, see [Manual Deployment](manual-deployment.html). 
+   - To listen on an external hostname or IP address, set `--insecure` and `--host=<external address>`. For a demonstration, see [Manual Deployment](manual-deployment.html).
 
 - Node data is stored in the `cockroach-data` directory. To store data in a different location, set `--store=<filepath>`. To use multiple stores, set this flag separately for each.
 
-- The `--background` flag runs the node in the background so you can continue the next steps in the same shell. 
+- The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 
 - The [standard output](start-a-node.html#standard-output) gives you a helpful summary: the CockroachDB version; the URL for the admin UI; the SQL URL for your client code; the storage locations for node and debug log data; whether the node is the first in the cluster, joined an existing cluster for the first time, or rejoined an existing cluster; the cluster ID; and the node ID.
 
 {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one node per host. When running multiple nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
 ## Step 2. Add nodes to the cluster
-   
+
 ~~~ shell
 # Start your second node:
 $ cockroach start --background \
@@ -75,7 +77,7 @@ These commands add two nodes to the cluster, but you can add as many as you like
 
 - Set the `--port` and `--http-port` flags to ports not in use by other nodes.
 
-- The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node. 
+- The `--join` flag connects the new node to the cluster. Set this flag to `localhost` and the port of the first node.
 
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 
@@ -149,7 +151,7 @@ You can stop the nodes (and therefore the cluster) as follows:
 # Stop node 1:
 $ cockroach quit
 
-# Stop node 2: 
+# Stop node 2:
 $ cockroach quit --port=26258
 
 # Stop node 3:

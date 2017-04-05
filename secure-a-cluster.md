@@ -5,13 +5,15 @@ toc: false
 asciicast: true
 ---
 
-Now that you've seen how easy it is to start, use, and stop a [local cluster](start-a-local-cluster.html), let's secure the cluster with authentication and encryption. This involves creating certificates and restarting nodes with a few additional flags.
+Now that you've seen how easy it is to [start, use, and stop a local cluster](start-a-local-cluster.html), let's secure the cluster with authentication and encryption. This involves creating certificates and restarting nodes with a few additional flags.
 
 <div id="toc"></div>
 
-## Watch a Demo
+## Before You Begin
 
-Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+
+Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
 
@@ -71,9 +73,9 @@ clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
 nodeID:     1
 ~~~
 
-This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions: 
+This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
+- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
 - When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 3.  Restart additional nodes
@@ -102,7 +104,7 @@ $ cockroach start --background \
 
 These commands restart additional nodes with their existing data, but securely. The commands are the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
+- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
 - When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flags are therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 4.  Restart the built-in SQL client as an interactive shell
@@ -161,10 +163,10 @@ INSERT 1
 ~~~
 
 When you're done, press **CTRL + D** to exit the SQL shell.
- 
+
 ## Step 6.  Access the Admin UI
 
-Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup. 
+Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
