@@ -5,9 +5,9 @@ keywords: reflection
 toc: false
 ---
 
-The `SHOW TRANSACTION` [statement](sql-statements.html) shows you the current transaction's [priority](transactions.html#transaction-priorities) or [isolation level](transactions.html#isolation-levels).
+The `SHOW TRANSACTION` [statement](sql-statements.html) shows you the current transaction's [isolation level](transactions.html#isolation-levels) or [priority](transactions.html#transaction-priorities).
 
-{{site.data.alerts.callout_info}}<code>SHOW TRANSACTION</code> can be run outside of transactions but simply returns <code>NORMAL</code> priority and <code>SERIALIZABLE</code> isolation level.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When run outside of a transaction, <code>SHOW TRANSACTION</code> returns the default isolation level or priority.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -32,10 +32,12 @@ No [privileges](privileges.html) are required to view transaction isolation leve
 ~~~
 ~~~
 +-----------------------------+
-| TRANSACTION ISOLATION LEVEL |
+| transaction isolation level |
 +-----------------------------+
 | SNAPSHOT                    |
 +-----------------------------+
+(1 row)
+
 ~~~
 
 ### Show the Transaction's Priority
@@ -49,10 +51,11 @@ No [privileges](privileges.html) are required to view transaction isolation leve
 ~~~
 ~~~
 +----------------------+
-| TRANSACTION PRIORITY |
+| transaction priority |
 +----------------------+
 | HIGH                 |
 +----------------------+
+(1 row)
 ~~~
 
 ## See Also
