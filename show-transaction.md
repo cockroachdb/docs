@@ -7,6 +7,8 @@ toc: false
 
 The `SHOW TRANSACTION` [statement](sql-statements.html) shows you the current transaction's [priority](transactions.html#transaction-priorities) or [isolation level](transactions.html#isolation-levels).
 
+{{site.data.alerts.callout_info}}<code>SHOW TRANSACTION</code> can be run outside of transactions but simply returns <code>NORMAL</code> priority and <code>SERIALIZABLE</code> isolation level.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Synopsis
@@ -30,11 +32,10 @@ No [privileges](privileges.html) are required to view transaction isolation leve
 ~~~
 ~~~
 +-----------------------------+
-| transaction isolation level |
+| TRANSACTION ISOLATION LEVEL |
 +-----------------------------+
 | SNAPSHOT                    |
 +-----------------------------+
-(1 row)
 ~~~
 
 ### Show the Transaction's Priority
@@ -48,11 +49,10 @@ No [privileges](privileges.html) are required to view transaction isolation leve
 ~~~
 ~~~
 +----------------------+
-| transaction priority |
+| TRANSACTION PRIORITY |
 +----------------------+
 | HIGH                 |
 +----------------------+
-(1 row)
 ~~~
 
 ## See Also
