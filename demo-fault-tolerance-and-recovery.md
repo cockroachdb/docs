@@ -298,20 +298,32 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 ## Step 10.  Stop the cluster
 
-You can stop the nodes (and therefore the cluster) as follows:
+Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html) to stop 2 of the 3 nodes:
 
 ~~~ shell
 # Stop node 1:
 $ cockroach quit
 
-# Stop node 3:
-$ cockroach quit --port=26259
+# Stop node 2:
+$ cockroach quit --port=26258
 
-# Stop node 4:
-$ cockroach quit --port=26260
 ~~~
 
-For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
+
+~~~ shell
+# Get the process ID for node 3:
+$ ps | grep cockroach
+~~~
+
+~~~
+13398 ttys001    0:00.67 cockroach start --store=fault-node3 --port=26259 --http-port=8082 --join=localhost:26257
+~~~
+
+~~~ shell
+# Force quit node 3:
+$ kill -9 13398
+~~~
 
 ## What's Next?
 
