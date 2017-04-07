@@ -5,13 +5,15 @@ toc: false
 asciicast: true
 ---
 
-Now that you've seen how easy it is to start, use, and stop a [local cluster](start-a-local-cluster.html), let's secure the cluster with authentication and encryption. This involves creating certificates and restarting nodes with a few additional flags.
+Now that you've seen how easy it is to [start, use, and stop a local cluster](start-a-local-cluster.html), let's secure the cluster with authentication and encryption. This involves creating certificates and restarting nodes with a few additional flags.
 
 <div id="toc"></div>
 
-## Watch a Demo
+## Before You Begin
 
-Feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
+Make sure you have already [installed CockroachDB](install-cockroachdb.html) and [started and stopped a local insecure cluster](start-a-local-cluster.html).
+
+Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
 
@@ -71,9 +73,9 @@ clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
 nodeID:     1
 ~~~
 
-This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions: 
+This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
+- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
 - When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 3.  Restart additional nodes
@@ -102,7 +104,7 @@ $ cockroach start --background \
 
 These commands restart additional nodes with their existing data, but securely. The commands are the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2. 
+- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
 - When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flags are therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 4.  Restart the built-in SQL client as an interactive shell
@@ -161,10 +163,10 @@ INSERT 1
 ~~~
 
 When you're done, press **CTRL + D** to exit the SQL shell.
- 
+
 ## Step 6.  Access the Admin UI
 
-Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup. 
+Reopen the [Admin UI](explore-the-admin-ui.html) by pointing your browser to `https://localhost:8080`. You can also find the address in the `admin` field in the standard output of any node on startup.
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
@@ -187,17 +189,23 @@ $ cockroach quit \
 --ca-cert=certs/ca.cert \
 --cert=certs/root.cert \
 --key=certs/root.key
-
-# Stop node 3:
-$ cockroach quit \
---host=localhost \
---port=26259 \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
 ~~~
 
-For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+With only 1 node online, a majority of replicas are no longer available, and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
+
+~~~ shell
+# Get the process ID for node 3:
+$ ps | grep cockroach
+~~~
+
+~~~
+12897 ttys001    0:00.48 cockroach start --store=node3 --port=26259 --http-port=8082 --http-host=localhost --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --join=localhost:26257
+~~~
+
+~~~ shell
+# Force quit the process:
+$ kill -9 12897
+~~~
 
 ## What's Next?
 

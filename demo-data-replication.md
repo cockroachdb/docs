@@ -179,7 +179,7 @@ Back in the Admin UI, you'll see that there are now 5 nodes listed. Again, at fi
 
 ## Step 8.  Stop the cluster
 
-You can stop the nodes (and therefore the cluster) as follows:
+Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html) to stop 3 of the 5 nodes:
 
 ~~~ shell
 # Stop node 1:
@@ -190,15 +190,25 @@ $ cockroach quit --port=26258
 
 # Stop node 3:
 $ cockroach quit --port=26259
-
-# Stop node 4:
-$ cockroach quit --port=26260
-
-# Stop node 5:
-$ cockroach quit --port=26261
 ~~~
 
-For more details about the `cockroach quit` command, see [Stop a Node](stop-a-node.html).
+With only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last nodes, but instead must get the nodes' process IDs and then force kill them:
+
+~~~ shell
+# Get the process ID for node 4 and 5:
+$ ps | grep cockroach
+~~~
+
+~~~
+13398 ttys001    0:00.67 cockroach start --store=repdemo-node4 --port=26260 --http-port=8083 --join=localhost:26257
+13400 ttys001    0:00.58 cockroach start --store=repdemo-node5 --port=26261 --http-port=8084 --join=localhost:26257
+~~~
+
+~~~ shell
+# Force quit the remaining nodes:
+$ kill -9 13398
+$ kill -9 13400
+~~~
 
 ## What's Next?
 
