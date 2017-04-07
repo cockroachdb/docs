@@ -56,7 +56,6 @@ You can also set the default isolation level for all transactions in the client'
 ~~~ sql
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
-
 ~~~
 +-------------------------------+
 | default_transaction_isolation |
@@ -65,13 +64,15 @@ You can also set the default isolation level for all transactions in the client'
 +-------------------------------+
 (1 row)
 ~~~
-
 ~~~ sql
 > SET DEFAULT_TRANSACTION_ISOLATION TO SNAPSHOT;
-
+~~~
+~~~
+SET
+~~~
+~~~ sql
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
-
 ~~~
 +-------------------------------+
 | default_transaction_isolation |
