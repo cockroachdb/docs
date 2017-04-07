@@ -126,6 +126,9 @@ func GenerateOperators() []byte {
 	return b.Bytes()
 }
 
+// TODO(mjibson): use the exported value from sql/parser/pg_builtins.go.
+const notUsableInfo = "Not usable; exposed only for compatibility with PostgreSQL."
+
 func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte {
 	functions := make(map[string][]string)
 	seen := make(map[string]struct{})
@@ -138,6 +141,9 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 		}
 		seen[name] = struct{}{}
 		for _, fn := range fns {
+			if fn.Info == notUsableInfo {
+				continue
+			}
 			if categorize && fn.WindowFunc != nil {
 				continue
 			}

@@ -104,6 +104,7 @@ Function &rarr; Returns | Description
 <code>btrim(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Removes all spaces from the beginning and end of `val`.</span>
 <code>concat(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Concatenates a comma-separated list of strings.</span>
 <code>concat_ws(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Uses the first argument as a separator between the concatenation of the subsequent arguments. <br/><br/>For example `concat_ws('!','wow','great')` returns `wow!great`.</span>
+<code>crdb_testing.to_english(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns an English string derived from a number.</span>
 <code>experimental_strftime(input: <a href="date.html">date</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
 <code>experimental_strftime(input: <a href="timestamp.html">timestamp</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
 <code>experimental_strftime(input: <a href="timestamp.html">timestamptz</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
@@ -168,22 +169,9 @@ Function &rarr; Returns | Description
 
 Function &rarr; Returns | Description
 --- | ---
-<code>array_in(string: <a href="string.html">string</a>, element_oid: <a href="int.html">int</a>, element_typmod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>col_description(table_oid: oid, column_number: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
 <code>format_type(type_oid: oid, typemod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns the SQL name of a data type that is identified by its type OID and possibly a type modifier. Currently, the type modifier is ignored.</span>
 <code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>) &rarr; setof tuple{int}</code> | <span class="funcdesc">Produces a virtual table containing the integer values from `start` to `end`, inclusive.</span>
 <code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>, step: <a href="int.html">int</a>) &rarr; setof tuple{int}</code> | <span class="funcdesc">Produces a virtual table containing the integer values from `start` to `end`, inclusive, by increment of `step`.</span>
-<code>obj_description(object_oid: oid) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>obj_description(object_oid: oid, catalog_name: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
 <code>oid(int: <a href="int.html">int</a>) &rarr; oid</code> | <span class="funcdesc">Converts an integer to an OID.</span>
-<code>pg_advisory_unlock(int: <a href="int.html">int</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
-<code>pg_backend_pid() &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: oid) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>pg_get_expr(pg_node_tree: <a href="string.html">string</a>, relation_oid: oid, pretty_bool: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>pg_get_indexdef(index_oid: oid) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>pg_get_userbyid(role_oid: oid) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>pg_try_advisory_lock(int: <a href="int.html">int</a>) &rarr; <a href="bool.html">bool</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility.</span>
-<code>pg_typeof(val: anyelement) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
-<code>shobj_description(object_oid: oid, catalog_name: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Not usable; exposed only for ORM compatibility with PostgreSQL.</span>
 <code>unnest(input: anyelement[]) &rarr; anyelement</code> | <span class="funcdesc">Returns the input array as a set of rows</span>
 
