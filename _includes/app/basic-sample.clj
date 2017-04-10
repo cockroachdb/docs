@@ -1,22 +1,33 @@
-;; Import the driver.
-(use 'clojure.java.jdbc)
+(ns test.test
+  (:require   [clojure.java.jdbc :as j]
+              [test.util :as util]))
 
-;; Connect to the "bank" database.
+;; Define the connection parameters to the cluster.
 (def db-spec {:subprotocol "postgresql"
               :subname "//localhost:26257/bank"
               :user "maxroach"
               :password ""})
 
-(with-db-connection [conn db-spec]
+(defn test-basic []
+  ;; Connect to the cluster and run the code below with
+  ;; the connection object bound to 'conn'.
+  (j/with-db-connection [conn db-spec]
 
-  ;; Insert two rows into the "accounts" table.
-  (insert! conn :accounts {:id 1 :balance 1000} {:id 2 :balance 250})
+    ;; Insert two rows into the "accounts" table.
+    (j/insert! conn :accounts {:id 1 :balance 1000})
+    (j/insert! conn :accounts {:id 2 :balance 250})
 
-  ;; Print out the balances.
-  (println "Initial balances:")
-  (->> (query conn ["SELECT id, balance FROM accounts"])
-       (map println)
-       doall)
+    ;; Print out the balances.
+    (println "Initial balances:")
+    (->> (j/query conn ["SELECT id, balance FROM accounts"])
+         (map println)
+         doall)
 
-;; The database connection is automatically closed by with-db-connection.
-)
+    ;; The database connection is automatically closed by with-db-connection.
+    )
+  )
+
+
+(defn -main [& args]
+  (test-basic)
+  )
