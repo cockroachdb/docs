@@ -120,19 +120,43 @@ $(function() {
 
   // collapse sidebar navigation
   $('.sidenav-arrow').on('click', function() {
-    $('#mysidebar li').slideToggle(400);
     $('.collapsed-header').slideToggle(400);
 
     if ($sidebar.hasClass('nav--collapsed')) {
       $sidebar.removeClass('nav--collapsed');
       $sidebar.removeAttr('style');
+
+      var $active = $('#mysidebar .active');
+      if ($active.length > 0) {
+        // if active drawer, we want to preserve that on expand
+        $('li.search-wrap').slideDown(400);
+        $active.slideDown(400);
+
+        // we want to show all children
+        if ($active.length === 1) {
+          $active.find('li').slideDown(400);
+        } else {
+          // this should only fire if more than 1 active li, meaning third tier is open
+          // we need to display the third tier's children
+          $('#mysidebar .active .active li').slideDown(400);
+
+        }
+      } else {
+        // otherwise, this should show top level
+        $('#mysidebar li').slideToggle(400);
+      }
+
     } else {
       $sidebar.addClass('nav--collapsed');
       $sidebar.animate({height: '40px'}, {duration: 400});
+      $('#mysidebar li').slideUp(400);
     }
   });
 
   $('#mysidebar a').on('click', function() {
+    // hide sibling links
     $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
+    // ensure child links are open
+    $(this).siblings('ul').children().slideDown();
   });
 });

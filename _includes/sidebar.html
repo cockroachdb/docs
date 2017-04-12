@@ -75,7 +75,14 @@
                             {% endif %}
 
                         {% for thirdlevel in item.thirdlevel %}
-                            <li><a href="#">{{ thirdlevel.title }}</a>
+                            <li>
+                                <a href="#">
+                                  {{ thirdlevel.title }}
+                                  {% if thirdlevel.thirdlevelitems %}
+                                    <div class="arrow-up"></div>
+                                    <div class="arrow-down"></div>
+                                  {% endif %}
+                                </a>
                                 <ul>
                                     {% for deeplevel in thirdlevel.thirdlevelitems %}
                                         {% if deeplevel.external_url %}

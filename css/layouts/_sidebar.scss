@@ -48,6 +48,17 @@
   margin-right: 10px;
 }
 
+.arrow-down {
+  display: inline-block;
+  border: solid $cl_blue;
+  border-width: 0 2px 2px 0;
+  padding: 2px;
+  vertical-align: middle;
+  margin-left: 5px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
 .nav {
   background-color: transparent;
   padding:0px;
@@ -149,16 +160,24 @@
       > code {
         color: $cl_green;
       }
-    }
 
-    .arrow-up {
-      display: inline-block;
+      .arrow-up {
+        display: inline-block;
+      }
     }
 
     // third tier
     li.active {
       a {
         width: 100%;
+
+        .arrow-up {
+          display: inline-block;
+        }
+
+        .arrow-down {
+          display: none;
+        }
       }
     }
   }

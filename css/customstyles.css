@@ -330,6 +330,16 @@ header {
   margin-top: 10px;
   margin-right: 10px; }
 
+.arrow-down {
+  display: inline-block;
+  border: solid #142848;
+  border-width: 0 2px 2px 0;
+  padding: 2px;
+  vertical-align: middle;
+  margin-left: 5px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg); }
+
 .nav {
   background-color: transparent;
   padding: 0px;
@@ -403,10 +413,14 @@ header {
     border-bottom: 1px solid #d8d8d8; }
     .nav li.active > a > code {
       color: #46a417; }
-  .nav li.active .arrow-up {
-    display: inline-block; }
+    .nav li.active > a .arrow-up {
+      display: inline-block; }
   .nav li.active li.active a {
     width: 100%; }
+    .nav li.active li.active a .arrow-up {
+      display: inline-block; }
+    .nav li.active li.active a .arrow-down {
+      display: none; }
 
 .roach {
   border: 1px solid #D9DBE2;
