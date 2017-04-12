@@ -32,25 +32,32 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 ~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
-~~~ 
-+-------+------------+--------+-----+--------+-----------+---------+
-| Table |    Name    | Unique | Seq | Column | Direction | Storing |
-+-------+------------+--------+-----+--------+-----------+---------+
-| tbl   | primary    | true   |   1 | id     | ASC       | false   |
-| tbl   | index_name | false  |   1 | name   | ASC       | false   |
-+-------+------------+--------+-----+--------+-----------+---------+
+~~~
++-------+--------------+--------+-----+--------+-----------+---------+----------+
+| Table |     Name     | Unique | Seq | Column | Direction | Storing | Implicit |
++-------+--------------+--------+-----+--------+-----------+---------+----------+
+| tbl   | primary      | true   |   1 | id     | ASC       | false   | false    |
+| tbl   | tbl_name_idx | false  |   1 | name   | ASC       | false   | false    |
+| tbl   | tbl_name_idx | false  |   2 | id     | ASC       | false   | true     |
++-------+--------------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
 ~~~
 ~~~ sql
-> DROP INDEX tbl@index_name;
-
+> DROP INDEX tbl@tbl_name_idx;
+~~~
+~~~
+DROP INDEX
+~~~
+~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
-~~~ 
-+-------+---------+--------+-----+--------+-----------+---------+
-| Table |  Name   | Unique | Seq | Column | Direction | Storing |
-+-------+---------+--------+-----+--------+-----------+---------+
-| tbl   | primary | true   |   1 | id     | ASC       | false   |
-+-------+---------+--------+-----+--------+-----------+---------+
+~~~
++-------+---------+--------+-----+--------+-----------+---------+----------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing | Implicit |
++-------+---------+--------+-----+--------+-----------+---------+----------+
+| tbl   | primary | true   |   1 | id     | ASC       | false   | false    |
++-------+---------+--------+-----+--------+-----------+---------+----------+
+(1 row)
 ~~~
 
 ### Remove an Index and Dependent Objects with `CASCADE`
@@ -60,18 +67,20 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 ~~~ sql
 > SHOW INDEX FROM orders;
 ~~~
-~~~ 
-+--------+---------------------+--------+-----+----------+-----------+---------+
-| Table  |        Name         | Unique | Seq |  Column  | Direction | Storing |
-+--------+---------------------+--------+-----+----------+-----------+---------+
-| orders | primary             | true   |   1 | id       | ASC       | false   |
-| orders | orders_customer_idx | false  |   1 | customer | ASC       | false   |
-+--------+---------------------+--------+-----+----------+-----------+---------+
+~~~
++--------+---------------------+--------+-----+----------+-----------+---------+----------+
+| Table  |        Name         | Unique | Seq |  Column  | Direction | Storing | Implicit |
++--------+---------------------+--------+-----+----------+-----------+---------+----------+
+| orders | primary             | true   |   1 | id       | ASC       | false   | false    |
+| orders | orders_customer_idx | false  |   1 | customer | ASC       | false   | false    |
+| orders | orders_customer_idx | false  |   2 | id       | ASC       | false   | true     |
++--------+---------------------+--------+-----+----------+-----------+---------+----------+
+(3 rows)
 ~~~
 ~~~ sql
 > DROP INDEX orders@orders_customer_idx;
 ~~~
-~~~ 
+~~~
 pq: index "orders_customer_idx" is in use as a foreign key constraint
 ~~~
 ~~~ sql
@@ -87,7 +96,11 @@ pq: index "orders_customer_idx" is in use as a foreign key constraint
 ~~~
 ~~~ sql
 > DROP INDEX orders@orders_customer_idx CASCADE;
-
+~~~
+~~~
+DROP INDEX
+~~~
+~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
 ~~~

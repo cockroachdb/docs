@@ -48,7 +48,7 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 Retrieve specific columns by naming them in a comma-separated list.
 
 ~~~ sql
-> SELECT id, name, balance 
+> SELECT id, name, balance
 FROM accounts;
 ~~~
 ~~~
@@ -88,8 +88,8 @@ FROM accounts;
 Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause.
 
 ~~~ sql
-> SELECT name, balance 
-FROM accounts 
+> SELECT name, balance
+FROM accounts
 WHERE balance < 300;
 ~~~
 ~~~
@@ -107,8 +107,8 @@ WHERE balance < 300;
 To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`.
 
 ~~~ sql
-> SELECT * 
-FROM accounts 
+> SELECT *
+FROM accounts
 WHERE balance > 2500 AND NOT type = 'checking';
 ~~~
 ~~~
@@ -125,8 +125,8 @@ WHERE balance > 2500 AND NOT type = 'checking';
 Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value.
 
 ~~~ sql
-> SELECT name 
-FROM accounts 
+> SELECT name
+FROM accounts
 WHERE state_opened = 'VT';
 ~~~
 ~~~
@@ -141,8 +141,8 @@ WHERE state_opened = 'VT';
 Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data.
 
 ~~~ sql
-> SELECT DISTINCT name 
-FROM accounts 
+> SELECT DISTINCT name
+FROM accounts
 WHERE state_opened = 'VT';
 ~~~
 ~~~
@@ -158,8 +158,8 @@ WHERE state_opened = 'VT';
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column.
 
 ~~~ sql
-> SELECT name, balance, state_opened 
-FROM accounts 
+> SELECT name, balance, state_opened
+FROM accounts
 WHERE state_opened IN ('AZ', 'NY', 'WA');
 ~~~
 ~~~
@@ -202,8 +202,8 @@ Search for partial [string](string.html) matches in columns using `LIKE`, which 
 - `_` matches exactly 1 character
 
 ~~~ sql
-> SELECT id, name, type 
-FROM accounts 
+> SELECT id, name, type
+FROM accounts
 WHERE name LIKE 'Anni%';
 ~~~
 ~~~
@@ -224,7 +224,7 @@ WHERE name LIKE 'Anni%';
 By using an aggregate function as a `target_elem`, you can perform the calculation on the entire column.
 
 ~~~sql
-> SELECT MIN(balance) 
+> SELECT MIN(balance)
 FROM accounts;
 ~~~
 ~~~
@@ -238,10 +238,10 @@ FROM accounts;
 You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself.
 
 ~~~ sql
-> SELECT id, name, balance 
-FROM accounts 
+> SELECT id, name, balance
+FROM accounts
 WHERE balance = (
-      SELECT 
+      SELECT
       MIN(balance)
       FROM accounts
 );
@@ -262,8 +262,8 @@ WHERE balance = (
 By filtering the statement, you can perform the calculation only on retrieved rows.
 
 ~~~sql
-> SELECT SUM(balance) 
-FROM accounts 
+> SELECT SUM(balance)
+FROM accounts
 WHERE state_opened IN ('AZ', 'NY', 'WA');
 ~~~
 ~~~
@@ -296,9 +296,9 @@ Instead of performing aggregate functions on an the entire set of retrieved rows
 When creating aggregate groups, each column used as a `target_elem` must be included in `GROUP BY`.
 
 ~~~ sql
-> SELECT state_opened AS state, SUM(balance) AS state_balance 
-FROM accounts 
-WHERE state_opened IN ('AZ', 'NY', 'WA') 
+> SELECT state_opened AS state, SUM(balance) AS state_balance
+FROM accounts
+WHERE state_opened IN ('AZ', 'NY', 'WA')
 GROUP BY state_opened;
 ~~~
 ~~~
@@ -316,9 +316,9 @@ GROUP BY state_opened;
 To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evlauate to a Boolean value.
 
 ~~~ sql
-> SELECT state_opened, AVG(balance) as avg 
-FROM accounts 
-GROUP BY state_opened 
+> SELECT state_opened, AVG(balance) as avg
+FROM accounts
+GROUP BY state_opened
 HAVING AVG(balance) BETWEEN 1700 AND 50000;
 ~~~
 ~~~
@@ -330,17 +330,17 @@ HAVING AVG(balance) BETWEEN 1700 AND 50000;
 | OH           | 2500.00 |
 | AL           | 1850.00 |
 +--------------+---------+
-~~~ 
+~~~
 
 #### Use Aggregate Functions in Having Clause
 
 Aggregate functions can also be used in the `HAVING` clause without needing to be included as a `target_elem`.
 
 ~~~ sql
-> SELECT name, state_opened 
-FROM accounts 
-WHERE state_opened in ('LA', 'MO') 
-GROUP BY name, state_opened 
+> SELECT name, state_opened
+FROM accounts
+WHERE state_opened in ('LA', 'MO')
+GROUP BY name, state_opened
 HAVING COUNT(name) > 1;
 ~~~
 ~~~
@@ -367,11 +367,11 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 ~~~ sql
 > SELECT name
-FROM accounts 
-WHERE state_opened IN ('AZ', 'NY') 
-UNION 
+FROM accounts
+WHERE state_opened IN ('AZ', 'NY')
+UNION
 SELECT name
-FROM mortgages 
+FROM mortgages
 WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
@@ -389,11 +389,11 @@ To show duplicate rows, you can use `ALL`.
 
 ~~~ sql
 > SELECT name
-FROM accounts 
-WHERE state_opened IN ('AZ', 'NY') 
+FROM accounts
+WHERE state_opened IN ('AZ', 'NY')
 UNION ALL
 SELECT name
-FROM mortgages 
+FROM mortgages
 WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
@@ -415,11 +415,11 @@ WHERE state_opened IN ('AZ', 'NY');
 `INTERSECT` finds only values that are present in both `SELECT` queries.
 
 ~~~ sql
-> SELECT name 
-FROM accounts 
-WHERE state_opened IN ('NJ', 'VA') 
+> SELECT name
+FROM accounts
+WHERE state_opened IN ('NJ', 'VA')
 INTERSECT
-SELECT name 
+SELECT name
 FROM mortgages;
 ~~~
 ~~~
@@ -436,10 +436,10 @@ FROM mortgages;
 `EXCEPT` finds values that are present in the first `SELECT` statement but not the second.
 
 ~~~ sql
-> SELECT name 
-FROM mortgages 
-EXCEPT 
-SELECT name 
+> SELECT name
+FROM mortgages
+EXCEPT
+SELECT name
 FROM accounts;
 ~~~
 ~~~
@@ -459,9 +459,9 @@ FROM accounts;
 By default, retrieved tables are sorted by the source table's Primary Key. However, you can change that so it's sorted by any column.
 
 ~~~ sql
-> SELECT * 
-FROM accounts 
-WHERE balance BETWEEN 350 AND 500 
+> SELECT *
+FROM accounts
+WHERE balance BETWEEN 350 AND 500
 ORDER BY balance DESC;
 ~~~
 ~~~
@@ -484,9 +484,9 @@ ORDER BY balance DESC;
 Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
 
 ~~~ sql
-> SELECT * 
-FROM accounts 
-WHERE balance BETWEEN 350 AND 500 
+> SELECT *
+FROM accounts
+WHERE balance BETWEEN 350 AND 500
 ORDER BY balance DESC, name ASC;
 ~~~
 ~~~
@@ -511,8 +511,8 @@ ORDER BY balance DESC, name ASC;
 You can reduce the number of results with `LIMIT`.
 
 ~~~ sql
-> SELECT id, name 
-FROM accounts 
+> SELECT id, name
+FROM accounts
 LIMIT 5;
 ~~~
 ~~~
@@ -532,9 +532,9 @@ LIMIT 5;
 If you want to limit the number of results, but go beyond the initial set, use `OFFSET` to proceed to the next set of results. This is often used to paginate through large tables where not all of the values need to be immediately retrieved.
 
 ~~~ sql
-> SELECT id, name 
-FROM accounts 
-LIMIT 5 
+> SELECT id, name
+FROM accounts
+LIMIT 5
 OFFSET 5;
 ~~~
 ~~~
@@ -556,18 +556,20 @@ By using "index hints", you can override [CockroachDB's index selection](https:/
 {{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a <code>SELECT</code> statement.{{site.data.alerts.end}}
 
 ~~~ sql
-> SHOW INDEXES ON accounts;
+> SHOW INDEXES FROM accounts;
 ~~~
 ~~~
-+----------+-------------------+--------+-----+--------+-----------+---------+
-|  Table   |       Name        | Unique | Seq | Column | Direction | Storing |
-+----------+-------------------+--------+-----+--------+-----------+---------+
-| accounts | primary           | true   |   1 | id     | ASC       | false   |
-| accounts | accounts_name_idx | false  |   1 | name   | ASC       | false   |
-+----------+-------------------+--------+-----+--------+-----------+---------+
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+|  Table   |       Name        | Unique | Seq | Column | Direction | Storing | Implicit |
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+| accounts | primary           | true   |   1 | id     | ASC       | false   | false    |
+| accounts | accounts_name_idx | false  |   1 | name   | ASC       | false   | false    |
+| accounts | accounts_name_idx | false  |   2 | id     | ASC       | false   | true     |
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
 ~~~
 ~~~ sql
-> SELECT name, balance 
+> SELECT name, balance
 FROM accounts@accounts_name_idx
 WHERE name = 'Edna Barath';
 ~~~
@@ -589,8 +591,8 @@ CockroachDB lets you find data as it was stored at a given point in time using `
 Imagine this example represents the database's current data.
 
 ~~~ sql
-> SELECT name, balance 
-FROM accounts 
+> SELECT name, balance
+FROM accounts
 WHERE name = 'Edna Barath';
 ~~~
 ~~~
@@ -605,9 +607,9 @@ WHERE name = 'Edna Barath';
 We could instead retrieve the values as they were on October 3, 2016 at 12:45 UTC.
 
 ~~~ sql
-> SELECT name, balance 
-FROM accounts 
-AS OF SYSTEM TIME '2016-10-03 12:45:00' 
+> SELECT name, balance
+FROM accounts
+AS OF SYSTEM TIME '2016-10-03 12:45:00'
 WHERE name = 'Edna Barath';
 ~~~
 ~~~
