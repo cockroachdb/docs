@@ -12,7 +12,7 @@ func main() {
 	// Connect to the "bank" database.
 	db, err := sql.Open("postgres", "postgresql://maxroach@localhost:26257/bank?sslmode=disable")
 	if err != nil {
-		log.Fatalf("error connection to the database: %s", err)
+		log.Fatalf("error connecting to the database: %s", err)
 	}
 
 	// Create the "accounts" table.
