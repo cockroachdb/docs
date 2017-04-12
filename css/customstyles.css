@@ -319,6 +319,17 @@ header {
   -moz-osx-font-smoothing: grayscale;
   line-height: 20px; }
 
+.arrow-up {
+  display: none;
+  border: solid #c4c6cc;
+  border-width: 0 2px 2px 0;
+  padding: 4px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px; }
+
 .nav {
   background-color: transparent;
   padding: 0px;
@@ -332,7 +343,8 @@ header {
       display: block;
       outline: none;
       text-decoration: none;
-      padding: 0 0 0 10px;
+      padding: 0;
+      margin-left: 10px;
       color: #142848;
       font-family: 'AvenirLTStd-Medium', serif;
       font-size: 18px;
@@ -341,31 +353,33 @@ header {
       -moz-osx-font-smoothing: grayscale;
       line-height: 20px; }
     .nav > li > ul {
-      border-left: 1px solid #46a417;
-      margin: 0 0 0 12px;
-      padding: 5px 0 10px 0; }
+      border-left: 1px solid #82CC00;
+      margin: 0 0 0 15px;
+      padding: 0; }
       .nav > li > ul > li {
-        margin: 0 0 0 30px;
-        padding: 5px 0 0;
+        margin: 0 0 7px 15px;
+        padding: 0;
         list-style: none; }
+        .nav > li > ul > li:last-of-type {
+          margin-bottom: 0; }
         .nav > li > ul > li > a {
           font-family: 'AvenirLTStd-Medium', serif;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           line-height: 20px; }
         .nav > li > ul > li > ul {
-          border-left: 1px solid #46a417;
-          margin: 0;
-          padding: 5px 0 10px 0; }
+          border-left: 1px solid #82CC00;
+          margin: 0 0 0 5px;
+          padding: 0; }
           .nav > li > ul > li > ul > li {
-            margin: 0 0 0 25px;
-            padding: 5px 0 0;
+            margin: 0 0 7px 15px;
+            padding: 0;
             list-style: none; }
             .nav > li > ul > li > ul > li > a {
               font-family: 'AvenirLTStd-Medium', serif;
-              font-size: 14px;
+              font-size: 16px;
               font-weight: normal;
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
@@ -383,9 +397,16 @@ header {
         color: #46a417; }
   .nav li.active > a {
     background-color: transparent;
-    color: #46a417; }
+    color: #46a417;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #d8d8d8; }
     .nav li.active > a > code {
       color: #46a417; }
+  .nav li.active .arrow-up {
+    display: inline-block; }
+  .nav li.active li.active a {
+    width: 100%; }
 
 .roach {
   border: 1px solid #D9DBE2;

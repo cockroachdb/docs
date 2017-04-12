@@ -131,4 +131,8 @@ $(function() {
       $sidebar.animate({height: '40px'}, {duration: 400});
     }
   });
+
+  $('#mysidebar a').on('click', function() {
+    $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
+  });
 });
