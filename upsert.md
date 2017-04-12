@@ -6,9 +6,13 @@ toc: false
 
 The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
 
-Note that `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
-
 <div id="toc"></div>
+
+## Considerations
+
+- `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
+
+- When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
 ## Required Privileges
 
