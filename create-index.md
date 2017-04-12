@@ -107,13 +107,14 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 > SHOW INDEX FROM products;
 ~~~
 ~~~
-+----------+--------------------+--------+-----+--------+-----------+---------+
-|  Table   |        Name        | Unique | Seq | Column | Direction | Storing |
-+----------+--------------------+--------+-----+--------+-----------+---------+
-| products | primary            | true   |   1 | id     | ASC       | false   |
-| products | products_price_idx | false  |   1 | name   | N/A       | true    |
-| products | products_price_idx | false  |   2 | price  | ASC       | false   |
-+----------+--------------------+--------+-----+--------+-----------+---------+
++----------+--------------------+--------+-----+--------+-----------+---------+----------+
+|  Table   |        Name        | Unique | Seq | Column | Direction | Storing | Implicit |
++----------+--------------------+--------+-----+--------+-----------+---------+----------+
+| products | primary            | true   |   1 | id     | ASC       | false   | false    |
+| products | products_price_idx | false  |   1 | price  | ASC       | false   | false    |
+| products | products_price_idx | false  |   2 | id     | ASC       | false   | true     |
++----------+--------------------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
 ~~~
 ~~~ sql
 > SELECT name FROM products@products_price_idx WHERE price > 10;

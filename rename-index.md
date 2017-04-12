@@ -35,26 +35,33 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 > SHOW INDEXES FROM users;
 ~~~
 ~~~
-+-------+----------------+--------+-----+--------+-----------+---------+
-| Table |      Name      | Unique | Seq | Column | Direction | Storing |
-+-------+----------------+--------+-----+--------+-----------+---------+
-| users | primary        | true   |   1 | id     | ASC       | false   |
-| users | users_name_idx | false  |   1 | name   | ASC       | false   |
-+-------+----------------+--------+-----+--------+-----------+---------+
++-------+----------------+--------+-----+--------+-----------+---------+----------+
+| Table |      Name      | Unique | Seq | Column | Direction | Storing | Implicit |
++-------+----------------+--------+-----+--------+-----------+---------+----------+
+| users | primary        | true   |   1 | id     | ASC       | false   | false    |
+| users | users_name_idx | false  |   1 | name   | ASC       | false   | false    |
+| users | users_name_idx | false  |   2 | id     | ASC       | false   | true     |
++-------+----------------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
 ~~~
 ~~~ sql
 > ALTER INDEX users@users_name_idx RENAME TO name_idx;
+~~~
+~~~
+RENAME INDEX
 ~~~
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
 ~~~
-+-------+----------+--------+-----+--------+-----------+---------+
-| Table |   Name   | Unique | Seq | Column | Direction | Storing |
-+-------+----------+--------+-----+--------+-----------+---------+
-| users | primary  | true   |   1 | id     | ASC       | false   |
-| users | name_idx | false  |   1 | name   | ASC       | false   |
-+-------+----------+--------+-----+--------+-----------+---------+
++-------+----------+--------+-----+--------+-----------+---------+----------+
+| Table |   Name   | Unique | Seq | Column | Direction | Storing | Implicit |
++-------+----------+--------+-----+--------+-----------+---------+----------+
+| users | primary  | true   |   1 | id     | ASC       | false   | false    |
+| users | name_idx | false  |   1 | name   | ASC       | false   | false    |
+| users | name_idx | false  |   2 | id     | ASC       | false   | true     |
++-------+----------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
 ~~~
 
 ## See Also
