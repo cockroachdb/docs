@@ -9,9 +9,9 @@ optimizely: true
 
 ## What is CockroachDB?
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data. 
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
 
-CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely [open source](https://github.com/cockroachdb/cockroach). 
+CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely [open source](https://github.com/cockroachdb/cockroach).
 
 ## When is CockroachDB a good choice?
 
@@ -25,7 +25,7 @@ CockroachDB is well suited for applications that require reliable, available, an
 
 CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
 
-Also, CockroachDB is not yet suitable for: 
+Also, CockroachDB is not yet suitable for:
 
 - Complex SQL JOINS ([the feature still needs optimization](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/))
 - Heavy analytics / OLAP
@@ -38,10 +38,10 @@ For more details, see [Install CockroachDB](install-cockroachdb.html).
 
 ## How does CockroachDB scale?
 
-CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or a private or public cloud. [Adding capacity](start-a-node.html) is as easy as pointing a new node at the running cluster. 
+CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or a private or public cloud. [Adding capacity](start-a-node.html) is as easy as pointing a new node at the running cluster.
 
 At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (64MB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
- 
+
 When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
 ## How does CockroachDB survive failures?
@@ -54,9 +54,9 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 
 - Different servers within a rack to tolerate server failures
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
-- Different servers in different datacenters to tolerate large scale network or power outages 
+- Different servers in different datacenters to tolerate large scale network or power outages
 
-When replicating across datacenters, we recommend using datacenters on a single continent to ensure better performance. Cross-continent and other high-latency scenarios will be better supported in the future. 
+When replicating across datacenters, we recommend using datacenters on a single continent to ensure better performance. Cross-continent and other high-latency scenarios will be better supported in the future.
 
 **Automated Repair**
 
@@ -70,7 +70,7 @@ See our description of [strong consistency](strong-consistency.html) for more de
 
 ## How is CockroachDB both highly available and strongly consistent?
 
-The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: 
+The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees:
 
 - Consistency
 - Availability
@@ -93,20 +93,14 @@ For more details, learn our [basic CockroachDB SQL statements](learn-cockroachdb
 
 Yes. CockroachDB distributes transactions across your cluster, whether it’s a few servers in a single location or many servers across multiple datacenters. Unlike with sharded setups, you don’t need to know the precise location of data; you just talk to any node in your cluster and CockroachDB gets your transaction to the right place seamlessly. Distributed transactions proceed without downtime or additional latency while rebalancing is underway. You can even move tables – or entire databases – between data centers or cloud infrastructure providers while the cluster is under load.
 
-## Does CockroachDB have ACID semantics?
+## Do transactions in CockroachDB guarantee ACID semantics?
 
-Yes. Every transaction in CockroachDB guarantees ACID semantics.
+Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed.
 
 - **Atomicity:** Transactions in CockroachDB are “all or nothing.” If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. If a transaction succeeds, all mutations are applied together with virtual simultaneity. For a detailed discussion of atomicity in CockroachDB transactions, see [How CockroachDB Distributes Atomic Transactions](https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/).
 - **Consistency:** SQL operations never see any intermediate states and move the database from one valid state to another, keeping indexes up to date. Operations always see the results of previously completed statements on overlapping data and maintain specified constraints such as unique columns. For a detailed look at how we've tested CockroachDB for correctness and consistency, see [DIY Jepsen Testing of CockroachDB](https://www.cockroachlabs.com/blog/diy-jepsen-testing-cockroachdb/).
 - **Isolation:** By default, transactions in CockroachDB use serializable snapshot isolation (SSI). This means that even concurrent read-write transactions will never result in anomalies. We also provide snapshot isolation (SI), which is more performant with high-contention workloads, although it exhibits anomalies not present in SSI (write skew). For a detailed discussion of isolation in CockroachDB transactions, see [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/).
-- **Durability:** In CockroachDB, every acknowledged write has been persisted consistently on a majority of replicas (typically at least 2) via the [Raft consensus algorithm](https://raft.github.io/). Power or disk failures that affect only a minority of replicas (typically 1) do not prevent the cluster from operating and do not lose any data.
-
-## How are transactions in CockroachDB lock-free?
-
-[Transactions](transactions.html) in CockroachDB do not explicitly lock all of their data resources. Instead, using [optimistic concurrency control (OCC)](https://en.wikipedia.org/wiki/Optimistic_concurrency_control), CockroachDB proceeds with transactions under the assumption that there’s no contention until commit time. In cases without contention, this results in higher performance than explicit locking would allow. With contention, transactions may need to be retried.
-
-In practice, most applications experience low contention. However, with significant contention, OCC may perform poorly. If your application experiences high rates of contention, snapshot isolation (SI) can significantly improve performance by eliminating the possibility of retries (except in cases of deadlock).
+- **Durability:** In CockroachDB, every acknowledged write has been persisted consistently on a majority of replicas (by default, at least 2) via the [Raft consensus algorithm](https://raft.github.io/). Power or disk failures that affect only a minority of replicas (typically 1) do not prevent the cluster from operating and do not lose any data.
 
 ## Since CockroachDB is inspired by Spanner, does it require atomic clocks to synchronize time?
 
@@ -134,9 +128,9 @@ See [Install Client Drivers](install-client-drivers.html) for more details.
 
 You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
 
-Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels. 
+Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels.
 
-For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.   
+For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.
 
 ## How does CockroachDB compare to MySQL or PostgreSQL?
 
@@ -146,7 +140,7 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 ## How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?
 
-While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions. 
+While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions.
 
 For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
 
@@ -170,7 +164,7 @@ To auto-generate unique row IDs, use the [`SERIAL`](serial.html) data type, whic
 > CREATE TABLE test (id SERIAL PRIMARY KEY, name STRING);
 ~~~
 
-On insert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert, a combination that is likely to be globally unique except in extreme cases where a very large number of IDs (100,000+) are generated per node per second. In such cases, you should use a [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead:  
+On insert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert, a combination that is likely to be globally unique except in extreme cases where a very large number of IDs (100,000+) are generated per node per second. In such cases, you should use a [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead:
 
 ~~~ sql
 > CREATE TABLE test (id BYTES PRIMARY KEY DEFAULT uuid_v4(), name STRING);
@@ -200,7 +194,7 @@ CockroachDB is a distributed SQL database built on a transactional and strongly-
 > CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
 ~~~
 
-When such a "simple" table has no indexes or foreign keys, [`INSERT`](insert.html)/[`UPSERT`](upsert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html) statements translate to key-value operations with minimal overhead (single digit percent slowdowns). For example, the following `UPSERT` to add or replace a row in the table would translate into a single key-value Put operation: 
+When such a "simple" table has no indexes or foreign keys, [`INSERT`](insert.html)/[`UPSERT`](upsert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html) statements translate to key-value operations with minimal overhead (single digit percent slowdowns). For example, the following `UPSERT` to add or replace a row in the table would translate into a single key-value Put operation:
 
 ~~~ sql
 > UPSERT INTO kv VALUES (1, b'hello')
@@ -208,7 +202,7 @@ When such a "simple" table has no indexes or foreign keys, [`INSERT`](insert.htm
 
 This SQL table approach also offers you a well-defined query language, a known transaction model, and the flexibility to add more columns to the table if the need arises.
 
-## Have questions that weren’t answered? 
+## Have questions that weren’t answered?
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
 - [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
