@@ -74,35 +74,30 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
     user_id INT,
     logon_date DATE
 );
-~~~
 
-~~~
-CREATE TABLE
-~~~
-
-~~~ sql
 > SHOW COLUMNS FROM logon;
 ~~~
 
 ~~~
-+------------+------+-------+----------------+
-|   Field    | Type | Null  |    Default     |
-+------------+------+-------+----------------+
-| user_id    | INT  | true  | NULL           |
-| logon_date | DATE | true  | NULL           |
-| rowid      | INT  | false | unique_rowid() |
-+------------+------+-------+----------------+
-(3 rows)
++------------+------+------+---------+---------+
+|   Field    | Type | Null | Default | Indices |
++------------+------+------+---------+---------+
+| user_id    | INT  | true | NULL    | {}      |
+| logon_date | DATE | true | NULL    | {}      |
++------------+------+------+---------+---------+
+(2 rows)
 ~~~
+
 ~~~ sql
 > SHOW INDEX FROM logon;
 ~~~
+
 ~~~
-+-------+---------+--------+-----+--------+-----------+---------+
-| Table |  Name   | Unique | Seq | Column | Direction | Storing |
-+-------+---------+--------+-----+--------+-----------+---------+
-| logon | primary | true   |   1 | rowid  | ASC       | false   |
-+-------+---------+--------+-----+--------+-----------+---------+
++-------+---------+--------+-----+--------+-----------+---------+----------+
+| Table |  Name   | Unique | Seq | Column | Direction | Storing | Implicit |
++-------+---------+--------+-----+--------+-----------+---------+----------+
+| logon | primary | true   |   1 | rowid  | ASC       | false   | false    |
++-------+---------+--------+-----+--------+-----------+---------+----------+
 (1 row)
 ~~~
 
@@ -116,13 +111,7 @@ In this example, we create a table with three columns. One column is the [primar
     user_email STRING UNIQUE,
     logoff_date DATE
 );
-~~~
 
-~~~
-CREATE TABLE
-~~~
-
-~~~ sql
 > SHOW COLUMNS FROM logoff;
 ~~~
 
@@ -177,18 +166,23 @@ In this example, we create two secondary indexes during table creation. Secondar
 
 > SHOW INDEX FROM product_information;
 ~~~
+
 ~~~
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
-|        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing |
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
-| product_information | primary                              | true   |   1 | product_id     | ASC       | false   |
-| product_information | product_information_product_name_key | true   |   1 | product_name   | ASC       | false   |
-| product_information | product_information_catalog_url_key  | true   |   1 | catalog_url    | ASC       | false   |
-| product_information | date_added_idx                       | false  |   1 | date_added     | ASC       | false   |
-| product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   |
-| product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   |
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+
-(6 rows)
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
+|        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing | Implicit |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
+| product_information | primary                              | true   |   1 | product_id     | ASC       | false   | false    |
+| product_information | product_information_product_name_key | true   |   1 | product_name   | ASC       | false   | false    |
+| product_information | product_information_product_name_key | true   |   2 | product_id     | ASC       | false   | true     |
+| product_information | product_information_catalog_url_key  | true   |   1 | catalog_url    | ASC       | false   | false    |
+| product_information | product_information_catalog_url_key  | true   |   2 | product_id     | ASC       | false   | true     |
+| product_information | date_added_idx                       | false  |   1 | date_added     | ASC       | false   | false    |
+| product_information | date_added_idx                       | false  |   2 | product_id     | ASC       | false   | true     |
+| product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   | false    |
+| product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   | false    |
+| product_information | supp_id_prod_status_idx              | false  |   3 | product_id     | ASC       | false   | true     |
++---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
+(10 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -202,16 +196,16 @@ To auto-generate unique row IDs, use the [`SERIAL`](serial.html) data type, whic
 
 ~~~ sql
 > CREATE TABLE test (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     name STRING
 );
 ~~~
 
-On insert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert, a combination that is likely to be globally unique except in extreme cases where a very large number of IDs (100,000+) are generated per node per second. In such cases, you should use a [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead: 
+On insert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert, a combination that is likely to be globally unique except in extreme cases where a very large number of IDs (100,000+) are generated per node per second. In such cases, you should use a [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead:
 
 ~~~ sql
 > CREATE TABLE test (
-    id BYTES PRIMARY KEY DEFAULT uuid_v4(), 
+    id BYTES PRIMARY KEY DEFAULT uuid_v4(),
     name STRING
 );
 ~~~
@@ -271,6 +265,7 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 ~~~ sql
 > SHOW CREATE TABLE logoff;
 ~~~
+
 ~~~
 +--------+----------------------------------------------------------+
 | Table  |                       CreateTable                        |
