@@ -286,29 +286,47 @@ header {
 
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
-  background-color: #F7F7F7;
-  border-bottom: 1px solid #D9DBE2; }
+  background-color: #F7F7F7; }
   @media screen and (min-width: 768px) {
     .col-sidebar {
       background-color: transparent;
       border-bottom: none; } }
 
 #mysidebar {
-  padding-top: 40px;
+  padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 20px; }
+  padding-bottom: 5px; }
   @media screen and (min-width: 992px) {
     #mysidebar {
       padding-top: 65px;
       padding-bottom: 0; } }
 
+.sidenav-arrow {
+  position: absolute;
+  z-index: 1;
+  right: 9px;
+  top: 0;
+  transition: transform 0.3s ease;
+  transform: translateY(22px) rotate(180deg); }
+
+.collapsed-header {
+  display: none;
+  font-family: 'AvenirLTStd-Medium', serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px; }
+
 .nav {
   background-color: transparent;
   padding: 0px;
   margin: 0px; }
+  .nav--collapsed .sidenav-arrow {
+    transform: translateY(11px) rotate(0deg); }
   .nav > li {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     list-style: none; }
     .nav > li > a {
       display: block;
@@ -317,11 +335,11 @@ header {
       padding: 0 0 0 10px;
       color: #142848;
       font-family: 'AvenirLTStd-Medium', serif;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 30px; }
+      line-height: 20px; }
     .nav > li > ul {
       border-left: 1px solid #46a417;
       margin: 0 0 0 12px;
@@ -1221,21 +1239,30 @@ a.accordion-toggle {
   position: relative; }
   .search .fa-search {
     position: absolute;
-    top: 11px;
-    left: 12px;
-    color: #46a417; }
+    top: 10px;
+    left: 15px;
+    color: #46a417;
+    font-size: 20px; }
   .search #search-input {
     background-color: white;
     border: solid 1px #bcbcbc;
     border-radius: 32px;
-    height: 35px;
-    width: 90%;
+    height: 40px;
+    width: 86%;
     outline: 0px none;
-    padding: 0px 10px 0px 35px;
+    padding: 3px 10px 0px 45px;
     transition: all 0.15s ease 0s;
-    margin-bottom: 30px;
-    margin-top: 3px;
-    font-size: 14px; }
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 40px; }
+    .search #search-input::-webkit-input-placeholder {
+      color: #bcbcbc; }
+    @media (min-width: 992px) {
+      .search #search-input {
+        width: 90%; } }
+
+li.search-wrap {
+  margin-bottom: 0; }
 
 .search-item {
   margin-top: 30px; }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="18px" viewBox="0 0 13 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Docs" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Docs-Update-Landing-scroll" transform="translate(-284.000000, -62.000000)" fill="#46A417">
+            <g id="Navigation" transform="translate(0.000000, 51.000000)">
+                <g id="arrow" transform="translate(290.500000, 20.375000) rotate(90.000000) translate(-290.500000, -20.375000) translate(282.000000, 14.000000)">
+                    <g stroke-width="1" transform="translate(-1.416667, 0.000000)">
+                        <polygon id="Fill-19" points="1.18052246 7.61138 14.5456837 7.61138 14.5456837 5.56868963 1.18052246 5.56868963"></polygon>
+                        <polygon id="Fill-20" points="10.5292362 0.798320163 16.2105349 6.59101688 14.7941833 8.03563108 9.11288461 2.24293436"></polygon>
+                        <polygon id="Fill-21" points="9.11288461 10.9376263 14.7941833 5.14492958 16.2105349 6.58905275 10.5292362 12.3817495"></polygon>
+                    </g>
+                    <rect id="Rectangle-10" x="15.5833333" y="0" width="1.41666667" height="13"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

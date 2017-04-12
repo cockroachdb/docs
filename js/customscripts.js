@@ -64,7 +64,7 @@ $(function() {
                 $sidebar.css('padding-top', 65);
             }
         }else{
-            $sidebar.css('padding-top', 40);
+            // $sidebar.css('padding-top', 10);
         }
     });
 
@@ -117,4 +117,18 @@ $(function() {
     if ($('[data-scope].current').length == 0) {
         setFilterScope($('[data-scope]').first().data('scope'));
     }
+
+  // collapse sidebar navigation
+  $('.sidenav-arrow').on('click', function() {
+    $('#mysidebar li').slideToggle(400);
+    $('.collapsed-header').slideToggle(400);
+
+    if ($sidebar.hasClass('nav--collapsed')) {
+      $sidebar.removeClass('nav--collapsed');
+      $sidebar.removeAttr('style');
+    } else {
+      $sidebar.addClass('nav--collapsed');
+      $sidebar.animate({height: '40px'}, {duration: 400});
+    }
+  });
 });

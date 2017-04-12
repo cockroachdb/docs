@@ -1,7 +1,7 @@
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: $cl_gray;
-  border-bottom: 1px solid $cl_border;
+  // border-bottom: 1px solid $cl_border;
 
   @include at-query($min, $screen-sm){
     background-color: transparent;
@@ -10,10 +10,10 @@
 }
 
 #mysidebar {
-  padding-top: 40px;
+  padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 20px;
+  padding-bottom: 5px;
 
   @include at-query($min, $screen-md){
     padding-top: 65px;
@@ -21,14 +21,35 @@
   }
 }
 
+.sidenav-arrow {
+  position: absolute;
+  z-index: 1;
+  right: 9px;
+  top: 0;
+  transition: transform 0.3s ease;
+  transform: translateY(22px) rotate(180deg);
+}
+
+.collapsed-header {
+  display: none;
+  @include avenir_m(16px);
+  line-height: 20px;
+}
+
 .nav {
   background-color: transparent;
   padding:0px;
   margin: 0px;
 
+  &--collapsed {
+    .sidenav-arrow {
+      transform: translateY(11px) rotate(0deg);
+    }
+  }
+
   //1st level
   > li {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     list-style: none;
 
     > a {
@@ -37,8 +58,8 @@
       text-decoration: none;
       padding: 0 0 0 10px;
       color: $cl_blue;
-      @include avenir_m(16px);
-      line-height: 30px;
+      @include avenir_m(18px);
+      line-height: 20px;
     }
 
     > ul {
@@ -67,7 +88,7 @@
             margin: 0 0 0 25px;
             padding: 5px 0 0;
             list-style: none;
-            
+
             > a {
               @include avenir_m(14px);
               line-height: 20px;
