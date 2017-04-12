@@ -6,7 +6,7 @@ toc: false
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
 
-{{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions that fail because another concurrent or recent transaction accessed the same values</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions</a> that are aborted to break a dependency cycle between concurrent transactions.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -22,7 +22,7 @@ No [privileges](privileges.html) are required to initiate a transaction. However
 
 In CockroachDB, the following are aliases for the `BEGIN` statement:
 
-- `BEGIN TRANSACTION` 
+- `BEGIN TRANSACTION`
 - `START TRANSACTION`
 
 The following aliases also exist for [isolation levels](transactions.html#isolation-levels):
@@ -87,8 +87,8 @@ You can also set a transaction's isolation level and priority with [`SET TRANSAC
 
 ### Begin a Transaction with Automatic Retries
 
-CockroachDB will [automatically retry](transactions.html#transaction-retries) all transactions that contain both `BEGIN` and `COMMIT` in the same batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests. 
-  
+CockroachDB will [automatically retry](transactions.html#transaction-retries) all transactions that contain both `BEGIN` and `COMMIT` in the same batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests.
+
 From the perspective of CockroachDB, a transaction sent as a batch looks like this:
 
 ~~~ sql
@@ -96,14 +96,14 @@ From the perspective of CockroachDB, a transaction sent as a batch looks like th
 ~~~
 
 However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would sent as a single batch (and automatically retried):
-  
+
 ~~~ go
 db.Exec(
-  "BEGIN; 
+  "BEGIN;
 
-  DELETE FROM customers WHERE id = 1; 
+  DELETE FROM customers WHERE id = 1;
 
-  DELETE orders WHERE customer = 1; 
+  DELETE orders WHERE customer = 1;
 
   COMMIT;"
 )
