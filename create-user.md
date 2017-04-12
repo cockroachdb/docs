@@ -6,8 +6,9 @@ toc: false
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
 
-When creating users, it's also important to note:
+When creating users, it's important to note:
 
+- Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, users must [authenticate their access to the cluster](#user-authentication).
 
@@ -17,7 +18,7 @@ When creating users, it's also important to note:
 
 ## Required Privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table. 
+The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
 
 ## Synopsis
 
@@ -33,7 +34,7 @@ table td:first-child {
 
 | Parameter | Description |
 |-----------|-------------|
-|`name` | The name of the user you want to create.|
+|`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
 |`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).|
 
 ## User Authentication
@@ -52,6 +53,8 @@ Secure clusters require users to authenticate their access to databases and tabl
 ~~~ sql
 > CREATE USER jpointsman;
 ~~~
+
+Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 
 After creating users, you must [grant them privileges to databases and tables](grant.html).
 
