@@ -6,8 +6,9 @@ toc: false
 
 To create and manage your cluster's users (which lets you control SQL-level [privileges](privileges.html)), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
 
-When creating users, it's also important to note:
+When creating users, it's important to note:
 
+- Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
@@ -17,7 +18,7 @@ When creating users, it's also important to note:
 
 ## Subcommands
 
-Subcommand | Usage 
+Subcommand | Usage
 -----------|------
 `get` | Retrieve a table containing a user and their hashed password.
 `ls` | List all users.
@@ -46,7 +47,7 @@ $ cockroach user set --help
 
 ## Flags
 
-The `user` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). 
+The `user` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
 
 Flag | Description
 -----|------------
@@ -81,6 +82,8 @@ Secure clusters require users to authenticate their access to databases and tabl
 $ cockroach user set jpointsman
 ~~~
 
+Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+
 After creating users, you must [grant them privileges to databases](grant.html).
 
 #### Secure Cluster
@@ -93,6 +96,8 @@ $ cockroach user set jpointsman \
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
+
+Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 
 After creating users, you must:
 
