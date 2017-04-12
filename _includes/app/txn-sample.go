@@ -45,6 +45,6 @@ func main() {
 	if err == nil {
 		fmt.Println("Success")
 	} else {
-		log.Fatalf("error: %s", err)
+		log.Fatal("error: ", err)
 	}
 }

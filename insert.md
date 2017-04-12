@@ -314,7 +314,7 @@ func main() {
                 "postgresql://root@localhost:26257/bank?sslmode=disable"
         )
         if err != nil {
-                log.Fatalf("error connecting to the database: %s", err)
+                log.Fatal("error connecting to the database: ", err)
         }
 
         // Insert two rows into the "accounts" table
