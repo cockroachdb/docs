@@ -21,7 +21,7 @@ Each of the following SQL statements control transactions in some way.
 | [`SAVEPOINT cockroach_restart`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values. |
 | [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries). |
 | [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction. |
-| [`ROLLBACK cockroach_restart`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority. |
+| [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority. |
 | [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began. |
 | [`SHOW TRANSACTION`](show-transaction.html) | Retrieve a transaction's [priority](#transaction-priorities) or [isolation level](#isolation-levels). |
 
@@ -29,7 +29,7 @@ Each of the following SQL statements control transactions in some way.
 
 In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements.
 
-To use [client-side transaction retries](#client-side-transaction-retries), you should also include the `SAVEPOINT cockroach_restart`, `ROLLBACK TO cockroach_restart` and `RELEASE SAVEPOINT` statements.
+To use [client-side transaction retries](#client-side-transaction-retries), you should also include the `SAVEPOINT cockroach_restart`, `ROLLBACK TO SAVEPOINT cockroach_restart` and `RELEASE SAVEPOINT` statements.
 
 ~~~ sql
 > BEGIN;
@@ -144,9 +144,9 @@ Implementing client-side retries requires three statements:
 
 - [`SAVEPOINT cockroach_restart`](savepoint.html) declares the client's intent to retry the transaction if there are contention errors. It must be executed after `BEGIN` but before the first statement that manipulates a database.
 
-- [`ROLLBACK TO cockroach_restart`](rollback-transaction.html#retry-a-transaction) is used when your application detects `40001` / `retry transaction` errors. It provides you a chance to "retry" the transaction by rolling the database's state back to the beginning of the transaction and increasing the transaction's priority.
+- [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction) is used when your application detects `40001` / `retry transaction` errors. It provides you a chance to "retry" the transaction by rolling the database's state back to the beginning of the transaction and increasing the transaction's priority.
 
-  After issuing `ROLLBACK TO cockroach_restart`, you must issue any statements you want the transaction to contain. Typically, this means recalculating values and reissuing a similar set of statements to the previous attempt.
+  After issuing `ROLLBACK TO SAVEPOINT cockroach_restart`, you must issue any statements you want the transaction to contain. Typically, this means recalculating values and reissuing a similar set of statements to the previous attempt.
 
 - [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) commits the transaction. At this point, CockroachDB checks to see if the transaction contends with others for access to the same values; the highest priority transaction succeeds, and the others return `40001` / `retry transaction` errors.
 

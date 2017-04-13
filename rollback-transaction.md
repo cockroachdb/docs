@@ -22,7 +22,7 @@ No [privileges](privileges.html) are required to rollback a transaction. However
 
 | Parameter | Description |
 |-----------|-------------|
-| `TO cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. |
+| `TO SAVEPOINT cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. |
 
 ## Example
 
@@ -59,10 +59,10 @@ Typically, your application conditionally executes rollbacks, but you can see th
 
 ### Retry a Transaction
 
-To use [client-side transaction retries](transactions.html#client-side-transaction-retries), your application must execute `ROLLBACK TO cockroach_restart` after detecting a `40001` / `retry transaction` error.
+To use [client-side transaction retries](transactions.html#client-side-transaction-retries), your application must execute `ROLLBACK TO SAVEPOINT cockroach_restart` after detecting a `40001` / `retry transaction` error.
 
 ~~~ sql
-> ROLLBACK TO cockroach_restart;
+> ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~
 
 For examples of retrying transactions in your application, check out the transaction code samples in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.

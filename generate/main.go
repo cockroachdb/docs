@@ -397,7 +397,14 @@ func main() {
 				{name: "rename_index", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'INDEX'")}, inline: []string{"table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
 				{name: "rename_table", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}},
 				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"}},
-				{name: "rollback_transaction", stmt: "transaction_stmt", inline: []string{"opt_transaction"}, match: []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")}},
+				{
+					name: "rollback_transaction",
+					stmt: "transaction_stmt",
+					inline: []string{"opt_to_savepoint"},
+					match: []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")},
+					replace: map[string]string{"'TRANSACTION'": "", "'TO'": "'TO' 'SAVEPOINT'","savepoint_name": "cockroach_restart"},
+					unlink: []string{"cockroach_restart"},
+				},
 				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
 				{
 					name:   "select_stmt",
