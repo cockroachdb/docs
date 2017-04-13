@@ -73,7 +73,7 @@ Optionally, you can specify in the front-matter a list of allowed hashes
 that don't correspond to a section heading on the page. This is
 currently used for pages with JavaScript toggle buttons, where the
 toggle to activate by default can be specified in the URL hash. If you
-attempt to link to e.g. `page-with-toggles.html#toggle-id` without
+attempt to link to, for example, `page-with-toggles.html#toggle-id` without
 listing `toggle-id` in `allowed_hashes`, our HTML proofer will complain
 that `toggle-id` does not exist on the page. Listing a hash in
 `allowed_hashes` will generate a dummy element with that ID at the top
@@ -159,7 +159,7 @@ We also have additional guidance to ensure consistency with our existing documen
 
 ### Code Samples
 
-Code samples are marked with an opening and closing set of 3 tildes (`~~~`). Shell and SQL commands should be syntax high-lighted where appropriate using the following info.
+Code samples are marked with an opening and closing set of 3 tildes (`~~~`). Shell and SQL commands should be syntax highlighted where appropriate using the following info.
 
 #### Shell Code Samples
 Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`.
@@ -169,6 +169,8 @@ SQL code samples are broken into two sections: commands and responses.
 
 - **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`.
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
+
+  Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
 
 ### Notes, Warnings, & Tips
 
