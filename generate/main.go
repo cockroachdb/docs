@@ -462,9 +462,12 @@ func main() {
 				{name: "table_constraint", inline: []string{"constraint_elem", "opt_storing", "storing"}},
 				{
 					name:    "truncate_stmt",
-					inline:  []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"},
-					replace: map[string]string{"'ONLY' '(' qualified_name ')'": "", "'ONLY' qualified_name": "", "qualified_name": "table_name", "'*'": "", "'CASCADE'": "", "'RESTRICT'": ""},
+					inline: []string{"opt_table", "relation_expr_list", "opt_drop_behavior"},
+					replace: map[string]string{"relation_expr": "table_name"},
 					unlink:  []string{"table_name"},
+					//inline:  []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"},
+					//replace: map[string]string{"'ONLY' '(' qualified_name ')'": "", "'ONLY' qualified_name": "", "qualified_name": "table_name", "'*'": "", "'CASCADE'": "", "'RESTRICT'": ""},
+					//unlink:  []string{"table_name"},
 				},
 				{
 					name:    "unique_column_level",

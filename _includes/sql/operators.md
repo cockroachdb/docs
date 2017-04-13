@@ -18,6 +18,7 @@
 <a href="int.html">int</a> `*` <a href="decimal.html">decimal</a> | <a href="decimal.html">decimal</a>
 <a href="int.html">int</a> `*` <a href="int.html">int</a> | <a href="int.html">int</a>
 <a href="int.html">int</a> `*` <a href="interval.html">interval</a> | <a href="interval.html">interval</a>
+<a href="interval.html">interval</a> `*` <a href="float.html">float</a> | <a href="interval.html">interval</a>
 <a href="interval.html">interval</a> `*` <a href="int.html">int</a> | <a href="interval.html">interval</a>
 
 `+` | Return
@@ -69,6 +70,7 @@
 <a href="float.html">float</a> `/` <a href="float.html">float</a> | <a href="float.html">float</a>
 <a href="int.html">int</a> `/` <a href="decimal.html">decimal</a> | <a href="decimal.html">decimal</a>
 <a href="int.html">int</a> `/` <a href="int.html">int</a> | <a href="decimal.html">decimal</a>
+<a href="interval.html">interval</a> `/` <a href="float.html">float</a> | <a href="interval.html">interval</a>
 <a href="interval.html">interval</a> `/` <a href="int.html">int</a> | <a href="interval.html">interval</a>
 
 `//` | Return
