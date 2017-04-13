@@ -21,11 +21,22 @@ $(function() {
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
 
+  // If open sidenav drawer exceeds length of page, we need to make it scrollable
+  function enableSidebarScroll() {
+    var sidebarBottom = $sidebar.outerHeight() + $('header').outerHeight();
+    if (sidebarBottom > $(window).height()) {
+      $('body').addClass('sidebar-scroll');
+    } else {
+      if ($('body').hasClass('sidebar-scroll')) $('body').removeClass('sidebar-scroll');
+    }
+  }
+
   function collapseSideNav() {
     $('.collapsed-header').slideDown(400);
     $sidebar.addClass('nav--collapsed');
     $sidebar.animate({height: sideNavHeight}, {duration: 400});
     $('#mysidebar li').slideUp(400);
+    setTimeout(function() {enableSidebarScroll();}, 450);
   }
 
   if(_viewport_width <= 768) {
@@ -156,15 +167,20 @@ $(function() {
         $('#mysidebar li').slideToggle(400);
       }
 
+      setTimeout(function() {enableSidebarScroll();}, 450);
     } else {
       collapseSideNav();
     }
   });
+
+  // $('#main-content row').on('touchstart', function(event){});
 
   $('#mysidebar a').on('click', function() {
     // hide sibling links
     $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
     // ensure child links are open
     $(this).siblings('ul').children().slideDown();
+    // @@Temporary: would be great to get this into a promise
+    setTimeout(function() {enableSidebarScroll();}, 450);
   });
 });
