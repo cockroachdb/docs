@@ -123,6 +123,12 @@ $(function() {
     setFilterScope($('[data-scope]').first().data('scope'));
   }
 
+  // On page load, if .active list item doesn't have children, remove active
+  // class. This ensures second tier siblings will be loaded in sidebar menu.
+  $('li.active').each(function() {
+    if ($(this).children('ul').length <= 0) $(this).removeClass('active');
+  });
+
   // collapse sidebar navigation
   $('.sidenav-arrow').on('click', function() {
     $('.collapsed-header').slideToggle(400);
