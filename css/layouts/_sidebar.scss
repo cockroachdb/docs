@@ -1,7 +1,11 @@
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: $cl_gray;
-  // border-bottom: 1px solid $cl_border;
+  position: fixed;
+  top: 61px;
+  width: 100%;
+  z-index: 1;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   @include at-query($min, $screen-sm){
     background-color: transparent;
