@@ -18,15 +18,14 @@ $(function() {
       $mobile_menu = $('nav.mobile_expanded'),
       $sidebar = $('#mysidebar'),
       $footer = $('section.footer'),
-      footertotop, scrolltop, difference;
+      footertotop, scrolltop, difference,
+      sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
 
   function collapseSideNav() {
     $('.collapsed-header').slideDown(400);
     $sidebar.addClass('nav--collapsed');
-    $sidebar.animate({height: '40px'}, {duration: 400});
+    $sidebar.animate({height: sideNavHeight}, {duration: 400});
     $('#mysidebar li').slideUp(400);
-    // @@Cleanup: consolidate style changes under body class
-    // $('.content-col').removeClass('sidenav-open');
   }
 
   if(_viewport_width <= 768) {

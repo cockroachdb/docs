@@ -323,6 +323,8 @@ header {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 20px; }
+  .collapsed-header__pre {
+    font-size: 11px; }
 
 .arrow-up {
   display: none;
@@ -350,6 +352,8 @@ header {
   padding: 0px;
   margin: 0px; }
   .nav--collapsed .sidenav-arrow {
+    transform: translateY(21px) rotate(0deg); }
+  .nav--collapsed.nav--home .sidenav-arrow {
     transform: translateY(11px) rotate(0deg); }
   .nav > li {
     margin-bottom: 20px;

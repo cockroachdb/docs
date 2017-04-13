@@ -49,9 +49,34 @@
 
         {% include custom/conditions.html %}
 
-        <ul id="mysidebar" class="nav" style="display: none">
+        <ul id="mysidebar" class="nav {% if page.url == '/' %}nav--home{% endif %}" style="display: none">
             <img class="sidenav-arrow" src="images/sidenav-arrow.svg">
-            <div class="collapsed-header">Docs Menu</div>
+            <div class="collapsed-header">
+              {% for entry in sidebar %}
+                {% for subcategory in entry.subcategories %}
+                  {% for item in subcategory.items %}
+                    <!-- second level -->
+                    {% if page.url == item.url or item.alternate_urls contains page.url%}
+                      <div class="collapsed-header__pre">{{ subcategory.title }}</div>
+                      <div class="collapsed-header__main">{{item.title}}</div>
+                    {% else %}
+                      <!-- third level -->
+                      {% for thirdlevel in item.thirdlevel %}
+                        {% for deeplevel in thirdlevel.thirdlevelitems %}
+                          {% if page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
+                          <div class="collapsed-header__pre">{{ subcategory.title }} > {{item.title}}</div>
+                          <div class="collapsed-header__main">{{deeplevel.title}}</div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+              {% endfor %}
+
+              <!-- landing page -->
+              {% if page.url == '/' %}Docs Menu{% endif %}
+            </div>
 
             <li class="search-wrap">
                 <div class="search">

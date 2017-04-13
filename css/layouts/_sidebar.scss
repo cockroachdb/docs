@@ -38,6 +38,10 @@
   display: none;
   @include avenir_m(16px);
   line-height: 20px;
+
+  &__pre {
+    font-size: 11px;
+  }
 }
 
 .arrow-up {
@@ -70,7 +74,13 @@
 
   &--collapsed {
     .sidenav-arrow {
-      transform: translateY(11px) rotate(0deg);
+      transform: translateY(21px) rotate(0deg);
+    }
+
+    &.nav--home {
+      .sidenav-arrow {
+        transform: translateY(11px) rotate(0deg);
+      }
     }
   }
 
