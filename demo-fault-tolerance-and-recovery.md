@@ -304,24 +304,24 @@ Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html
 # Stop node 1:
 $ cockroach quit
 
-# Stop node 2:
-$ cockroach quit --port=26258
+# Stop node 3:
+$ cockroach quit --port=26259
 
 ~~~
 
 With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
 
 ~~~ shell
-# Get the process ID for node 3:
+# Get the process ID for node 4:
 $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --store=fault-node3 --port=26259 --http-port=8082 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --store=fault-node4 --port=26260 --http-port=8083 --join=localhost:26257
 ~~~
 
 ~~~ shell
-# Force quit node 3:
+# Force quit node 4:
 $ kill -9 13398
 ~~~
 
