@@ -9,7 +9,7 @@ The `SAVEPOINT cockroach_restart` statement defines the intent to retry [transac
 {{site.data.alerts.callout_danger}}CockroachDB’s <code>SAVEPOINT</code> implementation only supports the <code>cockroach_restart</code> savepoint and does not support all savepoint functionality, such as nested transactions.{{site.data.alerts.end}}
 
 <div id="toc"></div>
- 
+
 ## Synopsis
 
 {% include sql/diagrams/savepoint.html %}
@@ -38,7 +38,7 @@ After you `BEGIN` the transaction, you must create the savepoint to identify tha
 > COMMIT;
 ~~~
 
-When using `SAVEPOINT`, your application must also include functions to execute retries with [`ROLLBACK TO cockroach_restart`](rollback-transaction.html#retry-a-transaction).
+When using `SAVEPOINT`, your application must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction).
 
 ## See Also
 
