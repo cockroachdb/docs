@@ -568,8 +568,10 @@ body.sidenav-open .col-content {
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
   #content #main-content .content-col {
-    padding-top: 30px;
+    padding-top: 50px;
     padding-bottom: 100px; }
+    #content #main-content .content-col--landing {
+      padding-top: 30px; }
   @media screen and (min-width: 768px) {
     #content {
       padding-top: 71px; }
