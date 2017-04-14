@@ -318,7 +318,7 @@ To shut down the CockroachDB cluster:
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-- **If you plan to restart the cluster**, use the [`minikube stop`](https://github.com/kubernetes/minikube/blob/master/docs/minikube_stop.md) command. This shuts down the minikube virtual machine but preserves all the resources you created:
+- **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
   ~~~ shell
   $ minikube stop
@@ -331,7 +331,7 @@ To shut down the CockroachDB cluster:
 
   You can restore the cluster to its previous state with `minikube start`.
 
-- **If you do not plan to restart the cluster**, use the [`minikube delete`](https://github.com/kubernetes/minikube/blob/master/docs/minikube_delete.md) command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
+- **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
 
   ~~~ shell
   $ minikube delete
