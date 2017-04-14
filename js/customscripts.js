@@ -21,24 +21,6 @@ $(function() {
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
 
-  // If open sidenav drawer exceeds length of page, we need to make it scrollable
-  function enableSidebarScroll() {
-    var sidebarBottom = $sidebar.outerHeight() + $('header').outerHeight();
-    if (sidebarBottom > $(window).height()) {
-      $('body').addClass('sidebar-scroll');
-    } else {
-      if ($('body').hasClass('sidebar-scroll')) $('body').removeClass('sidebar-scroll');
-    }
-  }
-
-  function collapseSideNav() {
-    $('.collapsed-header').slideDown(400);
-    $sidebar.addClass('nav--collapsed');
-    $sidebar.animate({height: sideNavHeight}, {duration: 400});
-    $('#mysidebar li').slideUp(400);
-    setTimeout(function() {enableSidebarScroll();}, 450);
-  }
-
   if(_viewport_width <= 768) {
     $mobile_menu.css('visibility', 'visible');
   }
@@ -83,7 +65,6 @@ $(function() {
     }
   });
 
-  collapseSideNav();
   $(window).scroll();
 
   // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
@@ -134,17 +115,30 @@ $(function() {
     setFilterScope($('[data-scope]').first().data('scope'));
   }
 
+  //
+  // Sidebar navigation (docs menu)
+  //
+  function collapseSideNav() {
+    $('.collapsed-header').slideDown(400);
+    $sidebar.addClass('nav--collapsed');
+    $sidebar.animate({height: sideNavHeight}, {duration: 400});
+    $('#mysidebar li').slideUp(400);
+  }
+  // Collapse nav on load
+  collapseSideNav();
+
   // On page load, if .active list item doesn't have children, remove active
   // class. This ensures second tier siblings will be loaded in sidebar menu.
   $('li.active').each(function() {
     if ($(this).children('ul').length <= 0) $(this).removeClass('active');
   });
 
-  // collapse sidebar navigation
+  // Collapse sidebar navigation
   $('.sidenav-arrow').on('click', function() {
     $('.collapsed-header').slideToggle(400);
 
     if ($sidebar.hasClass('nav--collapsed')) {
+      $('body').addClass('sidenav-open');
       $sidebar.removeClass('nav--collapsed');
       $sidebar.removeAttr('style');
 
@@ -164,23 +158,23 @@ $(function() {
         }
       } else {
         // otherwise, this should show top level
-        $('#mysidebar li').slideToggle(400);
+        $('#mysidebar li').slideDown(400);
       }
-
-      setTimeout(function() {enableSidebarScroll();}, 450);
     } else {
+      $('body').removeClass('sidenav-open')
       collapseSideNav();
     }
   });
-
-  // $('#main-content row').on('touchstart', function(event){});
 
   $('#mysidebar a').on('click', function() {
     // hide sibling links
     $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
     // ensure child links are open
     $(this).siblings('ul').children().slideDown();
-    // @@Temporary: would be great to get this into a promise
-    setTimeout(function() {enableSidebarScroll();}, 450);
+    // if a top level menu item is clicked, this ensures no active list items
+    // avoids third level item staying active, causing no items to appear on collapse/expand
+    if ($(this).parent('li').parent('#mysidebar').length > 0) {
+      $('li.active').removeClass('active');
+    }
   });
 });

@@ -52,7 +52,11 @@
   src: url("../fonts/AvenirLTStd-Medium.woff2") format("woff2"), url("../fonts/AvenirLTStd-Medium.woff") format("woff"), url("../fonts/AvenirLTStd-Medium.ttf") format("truetype"), url("../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium") format("svg"), url("../fonts/AvenirLTStd-Medium.eot?#iefix") format("embedded-opentype");
   font-weight: normal;
   font-style: normal; }
+html {
+  height: 100%; }
+
 body {
+  height: 100%;
   color: #142848;
   font-family: 'AvenirLTStd-Book', serif;
   font-size: 16px;
@@ -284,13 +288,17 @@ header {
       header nav.mobile {
         display: none; } }
 
-body.sidebar-scroll {
-  overflow: hidden;
-  position: fixed; }
-  body.sidebar-scroll .col-sidebar {
-    overflow: auto;
-    bottom: 0;
+body.sidenav-open .col-sidebar {
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  body.sidenav-open .col-sidebar #mysidebar {
+    height: 100%;
+    overflow: scroll;
     –webkit-overflow-scrolling: touch; }
+body.sidenav-open .col-content {
+  height: 100vh;
+  overflow: hidden; }
 
 /* navgoco sidebar styles (customized) */
 .col-sidebar {

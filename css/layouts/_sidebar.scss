@@ -1,11 +1,19 @@
-body.sidebar-scroll {
-  overflow: hidden;
-  position: fixed;
-
+body.sidenav-open {
   .col-sidebar {
-    overflow: auto;
     bottom: 0;
-    –webkit-overflow-scrolling: touch;
+    left: 0;
+    right: 0;
+
+    #mysidebar {
+      height: 100%;
+      overflow: scroll;
+      –webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .col-content {
+    height: 100vh;
+    overflow: hidden;
   }
 }
 
