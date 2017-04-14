@@ -20,11 +20,14 @@ body.sidenav-open {
 /* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: $cl_gray;
-  position: fixed;
-  top: 61px;
-  width: 100%;
-  z-index: 1001;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  @include at-query($max, $screen-md) {
+    position: fixed;
+    top: 61px;
+    width: 100%;
+    z-index: 1001;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  }
 
   @include at-query($min, $screen-sm){
     background-color: transparent;
@@ -51,6 +54,10 @@ body.sidenav-open {
   top: 0;
   transition: transform 0.3s ease;
   transform: translateY(22px) rotate(180deg);
+
+  @include at-query($min, $screen-md) {
+    display: none;
+  }
 }
 
 .collapsed-header {
@@ -196,6 +203,10 @@ body.sidenav-open {
 
       .arrow-up {
         display: inline-block;
+
+        @include at-query($min, $screen-md) {
+          display: none;
+        }
       }
     }
 
@@ -206,6 +217,10 @@ body.sidenav-open {
 
         .arrow-up {
           display: inline-block;
+
+          @include at-query($min, $screen-md) {
+            display: none;
+          }
         }
 
         .arrow-down {

@@ -21,8 +21,31 @@ $(function() {
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
 
+  function collapseSideNav() {
+    $('.collapsed-header').slideDown(400);
+    $sidebar.addClass('nav--collapsed');
+    $sidebar.animate({height: sideNavHeight}, {duration: 400});
+    $('#mysidebar li').slideUp(400);
+  }
+
+  // Separate function to configure sidenav on window resize
+  // We don't want to animate, so collapseSideNav() won't work
+  function sidenavOnResize(winWidth) {
+    if (winWidth > 768) {
+      $('#mysidebar li').show();
+      $('.collapsed-header').hide();
+      $sidebar.removeClass('nav--collapsed');
+    } else {
+      $('.collapsed-header').show();
+      $sidebar.addClass('nav--collapsed');
+      $sidebar.css({height: sideNavHeight});
+      $('#mysidebar li').hide();
+    }
+  }
+
   if(_viewport_width <= 768) {
     $mobile_menu.css('visibility', 'visible');
+    collapseSideNav();
   }
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
@@ -43,6 +66,7 @@ $(function() {
       $mobile_menu.css('visibility', 'visible');
     }
 
+    sidenavOnResize(_viewport_width);
     $(window).scroll();
   });
 
@@ -62,6 +86,7 @@ $(function() {
       }
     } else {
       // mobile
+      $sidebar.css('padding-top', 10);
     }
   });
 
@@ -115,64 +140,64 @@ $(function() {
     setFilterScope($('[data-scope]').first().data('scope'));
   }
 
-  //
-  // Sidebar navigation (docs menu)
-  //
-  function collapseSideNav() {
-    $('.collapsed-header').slideDown(400);
-    $sidebar.addClass('nav--collapsed');
-    $sidebar.animate({height: sideNavHeight}, {duration: 400});
-    $('#mysidebar li').slideUp(400);
-  }
-  // Collapse nav on load
-  collapseSideNav();
-
   // On page load, if .active list item doesn't have children, remove active
   // class. This ensures second tier siblings will be loaded in sidebar menu.
-  $('li.active').each(function() {
-    if ($(this).children('ul').length <= 0) $(this).removeClass('active');
-  });
+  if (_viewport_width <= 768) {
+    $('li.active').each(function() {
+      if ($(this).children('ul').length <= 0) $(this).removeClass('active');
+    });
+  }
 
   // Collapse sidebar navigation
   $('.sidenav-arrow').on('click', function() {
-    $('.collapsed-header').slideToggle(400);
+    _viewport_width = window.innerWidth;
+    // mobile only
+    if (_viewport_width <= 768) {
+      $('.collapsed-header').slideToggle(400);
 
-    if ($sidebar.hasClass('nav--collapsed')) {
-      $('body').addClass('sidenav-open');
-      $sidebar.removeClass('nav--collapsed');
-      $sidebar.removeAttr('style');
+      if ($sidebar.hasClass('nav--collapsed')) {
+        $('body').addClass('sidenav-open');
+        $sidebar.removeClass('nav--collapsed');
+        $sidebar.removeAttr('style');
 
-      var $active = $('#mysidebar .active');
-      if ($active.length > 0) {
-        // if active drawer, we want to preserve that on expand
-        $('li.search-wrap').slideDown(400);
-        $active.slideDown(400);
+        var $active = $('#mysidebar .active');
+        if ($active.length > 0) {
+          // if active drawer, we want to preserve that on expand
+          $('li.search-wrap').slideDown(400);
+          $active.slideDown(400);
 
-        // we want to show all children
-        if ($active.length === 1) {
-          $active.find('li').slideDown(400);
+          // we want to show all children
+          if ($active.length === 1) {
+            $active.find('li').slideDown(400);
+          } else {
+            // this should only fire if more than 1 active li, meaning third tier is open
+            // we need to display the third tier's children
+            $('#mysidebar .active .active li').slideDown(400);
+          }
         } else {
-          // this should only fire if more than 1 active li, meaning third tier is open
-          // we need to display the third tier's children
-          $('#mysidebar .active .active li').slideDown(400);
+          // otherwise, this should show top level
+          $('#mysidebar li').slideDown(400);
         }
       } else {
-        // otherwise, this should show top level
-        $('#mysidebar li').slideDown(400);
+        $('body').removeClass('sidenav-open')
+        collapseSideNav();
       }
-    } else {
-      $('body').removeClass('sidenav-open')
-      collapseSideNav();
     }
   });
 
   $('#mysidebar a').on('click', function() {
-    // hide sibling links
-    $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
-    // ensure child links are open
-    $(this).siblings('ul').children().slideDown();
+    _viewport_width = window.innerWidth;
+    // mobile only
+    if (_viewport_width <= 768) {
+      // hide sibling links
+      $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
+      // ensure child links are open
+      $(this).siblings('ul').children().slideDown();
+    }
+
     // if a top level menu item is clicked, this ensures no active list items
     // avoids third level item staying active, causing no items to appear on collapse/expand
+    // this fires on desktop as well, to prevent an empty menu after resize
     if ($(this).parent('li').parent('#mysidebar').length > 0) {
       $('li.active').removeClass('active');
     }
