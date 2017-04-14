@@ -6,7 +6,7 @@ toc: false
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.
 
-When using [client-side transaction retries](transactions.html#client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT cockroach_restart` to handle transaction that need to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements in the transaction.
+When using [client-side transaction retries](transactions.html#client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT cockroach_restart` to handle a transaction that needs to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
 
 <div id="toc"></div>
 
@@ -28,7 +28,7 @@ No [privileges](privileges.html) are required to rollback a transaction. However
 
 ### Rollback a Transaction
 
-Typically, your application conditionally executes rollbacks but you can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL.
+Typically, your application conditionally executes rollbacks, but you can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL.
 
 ~~~ sql
 > SELECT * FROM accounts;
