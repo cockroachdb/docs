@@ -8,6 +8,7 @@
 	@include groovy(all);
 	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 
 	#main-content {
 		.content-col {

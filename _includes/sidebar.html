@@ -49,22 +49,24 @@
 
         {% include custom/conditions.html %}
 
-        <ul id="mysidebar" class="nav {% if page.url == '/' %}nav--home{% endif %}" style="display: none">
-            <img class="sidenav-arrow" src="images/sidenav-arrow.svg">
+        <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
+            <div class="sidenav-arrow"><img src="images/sidenav-arrow.svg"></div>
             <div class="collapsed-header">
               {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
                   {% for item in subcategory.items %}
-                    <!-- second level -->
                     {% if page.url == item.url or item.alternate_urls contains page.url%}
                       <div class="collapsed-header__pre">{{ subcategory.title }}</div>
                       <div>{{item.title}}</div>
                     {% else %}
-                      <!-- third level -->
                       {% for thirdlevel in item.thirdlevel %}
                         {% for deeplevel in thirdlevel.thirdlevelitems %}
                           {% if page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
-                          <div class="collapsed-header__pre">{{subcategory.title}} > {{thirdlevel.title}}</div>
+                          <div class="collapsed-header__pre">
+                            {{subcategory.title}}
+                            <div class="arrow-down arrow-down--pre"></div>
+                            {{thirdlevel.title}}
+                          </div>
                           <div>{{deeplevel.title}}</div>
                           {% endif %}
                         {% endfor %}
@@ -74,8 +76,7 @@
                 {% endfor %}
               {% endfor %}
 
-              <!-- landing page -->
-              {% if page.url == '/' %}Docs Menu{% endif %}
+              {% if page.url == '/' or page.url == '/search.html' %}Docs Menu{% endif %}
             </div>
 
             <li class="search-wrap">
@@ -88,7 +89,7 @@
             </li>
             {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
-                <li><a href="#">{{ subcategory.title }}<div class="arrow-up"></div></a>
+                <li><a href="#">{{ subcategory.title }}<div class="arrow-down"></div><div class="arrow-up"></div></a>
                     <ul>
                         {% for item in subcategory.items %}
                             {% if item.external_url %}
@@ -98,7 +99,6 @@
                             {% else %}
                             <li><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
                             {% endif %}
-
                         {% for thirdlevel in item.thirdlevel %}
                             <li>
                                 <a href="#">
