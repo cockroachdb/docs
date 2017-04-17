@@ -149,7 +149,7 @@ body.menu_open {
       -ms-transform: rotate(-45deg);
       -o-transform: rotate(-45deg);
       transform: rotate(-45deg); }
-  body.menu_open #content {
+  body.menu_open #content, body.menu_open #mysidebar {
     margin-left: -200px; }
 
 nav.mobile_expanded {
@@ -322,7 +322,11 @@ body.sidenav-open .col-content {
   padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 5px; }
+  padding-bottom: 5px;
+  -webkit-transition: margin-left 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: margin-left 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: margin-left 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: margin-left 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   @media screen and (min-width: 992px) {
     #mysidebar {
       padding: 0; } }

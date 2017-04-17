@@ -44,6 +44,7 @@ body.sidenav-open {
   background-color: transparent;
   border-radius: 0px;
   padding-bottom: 5px;
+  @include groovy(margin-left);
 
   @include at-query($min, $screen-md){
     padding: 0;

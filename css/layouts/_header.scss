@@ -31,7 +31,7 @@ body.menu_open {
 		}
 	}
 
-	#content {
+	#content, #mysidebar {
 		margin-left:-200px;
 	}
 }
@@ -118,7 +118,7 @@ header {
 				text-decoration: none;
 			}
 		}
-		
+
 		@include at-query($min, $screen-sm){
 			display:inline-block;
 			float:right;
@@ -127,7 +127,7 @@ header {
 
 	nav.mobile {
 		float:right;
-  	
+
   	.hamburger {
   		width:21px;
   		height: 20px;
@@ -153,7 +153,7 @@ header {
   	 		&:nth-child(1) {
 		  		top: 0px;
 				}
-		 		
+
 		 		&:nth-child(2), &:nth-child(3) {
 		  		top: 8px;
 				}
