@@ -294,7 +294,8 @@ body.sidenav-open .col-sidebar {
   right: 0; }
   body.sidenav-open .col-sidebar #mysidebar {
     height: 100%;
-    overflow: scroll; }
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch; }
 body.sidenav-open .col-content {
   height: 100vh;
   overflow: hidden; }
