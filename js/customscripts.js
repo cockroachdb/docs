@@ -31,7 +31,7 @@ $(function() {
   // Separate function to configure sidenav on window resize
   // We don't want to animate, so collapseSideNav() won't work
   function sidenavOnResize(winWidth) {
-    if (winWidth > 768) {
+    if (winWidth > 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
@@ -43,9 +43,13 @@ $(function() {
     }
   }
 
-  if(_viewport_width <= 768) {
-    $mobile_menu.css('visibility', 'visible');
+  // Collapse side nav on load depending on window width
+  if (_viewport_width <= 992) {
     collapseSideNav();
+  }
+
+  if (_viewport_width <= 768) {
+    $mobile_menu.css('visibility', 'visible');
   }
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
@@ -142,7 +146,7 @@ $(function() {
 
   // On page load, if .active list item doesn't have children, remove active
   // class. This ensures second tier siblings will be loaded in sidebar menu.
-  if (_viewport_width <= 768) {
+  if (_viewport_width <= 992) {
     $('li.active').each(function() {
       if ($(this).children('ul').length <= 0) $(this).removeClass('active');
     });
@@ -152,7 +156,7 @@ $(function() {
   $('.sidenav-arrow').on('click', function() {
     _viewport_width = window.innerWidth;
     // mobile only
-    if (_viewport_width <= 768) {
+    if (_viewport_width <= 992) {
       $('.collapsed-header').slideToggle(400);
 
       if ($sidebar.hasClass('nav--collapsed')) {
@@ -188,7 +192,7 @@ $(function() {
   $('#mysidebar a').on('click', function() {
     _viewport_width = window.innerWidth;
     // mobile only
-    if (_viewport_width <= 768) {
+    if (_viewport_width <= 992) {
       // hide sibling links
       $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
       // ensure child links are open

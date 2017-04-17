@@ -7,7 +7,6 @@ body.sidenav-open {
     #mysidebar {
       height: 100%;
       overflow: scroll;
-      –webkit-overflow-scrolling: touch;
     }
   }
 
@@ -23,13 +22,18 @@ body.sidenav-open {
 
   @include at-query($max, $screen-md) {
     position: fixed;
+    left: 0;
     top: 61px;
     width: 100%;
     z-index: 1001;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
 
-  @include at-query($min, $screen-sm){
+  @include at-query($min, $screen-sm) {
+    top: 71px;
+  }
+
+  @include at-query($min, $screen-md){
     background-color: transparent;
     border-bottom: none;
   }
@@ -42,8 +46,7 @@ body.sidenav-open {
   padding-bottom: 5px;
 
   @include at-query($min, $screen-md){
-    padding-top: 65px;
-    padding-bottom: 0;
+    padding: 0;
   }
 }
 
