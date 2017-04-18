@@ -23,10 +23,10 @@ $(function() {
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
 
   function collapseSideNav() {
-    $('.collapsed-header').slideDown(300);
+    $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
-    $sidebar.animate({height: sideNavHeight}, {duration: 300});
-    $('#mysidebar li').slideUp(300);
+    $sidebar.css({height: sideNavHeight});
+    $('#mysidebar li').hide();
   }
 
   // Separate function to configure sidenav on window resize
@@ -117,9 +117,9 @@ $(function() {
 
       if ($(this).scrollTop() > 0 && !scrolled) {
         $('.col-sidebar').addClass('col-sidebar--scrolled');
-        $('.collapsed-header__pre').slideUp(300);
+        $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
-        $sidebar.animate({height: sideNavHeight}, {duration: 300});
+        $sidebar.animate({height: sideNavHeight}, {duration: 250});
       }
     }
   });
@@ -193,23 +193,23 @@ $(function() {
         var $active = $('#mysidebar .active');
         if ($active.length > 0) {
           // if active drawer, we want to preserve that on expand
-          $('li.search-wrap').slideDown(300);
-          $active.slideDown(300);
+          $('li.search-wrap').slideDown(250);
+          $active.slideDown(250);
 
           // we want to show all children
           if ($active.length === 1) {
-            $active.find('li').slideDown(300);
+            $active.find('li').slideDown(250);
           } else {
             // this should only fire if more than 1 active li, meaning third tier is open
             // we need to display the third tier's children
-            $('#mysidebar .active .active li').slideDown(300);
+            $('#mysidebar .active .active li').slideDown(250);
           }
         } else {
           // otherwise, this should show top level
-          $('#mysidebar li').slideDown(300);
+          $('#mysidebar li').slideDown(250);
         }
       } else {
-        $('.collapsed-header').slideDown(400);
+        // $('.collapsed-header').fadeIn(400);
         $('body').removeClass('sidenav-open')
         collapseSideNav();
       }

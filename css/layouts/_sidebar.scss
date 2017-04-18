@@ -53,7 +53,7 @@ body.sidenav-open {
 
     .nav--collapsed {
       .sidenav-arrow {
-        transform: translateY(11px);
+        transform: translateY(14px);
 
         img {
           transform: rotate(0deg);
@@ -77,12 +77,15 @@ body.sidenav-open {
 .sidenav-arrow {
   position: absolute;
   z-index: 1;
-  right: 9px;
-  top: 0;
+  // right: 9px;
+  // top: 0;
+  right: 0;
+  top: -14px;
   transition: transform 0.2s ease;
-  transform: translateY(22px);
+  transform: translateY(25px);
   width: 40px;
-  height: 18px;
+  // height: 18px;
+  height: 40px;
   text-align: right;
 
   @include at-query($min, $screen-md) {
@@ -94,6 +97,8 @@ body.sidenav-open {
     vertical-align: top;
     transition: transform 0.2s ease;
     transform: rotate(180deg);
+    margin-top: 11px;
+    margin-right: 9px;
   }
 }
 
@@ -115,7 +120,7 @@ body.sidenav-open {
   padding: 2px;
   margin-left: 10px;
   margin-bottom: 2px;
-  transition: transform .3s ease, margin-bottom .3s ease;
+  transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 
@@ -144,7 +149,7 @@ body.sidenav-open {
 
     &.nav--home {
       .sidenav-arrow {
-        transform: translateY(11px);
+        transform: translateY(14px);
 
         img {
           transform: rotate(0deg);
