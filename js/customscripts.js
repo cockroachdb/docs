@@ -121,13 +121,6 @@ $(function() {
         sideNavHeight = '40px';
         $sidebar.animate({height: sideNavHeight}, {duration: 300});
       }
-
-      if ($(this).scrollTop() <= 0) {
-        $('.col-sidebar').removeClass('col-sidebar--scrolled');
-        $('.collapsed-header__pre').slideDown(200);
-        sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-        $sidebar.animate({height: sideNavHeight}, {duration: 200});
-      }
     }
   });
 
