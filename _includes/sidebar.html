@@ -89,7 +89,7 @@
             </li>
             {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
-                <li><a href="#">{{ subcategory.title }}<div class="arrow-down"></div><div class="arrow-up"></div></a>
+                <li><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
                     <ul>
                         {% for item in subcategory.items %}
                             {% if item.external_url %}
@@ -104,7 +104,6 @@
                                 <a href="#">
                                   {{ thirdlevel.title }}
                                   {% if thirdlevel.thirdlevelitems %}
-                                    <div class="arrow-up"></div>
                                     <div class="arrow-down"></div>
                                   {% endif %}
                                 </a>

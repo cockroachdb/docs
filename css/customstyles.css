@@ -377,24 +377,14 @@ body.sidenav-open .col-content {
   .collapsed-header__pre {
     font-size: 11px; }
 
-.arrow-up {
-  display: none;
-  border: solid #c4c6cc;
-  border-width: 0 2px 2px 0;
-  padding: 4px;
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  float: right;
-  margin-top: 10px;
-  margin-right: 10px; }
-
 .arrow-down {
   display: inline-block;
   border: solid #142848;
   border-width: 0 2px 2px 0;
   padding: 2px;
-  vertical-align: middle;
-  margin-left: 5px;
+  margin-left: 10px;
+  margin-bottom: 2px;
+  transition: transform .3s ease, margin-bottom .3s ease;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg); }
   .arrow-down--pre {
@@ -439,9 +429,6 @@ body.sidenav-open .col-content {
         .nav > li > a {
           font-size: 16px;
           line-height: 30px; } }
-      @media screen and (min-width: 992px) {
-        .nav > li > a .arrow-down {
-          display: none; } }
     .nav > li > ul {
       border-left: 1px solid #82CC00;
       margin: 0 0 0 15px;
@@ -480,6 +467,8 @@ body.sidenav-open .col-content {
               @media screen and (min-width: 992px) {
                 .nav > li > ul > li > ul > li > a {
                   font-size: 14px; } }
+        .nav > li > ul > li .arrow-down {
+          margin-left: 6px; }
   .nav a {
     background-color: transparent;
     display: inline-block; }
@@ -497,24 +486,18 @@ body.sidenav-open .col-content {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #d8d8d8; }
+    @media screen and (min-width: 992px) {
+      .nav li.active > a {
+        border-bottom: none;
+        margin-bottom: 0; } }
     .nav li.active > a > code {
       color: #46a417; }
     .nav li.active > a .arrow-down {
-      display: none; }
-    .nav li.active > a .arrow-up {
-      display: inline-block; }
-      @media screen and (min-width: 992px) {
-        .nav li.active > a .arrow-up {
-          display: none; } }
+      transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+      margin-bottom: 0px; }
   .nav li.active li.active a {
     width: 100%; }
-    .nav li.active li.active a .arrow-up {
-      display: inline-block; }
-      @media screen and (min-width: 992px) {
-        .nav li.active li.active a .arrow-up {
-          display: none; } }
-    .nav li.active li.active a .arrow-down {
-      display: none; }
 
 .roach {
   border: 1px solid #D9DBE2;
