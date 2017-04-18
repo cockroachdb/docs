@@ -1,5 +1,6 @@
 body.sidenav-open {
   #content {
+    overflow: hidden; // stops background scrolling on chrome
     -webkit-overflow-scrolling: auto;
   }
 
