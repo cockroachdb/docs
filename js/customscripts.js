@@ -35,6 +35,7 @@ $(function() {
     if (winWidth > 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
+      $('body').removeClass('sidenav-open');
       $sidebar.removeClass('nav--collapsed');
       $sidebar.css('height', '');
     } else {
