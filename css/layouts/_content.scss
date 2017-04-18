@@ -2,13 +2,11 @@
 	background: #fff;
 	position: relative;
 	padding-top: 62px;
-	height: 100%;
 	width: 100%;
 	z-index: 1000;
 	@include groovy(all);
 	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	overflow: auto;
-	-webkit-overflow-scrolling: touch;
 
 	#main-content {
 		.content-col {
@@ -19,6 +17,11 @@
 				padding-top: 30px;
 			}
 		}
+	}
+
+	@include at-query ($max, $screen-md) {
+		height: 100%;
+		-webkit-overflow-scrolling: touch;
 	}
 
 	@include at-query($min, $screen-sm){

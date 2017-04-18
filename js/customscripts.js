@@ -32,18 +32,17 @@ $(function() {
   // Separate function to configure sidenav on window resize
   // We don't want to animate, so collapseSideNav() won't work
   function sidenavOnResize(winWidth) {
-    // ensure we're only firing this on width changes, and not height too
     if (winWidth > 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
+      $sidebar.css('height', '');
     } else {
       $('.collapsed-header').show();
       $sidebar.addClass('nav--collapsed');
       $sidebar.css({height: sideNavHeight});
       $('#mysidebar li').hide();
     }
-
   }
 
   // Collapse side nav on load depending on window width
@@ -79,8 +78,9 @@ $(function() {
       sidenavOnResize(_viewport_width);
       $(window).scroll();
     }
+
     // cache width to perform check above
-    cachedWidth = winWidth;
+    cachedWidth = _viewport_width;
   });
 
   $(window).on('scroll', function(){
@@ -95,7 +95,7 @@ $(function() {
       if (scrolltop > footertotop) {
         $sidebar.css('padding-top',  65-difference);
       } else {
-        $sidebar.css('padding-top', 65);
+        $sidebar.css('padding-top', '');
       }
     } else {
       // mobile

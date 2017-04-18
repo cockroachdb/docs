@@ -42,6 +42,7 @@ body.sidenav-open {
   @include at-query($min, $screen-md){
     background-color: transparent;
     border-bottom: none;
+    padding-left: 0;
   }
 
   &--scrolled {
@@ -167,6 +168,10 @@ body.sidenav-open {
     margin-bottom: 20px;
     list-style: none;
 
+    @include at-query($min, $screen-md) {
+      margin-bottom: 15px;
+    }
+
     > a {
       display: block;
       outline: none;
@@ -177,6 +182,11 @@ body.sidenav-open {
       color: $cl_blue;
       @include avenir_m(18px);
       line-height: 20px;
+
+      @include at-query($min, $screen-md) {
+        font-size: 16px;
+        line-height: 30px;
+      }
 
       .arrow-down {
         @include at-query($min, $screen-md) {
@@ -203,6 +213,10 @@ body.sidenav-open {
         > a {
           @include avenir_m(16px);
           line-height: 20px;
+
+          @include at-query($min, $screen-md) {
+            font-size: 14px;
+          }
         }
 
         > ul {
@@ -219,6 +233,10 @@ body.sidenav-open {
             > a {
               @include avenir_m(16px);
               line-height: 20px;
+
+              @include at-query($min, $screen-md) {
+                font-size: 14px;
+              }
             }
           }
         }
