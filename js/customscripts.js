@@ -87,7 +87,7 @@ $(function() {
   $(window).on('scroll', function(){
     _viewport_width = window.innerWidth;
 
-    if(_viewport_width >= 992) {
+    if(_viewport_width > 992) {
       //prevent sidebar from overlapping footer
       footertotop = $footer.position().top;
       scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 170;
@@ -98,24 +98,11 @@ $(function() {
       } else {
         $sidebar.css('padding-top', '');
       }
-    } else {
-      // mobile
+    } else { // mobile
       $sidebar.css('padding-top', 10);
-    }
-  });
-  // Fire scroll event on load
-  $(window).scroll();
 
-  // After content is scrolled from top
-  $('#content').on('scroll', function(e) {
-    if (!$sidebar.hasClass('nav--collapsed')) e.preventDefault();
-
-    _viewport_width = window.innerWidth;
-    // mobile only
-    if(_viewport_width <= 992 && $sidebar.hasClass('nav--collapsed')) {
       var scrolled = $('.col-sidebar').hasClass('col-sidebar--scrolled');
-
-      if ($(this).scrollTop() > 0 && !scrolled) {
+      if ($sidebar.hasClass('nav--collapsed') && $(window).scrollTop() > 0 && !scrolled) {
         $('.col-sidebar').addClass('col-sidebar--scrolled');
         $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
@@ -123,6 +110,8 @@ $(function() {
       }
     }
   });
+  // Fire scroll event on load
+  $(window).scroll();
 
   // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
   terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp
@@ -172,11 +161,12 @@ $(function() {
     setFilterScope($('[data-scope]').first().data('scope'));
   }
 
-  // On page load, if .active list item doesn't have children, remove active
-  // class. This ensures second tier siblings will be loaded in sidebar menu.
+  // On page load, update last list item style to match siblings
   if (_viewport_width <= 992) {
-    $('li.active').each(function() {
-      if ($(this).children('ul').length <= 0) $(this).removeClass('active');
+    $('li.active:last a').css({
+      'border-bottom': 'none',
+      'margin-bottom': '0',
+      'padding-bottom': '0'
     });
   }
 
@@ -196,20 +186,23 @@ $(function() {
           $('li.search-wrap').slideDown(250);
           $active.slideDown(250);
 
-          // we want to show all children
-          if ($active.length === 1) {
-            $active.find('li').slideDown(250);
-          } else {
-            // this should only fire if more than 1 active li, meaning third tier is open
-            // we need to display the third tier's children
-            $('#mysidebar .active .active li').slideDown(250);
+          $lastActive = $('li.active:last');
+          if ($lastActive.hasClass('tier-3')) {
+            $lastActive.siblings('li').slideDown(250);
+          } else if ($lastActive.hasClass('tier-2')) {
+            if ($lastActive.children('ul').length > 0) {
+              $lastActive.find('li').slideDown(250);
+            } else {
+              $lastActive.siblings('li').slideDown(250);
+            }
+          } else { // tier-1
+            $lastActive.find('li').slideDown(250);
           }
         } else {
           // otherwise, this should show top level
           $('#mysidebar li').slideDown(250);
         }
       } else {
-        // $('.collapsed-header').fadeIn(400);
         $('body').removeClass('sidenav-open')
         collapseSideNav();
       }
@@ -234,6 +227,9 @@ $(function() {
       $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
       // ensure child links are open
       $(this).siblings('ul').children().slideDown();
+      // remove any children and siblings with active class
+      $(this).parent('li').find('li.active').removeClass('active');
+      $(this).parent('li').siblings('li.active').removeClass('active');
     }
 
     // if a top level menu item is clicked, this ensures no active list items

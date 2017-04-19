@@ -19,11 +19,6 @@
 		}
 	}
 
-	@include at-query ($max, $screen-md) {
-		height: 100%;
-		-webkit-overflow-scrolling: touch;
-	}
-
 	@include at-query($min, $screen-sm){
 		padding-top: 71px;
 	}

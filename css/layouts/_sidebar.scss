@@ -1,9 +1,4 @@
 body.sidenav-open {
-  #content {
-    overflow: hidden; // stops background scrolling on chrome
-    -webkit-overflow-scrolling: auto;
-  }
-
   .col-sidebar {
     bottom: 0;
     left: 0;
@@ -17,12 +12,11 @@ body.sidenav-open {
   }
 
   .col-content {
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
   }
 }
 
-/* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: $cl_gray;
 
@@ -77,14 +71,11 @@ body.sidenav-open {
 .sidenav-arrow {
   position: absolute;
   z-index: 1;
-  // right: 9px;
-  // top: 0;
   right: 0;
   top: -14px;
   transition: transform 0.2s ease;
   transform: translateY(25px);
   width: 40px;
-  // height: 18px;
   height: 40px;
   text-align: right;
 

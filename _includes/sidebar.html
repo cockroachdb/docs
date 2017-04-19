@@ -50,7 +50,7 @@
         {% include custom/conditions.html %}
 
         <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
-            <div class="sidenav-arrow"><img src="images/sidenav-arrow.svg"></div>
+            <div class="sidenav-arrow"><img src="images/sidenav-arrow.svg" alt="Sidenav arrow"></div>
             <div class="collapsed-header">
               {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
@@ -89,18 +89,18 @@
             </li>
             {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
-                <li><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
+                <li class="tier-1"><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
                     <ul>
                         {% for item in subcategory.items %}
                             {% if item.external_url %}
-                            <li><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
+                            <li class="tier-2"><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
                             {% elsif page.url == item.url or item.alternate_urls contains page.url%}
-                            <li class="active"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
+                            <li class="active tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
                             {% else %}
-                            <li><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
+                            <li class="tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
                             {% endif %}
                         {% for thirdlevel in item.thirdlevel %}
-                            <li>
+                            <li class="tier-2">
                                 <a href="#">
                                   {{ thirdlevel.title }}
                                   {% if thirdlevel.thirdlevelitems %}
@@ -110,11 +110,11 @@
                                 <ul>
                                     {% for deeplevel in thirdlevel.thirdlevelitems %}
                                         {% if deeplevel.external_url %}
-                                        <li><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
+                                        <li class="tier-3"><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
                                         {% elsif page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
-                                        <li class="active"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
+                                        <li class="active tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
                                         {% else %}
-                                        <li><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
+                                        <li class="tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>

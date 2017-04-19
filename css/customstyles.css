@@ -288,9 +288,6 @@ header {
       header nav.mobile {
         display: none; } }
 
-body.sidenav-open #content {
-  overflow: hidden;
-  -webkit-overflow-scrolling: auto; }
 body.sidenav-open .col-sidebar {
   bottom: 0;
   left: 0;
@@ -300,10 +297,9 @@ body.sidenav-open .col-sidebar {
     overflow: scroll;
     -webkit-overflow-scrolling: touch; }
 body.sidenav-open .col-content {
-  height: 100vh;
+  height: 100%;
   overflow: hidden; }
 
-/* navgoco sidebar styles (customized) */
 .col-sidebar {
   background-color: #F7F7F7; }
   @media screen and (max-width: 992px) {
@@ -615,10 +611,6 @@ body.sidenav-open .col-content {
     padding-bottom: 100px; }
     #content #main-content .content-col--landing {
       padding-top: 30px; }
-  @media screen and (max-width: 992px) {
-    #content {
-      height: 100%;
-      -webkit-overflow-scrolling: touch; } }
   @media screen and (min-width: 768px) {
     #content {
       padding-top: 71px; } }
