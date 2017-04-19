@@ -80,32 +80,33 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory:
+1. Create a `certs` directory and a safe directory to keep your CA key:
+
+If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 
    ~~~ shell
    $ mkdir certs
+   $ mkdir my-safe-directory
    ~~~
 
 2. Create the CA key pair:
 
    ~~~ shell
    $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
-4. Create a client key pair for the `root` user:
+3. Create a client key pair for the `root` user:
 
    ~~~ shell
    $ cockroach cert create-client \
    root \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/root.cert \
-   --key=certs/root.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
-3. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the Droplet running HAProxy:
+4. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the Droplet running HAProxy:
 
    - `<node internal IP address>`, which is the node Droplet's **Private IP**.
    - `<node external IP address>`, which is the node Droplet's **ipv4** address.
@@ -125,10 +126,8 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    127.0.0.1 \
    <load balancer IP address> \
    <load balancer hostname> \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/<node name>.cert \
-   --key=certs/<node name>.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
 4. Upload the certificates to each node:
@@ -138,11 +137,11 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    $ ssh <username>@<node external IP address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-   $ scp certs/ca.cert \
-   certs/root.cert \
-   certs/root.key \
-   certs/<node name>.cert \
-   certs/<node name>.key \
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
    <username>@<node external IP address>:~/certs
    ~~~
 
@@ -172,9 +171,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 	~~~ shell
 	$ cockroach start --background \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node1 name>.cert \
-	--key=certs/<node1 name>.key \
+  --certs-dir=certs \
 	--advertise-host=<node1 internal IP address>
 	~~~
 
@@ -206,9 +203,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	$ cockroach start --background  \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node name>.cert \
-	--key=certs/<node name>.key \
+	--certs-dir=certs \
 	--advertise-host=<node internal IP address> \
 	--join=<node1 internal IP address>:26257
 	~~~
@@ -231,12 +226,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
-
-	{{site.data.alerts.callout_info}}When issuing <a href="cockroach-commands.html"><code>cockroach</code></a> commands on secure clusters, you must include flags for the <code>ca-cert</code>, as well as the client's <code>cert</code> and <code>key</code>.{{site.data.alerts.end}}
 
 	~~~ sql
 	> CREATE DATABASE securenodetest;
@@ -252,9 +243,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -289,9 +278,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	~~~ shell
 	$ cockroach sql \
 	--host=<load balancer IP address> \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 2.	View the cluster's databases:
