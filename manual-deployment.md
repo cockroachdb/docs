@@ -37,32 +37,32 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory:
+1. Create a `certs` directory and a safe directory to keep your CA key:
+
+If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 
    ~~~ shell
    $ mkdir certs
+   $ mkdir my-safe-directory
    ~~~
 
 2. Create the CA key pair:
 
    ~~~ shell
    $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
-
-   Store the `ca.key` file somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
 
 3. Create a client key pair for the `root` user:
 
    ~~~ shell
    $ cockroach cert create-client \
    root \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/root.cert \
-   --key=certs/root.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
+
 
 4. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
@@ -78,10 +78,8 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    <haproxy external IP addresses> \
    <haproxy hostnames>  \
    <other common names for haproxy instances> \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/<node name>.cert \
-   --key=certs/<node name>.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
 5. Upload the certificates to each node:
@@ -91,11 +89,11 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    $ ssh <username>@<node address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-   $ scp certs/ca.cert \
-   certs/root.cert \
-   certs/root.key \
-   certs/<node name>.cert \
-   certs/<node name>.key \
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
    <username>@<node address>:~/certs
    ~~~
 
@@ -121,9 +119,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 	~~~ shell
 	$ cockroach start --background \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node1 name>.cert \
-	--key=certs/<node1 name>.key \
+  --certs-dir=certs \
 	--host=<node1 address>
 	~~~
 
@@ -153,9 +149,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	$ cockroach start --background  \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node name>.cert \
-	--key=certs/<node name>.key \
+	--certs-dir=certs \
 	--host=<node address> \
 	--join=<node1 address>:26257
 	~~~
@@ -174,12 +168,8 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
-
-	{{site.data.alerts.callout_info}}When issuing <a href="cockroach-commands.html"><code>cockroach</code></a> commands on secure clusters, you must include flags for the <code>ca-cert</code>, as well as the client's <code>cert</code> and <code>key</code>.{{site.data.alerts.end}}
 
 	~~~ sql
 	> CREATE DATABASE securenodetest;
@@ -191,9 +181,7 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -254,11 +242,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	~~~ shell
 	$ cockroach gen haproxy \
+	--certs-dir=certs \
 	--host=<address of any node> \
-	--port=26257 \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--port=26257
 	~~~
 
 	By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
@@ -312,9 +298,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	~~~ shell
 	$ cockroach sql \
 	--host=<haproxy address> \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 2.	View the cluster's databases:
