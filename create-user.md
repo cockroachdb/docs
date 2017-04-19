@@ -85,7 +85,7 @@ $ cockroach sql --user=jpointsman
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman --ca-cert=certs/ca.cert --cert=jpointsman.cert --key=jpointsman.key
+$ cockroach sql --user=jpointsman
 ~~~
 
 #### Secure Clusters with Passwords
@@ -93,7 +93,7 @@ $ cockroach sql --user=jpointsman --ca-cert=certs/ca.cert --cert=jpointsman.cert
 [Users with passwords](#create-a-user-with-password-authentication) can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman --ca-cert=certs/ca.cert
+$ cockroach sql --user=jpointsman
 ~~~
 
 After issuing this command, you must enter the password for `jpointsman` twice.

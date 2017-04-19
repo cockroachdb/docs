@@ -34,13 +34,11 @@ The `cockroach sql` command supports the following flags as well as [logging fla
 
 Flag | Description 
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT` 
-`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
+`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`  
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--pretty` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below. 
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
-`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--insecure` | Run in insecure mode. If false, the certificate directory must contain valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
@@ -77,17 +75,17 @@ In these examples, we connect a SQL shell to a **secure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ cockroach sql --user=maxroach --ca-cert=certs/ca.cert --cert=certs/maxroach.cert --key=certs/maxroach.key  --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Using the --url flag:
-$ cockroach sql --url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/maxroach.crt&sslkey=certs/maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt"
+$ cockroach sql --url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=/home/maxroach/.cockroach-certs/client.maxroach.crt&sslkey=/home/maxroach/.cockroach-certs/client.maxroach.key&sslmode=verify-full&sslroot=/home/maxroach/.cockroach-cert/ca.crt"
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
 
 # Using the --url flag:
 $ cockroach sql --url="postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable"

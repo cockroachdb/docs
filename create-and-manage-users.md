@@ -51,12 +51,10 @@ The `user` command and subcommands support the following flags, as well as [logg
 
 Flag | Description
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
-`--cert` | The path to the [client certificate](create-security-certificates.html) of the user *issuing the command* (not the user you're creating). This flag is required if the cluster is secure. <br><br>**Env Variable:** `COCKROACH_CERT`
+`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
-`--host` | Database server host to connect to.<br/><br/>**Env Variable:** `COCKROACH_HOST`
-`--insecure` | Set this only if the cluster is insecure and running on multiple machines. <br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `--key` flags. <br><br>**Env Variable:** `COCKROACH_INSECURE`
-`--key` | Path to the [client key](create-security-certificates.html) protecting the client certificate of the user *issuing the command* (not the user you're creating). This flag is required if the cluster is secure. <br/><br/>**Env Variable:** `COCKROACH_KEY`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--insecure` | Run in insecure mode. If false, the certificate directory must contain valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
@@ -79,7 +77,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 #### Insecure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman
+$ cockroach user set --insecure jpointsman
 ~~~
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
@@ -89,10 +87,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 #### Secure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
+$ cockroach user set jpointsman
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
@@ -109,7 +104,7 @@ After creating users, you must:
 #### Insecure Clusters
 
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --insecure --user=jpointsman
 ~~~
 
 #### Secure Clusters with Client Certificates
@@ -117,18 +112,17 @@ $ cockroach sql --user=jpointsman
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman \
---ca-cert=certs/ca.cert \
---cert=jpointsman.cert \
---key=jpointsman.key
+$ cockroach sql --user=jpointsman
 ~~~
 
 #### Secure Clusters with Passwords
 
 [Users with passwords](create-and-manage-users.html#secure-cluster) can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
 
+If we cannot find client certificate and key files matching the user, we fall back on password authentication.
+
 ~~~ shell
-$ cockroach sql --user=jpointsman --ca-cert=certs/ca.cert
+$ cockroach sql --user=jpointsman
 ~~~
 
 After issuing this command, you must enter the password for `jpointsman` twice.
@@ -136,11 +130,7 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ### Update a User's Password
 
 ~~~ shell
-$ cockroach user set jpointsman \
---password \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
+$ cockroach user set jpointsman --password
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
