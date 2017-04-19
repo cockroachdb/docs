@@ -45,9 +45,9 @@ $(hostname) \
 ~~~
 
 - The first command makes a new directory for the certificates.
-- The second command creates the Certificate Authority (CA) certificate and key: `ca.cert` and `ca.key`.
-- The third command creates the client certificate and key, in this case for the `root` user: `root.cert` and `root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 5).
-- The fourth command creates the node certificate and key: `node.cert` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+- The second command creates the Certificate Authority (CA) certificate and key: `ca.crt` and `ca.key`.
+- The third command creates the client certificate and key, in this case for the `root` user: `client.root.crt` and `client.root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 5).
+- The fourth command creates the node certificate and key: `node.crt` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
 
 ## Step 2.  Restart the first node
 
