@@ -20,30 +20,28 @@ Also, feel free to watch this process in action before going through the steps y
 ## Step 1.  Create security certificates
 
 ~~~ shell
-# Create a certs directory:
+# Create a certs directory and safe directory for the CA key.
+# If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 $ mkdir certs
+$ mkdir my-safe-directory
 
 # Create the CA key pair:
 $ cockroach cert create-ca \
---ca-cert=certs/ca.cert \
---ca-key=certs/ca.key
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
 
 # Create a client key pair for the root user:
 $ cockroach cert create-client \
 root \
---ca-cert=certs/ca.cert \
---ca-key=certs/ca.key \
---cert=certs/root.cert \
---key=certs/root.key
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
 
 # Create a key pair for the nodes:
 $ cockroach cert create-node \
 localhost \
 $(hostname) \
---ca-cert=certs/ca.cert \
---ca-key=certs/ca.key \
---cert=certs/node.cert \
---key=certs/node.key
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
 ~~~
 
 - The first command makes a new directory for the certificates.
@@ -56,9 +54,7 @@ $(hostname) \
 ~~~ shell
 $ cockroach start --background \
 --http-host=localhost \
---ca-cert=certs/ca.cert \
---cert=certs/node.cert \
---key=certs/node.key
+--certs-dir=certs
 ~~~
 
 ~~~
@@ -75,8 +71,8 @@ nodeID:     1
 
 This command restarts your first node with its existing data, but securely. The command is the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
-- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
+- The `--certs-dir` directory points to the directory holding certificates and keys. It can be left out if you are using the default directory `${HOME}/.cockroach-certs`.
+- The Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 3.  Restart additional nodes
 
@@ -86,9 +82,7 @@ $ cockroach start --background \
 --port=26258 \
 --http-port=8081 \
 --http-host=localhost \
---ca-cert=certs/ca.cert \
---cert=certs/node.cert \
---key=certs/node.key \
+--certs-dir=certs \
 --join=localhost:26257
 
 $ cockroach start --background \
@@ -96,30 +90,26 @@ $ cockroach start --background \
 --port=26259 \
 --http-port=8082 \
 --http-host=localhost \
---ca-cert=certs/ca.cert \
---cert=certs/node.cert \
---key=certs/node.key \
+--certs-dir=certs \
 --join=localhost:26257
 ~~~
 
 These commands restart additional nodes with their existing data, but securely. The commands are the same as before with the following additions:
 
-- The `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the node certificate and key created in step 2.
-- When certs are used, the Admin UI defaults to listening on all interfaces. The `--http-host` flags are therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
+- The `--certs-dir` directory points to the directory holding certificates and keys. It can be left out if you are using the default directory `${HOME}/.cockroach-certs`.
+- The Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
 ## Step 4.  Restart the built-in SQL client as an interactive shell
 
 ~~~ shell
 $ cockroach sql \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
+--certs-dir=certs
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
 
-This command is the same as before, but now uses the additional `--ca-cert`, `--cert`, and `--key` flags to point to the CA certificate and the certificate and key for the `root` user created in step 2.
+This command is the same as before, but now uses the additional `--certs-dir` flag to point to the custom certificate directory.
 
 ## Step 5.  Run more CockroachDB SQL statements
 
@@ -178,17 +168,13 @@ You can stop the nodes (and therefore the cluster) as follows:
 # Stop node 1:
 $ cockroach quit \
 --host=localhost \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
+--certs-dir=certs
 
 # Stop node 2:
 $ cockroach quit \
 --host=localhost \
 --port=26258 \
---ca-cert=certs/ca.cert \
---cert=certs/root.cert \
---key=certs/root.key
+--certs-dir=certs
 ~~~
 
 With only 1 node online, a majority of replicas are no longer available, and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
@@ -199,7 +185,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-12897 ttys001    0:00.48 cockroach start --store=node3 --port=26259 --http-port=8082 --http-host=localhost --ca-cert=certs/ca.cert --cert=certs/node.cert --key=certs/node.key --join=localhost:26257
+12897 ttys001    0:00.48 cockroach start --store=node3 --port=26259 --http-port=8082 --http-host=localhost --certs-dir=certs --join=localhost:26257
 ~~~
 
 ~~~ shell
