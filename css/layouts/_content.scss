@@ -2,7 +2,6 @@
 	background: #fff;
 	position: relative;
 	padding-top: 62px;
-	
 	width: 100%;
 	z-index: 1000;
 	@include groovy(all);
@@ -11,18 +10,17 @@
 
 	#main-content {
 		.content-col {
+			padding-top: 50px;
 			padding-bottom: 100px;
+
+			&--landing {
+				padding-top: 30px;
+			}
 		}
 	}
 
 	@include at-query($min, $screen-sm){
 		padding-top: 71px;
-
-		#main-content {
-			.content-col {
-				padding-top: 25px;
-			}
-		}
 	}
 
 	@include at-query($min, $screen-md){
