@@ -102,7 +102,7 @@ GCE offers fully-managed [TCP load balancing](https://cloud.google.com/compute/d
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.cert` and `ca.key`)
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
 - A client key pair for the `root` user
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP address provisioned for the GCE load balancer
 
