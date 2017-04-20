@@ -58,7 +58,7 @@ Usernames are case-insensitive; must start with either a letter or underscore; m
 
 After creating users, you must [grant them privileges to databases and tables](grant.html).
 
-For users on secure clusters, you also need to generate [client certificates and keys](create-security-certificates.html#create-the-certificate-and-key-for-a-client) to authenticate the user's access to the cluster.
+For users on secure clusters, you also need to generate [client certificates and keys](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) to authenticate the user's access to the cluster.
 
 ### Create a User with Password Authentication
 
@@ -66,7 +66,7 @@ For users on secure clusters, you also need to generate [client certificates and
 > CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
-{{site.data.alerts.callout_info}}We strongly recommend also creating <a href="create-security-certificates.html#create-the-certificate-and-key-for-a-client">client certificates and keys</a> and using them to <a href="#secure-clusters-with-client-certificates">authenticate the user's access to the cluster</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}We strongly recommend also creating <a href="create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client">client certificates and keys</a> and using them to <a href="#secure-clusters-with-client-certificates">authenticate the user's access to the cluster</a>.{{site.data.alerts.end}}
 
 ### Manage Users
 
@@ -82,7 +82,7 @@ $ cockroach sql --user=jpointsman
 
 #### Secure Clusters with Client Certificates
 
-All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-for-a-client) issued to their username.
+All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 ~~~ shell
 $ cockroach sql --user=jpointsman

@@ -165,7 +165,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    node.key
    ~~~
 
-   This command issues the certificate/key pair to the service name you will use for the node later (`cockroachdb-1`) as well as to local addresses that will make it easy to run the built-in SQL shell and other CockroachDB client commands in the same container as the node. If you plan to connect a client to the cluster from a separate container, you'll need to <a href="create-security-certificates.html#create-the-certificate-and-key-for-a-client">create a client cert and key</a> as well.
+   This command issues the certificate/key pair to the service name you will use for the node later (`cockroachdb-1`) as well as to local addresses that will make it easy to run the built-in SQL shell and other CockroachDB client commands in the same container as the node. If you plan to connect a client to the cluster from a separate container, you'll need to <a href="create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client">create a client cert and key</a> as well.
 
 6. Create Docker secrets for the first node's certificate and key:
 

@@ -10,7 +10,7 @@ When creating users, it's important to note:
 
 - Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
-- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
 {{site.data.alerts.callout_info}}You can also create users through the <a href="create-user.html"><code>CREATE USER</code></a> statement.{{site.data.alerts.end}}
 
@@ -96,7 +96,7 @@ Usernames are case-insensitive; must start with either a letter or underscore; m
 
 After creating users, you must:
 
-- [Create their client certificates](create-security-certificates.html#create-the-certificate-and-key-for-a-client).
+- [Create their client certificates](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client).
 - [Grant them privileges to databases](grant.html).
 
 ### Authenticate as a Specific User
@@ -109,7 +109,7 @@ $ cockroach sql --insecure --user=jpointsman
 
 #### Secure Clusters with Client Certificates
 
-All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-for-a-client) issued to their username.
+All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 ~~~ shell
 $ cockroach sql --user=jpointsman
