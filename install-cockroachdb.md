@@ -64,6 +64,7 @@ $(document).ready(function(){
     }
 
     function toggleWindows(){
+        $(".windows-button:first").trigger('click');
         $("#windowsinstall").show();
         $("#macinstall").hide();
         $("#linuxinstall").hide();
@@ -105,7 +106,7 @@ $(document).ready(function(){
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
     </li>
@@ -143,7 +144,7 @@ $(document).ready(function(){
       <p>The build process can take 10+ minutes, so please be patient.</p>
     </li>
     <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
@@ -208,7 +209,7 @@ $(document).ready(function(){
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
-    <p>Make sure CockroachDB installed successfully:</p>
+    <p>Make sure the CockroachDB executable works:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
@@ -255,7 +256,7 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-    <p>Make sure CockroachDB installed successfully:</p>
+    <p>Make sure the CockroachDB executable works:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
@@ -309,7 +310,7 @@ $(document).ready(function(){
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
     </li>
@@ -374,7 +375,7 @@ $(document).ready(function(){
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
@@ -423,7 +424,7 @@ $(document).ready(function(){
     </div>
   </li>
   <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
   </li>
@@ -448,11 +449,57 @@ $(document).ready(function(){
 </div>
 </div>
 
-<div id="windowsinstall" style="display: none;" markdown="1">
+<div id="windowsinstall" style="display: none;">
 
-<p>At this time, it's only possible to run CockroachDB on Windows in a Docker virtual environment. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version of CockroachDB.</p>
+<p>There are two ways to install CockroachDB on Windows. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
 
-{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See <a href="orchestration.html">Orchestration</a> for more details.{{site.data.alerts.end}}
+<div id="windows-installs" class="clearfix">
+<a href="#download-the-binary-windows" class="install-button windows-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="windows-binary">Download the <div class="c2a">Binary</div></a>
+<a href="#use-docker-windows" class="install-button windows-button" data-eventcategory="buttonClick-doc-install" data-eventaction="windows-docker">Use <div class="c2a">Docker</div></a>
+</div>
+
+<div id="download-the-binary-windows" class="install-option">
+<h2>Download the Binary</h2>
+
+{{site.data.alerts.callout_info}}Support for running CockroachDB on Windows is experimental and has not been extensively tested by Cockroach Labs. The Windows binary is provided as a convenience for local development and experimentation; production deployments of CockroachDB on Windows are strongly discouraged.{{site.data.alerts.end}}
+
+<ol>
+  <li>
+    <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.windows-6.2-amd64.exe.tgz">CockroachDB tarball for Windows</a>.</p>
+  </li>
+  <li>
+    <p>Using <a href="http://www.7-zip.org/">7-Zip</a> or a similar tool, extract the binary into the directory of your choosing (e.g., <code>C:\cockroach\</code>).</p>
+  </li>
+  <li>
+    <p>Open PowerShell and make sure the CockroachDB executable works:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach\cockroach.exe version</code></pre></div>
+  </li>
+  <li>
+    <p>Get future release notes emailed to you:</p>
+    <div class="hubspot-install-form install-form-8 clearfix">
+      <script>
+        hbspt.forms.create({
+          css: '',
+          cssClass: 'install-form',
+          portalId: '1753393',
+          formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+          formInstanceId: 8,
+          target: '.install-form-8'
+        });
+      </script>
+    </div>
+  </li>
+</ol>
+<h2 id="whats-next">What's Next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+</div>
+
+<div id="use-docker-windows" class="install-option" style="display: none;">
+
+<h2>Use Docker</h2>
+
+{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
 <ol>
   <li>
@@ -475,22 +522,21 @@ $(document).ready(function(){
     <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{site.data.strings.version}}</code></pre></div>
   </li>
   <li>
-      <p>Make sure CockroachDB installed successfully:</p>
+      <p>Make sure the CockroachDB executable works:</p>
 
       <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="nb" data-eventcategory="win-docker-step4">PS </span>C:\Users\username&gt; docker run --rm cockroachdb/cockroach:{{site.data.strings.version}} version</code></pre></div>
-
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
-    <div class="hubspot-install-form install-form-8 clearfix">
+    <div class="hubspot-install-form install-form-9 clearfix">
       <script>
         hbspt.forms.create({
           css: '',
           cssClass: 'install-form',
           portalId: '1753393',
           formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-          formInstanceId: 8,
-          target: '.install-form-8'
+          formInstanceId: 9,
+          target: '.install-form-9'
         });
       </script>
     </div>
@@ -498,4 +544,5 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster-in-docker.html#os-windows">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+</div>
 </div>
