@@ -4,7 +4,7 @@ summary: CockroachDB comes with a built-in client for executing SQL statements f
 toc: false
 ---
 
-CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.  
+CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
 To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
 
@@ -20,7 +20,7 @@ $ cockroach sql <flags>
 $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
- 
+
 # View help:
 $ cockroach sql --help
 ~~~
@@ -29,16 +29,16 @@ $ cockroach sql --help
 
 The `cockroach sql` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-- To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details. 
+- To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details.
 - To execute SQL statements from the command line, use the `--execute` flag.
 
-Flag | Description 
+Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`  
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--pretty` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below. 
+`--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
+`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--pretty` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
-`--insecure` | Run in insecure mode. If false, the certificate directory must contain valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
+`--insecure` | Run in insecure mode. If false, the certificate directory (`--certs-dir`) must contain valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
@@ -75,20 +75,31 @@ In these examples, we connect a SQL shell to a **secure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql \
+--certs-dir=certs \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 
 # Using the --url flag:
-$ cockroach sql --url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=/home/maxroach/.cockroach-certs/client.maxroach.crt&sslkey=/home/maxroach/.cockroach-certs/client.maxroach.key&sslmode=verify-full&sslroot=/home/maxroach/.cockroach-cert/ca.crt"
+$ cockroach sql \
+--url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=/certs/client.maxroach.crt&sslkey=/certs/client.maxroach.key&sslmode=verify-full&sslroot=/certs/ca.crt"
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
 ~~~ shell
 # Using standard connection flags:
-$ cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb 
+$ cockroach sql --insecure \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 
 # Using the --url flag:
-$ cockroach sql --url="postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable"
+$ cockroach sql \
+--url="postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable"
 ~~~
 
 ### Execute SQL statement within the SQL shell
@@ -118,12 +129,31 @@ In these examples, we use the `--execute` flag to execute statements from the co
 
 ~~~ shell
 # Statements with a single --execute flag:
-$ cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
-CREATE TABLE
-INSERT 2 
+$ cockroach sql --insecure \
+--execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
+~~~
 
+~~~
+CREATE TABLE
+INSERT 2
+~~~
+
+~~~ shell
 # Statements with multiple --execute flags:
-$ cockroach sql --execute="CREATE TABLE roaches (name STRING, country STRING)" --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb   
+$ cockroach sql --insecure \
+--execute="CREATE TABLE roaches (name STRING, country STRING)" \
+--execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~
 CREATE TABLE
 INSERT 2
 ~~~
@@ -132,7 +162,7 @@ In this example, we use the `echo` command to execute statements from the comman
 
 ~~~ shell
 # Statements with the echo command:
-$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
 +----------+
 |  Table   |
 +----------+
@@ -154,15 +184,27 @@ When the standard output is a terminal, pretty output is enabled by default, but
 
 ~~~ shell
 # Using the default pretty output:
-$ cockroach sql --pretty --execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+$ cockroach sql --insecure \
+--pretty \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+~~~
+
+~~~
 +-------+--------+
 | chick | turtle |
 +-------+--------+
 | 🐥    | 🐢     |
 +-------+--------+
+~~~
 
+~~~ shell
 # Explicitly disabling pretty output:
-$ cockroach sql --pretty=false --execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+$ cockroach sql --insecure \
+--pretty=false \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+~~~
+
+~~~
 1 row
 chick turtle
 "\U0001f425"  "\U0001f422"
@@ -172,15 +214,30 @@ When piping output to another command or a file, the default is reversed. Pretty
 
 ~~~ shell
 # Using the default non-pretty output:
-$ cockroach sql --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt
+$ cockroach sql --insecure \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+> out.txt
+
 $ cat out.txt
+~~~
+
+~~~
 1 row
 chick turtle
 "\U0001f425"  "\U0001f422"
+~~~
 
+~~~ shell
 # Explicitly requesting pretty output:
-$ cockroach sql --pretty --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt
+$ cockroach sql --insecure \
+--pretty \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+> out.txt
+
 $ cat out.txt
+~~~
+
+~~~
 +-------+--------+
 | chick | turtle |
 +-------+--------+
@@ -196,10 +253,23 @@ In this example, we show and then execute the contents of a file containing SQL 
 
 ~~~ shell
 $ cat statements.sql
+~~~
+
+~~~
 CREATE TABLE roaches (name STRING, country STRING);
 INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
+~~~
 
-$ cockroach sql --user=maxroach --host=roachcluster.com ---port=26257 --database=critterdb < statements.sql
+~~~ shell
+$ cockroach sql --insecure \
+--user=maxroach \
+--host=roachcluster.com \
+---port=26257 \
+--database=critterdb \
+< statements.sql
+~~~
+
+~~~
 CREATE TABLE
 INSERT 2
 ~~~
@@ -213,10 +283,12 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 ~~~ sql
 > \! cat test.csv
 ~~~
+
 ~~~
 12, 13, 14
 10, 20, 30
 ~~~
+
 ~~~ sql
 > CREATE TABLE csv (x INT, y INT, z INT);
 
@@ -224,6 +296,7 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 
 > SELECT * FROM csv;
 ~~~
+
 ~~~
 +----+----+----+
 | x  | y  | z  |
@@ -242,6 +315,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 > SELECT * FROM for_loop;
 ~~~
+
 ~~~
 +---+
 | x |

@@ -57,7 +57,7 @@ The output should be:
 To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
 
 ~~~ shell
-$ cockroach sql -e 'SHOW TABLES' --database=bank
+$ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
 
 ~~~
@@ -70,7 +70,7 @@ $ cockroach sql -e 'SHOW TABLES' --database=bank
 ~~~
 
 ~~~ shell
-$ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~

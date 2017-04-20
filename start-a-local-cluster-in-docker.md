@@ -101,7 +101,7 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 
 Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach1 ./cockroach sql
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach1 ./cockroach sql --insecure
 <span class="c1"># Welcome to the cockroach SQL interface.</span>
 <span class="c1"># All statements must be terminated by a semicolon.</span>
 <span class="c1"># To exit: CTRL + D.</span></code></pre></div>
@@ -135,7 +135,7 @@ Exit the SQL shell on node 1:
 
 Then start the SQL shell in the second container:
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach2 ./cockroach sql
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; docker <span class="nb">exec</span> -it roach2 ./cockroach sql --insecure
 <span class="c1"># Welcome to the cockroach SQL interface.</span>
 <span class="c1"># All statements must be terminated by a semicolon.</span>
 <span class="c1"># To exit: CTRL + D.</span></code></pre></div>

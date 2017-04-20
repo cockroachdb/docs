@@ -49,7 +49,7 @@ You can copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
 
 ~~~ shell
-$ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~

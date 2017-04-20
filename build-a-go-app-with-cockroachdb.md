@@ -91,7 +91,7 @@ Success
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
 
 ~~~ shell
-$ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~

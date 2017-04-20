@@ -2,9 +2,11 @@
 
 Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
 
+<!-- TODO: update the asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="107" speed="2" theme="monokai" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
+-->
 
 ## Step 1. Create a bridge network
 
@@ -75,7 +77,7 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
 ~~~ shell
-$ docker exec -it roach1 ./cockroach sql
+$ docker exec -it roach1 ./cockroach sql --insecure
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -111,7 +113,7 @@ Exit the SQL shell on node 1:
 Then start the SQL shell in the second container:
 
 ~~~ shell
-$ docker exec -it roach2 ./cockroach sql
+$ docker exec -it roach2 ./cockroach sql --insecure
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
