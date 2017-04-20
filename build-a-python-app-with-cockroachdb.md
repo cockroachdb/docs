@@ -19,11 +19,11 @@ This tutorial shows you how build a simple Python application with CockroachDB u
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-<div class="filter-content" markdown="1" data-scope="driver">
+<!-- TODO: update asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/build-a-python-app-with-driver.json" cols="107" speed="2" theme="monokai" poster="npt:0:24" title="Build a Python App - Client Driver"></asciinema-player>
-</div>
+-->
 
 ## Step 1. Install the psycopg2 driver
 
@@ -96,7 +96,7 @@ Balances after transfer:
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
 
 ~~~ shell
-$ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~

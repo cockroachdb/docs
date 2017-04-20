@@ -13,9 +13,11 @@ Now that you've seen how easy it is to [start, use, and stop a local cluster](st
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html) and [started and stopped a local insecure cluster](start-a-local-cluster.html).
 
+<!-- TODO: update the asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
 
 <asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
+-->
 
 ## Step 1.  Create security certificates
 
@@ -46,7 +48,7 @@ $(hostname) \
 
 - The first command makes a new directory for the certificates.
 - The second command creates the Certificate Authority (CA) certificate and key: `ca.crt` and `ca.key`.
-- The third command creates the client certificate and key, in this case for the `root` user: `client.root.crt` and `client.root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 5).
+- The third command creates the client certificate and key, in this case for the `root` user: `client.root.crt` and `client.root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 4).
 - The fourth command creates the node certificate and key: `node.crt` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
 
 ## Step 2.  Restart the first node
@@ -99,7 +101,7 @@ These commands restart additional nodes with their existing data, but securely. 
 - The `--certs-dir` directory points to the directory holding certificates and keys. It can be left out if you are using the default directory `${HOME}/.cockroach-certs`.
 - The Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
 
-## Step 4.  Restart the built-in SQL client as an interactive shell
+## Step 4.  Restart the built-in SQL client
 
 ~~~ shell
 $ cockroach sql \
@@ -109,7 +111,7 @@ $ cockroach sql \
 # To exit: CTRL + D.
 ~~~
 
-This command is the same as before, but now uses the additional `--certs-dir` flag to point to the custom certificate directory.
+This command is the same as before but now uses the additional `--certs-dir` flag to point to the directory holding certificates and keys.
 
 ## Step 5.  Run more CockroachDB SQL statements
 
@@ -130,13 +132,7 @@ This command is the same as before, but now uses the additional `--certs-dir` fl
 
 ~~~ sql
 > INSERT INTO bank.accounts VALUES (4, 250.75);
-~~~
 
-~~~
-INSERT 1
-~~~
-
-~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
