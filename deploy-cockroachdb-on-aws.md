@@ -105,8 +105,6 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 1. Create a `certs` directory and a safe directory to keep your CA key:
 
-If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
-
    ~~~ shell
    $ mkdir certs
    $ mkdir my-safe-directory
@@ -129,35 +127,35 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    --ca-key=my-safe-directory/ca.key
    ~~~
 
-4. For each node, a create a node key pair issued for all common names you might use to refer to the node, including:
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the AWS load balancer:
 
-   - `<node internal IP address>` which is the instance's **Internal IP**.
-   - `<node external IP address>` which is the instance's **External IP address**.
-   - `<node hostname>` which is the instance's hostname. You can find this by SSHing into a server and running `hostname`. For many AWS EC2 servers, this is `ip-` followed by the internal IP address delimited by dashes; e.g., `ip-172-31-18-168`.
-   - `<other common names for node>` which include any domain names you point to the instance.
+   - `<node1 internal IP address>` which is the instance's **Internal IP**.
+   - `<node1 external IP address>` which is the instance's **External IP address**.
+   - `<node1 hostname>` which is the instance's hostname. You can find this by SSHing into a server and running `hostname`. For many AWS EC2 servers, this is `ip-` followed by the internal IP address delimited by dashes; e.g., `ip-172-31-18-168`.
+   - `<other common names for node1>` which include any domain names you point to the instance.
    - `localhost` and `127.0.0.1`
    - `<load balancer IP address>`
    - `<load balancer hostname>`
 
    ~~~ shell
    $ cockroach cert create-node \
-   <node internal IP address> \
-   <node external IP address> \
-   <node hostname>  \
-   <other common names for node> \
+   <node1 internal IP address> \
+   <node1 external IP address> \
+   <node1 hostname>  \
+   <other common names for node1> \
    localhost \
    127.0.0.1 \
-   <load balancer IP address>
-   <load balancer hostname>
+   <load balancer IP address> \
+   <load balancer hostname> \
    --certs-dir=certs \
    --ca-key=my-safe-directory/ca.key
    ~~~
 
-5. Upload the certificates to each node:
+5. Upload the certificates to the first node:
 
    ~~~ shell
    # Create the certs directory:
-   $ ssh -i <path to AWS .pem> <username>@<node external IP address> "mkdir certs"
+   $ ssh -i <path to AWS .pem> <username>@<node1 external IP address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
    $ scp -i <path to AWS .pem>\
@@ -166,8 +164,42 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    certs/client.root.key \
    certs/node.crt \
    certs/node.key \
-   <username>@<node external IP address>:~/certs
+   <username>@<node1 external IP address>:~/certs
    ~~~
+
+6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node --overwrite\
+   <node2 internal IP address> \
+   <node2 external IP address> \
+   <node2 hostname>  \
+   <other common names for node2> \
+   localhost \
+   127.0.0.1 \
+   <load balancer IP address> \
+   <load balancer hostname> \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+   ~~~
+
+7. Upload the certificates to the second node:
+
+   ~~~ shell
+   # Create the certs directory:
+   $ ssh -i <path to AWS .pem> <username>@<node2 external IP address> "mkdir certs"
+
+   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+   $ scp -i <path to AWS .pem>\
+   certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
+   <username>@<node2 external IP address>:~/certs
+   ~~~
+
+8. Repeat steps 6 and 7 for each additional node.
 
 ## Step 5. Start the first node
 
@@ -195,7 +227,7 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
 
 	~~~ shell
 	$ cockroach start --background \
-  --certs-dir=certs \
+    --certs-dir=certs \
 	--advertise-host=<node1 internal IP address>
 	~~~
 
@@ -250,7 +282,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-  --certs-dir=certs
+    --certs-dir=certs
 	~~~
 
 	~~~ sql
@@ -267,7 +299,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-  --certs-dir=certs
+    --certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -302,8 +334,8 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	~~~ shell
 	$ cockroach sql \
+    --certs-dir=certs
 	--host=<load balancer IP address> \
-  --certs-dir=certs
 	~~~
 
 3.	View the cluster's databases:

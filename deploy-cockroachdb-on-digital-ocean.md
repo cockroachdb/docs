@@ -82,8 +82,6 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 1. Create a `certs` directory and a safe directory to keep your CA key:
 
-If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
-
    ~~~ shell
    $ mkdir certs
    $ mkdir my-safe-directory
@@ -106,7 +104,7 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    --ca-key=my-safe-directory/ca.key
    ~~~
 
-4. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the Droplet running HAProxy:
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the Digital Ocean Load Balancer:
 
    - `<node internal IP address>`, which is the node Droplet's **Private IP**.
    - `<node external IP address>`, which is the node Droplet's **ipv4** address.
@@ -118,10 +116,10 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
 
    ~~~ shell
    $ cockroach cert create-node \
-   <node internal IP address> \
-   <node external IP address> \
-   <node hostname>  \
-   <other common names for node> \
+   <node1 internal IP address> \
+   <node1 external IP address> \
+   <node1 hostname>  \
+   <other common names for node1> \
    localhost \
    127.0.0.1 \
    <load balancer IP address> \
@@ -130,11 +128,11 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    --ca-key=my-safe-directory/ca.key
    ~~~
 
-4. Upload the certificates to each node:
+5. Upload the certificates to the first node:
 
    ~~~ shell
    # Create the certs directory:
-   $ ssh <username>@<node external IP address> "mkdir certs"
+   $ ssh <username>@<node1 external IP address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
    $ scp certs/ca.crt \
@@ -142,8 +140,41 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    certs/client.root.key \
    certs/node.crt \
    certs/node.key \
-   <username>@<node external IP address>:~/certs
+   <username>@<node1 external IP address>:~/certs
    ~~~
+
+6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node --overwrite\
+   <node2 internal IP address> \
+   <node2 external IP address> \
+   <node2 hostname>  \
+   <other common names for node2> \
+   localhost \
+   127.0.0.1 \
+   <load balancer IP address> \
+   <load balancer hostname> \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+   ~~~
+
+7. Upload the certificates to the second node:
+
+   ~~~ shell
+   # Create the certs directory:
+   $ ssh <username>@<node2 external IP address> "mkdir certs"
+
+   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
+   <username>@<node2 external IP address>:~/certs
+   ~~~
+
+8. Repeat steps 6 and 7 for each additional node.
 
 ## Step 5. Start the first node
 
@@ -171,7 +202,7 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
 
 	~~~ shell
 	$ cockroach start --background \
-  --certs-dir=certs \
+    --certs-dir=certs \
 	--advertise-host=<node1 internal IP address>
 	~~~
 
@@ -277,8 +308,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 	~~~ shell
 	$ cockroach sql \
-	--host=<load balancer IP address> \
 	--certs-dir=certs
+	--host=<load balancer IP address> \
 	~~~
 
 2.	View the cluster's databases:
