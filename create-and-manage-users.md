@@ -54,7 +54,7 @@ Flag | Description
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
-`--insecure` | Run in insecure mode. If false, the certificate directory must contain valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
+`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
@@ -87,7 +87,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 #### Secure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman
+$ cockroach user set jpointsman --certs-dir=certs
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
@@ -112,7 +112,7 @@ $ cockroach sql --insecure --user=jpointsman
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
 #### Secure Clusters with Passwords
@@ -122,7 +122,7 @@ $ cockroach sql --user=jpointsman
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
 After issuing this command, you must enter the password for `jpointsman` twice.
@@ -130,7 +130,7 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ### Update a User's Password
 
 ~~~ shell
-$ cockroach user set jpointsman --password
+$ cockroach user set jpointsman --certs-dir=certs --password
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
@@ -140,7 +140,7 @@ After issuing this command, enter and confirm the user's new password at the com
 ### List All Users
 
 ~~~ shell
-$ cockroach user ls
+$ cockroach user ls --insecure
 ~~~
 ~~~
 +------------+
@@ -153,7 +153,7 @@ $ cockroach user ls
 ### Find a Specific User
 
 ~~~ shell
-$ cockroach user get jpointsman
+$ cockroach user get jpointsman --insecure
 ~~~
 ~~~
 +------------+--------------------------------------------------------------+
@@ -166,7 +166,7 @@ $ cockroach user get jpointsman
 ### Remove a User
 
 ~~~ shell
-$ cockroach user rm jpointsman
+$ cockroach user rm jpointsman --insecure
 ~~~
 
 ## See Also
