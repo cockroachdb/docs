@@ -21,7 +21,7 @@ Subcommand | Usage
 
 ## Certificate Directory
 
-The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag and names the files as follows:
+The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag, with the files named as follows:
 
 File name pattern | File usage
 -------------|------------
