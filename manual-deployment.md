@@ -39,8 +39,6 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 1. Create a `certs` directory and a safe directory to keep your CA key:
 
-If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
-
    ~~~ shell
    $ mkdir certs
    $ mkdir my-safe-directory
@@ -64,14 +62,14 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    ~~~
 
 
-4. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the HAProxy instances:
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
    ~~~ shell
    $ cockroach cert create-node \
-   <node internal IP address> \
-   <node external IP address> \
-   <node hostname>  \
-   <other common names for node> \
+   <node1 internal IP address> \
+   <node1 external IP address> \
+   <node1 hostname>  \
+   <other common names for node1> \
    localhost \
    127.0.0.1 \
    <haproxy internal IP addresses> \
@@ -82,11 +80,11 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    --ca-key=my-safe-directory/ca.key
    ~~~
 
-5. Upload the certificates to each node:
+5. Upload the certificates to first node:
 
    ~~~ shell
    # Create the certs directory:
-   $ ssh <username>@<node address> "mkdir certs"
+   $ ssh <username>@<node1 address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
    $ scp certs/ca.crt \
@@ -94,8 +92,43 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
    certs/client.root.key \
    certs/node.crt \
    certs/node.key \
-   <username>@<node address>:~/certs
+   <username>@<node1 address>:~/certs
    ~~~
+
+6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node --overwrite\
+   <node2 internal IP address> \
+   <node2 external IP address> \
+   <node2 hostname>  \
+   <other common names for node1> \
+   localhost \
+   127.0.0.1 \
+   <haproxy internal IP addresses> \
+   <haproxy external IP addresses> \
+   <haproxy hostnames>  \
+   <other common names for haproxy instances> \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+   ~~~
+
+7. Upload the certificates to the second node:
+
+   ~~~ shell
+   # Create the certs directory:
+   $ ssh <username>@<node2 address> "mkdir certs"
+
+   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
+   <username>@<node2 address>:~/certs
+   ~~~
+
+8. Repeat steps 6 and 7 for each additional node.
 
 ## Step 2. Start the first node
 
@@ -119,7 +152,7 @@ If using the default certificate directory (`${HOME}/.cockroach-certs`), make su
 
 	~~~ shell
 	$ cockroach start --background \
-  --certs-dir=certs \
+    --certs-dir=certs \
 	--host=<node1 address>
 	~~~
 
@@ -297,8 +330,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 	~~~ shell
 	$ cockroach sql \
-	--host=<haproxy address> \
 	--certs-dir=certs
+	--host=<haproxy address> \
 	~~~
 
 2.	View the cluster's databases:

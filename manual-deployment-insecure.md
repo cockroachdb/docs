@@ -47,8 +47,7 @@ For guidance on cluster topology, clock synchronization, and file descriptor lim
 3. 	Start a new CockroachDB cluster with a single node:
 
 	~~~ shell
-	$ cockroach start \
-	--insecure \
+	$ cockroach start --insecure \
 	--host=<node1 address>
 	~~~
 
@@ -77,8 +76,7 @@ At this point, your cluster is live and operational but contains only a single n
 3. 	Start a new node that joins the cluster using the first node's address:
 
 	~~~ shell
-	$ cockroach start \
-	--insecure \
+	$ cockroach start --insecure \
 	--host=<node2 address> \
 	--join=<node1 address>:26257
 	~~~
@@ -98,7 +96,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 2.	Launch the built-in SQL client and create a database:
 
 	~~~ shell
-	$ cockroach sql
+	$ cockroach sql --insecure
 	~~~
 
 	~~~ sql
@@ -110,7 +108,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 4.	Launch the built-in SQL client:
 
 	~~~ shell
-	$ cockroach sql
+	$ cockroach sql --insecure
 	~~~
 
 5.	View the cluster's databases, which will include `insecurenodetest`:
@@ -169,10 +167,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 4. 	Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
 
 	~~~ shell
-	$ cockroach gen haproxy \
+	$ cockroach gen haproxy --insecure \
 	--host=<address of any node> \
 	--port=26257 \
-	--insecure
 	~~~
 
 	By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
@@ -226,10 +223,9 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 2.	Launch the built-in SQL client, with the `--host` flag set to the address of one of the HAProxy servers:
 
 	~~~ shell
-	$ cockroach sql \
+	$ cockroach sql --insecure \
 	--host=<haproxy address> \
 	--port=26257 \
-	--insecure
 	~~~
 
 3.	View the cluster's databases:
