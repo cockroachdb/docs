@@ -151,8 +151,8 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    <other common names for node> \
    localhost \
    127.0.0.1 \
-   <load balancer IP address>
-   <load balancer hostname>
+   <load balancer IP address> \
+   <load balancer hostname> \
    --certs-dir=certs \
    --ca-key=my-safe-directory/ca.key
    ~~~
@@ -182,8 +182,8 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    <other common names for node2> \
    localhost \
    127.0.0.1 \
-   <load balancer IP address>
-   <load balancer hostname>
+   <load balancer IP address> \
+   <load balancer hostname> \
    --certs-dir=certs \
    --ca-key=my-safe-directory/ca.key
    ~~~

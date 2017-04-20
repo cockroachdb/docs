@@ -225,7 +225,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	~~~ shell
 	$ cockroach sql --insecure \
 	--host=<haproxy address> \
-	--port=26257 \
+	--port=26257
 	~~~
 
 3.	View the cluster's databases:

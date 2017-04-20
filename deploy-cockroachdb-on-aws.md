@@ -227,7 +227,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 	~~~ shell
 	$ cockroach start --background \
-    --certs-dir=certs \
+	--certs-dir=certs \
 	--advertise-host=<node1 internal IP address>
 	~~~
 
@@ -282,7 +282,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-    --certs-dir=certs
+	--certs-dir=certs
 	~~~
 
 	~~~ sql
@@ -299,7 +299,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-    --certs-dir=certs
+	--certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -334,8 +334,8 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	~~~ shell
 	$ cockroach sql \
-    --certs-dir=certs
-	--host=<load balancer IP address> \
+	--certs-dir=certs \
+	--host=<load balancer IP address>
 	~~~
 
 3.	View the cluster's databases:

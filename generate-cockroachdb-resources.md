@@ -105,7 +105,7 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
 
 ~~~ shell
 # Generate example `startrek` database:
-$ cockroach gen example-data startrek | cockroach sql
+$ cockroach gen example-data startrek | cockroach sql --insecure
 ~~~
 
 ~~~
@@ -121,7 +121,7 @@ INSERT 200
 
 ~~~ shell
 # Launch the built-in SQL client to view it:
-$ cockroach sql
+$ cockroach sql --insecure
 ~~~
 
 ~~~ sql
@@ -141,7 +141,7 @@ You can also generate an example `intro` database, which contains 1 table, `myta
 
 ~~~ shell
 # Generate example `intro` database:
-$ cockroach gen example-data intro | cockroach sql
+$ cockroach gen example-data intro | cockroach sql --insecure
 ~~~
 
 ~~~
@@ -158,7 +158,7 @@ INSERT 1
 
 ~~~ shell
 # Launch the built-in SQL client to view it:
-$ cockroach sql
+$ cockroach sql --insecure
 ~~~
 
 ~~~ sql
@@ -217,10 +217,11 @@ $ cockroach sql
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="secure">
-To generate an HAProxy config file for a secure cluster, run the `cockroach gen haproxy` command, specifying the address of any instance running a CockroachDB node and [security flags](create-security-certificates.html) pointing to the CA cert and the client cert and key:
+To generate an HAProxy config file for a secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory](create-security-certificates.html) and the address of any instance running a CockroachDB node:
 
 ~~~ shell
 $ cockroach gen haproxy \
+--certs-dir=<path to certs directory> \
 --host=<address of any node in the cluster> \
 --port=26257
 ~~~
@@ -230,10 +231,9 @@ $ cockroach gen haproxy \
 To generate an HAProxy config file for an insecure cluster, run the `cockroach gen haproxy` command, specifying the address of any instance running a CockroachDB node:
 
 ~~~ shell
-$ cockroach gen haproxy \
+$ cockroach gen haproxy --insecure \
 --host=<address of any node in the cluster> \
---port=26257 \
---insecure
+--port=26257
 ~~~
 </div>
 

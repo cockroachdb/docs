@@ -33,9 +33,9 @@ File name pattern | File usage
 
 Note the following:
 
-- The CA key is never loaded automatically by `cockroach` commands, so it should be created in a seperate directory, identified by the `--ca-key` flag.
+- The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 
-- Keys (files ending in `.key`) must not have group or world permissions (maximum permissions are 0700, or `rwx------`). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=false`.
+- Keys (files ending in `.key`) must not have group or world permissions (maximum permissions are 0700, or `rwx------`). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
 
 ## Synopsis
 

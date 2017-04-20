@@ -84,7 +84,7 @@ $ cockroach sql \
 
 # Using the --url flag:
 $ cockroach sql \
---url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=/certs/client.maxroach.crt&sslkey=/certs/client.maxroach.key&sslmode=verify-full&sslroot=/certs/ca.crt"
+--url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/client.maxroach.crt&sslkey=certs/client.maxroach.key&sslmode=verify-full&sslroot=certs/ca.crt"
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
