@@ -10,16 +10,16 @@ To view details for each node in the cluster, use the `cockroach node` [command]
 
 ## Subcommands
 
-Subcommand | Usage 
+Subcommand | Usage
 -----------|------
 `ls` | List the ID of each node in the cluster.
-`status` | View the status of one or all nodes.  
+`status` | View the status of one or all nodes.
 
 ## Synopsis
 
 ~~~ shell
 # List node IDs:
-$ cockroach node ls <flags> 
+$ cockroach node ls <flags>
 
 # Show the status of nodes:
 $ cockroach node status <optional node ID> <flags>
@@ -32,15 +32,13 @@ $ cockroach node status --help
 
 ## Flags
 
-The `node` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). 
+The `node` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
 
-Flag | Description 
+Flag | Description
 -----|------------
-`--ca-cert` | The path to the [CA certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CA_CERT`
-`--cert` | The path to the [client certificate](create-security-certificates.html). This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_CERT`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Set this only if the cluster is insecure and running on multiple machines.<br><br>If the cluster is insecure and local, leave this out. If the cluster is secure, leave this out and set the `--ca-cert`, `--cert`, and `-key` flags.<br><br>**Env Variable:** `COCKROACH_INSECURE`
-`--key` | The path to the [client key](create-security-certificates.html) protecting the client certificate. This flag is required if the cluster is secure.<br><br>**Env Variable:** `COCKROACH_KEY` 
+`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 
@@ -50,26 +48,29 @@ For the `node ls` command, only the `id` field is returned for each node. For th
 
 Field | Description
 ----------|------------
-`id` | 
-`address` | 
-`build` |  
-`updated_at` | 
-`started_at` |   
-`live_bytes` |  
-`key_bytes` |  
-`value_bytes` | 
-`intent_bytes` | 
-`system_bytes` | 
-`leader_ranges` | 
-`repl_ranges` | 
-`avail_ranges` | 
+`id` |
+`address` |
+`build` |
+`updated_at` |
+`started_at` |
+`live_bytes` |
+`key_bytes` |
+`value_bytes` |
+`intent_bytes` |
+`system_bytes` |
+`leader_ranges` |
+`repl_ranges` |
+`avail_ranges` |
 
 ## Examples
 
 ### List node IDs
 
 ~~~ shell
-$ cockroach node ls
+$ cockroach node ls --insecure
+~~~
+
+~~~
 +----+
 | id |
 +----+
@@ -82,7 +83,10 @@ $ cockroach node ls
 ### Show the status of a single node
 
 ~~~ shell
-$ cockroach node status 1 
+$ cockroach node status 1 --insecure
+~~~
+
+~~~
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 | id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
@@ -93,7 +97,10 @@ $ cockroach node status 1
 ### Show the status of all nodes
 
 ~~~ shell
-$ cockroach node status
+$ cockroach node status --insecure
+~~~
+
+~~~
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+
 | id |     address     |           build           |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | leader_ranges | repl_ranges | avail_ranges |
 +----+-----------------+---------------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+---------------+-------------+--------------+

@@ -102,77 +102,107 @@ GCE offers fully-managed [TCP load balancing](https://cloud.google.com/compute/d
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.cert` and `ca.key`)
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
 - A client key pair for the `root` user
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP address provisioned for the GCE load balancer
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory:
+1.	Create a `certs` directory and a safe directory to keep your CA key:
 
-   ~~~ shell
-   $ mkdir certs
-   ~~~
+	~~~ shell
+	$ mkdir certs
+	$ mkdir my-safe-directory
+	~~~
 
-2. Create the CA key pair:
+2. 	Create the CA key pair:
 
-   ~~~ shell
-   $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
-   ~~~
+	~~~ shell
+	$ cockroach cert create-ca \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-3. Create a client key pair for the `root` user:
+3. 	Create a client key pair for the `root` user:
 
-   ~~~ shell
-   $ cockroach cert create-client \
-   root \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/root.cert \
-   --key=certs/root.key
-   ~~~
+	~~~ shell
+	$ cockroach cert create-client \
+	root \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-4. For each node, a create a node key pair issued for all common names you might use to refer to the node, including:
+4. 	Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the GCE load balancer:
 
-   - `<node internal IP address>` which is the instance's **Internal IP**.
-   - `<node external IP address>` which is the instance's **External IP address**.
-   - `<node hostname>` which is the instance's **Name**.
-   - `<other common names for node>` which include any domain names you point to the instance.
-   - `localhost` and `127.0.0.1`
-   - `<load balancer IP address>`
-   - `<load balancer hostname>`
+	- `<node1 internal IP address>` which is the instance's **Internal IP**.
+	- `<node1 external IP address>` which is the instance's **External IP address**.
+	- `<node1 hostname>` which is the instance's **Name**.
+	- `<other common names for node1>` which include any domain names you point to the instance.
+	- `localhost` and `127.0.0.1`
+	- `<load balancer IP address>`
+	- `<load balancer hostname>`
 
-   ~~~ shell
-   $ cockroach cert create-node \
-   <node internal IP address> \
-   <node external IP address> \
-   <node hostname>  \
-   <other common names for node> \
-   localhost \
-   127.0.0.1 \
-   <load balancer IP address>
-   <load balancer hostname>
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/<node name>.cert \
-   --key=certs/<node name>.key
-   ~~~
+	~~~ shell
+	$ cockroach cert create-node \
+	<node1 internal IP address> \
+	<node1 external IP address> \
+	<node1 hostname>  \
+	<other common names for node1> \
+	localhost \
+	127.0.0.1 \
+	<load balancer IP address> \
+	<load balancer hostname> \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-5. Upload the certificates to each node:
+5. 	Upload the certificates to the first node:
 
-   ~~~ shell
-   # Create the certs directory:
-   $ ssh <username>@<node external IP address> "mkdir certs"
+	~~~ shell
+	# Create the certs directory:
+	$ ssh <username>@<node1 external IP address> "mkdir certs"
 
-   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-   $ scp certs/ca.cert \
-   certs/root.cert \
-   certs/root.key \
-   certs/<node name>.cert \
-   certs/<node name>.key \
-   <username>@<node external IP address>:~/certs
-   ~~~
+	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	$ scp certs/ca.crt \
+	certs/client.root.crt \
+	certs/client.root.key \
+	certs/node.crt \
+	certs/node.key \
+	<username>@<node1 external IP address>:~/certs
+	~~~
+
+6. 	Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+	~~~ shell
+	$ cockroach cert create-node --overwrite\
+	<node2 internal IP address> \
+	<node2 external IP address> \
+	<node2 hostname>  \
+	<other common names for node2> \
+	localhost \
+	127.0.0.1 \
+	<load balancer IP address> \
+	<load balancer hostname> \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
+
+7. 	Upload the certificates to the second node:
+
+	~~~ shell
+	# Create the certs directory:
+	$ ssh <username>@<node2 external IP address> "mkdir certs"
+
+	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	$ scp certs/ca.crt \
+	certs/client.root.crt \
+	certs/client.root.key \
+	certs/node.crt \
+	certs/node.key \
+	<username>@<node2 external IP address>:~/certs
+	~~~
+
+8. 	Repeat steps 6 and 7 for each additional node.
 
 ## Step 5. Start the first node
 
@@ -200,9 +230,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 	~~~ shell
 	$ cockroach start --background \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node1 name>.cert \
-	--key=certs/<node1 name>.key \
+	--certs-dir=certs
 	~~~
 
 ## Step 6. Add nodes to the cluster
@@ -233,9 +261,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	$ cockroach start --background  \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node name>.cert \
-	--key=certs/<node name>.key \
+	--certs-dir=certs \
 	--join=<node1 internal IP address>:26257
 	~~~
 
@@ -257,12 +283,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
-
-	{{site.data.alerts.callout_info}}When issuing <a href="cockroach-commands.html"><code>cockroach</code></a> commands on secure clusters, you must include flags for the <code>ca-cert</code>, as well as the client's <code>cert</code> and <code>key</code>.{{site.data.alerts.end}}
 
 	~~~ sql
 	> CREATE DATABASE securenodetest;
@@ -278,9 +300,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -313,10 +333,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 	~~~ shell
 	$ cockroach sql \
-	--host=<load balancer IP address> \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs \
+	--host=<load balancer IP address>
 	~~~
 
 2.	View the cluster's databases:

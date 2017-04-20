@@ -103,24 +103,25 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.cert` and `ca.key`)
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
 - A client key pair for the `root` user
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP address provisioned for the Azure load balancer
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory:
+1. Create a `certs` directory and a safe directory to keep your CA key:
 
    ~~~ shell
    $ mkdir certs
+   $ mkdir my-safe-directory
    ~~~
 
 2. Create the CA key pair:
 
    ~~~ shell
    $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
 3. Create a client key pair for the `root` user:
@@ -128,18 +129,16 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    ~~~ shell
    $ cockroach cert create-client \
    root \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/root.cert \
-   --key=certs/root.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
-4. For each node, create a node key pair issued for all common names you might use to refer to the node, including:
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the Azure load balancer:
 
-   - `<node internal IP address>` which is the VM's **Private IP address** (available on the VM's **Network Interface**).
-   - `<node external IP address>` which is the VM's **Public IP address** (available on the VM's **Network Interface**).
-   - `<node hostname>` which is the VM's **Name**.
-   - `<other common names for node>` which include any domain names you point to the instance.
+   - `<node1 internal IP address>` which is the VM's **Private IP address** (available on the VM's **Network Interface**).
+   - `<node1 external IP address>` which is the VM's **Public IP address** (available on the VM's **Network Interface**).
+   - `<node1 hostname>` which is the VM's **Name**.
+   - `<other common names for node1>` which include any domain names you point to the instance.
    - `localhost` and `127.0.0.1`
    - `<load balancer IP address>`
    - `<load balancer hostname>`
@@ -152,97 +151,124 @@ Locally, you'll need to [create the following certificates and keys](create-secu
    <other common names for node> \
    localhost \
    127.0.0.1 \
-   <load balancer IP address>
-   <load balancer hostname>
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/<node name>.cert \
-   --key=certs/<node name>.key
+   <load balancer IP address> \
+   <load balancer hostname> \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
    ~~~
 
-5. Upload the certificates to each node:
+5. Upload the certificates to the first node:
 
    ~~~ shell
    # Create the certs directory:
-   $ ssh <username>@<node external IP address> "mkdir certs"
+   $ ssh <username>@<node1 external IP address> "mkdir certs"
 
    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-   $ scp certs/ca.cert \
-   certs/root.cert \
-   certs/root.key \
-   certs/<node name>.cert \
-   certs/<node name>.key \
-   <username>@<node external IP address>:~/certs
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
+   <username>@<node1 external IP address>:~/certs
    ~~~
+
+6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node \
+   <node2 internal IP address> \
+   <node2 external IP address> \
+   <node2 hostname>  \
+   <other common names for node2> \
+   localhost \
+   127.0.0.1 \
+   <load balancer IP address> \
+   <load balancer hostname> \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+   ~~~
+
+7. Upload the certificates to the second node:
+
+   ~~~ shell
+   # Create the certs directory:
+   $ ssh <username>@<node2 external IP address> "mkdir certs"
+
+   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+   $ scp certs/ca.crt \
+   certs/client.root.crt \
+   certs/client.root.key \
+   certs/node.crt \
+   certs/node.key \
+   <username>@<node2 external IP address>:~/certs
+   ~~~
+
+8. Repeat steps 6 and 7 for each additional node.
 
 ## Step 5. Start the first node
 
-1. 	SSH to your instance:
+1.  SSH to your instance:
 
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node1 external IP address>
+    ~~~
 
 2.	Install the latest CockroachDB binary:
 
-	~~~ shell
-	# Get the latest CockroachDB tarball.
-	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+    ~~~ shell
+    # Get the latest CockroachDB tarball.
+    $ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
-	# Extract the binary.
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+    # Extract the binary.
+    $ tar -xf cockroach-latest.linux-amd64.tgz  \
+    --strip=1 cockroach-latest.linux-amd64/cockroach
 
-	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
-	~~~
+    # Move the binary.
+    $ sudo mv cockroach /usr/local/bin
+    ~~~
 
 3. 	Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
 
-	~~~ shell
-	$ cockroach start \
-  --background \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node1 name>.cert \
-	--key=certs/<node1 name>.key \
-	--advertise-host=<node1 internal IP address>
-	~~~
+    ~~~ shell
+    $ cockroach start \
+    --background \
+    --certs-dir=certs \
+    --advertise-host=<node1 internal IP address>
+    ~~~
 
 ## Step 6. Add nodes to the cluster
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
 
-1. 	SSH to your instance:
+1.  SSH to your instance:
 
-	~~~
-	$ ssh <username>@<additional node external IP address>
-	~~~
+    ~~~
+    $ ssh <username>@<additional node external IP address>
+    ~~~
 
-2.	Install the latest CockroachDB binary:
+2.  Install the latest CockroachDB binary:
 
-	~~~ shell
-	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+    ~~~ shell
+    # Get the latest CockroachDB tarball.
+    $ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
 
-	# Extract the binary.
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+    # Extract the binary.
+    $ tar -xf cockroach-latest.linux-amd64.tgz  \
+    --strip=1 cockroach-latest.linux-amd64/cockroach
 
-	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
-	~~~
+    # Move the binary.
+    $ sudo mv cockroach /usr/local/bin
+    ~~~
 
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
 
-	~~~ shell
-	$ cockroach start \
-  --background  \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node name>.cert \
-	--key=certs/<node name>.key \
-	--advertise-host=<node internal IP address> \
-	--join=<node1 internal IP address>:26257
-	~~~
+    ~~~ shell
+    $ cockroach start \
+    --background \
+    --certs-dir=certs \
+    --advertise-host=<node internal IP address> \
+    --join=<node1 internal IP address>:26257
+    ~~~
 
 4.  Repeat these steps for each instance you want to use as a node.
 
@@ -254,57 +280,51 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 1. 	SSH to your first node:
 
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node1 external IP address>
+    ~~~
 
 2.	Launch the built-in SQL client and create a database:
 
-	~~~ shell
-	$ cockroach sql \
-  --ca-cert=certs/ca.cert \
-  --cert=certs/root.cert \
-  --key=certs/root.key
-	~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs
+    ~~~
 
-  {{site.data.alerts.callout_info}}When issuing <a href="cockroach-commands.html"><code>cockroach</code></a> commands on secure clusters, you must include flags for the <code>ca-cert</code>, as well as the client's <code>cert</code> and <code>key</code>.{{site.data.alerts.end}}
-
-  ~~~ sql
-	> CREATE DATABASE securenodetest;
-	~~~
+    ~~~ sql
+    > CREATE DATABASE securenodetest;
+    ~~~
 
 3. 	In another terminal window, SSH to another node:
 
-	~~~ shell
-	$ ssh <username>@<node3 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node3 external IP address>
+    ~~~
 
 4.	Launch the built-in SQL client:
 
-	~~~ shell
-	$ cockroach sql \
-  --ca-cert=certs/ca.cert \
-  --cert=certs/root.cert \
-  --key=certs/root.key
-	~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs
+    ~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
 
-	~~~ sql
-	> SHOW DATABASE;
-	~~~
-	~~~
-  +--------------------+
-  |      Database      |
-  +--------------------+
-  | crdb_internal      |
-  | information_schema |
-  | securenodetest     |
-  | pg_catalog         |
-  | system             |
-  +--------------------+
-  (5 rows)
-	~~~
+    ~~~ sql
+    > SHOW DATABASE;
+    ~~~
+    ~~~
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | crdb_internal      |
+    | information_schema |
+    | securenodetest     |
+    | pg_catalog         |
+    | system             |
+    +--------------------+
+    (5 rows)
+    ~~~
 
 6.  Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
@@ -318,47 +338,45 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 2.  Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
 
-  ~~~ shell
-  $ cockroach sql \
-  --host=<load balancer IP address> \
-  --ca-cert=certs/ca.cert \
-  --cert=certs/root.cert \
-  --key=certs/root.key
-  ~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs \
+    --host=<load balancer IP address>
+    ~~~
 
 3.  View the cluster's databases:
 
-  ~~~ sql
-  > SHOW DATABASES;
-  ~~~
-  ~~~
-  +--------------------+
-  |      Database      |
-  +--------------------+
-  | crdb_internal      |
-  | information_schema |
-  | securenodetest     |
-  | pg_catalog         |
-  | system             |
-  +--------------------+
-  (5 rows)
-  ~~~
+    ~~~ sql
+    > SHOW DATABASES;
+    ~~~
+    ~~~
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | crdb_internal      |
+    | information_schema |
+    | securenodetest     |
+    | pg_catalog         |
+    | system             |
+    +--------------------+
+    (5 rows)
+    ~~~
 
-  As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
+    As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
 
 4.  Check which node you were redirected to:
 
-  ~~~ sql
-  > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
-  ~~~
-  ~~~
-  +---------+
-  | node_id |
-  +---------+
-  |       3 |
-  +---------+
-  (1 row)
-  ~~~
+    ~~~ sql
+    > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
+    ~~~
+    ~~~
+    +---------+
+    | node_id |
+    +---------+
+    |       3 |
+    +---------+
+    (1 row)
+    ~~~
 
 5.  Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 

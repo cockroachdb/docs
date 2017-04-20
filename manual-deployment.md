@@ -31,73 +31,104 @@ For guidance on cluster topology, clock synchronization, and file descriptor lim
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.cert` and `ca.key`)
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
 - A client key pair for the `root` user
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP addresses and common names for machines running HAProxy.
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory:
+1.	Create a `certs` directory and a safe directory to keep your CA key:
 
-   ~~~ shell
-   $ mkdir certs
-   ~~~
+	~~~ shell
+	$ mkdir certs
+	$ mkdir my-safe-directory
+	~~~
 
-2. Create the CA key pair:
+2.	Create the CA key pair:
 
-   ~~~ shell
-   $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
-   ~~~
+	~~~ shell
+	$ cockroach cert create-ca \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-   Store the `ca.key` file somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
+3.	Create a client key pair for the `root` user:
 
-3. Create a client key pair for the `root` user:
+	~~~ shell
+	$ cockroach cert create-client \
+	root \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-   ~~~ shell
-   $ cockroach cert create-client \
-   root \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/root.cert \
-   --key=certs/root.key
-   ~~~
 
-4. For each node, create a node key pair issued to all common names you might use to refer to the node as well as to the HAProxy instances:
+4.	Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
-   ~~~ shell
-   $ cockroach cert create-node \
-   <node internal IP address> \
-   <node external IP address> \
-   <node hostname>  \
-   <other common names for node> \
-   localhost \
-   127.0.0.1 \
-   <haproxy internal IP addresses> \
-   <haproxy external IP addresses> \
-   <haproxy hostnames>  \
-   <other common names for haproxy instances> \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/<node name>.cert \
-   --key=certs/<node name>.key
-   ~~~
+	~~~ shell
+	$ cockroach cert create-node \
+	<node1 internal IP address> \
+	<node1 external IP address> \
+	<node1 hostname>  \
+	<other common names for node1> \
+	localhost \
+	127.0.0.1 \
+	<haproxy internal IP addresses> \
+	<haproxy external IP addresses> \
+	<haproxy hostnames>  \
+	<other common names for haproxy instances> \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
 
-5. Upload the certificates to each node:
+5.	Upload the certificates to first node:
 
-   ~~~ shell
-   # Create the certs directory:
-   $ ssh <username>@<node address> "mkdir certs"
+	~~~ shell
+	# Create the certs directory:
+	$ ssh <username>@<node1 address> "mkdir certs"
 
-   # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-   $ scp certs/ca.cert \
-   certs/root.cert \
-   certs/root.key \
-   certs/<node name>.cert \
-   certs/<node name>.key \
-   <username>@<node address>:~/certs
-   ~~~
+	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	$ scp certs/ca.crt \
+	certs/client.root.crt \
+	certs/client.root.key \
+	certs/node.crt \
+	certs/node.key \
+	<username>@<node1 address>:~/certs
+	~~~
+
+6.	Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+	~~~ shell
+	$ cockroach cert create-node --overwrite\
+	<node2 internal IP address> \
+	<node2 external IP address> \
+	<node2 hostname>  \
+	<other common names for node1> \
+	localhost \
+	127.0.0.1 \
+	<haproxy internal IP addresses> \
+	<haproxy external IP addresses> \
+	<haproxy hostnames>  \
+	<other common names for haproxy instances> \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
+
+7.	Upload the certificates to the second node:
+
+	~~~ shell
+	# Create the certs directory:
+	$ ssh <username>@<node2 address> "mkdir certs"
+
+	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	$ scp certs/ca.crt \
+	certs/client.root.crt \
+	certs/client.root.key \
+	certs/node.crt \
+	certs/node.key \
+	<username>@<node2 address>:~/certs
+	~~~
+
+8.	Repeat steps 6 and 7 for each additional node.
 
 ## Step 2. Start the first node
 
@@ -121,9 +152,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 	~~~ shell
 	$ cockroach start --background \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node1 name>.cert \
-	--key=certs/<node1 name>.key \
+	--certs-dir=certs \
 	--host=<node1 address>
 	~~~
 
@@ -153,9 +182,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	$ cockroach start --background  \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/<node name>.cert \
-	--key=certs/<node name>.key \
+	--certs-dir=certs \
 	--host=<node address> \
 	--join=<node1 address>:26257
 	~~~
@@ -174,12 +201,8 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
-
-	{{site.data.alerts.callout_info}}When issuing <a href="cockroach-commands.html"><code>cockroach</code></a> commands on secure clusters, you must include flags for the <code>ca-cert</code>, as well as the client's <code>cert</code> and <code>key</code>.{{site.data.alerts.end}}
 
 	~~~ sql
 	> CREATE DATABASE securenodetest;
@@ -191,9 +214,7 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 	~~~ shell
 	$ cockroach sql \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs
 	~~~
 
 5.	View the cluster's databases, which will include `securenodetest`:
@@ -254,11 +275,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	~~~ shell
 	$ cockroach gen haproxy \
+	--certs-dir=certs \
 	--host=<address of any node> \
-	--port=26257 \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--port=26257
 	~~~
 
 	By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
@@ -311,10 +330,8 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 	~~~ shell
 	$ cockroach sql \
-	--host=<haproxy address> \
-	--ca-cert=certs/ca.cert \
-	--cert=certs/root.cert \
-	--key=certs/root.key
+	--certs-dir=certs \
+	--host=<haproxy address>
 	~~~
 
 2.	View the cluster's databases:
@@ -373,11 +390,11 @@ View your cluster's Admin UI by going to `https://<any node's address>:8080`.
 
 On this page, verify that the cluster is running as expected:
 
-1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
+1.	Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
 
-   Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--host` flag. This prevents the node from receiving replicas and working as part of the cluster.
+	Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--host` flag. This prevents the node from receiving replicas and working as part of the cluster.
 
-2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
+2. 	Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
 {% include prometheus-callout.html %}
 

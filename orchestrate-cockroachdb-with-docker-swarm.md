@@ -110,83 +110,123 @@ $ sudo docker network create --driver overlay cockroachdb
 
 ## Step 5. Create security resources
 
-A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and client/node authentication and communication. In this step, you'll install CockroachDB locally and then use the [`cockroach cert`](create-security-certificates.html) command to generate a certificate authority (CA) certificate and key pair and node cerificate and key pairs. You'll then assign these files to Docker [secrets](https://docs.docker.com/engine/swarm/secrets/) for use by your Docker services.
+A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and client/node authentication and communication. In this step, you'll install CockroachDB locally, use the [`cockroach cert`](create-security-certificates.html) command to generate a certificate authority (CA) certificate and key pair and node cerificate and key pairs, and assign these files to Docker [secrets](https://docs.docker.com/engine/swarm/secrets/) for use by your Docker services.
 
 1. [Install CockroachDB](install-cockroachdb.html) locally.
 
-2. Create a `certs` directory:
+2. Create a `certs` directory and a safe directory to keep your CA key:
 
    ~~~ shell
    $ mkdir certs
+   $ mkdir my-safe-directory
    ~~~
 
-3. Use the `cockroach cert create-ca` command to create the certificate authority (CA) certificate and key pair:
+3. Create the certificate authority (CA) certificate and key pair:
 
    ~~~ shell
-   # Create the CA cert and key pair:
    $ cockroach cert create-ca \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+
+   $ ls certs
    ~~~
 
-4. Use the `cockroach cert create-node` command to create a certificate and key pair per node:
-
-   ~~~ shell
-   # Create the cert and key pair for node 1:
-   $ cockroach cert create-node \
-   cockroachdb-1 \
-   localhost \
-   127.0.0.1 \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/cockroachdb-1.cert \
-   --key=certs/cockroachdb-1.key
-
-   # Create the cert and key pair for node 2:
-   $ cockroach cert create-node \
-   cockroachdb-2 \
-   localhost \
-   127.0.0.1 \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/cockroachdb-2.cert \
-   --key=certs/cockroachdb-2.key
-
-   # Create the cert and key pair for node 3:
-   $ cockroach cert create-node \
-   cockroachdb-3 \
-   localhost \
-   127.0.0.1 \
-   --ca-cert=certs/ca.cert \
-   --ca-key=certs/ca.key \
-   --cert=certs/cockroachdb-3.cert \
-   --key=certs/cockroachdb-3.key
+   ~~~
+   ca.crt
    ~~~
 
-   These commands issue the cert/key pairs to the service names you will use for the nodes later (`cockroachdb-1`, `cockroachdb-2`, `cockroachdb-3`), as well as to local addresses that will make it easy to run the built-in SQL shell and other CockroachDB client commands in the same containers as the nodes. If you plan to connect a client to the cluster from a separate container, you'll need to <a href="create-security-certificates.html#create-the-certificate-and-key-for-a-client">create a client cert and key</a> as well.
 
-5. Use the [`docker secret create`](https://docs.docker.com/engine/reference/commandline/secret_create/) command to create a Docker secret for the `ca.cert` file and each node `.cert` and `.key` file:
+4. Create a Docker secret for the `ca.crt` file using the [`docker secret create`](https://docs.docker.com/engine/reference/commandline/secret_create/) command:
 
    {{site.data.alerts.callout_success}}Store the <code>ca.key</code> file somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.{{site.data.alerts.end}}
 
    ~~~ shell
-   # Create the secret for the CA cert:
-   $ docker secret create ca.cert certs/ca.cert
-
-   # Create secrets for the node 1 cert and key:
-   $ docker secret create cockroachdb-1.cert certs/cockroachdb-1.cert
-   $ docker secret create cockroachdb-1.key certs/cockroachdb-1.key
-
-   # Create secrets for the node 2 cert and key:
-   $ docker secret create cockroachdb-2.cert certs/cockroachdb-2.cert
-   $ docker secret create cockroachdb-2.key certs/cockroachdb-2.key
-
-   # Create secrets for the node 3 cert and key:
-   $ docker secret create cockroachdb-3.cert certs/cockroachdb-3.cert
-   $ docker secret create cockroachdb-3.key certs/cockroachdb-3.key
+   $ docker secret create ca-crt certs/ca.crt
    ~~~
 
-   These commands assign names to the secrets and identify the location of the relevant certificates and keys. The names used are identical to the the `.cert` and `.key` filenames. You can use different names, if you like, but be sure to reference the correct names when starting the CockroachDB nodes in the next step.
+   This command assigns a name to the secret (`ca-crt`) and identifies the location of the cockroach-generated CA certificate file. You can use a different secret name, if you like, but be sure to reference the correct name when starting the CockroachDB nodes in the next step.
+
+5. Create the certificate and key for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node \
+   cockroachdb-1 \
+   localhost \
+   127.0.0.1 \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+
+   $ ls certs
+   ~~~
+
+   ~~~
+   ca.crt
+   node.crt
+   node.key
+   ~~~
+
+   This command issues the certificate/key pair to the service name you will use for the node later (`cockroachdb-1`) as well as to local addresses that will make it easy to run the built-in SQL shell and other CockroachDB client commands in the same container as the node. If you plan to connect a client to the cluster from a separate container, you'll need to <a href="create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client">create a client cert and key</a> as well.
+
+6. Create Docker secrets for the first node's certificate and key:
+
+   ~~~ shell
+   $ docker secret create cockroachdb-1-crt certs/node.crt
+   $ docker secret create cockroachdb-1-key certs/node.key
+   ~~~
+
+   Again, these commands assign names to the secrets (`cockroachdb-1-crt` and `cockroachdb-1-key`) and identify the location of the cockroach-generated certificate and key files.
+
+7. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+
+   ~~~ shell
+   $ cockroach cert create-node --overwrite\
+   cockroachdb-2 \
+   localhost \
+   127.0.0.1 \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+
+   $ ls certs
+   ~~~
+
+   ~~~
+   ca.crt
+   node.crt
+   node.key
+   ~~~
+
+8. Create Docker secrets for the second node's certificate and key:
+
+   ~~~ shell
+   $ docker secret create cockroachdb-2-crt certs/node.crt
+   $ docker secret create cockroachdb-2-key certs/node.key
+   ~~~
+
+9. Create the certificate and key for the third node, again using the `--overwrite` flag to replace the files created for the second node:
+
+   ~~~ shell
+   $ cockroach cert create-node --overwrite\
+   cockroachdb-3 \
+   localhost \
+   127.0.0.1 \
+   --certs-dir=certs \
+   --ca-key=my-safe-directory/ca.key
+
+   $ ls certs
+   ~~~
+
+   ~~~
+   ca.crt
+   node.crt
+   node.key
+   ~~~
+
+10.   Create Docker secrets for the third node's certificate and key:
+
+      ~~~ shell
+      $ docker secret create cockroachdb-3-crt certs/node.crt
+      $ docker secret create cockroachdb-3-key certs/node.key
+      ~~~
 
 ## Step 6. Start the CockroachDB cluster
 
@@ -199,15 +239,13 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    --network cockroachdb \
    --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   --secret ca.cert \
-   --secret source=cockroachdb-1.cert,target=node.cert \
-   --secret source=cockroachdb-1.key,target=node.key,mode=0600 \
+   --secret source=ca-crt,target=ca.crt\
+   --secret source=cockroachdb-1-crt,target=node.crt \
+   --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
    cockroachdb/cockroach:{{site.data.strings.version}} start \
    --advertise-host=cockroachdb-1 \
    --logtostderr \
-   --ca-cert=/run/secrets/ca.cert \
-   --cert=/run/secrets/node.cert \
-   --key=/run/secrets/node.key
+   --certs-dir=/run/secrets
    ~~~
 
    This command creates a service that starts a container securely, joins it to the overlay network, and starts the first CockroachDB node inside the container mounted to a local volume for persistent storage. Let's look at each part:
@@ -219,7 +257,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    - `--mount`: This flag mounts a local volume called `cockroachdb-1`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
      {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.
    - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
-   - `--secret`: These flags identify the secrets to use in securing the node. They must reference the secret names defined in step 5.5. For the node cert and key secrets, the `source` field identifies the relevant secret, and the `target` field defines a more generic name to be used in `cockroach start` flags. For the node key secret, the `mode` field also sets the file permissions to `0600`; if this isn't set, Docker will assign a default file permission of `0400`, which will not work with CockroachDB's built-in SQL client.
+   - `--secret`: These flags identify the secrets to use in securing the node. They must reference the secret names defined in step 5. For the node certificate and key secrets, the `source` field identifies the relevant secret, and the `target` field defines the name to be used in `cockroach start` flags. For the node key secret, the `mode` field also sets the file permissions to `0600`; if this isn't set, Docker will assign a default file permission of `0400`, which will not work with CockroachDB's built-in SQL client.
    - `cockroachdb/cockroach:{{site.data.strings.version}} start ...`: The CockroachDB command to [start a node](start-a-node.html) in the container, instruct other cluster members to talk to it using its persistent network address, `cockroachdb-1`, and to use the relevant Docker secrets to authenticate and encrypt communication.
 
 2. On the same instance, create the services to start two other CockroachDB nodes and join them to the cluster:
@@ -232,15 +270,13 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    --network cockroachdb \
    --stop-grace-period 60s \
    --mount type=volume,source=cockroachdb-2,target=/cockroach/cockroach-data,volume-driver=local \
-   --secret ca.cert \
-   --secret source=cockroachdb-2.cert,target=node.cert \
-   --secret source=cockroachdb-2.key,target=node.key,mode=0600 \
+   --secret source=ca-crt,target=ca.crt \
+   --secret source=cockroachdb-2-crt,target=node.crt \
+   --secret source=cockroachdb-2-key,target=node.key,mode=0600 \
    cockroachdb/cockroach:{{site.data.strings.version}} start \
    --advertise-host=cockroachdb-2 \
    --logtostderr \
-   --ca-cert=/run/secrets/ca.cert \
-   --cert=/run/secrets/node.cert \
-   --key=/run/secrets/node.key \
+   --certs-dir=/run/secrets \
    --join=cockroachdb-1:26257
 
    # Create the third service:
@@ -250,15 +286,13 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    --network cockroachdb \
    --mount type=volume,source=cockroachdb-3,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   --secret ca.cert \
-   --secret source=cockroachdb-3.cert,target=node.cert \
-   --secret source=cockroachdb-3.key,target=node.key,mode=0600 \
+   --secret source=ca-crt,target=ca.crt \
+   --secret source=cockroachdb-3-crt,target=node.crt \
+   --secret source=cockroachdb-3-key,target=node.key,mode=0600 \
    cockroachdb/cockroach:{{site.data.strings.version}} start \
    --advertise-host=cockroachdb-3 \
    --logtostderr \
-   --ca-cert=/run/secrets/ca.cert \
-   --cert=/run/secrets/node.cert \
-   --key=/run/secrets/node.key \
+   --certs-dir=/run/secrets \
    --join=cockroachdb-1:26257
    ~~~
 
@@ -293,15 +327,13 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    --network cockroachdb \
    --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
    --stop-grace-period 60s \
-   --secret ca.cert \
-   --secret source=cockroachdb-1.cert,target=node.cert \
-   --secret source=cockroachdb-1.key,target=node.key,mode=0600 \
+   --secret source=ca-crt,target=ca.crt \
+   --secret source=cockroachdb-1-crt,target=node.crt \
+   --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
    cockroachdb/cockroach:{{site.data.strings.version}} start \
    --advertise-host=cockroachdb-1 \
    --logtostderr \
-   --ca-cert=/run/secrets/ca.cert \
-   --cert=/run/secrets/node.cert \
-   --key=/run/secrets/node.key \
+   --certs-dir=/run/secrets \
    --join=cockroachdb-2:26257
    ~~~
 
@@ -322,9 +354,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
    ~~~ shell
    $ sudo docker exec -it 9539871cc769 \
    ./cockroach sql \
-   --ca-cert=/run/secrets/ca.cert \
-   --cert=/run/secrets/node.cert \
-   --key=/run/secrets/node.key
+   --certs-dir=/run/secrets
    ~~~
 
    Because we are starting the SQL client in the same container as a node, we can use the node certificate and key to execute the [`cockroach sql`](use-the-built-in-sql-client.html) command securely.
@@ -417,12 +447,12 @@ $ sudo docker volume rm cockroachdb-1
 
 # Identify the name of secrets:
 $ sudo docker secrets ls
-ca.cert
-cockroachdb-1.cert
-cockroachdb-1.key
+ca-crt
+cockroachdb-1-crt
+cockroachdb-1-key
 
 # Remove the secrets:
-$ sudo docker secret rm ca.cert cockroachdb-1.cert cockroachdb-1.key
+$ sudo docker secret rm ca-crt cockroachdb-1-crt cockroachdb-1-key
 ~~~
 
 ## See Also

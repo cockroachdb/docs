@@ -16,7 +16,6 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-`freeze-cluster` | Freeze the cluster in preparation for an upgrade (docs coming soon).
 [`quit`](stop-a-node.html) | Drain and shutdown a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`user`](create-and-manage-users.html) | Get, set, list, and remove users.

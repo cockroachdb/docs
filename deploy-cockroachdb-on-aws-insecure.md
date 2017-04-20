@@ -116,8 +116,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 3. 	Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
 
 	~~~ shell
-	$ cockroach start \
-	--insecure \
+	$ cockroach start --insecure \
 	--background
 	~~~
 
@@ -148,8 +147,7 @@ At this point, your cluster is live and operational but contains only a single n
 3. 	Start a new node that joins the cluster using the first node's internal IP address:
 
 	~~~ shell
-	$ cockroach start \
-	--insecure \
+	$ cockroach start --insecure \
 	--background \
 	--join=<node1 internal IP address>:26257
 	~~~
@@ -171,7 +169,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 2.	Launch the built-in SQL client and create a database:
 
 	~~~ shell
-	$ cockroach sql
+	$ cockroach sql --insecure
 	~~~
 	~~~ sql
 	> CREATE DATABASE insecurenodetest;
@@ -186,7 +184,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 4.	Launch the built-in SQL client:
 
 	~~~ shell
-	$ cockroach sql
+	$ cockroach sql --insecure
 	~~~
 
 5.	View the cluster's databases, which will include `insecurenodetest`:
@@ -220,10 +218,9 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 2.	Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
 
 	~~~ shell
-	$ cockroach sql \
+	$ cockroach sql --insecure \
 	--host=<load balancer IP address> \
-	--port=26257 \
-	--insecure
+	--port=26257
 	~~~
 
 3.	View the cluster's databases:

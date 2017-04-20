@@ -218,7 +218,7 @@ $ sudo docker network create --driver overlay cockroachdb
 2. Use the `sudo docker exec` command to open the built-in SQL shell in interactive mode inside the container:
 
    ~~~ shell
-   $ sudo docker exec -it 9539871cc769 ./cockroach sql
+   $ sudo docker exec -it 9539871cc769 ./cockroach sql --insecure
    ~~~
 
 2. Run some [CockroachDB SQL statements](sql-statements.html):

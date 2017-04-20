@@ -167,7 +167,7 @@ Kubectl is now configured to use the cluster.
 
    ~~~ shell
    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-   -- sql --host=cockroachdb-public
+   -- sql --insecure --host=cockroachdb-public
    ~~~
 
 2. Run some [CockroachDB SQL statements](sql-statements.html):

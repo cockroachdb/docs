@@ -24,12 +24,10 @@ Install the php-pgsql driver as described in the [official documentation](http:/
 As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
 
 ~~~ shell
-$ cockroach sql --database=bank --user=maxroach -e \
-'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)'
-~~~
-
-~~~
-CREATE TABLE
+$ cockroach sql --insecure \
+--database=bank \
+--user=maxroach \
+-e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)'
 ~~~
 
 ## Step 6. Run the PHP code
@@ -63,7 +61,7 @@ You can copy the code or
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
 
 ~~~ shell
-$ cockroach sql -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~
