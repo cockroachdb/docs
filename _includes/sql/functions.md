@@ -1,3 +1,9 @@
+### Bitwise Functions
+
+Function &rarr; Returns | Description
+--- | ---
+<code>bitwise_not(x: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Returns the bitwise not of `x`.</span>
+
 ### Comparison Functions
 
 Function &rarr; Returns | Description
