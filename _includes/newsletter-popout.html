@@ -65,7 +65,7 @@
 
 		$(window).scroll(function() {
 			var cookie = getCookie('popout');
-			if(!cookie){
+			if(!cookie && window.innerWidth >= 768){
 			   	if($(window).scrollTop() + $(window).height() >= $(document).height()*.75) {
 			    	$footer_popout.addClass('animate');
 			    	setCookie('popout', 1);
