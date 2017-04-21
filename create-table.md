@@ -192,27 +192,7 @@ We also have other resources on indexes:
 
 ### Create a Table with Auto-Generated Unique Row IDs
 
-To auto-generate unique row IDs, use the [`SERIAL`](serial.html) data type, which is an alias for [`INT`](int.html) with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
-
-~~~ sql
-> CREATE TABLE test (
-    id SERIAL PRIMARY KEY,
-    name STRING
-);
-~~~
-
-On insert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert, a combination that is likely to be globally unique except in extreme cases where a very large number of IDs (100,000+) are generated per node per second. In such cases, you should use a [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead:
-
-~~~ sql
-> CREATE TABLE test (
-    id BYTES PRIMARY KEY DEFAULT uuid_v4(),
-    name STRING
-);
-~~~
-
-Because `BYTES` values are 128-bit, much larger than `INT` values at 64-bit, there is virtually no chance of generating non-unique values.
-
-The distribution of IDs at the key-value level may also be a consideration. When using `BYTES` with `uuid_v4()` as the default value, consecutively generated IDs will be spread across different key-value ranges (and therefore likely across different nodes), whereas when using `INT` with `unique_rowid()` as the default value, consecutively generated IDs may end up in the same key-value range.
+{% include faq/auto-generate-unique-ids.html %}
 
 ### Create a Table with Foreign Keys
 
@@ -256,7 +236,7 @@ In this example, we'll show a series of tables using different formats of foreig
 
 ### Create a Table that Mirrors Key-Value Storage
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key. See this [FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) for more details.
+{% include faq/simulate-key-value-store.html %}
 
 ### Show the Definition of a Table
 

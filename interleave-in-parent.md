@@ -45,11 +45,7 @@ By writing data in this way, related data is more likely to remain on the same k
 
 ## When to Interleave Tables
 
-You're most likely to benefit from interleaved tables when:
-
-  - Your tables form a [hierarchy](#interleaved-hierarchy)
-  - Queries maximize the [benefits of interleaving](#benefits)
-  - Queries do not suffer too greatly from interleaving's [tradeoffs](#tradeoffs)
+{% include faq/when-to-interleave-tables.html %}
 
 ### Interleaved Hierarchy
 
@@ -107,10 +103,10 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
   );
 
 > CREATE TABLE orders (
-    customer INT, 
+    customer INT,
     id INT,
-    total DECIMAL(20, 5), 
-    PRIMARY KEY (customer, id), 
+    total DECIMAL(20, 5),
+    PRIMARY KEY (customer, id),
     CONSTRAINT fk_customer FOREIGN KEY (customer) REFERENCES customers
     ) INTERLEAVE IN PARENT customers (customer)
   ;
@@ -133,13 +129,13 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
 It can be easier to understand what interleaving tables does by seeing what it looks like in the key-value store. For example, using the above example of interleaving `orders` in `customers`, we could insert the following values:
 
 ~~~ sql
-> INSERT INTO customers 
-  (id, name) VALUES 
+> INSERT INTO customers
+  (id, name) VALUES
   (1, 'Ha-Yun'),
   (2, 'Emanuela');
 
-> INSERT INTO orders 
-  (customer, id, total) VALUES 
+> INSERT INTO orders
+  (customer, id, total) VALUES
   (1, 1000, 100.00),
   (2, 1001, 90.00),
   (1, 1002, 80.00),
