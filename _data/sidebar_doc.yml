@@ -458,14 +458,44 @@ entries:
         - title: Troubleshoot
           url: /troubleshoot.html
 
-    - title: Learn How It Works
+    - title: Contribute
       items:
 
-        - title: Frequently Asked Questions
+        - title: Contribute to CockroachDB
+          url: /contribute-to-cockroachdb.html
+
+        - title: Improve the Docs
+          url: /improve-the-docs.html
+
+    - title: Release Notes
+      items:
+
+        - title: beta-20170420
+          url: /beta-20170420.html
+
+        - title: beta-20170413
+          url: /beta-20170413.html
+
+        - title: beta-20170406
+          url: /beta-20170406.html
+
+        - title: beta-20170330
+          url: /beta-20170330.html
+
+        - title: beta-20170323
+          url: /beta-20170323.html
+
+        - title: Older Beta Versions
+          url: /older-versions.html
+
+    - title: FAQs
+      items:
+
+        - title: General FAQs
           url: /frequently-asked-questions.html
 
-        - title: Tech Talks
-          external_url: https://www.cockroachlabs.com/community/tech-talks/
+        - title: SQL FAQs
+          url: /sql-faqs.html
 
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
@@ -501,32 +531,3 @@ entries:
                 - title: Go Implementation
                   url: /go-implementation.html
 
-    - title: Contribute
-      items:
-
-        - title: Contribute to CockroachDB
-          url: /contribute-to-cockroachdb.html
-
-        - title: Improve the Docs
-          url: /improve-the-docs.html
-
-    - title: Release Notes
-      items:
-
-        - title: beta-20170420
-          url: /beta-20170420.html
-
-        - title: beta-20170413
-          url: /beta-20170413.html
-
-        - title: beta-20170406
-          url: /beta-20170406.html
-
-        - title: beta-20170330
-          url: /beta-20170330.html
-
-        - title: beta-20170323
-          url: /beta-20170323.html
-
-        - title: Older Beta Versions
-          url: /older-versions.html
