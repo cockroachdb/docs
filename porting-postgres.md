@@ -8,6 +8,8 @@ Although CockroachDB supports PostgreSQL syntax and drivers, it does not offer e
 
 Note that some of these differences only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
+{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting application that use [SQL features CockroachDB does not currently support](/sql-feature-support.html), such as arrays or the `ENUM` type.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ### Overflow of `float`
@@ -55,8 +57,6 @@ The unary `~` (bitwise not) operator in PostgreSQL has a low precedence. For exa
 SELECT ~1 + 2
 ```
 
-Is parsed as `~ (1 + 2)` because `~` has a lower precedence than `+`.
-
 In CockroachDB, unary `~` has the same (high) precedence as unary `-`, so the above expression will be parsed as `(~1) + 2`.
 
 **Porting instructions:** Manually add parentheses around expressions that depend on the PostgreSQL behavior.
@@ -69,7 +69,7 @@ The operators `|` (bitwise OR), `#` (bitwise XOR), and `&` (bitwise AND) in Post
 
 ### Integer division
 
-Division of integers in PostgreSQL results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0` since it is performing integer division:
+Division of integers in PostgreSQL results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0`:
 
 ```
 SELECT 1 + 1 / 2
