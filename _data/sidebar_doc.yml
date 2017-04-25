@@ -366,12 +366,12 @@ entries:
 
         - title: Information Schema
           url: /information-schema.html
-          thirdlevel:
 
+          thirdlevel:
           - title: Porting Applications
             thirdlevelitems:
 
-              - title: Postgres
+              - title: From PostgreSQL
                 url: /porting-postgres.html
 
     - title: Deploy
