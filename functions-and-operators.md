@@ -14,7 +14,7 @@ toc: true
 
 ## Operators
 
-The following table lists all CockroachDB operators from highest to lowest precedence, i.e., the order in which they will be evaluated within a statement.
+The following table lists all CockroachDB operators from highest to lowest precedence, i.e., the order in which they will be evaluated within a statement. Operators with the same precedence are left associative. This means that those operators are grouped together starting from the left and moving right.
 
 | Order of Precedence | Operator | Name | Operator Arity |
 | --- |
@@ -54,10 +54,6 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 15 | `NOT` | Logical NOT | unary |
 | 16 | `AND` | Logical AND | binary |
 | 17 | `OR` | Logical OR | binary |
-
-Operators with the same precedence are left associative. This means that those operators are grouped together starting from the left and moving right.
-
-Comparison operators (including `LIKE`, `~`, and `IS`) are non associative.
 
 ### Supported Operations
 
