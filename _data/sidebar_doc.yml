@@ -420,6 +420,9 @@ entries:
                   url: /orchestrate-cockroachdb-with-docker-swarm.html
                   alternate_urls: [/orchestrate-cockroachdb-with-docker-swarm-insecure.html]
 
+        - title: Global Configurations
+          url: /global-configurations.html
+
         - title: Cockroach Commands
           url: /cockroach-commands.html
 
@@ -461,6 +464,9 @@ entries:
 
         - title: Generate CockroachDB Resources
           url: /generate-cockroachdb-resources.html
+
+        - title: Diagnostics Reporting
+          url: /diagnostics-reporting.html
 
         - title: Troubleshoot
           url: /troubleshoot.html
