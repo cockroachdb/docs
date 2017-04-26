@@ -8,7 +8,7 @@ Although CockroachDB supports PostgreSQL syntax and drivers, it does not offer e
 
 Note that some of these differences only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
-{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use [SQL features CockroachDB does not currently support](/sql-feature-support.html), such as arrays or the `ENUM` type.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="/sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as arrays or the `ENUM` type.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
