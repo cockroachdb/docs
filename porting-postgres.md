@@ -8,54 +8,54 @@ Although CockroachDB supports PostgreSQL syntax and drivers, it does not offer e
 
 Note that some of these differences only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
-{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as arrays or the `ENUM` type.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as arrays or the <code>ENUM</code> type.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ### Overflow of `float`
 
-The `float` type in PostgreSQL will return an error if it overflows or an expression would return Infinity:
+In PostgreSQL, the `float` type returns an error when it overflows or an expression would return Infinity:
 
-```
+~~~
 postgres=# select 1e300::float * 1e10::float;
 ERROR:  value out of range: overflow
 postgres=#  select pow(0::float, -1::float);
 ERROR:  zero raised to a negative power is undefined
-```
+~~~
 
-In CockroachDB, these expressions will instead return Infinity:
+In CockroachDB, these expressions instead return Infinity:
 
-~~~sql
+~~~ sql
 SELECT 1e300::float * 1e10::float;
 ~~~
 
-```
+~~~
 +----------------------------+
 | 1e300::FLOAT * 1e10::FLOAT |
 +----------------------------+
 | +Inf                       |
 +----------------------------+
-```
+~~~
 
-~~~sql
+~~~ sql
 SELECT pow(0::float, -1::float);
 ~~~
 
-```
+~~~
 +---------------------------+
 | pow(0::FLOAT, - 1::FLOAT) |
 +---------------------------+
 | +Inf                      |
 +---------------------------+
-```
+~~~
 
 ### Precedence of unary `~`
 
-The unary `~` (bitwise not) operator in PostgreSQL has a low precedence. For example, the following query is parsed as `~ (1 + 2)` because `~` has a lower precedence than `+`:
+In PostgreSQL, the unary `~` (bitwise not) operator has a low precedence. For example, the following query is parsed as `~ (1 + 2)` because `~` has a lower precedence than `+`:
 
-```
+~~~ sql
 SELECT ~1 + 2
-```
+~~~
 
 In CockroachDB, unary `~` has the same (high) precedence as unary `-`, so the above expression will be parsed as `(~1) + 2`.
 
@@ -63,17 +63,19 @@ In CockroachDB, unary `~` has the same (high) precedence as unary `-`, so the ab
 
 ### Precedence of bitwise operators
 
-The operators `|` (bitwise OR), `#` (bitwise XOR), and `&` (bitwise AND) in PostgreSQL all have the same precedence. In CockroachDB the precedence from highest to lowest is: `&`, `#`, `|`.
+In PostgreSQL, the operators `|` (bitwise OR), `#` (bitwise XOR), and `&` (bitwise AND) all have the same precedence.
+
+In CockroachDB, the precedence from highest to lowest is: `&`, `#`, `|`.
 
 **Porting instructions:** Manually add parentheses around expressions that depend on the PostgreSQL behavior.
 
 ### Integer division
 
-Division of integers in PostgreSQL results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0`:
+In PostgreSQL, division of integers results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0`:
 
-```
+~~~ sql
 SELECT 1 + 1 / 2
-```
+~~~
 
 In CockroachDB, integer division results in a `decimal`. CockroachDB instead provides the `//` operator to perform floor division.
 
@@ -81,16 +83,16 @@ In CockroachDB, integer division results in a `decimal`. CockroachDB instead pro
 
 ### Shift argument modulo
 
-The shift operators in PostgreSQL (`<<`, `>>`) sometimes modulo their second argument to the bit size of the underlying type. For example, the following query results in a `1` because the int type is 32 bits, and `32 % 32` is `0`, so this is the equivalent of `1 << 0`:
+In PostgreSQL, the shift operators (`<<`, `>>`) sometimes modulo their second argument to the bit size of the underlying type. For example, the following query results in a `1` because the int type is 32 bits, and `32 % 32` is `0`, so this is the equivalent of `1 << 0`:
 
-```
+~~~ sql
 SELECT 1::int << 32
-```
+~~~
 
 In CockroachDB, no such modulo is performed.
 
 **Porting instructions:** Manually add a modulo to the second argument. Also note that CockroachDB's [`INT`](int.html) type is always 64 bits. For example:
 
-```
+~~~ sql
 SELECT 1::int << (x % 64)
-```
+~~~
