@@ -462,6 +462,9 @@ entries:
         - title: View Version Details
           url: /view-version-details.html
 
+        - title: Upgrade Cluster Version
+          url: /upgrade-cockroach.html
+          
         - title: Back up Data
           url: /back-up-data.html
 
