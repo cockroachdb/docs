@@ -477,6 +477,9 @@ entries:
     - title: Release Notes
       items:
 
+        - title: 1.0-rc.1
+          url: /1.0-rc.1.html
+
         - title: beta-20170420
           url: /beta-20170420.html
 
@@ -488,9 +491,6 @@ entries:
 
         - title: beta-20170330
           url: /beta-20170330.html
-
-        - title: beta-20170323
-          url: /beta-20170323.html
 
         - title: Older Beta Versions
           url: /older-versions.html
@@ -537,4 +537,3 @@ entries:
 
                 - title: Go Implementation
                   url: /go-implementation.html
-
