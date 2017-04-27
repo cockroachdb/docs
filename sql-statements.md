@@ -86,3 +86,10 @@ Statement | Usage
 [`SHOW DATABASE`](show-database.html) | List the default database for the session.
 [`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
 [`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
+
+## Cluster Management Statements
+
+Statement | Usage
+----------|------------
+[`SHOW ALL CLUSTER SETTINGS`](global-configurations.html#view-current-global-configurations) | List the current cluster-wide settings.
+[`SET CLUSTER SETTING`](global-configurations.html#change-a-global-configuration) | Set a cluster-wide setting.
