@@ -1,18 +1,18 @@
 ---
-title: Back Up and Restore Data
-summary: Learn how to back up and restore a CockroachDB cluster.
+title: SQL Dump (Export)
+summary: Learn how to dump data from a CockroachDB cluster.
 toc: false
 ---
 
-{{site.data.alerts.callout_danger}}The feature described here is a simple form of backup and restore that writes to and reads from a local flat file. A production-suitable solution that uses cloud storage and efficiently manages the time and load on the nodes of the cluster is under development for our 1.0 release. For more details about the upcoming solution, see the original <a href="https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/backup_restore.md">RFC</a>.{{site.data.alerts.end}}
+The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate one or more tables and all their rows (also known as a *dump*). This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
-The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate one or more tables and all their rows. This command can be used to back up each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
+{{site.data.alerts.callout_success}}CockroachDB <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users can also back up their cluster's data using <a href="backup.html"><code>BACKUP</code></a>.{{site.data.alerts.end}}
 
 When `cockroach dump` is executed:
 
-- Table schema and data are dumped as they appear at the time that the command is started, or at the time specified in the `--as-of` flag. Any changes after the command starts, or after the timestamp specified in `--as-of`, will not be included in the dump.
-- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
-- Reads, writes, and schema changes can happen while the dump is in progress.
+- Table schema and data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
+- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail. 
+- Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
 {{site.data.alerts.callout_info}}The user must have the <code>SELECT</code> privilege on the target table(s).{{site.data.alerts.end}}
 
@@ -50,11 +50,10 @@ $ cockroach dump --help
 
 The `cockroach dump` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-Flag | Description
+Flag | Description 
 -----|------------
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--database`<br>`-d` | Not valid for the `dump` command. This flag will eventually be removed.
 `--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
@@ -64,7 +63,7 @@ Flag | Description
 
 ## Examples
 
-{{site.data.alerts.callout_info}}All but the last example use our sample startrek database and assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. You can add the sample startrek database to a cluster via the <a href="generate-cockroachdb-resources.html#generate-example-data"><code>cockroach gen</code></a> command.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These examples use our sample startrek database, which you can add to a cluster via the <a href="generate-cockroachdb-resources.html#generate-example-data"><code>cockroach gen</code></a> command. Also, the examples assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. {{site.data.alerts.end}}
 
 ### Dump a table's schema and data
 
@@ -209,7 +208,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 ### Dump fails (user does not have `SELECT` privilege)
 
-In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
+In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table. 
 
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
@@ -222,7 +221,7 @@ Failed running "dump"
 
 ### Restore a table from a backup file
 
-In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
+In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command. 
 
 ~~~ shell
 $ cat backup.sql
@@ -336,5 +335,6 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 ## See Also
 
+- [Import Data](import-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
