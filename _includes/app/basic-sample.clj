@@ -1,6 +1,6 @@
 (ns test.test
-  (:require   [clojure.java.jdbc :as j]
-              [test.util :as util]))
+  (:require [clojure.java.jdbc :as j]
+            [test.util :as util]))
 
 ;; Define the connection parameters to the cluster.
 (def db-spec {:subprotocol "postgresql"
@@ -24,10 +24,8 @@
          doall)
 
     ;; The database connection is automatically closed by with-db-connection.
-    )
-  )
+    ))
 
 
 (defn -main [& args]
-  (test-basic)
-  )
+  (test-basic))

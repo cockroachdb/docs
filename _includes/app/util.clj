@@ -1,25 +1,24 @@
 (ns test.util
-  (:require   [clojure.java.jdbc :as j]
-              [clojure.walk :as walk]))
+  (:require [clojure.java.jdbc :as j]
+            [clojure.walk :as walk]))
 
-(defn txn-restart-err-p
-  "Takes an exception and return true if it is a CockroachDB retry error."
+(defn txn-restart-err?
+  "Takes an exception and returns true if it is a CockroachDB retry error."
   [e]
   (when-let [m (.getMessage e)]
     (condp instance? e
       java.sql.BatchUpdateException
       (and (re-find #"getNextExc" m)
-           (txn-restart-err-p (.getNextException e)))
+           (txn-restart-err? (.getNextException e)))
 
       org.postgresql.util.PSQLException
       (= (.getSQLState e) "40001") ; 40001 is the code returned by CockroachDB retry errors.
 
-      false
-      )))
+      false)))
 
 ;; Wrapper for a transaction.
-;; This automatically invokes the body again
-;; as long as the database server asks the transaction to be retried.
+;; This automatically invokes the body again as long as the database server
+;; asks the transaction to be retried.
 
 (defmacro with-txn-retry
   "Wrap an evaluation within a CockroachDB retry block."
@@ -30,12 +29,10 @@
        (let [res# (try (let [r# (do ~@body)]
                          {:ok r#})
                        (catch java.sql.SQLException  e#
-                         (if (txn-restart-err-p e#)
+                         (if (txn-restart-err? e#)
                            {:retry true}
                            (throw e#))))]
          (if (:retry res#)
            (do (j/execute! ~txn ["rollback to savepoint cockroach_restart"])
                (recur))
-           (:ok res#))
-         ))))
-
+           (:ok res#))))))

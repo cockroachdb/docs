@@ -1,13 +1,12 @@
 (ns test.test
-  (:require   [clojure.java.jdbc :as j]
-              [test.util :as util]))
+  (:require [clojure.java.jdbc :as j]
+            [test.util :as util]))
 
 ;; Define the connection parameters to the cluster.
 (def db-spec {:subprotocol "postgresql"
               :subname "//localhost:26257/bank"
               :user "maxroach"
               :password ""})
-
 
 ;; The transaction we want to run.
 (defn transferFunds
@@ -22,8 +21,7 @@
 
   ;; Perform the transfer.
   (j/execute! txn [(str "UPDATE accounts SET balance = balance - " amount " WHERE id = " from)])
-  (j/execute! txn [(str "UPDATE accounts SET balance = balance + " amount " WHERE id = " to)])
-  )
+  (j/execute! txn [(str "UPDATE accounts SET balance = balance + " amount " WHERE id = " to)]))
 
 (defn test-txn []
   ;; Connect to the cluster and run the code below with
@@ -39,10 +37,7 @@
     (println "Balances after transfer:")
     (->> (j/query conn ["SELECT id, balance FROM accounts"])
          (map println)
-         (doall))
-    )
-  )
+         (doall))))
 
 (defn -main [& args]
-  (test-txn)
-  )
+  (test-txn))
