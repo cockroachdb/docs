@@ -87,6 +87,13 @@ Statement | Usage
 [`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
 [`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
 
+## Cluster Management Statements
+
+Statement | Usage
+----------|------------
+[`SHOW ALL CLUSTER SETTINGS`](global-configurations.html#view-current-global-configurations) | List the current cluster-wide settings.
+[`SET CLUSTER SETTING`](global-configurations.html#change-a-global-configuration) | Set a cluster-wide setting.
+
 ## Backup & Restore Statements (Enterprise)
 
 The following statements are availably only to [enterprise license](https://www.cockroachlabs.com/pricing/) users.
@@ -97,5 +104,3 @@ Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
-
-
