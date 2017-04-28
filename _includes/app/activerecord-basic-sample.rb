@@ -5,11 +5,11 @@ require 'activerecord-cockroachdb-adapter'
 # Connect to CockroachDB through ActiveRecord.
 # In Rails, this configuration would go in config/database.yml as usual.
 ActiveRecord::Base.establish_connection(
-  adapter:  "cockroachdb",
-  username: "maxroach",
-  password: "",
-  database: "bank",
-  host:     "localhost",
+  adapter:  'cockroachdb',
+  username: 'maxroach',
+  password: '',
+  database: 'bank',
+  host:     'localhost',
   port:     26257,
 )
 
@@ -42,5 +42,5 @@ Account.create(id: 2, balance: 250)
 
 # Retrieve accounts and print out the balances
 Account.all.each do |acct|
-    puts "#{acct.id} #{acct.balance}"
+  puts "#{acct.id} #{acct.balance}"
 end
