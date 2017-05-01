@@ -25,7 +25,7 @@ $ cockroach start --help
 
 ## Flags
 
-The `start` command supports the following flags, as well as [logging flags](cockroach-commands.html#logging-flags). When adding a node to an existing cluster, include the `--join` flag.
+The `start` command supports the following flags, as well as [logging flags](#logging). When adding a node to an existing cluster, include the `--join` flag.
 
 Flag | Description
 -----|-----------
@@ -47,7 +47,22 @@ Flag | Description
 `--port`<br>`-p` | The port to bind to for internal and client communication.<br><br>To have an unused port assigned automatically, pass `--port=0`.<br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [`store`](#store) below.
 
-#### `store`
+### Logging
+
+By default, `cockroach start` writes all messages to log files and error-type messages to `stderr`. However, you can control your [logging](debug-and-error-logs.html) behavior with the following flags on supported statements:
+
+{% include custom/logging-flags.md %}
+
+#### Defaults
+
+`cockroach start` uses the following default values for these logging flags:
+
+- `--log-dir=<first store dir>/logs`
+- `--logtostderr=WARNING`
+
+This means, by default, CockroachDB writes all messages to log files, and messages with a [severity level](debug-and-error-logs.html#severity-levels) of `WARNING` or greater to `stderr`.
+
+### `store`
 
 The `store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
