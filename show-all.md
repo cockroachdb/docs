@@ -1,10 +1,12 @@
 ---
 title: SHOW ALL
-summary: The SHOW ALL statement lists all current run-time settings. 
+summary: The SHOW ALL statement lists all run-time settings for the current session.
 toc: false
 ---
 
-The `SHOW ALL` [statement](sql-statements.html) lists all current run-time settings.
+The `SHOW ALL` [statement](sql-statements.html) lists all run-time settings for the current session.
+
+{{site.data.alerts.callout_success}}For details about cluster settings that apply across all nodes in a cluster, see <a href="cluster-settings.html">Cluster Settings</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -22,8 +24,8 @@ The following run-time variables are returned by `SHOW ALL`:
 
 Variable | Description
 ------|------------
-`DATABASE` | The default database for the current session, as set by [`SET DATABASE`](set-database.html) or the client's connection string. This variable can be viewed with [`SHOW DATABASE`](show-database.html) as well. 
-`DEFAULT_TRANSACTION_ISOLATION` | The default transaction isolation level for the current session, as set by `SET DEFAULT_TRANSACTION_ISOLATION` or the client's connection string. 
+`DATABASE` | The default database for the current session, as set by [`SET DATABASE`](set-database.html) or the client's connection string. This variable can be viewed with [`SHOW DATABASE`](show-database.html) as well.
+`DEFAULT_TRANSACTION_ISOLATION` | The default transaction isolation level for the current session, as set by `SET DEFAULT_TRANSACTION_ISOLATION` or the client's connection string.
 `MAX_INDEX_KEYS` | Not usable; exposed only for ORM compatibility.
 `SEARCH_PATH` | A list of databases or namespaces that will be searched to resolve unqualified table or function names, as set by `SET SEARCH_PATH`. This variable can be viewed with `SHOW SEARCH_PATH` as well. For more details, see [Name Resolution](sql-name-resolution.html).
 `SERVER_VERSION` | The version of PostgreSQL that CockroachDB emulates.
