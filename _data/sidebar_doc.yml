@@ -480,8 +480,29 @@ entries:
         - title: Diagnostics Reporting
           url: /diagnostics-reporting.html
 
-        - title: Troubleshoot
-          url: /troubleshoot.html
+    - title: Troubleshooting
+      items:
+
+        - title: Troubleshooting Overivew
+          url: /troubleshooting-overview.html
+
+        - title: Single Nodes & Sandboxes
+          url: /single-nodes-and-sandboxes-troubleshooting.html
+
+        - title: Cluster & Node Setup
+          url: /cluster-setup-troubleshooting.html
+
+        - title: Query Behavior
+          url: /query-behavior-troubleshooting.html
+
+        - title: Error & Debug Logs
+          url: /error-logs.html
+
+        - title: Support Resources
+          url: /support-resources.html
+
+        - title: File an Issue
+          url: /file-an-issue.html
 
     - title: Contribute
       items:
