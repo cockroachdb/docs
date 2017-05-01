@@ -47,7 +47,7 @@ $ cockroach user set --help
 
 ## Flags
 
-The `user` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `user` command and subcommands support the following flags:
 
 Flag | Description
 -----|------------
@@ -60,6 +60,12 @@ Flag | Description
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | Connect to the cluster on the provided URL, e.g., `postgresql://myuser@localhost:26257/mydb`. If left blank, the connection flags are used (`host`, `port`, `user`, `database`, `insecure`, `certs`). <br/><br/>**Env Variable:** `COCKROACH_URL`
 `-u`, `--user` | _Deprecated_: Only the `root` user can create users, so you cannot pass any other usernames into this flag. <br/><br/>**Env Variable:** `COCKROACH_USER` <br/>**Default**: `root`
+
+### Logging
+
+By default, the `user` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can also change its [logging behavior](debug-and-error-logs.html).
 
 ## User Authentication
 

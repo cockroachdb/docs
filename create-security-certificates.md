@@ -73,7 +73,7 @@ $ cockroach cert list --help
 
 ## Flags
 
-The `cert` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `cert` command and subcommands support the following flags:
 
 
 Flag | Description
@@ -85,6 +85,11 @@ Flag | Description
 `--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
 `--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
 
+### Logging
+
+By default, the `cert` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can also change its [logging behavior](debug-and-error-logs.html).
 
 ## Examples
 
