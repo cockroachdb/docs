@@ -12,7 +12,7 @@
 		position: relative;
 		bottom: -2px;
 		float: left;
-		
+
 
 		&:hover {
 			border: 1px solid $cl_green;
@@ -36,7 +36,7 @@
 
 		&#mac {
 			margin: 0 2% 0 0;
-			&:after {	
+			&:after {
 				content: "\f179";
          	}
 		}
@@ -44,13 +44,13 @@
 		&#linux {
 			margin: 0 2% 0 0;
 
-			&:after {	
+			&:after {
 				content: "\f17c";
          	}
 		}
 
 		&#windows {
-			&:after {	
+			&:after {
 				content: "\f17a";
          	}
 		}
@@ -86,8 +86,8 @@
 #mac-installs {
 	.install-button {
 		width: 24.25%;
-		
-		&:nth-child(-n+3){ 
+
+		&:nth-child(-n+3){
 			margin-right: 1%;
 		}
 	}
@@ -97,7 +97,17 @@
 	.install-button {
 		width: 32%;
 
-		&:nth-child(-n+2){ 
+		&:nth-child(-n+2){
+			margin-right: 2%;
+		}
+	}
+}
+
+#windows-installs {
+	.install-button {
+		width: 48%;
+
+		&:nth-child(-n+1){
 			margin-right: 2%;
 		}
 	}
@@ -165,7 +175,7 @@
 		}
 	}
 
-	#mac-installs, #linux-installs {
+	#mac-installs, #linux-installs, #windows-installs {
 		.install-button {
 			width: auto;
 			margin-right: 0;

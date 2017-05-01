@@ -1584,6 +1584,11 @@ li.search-wrap {
   #linux-installs .install-button:nth-child(-n+2) {
     margin-right: 2%; }
 
+#windows-installs .install-button {
+  width: 48%; }
+  #windows-installs .install-button:nth-child(-n+1) {
+    margin-right: 2%; }
+
 /* Generic Filter Button */
 .filters {
   font-size: 0; }
@@ -1637,7 +1642,7 @@ li.search-wrap {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale; }
 
-  #mac-installs .install-button, #linux-installs .install-button {
+  #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;
     margin-right: 0; }
 
