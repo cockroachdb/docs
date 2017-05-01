@@ -32,7 +32,9 @@ $ cockroach node status --help
 
 ## Flags
 
-The `node` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `node` command and subcommands support the following [general-use](#general) and [logging](#logging) flags.
+
+### General
 
 Flag | Description
 -----|------------
@@ -41,6 +43,12 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
+
+### Logging
+
+By default, the `node` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## Response
 

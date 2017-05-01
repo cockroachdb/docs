@@ -128,7 +128,9 @@ $ cockroach zone rm --help
 
 ## Flags
 
-The `zone` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `zone` command and subcommands support the following [general-use](#general) and [logging](#logging) flags.
+
+### General
 
 Flag | Description
 -----|------------
@@ -141,6 +143,12 @@ Flag | Description
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>`<br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The user connecting to the database. Currently, only the `root` user can configure replication zones. <br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+
+### Logging
+
+By default, the `zone` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## Basic Examples
 
@@ -383,7 +391,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 - You have a 7 nodes, 5 with SSD drives and 2 with HDD drives.
 - You want data replicated 3 times by default.
-- Speed and availability are important for a specific table that is queried very frequently, however, so you want the data in that table to be replicated 5 times, preferrably on nodes with SSD drives.
+- Speed and availability are important for a specific table that is queried very frequently, however, so you want the data in that table to be replicated 5 times, preferably on nodes with SSD drives.
 
 **Approach:**
 
@@ -423,7 +431,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the table:
-   $ cockroach zone set db.important_tablee --insecure -f table_zone.yaml
+   $ cockroach zone set db.important_table --insecure -f table_zone.yaml
    ~~~
 
    ~~~
