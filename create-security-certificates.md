@@ -6,7 +6,7 @@ toc: false
 
 A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
-When using <code>cockroach cert</code> to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
 <div id="toc"></div>
 
@@ -42,26 +42,26 @@ Note the following:
 ~~~ shell
 # Create the CA certificate and key:
 $ cockroach cert create-ca \
- --certs-dir=<path-to-certs-directory> \
- --ca-key=<path-to-ca-key>
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
 
 # Create a node certificate and key, specifying all addresses at which the node can be reached:
 $ cockroach cert create-node \
- <node-hostname> \
- <node-other-hostname> \
- <node-yet-another-hostname> \
- --certs-dir=<path-to-certs-directory> \
- --ca-key=<path-to-ca-key>
+ [node-hostname] \
+ [node-other-hostname] \
+ [node-yet-another-hostname] \
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
 
 # Create a client certificate and key:
 $ cockroach cert create-client \
- <username> \
- --certs-dir=<path-to-certs-directory> \
- --ca-key=<path-to-ca-key>
+ [username] \
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
 
 # List certificates and keys:
 $ cockroach cert list \
- --certs-dir=<path-to-certs-directory>
+ --certs-dir=[path-to-certs-directory]
 
 # View help:
 $ cockroach cert --help
@@ -73,8 +73,7 @@ $ cockroach cert list --help
 
 ## Flags
 
-The `cert` command and subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
-
+The `cert` command and subcommands support the following flags:
 
 Flag | Description
 -----|-----------
@@ -85,6 +84,11 @@ Flag | Description
 `--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
 `--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
 
+### Logging
+
+By default, the `cert` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## Examples
 
