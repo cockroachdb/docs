@@ -193,7 +193,7 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 
 [Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
 
-- [Explore Core Feature](demo-data-replication.html)
+- [Explore Core Features](demo-data-replication.html)
 - [Manual Deployment](manual-deployment.html)
 - [Cloud Deployment](cloud-deployment.html)
 - [Orchestration](orchestration.html)
