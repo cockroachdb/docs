@@ -1,0 +1,24 @@
+---
+title: Troubleshooting Overview
+summary: If you're having a hard time using CockroachDB, check out this overview of our existing troubleshooting resources
+toc: false
+---
+
+## General Troubleshooting
+
+If you run into issues with CockroachDB, there are a few general steps you can always take:
+ 
+ - Check your [logs](debug-and-error-logs.html).
+ - [Start your nodes](start-a-node.html) with the `--vmodule` flag to add more detail to your logs.
+ - Stop your node, and then restart it using `--logtostderr` to output errors to your terminal instead of logs, so you can see any errors as they occur.
+
+## Topic-Specific Troubleshooting
+
+- [Single Nodes & Sandboxes](single-nodes-and-sandboxes-troubleshooting.html) helps with issues common to local and test clusters.
+- [Node & Cluster Setup](cluster-setup-troubleshooting.html) helps start your cluster and scale it by adding nodes.
+- [Query Behavior](cluster-setup-troubleshooting.html) helps with unexpected query results.
+
+## Resources
+
+- [Support Resources](support-resources.html) identifies ways you can get help with troubleshooting.
+- [File an Issue](file-an-issue.html) provides details about filing issues that you're unable to resolve.
