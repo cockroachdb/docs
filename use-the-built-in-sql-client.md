@@ -27,7 +27,7 @@ $ cockroach sql --help
 
 ## Flags
 
-The `cockroach sql` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
+The `sql` command supports the following flags:
 
 - To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the `--url` flag, which includes connection details.
 - To execute SQL statements from the command line, use the `--execute` flag.
@@ -43,6 +43,12 @@ Flag | Description
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+
+### Logging
+
+By default, the `sql` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## SQL Shell Commands
 
