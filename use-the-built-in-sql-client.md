@@ -186,7 +186,11 @@ When the standard output is a terminal, pretty output is enabled by default, but
 # Using the default pretty output:
 $ cockroach sql --insecure \
 --pretty \
---execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 ~~~
 
 ~~~
@@ -201,7 +205,11 @@ $ cockroach sql --insecure \
 # Explicitly disabling pretty output:
 $ cockroach sql --insecure \
 --pretty=false \
---execute="SELECT '🐥' AS chick, '🐢' AS turtle"
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 ~~~
 
 ~~~
@@ -215,8 +223,11 @@ When piping output to another command or a file, the default is reversed. Pretty
 ~~~ shell
 # Using the default non-pretty output:
 $ cockroach sql --insecure \
---execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
-> out.txt
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 
 $ cat out.txt
 ~~~
@@ -231,8 +242,11 @@ chick turtle
 # Explicitly requesting pretty output:
 $ cockroach sql --insecure \
 --pretty \
---execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
-> out.txt
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
+--user=maxroach \
+--host=roachcluster.com \
+--port=26257 \
+--database=critterdb
 
 $ cat out.txt
 ~~~

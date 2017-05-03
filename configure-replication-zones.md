@@ -153,7 +153,9 @@ The cluster-wide replication zone (`.default`) is initially set to replicate dat
 To view the default replication zone, use the `cockroach zone get .default` command with appropriate flags:
 
 ~~~ shell
-$ cockroach zone get .default --insecure
+$ cockroach zone get .default --insecure \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 ~~~
@@ -179,7 +181,10 @@ num_replicas: 5
 ~~~
 
 ~~~ shell
-$ cockroach zone set .default --insecure -f default_update.yaml
+$ cockroach zone set .default --insecure \
+--host=roachcluster.com \
+--port=26257 \
+-f default_update.yaml
 ~~~
 
 ~~~
@@ -194,7 +199,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set .default --insecure --host=roachcluster.com --port=26257 -f -
 ~~~
 
 ### Create a Replication Zone for a Database
@@ -210,7 +215,10 @@ num_replicas: 7
 ~~~
 
 ~~~ shell
-$ cockroach zone set db1 --insecure -f database_zone.yaml
+$ cockroach zone set db1 --insecure \
+--host=roachcluster.com \
+--port=26257 \
+-f database_zone.yaml
 ~~~
 
 ~~~
@@ -225,7 +233,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set db1 --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set db1 --insecure --host=roachcluster.com --port=26257 -f -
 ~~~
 
 ### Create a Replication Zone for a Table
@@ -241,7 +249,10 @@ num_replicas: 7
 ~~~
 
 ~~~ shell
-$ cockroach zone set db1.t1 --insecure -f table_zone.yaml
+$ cockroach zone set db1.t1 --insecure \
+--host=roachcluster.com \
+--port=26257 \
+-f table_zone.yaml
 ~~~
 
 ~~~
@@ -256,7 +267,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
+$ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure --host=roachcluster.com --port=26257 -f -
 ~~~
 
 ## Scenario-based Examples
@@ -274,7 +285,7 @@ Start each node with its datacenter location specified in the `--locality` flag:
 
 ~~~ shell
 # Start the two nodes in datacenter 1:
-$ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 \
+$ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
 $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
 --join=<node1 hostname>:27257
 
@@ -308,7 +319,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Start the three nodes in datacenter 1:
-   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 \
+   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
    $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
    --join=<node1 hostname>:27257
    $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-1 \
@@ -336,7 +347,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the database used by application 1:
-   $ cockroach zone set app1_db --insecure -f app1_zone.yaml
+   $ cockroach zone set app1_db --insecure \
+   --host=<any node's hostname> \
+   -f app1_zone.yaml
    ~~~
 
    ~~~
@@ -363,7 +376,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the database used by application 2:
-   $ cockroach zone set app2_db --insecure -f app2_zone.yaml
+   $ cockroach zone set app2_db --insecure \
+   --host=<any node's hostname> \
+   -f app2_zone.yaml
    ~~~
 
    ~~~
@@ -391,7 +406,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Start the 5 nodes with SSD storage:
-   $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd \
+   $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
    $ cockroach start --insecure --host=<node2 hostname> --store=path=node2,attrs=ssd \
    --join=<node1 hostname>:27257
    $ cockroach start --insecure --host=<node3 hostname> --store=path=node3,attrs=ssd \
@@ -423,7 +438,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the table:
-   $ cockroach zone set db.important_tablee --insecure -f table_zone.yaml
+   $ cockroach zone set db.important_tablee --insecure \
+   --host=<any node's hostname> \
+   -f table_zone.yaml
    ~~~
 
    ~~~
