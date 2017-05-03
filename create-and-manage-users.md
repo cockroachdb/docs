@@ -77,7 +77,10 @@ Secure clusters require users to authenticate their access to databases and tabl
 #### Insecure Cluster
 
 ~~~ shell
-$ cockroach user set --insecure jpointsman
+$ cockroach user set jpointsman \
+--insecure \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
@@ -87,7 +90,10 @@ After creating users, you must [grant them privileges to databases](grant.html).
 #### Secure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman --certs-dir=certs
+$ cockroach user set jpointsman \
+--certs-dir=certs \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
@@ -104,7 +110,11 @@ After creating users, you must:
 #### Insecure Clusters
 
 ~~~ shell
-$ cockroach sql --insecure --user=jpointsman
+$ cockroach sql \
+--insecure \
+--user=jpointsman \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 #### Secure Clusters with Client Certificates
@@ -112,7 +122,11 @@ $ cockroach sql --insecure --user=jpointsman
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql --certs-dir=certs --user=jpointsman
+$ cockroach sql \
+--certs-dir=certs \
+--user=jpointsman \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 #### Secure Clusters with Passwords
@@ -122,7 +136,11 @@ $ cockroach sql --certs-dir=certs --user=jpointsman
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
 ~~~ shell
-$ cockroach sql --certs-dir=certs --user=jpointsman
+$ cockroach sql \
+--certs-dir=certs \
+--user=jpointsman \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 After issuing this command, you must enter the password for `jpointsman` twice.
@@ -130,7 +148,11 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ### Update a User's Password
 
 ~~~ shell
-$ cockroach user set jpointsman --certs-dir=certs --password
+$ cockroach user set jpointsman \
+--certs-dir=certs \
+--password \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
@@ -140,7 +162,10 @@ After issuing this command, enter and confirm the user's new password at the com
 ### List All Users
 
 ~~~ shell
-$ cockroach user ls --insecure
+$ cockroach user ls \
+--insecure \
+--host=roachcluster.com \
+--port=26257
 ~~~
 ~~~
 +------------+
@@ -153,7 +178,10 @@ $ cockroach user ls --insecure
 ### Find a Specific User
 
 ~~~ shell
-$ cockroach user get jpointsman --insecure
+$ cockroach user get jpointsman \
+--insecure \
+--host=roachcluster.com \
+--port=26257
 ~~~
 ~~~
 +------------+--------------------------------------------------------------+
@@ -166,7 +194,10 @@ $ cockroach user get jpointsman --insecure
 ### Remove a User
 
 ~~~ shell
-$ cockroach user rm jpointsman --insecure
+$ cockroach user rm jpointsman \
+--insecure \
+--host=roachcluster.com \
+--port=26257
 ~~~
 
 ## See Also
