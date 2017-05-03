@@ -16,15 +16,16 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ~~~ shell
 $ cockroach start --insecure \
---background \
---store=repdemo-node1
+--store=repdemo-node1 \
+--host=localhost \
+--background
 ~~~
 
 ## Step 2. Write data
 
 Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data intro | cockroach sql --insecure
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data intro | cockroach sql --insecure --host=localhost
 </code></pre>
 </div>
 
@@ -43,7 +44,7 @@ INSERT 1
 Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --insecure --host=locahost --port=26258
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -118,19 +119,21 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 ~~~ shell
 # Add node 2:
 $ cockroach start --insecure \
---background \
 --store=repdemo-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
+--background
 
 # Add node 3:
 $ cockroach start --insecure \
---background \
 --store=repdemo-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
 --join=localhost:26257
+--background
 ~~~
 
 ## Step 4. Watch data replicate to the new nodes
@@ -143,7 +146,7 @@ Open the Admin UI at `http://localhost:8080` and click **View nodes list** on th
 
 As you just saw, CockroachDB replicates data 3 times by default. Now, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication2-zone-edit"><span class="gp noselect shellterminal"></span><span class="nb">echo</span> <span class="s1">'num_replicas: 5'</span> | cockroach zone <span class="nb">set</span> .default --insecure -f -
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication2-zone-edit"><span class="gp noselect shellterminal"></span><span class="nb">echo</span> <span class="s1">'num_replicas: 5'</span> | cockroach zone <span class="nb">set</span> .default --insecure --host=localhost -f -
 </code></pre>
 </div>
 
@@ -161,19 +164,21 @@ constraints: []
 ~~~ shell
 # Add node 4:
 $ cockroach start --insecure \
---background \
+--host=localhost \
 --store=repdemo-node4 \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Add node 5:
 $ cockroach start --insecure \
---background \
+--host=localhost \
 --store=repdemo-node5 \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 7. Watch data replicate to the new nodes
@@ -188,13 +193,13 @@ Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html
 
 ~~~ shell
 # Stop node 1:
-$ cockroach quit --insecure
+$ cockroach quit --insecure --host=localhost
 
 # Stop node 2:
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost --port=26258
 
 # Stop node 3:
-$ cockroach quit --insecure --port=26259
+$ cockroach quit --insecure --host=localhost --port=26259
 ~~~
 
 With only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last nodes, but instead must get the nodes' process IDs and then force kill them:
@@ -205,8 +210,8 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=repdemo-node4 --port=26260 --http-port=8083 --join=localhost:26257
-13400 ttys001    0:00.58 cockroach start --insecure --store=repdemo-node5 --port=26261 --http-port=8084 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --insecure --store=repdemo-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
+13400 ttys001    0:00.58 cockroach start --insecure --store=repdemo-node5 --host=localhost --port=26261 --http-port=8084 --join=localhost:26257
 ~~~
 
 ~~~ shell
