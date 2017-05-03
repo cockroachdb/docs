@@ -58,6 +58,26 @@ If you'd like to tell the query planner which index to use, you can do so via so
 > SELECT col1 FROM tbl1@idx1;
 ~~~
 
+## How do I log SQL queries?
+
+For production clusters, the best way to log queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
+
+~~~ sql
+> SET CLUSTER SETTING sql.trace.log_statement_execute = true;
+~~~
+
+With this setting on, each node of the cluster writes all SQL queries it executes to its log file. When you no longer need to log queries, you can turn the setting back off:
+
+~~~ sql
+> SET CLUSTER SETTING sql.trace.log_statement_execute = false;
+~~~
+
+Alternatively, if you are testing CockroachDB locally and want to log queries executed just by a specific node, you can pass `--vmodule=executor=2` to the [`cockroach start`](start-a-node.html) command when starting the node. For example, to start a single node locally and log all SQL queries it executes, you'd run:
+
+~~~ shell
+$ cockroach start --insecure --host=localhost --vmodule=executor=2
+~~~
+
 ## Does CockroachDB support a UUID type?
 
 Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column should perform just as well.
