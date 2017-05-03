@@ -19,30 +19,33 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=fault-node1
+--store=fault-node1 \
+--host=localhost \
+--background
 
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=fault-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 Open the built-in SQL shell on any node to verify that the cluster is live:
 
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --insecure --host=localhost
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -71,7 +74,7 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 Use the [`cockroach quit`](stop-a-node.html) command to stop node 2 (port `26258`):
 
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost --port=26258
 ~~~
 
 ~~~
@@ -84,7 +87,7 @@ ok
 Open the built-in SQL shell on node 1 (port `26257`) or node 3 (port `26259`):
 
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost --port=26259
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -114,7 +117,7 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql --insecure
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql --insecure --host=localhost
 </code></pre>
 </div>
 
@@ -132,7 +135,7 @@ INSERT 200
 Once again, open the SQL shell on node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
 
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost --port=26259
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -199,11 +202,12 @@ Rejoin node 2 to the cluster, using the same command that you used in step 1:
 
 ~~~ shell
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ~~~
@@ -223,7 +227,7 @@ nodeID:     2
 Open the SQL shell on the rejoined node 2 (port `26258`) and check for the `startrek` data that was added while the node was offline:
 
 ~~~ shell
-$ cockroach sql --insecure --port=26258
+$ cockroach sql --insecure --host=localhost --port=26258
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -263,14 +267,15 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault2-add-node"><span class="gp noselect shellterminal"></span>cockroach start --insecure <span class="se">\</span>
---background <span class="se">\</span>
---store<span class="o">=</span>fault-node4 <span class="se">\</span>
---port<span class="o">=</span>26260 <span class="se">\</span>
---http-port<span class="o">=</span>8083 <span class="se">\</span>
---join<span class="o">=</span>localhost:26257
-</code></pre>
-</div>
+~~~ shell
+$ cockroach start --insecure \
+--store=fault-node4 \
+--host=localhost \
+--port=26260 \
+--http-port=8083 \
+--join=localhost:26257 \
+--background
+~~~
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
@@ -289,7 +294,7 @@ nodeID:     4
 Again use the [`cockroach quit`](stop-a-node.html) command to stop node 2 (port `26258`):
 
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost --port=26258
 ~~~
 
 ~~~
@@ -314,10 +319,10 @@ Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html
 
 ~~~ shell
 # Stop node 1:
-$ cockroach quit --insecure
+$ cockroach quit --insecure --host=localhost
 
 # Stop node 3:
-$ cockroach quit --insecure --port=26259
+$ cockroach quit --insecure --host=localhost --port=26259
 
 ~~~
 
@@ -329,7 +334,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --port=26260 --http-port=8083 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
 ~~~
 
 ~~~ shell

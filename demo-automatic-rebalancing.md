@@ -22,30 +22,33 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=scale-node1
+--store=scale-node1 \
+--host=localhost \
+--background
 
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=scale-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=scale-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node to verify that the cluster is live:
 
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --insecure --host=localhost --port=26258
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -76,7 +79,7 @@ In CockroachDB, you use [replication zones](configure-replication-zones.html) to
 However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
 
 ~~~ shell
-$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure -f -
+$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure --host=localhost -f -
 ~~~
 
 ~~~
@@ -132,19 +135,21 @@ Adding capacity is as simple as starting more nodes and joining them to the runn
 ~~~ shell
 # Start node 4:
 $ cockroach start --insecure \
---background \
 --store=scale-node4 \
+--host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 5:
 $ cockroach start --insecure \
---background \
 --store=scale-node5 \
+--host=localhost \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 6. Watch data rebalance across all 5 nodes
@@ -159,16 +164,16 @@ Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html
 
 ~~~ shell
 # Stop node 1:
-$ cockroach quit --insecure
+$ cockroach quit --insecure --host=localhost
 
 # Stop node 2:
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost --port=26258
 
 # Stop node 3:
-$ cockroach quit --insecure --port=26259
+$ cockroach quit --insecure --host=localhost --port=26259
 
 # Stop node 4:
-$ cockroach quit --insecure --port=26260
+$ cockroach quit --insecure --host=localhost --port=26260
 ~~~
 
 With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
@@ -179,7 +184,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13400 ttys001    0:00.58 cockroach start --insecure --store=scale-node5 --port=26261 --http-port=8084 --join=localhost:26257
+13400 ttys001    0:00.58 cockroach start --insecure --store=scale-node5 --host=localhost --port=26261 --http-port=8084 --join=localhost:26257
 ~~~
 
 ~~~ shell

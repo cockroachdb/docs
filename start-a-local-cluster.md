@@ -25,7 +25,9 @@ Also, feel free to watch this process in action before going through the steps y
 ## Step 1. Start the first node
 
 ~~~ shell
-$ cockroach start --insecure --background
+$ cockroach start --insecure \
+--host=localhost \
+--background
 ~~~
 
 ~~~
@@ -40,9 +42,10 @@ clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
 nodeID:     1
 ~~~
 
-This command starts a node in insecure mode, accepting all [`cockroach start`](start-a-node.html) defaults.
+This command starts a node in insecure mode, accepting most [`cockroach start`](start-a-node.html) defaults.
 
-- Communication is non-encrypted, with the node listening on all interfaces on port `26257` for internal and client traffic and on port `8080` for HTTP requests from the Admin UI.
+- The `--insecure` flag makes communication unencrypted.
+- Since this is a purely local cluster, `--host=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 - Node data is stored in the `cockroach-data` directory.
 - The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
@@ -58,19 +61,21 @@ To simulate a real deployment, scale your cluster by adding two more nodes:
 ~~~ shell
 # Start the second node:
 $ cockroach start --insecure \
---background \
 --store=node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start the third node:
 $ cockroach start --insecure \
---background \
 --store=node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 The main difference here is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--port`, and `--http-port` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.

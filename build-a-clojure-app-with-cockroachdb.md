@@ -25,6 +25,7 @@ As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-clien
 
 ~~~ shell
 $ cockroach sql --insecure \
+--host=localhost \
 --database=bank \
 --user=maxroach \
 -e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)'

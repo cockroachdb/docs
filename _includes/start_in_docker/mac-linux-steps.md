@@ -27,7 +27,7 @@ $ docker run -d \
 --net=roachnet \
 -p 26257:26257 -p 8080:8080  \
 -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --host=localhost
 ~~~
 
 This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
@@ -39,7 +39,7 @@ This command creates a container and starts the first CockroachDB node inside it
 - `--net`: The bridge network for the container to join. See step 1 for more details.
 - `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port for HTTP requests to the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
 - `-v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `${PWD}/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume">Mount a host directory as a data volume</a> topic.
-- `cockroachdb/cockroach:{{site.data.strings.version}} start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode.
+- `cockroachdb/cockroach:{{site.data.strings.version}} start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode with the node listening only on `localhost`. Default ports are used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 
   {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one container/node per host. When running multiple containers/nodes on a single host, however, it may lead to out of memory errors, especially when testing against the cluster in a serious way. To avoid such errors, you can manually limit each node's cache size by setting the <a href="start-a-node.html#flags"><code>--cache</code></a> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
@@ -56,7 +56,7 @@ $ docker run -d \
 --hostname=roach2 \
 --net=roachnet \
 -v "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --host=localhost --join=roach1
 
 # Start the third container/node:
 $ docker run -d \
@@ -64,7 +64,7 @@ $ docker run -d \
 --hostname=roach3 \
 --net=roachnet \
 -v "${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" \
-cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --join=roach1
+cockroachdb/cockroach:{{site.data.strings.version}} start --insecure --host=localhost --join=roach1
 ~~~
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
