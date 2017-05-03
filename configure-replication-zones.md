@@ -136,7 +136,7 @@ Flag | Description
 `--database`<br>`-d` | Not currently implemented.
 `--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
 `--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>`<br><br>**Env Variable:** `COCKROACH_URL`
@@ -274,7 +274,7 @@ Start each node with its datacenter location specified in the `--locality` flag:
 
 ~~~ shell
 # Start the two nodes in datacenter 1:
-$ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 \
+$ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
 $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
 --join=<node1 hostname>:27257
 
@@ -308,7 +308,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Start the three nodes in datacenter 1:
-   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 \
+   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
    $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
    --join=<node1 hostname>:27257
    $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-1 \
@@ -323,7 +323,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
    --join=<node1 hostname>:27257
    ~~~
 
-2. Configure a replication zone for the database used by application 1:
+2. On any node, configure a replication zone for the database used by application 1:
 
    ~~~ shell
    # Create a YAML file with the replica count set to 5:
@@ -350,7 +350,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
 
-3. Configure a replication zone for the database used by application 2:
+3. On any node, configure a replication zone for the database used by application 2:
 
    ~~~ shell
    # Create a YAML file with 1 datacenter as a required constraint:
@@ -391,7 +391,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Start the 5 nodes with SSD storage:
-   $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd \
+   $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
    $ cockroach start --insecure --host=<node2 hostname> --store=path=node2,attrs=ssd \
    --join=<node1 hostname>:27257
    $ cockroach start --insecure --host=<node3 hostname> --store=path=node3,attrs=ssd \
@@ -408,7 +408,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
    --join=<node1 hostname>:27257
    ~~~
 
-2. Configure a replication zone for the table that must be replicated more strictly:
+2. On any node, configure a replication zone for the table that must be replicated more strictly:
 
    ~~~ shell
    # Create a YAML file with the replica count set to 5

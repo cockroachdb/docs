@@ -48,7 +48,7 @@ $ cockroach start --insecure \
 Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node to verify that the cluster is live:
 
 ~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26258
+$ cockroach sql --insecure
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -79,7 +79,7 @@ In CockroachDB, you use [replication zones](configure-replication-zones.html) to
 However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
 
 ~~~ shell
-$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure --host=localhost -f -
+$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure -f -
 ~~~
 
 ~~~
@@ -164,16 +164,16 @@ Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html
 
 ~~~ shell
 # Stop node 1:
-$ cockroach quit --insecure --host=localhost
+$ cockroach quit --insecure
 
 # Stop node 2:
-$ cockroach quit --insecure --host=localhost --port=26258
+$ cockroach quit --insecure --port=26258
 
 # Stop node 3:
-$ cockroach quit --insecure --host=localhost --port=26259
+$ cockroach quit --insecure --port=26259
 
 # Stop node 4:
-$ cockroach quit --insecure --host=localhost --port=26260
+$ cockroach quit --insecure --port=26260
 ~~~
 
 With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
