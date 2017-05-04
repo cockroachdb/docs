@@ -55,6 +55,13 @@
 				content: "\f17a";
          	}
 		}
+
+		&#source {
+			margin: 0 2% 0 0;
+			&:after {
+				content: "\f1c6";
+			}
+		}
 	}
 }
 
