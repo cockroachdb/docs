@@ -1537,15 +1537,17 @@ li.search-wrap {
       z-index: 5;
       font-size: 55px; }
     #os-tabs button#mac {
-      margin: 0 2% 0 0; }
+      margin: 0 2% 2% 0; }
       #os-tabs button#mac:after {
         content: "\f179"; }
     #os-tabs button#linux {
-      margin: 0 2% 0 0; }
+      margin: 0 2% 2% 0; }
       #os-tabs button#linux:after {
         content: "\f17c"; }
-    #os-tabs button#windows:after {
-      content: "\f17a"; }
+    #os-tabs button#windows {
+      margin: 0 2% 0 0; }
+      #os-tabs button#windows:after {
+        content: "\f17a"; }
 
 .install-button {
   display: inline-block;

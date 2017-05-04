@@ -35,14 +35,14 @@
 		}
 
 		&#mac {
-			margin: 0 2% 0 0;
+			margin: 0 2% 2% 0;
 			&:after {
 				content: "\f179";
          	}
 		}
 
 		&#linux {
-			margin: 0 2% 0 0;
+			margin: 0 2% 2% 0;
 
 			&:after {
 				content: "\f17c";
@@ -50,6 +50,7 @@
 		}
 
 		&#windows {
+			margin: 0 2% 0 0;
 			&:after {
 				content: "\f17a";
          	}
