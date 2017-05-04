@@ -4,7 +4,7 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: false
 ---
 
-By default, each node of a CockroachDB cluster shares diagnostic details with Cockroach Labs on a daily basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, each node of a CockroachDB cluster shares diagnostic details with Cockroach Labs on an hourly basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page explains the details that get shared and how to opt out of sharing.
 
@@ -14,11 +14,11 @@ This page explains the details that get shared and how to opt out of sharing.
 
 ## What Gets Shared
 
-When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on a daily basis. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
+When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
 
 ### Storage Details
 
-Each node of a CockroachDB cluster shares the following storage details on a daily basis:
+Each node of a CockroachDB cluster shares the following storage details on an hourly basis:
 
 Detail | Description
 -------|------------
@@ -61,7 +61,7 @@ This JSON example shows what storage details look like when sent to Cockroach La
 
 ### SQL Table Structure Details
 
-Each node of a CockroachDB cluster shares the following details about the structure of each table stored on the node on a daily basis:
+Each node of a CockroachDB cluster shares the following details about the structure of each table stored on the node on an hourly basis:
 
 {{site.data.alerts.callout_info}}No actual table data or table/column names are shared, just metadata about the structure of tables. All names and other string values are scrubbed and replaced with underscores.{{site.data.alerts.end}}
 
@@ -114,7 +114,7 @@ This JSON example shows an excerpt of what table structure details look like whe
 
 ### SQL Query Statistics
 
-Each node of a CockroachDB cluster shares the following statistics about the SQL queries it has executed on a daily basis:
+Each node of a CockroachDB cluster shares the following statistics about the SQL queries it has executed on an hourly basis:
 
 {{site.data.alerts.callout_info}}No query results are shared, just the queries themselves, with all names and other strings scrubbed and replaced with underscores, and statistics about the queries.{{site.data.alerts.end}}
 
