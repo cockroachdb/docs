@@ -19,24 +19,27 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=fault-node1
+--store=fault-node1 \
+--host=localhost \
+--background
 
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=fault-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 Open the built-in SQL shell on any node to verify that the cluster is live:
@@ -199,11 +202,12 @@ Rejoin node 2 to the cluster, using the same command that you used in step 1:
 
 ~~~ shell
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ~~~
@@ -263,14 +267,15 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault2-add-node"><span class="gp noselect shellterminal"></span>cockroach start --insecure <span class="se">\</span>
---background <span class="se">\</span>
---store<span class="o">=</span>fault-node4 <span class="se">\</span>
---port<span class="o">=</span>26260 <span class="se">\</span>
---http-port<span class="o">=</span>8083 <span class="se">\</span>
---join<span class="o">=</span>localhost:26257
-</code></pre>
-</div>
+~~~ shell
+$ cockroach start --insecure \
+--store=fault-node4 \
+--host=localhost \
+--port=26260 \
+--http-port=8083 \
+--join=localhost:26257 \
+--background
+~~~
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
@@ -329,7 +334,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --port=26260 --http-port=8083 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
 ~~~
 
 ~~~ shell

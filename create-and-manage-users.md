@@ -53,7 +53,7 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
@@ -77,7 +77,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 #### Insecure Cluster
 
 ~~~ shell
-$ cockroach user set --insecure jpointsman
+$ cockroach user set jpointsman --insecure
 ~~~
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.

@@ -95,7 +95,7 @@ cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --j
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
 - `-v`: This flag mounts a host directory as a data volume. Data and logs for these nodes will be stored in `Users/<username>/cockroach-data/roach2` and `Users/<username>/cockroach-data/roach3` on the host and will persist after the containers are stopped or deleted.
-- `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
+- `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
 ## Step 4. Test the cluster
 
