@@ -136,7 +136,7 @@ Flag | Description
 `--database`<br>`-d` | Not currently implemented.
 `--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
 `--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>`<br><br>**Env Variable:** `COCKROACH_URL`
@@ -153,9 +153,7 @@ The cluster-wide replication zone (`.default`) is initially set to replicate dat
 To view the default replication zone, use the `cockroach zone get .default` command with appropriate flags:
 
 ~~~ shell
-$ cockroach zone get .default --insecure \
---host=roachcluster.com \
---port=26257
+$ cockroach zone get .default --insecure
 ~~~
 
 ~~~
@@ -181,10 +179,7 @@ num_replicas: 5
 ~~~
 
 ~~~ shell
-$ cockroach zone set .default --insecure \
---host=roachcluster.com \
---port=26257 \
--f default_update.yaml
+$ cockroach zone set .default --insecure -f default_update.yaml
 ~~~
 
 ~~~
@@ -199,7 +194,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default --insecure --host=roachcluster.com --port=26257 -f -
+$ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 ~~~
 
 ### Create a Replication Zone for a Database
@@ -215,10 +210,7 @@ num_replicas: 7
 ~~~
 
 ~~~ shell
-$ cockroach zone set db1 --insecure \
---host=roachcluster.com \
---port=26257 \
--f database_zone.yaml
+$ cockroach zone set db1 --insecure -f database_zone.yaml
 ~~~
 
 ~~~
@@ -233,7 +225,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set db1 --insecure --host=roachcluster.com --port=26257 -f -
+$ echo 'num_replicas: 5' | cockroach zone set db1 --insecure -f -
 ~~~
 
 ### Create a Replication Zone for a Table
@@ -249,10 +241,7 @@ num_replicas: 7
 ~~~
 
 ~~~ shell
-$ cockroach zone set db1.t1 --insecure \
---host=roachcluster.com \
---port=26257 \
--f table_zone.yaml
+$ cockroach zone set db1.t1 --insecure -f table_zone.yaml
 ~~~
 
 ~~~
@@ -267,7 +256,7 @@ constraints: []
 Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure --host=roachcluster.com --port=26257 -f -
+$ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
 
 ## Scenario-based Examples
@@ -347,9 +336,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the database used by application 1:
-   $ cockroach zone set app1_db --insecure \
-   --host=<any node's hostname> \
-   -f app1_zone.yaml
+   $ cockroach zone set app1_db --insecure --host=<hostname of any node> -f app1_zone.yaml
    ~~~
 
    ~~~
@@ -376,9 +363,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the database used by application 2:
-   $ cockroach zone set app2_db --insecure \
-   --host=<any node's hostname> \
-   -f app2_zone.yaml
+   $ cockroach zone set app2_db --insecure --host=<hostname of any node> -f app2_zone.yaml
    ~~~
 
    ~~~
@@ -438,9 +423,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    ~~~ shell
    # Apply the replication zone to the table:
-   $ cockroach zone set db.important_tablee --insecure \
-   --host=<any node's hostname> \
-   -f table_zone.yaml
+   $ cockroach zone set db.important_tablee --insecure --host=<hostname of any node> -f table_zone.yaml
    ~~~
 
    ~~~

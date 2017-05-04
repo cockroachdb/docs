@@ -55,7 +55,7 @@ Flag | Description
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
@@ -68,9 +68,7 @@ Flag | Description
 ### Dump a table's schema and data
 
 ~~~ shell
-$ cockroach dump startrek episodes --insecure \
---host=roachcluster.com \
---user=maxroach > backup.sql
+$ cockroach dump startrek episodes --insecure --user=maxroach > backup.sql
 ~~~
 
 ~~~ shell
@@ -107,10 +105,7 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 ### Dump just a table's schema
 
 ~~~ shell
-$ cockroach dump startrek episodes --insecure \
---host=roachcluster.com \
---user=maxroach \
---dump-mode=schema > backup.sql
+$ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=schema > backup.sql
 ~~~
 
 ~~~ shell
@@ -134,10 +129,7 @@ CREATE TABLE episodes (
 ### Dump just a table's data
 
 ~~~ shell
-$ cockroach dump startrek episodes --insecure \
---host=roachcluster.com \
---user=maxroach \
---dump-mode=data > backup.sql
+$ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=data > backup.sql
 ~~~
 
 ~~~ shell
@@ -162,9 +154,7 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 ### Dump all tables in a database
 
 ~~~ shell
-$ cockroach dump startrek --insecure \
---host=roachcluster.com \
---user=maxroach > backup.sql
+$ cockroach dump startrek --insecure --user=maxroach > backup.sql
 ~~~
 
 ~~~ shell
@@ -221,9 +211,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
 
 ~~~ shell
-$ cockroach dump startrek episodes --insecure \
---host=roachcluster.com \
---user=leslieroach > backup.sql
+$ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
 ~~~
 
 ~~~ shell
@@ -260,10 +248,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 ~~~
 
 ~~~ shell
-$ cockroach sql --insecure \
---host=roachcluster.com \
---database=startrek \
---user=maxroach < backup.sql
+$ cockroach sql --insecure --database=startrek --user=maxroach < backup.sql
 ~~~
 
 ~~~ shell
@@ -279,9 +264,7 @@ In this example, we assume there were several inserts into a table both before a
 First, let's use the built-in SQL client to view the table at the current time:
 
 ~~~ shell
-$ cockroach sql --insecure \
---host=roachcluster \
---execute="SELECT * FROM db1.dump_test"
+$ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 ~~~
 
 ~~~
@@ -311,9 +294,7 @@ $ cockroach sql --insecure \
 Next, let's use a [time-travel query](select.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
 
 ~~~ shell
-$ cockroach sql --insecure \
---host=roachcluster.com \
---execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
+$ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
 ~~~
 
 ~~~
@@ -335,10 +316,7 @@ $ cockroach sql --insecure \
 Finally, let's use `cockroach dump` with the `--as-of` flag set to dump the contents of the table as of `2017-03-07 19:55:00`.
 
 ~~~ shell
-$ cockroach dump db1 dump_test --insecure \
---host=roachcluster.com \
---dump-mode=data \
---as-of='2017-03-07 19:55:00'
+$ cockroach dump db1 dump_test --insecure --dump-mode=data --as-of='2017-03-07 19:55:00'
 ~~~
 
 ~~~

@@ -37,7 +37,7 @@ $ cockroach start --insecure \
 As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
 
 ~~~ shell
-$ cockroach user set maxroach --insecure --host=localhost
+$ cockroach user set maxroach --insecure
 ~~~
 
 ## Step 4. Create a database and grant privileges
@@ -45,11 +45,11 @@ $ cockroach user set maxroach --insecure --host=localhost
 As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database.
 
 ~~~ shell
-$ cockroach sql --insecure --host=localhost -e 'CREATE DATABASE bank'
+$ cockroach sql --insecure -e 'CREATE DATABASE bank'
 ~~~
 
 Then [grant privileges](grant.html) to the `maxroach` user
 
 ~~~ shell
-$ cockroach sql --insecure --host=localhost -e 'GRANT ALL ON DATABASE bank TO maxroach'
+$ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~

@@ -53,7 +53,7 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
@@ -77,10 +77,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 #### Insecure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman \
---insecure \
---host=roachcluster.com \
---port=26257
+$ cockroach user set jpointsman --insecure
 ~~~
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
@@ -90,10 +87,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 #### Secure Cluster
 
 ~~~ shell
-$ cockroach user set jpointsman \
---certs-dir=certs \
---host=roachcluster.com \
---port=26257
+$ cockroach user set jpointsman --certs-dir=certs
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
@@ -110,11 +104,7 @@ After creating users, you must:
 #### Insecure Clusters
 
 ~~~ shell
-$ cockroach sql \
---insecure \
---user=jpointsman \
---host=roachcluster.com \
---port=26257
+$ cockroach sql --insecure --user=jpointsman
 ~~~
 
 #### Secure Clusters with Client Certificates
@@ -122,11 +112,7 @@ $ cockroach sql \
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 ~~~ shell
-$ cockroach sql \
---certs-dir=certs \
---user=jpointsman \
---host=roachcluster.com \
---port=26257
+$ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
 #### Secure Clusters with Passwords
@@ -136,11 +122,7 @@ $ cockroach sql \
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
 ~~~ shell
-$ cockroach sql \
---certs-dir=certs \
---user=jpointsman \
---host=roachcluster.com \
---port=26257
+$ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
 After issuing this command, you must enter the password for `jpointsman` twice.
@@ -148,11 +130,7 @@ After issuing this command, you must enter the password for `jpointsman` twice.
 ### Update a User's Password
 
 ~~~ shell
-$ cockroach user set jpointsman \
---certs-dir=certs \
---password \
---host=roachcluster.com \
---port=26257
+$ cockroach user set jpointsman --certs-dir=certs --password
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
@@ -162,10 +140,7 @@ After issuing this command, enter and confirm the user's new password at the com
 ### List All Users
 
 ~~~ shell
-$ cockroach user ls \
---insecure \
---host=roachcluster.com \
---port=26257
+$ cockroach user ls --insecure
 ~~~
 ~~~
 +------------+
@@ -178,10 +153,7 @@ $ cockroach user ls \
 ### Find a Specific User
 
 ~~~ shell
-$ cockroach user get jpointsman \
---insecure \
---host=roachcluster.com \
---port=26257
+$ cockroach user get jpointsman --insecure
 ~~~
 ~~~
 +------------+--------------------------------------------------------------+
@@ -194,10 +166,7 @@ $ cockroach user get jpointsman \
 ### Remove a User
 
 ~~~ shell
-$ cockroach user rm jpointsman \
---insecure \
---host=roachcluster.com \
---port=26257
+$ cockroach user rm jpointsman --insecure
 ~~~
 
 ## See Also
