@@ -79,7 +79,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
+<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest release, {{ site.data.strings.version }}. </p>
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -92,17 +92,17 @@ $(document).ready(function(){
   <h2>Download the Binary</h2>
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB archive for OS X</a>.</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB {{ site.data.strings.version }} archive for OS X</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-latest.darwin-10.9-amd64.tgz</code></pre></div>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-{{ site.data.strings.version }}.darwin-10.9-amd64.tgz</code></pre></div>
     </li>
     <li>
       <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-latest.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
+      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ site.data.strings.version }}.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
@@ -188,15 +188,15 @@ $(document).ready(function(){
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.src.tgz">CockroachDB {{ site.data.strings.version }} source archive</a>.</p>
   </li>
   <li>
     <p>Extract the sources:</p>
-    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
+    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-{{ site.data.strings.version }}.src.tgz</code></pre></div></p>
   </li>
   <li><p>In the extracted directory, run <code>make</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ site.data.strings.version }}<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -282,7 +282,7 @@ $(document).ready(function(){
 </div>
 
 <div id="linuxinstall" style="display: none;">
-<p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest release, {{ site.data.strings.version }}.</p>
 
 <div id="linux-installs" class="clearfix">
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
@@ -295,18 +295,18 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB archive for Linux</a>.</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB {{ site.data.strings.version }} archive for Linux</a>.</p>
     </li>
     <li>
       <p>Extract the binary:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>tar xfz cockroach-latest.linux-amd64.tgz</code></pre>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>tar xfz cockroach-{{ site.data.strings.version }}.linux-amd64.tgz</code></pre>
       </div>
     </li>
     <li>
       <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-latest.linux-amd64/cockroach /usr/local/bin</code></pre></div>
+      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
@@ -354,15 +354,15 @@ $(document).ready(function(){
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.src.tgz">CockroachDB {{ site.data.strings.version }} source archive</a>.</p>
   </li>
   <li>
     <p>Extract the sources:</p>
-    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
+    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-{{ site.data.strings.version }}.src.tgz</code></pre></div></p>
   </li>
   <li><p>In the extracted directory, run <code>make</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ site.data.strings.version }}<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -451,7 +451,7 @@ $(document).ready(function(){
 
 <div id="windowsinstall" style="display: none;">
 
-<p>There are two ways to install CockroachDB on Windows. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
+<p>There are two ways to install CockroachDB on Windows. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest release, {{ site.data.strings.version }}. </p>
 
 <div id="windows-installs" class="clearfix">
 <a href="#download-the-binary-windows" class="install-button windows-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="windows-binary">Download the <div class="c2a">Binary</div></a>
@@ -465,12 +465,12 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Download and extract the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.windows-6.2-amd64.zip">CockroachDB archive for Windows</a>.</p>
+    <p>Download and extract the <a href="https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.windows-6.2-amd64.zip">CockroachDB {{ site.data.strings.version }} archive for Windows</a>.</p>
   </li>
   <li>
     <p>Open PowerShell, navigate to the directory containing the binary, and make sure the CockroachDB executable works:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-latest.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-{{ site.data.strings.version }}.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
