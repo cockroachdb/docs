@@ -492,26 +492,14 @@ entries:
         - title: Improve the Docs
           url: /improve-the-docs.html
 
-    - title: Release Notes
+    - title: Releases
       items:
 
         - title: v1.0-rc.2
           url: /v1.0-rc.2.html
 
-        - title: v1.0-rc.1
-          url: /v1.0-rc.1.html
-
-        - title: beta-20170420
-          url: /beta-20170420.html
-
-        - title: beta-20170413
-          url: /beta-20170413.html
-
-        - title: beta-20170406
-          url: /beta-20170406.html
-
-        - title: Older Versions
-          url: /older-versions.html
+        - title: All Releases
+          url: /releases.html
 
     - title: FAQs
       items:

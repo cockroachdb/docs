@@ -1,0 +1,92 @@
+- date: May 5, 2017
+  version: v1.0-rc.2
+  source: true
+  windows: true
+  latest: true
+- date: May 1, 2017
+  version: v1.0-rc.1
+  source: true
+  windows: true
+- date: Apr 20, 2017
+  version: beta-20170420
+  source: true
+- date: Apr 13, 2017
+  version: beta-20170413
+  source: true
+- date: Apr 06, 2017
+  version: beta-20170406
+  source: true
+- date: Mar 30, 2017
+  version: beta-20170330
+  source: true
+- date: Mar 23, 2017
+  version: beta-20170323
+- date: Mar 9, 2017
+  version: beta-20170309
+- date: Feb 23, 2017
+  version: beta-20170223
+- date: Feb 16, 2017
+  version: beta-20170216
+- date: Feb 9, 2017
+  version: beta-20170209
+- date: Jan 26, 2017
+  version: beta-20170126
+- date: Jan 12, 2017
+  version: beta-20170112
+- date: Jan 5, 2017
+  version: beta-20170105
+- date: Dec 15, 2016
+  version: beta-20161215
+- date: Dec 8, 2016
+  version: beta-20161208
+- date: Dec 1, 2016
+  version: beta-20161201
+- date: Nov 10, 2016
+  version: beta-20161110
+  withdrawn: true
+- date: Nov 3, 2016
+  version: beta-20161103
+- date: Oct 27, 2016
+  version: beta-20161027
+- date: Oct 13, 2016
+  version: beta-20161013
+- date: Oct 6, 2016
+  version: beta-20161006
+- date: Sep 29, 2016
+  version: beta-20160929
+- date: Sep 15, 2016
+  version: beta-20160915
+- date: Sep 9, 2016
+  version: beta-20160908
+- date: Aug 29, 2016
+  version: beta-20160829
+- date: Jul 28, 2016
+  version: beta-20160728
+- date: Jul 21, 2016
+  version: beta-20160721
+- date: Jul 14, 2016
+  version: beta-20160714
+- date: Jun 29, 2016
+  version: beta-20160629
+- date: Jun 16, 2016
+  version: beta-20160616
+- date: Jun 9, 2016
+  version: beta-20160609
+- date: Jun 2, 2016
+  version: beta-20160602
+- date: May 26, 2016
+  version: beta-20160526
+- date: May 19, 2016
+  version: beta-20160519
+- date: May 12, 2016
+  version: beta-20160512
+- date: May 5, 2016
+  version: beta-20160505
+- date: Apr 28, 2016
+  version: beta-20160428
+- date: Apr 21, 2016
+  version: beta-20160421
+- date: Apr 14, 2016
+  version: beta-20160414
+- date: Apr 7, 2016
+  version: beta-20160407

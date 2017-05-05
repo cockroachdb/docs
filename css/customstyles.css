@@ -1548,6 +1548,10 @@ li.search-wrap {
       margin: 0 2% 0 0; }
       #os-tabs button#windows:after {
         content: "\f17a"; }
+    #os-tabs button#source {
+      margin: 0 2% 0 0; }
+      #os-tabs button#source:after {
+        content: "\f1c6"; }
 
 .install-button {
   display: inline-block;
@@ -2993,5 +2997,25 @@ img.mfp-img {
 
 .gitter-chat-embed {
   z-index: 9999; }
+
+.release-table .fa {
+  margin-right: 2px; }
+.release-table .latest {
+  background-color: #fafdf6; }
+.release-table .badge {
+  background-color: #4eb21d;
+  font-size: 10px;
+  text-transform: uppercase;
+  vertical-align: middle; }
+.release-table .badge-gray {
+  background-color: #959797; }
+.release-table .os-release-link {
+  margin-right: 20px; }
+.release-table .os-release-link:last-child {
+  margin-right: 0; }
+.release-table .os-release-cell {
+  padding-left: 30px;
+  padding-right: 30px;
+  white-space: nowrap; }
 
 /*# sourceMappingURL=customstyles.css.map */
