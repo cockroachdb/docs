@@ -16,6 +16,7 @@
 - date: Apr 06, 2017
   version: beta-20170406
   source: true
+  withdrawn: true
 - date: Mar 30, 2017
   version: beta-20170330
   source: true
