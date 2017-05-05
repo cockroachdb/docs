@@ -114,11 +114,11 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+	$ tar -xf cockroach-{{ site.data.strings.version }}.linux-amd64.tgz  \
+	--strip=1 cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach
 
 	# Move the binary.
 	$ sudo mv cockroach /usr/local/bin
@@ -148,11 +148,11 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+	$ tar -xf cockroach-{{ site.data.strings.version }}.linux-amd64.tgz  \
+	--strip=1 cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach
 
 	# Move the binary.
 	$ sudo mv cockroach /usr/local/bin
