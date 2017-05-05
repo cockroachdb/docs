@@ -4,7 +4,7 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: false
 ---
 
-By default, each node of a CockroachDB cluster shares diagnostic details with Cockroach Labs on a daily basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, each node of a CockroachDB cluster shares diagnostic details with Cockroach Labs on an hourly basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page explains the details that get shared and how to opt out of sharing.
 
@@ -14,11 +14,11 @@ This page explains the details that get shared and how to opt out of sharing.
 
 ## What Gets Shared
 
-When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage and table structure details with Cockroach Labs on a daily basis. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
+When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
 
 ### Storage Details
 
-Each node of a CockroachDB cluster shares the following storage details:
+Each node of a CockroachDB cluster shares the following storage details on an hourly basis:
 
 Detail | Description
 -------|------------
@@ -59,9 +59,9 @@ This JSON example shows what storage details look like when sent to Cockroach La
 }
 ~~~
 
-### SQL Table Structure
+### SQL Table Structure Details
 
-Each node of a CockroachDB cluster shares the following details about the structure of each table stored on the node:
+Each node of a CockroachDB cluster shares the following details about the structure of each table stored on the node on an hourly basis:
 
 {{site.data.alerts.callout_info}}No actual table data or table/column names are shared, just metadata about the structure of tables. All names and other string values are scrubbed and replaced with underscores.{{site.data.alerts.end}}
 
@@ -112,6 +112,93 @@ This JSON example shows an excerpt of what table structure details look like whe
 }
 ~~~
 
+### SQL Query Statistics
+
+Each node of a CockroachDB cluster shares the following statistics about the SQL queries it has executed on an hourly basis:
+
+{{site.data.alerts.callout_info}}No query results are shared, just the queries themselves, with all names and other strings scrubbed and replaced with underscores, and statistics about the queries.{{site.data.alerts.end}}
+
+Detail | Description
+-------|------------
+Query | The query executed. Names and other strings are replaced with underscores.
+Counts | The number of times the query was executed, the number of times the query was committed on the first attempt (without retries), and the maximum observed number of times the query was retried automatically.
+Last Error | The last error the query encountered.
+Rows | The number of rows returned or observed.
+Latencies | The amount of time involved in various aspects of the query, for example, the time to parse the query, the time to plan the query, and the time to run the query and fetch/compute results.
+
+#### Example
+
+This JSON example shows an excerpt of what query statistics look like when sent to Cockroach Labs. Note that all names and other strings have been scrubbed from the queries and replaced with underscores.
+
+~~~ json
+{
+   "sqlstats": {
+      "-3750763034362895579": {
+         "CREATE DATABASE _": {
+            "count": 1,
+            "first_attempt_count": 1,
+            "max_retries": 0,
+            "last_err": "",
+            "num_rows": {
+               "mean": 0,
+               "squared_diffs": 0
+            },
+            "parse_lat": {
+               "mean": 0.00010897,
+               "squared_diffs": 0
+            },
+            "plan_lat": {
+               "mean": 0.000011004,
+               "squared_diffs": 0
+            },
+            "run_lat": {
+               "mean": 0.002049073,
+               "squared_diffs": 0
+            },
+            "service_lat": {
+               "mean": 0.00220478,
+               "squared_diffs": 0
+            },
+            "overhead_lat": {
+               "mean": 0.0000357329999999996,
+               "squared_diffs": 0
+            }
+         },
+         "INSERT INTO _ VALUES (_)": {
+            "count": 10,
+            "first_attempt_count": 10,
+            "max_retries": 0,
+            "last_err": "",
+            "num_rows": {
+               "mean": 2,
+               "squared_diffs": 0
+            },
+            "parse_lat": {
+               "mean": 0.000021831200000000002,
+               "squared_diffs": 5.024879776000002e-10
+            },
+            "plan_lat": {
+               "mean": 0.00007221249999999999,
+               "squared_diffs": 7.744142312499998e-9
+            },
+            "run_lat": {
+               "mean": 0.0003641647,
+               "squared_diffs": 1.0141981141410002e-7
+            },
+            "service_lat": {
+               "mean": 0.00048527110000000004,
+               "squared_diffs": 2.195025173849e-7
+            },
+            "overhead_lat": {
+               "mean": 0.00002706270000000002,
+               "squared_diffs": 2.347266118100001e-9
+            }
+         },
+         ...
+      }
+   }
+}
+~~~
 ## Opt Out of Diagnostics Reporting
 
 To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following `SET CLUSTER SETTING` statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
