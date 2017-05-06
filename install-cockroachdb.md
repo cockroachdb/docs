@@ -465,7 +465,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Download and extract the latest <a href="https://binaries.cockroachdb.com/cockroach-latest.windows-6.2-amd64.zip">CockroachDB archive for Windows</a>.</p>
+    <p>Download and extract the latest <a href="https://binaries.cockroachdb.com/cockroach-v1.0-rc.2.windows-6.2-amd64.zip">CockroachDB archive for Windows</a>.</p>
   </li>
   <li>
     <p>Open PowerShell, navigate to the directory containing the binary, and make sure the CockroachDB executable works:</p>
