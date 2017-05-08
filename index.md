@@ -8,7 +8,17 @@ optimizely: true
 twitter: true
 ---
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It scales horizontally; survives failures with minimal latency disruption and no manual intervention; supports ACID transactions; and provides a familiar SQL API.
+CockroachDB is an open source database for building global, scalable cloud services that survive disasters.
+
+<style>
+    #party {
+        font-size: 30px;
+        padding-right: 10px;
+        vertical-align: -20%;
+    }
+</style>
+
+{{site.data.alerts.callout_info}}<span id="party">🎉</span>CockroachDB 1.0 is now available! Click <a href="url-to-blog-post">here</a> for details.{{site.data.alerts.end}}
 
 <div class="row">
     <div class="col-md-4">
