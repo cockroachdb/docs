@@ -92,7 +92,7 @@ CockroachDB automatically retries any of the following types of transactions:
   > BEGIN; DELETE FROM customers WHERE id = 1; DELETE orders WHERE customer = 1; COMMIT;
   ~~~
 
-  However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would sent as a single batch (and automatically retried):
+  However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would be sent as a single batch (and automatically retried):
 
   ~~~ go
   db.Exec(
