@@ -461,7 +461,7 @@ $(document).ready(function(){
 <div id="download-the-binary-windows" class="install-option">
 <h2>Download the Binary</h2>
 
-{{site.data.alerts.callout_info}}The Windows binary requires Windows 8 or later. Support for running CockroachDB on Windows is experimental and has not been extensively tested by Cockroach Labs. The binary is provided as a convenience for local development and experimentation; production deployments of CockroachDB on Windows are strongly discouraged. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Native CockroachDB on Windows requires Windows 8 or higher, is experimental, and has not been extensively tested by Cockroach Labs. This prebuilt binary is provided as a convenience for local development and experimentation; production deployments of CockroachDB on Windows are strongly discouraged. {{site.data.alerts.end}}
 
 <ol>
   <li>
