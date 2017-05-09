@@ -144,3 +144,38 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries, window functions) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, either a memory capacity error will be reported to the client that issued the query, or the node may crash. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
+## Counting distinct rows in a table
+
+When using `count(DISTINCT a.*)` to count distinct rows in a table, the results are almost always incorrect, for example:
+
+~~~ sql
+> CREATE TABLE t (a INT, b INT);
+
+> INSERT INTO t VALUES (1, 2), (1, 3), (2, 1);
+
+> SELECT count(DISTINCT t.*) FROM t;
+~~~
+
+~~~
++---------------------+
+| count(DISTINCT t.*) |
++---------------------+
+|                   1 |
++---------------------+
+(1 row)
+~~~
+
+As a workaround, list the columns explicitly, for example:
+
+~~~ sql
+> SELECT count(DISTINCT (t.a, t.b)) FROM t;
+~~~
+
+~~~
++----------------------------+
+| count(DISTINCT (t.a, t.b)) |
++----------------------------+
+|                          3 |
++----------------------------+
+(1 row)
+~~~
