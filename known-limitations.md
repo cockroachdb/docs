@@ -127,3 +127,9 @@ It's not possible to [create a view](create-view.html) with an array type in the
 A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted.
 
 If you need to increase these limits, you can update the [cluster-wide settings](cluster-settings.html) `kv.raft.command.max_size` and `kv.transaction.max_intents`. However, we strongly encourage you to discuss your goals with CockroachDB before doing so.
+
+## Max size of a single column family
+
+When creating or updating a row, if the combined size of all the values in a single [column family](column-families.html) exceeds the max range size (64MiB by default) for the table, the operation may fail, or cluster performance may suffer.
+
+As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
