@@ -10,7 +10,7 @@ This page describes limitations we've identified in the [CockroachDB 1.0](v1.0.h
 
 ## Removing all rows from large tables
 
-When removing all rows from a table via a [`TRUNCATE`](truncate.html) statement or a [`DELETE`](delete.html#delete-all-rows) statement without a `WHERE` clause, the entire operation is currently batched as a single [transaction](transactions.html). For large tables, this can cause the nodes containing the table data to either fail or exhibit poor performance due to elevated memory and CPU usage.
+When removing all rows from a table via a [`TRUNCATE`](truncate.html) statement or a [`DELETE`](delete.html#delete-all-rows) statement without a `WHERE` clause, the entire operation is currently batched as a single [transaction](transactions.html). For large tables, this can cause the nodes containing the table data to either crash or exhibit poor performance due to elevated memory and CPU usage.
 
 As a workaround, when you need to remove all rows from a large table:
 
@@ -120,7 +120,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ## Creating views with array types
 
-It's not possible to [create a view](create-view.html) with an array type in the view's `SELECT` query. Attempting to do so causes the node that receives the request to fail.
+It's not possible to [create a view](create-view.html) with an array type in the view's `SELECT` query. Attempting to do so causes the node that receives the request to crash.
 
 ## Write and update limits for a single transaction
 
@@ -136,6 +136,11 @@ As a workaround, you can either [manually split a table's columns into multiple 
 
 ## Simultaneous client connections and running queries on a single node
 
-When a node has both a high number of client connections and running queries, the node may fail due to memory exhaustion. This is due to CockroachDB not limiting the number of clients and queries based on how much free RAM is available on the node.
+When a node has both a high number of client connections and running queries, the node may crash due to memory exhaustion. This is due to CockroachDB not limiting the number of clients and queries based on how much free RAM is available on the node.
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
+
+## SQL subexpressions and memory usage
+
+Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries, window functions) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, either a memory capacity error will be reported to the client that issued the query, or the node may crash. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
+
