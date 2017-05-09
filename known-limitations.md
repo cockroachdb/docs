@@ -18,7 +18,14 @@ As a workaround, when you need to remove all rows from a large table:
 2. Use [`DROP TABLE`](drop-table.html) to remove the table.
 3. Use [`CREATE TABLE`](create-table.html) with the output from step 1 to recreate the table.
 
-## Schema
+## Schema changes with transactions
+
+Within a single [transaction](transactions.html):
+
+- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
+- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
+- A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+
 ## `INSERT ON CONFLICT` vs. `UPSERT`
 
 When inserting/updating all columns of a table, and the table has no secondary indexes, it's recommended to use an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas the `INSERT ON CONFLICT` always has to read to determine the necessary writes, the `UPSERT` statement writes without first reading and so will be faster.
@@ -111,7 +118,7 @@ Many string operations are not properly overloaded for collated strings, for exa
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
-## Do not create views with array types
+## Creating views with array types
 
 It's not possible to [create a view](create-view.html) with an array type in the view's `SELECT` query. Attempting to do so causes the node that receives the request to fail.
 
