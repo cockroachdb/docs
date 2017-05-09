@@ -109,3 +109,7 @@ Many string operations are not properly overloaded for collated strings, for exa
 ~~~
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
+
+## Do not create views with array types
+
+It's not possible to [create a view](create-view.html) with an array type in the view's `SELECT` query. Attempting to do so causes the node that receives the request to fail.
