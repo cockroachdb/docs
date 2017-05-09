@@ -498,11 +498,8 @@ entries:
     - title: Releases
       items:
 
-        - title: v1.0-rc.2
-          url: /v1.0-rc.2.html
-
-        - title: Known Limitations
-          url: /v1.0-known-limitations.html
+        - title: 1.0
+          url: /v1.0.html
 
         - title: All Releases
           url: /releases.html
@@ -549,3 +546,6 @@ entries:
 
                 - title: Go Implementation
                   url: /go-implementation.html
+
+        - title: Known Limitations
+          url: /known-limitations.html
