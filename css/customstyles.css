@@ -183,6 +183,42 @@ nav.mobile_expanded {
     color: #46a417; }
   nav.mobile_expanded a.current-menu-item {
     background: #efefef; }
+  nav.mobile_expanded .mobile-menu-products {
+    float: left;
+    font-family: 'AvenirLTStd-Heavy', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 1.3px;
+    color: #142848;
+    text-transform: uppercase;
+    padding: 25px 0 30px 20px;
+    border-bottom: 1px solid #DADBE2; }
+    nav.mobile_expanded .mobile-menu-products a {
+      position: relative;
+      display: block;
+      font-family: 'AvenirLTStd-Heavy', serif;
+      font-size: 12px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 20px;
+      letter-spacing: normal;
+      text-transform: none;
+      border-bottom: none;
+      padding: 25px 0 0 17px; }
+      nav.mobile_expanded .mobile-menu-products a:before {
+        content: '';
+        display: block;
+        position: relative;
+        max-width: inherit;
+        max-height: inherit;
+        left: -17px;
+        top: 10px;
+        width: 10px;
+        height: 2px;
+        background-color: rgba(19, 40, 72, 0.2); }
 
 header {
   width: 100%;
@@ -238,6 +274,75 @@ header {
       header nav.desktop {
         display: inline-block;
         float: right; } }
+    header nav.desktop .products-dropdown {
+      position: absolute;
+      max-width: 280px;
+      margin-left: -31px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+      text-transform: none;
+      letter-spacing: normal;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease; }
+      header nav.desktop .products-dropdown a {
+        padding: 20px 30px;
+        margin: 0; }
+        header nav.desktop .products-dropdown a:first-child {
+          padding-right: 50px;
+          border-bottom: solid 2px #e6e6e6; }
+        header nav.desktop .products-dropdown a .products-dropdown__title {
+          font-family: 'Adelle-Regular', serif;
+          font-size: 18px;
+          font-weight: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          font-weight: bold;
+          line-height: 30px;
+          color: #142848;
+          text-transform: none;
+          letter-spacing: normal;
+          -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+          -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+          -o-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+          transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+        header nav.desktop .products-dropdown a .products-dropdown__info {
+          font-family: 'AvenirLTStd-Roman', serif;
+          font-size: 14px;
+          font-weight: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          line-height: 20px;
+          color: #4d4d4d;
+          text-transform: none;
+          letter-spacing: normal; }
+        header nav.desktop .products-dropdown a:hover .products-dropdown__title {
+          color: #46a417; }
+    header nav.desktop .menu-item-products {
+      float: left;
+      margin: 0 10px;
+      padding: 0;
+      font-family: 'AvenirLTStd-Heavy', serif;
+      font-size: 12px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 40px;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      -o-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+      header nav.desktop .menu-item-products.current-menu-item {
+        color: #46a417; }
+      header nav.desktop .menu-item-products:hover {
+        cursor: pointer;
+        color: #46a417; }
+        header nav.desktop .menu-item-products:hover .products-dropdown {
+          opacity: 1;
+          pointer-events: all; }
   header nav.mobile {
     float: right; }
     header nav.mobile .hamburger {
