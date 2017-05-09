@@ -212,7 +212,7 @@ $ cockroach start --insecure \
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8081
 sql:        postgresql://root@localhost:26258?sslmode=disable
 logs:       node2/logs
@@ -279,7 +279,7 @@ $ cockroach start --insecure \
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8083
 sql:        postgresql://root@localhost:26260?sslmode=disable
 logs:       node4/logs
