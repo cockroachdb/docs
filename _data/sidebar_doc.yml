@@ -495,8 +495,8 @@ entries:
     - title: Releases
       items:
 
-        - title: v1.0-rc.2
-          url: /v1.0-rc.2.html
+        - title: 1.0
+          url: /v1.0.html
 
         - title: Known Limitations
           url: /v1.0-known-limitations.html
