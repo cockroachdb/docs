@@ -18,6 +18,7 @@ As a workaround, when you need to remove all rows from a large table:
 2. Use [`DROP TABLE`](drop-table.html) to remove the table.
 3. Use [`CREATE TABLE`](create-table.html) with the output from step 1 to recreate the table.
 
+## Schema
 ## `INSERT ON CONFLICT` vs. `UPSERT`
 
 When inserting/updating all columns of a table, and the table has no secondary indexes, it's recommended to use an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas the `INSERT ON CONFLICT` always has to read to determine the necessary writes, the `UPSERT` statement writes without first reading and so will be faster.
@@ -113,3 +114,9 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ## Do not create views with array types
 
 It's not possible to [create a view](create-view.html) with an array type in the view's `SELECT` query. Attempting to do so causes the node that receives the request to fail.
+
+## Write and update limits for a single transaction
+
+A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted.
+
+If you need to increase these limits, you can update the [cluster-wide settings](cluster-settings.html) `kv.raft.command.max_size` and `kv.transaction.max_intents`. However, we strongly encourage you to discuss your goals with CockroachDB before doing so.
