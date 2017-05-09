@@ -133,3 +133,9 @@ If you need to increase these limits, you can update the [cluster-wide settings]
 When creating or updating a row, if the combined size of all the values in a single [column family](column-families.html) exceeds the max range size (64MiB by default) for the table, the operation may fail, or cluster performance may suffer.
 
 As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
+
+## Simultaneous client connections and running queries on a single node
+
+When a node has both a high number of client connections and running queries, the node may fail due to memory exhaustion. This is due to CockroachDB not limiting the number of clients and queries based on how much free RAM is available on the node.
+
+To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
