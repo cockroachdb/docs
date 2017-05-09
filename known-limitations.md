@@ -1,10 +1,10 @@
 ---
-title: v1.0 Known Limitations
+title: Known Limitations
 summary:
 toc: false
 ---
 
-This page describes limitations we've identified in the v1.0 release and plan to investigate and possibly resolve in a future release.
+This page describes limitations we've identified in the [CockroachDB 1.0](v1.0.html) release and plan to investigate and possibly resolve in future releases.
 
 <div id="toc"></div>
 
@@ -85,7 +85,7 @@ Queries with constant expressions that evaluate to 2**-63 may be incorrectly rej
 pq: ($0, $0) < (1, - 9223372036854775808:::INT): tuples ($0, $0), (1, - 9223372036854775808:::INT) are not comparable at index 2: numeric constant out of int64 range
 ~~~
 
-## Overload resolutation for collated strings
+## Overload resolution for collated strings
 
 Many string operations are not properly overloaded for collated strings, for example:
 
