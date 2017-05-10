@@ -182,7 +182,10 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.8.</p>
       </li>
       <li>
-        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
+        <p><a href="https://www.gnu.org/software/bash/">Bash</a>, preferably version 4+, though the older Bash version that ships with macOS is known to work.</p>
+      </li>
+      <li>
+        <p><a href="https://cmake.org">CMake</a>. Versions 3.81+ are known to work.</p>
       </li>
     </ul>
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
@@ -348,7 +351,13 @@ $(document).ready(function(){
         <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.8.</p>
       </li>
       <li>
-        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
+        <p><a href="https://www.gnu.org/software/bash/">Bash</a>. Version 4+ is preferred, but later releases from the 3.x series are also known to work.</p>
+      </li>
+      <li>
+        <p><a href="https://cmake.org">CMake</a>. Versions 3.81+ are known to work.</p>
+      </li>
+      <li>
+        <p><a href="https://tukaani.org/xz/">XZ Utils</a>. Versions 5.2.3+ are known to work.</p>
       </li>
     </ul>
     <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
