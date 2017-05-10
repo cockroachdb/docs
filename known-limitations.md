@@ -26,11 +26,11 @@ Within a single [transaction](transactions.html):
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
-## Nodes need access to the first key-value range on startup
+## Join flags when restoring a backup onto new machines
 
-As show in our [deployment tutorials](manual-deployment.html), when starting the first node of a cluster, the `--join` flag should be empty, but when starting all subsequent nodes, `--join` should be set to the address of node 1. This approach ensures that all nodes have access to a copy of the first key-value range, which is part of a meta-index identifying where all range replicas are stored, and which nodes requires to initialize themselves and start accepting incoming connections.
+In our [deployment tutorials](manual-deployment.html), when starting the first node of a cluster, the `--join` flag should be empty, but when starting all subsequent nodes, `--join` should be set to the address of node 1. This approach ensures that all nodes have access to a copy of the first key-value range, which is part of a meta-index identifying where all range replicas are stored, and which nodes require to initialize themselves and start accepting incoming connections.
 
-For the same reason, when restarting a node (even node 1), the `--join` flag should be set to the address of node 1.
+Ensuring that all nodes have access to a copy of the first key-value range is a bit tougher when restoring from a whole-cluster backup onto machines with different IP addresses than the original cluster. In this case, the `--join` flags must form a fully-connected directed graph. The easiest way to do this is to put all of the new nodes' addresses into each node's `--join` flag, which ensures all nodes will be able to join a node with a copy of the first key-value range.
 
 ## `INSERT ON CONFLICT` vs. `UPSERT`
 
