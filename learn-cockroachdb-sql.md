@@ -6,7 +6,7 @@ toc: false
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="https://github.com/cockroachdb/cockroach/issues/12854">1.0 Product Roadmap</a> and <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

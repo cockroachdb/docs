@@ -34,7 +34,7 @@ table tr td:nth-child(2) {
 | `BYTES` | ✓ | CockroachDB Extension | [`BYTES` documentation](bytes.html) |
 | Automatic key generation | ✓ | Common Extension | [`SERIAL` documentation](serial.html) |
 | `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html) |
-| `COLLATE` | Partial | Standard | [`COLLATE` documentation](collate.html) |
+| `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html) |
 | `AUTO INCREMENT` | Alternative | Common Extension | [`SERIAL`](serial.html) replaces support for this component. |
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
 | Arrays | Planned | Standard | [GitHub Issue tracking array support](https://github.com/cockroachdb/cockroach/issues/2115) |
@@ -139,7 +139,7 @@ table tr td:nth-child(2) {
 | Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](sql-expressions.html#scalar-subqueries); correlated are not. Currently works only with small data sets. |
 | Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
 | Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](sql-expressions.html#array-constructors) and [Subscripting](sql-expressions.html#subscripted-expressions) |
-| `COLLATE`| Partial | Standard | [Collation expressions documentation](sql-expressions.html#collation-expressions) |
+| `COLLATE`| ✓ | Standard | [Collation expressions documentation](sql-expressions.html#collation-expressions) |
 | Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](sql-expressions.html#column-references) |
 | Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](sql-expressions.html#explicitly-typed-expressions) |
 
