@@ -61,7 +61,7 @@ $ cockroach start --background \
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      {{site.data.strings.version}} @ {{site.data.strings.build_time}}
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      https://ROACHs-MBP:8080
 sql:        postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
 logs:       cockroach-data/logs

@@ -1,8 +1,12 @@
+- date: May 10, 2017
+  version: v1.0
+  source: true
+  windows: true
+  latest: true
 - date: May 5, 2017
   version: v1.0-rc.2
   source: true
   windows: true
-  latest: true
 - date: May 1, 2017
   version: v1.0-rc.1
   source: true
