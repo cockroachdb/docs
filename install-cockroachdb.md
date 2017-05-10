@@ -79,7 +79,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on Mac OS X. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
+<p>There are four ways to install CockroachDB on macOS. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -174,18 +174,25 @@ $(document).ready(function(){
   <li>
     <p>Install the following prerequisites, as necessary:</p>
 
-    <ul>
-      <li>
-        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On Mac OS X, Xcode should suffice.</p>
-      </li>
-      <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.8.</p>
-      </li>
-      <li>
-        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
-      </li>
-    </ul>
-    <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
+    <table>
+      <tr>
+        <td>C++ compiler</td>
+        <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
+      </tr>
+      <tr>
+        <td>Go</td>
+        <td>Version 1.8.1 is required.</td>
+      </tr>
+      <tr>
+        <td>Bash</td>
+        <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
+      </tr>
+      <tr>
+        <td>CMake</td>
+        <td>Versions 3.81+ are known to work.</td>
+      </tr>
+    </table>
+    <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
     <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
@@ -340,18 +347,29 @@ $(document).ready(function(){
   <li>
     <p>Install the following prerequisites, as necessary:</p>
 
-    <ul>
-      <li>
-        <p>A C++ compiler that supports C++11. Note that GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>.</p>
-      </li>
-      <li>
-        <p>A <a href="http://golang.org/doc/code.html">Go environment</a> with a 64-bit version of Go 1.8.</p>
-      </li>
-      <li>
-        <p><a href="https://www.gnu.org/software/bash/">Bash</a></p>
-      </li>
-    </ul>
-    <p>Note that at least 2GB of RAM is required to build from source. If you plan to run our test suite as well, you'll need closer to 4GB of RAM.</p>
+    <table>
+      <tr>
+        <td>C++ compiler</td>
+        <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
+      </tr>
+      <tr>
+        <td>Go</td>
+        <td>Version 1.8, or a later version in the 1.8 series, is required.</td>
+      </tr>
+      <tr>
+        <td>Bash</td>
+        <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
+      </tr>
+      <tr>
+        <td>CMake</td>
+        <td>Versions 3.81+ are known to work.</td>
+      </tr>
+      <tr>
+        <td><a href="https://tukaani.org/xz/">XZ Utils</a></td>
+        <td>Versions 5.2.3+ are known to work.</td>
+      </tr>
+    </table>
+    <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
     <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
