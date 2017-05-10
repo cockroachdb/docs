@@ -13,7 +13,7 @@ However, there are a few things you should keep in mind:
 
   - We recommend creating scripts to upgrade CockroachDB and not attempting to do so by hand.
 
-  - Only bring down only one node at a time, and wait at least one minute after it rejoins the cluster to bring down the next node. This reduces the number of nodes you have offline at any point in time, minimizing the chance you'll lose a majority of the nodes in your cluster which can cause service outages.
+  - Bring down only one node at a time, and wait at least one minute after it rejoins the cluster to bring down the next node. This reduces the number of nodes you have offline at any point in time, minimizing the chance you'll lose a majority of the nodes in your cluster which can cause service outages.
 
 ## Perform a Rolling Upgrade
 
