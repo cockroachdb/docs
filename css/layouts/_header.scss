@@ -64,6 +64,40 @@ nav.mobile_expanded {
 	a.current-menu-item {
 		background: #efefef;
 	}
+
+	.mobile-menu-products {
+		float: left;
+		@include avenir_h(14px);
+		letter-spacing: 1.3px;
+		color: $cl_blue;
+		text-transform: uppercase;
+		padding: 25px 0 30px 20px;
+		border-bottom: 1px solid #DADBE2;
+
+		a {
+			position: relative;
+			display: block;
+			@include avenir_h(12px);
+			line-height: 20px;
+			letter-spacing: normal;
+			text-transform: none;
+			border-bottom: none;
+			padding: 25px 0 0 17px;
+
+			&:before {
+				content: '';
+				display: block;
+				position: relative;
+				max-width: inherit;
+				max-height: inherit;
+				left: -17px;
+				top: 10px;
+				width: 10px;
+				height: 2px;
+				background-color: rgba(19,40,72,0.2);
+			}
+		}
+	}
 }
 
 header {
@@ -122,6 +156,82 @@ header {
 		@include at-query($min, $screen-sm){
 			display:inline-block;
 			float:right;
+		}
+
+		.products-dropdown {
+			// display: none;
+			position: absolute;
+			max-width: 280px;
+			margin-left: -31px;
+			background-color: #ffffff;
+			border-radius: 5px;
+			box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+			text-transform: none;
+			letter-spacing: normal;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.4s ease;
+
+			a {
+				padding: 20px 30px;
+				margin: 0;
+
+				&:first-child {
+					padding-right: 50px;
+					border-bottom: solid 2px #e6e6e6;
+				}
+
+				.products-dropdown {
+					&__title {
+						@include adelle(18px);
+						font-weight: bold;
+						line-height: 30px;
+						color: $cl_blue;
+						text-transform: none;
+						letter-spacing: normal;
+						@include groovy(color);
+					}
+
+					&__info {
+						@include avenir_r(14px);
+						line-height: 20px;
+						color: #4d4d4d;
+						text-transform: none;
+						letter-spacing: normal;
+					}
+				}
+
+				&:hover {
+					.products-dropdown__title {
+						color: $cl_green;
+					}
+				}
+			}
+		}
+
+		.menu-item-products {
+			float: left;
+			margin: 0 10px;
+			padding: 0;
+			@include avenir_h(12px);
+			line-height: 40px;
+			letter-spacing: 1.3px;
+			text-transform: uppercase;
+			@include groovy(color);
+
+			&.current-menu-item {
+				color: $cl_green;
+			}
+
+			&:hover {
+				cursor: pointer;
+				color: $cl_green;
+
+				.products-dropdown {
+					opacity: 1;
+					pointer-events: all;
+				}
+			}
 		}
 	}
 
