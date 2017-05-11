@@ -561,6 +561,9 @@ entries:
                   url: /orchestrate-cockroachdb-with-docker-swarm.html
                   alternate_urls: [/orchestrate-cockroachdb-with-docker-swarm-insecure.html]
 
+        - title: Cluster Settings
+          url: /cluster-settings.html
+
         - title: Cockroach Commands
           id: cockroach-commands
           url: /cockroach-commands.html
@@ -605,6 +608,9 @@ entries:
           id: view-version-details
           url: /view-version-details.html
 
+        - title: Upgrade a Cluster's Version
+          url: /upgrade-cockroach-version.html
+          
         - title: Back up Data
           id: back-up-data
           url: /back-up-data.html
@@ -625,6 +631,9 @@ entries:
           id: generate-cockroachdb-resources
           url: /generate-cockroachdb-resources.html
 
+        - title: Diagnostics Reporting
+          url: /diagnostics-reporting.html
+
         - title: Troubleshoot
           id: troubleshoot
           url: /troubleshoot.html
@@ -641,33 +650,17 @@ entries:
           id: improve-the-docs
           url: /improve-the-docs.html
 
-    - title: Release Notes
-      id: release-notes
+    - title: Releases
+      id: releases
       items:
 
-        - title: beta-20170420
-          id: beta-20170420
-          url: /beta-20170420.html
+        - title: 1.0
+          id: 1.0-release
+          url: /v1.0.html
 
-        - title: beta-20170413
-          id: beta-20170413
-          url: /beta-20170413.html
-
-        - title: beta-20170406
-          id: beta-20170406
-          url: /beta-20170406.html
-
-        - title: beta-20170330
-          id: beta-20170330
-          url: /beta-20170330.html
-
-        - title: beta-20170323
-          id: beta-20170323
-          url: /beta-20170323.html
-
-        - title: Older Beta Versions
-          id: older-versions
-          url: /older-versions.html
+        - title: All Releases
+          id: all-releases
+          url: /releases.html
 
     - title: FAQs
       id: faqs
@@ -725,3 +718,7 @@ entries:
                 - title: Go Implementation
                   id: go-implementation
                   url: /go-implementation.html
+
+        - title: Known Limitations
+          id: known-limitations
+          url: /known-limitations.html

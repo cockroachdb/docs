@@ -19,24 +19,27 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=fault-node1
+--store=fault-node1 \
+--host=localhost \
+--background
 
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=fault-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 Open the built-in SQL shell on any node to verify that the cluster is live:
@@ -199,16 +202,17 @@ Rejoin node 2 to the cluster, using the same command that you used in step 1:
 
 ~~~ shell
 $ cockroach start --insecure \
---background \
 --store=fault-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8081
 sql:        postgresql://root@localhost:26258?sslmode=disable
 logs:       node2/logs
@@ -263,18 +267,19 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 Now, to prepare the cluster for a permanent node failure, add a fourth node:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault2-add-node"><span class="gp noselect shellterminal"></span>cockroach start --insecure <span class="se">\</span>
---background <span class="se">\</span>
---store<span class="o">=</span>fault-node4 <span class="se">\</span>
---port<span class="o">=</span>26260 <span class="se">\</span>
---http-port<span class="o">=</span>8083 <span class="se">\</span>
---join<span class="o">=</span>localhost:26257
-</code></pre>
-</div>
+~~~ shell
+$ cockroach start --insecure \
+--store=fault-node4 \
+--host=localhost \
+--port=26260 \
+--http-port=8083 \
+--join=localhost:26257 \
+--background
+~~~
 
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
-build:      beta-20161103-97-g581c2bc @ 2016/11/07 16:54:20 (go1.7.1)
+build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
 admin:      http://localhost:8083
 sql:        postgresql://root@localhost:26260?sslmode=disable
 logs:       node4/logs
@@ -329,7 +334,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --port=26260 --http-port=8083 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
 ~~~
 
 ~~~ shell

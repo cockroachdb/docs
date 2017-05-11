@@ -16,8 +16,9 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ~~~ shell
 $ cockroach start --insecure \
---background \
---store=repdemo-node1
+--store=repdemo-node1 \
+--host=localhost \
+--background
 ~~~
 
 ## Step 2. Write data
@@ -40,7 +41,7 @@ INSERT 1
 ...
 ~~~
 
-Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
+Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node and verify that the new `intro` database was added with one table, `mytable`:
 
 ~~~ shell
 $ cockroach sql --insecure
@@ -118,19 +119,21 @@ Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 ~~~ shell
 # Add node 2:
 $ cockroach start --insecure \
---background \
 --store=repdemo-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
+--background
 
 # Add node 3:
 $ cockroach start --insecure \
---background \
 --store=repdemo-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
 --join=localhost:26257
+--background
 ~~~
 
 ## Step 4. Watch data replicate to the new nodes
@@ -161,19 +164,21 @@ constraints: []
 ~~~ shell
 # Add node 4:
 $ cockroach start --insecure \
---background \
+--host=localhost \
 --store=repdemo-node4 \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Add node 5:
 $ cockroach start --insecure \
---background \
+--host=localhost \
 --store=repdemo-node5 \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 7. Watch data replicate to the new nodes
@@ -205,8 +210,8 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=repdemo-node4 --port=26260 --http-port=8083 --join=localhost:26257
-13400 ttys001    0:00.58 cockroach start --insecure --store=repdemo-node5 --port=26261 --http-port=8084 --join=localhost:26257
+13398 ttys001    0:00.67 cockroach start --insecure --store=repdemo-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
+13400 ttys001    0:00.58 cockroach start --insecure --store=repdemo-node5 --host=localhost --port=26261 --http-port=8084 --join=localhost:26257
 ~~~
 
 ~~~ shell

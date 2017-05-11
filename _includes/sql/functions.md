@@ -1,9 +1,3 @@
-### Bitwise Functions
-
-Function &rarr; Returns | Description
---- | ---
-<code>bitwise_not(x: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Returns the bitwise not of `x`.</span>
-
 ### Comparison Functions
 
 Function &rarr; Returns | Description
@@ -110,7 +104,6 @@ Function &rarr; Returns | Description
 <code>btrim(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Removes all spaces from the beginning and end of `val`.</span>
 <code>concat(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Concatenates a comma-separated list of strings.</span>
 <code>concat_ws(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Uses the first argument as a separator between the concatenation of the subsequent arguments. <br/><br/>For example `concat_ws('!','wow','great')` returns `wow!great`.</span>
-<code>crdb_testing.to_english(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns an English string derived from a number.</span>
 <code>experimental_strftime(input: <a href="date.html">date</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
 <code>experimental_strftime(input: <a href="timestamp.html">timestamp</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
 <code>experimental_strftime(input: <a href="timestamp.html">timestamptz</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">From `input`, extracts and formats the time as identified in `extract_format` using standard `strftime` notation (though not all formatting is supported).</span>
@@ -151,6 +144,7 @@ Function &rarr; Returns | Description
 <code>substring(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>, escape_char: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns a substring of `input` that matches the regular expression `regex` using `escape_char` as your escape character instead of `\`.</span>
 <code>substring(input: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>, end_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns a substring of `input` between `start_pos` and `end_pos` (count starts at 1).</span>
 <code>substring(input: <a href="string.html">string</a>, substr_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns a substring of `input` starting at `substr_pos` (count starts at 1).</span>
+<code>to_english(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">This function enunciates the value of its argument using English cardinals.</span>
 <code>to_ip(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code> | <span class="funcdesc">Converts the character string representation of an IP to its byte string representation.</span>
 <code>to_uuid(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code> | <span class="funcdesc">Converts the character string representation of a UUID to its byte string representation.</span>
 <code>translate(input: <a href="string.html">string</a>, find: <a href="string.html">string</a>, replace: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">In `input`, replaces the first character from `find` with the first character in `replace`; repeat for each character in `find`. <br/><br/>For example, `translate('doggie', 'dog', '123');` returns `1233ie`.</span>
@@ -164,6 +158,9 @@ Function &rarr; Returns | Description
 <code>array_lower(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Calculates the minimum value of `input` on the provided `array_dimension`. However, because CockroachDB doesn't yet support multi-dimensional arrays, the only supported `array_dimension` is **1**.</span>
 <code>array_upper(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Calculates the maximum value of `input` on the provided `array_dimension`. However, because CockroachDB doesn't yet support multi-dimensional arrays, the only supported `array_dimension` is **1**.</span>
 <code>cluster_logical_timestamp() &rarr; <a href="decimal.html">decimal</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
+<code>crdb_internal.force_internal_error(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
+<code>crdb_internal.force_log_fatal(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
+<code>crdb_internal.force_panic(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>, txnID: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">This function is used only by CockroachDB's developers for testing purposes.</span>
 <code>current_database() &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Returns the current database.</span>

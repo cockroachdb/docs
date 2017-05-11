@@ -5,8 +5,9 @@ For the purpose of this tutorial, you need only one CockroachDB node running in 
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=hello-1
+--store=hello-1 \
+--host=localhost \
+--background
 ~~~
 
 But as you might've seen in the [Start a Local Cluster](start-a-local-cluster.html) tutorial, it's incredibly easy to start and join addition nodes, if you want to simulate a real cluster:
@@ -14,19 +15,21 @@ But as you might've seen in the [Start a Local Cluster](start-a-local-cluster.ht
 ~~~ shell
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=hello-2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=hello-3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 3. Create a user

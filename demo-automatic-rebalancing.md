@@ -22,24 +22,27 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 ~~~ shell
 # Start node 1:
 $ cockroach start --insecure \
---background \
---store=scale-node1
+--store=scale-node1 \
+--host=localhost \
+--background
 
 # Start node 2:
 $ cockroach start --insecure \
---background \
 --store=scale-node2 \
+--host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 3:
 $ cockroach start --insecure \
---background \
 --store=scale-node3 \
+--host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node to verify that the cluster is live:
@@ -132,19 +135,21 @@ Adding capacity is as simple as starting more nodes and joining them to the runn
 ~~~ shell
 # Start node 4:
 $ cockroach start --insecure \
---background \
 --store=scale-node4 \
+--host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 
 # Start node 5:
 $ cockroach start --insecure \
---background \
 --store=scale-node5 \
+--host=localhost \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 6. Watch data rebalance across all 5 nodes
@@ -179,7 +184,7 @@ $ ps | grep cockroach
 ~~~
 
 ~~~
-13400 ttys001    0:00.58 cockroach start --insecure --store=scale-node5 --port=26261 --http-port=8084 --join=localhost:26257
+13400 ttys001    0:00.58 cockroach start --insecure --store=scale-node5 --host=localhost --port=26261 --http-port=8084 --join=localhost:26257
 ~~~
 
 ~~~ shell

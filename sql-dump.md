@@ -11,7 +11,7 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 When `cockroach dump` is executed:
 
 - Table schema and data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail. 
+- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
 {{site.data.alerts.callout_info}}The user must have the <code>SELECT</code> privilege on the target table(s).{{site.data.alerts.end}}
@@ -50,12 +50,12 @@ $ cockroach dump --help
 
 The `cockroach dump` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
 
-Flag | Description 
+Flag | Description
 -----|------------
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`
+`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
@@ -208,7 +208,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 ### Dump fails (user does not have `SELECT` privilege)
 
-In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table. 
+In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
 
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
@@ -221,7 +221,7 @@ Failed running "dump"
 
 ### Restore a table from a backup file
 
-In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command. 
+In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
 
 ~~~ shell
 $ cat backup.sql

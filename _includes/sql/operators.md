@@ -221,6 +221,7 @@ tuple `IN` tuple | <a href="bool.html">bool</a>
 
 `~` | Return
 --- | ---
+`~`<a href="int.html">int</a> | <a href="int.html">int</a>
 <a href="string.html">string</a> `~` <a href="string.html">string</a> | <a href="bool.html">bool</a>
 
 `~*` | Return
