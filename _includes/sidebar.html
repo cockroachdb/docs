@@ -89,18 +89,18 @@
             </li>
             {% for entry in sidebar %}
                 {% for subcategory in entry.subcategories %}
-                <li class="tier-1"><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
+                <li id="{{subcategory.id}}" class="tier-1"><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
                     <ul>
                         {% for item in subcategory.items %}
                             {% if item.external_url %}
-                            <li class="tier-2"><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
+                            <li id="{{item.id}}" class="tier-2"><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
                             {% elsif page.url == item.url or item.alternate_urls contains page.url%}
-                            <li class="active tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
+                            <li id="{{item.id}}" class="active tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
                             {% else %}
-                            <li class="tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
+                            <li id="{{item.id}}" class="tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
                             {% endif %}
                         {% for thirdlevel in item.thirdlevel %}
-                            <li class="tier-2">
+                            <li id="{{thirdlevel.id}}" class="tier-2">
                                 <a href="#">
                                   {{ thirdlevel.title }}
                                   {% if thirdlevel.thirdlevelitems %}
@@ -110,11 +110,11 @@
                                 <ul>
                                     {% for deeplevel in thirdlevel.thirdlevelitems %}
                                         {% if deeplevel.external_url %}
-                                        <li class="tier-3"><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
+                                        <li id="{{deeplevel.id}}" class="tier-3"><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
                                         {% elsif page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
-                                        <li class="active tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
+                                        <li id="{{deeplevel.id}}" class="active tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
                                         {% else %}
-                                        <li class="tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
+                                        <li id="{{deeplevel.id}}" class="tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>

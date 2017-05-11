@@ -6,423 +6,558 @@ entries:
   subcategories:
 
     - title: Get Started
+      id: get-started
       items:
 
         - title: Install CockroachDB
+          id: install-cockroachdb
           url: /install-cockroachdb.html
 
           thirdlevel:
             - title: Start a Cluster
+              id: start-a-cluster
               thirdlevelitems:
 
                 - title: From Binary
+                  id: from-binary
                   url: /start-a-local-cluster.html
 
                 - title: In Docker
+                  id: in-docker
                   url: /start-a-local-cluster-in-docker.html
 
         - title: Secure a Cluster
+          id: secure-a-cluster
           url: /secure-a-cluster.html
 
           thirdlevel:
             - title: Learn CockroachDB SQL
+              id: learn-cockroachdb-sql
               thirdlevelitems:
 
                 - title: Essential SQL Statements
+                  id: essential-sql-statements
                   url: /learn-cockroachdb-sql.html
 
                 - title: Use the Built-in SQL Client
+                  id: use-the-built-in-sql-client
                   url: /use-the-built-in-sql-client.html
 
             - title: Build an App
+              id: build-an-app
               thirdlevelitems:
 
                 - title: Overview
+                  id: build-an-app-overview
                   url: /build-an-app-with-cockroachdb.html
 
                 - title: Go
+                  id: build-an-app-go
                   url: /build-a-go-app-with-cockroachdb.html
                   alternate_urls: [/build-a-go-app-with-cockroachdb-gorm.html]
 
                 - title: Python
+                  id: build-an-app-python
                   url: /build-a-python-app-with-cockroachdb.html
                   alternate_urls: [/build-a-python-app-with-cockroachdb-sqlalchemy.html]
 
                 - title: Ruby
+                  id: build-an-app-ruby
                   url: /build-a-ruby-app-with-cockroachdb.html
                   alternate_urls: [/build-a-ruby-app-with-cockroachdb-activerecord.html]
 
                 - title: Java
+                  id: build-an-app-java
                   url: /build-a-java-app-with-cockroachdb.html
                   alternate_urls: [/build-a-java-app-with-cockroachdb-hibernate.html]
 
                 - title: Node.js
+                  id: build-an-app-node
                   url: /build-a-nodejs-app-with-cockroachdb.html
                   alternate_urls: [/build-a-nodejs-app-with-cockroachdb-sequelize.html]
 
                 - title: C++
+                  id: build-an-app-cpp
                   url: /build-a-c++-app-with-cockroachdb.html
 
                 - title: Clojure
+                  id: build-an-app-clojure
                   url: /build-a-clojure-app-with-cockroachdb.html
 
                 - title: PHP
+                  id: build-an-app-php
                   url: /build-a-php-app-with-cockroachdb.html
 
                 - title: Rust
+                  id: build-an-app-rust
                   url: /build-a-rust-app-with-cockroachdb.html
 
             - title: Explore Core Features
+              id: explore-core-features
               thirdlevelitems:
 
                 - title: Data Replication
+                  id: data-replication
                   url: /demo-data-replication.html
 
                 - title: Fault Tolerance & Recovery
+                  id: fault-tolerance-and-recovery
                   url: /demo-fault-tolerance-and-recovery.html
 
                 - title: Automatic Rebalancing
+                  id: automatic-rebalancing
                   url: /demo-automatic-rebalancing.html
 
     - title: Develop
+      id: develop
       items:
 
         - title: Install Client Drivers
+          id: install-client-drivers
           url: /install-client-drivers.html
 
         - title: SQL Feature Support
+          id: sql-feature-support
           url: /sql-feature-support.html
 
           thirdlevel:
             - title: SQL Statements
+              id: sql-statements
               thirdlevelitems:
 
                 - title: Overview
+                  id: sql-statements-overview
                   url: /sql-statements.html
 
                 - title: <code>ADD COLUMN</code>
+                  id: add-column
                   url: /add-column.html
 
                 - title: <code>ADD CONSTRAINT</code>
+                  id: add-constraint
                   url: /add-constraint.html
 
                 - title: <code>ALTER COLUMN</code>
+                  id: alter-column
                   url: /alter-column.html
 
                 - title: <code>ALTER TABLE</code>
+                  id: alter-table
                   url: /alter-table.html
 
                 - title: <code>ALTER VIEW</code>
+                  id: alter-view
                   url: /alter-view.html
 
                 - title: <code>BACKUP</code> (Enterprise)
+                  id: backup
                   url: /backup.html
 
                 - title: <code>BEGIN</code>
+                  id: begin-transaction
                   url: /begin-transaction.html
 
                 - title: <code>COMMIT</code>
+                  id: commit-transaction
                   url: /commit-transaction.html
 
                 - title: <code>CREATE DATABASE</code>
+                  id: create-database
                   url: /create-database.html
 
                 - title: <code>CREATE INDEX</code>
+                  id: create-index
                   url: /create-index.html
 
                 - title: <code>CREATE TABLE</code>
+                  id: create-table
                   url: /create-table.html
 
                 - title: <code>CREATE TABLE AS</code>
+                  id: create-table-as
                   url: /create-table-as.html
 
                 - title: <code>CREATE USER</code>
+                  id: create-user
                   url: /create-user.html
 
                 - title: <code>CREATE VIEW</code>
+                  id: create-view
                   url: /create-view.html
 
                 - title: <code>DELETE</code>
+                  id: delete
                   url: /delete.html
 
                 - title: <code>DROP COLUMN</code>
+                  id: drop-column
                   url: /drop-column.html
 
                 - title: <code>DROP CONSTRAINT</code>
+                  id: drop-constraint
                   url: /drop-constraint.html
 
                 - title: <code>DROP DATABASE</code>
+                  id: drop-database
                   url: /drop-database.html
 
                 - title: <code>DROP INDEX</code>
+                  id: drop-index
                   url: /drop-index.html
 
                 - title: <code>DROP TABLE</code>
+                  id: drop-table
                   url: /drop-table.html
 
                 - title: <code>DROP VIEW</code>
+                  id: drop-view
                   url: /drop-view.html
 
                 - title: <code>EXPLAIN</code>
+                  id: explain
                   url: /explain.html
 
                 - title: <code>GRANT</code>
+                  id: grant
                   url: /grant.html
 
                 - title: <code>INSERT</code>
+                  id: insert
                   url: /insert.html
 
                 - title: <code>RENAME COLUMN</code>
+                  id: rename-column
                   url: /rename-column.html
 
                 - title: <code>RENAME DATABASE</code>
+                  id: rename-database
                   url: /rename-database.html
 
                 - title: <code>RENAME INDEX</code>
+                  id: rename-index
                   url: /rename-index.html
 
                 - title: <code>RENAME TABLE</code>
+                  id: rename-table
                   url: /rename-table.html
 
                 - title: <code>RELEASE SAVEPOINT</code>
+                  id: release-savepoint
                   url: /release-savepoint.html
 
                 - title: <code>RESTORE</code> (Enterprise)
+                  id: restore
                   url: /restore.html
 
                 - title: <code>REVOKE</code>
+                  id: revoke
                   url: /revoke.html
 
                 - title: <code>ROLLBACK</code>
+                  id: rollback-transaction
                   url: /rollback-transaction.html
 
                 - title: <code>SAVEPOINT</code>
+                  id: savepoint
                   url: /savepoint.html
 
                 - title: <code>SELECT</code>
+                  id: select
                   url: /select.html
 
                 - title: <code>SET DATABASE</code>
+                  id: set-database
                   url: /set-database.html
 
                 - title: <code>SET TIME ZONE</code>
+                  id: set-time-zone
                   url: /set-time-zone.html
 
                 - title: <code>SET TRANSACTION</code>
+                  id: set-transaction
                   url: /set-transaction.html
 
                 - title: <code>SHOW ALL</code>
+                  id: show-all
                   url: /show-all.html
 
                 - title: <code>SHOW COLUMNS</code>
+                  id: show-columns
                   url: /show-columns.html
 
                 - title: <code>SHOW CONSTRAINTS</code>
+                  id: show-constraints
                   url: /show-constraints.html
 
                 - title: <code>SHOW CREATE TABLE</code>
+                  id: show-create-table
                   url: /show-create-table.html
 
                 - title: <code>SHOW CREATE VIEW</code>
+                  id: show-create-view
                   url: /show-create-view.html
 
                 - title: <code>SHOW DATABASE</code>
+                  id: show-database
                   url: /show-database.html
 
                 - title: <code>SHOW DATABASES</code>
+                  id: show-databases
                   url: /show-databases.html
 
                 - title: <code>SHOW GRANTS</code>
+                  id: show-grants
                   url: /show-grants.html
 
                 - title: <code>SHOW INDEX</code>
+                  id: show-index
                   url: /show-index.html
 
                 - title: <code>SHOW TABLES</code>
+                  id: show-tables
                   url: /show-tables.html
 
                 - title: <code>SHOW TIME ZONE</code>
+                  id: show-time-zone
                   url: /show-time-zone.html
 
                 - title: <code>SHOW TRANSACTION</code>
+                  id: show-transaction
                   url: /show-transaction.html
 
                 - title: <code>SHOW USERS</code>
+                  id: show-users
                   url: /show-users.html
 
                 - title: <code>TRUNCATE</code>
+                  id: truncate
                   url: /truncate.html
 
                 - title: <code>UPDATE</code>
+                  id: update
                   url: /update.html
 
                 - title: <code>UPSERT</code>
+                  id: upsert
                   url: /upsert.html
 
             - title: SQL Syntax
+              id: sql-syntax
               thirdlevelitems:
 
                 - title: Keywords & Identifiers
+                  id: keywords-and-identifiers
                   url: /keywords-and-identifiers.html
 
                 - title: Constants
+                  id: sql-constants
                   url: /sql-constants.html
 
                 - title: Value Expressions
+                  id: sql-expressions
                   url: /sql-expressions.html
 
                 - title: Table Expressions
+                  id: table-expressions
                   url: /table-expressions.html
 
                 - title: Name Resolution
+                  id: sql-name-resolution
                   url: /sql-name-resolution.html
 
                 - title: Full SQL Grammar
+                  id: sql-grammar
                   url: /sql-grammar.html
 
             - title: Constraints
+              id: constraints
               thirdlevelitems:
 
                 - title: Overview
+                  id: constraints-overview
                   url: /constraints.html
 
                 - title: Check
+                  id: check
                   url: /check.html
 
                 - title: Default Value
+                  id: default-value
                   url: /default-value.html
 
                 - title: Foreign Key
+                  id: foreign-key
                   url: /foreign-key.html
 
                 - title: Not Null
+                  id: not-null
                   url: /not-null.html
 
                 - title: Primary Key
+                  id: primary-key
                   url: /primary-key.html
 
                 - title: Unique
+                  id: unique
                   url: /unique.html
 
             - title: Data Definition
+              id: data-definition
               thirdlevelitems:
 
                 - title: Indexes
+                  id: indexes
                   url: /indexes.html
 
                 - title: Views
+                  id: views
                   url: /views.html
 
                 - title: Column Families
+                  id: column-families
                   url: /column-families.html
 
                 - title: Interleaved Tables
+                  id: interleaved-tables
                   url: /interleave-in-parent.html
 
                 - title: <code>NULL</code> Handling
+                  id: null-handling
                   url: /null-handling.html
 
             - title: Data Types
+              id: data-types
               thirdlevelitems:
 
                 - title: Overview
+                  id: data-types-overview
                   url: /data-types.html
 
                 - title: <code>INT</code>
+                  id: int
                   url: /int.html
 
                 - title: <code>SERIAL</code>
+                  id: serial
                   url: /serial.html
 
                 - title: <code>DECIMAL</code>
+                  id: decimal
                   url: /decimal.html
 
                 - title: <code>FLOAT</code>
+                  id: float
                   url: /float.html
 
                 - title: <code>BOOL</code>
+                  id: bool
                   url: /bool.html
 
                 - title: <code>DATE</code>
+                  id: date
                   url: /date.html
 
                 - title: <code>TIMESTAMP</code>
+                  id: timestamp
                   url: /timestamp.html
 
                 - title: <code>INTERVAL</code>
+                  id: interval
                   url: /interval.html
 
                 - title: <code>STRING</code>
+                  id: string
                   url: /string.html
 
                 - title: <code>COLLATE</code>
+                  id: collate
                   url: /collate.html
 
                 - title: <code>BYTES</code>
+                  id: bytes
                   url: /bytes.html
 
         - title: Privileges
+          id: privileges
           url: /privileges.html
 
         - title: Functions and Operators
+          id: functions-and-operators
           url: /functions-and-operators.html
 
         - title: Transactions
+          id: transactions
           url: /transactions.html
 
         - title: Information Schema
+          id: information-schema
           url: /information-schema.html
 
           thirdlevel:
           - title: Porting Applications
+            id: porting-applications
             thirdlevelitems:
 
               - title: From PostgreSQL
+                id: porting-postgres
                 url: /porting-postgres.html
 
     - title: Deploy
+      id: deploy
       items:
 
         - title: Recommended Production Settings
+          id: recommended-production-settings
           url: /recommended-production-settings.html
 
         - title: Manual Deployment
+          id: manual-deployment
           url: /manual-deployment.html
           alternate_urls: [/manual-deployment-insecure.html]
 
           thirdlevel:
             - title: Cloud Deployment
+              id: cloud-deployment
               thirdlevelitems:
 
                 - title: Overview
+                  id: cloud-deployment-overview
                   url: /cloud-deployment.html
 
                 - title: AWS
+                  id: cloud-deployment-aws
                   url: /deploy-cockroachdb-on-aws.html
                   alternate_urls: [/deploy-cockroachdb-on-aws-insecure.html]
 
                 - title: Azure
+                  id: cloud-deployment-azure
                   url: /deploy-cockroachdb-on-microsoft-azure.html
                   alternate_urls: [/deploy-cockroachdb-on-microsoft-azure-insecure.html]
 
                 - title: Digital Ocean
+                  id: cloud-deployment-digital-ocean
                   url: /deploy-cockroachdb-on-digital-ocean.html
                   alternate_urls: [/deploy-cockroachdb-on-digital-ocean-insecure.html]
 
                 - title: Google Cloud Platform GCE
+                  id: cloud-deployment-gce
                   url: /deploy-cockroachdb-on-google-cloud-platform.html
                   alternate_urls: [/deploy-cockroachdb-on-google-cloud-platform-insecure.html]
 
             - title: Orchestration
+              id: orchestration
               thirdlevelitems:
 
                 - title: Overview
+                  id: orchestration-overview
                   url: /orchestration.html
 
                 - title: Kubernetes
+                  id: orchestration-kubernetes
                   url: /orchestrate-cockroachdb-with-kubernetes.html
 
                 - title: Docker Swarm
+                  id: orchestration-docker-swarm
                   url: /orchestrate-cockroachdb-with-docker-swarm.html
                   alternate_urls: [/orchestrate-cockroachdb-with-docker-swarm-insecure.html]
 
@@ -430,122 +565,160 @@ entries:
           url: /cluster-settings.html
 
         - title: Cockroach Commands
+          id: cockroach-commands
           url: /cockroach-commands.html
 
         - title: Start a Node
+          id: start-a-node
           url: /start-a-node.html
 
         - title: Stop a Node
+          id: stop-a-node
           url: /stop-a-node.html
 
         - title: Create Security Certificates
+          id: create-security-certificates
           url: /create-security-certificates.html
 
         - title: Create & Manage Users
+          id: create-and-manage-users
           url: /create-and-manage-users.html
 
         - title: Configure Replication Zones
+          id: configure-replication-zones
           url: /configure-replication-zones.html
 
     - title: Manage
+      id: manage
       items:
 
         - title: Explore the Admin UI
+          id: explore-the-admin-ui
           url: /explore-the-admin-ui.html
 
         - title: Monitor CockroachDB with Prometheus
+          id: monitor-cockroachdb-with-prometheus
           url: /monitor-cockroachdb-with-prometheus.html
 
         - title: View Node Details
+          id: view-node-details
           url: /view-node-details.html
 
         - title: View Version Details
+          id: view-version-details
           url: /view-version-details.html
 
         - title: Upgrade a Cluster's Version
           url: /upgrade-cockroach-version.html
           
         - title: Back up Data
+          id: back-up-data
           url: /back-up-data.html
 
         - title: Restore Data
+          id: restore-data
           url: /restore-data.html
 
         - title: Dump/Export Schema or Data
+          id: sql-dump
           url: /sql-dump.html
 
         - title: Import Data
+          id: import-data
           url: /import-data.html
 
         - title: Generate CockroachDB Resources
+          id: generate-cockroachdb-resources
           url: /generate-cockroachdb-resources.html
 
         - title: Diagnostics Reporting
           url: /diagnostics-reporting.html
 
         - title: Troubleshoot
+          id: troubleshoot
           url: /troubleshoot.html
 
     - title: Contribute
+      id: contribute
       items:
 
         - title: Contribute to CockroachDB
+          id: contribute-to-cockroachdb
           url: /contribute-to-cockroachdb.html
 
         - title: Improve the Docs
+          id: improve-the-docs
           url: /improve-the-docs.html
 
     - title: Releases
+      id: releases
       items:
 
         - title: 1.0
+          id: 1.0-release
           url: /v1.0.html
 
         - title: All Releases
+          id: all-releases
           url: /releases.html
 
     - title: FAQs
+      id: faqs
       items:
 
         - title: General FAQs
+          id: general-faqs
           url: /frequently-asked-questions.html
 
         - title: SQL FAQs
+          id: sql-faqs
           url: /sql-faqs.html
 
         - title: CockroachDB in Comparison
+          id: cockroachdb-in-comparison
           url: /cockroachdb-in-comparison.html
 
         - title: CockroachDB Architecture
+          id: cockroachdb-architecture
           url: /cockroachdb-architecture.html
 
           thirdlevel:
             - title: CockroachDB Features
+              id: cockroachdb-features
               thirdlevelitems:
 
                 - title: Simplified Deployment
+                  id: simplified-deployment
                   url: /simplified-deployment.html
 
                 - title: Strong Consistency
+                  id: strong-consistency
                   url: /strong-consistency.html
 
                 - title: SQL
+                  id: sql
                   url: /sql.html
 
                 - title: Distributed Transactions
+                  id: distributed-transactions
                   url: /distributed-transactions.html
 
                 - title: Automated Scaling & Repair
+                  id: automated-scaling-and-repair
                   url: /automated-scaling-and-repair.html
 
                 - title: High Availability
+                  id: high-availability
                   url: /high-availability.html
 
                 - title: Open Source
+                  id: open-source
                   url: /open-source.html
 
                 - title: Go Implementation
+                  id: go-implementation
                   url: /go-implementation.html
 
         - title: Known Limitations
+          id: known-limitations
           url: /known-limitations.html
