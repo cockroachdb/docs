@@ -128,6 +128,9 @@ $(document).ready(function(){
   </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="use-homebrew" class="install-option" style="display: none;">
@@ -166,6 +169,9 @@ $(document).ready(function(){
   </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="build-from-source" class="install-option" style="display: none;">
@@ -238,6 +244,9 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="use-docker" class="install-option" style="display: none;">
@@ -285,6 +294,9 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster-in-docker.html">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 </div>
 
@@ -339,6 +351,9 @@ $(document).ready(function(){
   </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="build-from-source-linux" class="install-option" style="display: none;">
@@ -415,6 +430,9 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="use-docker-linux" class="install-option" style="display: none;">
@@ -464,6 +482,9 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster-in-docker.html#os-linux">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 </div>
 
@@ -508,6 +529,9 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 
 <div id="use-docker-windows" class="install-option" style="display: none;">
@@ -559,5 +583,8 @@ $(document).ready(function(){
 </ol>
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster-in-docker.html#os-windows">Quick start</a> a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data, or explore running a physically distributed cluster in containers using <a href="orchestration.html">orchestration</a> tools.</p>
+
+{% include diagnostics-callout.html %}
+
 </div>
 </div>
