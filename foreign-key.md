@@ -21,15 +21,13 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 **Foreign Key Columns**
 
-- Only new tables created via [`CREATE TABLE`](create-table.html#create-a-table-with-foreign-keys) can use foreign keys. In a future release, we plan to add support for existing tables through `ALTER TABLE`.
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - Each column cannot belong to more than 1 Foreign Key constraint.
 - Foreign key columns must be [indexed](indexes.html) when the table is created. To meet this requirement, there are a few options:
-
     - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-indexes) clause of `CREATE TABLE`.
     - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
     - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
-  
+
   Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
 
 **Referenced Columns**
@@ -98,7 +96,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 |-----------|-------------|
 | `table_name` | The name of the table you're creating. |
 | `column_def` | Definitions for the table's columns. |
-| `name` | The name of the constraint. | 
+| `name` | The name of the constraint. |
 | `fk_column_name` | The name of the foreign key column. |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
@@ -158,6 +156,7 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
+- [`ADD CONSTRAINT`](add-constraint.html)
 - [Check constraint](check.html)
 - [Default Value constraint](default-value.html)
 - [Not Null constraint](not-null.html)
