@@ -155,6 +155,12 @@ CockroachDB docs should be:
 - Correct
 - Concise
 
+To enable this, we have the following specific guidance:
+
+- Use the imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)."
+- Use active voice instead of passive. [*Purdue Online Writing Lab resource*](https://owl.english.purdue.edu/owl/resource/539/02/)
+- Prefer periods over semicolons.
+
 We also have additional guidance to ensure consistency with our existing documents.
 
 ### Code Samples
