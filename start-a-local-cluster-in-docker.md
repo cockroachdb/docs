@@ -53,7 +53,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -p 26257:26257 -p 8080:8080 <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach1:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure</code></pre></div>
+cockroachdb/cockroach:{{site.data.strings.version}} <span class="nb">start</span> --insecure</code></pre></div>
 
 This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
 
@@ -82,7 +82,7 @@ To simulate a real deployment, scale your cluster by adding two more nodes:
 --hostname<span class="o">=</span>roach2 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach2:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
+cockroachdb/cockroach:{{site.data.strings.version}} <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
 
 <span class="c1"># Start the third container/node:</span>
 <span class="nb">PS </span>C:\Users\username&gt; docker run -d <span class="sb">`</span>
@@ -90,7 +90,7 @@ cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --j
 --hostname<span class="o">=</span>roach3 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach3:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach:beta-20170209 <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
+cockroachdb/cockroach:{{site.data.strings.version}} <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
