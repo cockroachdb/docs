@@ -207,9 +207,9 @@ $(document).ready(function(){
     <p>Extract the sources:</p>
     <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
   </li>
-  <li><p>In the extracted directory, run <code>make</code>:</p>
+  <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -393,9 +393,9 @@ $(document).ready(function(){
     <p>Extract the sources:</p>
     <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-latest.src.tgz</code></pre></div></p>
   </li>
-  <li><p>In the extracted directory, run <code>make</code>:</p>
+  <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make</code></pre></div>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-latest<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
