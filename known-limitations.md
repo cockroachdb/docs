@@ -190,10 +190,10 @@ As a workaround, list the columns explicitly, for example:
 
 ## Running on Windows as a non-admin user
 
-When a CockroachDB node is started, logs are written to a file by default, with a symlink referencing the log file. On Windows, symlink creation requires admin permissions. Therefore, when running CockroachDB on Windows as a non-admin user, you must pass the `--log-dir=` to the `cockroach start` command to have logs written to `stdout` instead of to a file:
+By default, CockroachDB logs to a file which is periodically rotated; in addition to these log files, a symlink pointing to the current log file is maintained. On Windows, symlink creation requires admin permissions, which can cause CockroachDB to fail on start. As a workaround, when running CockroachDB on Windows as a non-admin user, pass `--log-dir=` (with the empty value) to the `cockroach start` command to have logs written to `stdout` instead of to a file, e.g.:
 
 ~~~ shell
-$ cockroach.exe start --insecure --log-dir=
+$ cockroach.exe start --log-dir= --insecure
 ~~~
 
 ## Query planning for `OR` expressions
