@@ -110,6 +110,7 @@ Any comparison between a value and `NULL` results in `NULL`. This behavior is co
 ~~~ sql
 > SELECT * FROM t1 WHERE NOT (c = 1 AND b < 10);
 ~~~
+~~~
 +---+------+---+
 | a |  b   | c |
 +---+------+---+
