@@ -218,7 +218,7 @@ $(document).ready(function(){
   <li>
   <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./src/github.com/cockroachdb/cockroach/cockroach /usr/local/bin</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
@@ -404,7 +404,7 @@ $(document).ready(function(){
   <li>
   <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./src/github.com/cockroachdb/cockroach/cockroach /usr/local/bin</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
   </li>
   <li>
