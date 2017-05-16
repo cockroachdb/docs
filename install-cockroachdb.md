@@ -216,10 +216,12 @@ $(document).ready(function(){
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
   <li>
-  <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
+  <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+
+  <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
   </li>
   <li>
     <p>Make sure the CockroachDB executable works:</p>
@@ -402,10 +404,13 @@ $(document).ready(function(){
     <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
   </li>
   <li>
-  <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i ./bin/cockroach /usr/local/bin</code></pre></div>
+  <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
+
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+
+  <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
   </li>
   <li>
       <p>Make sure the CockroachDB executable works:</p>
