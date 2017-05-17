@@ -141,10 +141,9 @@ $(document).ready(function(){
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
     </li>
     <li>
-      <p>Run our brew recipe to get the CockroachDB code and build the binary:</p>
+      <p>Instruct Homebrew to install CockroachDB:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/cockroach/cockroach</code></pre></div>
-      <p>The build process can take 10+ minutes, so please be patient.</p>
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroach</code></pre></div>
     </li>
     <li>
       <p>Make sure the CockroachDB executable works:</p>
