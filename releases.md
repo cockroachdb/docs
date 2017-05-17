@@ -40,19 +40,19 @@ After downloading your desired release, learn how to [Install CockroachDB](insta
                 <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">
                     <i class="fa fa-apple" aria-hidden="true"></i> Mac
                 </a>
-                {% if release.windows %}
+                {% unless release.no_windows %}
                     <wbr>
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">
                         <i class="fa fa-windows" aria-hidden="true"></i> Windows
                     </a>
-                {% endif %}
+                {% endunless %}
             </td>
             <td>
-                {% if release.source %}
+                {% unless release.no_source %}
                 <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">
                     <i class="fa fa-file-archive-o" aria-hidden="true"></i> Source
                 </a>
-                {% endif %}
+                {% endunless %}
             </td>
         {% endif %}
     </tr>
