@@ -6,6 +6,8 @@ toc: false
 
 After downloading your desired release, learn how to [Install CockroachDB](install-cockroachdb.html).
 
+{% for section in site.data.releases %}
+## {{section.title}}
 <table class="release-table">
 <thead>
 <tr>
@@ -17,7 +19,7 @@ After downloading your desired release, learn how to [Install CockroachDB](insta
 </thead>
 
 <tbody>
-{% for release in site.data.releases %}
+{% for release in section.releases %}
     <tr {% if release.latest %}class="latest"{% endif %}>
         <td>
             <a href="{{ release.version }}.html">{{ release.version }}</a>
@@ -57,3 +59,4 @@ After downloading your desired release, learn how to [Install CockroachDB](insta
 {% endfor %}
 </tbody>
 </table>
+{% endfor %}
