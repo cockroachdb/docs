@@ -6,6 +6,8 @@ toc: false
 
 After downloading your desired release, learn how to [Install CockroachDB](install-cockroachdb.html).
 
+{% for section in site.data.releases %}
+## {{section.title}}
 <table class="release-table">
 <thead>
 <tr>
@@ -17,7 +19,7 @@ After downloading your desired release, learn how to [Install CockroachDB](insta
 </thead>
 
 <tbody>
-{% for release in site.data.releases %}
+{% for release in section.releases %}
     <tr {% if release.latest %}class="latest"{% endif %}>
         <td>
             <a href="{{ release.version }}.html">{{ release.version }}</a>
@@ -38,22 +40,23 @@ After downloading your desired release, learn how to [Install CockroachDB](insta
                 <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">
                     <i class="fa fa-apple" aria-hidden="true"></i> Mac
                 </a>
-                {% if release.windows %}
+                {% unless release.no_windows %}
                     <wbr>
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">
                         <i class="fa fa-windows" aria-hidden="true"></i> Windows
                     </a>
-                {% endif %}
+                {% endunless %}
             </td>
             <td>
-                {% if release.source %}
+                {% unless release.no_source %}
                 <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">
                     <i class="fa fa-file-archive-o" aria-hidden="true"></i> Source
                 </a>
-                {% endif %}
+                {% endunless %}
             </td>
         {% endif %}
     </tr>
 {% endfor %}
 </tbody>
 </table>
+{% endfor %}
