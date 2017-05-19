@@ -2969,6 +2969,39 @@ img.mfp-img {
       margin-left: 10px;
       padding: 12px 30px; } }
 
+.contribute {
+  float: right; }
+
+.btn-contribute {
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  display: inline-block;
+  border: 2px solid #46a417;
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 12px;
+  color: black;
+  line-height: 40px;
+  text-align: center;
+  width: 150px;
+  height: 40px;
+  background-color: transparent;
+  border: none; }
+  .btn-contribute:focus {
+    color: #46a417; }
+  .btn-contribute:hover {
+    color: #46a417; }
+
 #help-widgets {
   z-index: 1000;
   position: absolute;
