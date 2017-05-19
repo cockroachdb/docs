@@ -616,6 +616,23 @@ a.accordion-toggle {
     font-style: normal;
 }
 
+.post-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 40px -30px 10px;
+
+  > * {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+.post-title-main {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 @import "components/search";
 @import "components/callout";
 @import "components/toc";
