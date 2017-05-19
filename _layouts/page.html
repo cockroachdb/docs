@@ -3,6 +3,19 @@ layout: default
 ---
 
 <div class="post-header">
+   {% unless page.contribute == false %}
+   <div class="contribute dropdown">
+      <button class="btn-contribute dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+         <i class="fa fa-github"></i> Contribute
+         <span class="arrow-down"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+         <li><a href="https://github.com/cockroachdb/docs/edit/gh-pages{{ page.url | replace: '.html', '.md'}}" target="blank">Edit This Page</a></li>
+         <li><a href="https://github.com/cockroachdb/docs/issues/new?title={{page.title}}%20Doc%20Update%20&amp;body=Re%3A%20%5B{{page.title}}%5D(https%3A%2F%2Fcockroachlabs.com/docs/{{page.url}})%0A%0APriority%20(Low‚%20Medium‚%20High)%3A%0A%0A%23%23%20Issue%20Description%3A%0A%0A%23%23%20Suggested%20Resolution%20&amp;labels=community" target="blank">Report Doc Issue</a></li>
+         <li><a href="https://github.com/cockroachdb/docs/issues/new?title=New%20Doc%20Proposal%20&amp;body=Priority%20(Low‚%20Medium‚%20High)%3A%0A%0A%23%23%20Title%0A%0A%0A%23%23%20Description%0A%0A%0A%23%23%20Outline%0A%0A%0A%23%23%20Expected%20Audience&amp;labels=community" target="blank">Suggest New Content</a></li>
+      </ul>
+   </div>
+   {% endunless %}
    <h1 class="post-title-main">{% if page.homepage == true %} {{site.homepage_title}} {% else %}{{ page.title }}{% endif %}</h1>
 </div>
 

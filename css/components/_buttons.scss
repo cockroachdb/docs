@@ -1,4 +1,4 @@
-@mixin button(){ 
+@mixin button(){
 	text-transform: uppercase;
 	letter-spacing: 1.3px;
 	@include rounded(100px);
@@ -13,7 +13,7 @@
 	line-height: 12px;
 	color: #FFFFFF;
 	padding: 18px 25px 16px;
-	
+
 	background-color: $cl_alternate_green;
 
 	&:focus {
@@ -55,7 +55,7 @@
 	padding: 8px 16px;
 	color: #FFFFFF;
 	margin-right: 15px;
-	
+
 
 	&:focus {
 		color: #FFFFFF;
@@ -75,3 +75,56 @@
 	}
 }
 
+.contribute {
+	float: right;
+
+	.btn-contribute {
+		@include button();
+		@include avenir_bl(12px);
+		color: #142848;
+		line-height: 40px;
+		text-align: center;
+		width: 150px;
+		background-color: transparent;
+		border: none;
+
+		&:focus {
+			color: $cl_green;
+		}
+
+		&:hover {
+			color: $cl_green;
+		}
+	}
+
+	.dropdown-toggle {
+		font-family: 'AvenirLTStd-Heavy', serif;
+	}
+
+	.dropdown-menu {
+		border: none;
+		box-shadow: 0 0 15px 0 rgba(0,0,0,0.06), 0 0 5px 0 rgba(0,0,0,0.06);
+	}
+
+	.dropdown-menu > li > a {
+		line-height: 20px;
+	    font-family: 'AvenirLTStd-Medium', serif;
+	    font-weight: normal;
+	    -webkit-font-smoothing: antialiased;
+	    font-size: 14px;
+	   	color: #142848;
+	   	margin: 7px 0 7px;
+
+	    &:focus {
+	    	text-decoration: none;
+			background-color: transparent;
+			color: $cl_green;
+		}
+
+		&:hover {
+	    	text-decoration: none;
+			background-color: transparent;
+			color: $cl_green;
+		}
+	}
+}
