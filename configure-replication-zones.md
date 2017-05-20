@@ -25,6 +25,8 @@ There are three replication zone levels:
 
 When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses the replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone.
 
+In addition to the databases and tables that are visible via SQL, CockroachDB stores some additional internal data in what are called system ranges. You can configure replication zones for parts of these internal data ranges if you'd like to override the cluster-wide settings. See [Create a Replication Zone for System Ranges](#create-a-replication-zone-for-system-ranges) for more details.
+
 ### Replication Zone Format
 
 A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
@@ -259,6 +261,45 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
 
+### Create a Replication Zone for System Ranges
+
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores some additional data in what are called system ranges. There are three categories of system ranges for which replication zones can be set:
+
+Zone Name | Description
+----------|------------
+**.meta** | The "meta" ranges contain the authoritative information about the location of all data in the cluster. If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.
+**.system** | The ".system" zone config controls the replication of a variety of important internal data, including information needed to allocate new table IDs and track the health of a cluster's nodes.
+**.timeseries** | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's admin UI.
+
+To control replication for one of the above sets of system ranges, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
+
+~~~ shell
+$ cat meta_zone.yaml
+~~~
+
+~~~
+num_replicas: 7
+~~~
+
+~~~ shell
+$ cockroach zone set .meta --insecure -f meta_zone.yaml
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 86400
+num_replicas: 7
+constraints: []
+~~~
+
+Alternately, you can pass the YAML content via the standard input:
+
+~~~ shell
+$ echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
+~~~
+
 ## Scenario-based Examples
 
 ### Even Replication Across Datacenters
@@ -381,7 +422,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Scenario:**
 
-- You have a 7 nodes, 5 with SSD drives and 2 with HDD drives.
+- You have 7 nodes, 5 with SSD drives and 2 with HDD drives.
 - You want data replicated 3 times by default.
 - Speed and availability are important for a specific table that is queried very frequently, however, so you want the data in that table to be replicated 5 times, preferrably on nodes with SSD drives.
 
@@ -436,6 +477,86 @@ There's no need to make zone configuration changes; by default, the cluster is c
    ~~~
 
    Data in the table will be replicated 5 times, and the positive constraint will place data in the table on nodes with `ssd` drives whenever possible.
+
+### Tweaking the replication of system ranges
+
+**Scenario:**
+
+- You have nodes spread across 7 datacenters.
+- You want data replicated 5 times by default.
+- For better performance, you want a copy of the meta ranges in all of the datacenters.
+- To save disk space, you only want the internal timeseries data replicated 3 times by default.
+
+**Approach:**
+
+1. Start each node with a different locality attribute:
+
+   ~~~ shell
+   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
+   $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-2 \
+   --join=<node1 hostname>:27257
+   $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-3 \
+   --join=<node1 hostname>:27257
+   $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-4 \
+   --join=<node1 hostname>:27257
+   $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-5 \
+   --join=<node1 hostname>:27257
+   $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-6 \
+   --join=<node1 hostname>:27257
+   $ cockroach start --insecure --host=<node7 hostname> --locality=datacenter=us-7 \
+   --join=<node1 hostname>:27257
+   ~~~
+
+2. On any node, configure the default replication zone:
+
+   ~~~ shell
+   echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+   ~~~
+
+   ~~~
+   range_min_bytes: 1048576
+   range_max_bytes: 67108864
+   gc:
+     ttlseconds: 86400
+   num_replicas: 5
+   constraints: []
+   ~~~
+
+   All data in the cluster will be replicated 5 times, including both SQL data and the internal system data.
+
+3. On any node, configure the `.meta` replication zone:
+
+   ~~~ shell
+   echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
+   ~~~
+
+   ~~~
+   range_min_bytes: 1048576
+   range_max_bytes: 67108864
+   gc:
+     ttlseconds: 86400
+   num_replicas: 7
+   constraints: []
+   ~~~
+
+   The `.meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
+
+4. On any node, configure the `.timeseries` replication zone:
+
+   ~~~ shell
+   echo 'num_replicas: 3' | cockroach zone set .timeseries --insecure -f -
+   ~~~
+
+   ~~~
+   range_min_bytes: 1048576
+   range_max_bytes: 67108864
+   gc:
+     ttlseconds: 86400
+   num_replicas: 7
+   constraints: []
+   ~~~
+
+   The timeseries data will only be replicated 3 times without affecting the configuration of all other data.
 
 ## See Also
 
