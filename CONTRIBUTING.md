@@ -141,7 +141,11 @@ The syntax for including content is `{% include <filepath> %}`, for example, `{%
 
 ### Feedback Widget
 
-"Yes/No" feedback buttons appear toward the bottom of every page by default. On any page for which we don't want feedback (e.g., stub pages), you can remove the feedback buttons by setting `feedback: false` in the page's front-matter.
+We show "Yes/No" feedback buttons at the bottom of every page by default. To remove these buttons from a page, set `feedback: false` in the page's front-matter.
+
+### Contributing Options
+
+We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
 
 ### A/B Testing
 
