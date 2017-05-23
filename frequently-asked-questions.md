@@ -160,3 +160,6 @@ Not yet, but this is on our long-term roadmap.
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
 - [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
+- [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
+- [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
+
