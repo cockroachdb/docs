@@ -185,7 +185,7 @@ By default, CockroachDB periodically rotates the file it writes logs to, as well
 To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, e.g.:
 
 ~~~ shell
-$ cockroach.exe start --log-dir= --insecure 
+$ cockroach.exe start --log-dir= --insecure
 ~~~
 
 ## Query planning for `OR` expressions

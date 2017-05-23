@@ -81,3 +81,8 @@ $ cockroach start --insecure --host=localhost --vmodule=executor=2
 ## Does CockroachDB support a UUID type?
 
 Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column should perform just as well.
+
+## See Also
+
+- [Product FAQs](frequently-asked-questions.html)
+- [Operational FAQS](operational-faqs.html)

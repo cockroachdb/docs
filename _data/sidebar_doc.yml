@@ -464,7 +464,7 @@ entries:
 
         - title: Upgrade a Cluster's Version
           url: /upgrade-cockroach-version.html
-          
+
         - title: Back up Data
           url: /back-up-data.html
 
@@ -507,11 +507,14 @@ entries:
     - title: FAQs
       items:
 
-        - title: General FAQs
+        - title: Product FAQs
           url: /frequently-asked-questions.html
 
         - title: SQL FAQs
           url: /sql-faqs.html
+
+        - title: Operational FAQs
+          url: /operational-faqs.html
 
         - title: CockroachDB in Comparison
           url: /cockroachdb-in-comparison.html
