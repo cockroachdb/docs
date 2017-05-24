@@ -41,7 +41,7 @@ INSERT 1
 ...
 ~~~
 
-Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node and verify that the new `intro` database was added with one table, `mytable`:
+Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
 ~~~ shell
 $ cockroach sql --insecure
