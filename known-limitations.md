@@ -120,6 +120,13 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
 
+## Dropping a database containing views
+
+When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
+database containing the tables fails silently.
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
+
 ## Write and update limits for a single transaction
 
 A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
