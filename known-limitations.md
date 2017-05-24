@@ -138,6 +138,8 @@ As a workaround, make the locale lowercase or remove the quotes.
 
 Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
 
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
+
 ## Dropping a database containing views
 
 When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
