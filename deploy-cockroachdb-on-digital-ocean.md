@@ -24,12 +24,13 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Recommendations
 
+- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+
 - Set up your Droplets using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
+
 - Decide how you want to access your Admin UI:
 	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
 	- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
-
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 ## Step 1. Create Droplets
 
