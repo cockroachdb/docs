@@ -11,7 +11,7 @@ toc: false
 
 This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
-If you plan to use CockroachDB in production, we recommend using a secure cluster instead. Select **Secure** above for instructions.
+{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -24,7 +24,13 @@ If you plan to use CockroachDB in production, we recommend using a secure cluste
 
 ## Recommendations
 
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- If you plan to use CockroachDB in production, we recommend using a [secure cluster](manual-deployment.html) instead. Using an insecure cluster comes with risks:
+  - Your cluster is open for any client that can access any nodes' IP addresses.
+  - Any user, even `root`, can log in without providing a password.
+  - Any user, connecting as `root`, can read or write any data in your cluster.
+  - There is no network encryption or authentication, and thus no confidentiality.
+
+- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 ## Step 1. Start the first node
 

@@ -22,12 +22,17 @@ You must have [SSH access](https://cloud.google.com/compute/docs/instances/conne
 
 ## Recommendations
 
-Decide how you want to access your Admin UI:
+- If you plan to use CockroachDB in production, we recommend using a [secure cluster](deploy-cockroachdb-on-google-cloud-platform.html) instead. Using an insecure cluster comes with risks:
+  - Your cluster is open for any client that can access any nodes' IP addresses.
+  - Any user, even `root`, can log in without providing a password.
+  - Any user, connecting as `root`, can read or write any data in your cluster.
+  - There is no network encryption or authentication, and thus no confidentiality.
 
-- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
-- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
+- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- Decide how you want to access your Admin UI:
+  - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
+  - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
 {{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
 
