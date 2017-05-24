@@ -145,6 +145,24 @@ database containing the tables fails silently.
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
 
+## Qualifying a column that comes from a view
+
+It is not possible to fully qualify a column that comes from a view because the view gets replaced by an anonymous subquery, for example:
+
+~~~ sql
+> CREATE TABLE test (a INT, b INT);
+
+> CREATE VIEW Caps AS SELECT a, b FROM test;
+
+> SELECT sum(Caps.a) FROM Caps GROUP BY b;
+~~~
+
+~~~
+pq: source name "caps" not found in FROM clause
+~~~
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
+
 ## Write and update limits for a single transaction
 
 A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
