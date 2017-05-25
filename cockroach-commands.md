@@ -22,6 +22,7 @@ Command | Usage
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | List node IDs and show their status.
 [`dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
+[`debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, and example data.
 [`version`](view-version-details.html) | Output CockroachDB version and dependency details.
 
