@@ -22,7 +22,9 @@ $ cockroach quit --help
 
 ## Flags
 
-The `quit` command supports the following flags as well as [logging flags](cockroach-commands.html#logging-flags).
+The `quit` command supports the following [general-use](#general) and [logging](#logging) flags.
+
+### General
 
 Flag | Description
 -----|------------
@@ -30,6 +32,12 @@ Flag | Description
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:**`localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Logging
+
+By default, the `quit` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## Example
 

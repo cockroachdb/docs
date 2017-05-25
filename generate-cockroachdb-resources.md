@@ -43,25 +43,27 @@ $ cockroach gen haproxy --help
 
 ## Flags
 
-The `gen` subcommands support the following flags, as well as [logging flags](cockroach-commands.html#logging-flags).
+The `gen` subcommands supports the following [general-use](#general) and [logging](#logging) flags.
 
-### `man`
+### General
+
+#### `man`
 
 Flag | Description
 -----|-----------
 `--path` | The path where man pages will be generated.<br><br>**Default:** `man/man1` under the current directory
 
-### `autocomplete`
+#### `autocomplete`
 
 Flag | Description
 -----|-----------
 `--out` | The path where the autocomplete file will be generated.<br><br>**Default:** `cockroach.bash` in the current directory
 
-### `example-data`
+#### `example-data`
 
 No flags are supported. See the [Generate Example Data](#generate-example-data) example for guidance.
 
-### `haproxy`
+#### `haproxy`
 
 Flag | Description
 -----|-----------
@@ -70,6 +72,12 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--out` | The path where the HAProxy config file will be generated.<br><br>**Default:** `haproxy.cfg` in the current directory
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Logging
+
+By default, the `gen` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
 ## Examples
 
