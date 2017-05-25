@@ -105,7 +105,7 @@ If you want to make a change to an immutable constraint, you can use the followi
 
 1. [Create a new table](create-table.html) with the constraints you want to apply.
 2. Move the data from the old table to the new one using [`INSERT` from a `SELECT` statement](insert.html#insert-from-a-select-statement).
-3. [drop the old table](drop-table.html), and then [rename the new table to the old name](rename-table.html). This cannot be done transactionally.
+3. [Drop the old table](drop-table.html), and then [rename the new table to the old name](rename-table.html). This cannot be done transactionally.
 
 ## See Also
 
