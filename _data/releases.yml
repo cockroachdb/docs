@@ -1,8 +1,10 @@
 - title: Production Releases
   releases:
+    - date: May 25, 2017
+      version: v1.0.1
+      latest: true
     - date: May 10, 2017
       version: v1.0
-      latest: true
 - title: Testing Releases
   releases:
     - date: May 5, 2017
