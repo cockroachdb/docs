@@ -93,7 +93,7 @@ pq: ($0, $0) < (1, - 9223372036854775808:::INT): tuples ($0, $0), (1, - 92233720
 
 ## Overload resolution for collated strings
 
-Many string operations are not properly overloaded for collated strings, for example:
+Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
 ~~~ sql
 > SELECT 'string1' || 'string2';
@@ -116,9 +116,60 @@ Many string operations are not properly overloaded for collated strings, for exa
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
+## Quoting collation locales containing uppercase letters
+
+Quoting a [collation](collate.html) locale containing uppercase letters results in an error, for example:
+
+~~~ sql
+> CREATE TABLE a (b STRING COLLATE "DE");
+~~~
+
+~~~
+invalid syntax: statement ignored: invalid locale "DE": language: tag is not well-formed at or near ")"
+CREATE TABLE a (b STRING COLLATE "DE");
+                                     ^
+~~~
+
+As a workaround, make the locale lowercase or remove the quotes, for example:
+
+~~~ sql
+> CREATE TABLE a (b STRING COLLATE "de");
+
+> CREATE TABLE b (c STRING COLLATE DE);
+~~~
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
+
 ## Creating views with array types
 
 Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
+
+## Dropping a database containing views
+
+When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
+database containing the tables fails silently.
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
+
+## Qualifying a column that comes from a view
+
+It is not possible to fully qualify a column that comes from a view because the view gets replaced by an anonymous subquery, for example:
+
+~~~ sql
+> CREATE TABLE test (a INT, b INT);
+
+> CREATE VIEW Caps AS SELECT a, b FROM test;
+
+> SELECT sum(Caps.a) FROM Caps GROUP BY b;
+~~~
+
+~~~
+pq: source name "caps" not found in FROM clause
+~~~
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
 
 ## Write and update limits for a single transaction
 
@@ -187,6 +238,8 @@ To resolve this issue, non-admin users must log to `stdout` (instead of files) b
 ~~~ shell
 $ cockroach.exe start --log-dir= --insecure
 ~~~
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
 
 ## Query planning for `OR` expressions
 
