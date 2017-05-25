@@ -498,6 +498,9 @@ entries:
         - title: Debug & Error Logs
           url: /debug-and-error-logs.html
 
+        - title: Collect Cluster Debug Info
+          url: /debug-zip.html
+
         - title: Support Resources
           url: /support-resources.html
 

@@ -6,15 +6,15 @@ toc: false
 
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
-Each node's logs detail only the internal activity of that node without visibility into the behavior of other nodes in the cluster. When troubleshooting, this means that you must identify the node where the problem occurred or check the logs from all of the nodes in your cluster.
-
 <div id="toc"></div>
 
 ## Details
 
-Each [`cockroach` command](cockroach-commands.html) a node processes produces a stream of messages about its activities. Each message's body describes the activity, and its envelope contains metadata such as the message's severity level.
+When a node processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message's body describes the activity, and its envelope contains metadata such as the message's severity level.
 
-As commands generate messages, CockroachDB uses the [command](#commands)'s [logging flags](#flags) and the message's [severity level](#severity-levels) to determine the appropriate [location](#output-locations) for it.
+As a command generates messages, CockroachDB uses the [command](#commands)'s [logging flags](#flags) and the message's [severity level](#severity-levels) to determine the appropriate [location](#output-locations) for it.
+
+Each node's logs detail only the internal activity of that node without visibility into the behavior of other nodes in the cluster. When troubleshooting, this means that you must identify the node where the problem occurred or [collect the logs from all active nodes in your cluster](debug-zip.html).
 
 {{site.data.alerts.callout_info}}You can also <a href="#log-queries">log queries</a> your cluster receives.{{site.data.alerts.end}}
 
