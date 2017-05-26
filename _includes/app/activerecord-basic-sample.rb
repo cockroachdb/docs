@@ -25,8 +25,7 @@ end
 # In Rails, this would go in db/migrate/ as usual.
 class Schema < ActiveRecord::Migration
   def change
-    create_table :accounts, force: true, id: false, primary_key: 'id' do |t|
-      t.integer :id
+    create_table :accounts, force: true do |t|
       t.integer :balance
     end
   end

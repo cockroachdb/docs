@@ -50,8 +50,8 @@ $ ruby activerecord-basic-sample.rb
 The output should be:
 
 ~~~ shell
--- create_table(:accounts, {:force=>true, :id=>false, :primary_key=>"id"})
-   -> 0.0380s
+-- create_table(:accounts, {:force=>true})
+   -> 0.0361s
 1 1000
 2 250
 ~~~
