@@ -6,7 +6,12 @@ toc_not_nested: true
 asciicast: true
 ---
 
-Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start a multi-node cluster locally with each node listening on a different port.
+<div class="filters filters-big clearfix">
+    <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
+    <a href="secure-a-cluster.html"><button class="filter-button">Secure</button></a>
+</div>
+
+Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start an insecure, multi-node cluster locally.
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 
@@ -26,8 +31,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 ~~~ shell
 $ cockroach start --insecure \
---host=localhost \
---background
+--host=localhost
 ~~~
 
 ~~~
@@ -47,42 +51,41 @@ This command starts a node in insecure mode, accepting most [`cockroach start`](
 - The `--insecure` flag makes communication unencrypted.
 - Since this is a purely local cluster, `--host=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 - Node data is stored in the `cockroach-data` directory.
-- The `--background` flag runs the node in the background so you can continue the next steps in the same shell.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
 
 {{site.data.alerts.callout_success}}By default, each node's cache is limited to 25% of available memory. This default is reasonable when running one node per host. When you run multiple nodes on a single host, however, this default may lead to out-of-memory errors, especially if you test in a serious way. To avoid such errors, you can limit each node's cache size by setting the <code>--cache</code> flag in the <code>start</code> command.{{site.data.alerts.end}}
 
 ## Step 2. Add nodes to the cluster
 
-At this point, your cluster is live and operational. With just one node, you can already connect a SQL client and start building out your database. In real deployments, however, you'll always want 3 or more nodes to take advantage of CockroachDB's [automatic replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), and [fault tolerance](demo-fault-tolerance-and-recovery.html) capabilities.
+At this point, your cluster is live and operational. With just one node, you can already connect a SQL client and start building out your database. In real deployments, however, you'll always want 3 or more nodes to take advantage of CockroachDB's [automatic replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), and [fault tolerance](demo-fault-tolerance-and-recovery.html) capabilities. This step helps you simulate a real deployment locally.
 
-To simulate a real deployment, scale your cluster by adding two more nodes:
+In a new terminal, add the second node:
 
 ~~~ shell
-# Start the second node:
 $ cockroach start --insecure \
 --store=node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257 \
---background
+--join=localhost:26257
+~~~
 
-# Start the third node:
+In a new terminal, add the third node:
+
+~~~ shell
 $ cockroach start --insecure \
 --store=node3 \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
-The main difference here is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--port`, and `--http-port` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.
+The main difference in these commands is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--port`, and `--http-port` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.
 
 ## Step 3. Test the cluster
 
-Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, start the [built-in SQL client](use-the-built-in-sql-client.html) on node 1:
+Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, open a new terminal and connect the [built-in SQL client](use-the-built-in-sql-client.html) to node 1:
 
 {{site.data.alerts.callout_info}}The SQL client is built into the <code>cockroach</code> binary, so nothing extra is needed.{{site.data.alerts.end}}
 
@@ -120,7 +123,7 @@ Exit the SQL shell on node 1:
 > \q
 ~~~
 
-Then start the SQL shell on node 2, this time specifying the node's non-default port:
+Then connect the SQL shell to node 2, this time specifying the node's non-default port:
 
 ~~~ shell
 $ cockroach sql --insecure --port=26258
@@ -148,7 +151,7 @@ Now run the same `SELECT` query:
 
 As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-When you're done, exit the SQL shell on node 2:
+Exit the SQL shell on node 2:
 
 ~~~ sql
 > \q
@@ -160,7 +163,7 @@ To access the [Admin UI](explore-the-admin-ui.html) for your cluster, point a br
 
 <img src="images/admin_ui.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
+As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Node** graph and hover over the line:
 
 <img src="images/admin_ui_replicas.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -170,13 +173,9 @@ The replica count on each node is identical, indicating that all data in the clu
 
 ## Step 5.  Stop the cluster
 
-Once you're done with your test cluster, stop the first node:
+Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL + C** to stop the node.
 
-~~~ shell
-$ cockroach quit --insecure
-~~~
-
-With 2 nodes still online, the cluster remains operational because a majority of replicas are still available. You can verify that the cluster has tolerated this "failure" by starting the built-in SQL shell on nodes 2 or 3:
+At this point, with 2 nodes still online, the cluster remains operational because a majority of replicas are available. To verify that the cluster has tolerated this "failure", connect the built-in SQL shell to nodes 2 or 3. You can do this in the same terminal or in a new terminal.
 
 ~~~ shell
 $ cockroach sql --insecure --port=26258
@@ -198,34 +197,61 @@ $ cockroach sql --insecure --port=26258
 (1 row)
 ~~~
 
-Now stop the second node:
+Exit the SQL shell:
 
-~~~
-$ cockroach quit --insecure --port=26258
-~~~
-
-With only 1 node online, a majority of replicas are no longer available, and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
-
-~~~ shell
-# Get the process ID for node 3:
-$ ps | grep cockroach
+~~~ sql
+> \q
 ~~~
 
-~~~
-5084 ttys001    0:50.15 cockroach start --insecure --store=node3 --port=26259 --http-port=8082 --join=localhost:26257
-~~~
+Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL + C**.
+
+{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+
+If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ shell
-# Force quit the process:
-$ kill -9 5084
+$ rm -rf cockroach-data node2 node3
+~~~
+
+## Step 6. Restart the cluster
+
+If you decide to use the cluster for further testing, you'll need to restart at least 2 of your 3 nodes from the directories containing the nodes' data stores.
+
+Restart the first node from the parent directory of `cockroach-data/`:
+
+~~~ shell
+$ cockroach start --insecure \
+--host=localhost
+~~~
+
+{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you won't see a response to the above command until after you restart the second node.
+{{site.data.alerts.end}}
+
+In a new terminal, restart the second node from the parent directory of `node2/`:
+
+~~~ shell
+$ cockroach start --insecure \
+--store=node2 \
+--host=localhost \
+--port=26258 \
+--http-port=8081 \
+--join=localhost:26257
+~~~
+
+In a new terminal, restart the third node from the parent directory of `node3/`:
+
+~~~ shell
+$ cockroach start --insecure \
+--store=node3 \
+--host=localhost \
+--port=26259 \
+--http-port=8082 \
+--join=localhost:26257
 ~~~
 
 ## What's Next?
 
-[Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
-
-- [Explore Core Features](demo-data-replication.html)
-- [Manual Deployment](manual-deployment.html)
-- [Cloud Deployment](cloud-deployment.html)
-- [Orchestration](orchestration.html)
-- [Import Data](import-data.html)
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language
+- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
