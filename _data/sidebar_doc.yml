@@ -17,14 +17,11 @@ entries:
 
                 - title: From Binary
                   url: /start-a-local-cluster.html
+                  alternate_urls: [/secure-a-cluster.html]
 
                 - title: In Docker
                   url: /start-a-local-cluster-in-docker.html
 
-        - title: Secure a Cluster
-          url: /secure-a-cluster.html
-
-          thirdlevel:
             - title: Learn CockroachDB SQL
               thirdlevelitems:
 
