@@ -1,35 +1,141 @@
 section.footer {
-	background: $cl_blue;
-	padding: 50px 15px 60px;
 	position: relative;
+	padding: 30px 20px 20px;
 
-	
-	.container { padding: 0; }
-	.row { margin: 0; }
-	
+	@include at-query($min, $screen-sm) {
+		padding: 50px 60px 20px;
+	}
 
-	//Nav Items
+	@include at-query($min, $screen-md) {
+		padding-bottom: 60px;
+	}
+
+	.container {
+		padding: 0;
+
+		@include at-query($min, $screen-sm) {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-ms-flex-wrap: wrap;
+			    flex-wrap: wrap;
+			max-width: 100%;
+		}
+
+		@include at-query($min, $screen-md) {
+			max-width: 1050px;
+			margin: 0 auto;
+		}
+	}
+
+	.footer {
+		&__flex-wrap {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+			-ms-flex-wrap: wrap;
+			    flex-wrap: wrap;
+
+			@include at-query($min, $screen-sm) {
+				width: 65%;
+			}
+
+			@include at-query($min, $screen-md) {
+				width: 69%;
+			}
+		}
+
+		&__social {
+			border-top: solid 1px #e2e2e2;
+			padding-top: 35px;
+
+			@include at-query($min, $screen-sm) {
+				border-top: none;
+				border-left: solid 1px #e2e2e2;
+				width: 34%;
+				padding-top: 0;
+				padding-left: 60px;
+			}
+
+			@include at-query($min, $screen-md) {
+				width: 30%;
+			}
+
+			.footer-nav {
+				width: 100%;
+
+				li, a {
+					text-align: center;
+
+					@include at-query($min, $screen-sm) {
+						text-align: left;
+						line-height: 34px;
+					}
+
+					@include at-query($min, $screen-md) {
+						text-align: left;
+						line-height: 24px;
+					}
+				}
+
+				li.header {
+					margin-bottom: 22px;
+
+					@include at-query($min, $screen-sm) {
+						margin-bottom: 12px;
+					}
+				}
+			}
+		}
+	}
+
+	// Nav Items
 	.footer-nav {
 		list-style: none;
-		padding: 0;
-		margin: 0;
 		margin-bottom: 30px;
+		width: calc(100% / 2);
+		padding: 0;
+
+		@include at-query($min, $screen-md) {
+			width: calc(100% / 4 - 1px);
+
+			&--product {
+				-webkit-box-ordinal-group: -1;
+				    -ms-flex-order: -2;
+				        order: -2;
+			}
+
+			&--documentation {
+				-webkit-box-ordinal-group: 0;
+				    -ms-flex-order: -1;
+				        order: -1;
+			}
+		}
 
 		li {
-			color:#FFFFFF;
+			color: $cl_blue;
 			text-transform: uppercase;
 			list-style:none;
 			text-align: left;
 			padding:0;
 			margin:0 20px 0 0;
 			text-indent:0;
-			line-height:14px;
-			display: inline-block;
+
+			@include at-query($min, $screen-sm) {
+				width:100%;
+			}
+
+			@include at-query($min, $screen-md) {
+				text-align: left;
+			}
 
 			a {
-				color:#FFFFFF;
+				color: $cl_blue_dark;
 				@include avenir_bk(14px);
-				line-height: 24px;
+				line-height: 34px;
 				text-transform: none;
 				@include groovy(color);
 
@@ -37,260 +143,49 @@ section.footer {
 					color: $cl_green;
 				}
 
-				@include at-query($min, $screen-md){
-					line-height: 30px;
+				@include at-query($min, $screen-sm) {
+					line-height: 24px;
 				}
-			}
-
-			@include at-query($min, $screen-sm){
-				width:100%;
-			}
-
-			@include at-query($min, $screen-md){
-				text-align: left;
 			}
 		}
 
-		li.header {
+		li.header a {
 			width:100%;
 			margin-bottom:5px;
 			@include avenir_h(12px);
 			line-height: 17px;
 			letter-spacing: 1.3px;
-			opacity: 0.5;
 			display: block;
+			text-transform: uppercase;
 
-			@include at-query($min, $screen-sm){
-				margin-bottom: 15px;
+			@include at-query($min, $screen-sm) {
+				margin-bottom: 12px;
+				font-size: 13px;
 			}
 		}
+
 		li:before {
-		    content: "";
+		  content: "";
 			display:none;
 			left:auto;
 			top:auto;
 		}
 	}
 
-	//Footer Logo + Copyright
-	.footer-logo-wrap {
+	.copyright {
+		margin: 10px 0 0;
+		text-align: center;
+		@include avenir_m(14px);
+		color: $cl_blue;
 
-		.footer-logo {
-			text-align: center;
-			margin-bottom: 5px;
-
-			img {
-				max-width:36px;
-				width: 100%;
-				height: auto;
-			}
-
-			@include at-query($min, $screen-md){
-				text-align: left;
-				display: inline-block;
-				vertical-align: middle;
-				margin-right: 5px;
-				margin-bottom: 0;
-			}
-
-		}
-
-		.copyright {
-			margin:0;
-			color:#FFFFFF;
-			text-align: center;
-			@include avenir_m(12px);
-
-			@include at-query($min, $screen-md){
-				text-align: left;
-				display: inline-block;
-				vertical-align: middle;
-			}
-		}
-
-		@include at-query($min, $screen-md){
-			margin-top: 75px;
-		}
-	}
-
-	//Hubspot Form
-	#hubspot-form {
-		margin: 50px 0;
-
-		.form-header {
-			color: #FFFFFF;
-			@include avenir_m(16px);
-			line-height: 20px;
-			text-align: center;
-			margin-bottom: 10px;
-
-			@include at-query($min, $screen-md){
-				text-align: left;
-				display: inline-block;
-				vertical-align: middle;
-				margin-bottom: 0;
-			}
-		}
-
-		.hbspt-form {
+		@include at-query($min, $screen-sm) {
 			width: 100%;
-			max-width: 325px;
-			margin: 0 auto;
-
-			form {
-				overflow: auto;
-			}
-
-			label {
-				display: none;
-			}
-
-			.hs_email {
-				position: relative;
-				height: 42px;
-				width: calc(100% - 110px);
-				float: left;
-
-				&:before {
-					background-image: url('../images/mailinglist-icon.png');
-  				background-size: 19px 12px;
-  				background-repeat: no-repeat;
-  				width: 19px;
-  				height: 12px;
-  				position: absolute;
-  				left: 15px;
-  				top: 50%;	
-  				@include translate(0, -50%);
-  				content: '';
-				}
-			}
-
-			.hs-input {
-				font-size:14px;
-				padding:0px 15px 0 40px;
-				line-height:40px;
-				outline:none;
-				min-height:40px;
-				@include border-left-radius(38px);
-				width: 100%;
-				background-color: transparent;
-				border: 1px solid $cl_blue_pale;
-				border-right-width: 1px;
-				color: #FFFFFF;
-
-				&::-webkit-input-placeholder {
-				    color: rgba(255, 255, 255, 0.3);
-				}
-				&:-moz-placeholder {
-				   color: rgba(255, 255, 255, 0.3);
-				   opacity:  1;
-				}
-				&::-moz-placeholder {
-				   color: rgba(255, 255, 255, 0.3);
-				   opacity:  1;
-				}
-				&:-ms-input-placeholder {
-				   color: rgba(255, 255, 255, 0.3);
-				}
-				&:placeholder-shown {
-				  color: rgba(255, 255, 255, 0.3);
-				}
-
-				@include at-query($min, $screen-md){
-					font-size: 16px;
-				}
-			}
-
-			.hs_submit {
-				position: relative;
-			}
-
-			.hs-button {
-				width: 110px;
-				text-align: center;
-				background-color: $cl_green;
-				min-height: 40px;
-				color: #FFFFFF;
-				padding: 15px 0 14px;
-				line-height:11px;
-				@include avenir_bl(11px);
-				text-transform: uppercase;
-				letter-spacing: 1.3px;
-				@include border-right-radius(38px);
-				float: right;
-				border: 1px solid $cl_blue_pale;
-				border-left-width: 0px;
-				position: relative;
-				outline: 0;
-				z-index: 5;
-				@include groovy(all);
-
-				&:hover {
-					color: $cl_green;
-					background-color: #FFFFFF;
-				}
-			}
-
-			.hs-error-msgs, .hs-form-required {
-				display: none !important;
-			}
-
-			.submitted-message {
-				font-size:14px;
-				padding:0px 15px 0 40px;
-				line-height:40px;
-				outline:none;
-				min-height:40px;
-				border-radius: 38px;
-				text-align: left;
-				width: 100%;
-				background-color: transparent;
-				border: 1px solid #FFFFFF;
-				color: #FFFFFF;
-				position: relative;
-
-				&:before {
-					background-image: url('../images/mailinglist-icon.png');
-  				background-size: 19px 12px;
-  				background-repeat: no-repeat;
-  				width: 19px;
-  				height: 12px;
-  				position: absolute;
-  				left: 15px;
-  				top: 50%;	
-  				@include translate(0, -50%);
-  				content: '';
-				}
-
-				@include at-query($min, $screen-md){
-					font-size: 16px;
-				}
-			}
-
-			@include at-query($min, $screen-md){
-				display: inline-block;
-				vertical-align: middle;
-				margin: 0 0 0 15px;
-				max-width: 350px;
-			}
+			margin-top: 65px;
 		}
 
-		@include at-query($min, $screen-md){
-			margin: 75px 0 0;
-			text-align: right;
+		@include at-query($min, $screen-md) {
+			text-align: left;
+			margin-top: 15px;
 		}
-	}
-
-	@include at-query($min, $screen-sm){
-		padding-top: 55px;
-	}
-
-	@include at-query($min, $screen-md){
-		padding-top: 60px;
-		padding-bottom: 55px;
-	}
-
-	@include at-query($min, $screen-lg){
-		padding-top: 65px;
 	}
 }
