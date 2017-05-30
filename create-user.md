@@ -96,8 +96,6 @@ $ cockroach sql --user=jpointsman
 $ cockroach sql --user=jpointsman
 ~~~
 
-After issuing this command, you must enter the password for `jpointsman` twice.
-
 ## See Also
 
 - [`cockroach user` command](create-and-manage-users.html)

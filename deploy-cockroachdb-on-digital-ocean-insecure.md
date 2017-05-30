@@ -22,12 +22,20 @@ You must have [SSH access](https://www.digitalocean.com/community/tutorials/how-
 
 ## Recommendations
 
+- If you plan to use CockroachDB in production, we recommend using a [secure cluster](deploy-cockroachdb-on-digital-ocean.html) instead. Using an insecure cluster comes with risks:
+  - Your cluster is open to any client that can access any node's IP addresses.
+  - Any user, even `root`, can log in without providing a password.
+  - Any user, connecting as `root`, can read or write any data in your cluster.
+  - There is no network encryption or authentication, and thus no confidentiality.
+
+- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+
 - Set up your Droplets using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
+
 - Decide how you want to access your Admin UI:
 	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
 	- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 ## Step 1. Create Droplets
 

@@ -123,7 +123,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
 --background
 
 # Add node 3:
@@ -132,7 +132,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
 --background
 ~~~
 
