@@ -1,6 +1,5 @@
 *~
 .DS_Store
-Gemfile.lock
 generate/generate
 Railroad.jar
 .sass-cache
