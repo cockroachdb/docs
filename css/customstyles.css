@@ -736,6 +736,8 @@ section.footer {
   @media screen and (min-width: 992px) {
     section.footer {
       padding-bottom: 60px; } }
+  section.footer ul li {
+    line-height: 22px; }
   section.footer .container {
     padding: 0; }
     @media screen and (min-width: 768px) {
