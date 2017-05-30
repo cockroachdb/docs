@@ -7,7 +7,14 @@ url: "https://www.cockroachlabs.com"
 baseurl: "/docs"
 
 highlighter: rouge
-markdown: kramdown
+markdown: redcarpet
+
+redcarpet:
+  extensions:
+  - disable_indented_code_blocks
+  - no_intra_emphasis
+  - tables
+  - with_toc_data
 
 exclude: ["set-application-name.md", "vendor"]
 
