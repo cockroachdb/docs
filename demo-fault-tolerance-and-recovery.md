@@ -17,32 +17,31 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 {{site.data.alerts.callout_success}}See <a href="start-a-local-cluster.html">Start a Local Cluster</a> for details about <code>cockroach start</code> options.{{site.data.alerts.end}}
 
 ~~~ shell
-# Start node 1:
+# In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=fault-node1 \
---host=localhost \
---background
+--host=localhost
 
-# Start node 2:
+# In a new terminal, start node 2:
 $ cockroach start --insecure \
 --store=fault-node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 
-# Start node 3:
+# In a new terminal, start node 3:
 $ cockroach start --insecure \
 --store=fault-node3 \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
-Open the built-in SQL shell on any node to verify that the cluster is live:
+## Step 2. Verify that the cluster is live
+
+In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
 
 ~~~ shell
 $ cockroach sql --insecure
@@ -67,11 +66,17 @@ $ cockroach sql --insecure
 (4 rows)
 ~~~
 
-Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+Exit the SQL shell:
 
-## Step 2. Remove a node temporarily
+~~~ sql
+> \q
+~~~
 
-Use the [`cockroach quit`](stop-a-node.html) command to stop node 2 (port `26258`):
+## Step 3. Remove a node temporarily
+
+In the terminal running node 2, press **CTRL + C** to stop the node.
+
+Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
 ~~~ shell
 $ cockroach quit --insecure --port=26258
@@ -82,9 +87,9 @@ initiating graceful shutdown of server
 ok
 ~~~
 
-## Step 3. Verify that the cluster remains available
+## Step 4. Verify that the cluster remains available
 
-Open the built-in SQL shell on node 1 (port `26257`) or node 3 (port `26259`):
+Switch to the terminal for the built-in SQL shell and reconnect the shell to node 1 (port `26257`) or node 3 (port `26259`):
 
 ~~~ shell
 $ cockroach sql --insecure --port=26259
@@ -111,11 +116,15 @@ $ cockroach sql --insecure --port=26259
 
 As you see, despite one node being offline, the cluster continues uninterrupted because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one node live, the cluster would be unresponsive until another node was brought back online.
 
-Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+Exit the SQL shell:
 
-## Step 4. Write data while the node is offline
+~~~ sql
+> \q
+~~~
 
-Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
+## Step 5. Write data while the node is offline
+
+In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
 <div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql --insecure
 </code></pre>
@@ -132,7 +141,7 @@ CREATE TABLE
 INSERT 200
 ~~~
 
-Once again, open the SQL shell on node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
+Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
 
 ~~~ shell
 $ cockroach sql --insecure --port=26259
@@ -194,11 +203,15 @@ $ cockroach sql --insecure --port=26259
 (10 rows)
 ~~~
 
-Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+Exit the SQL shell:
 
-## Step 5. Rejoin the node to the cluster
+~~~ sql
+> \q
+~~~
 
-Rejoin node 2 to the cluster, using the same command that you used in step 1:
+## Step 6. Rejoin the node to the cluster
+
+Switch to the terminal for node 2, and rejoin the node to the cluster, using the same command that you used in step 1:
 
 ~~~ shell
 $ cockroach start --insecure \
@@ -206,8 +219,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
 ~~~
@@ -222,9 +234,9 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     2
 ~~~
 
-## Step 6. Verify that the rejoined node has caught up
+## Step 7. Verify that the rejoined node has caught up
 
-Open the SQL shell on the rejoined node 2 (port `26258`) and check for the `startrek` data that was added while the node was offline:
+Switch to the terminal for the built-in SQL shell, connect the shell to the rejoined node 2 (port `26258`), and check for the `startrek` data that was added while the node was offline:
 
 ~~~ shell
 $ cockroach sql --insecure --port=26258
@@ -263,9 +275,9 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 <img src="images/recovery1.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Add another node
+## Step 8. Add another node
 
-Now, to prepare the cluster for a permanent node failure, add a fourth node:
+Now, to prepare the cluster for a permanent node failure, open a new terminal and add a fourth node:
 
 ~~~ shell
 $ cockroach start --insecure \
@@ -273,8 +285,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
 ~~~
@@ -289,9 +300,11 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     4
 ~~~
 
-## Step 8. Remove a node permanently
+## Step 9. Remove a node permanently
 
-Again use the [`cockroach quit`](stop-a-node.html) command to stop node 2 (port `26258`):
+Again, switch to the terminal running node 2 and press **CTRL + C** to stop it.
+
+Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
 ~~~ shell
 $ cockroach quit --insecure --port=26258
@@ -303,7 +316,7 @@ ok
 server drained and shutdown completed
 ~~~
 
-## Step 9. Verify that the cluster re-replicates missing replicas
+## Step 10. Verify that the cluster re-replicates missing replicas
 
 Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
@@ -313,33 +326,16 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 <img src="images/recovery3.png" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 10.  Stop the cluster
+## Step 11.  Stop the cluster
 
-Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html) to stop 2 of the 3 nodes:
+Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL + C**.
 
-~~~ shell
-# Stop node 1:
-$ cockroach quit --insecure
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
 
-# Stop node 3:
-$ cockroach quit --insecure --port=26259
-
-~~~
-
-With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
+If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ shell
-# Get the process ID for node 4:
-$ ps | grep cockroach
-~~~
-
-~~~
-13398 ttys001    0:00.67 cockroach start --insecure --store=fault-node4 --host=localhost --port=26260 --http-port=8083 --join=localhost:26257
-~~~
-
-~~~ shell
-# Force quit node 4:
-$ kill -9 13398
+$ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5
 ~~~
 
 ## What's Next?
