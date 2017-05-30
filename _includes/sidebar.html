@@ -47,38 +47,10 @@
 
         </script>
 
-        {% include custom/conditions.html %}
+        {% assign sidebar = site.data.sidebar_doc.entries %}
 
         <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
             <div class="sidenav-arrow"><img src="images/sidenav-arrow.svg" alt="Sidenav arrow"></div>
-            <div class="collapsed-header">
-              {% for entry in sidebar %}
-                {% for subcategory in entry.subcategories %}
-                  {% for item in subcategory.items %}
-                    {% if page.url == item.url or item.alternate_urls contains page.url%}
-                      <div class="collapsed-header__pre">{{ subcategory.title }}</div>
-                      <div>{{item.title}}</div>
-                    {% else %}
-                      {% for thirdlevel in item.thirdlevel %}
-                        {% for deeplevel in thirdlevel.thirdlevelitems %}
-                          {% if page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
-                          <div class="collapsed-header__pre">
-                            {{subcategory.title}}
-                            <div class="arrow-down arrow-down--pre"></div>
-                            {{thirdlevel.title}}
-                          </div>
-                          <div>{{deeplevel.title}}</div>
-                          {% endif %}
-                        {% endfor %}
-                      {% endfor %}
-                    {% endif %}
-                  {% endfor %}
-                {% endfor %}
-              {% endfor %}
-
-              {% if page.url == '/' or page.url == '/search.html' %}Docs Menu{% endif %}
-            </div>
-
             <li class="search-wrap">
                 <div class="search">
                     <span class="fa fa-search"></span>
