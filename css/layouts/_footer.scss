@@ -181,6 +181,7 @@ section.footer {
 		text-align: center;
 		@include avenir_m(14px);
 		color: $cl_blue;
+		line-height: 20px;
 
 		@include at-query($min, $screen-sm) {
 			width: 100%;

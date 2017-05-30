@@ -874,7 +874,8 @@ section.footer {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #142848; }
+    color: #142848;
+    line-height: 20px; }
     @media screen and (min-width: 768px) {
       section.footer .copyright {
         width: 100%;
