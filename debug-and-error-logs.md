@@ -104,7 +104,7 @@ To help troubleshoot [query performance issues](query-behavior-troubleshooting.h
 - **Long-running transactions**:
   
   ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.threshold = '[time]';
+  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '[time]';
   ~~~
 
   The `[time]` parameter accepts common time specifiers, such as `100ms` or `2s`.
