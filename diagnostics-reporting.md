@@ -199,6 +199,7 @@ This JSON example shows an excerpt of what query statistics look like when sent 
    }
 }
 ~~~
+
 ## Opt Out of Diagnostics Reporting
 
 To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following `SET CLUSTER SETTING` statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
