@@ -134,7 +134,7 @@ Once you're done troubleshooting, you should disable query logging to prevent it
 - **Long-running transactions**:
   
   ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.threshold = '0s';
+  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '0s';
   ~~~
 
 - **All queries**:
