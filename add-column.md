@@ -38,13 +38,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~ 
 
 ~~~
-+---------+---------+---------+---------+---------+
+
 | Field	  | Type	| Null	  | Default	| Indices |
-+---------+---------+---------+---------+---------+
+|---------|---------|---------|---------|---------|
 | id	  | INT		| false	  | NULL	|{primary}|
 | balance | DECIMAL	| true	  | NULL	| {}	  |
 | names	  | STRING	| true	  | NULL	| {}	  |
-+---------+---------+---------+---------+---------+
+|---------|---------|---------|---------|---------|
 ~~~
 
 ### ADD MULTIPLE COLUMNS
