@@ -1,6 +1,6 @@
 ---
-title: Start a Cluster in Docker
-summary: Run a multi-node CockroachDB cluster across multiple Docker containers on a single host.
+title: Start a Cluster in Docker (Insecure)
+summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
 asciicast: true
 allowed_hashes: [os-mac, os-linux, os-windows]
@@ -16,7 +16,7 @@ To link directly to the linux or windows tab, append #os-linux or #os-windows to
     <button id="windows" class="filter-button" data-scope="os-windows">Windows</button>
 </div>
 
-Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run a multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
+Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
 {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See <a href="orchestration.html">Orchestration</a> for more details.{{site.data.alerts.end}}
 
@@ -191,10 +191,7 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 
 ## What's Next?
 
-[Secure your cluster](secure-a-cluster.html) with authentication and encryption. You might also be interested in:
-
-- [Explore Core Features](demo-data-replication.html)
-- [Manual Deployment](manual-deployment.html)
-- [Cloud Deployment](cloud-deployment.html)
-- [Orchestration](orchestration.html)
-- [Import Data](import-data.html)
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language
+- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance

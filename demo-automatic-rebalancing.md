@@ -20,32 +20,29 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 {{site.data.alerts.callout_success}}See <a href="start-a-local-cluster.html">Start a Local Cluster</a> for details about <code>cockroach start</code> options.{{site.data.alerts.end}}
 
 ~~~ shell
-# Start node 1:
+# In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=scale-node1 \
---host=localhost \
---background
+--host=localhost
 
-# Start node 2:
+# In a new terminal, start node 2:
 $ cockroach start --insecure \
 --store=scale-node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 
-# Start node 3:
+# In a new terminal, start node 3:
 $ cockroach start --insecure \
 --store=scale-node3 \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
-Open the [built-in SQL shell](use-the-built-in-sql-client.html) on any node to verify that the cluster is live:
+In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node to verify that the cluster is live:
 
 ~~~ shell
 $ cockroach sql --insecure
@@ -70,7 +67,11 @@ $ cockroach sql --insecure
 (4 rows)
 ~~~
 
-Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+Exit the SQL shell:
+
+~~~ sql
+> \q
+~~~
 
 ## Step 2. Lower the max range size
 
@@ -133,23 +134,21 @@ Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the r
 Adding capacity is as simple as starting more nodes and joining them to the running cluster:
 
 ~~~ shell
-# Start node 4:
+# In a new terminal, start node 4:
 $ cockroach start --insecure \
 --store=scale-node4 \
 --host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 
-# Start node 5:
+# In a new terminal, start node 5:
 $ cockroach start --insecure \
 --store=scale-node5 \
 --host=localhost \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257 \
---background
+--join=localhost:26257
 ~~~
 
 ## Step 6. Watch data rebalance across all 5 nodes
@@ -160,36 +159,14 @@ Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and rep
 
 ## Step 7.  Stop the cluster
 
-Once you're done with your test cluster, use [`cockroach quit`](stop-a-node.html) to stop 4 of the 5 nodes:
+Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL + C**.
+
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+
+If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ shell
-# Stop node 1:
-$ cockroach quit --insecure
-
-# Stop node 2:
-$ cockroach quit --insecure --port=26258
-
-# Stop node 3:
-$ cockroach quit --insecure --port=26259
-
-# Stop node 4:
-$ cockroach quit --insecure --port=26260
-~~~
-
-With only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. As a result, you can't use `cockroach quit` to stop the last node, but instead must get the node's process ID and then force kill it:
-
-~~~ shell
-# Get the process ID for node 5:
-$ ps | grep cockroach
-~~~
-
-~~~
-13400 ttys001    0:00.58 cockroach start --insecure --store=scale-node5 --host=localhost --port=26261 --http-port=8084 --join=localhost:26257
-~~~
-
-~~~ shell
-# Force quit the remaining node:
-$ kill -9 13400
+$ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 ~~~
 
 ## What's Next?

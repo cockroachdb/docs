@@ -80,4 +80,3 @@ You can use this as a template for [filing an issue in GitHub](https://github.co
 
 
 ~~~
-
