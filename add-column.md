@@ -38,13 +38,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~ 
 
 ~~~
-+---------+---------+---------+---------+---------+
-| Field	  | Type	| Null	  | Default	| Indices |
-+---------+---------+---------+---------+---------+
-| id	  | INT		| false	  | NULL	|{primary}|
-| balance | DECIMAL	| true	  | NULL	| {}	  |
-| names	  | STRING	| true	  | NULL	| {}	  |
-+---------+---------+---------+---------+---------+
++-----------+-------------------+-------+---------+-----------+
+|   Field   |       Type        | Null  | Default |  Indices  |
++-----------+-------------------+-------+---------+-----------+
+| id        | INT               | false | NULL    | {primary} |
+| balance   | DECIMAL           | true  | NULL    | {}        |
+| names     | STRING            | true  | NULL    | {}        |
++-----------+-------------------+-------+---------+-----------+
 ~~~
 
 
@@ -59,15 +59,15 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~ 
 
 ~~~
-+-----------+-----------+-----------+-----------+-----------+
-| Field	  	| Type		| Null	  	| Default	| Indices 	|
-+-----------+-----------+-----------+-----------+-----------+
-| id	  	| INT		| false	  	| NULL		|{primary}	|
-| balance 	| DECIMAL	| true	  	| NULL		| {}	  	|
-| names	  	| STRING	| true	  	| NULL		| {}	  	|
-| location	| STRING	| true	  	| NULL		| {}	  	|
-| amount  	| DECIMAL	| true	  	| NULL		| {}	  	|
-+-----------+-----------+-----------+-----------+-----------+
++-----------+-------------------+-------+---------+-----------+
+|   Field   |       Type        | Null  | Default |  Indices  |
++-----------+-------------------+-------+---------+-----------+
+| id        | INT               | false | NULL    | {primary} |
+| balance   | DECIMAL           | true  | NULL    | {}        |
+| names     | STRING            | true  | NULL    | {}        |
+| location  | STRING            | true  | NULL    | {}        |
+| amount    | INT               | true  | NULL    | {}        |
++-----------+-------------------+-------+---------+-----------+
 
 ~~~
 
