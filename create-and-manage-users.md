@@ -133,8 +133,6 @@ If we cannot find client certificate and key files matching the user, we fall ba
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
-After issuing this command, you must enter the password for `jpointsman` twice.
-
 ### Update a User's Password
 
 ~~~ shell

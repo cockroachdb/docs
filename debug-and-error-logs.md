@@ -104,7 +104,7 @@ To help troubleshoot [query performance issues](query-behavior-troubleshooting.h
 - **Long-running transactions**:
   
   ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.threshold = '[time]';
+  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '[time]';
   ~~~
 
   The `[time]` parameter accepts common time specifiers, such as `100ms` or `2s`.
@@ -134,7 +134,7 @@ Once you're done troubleshooting, you should disable query logging to prevent it
 - **Long-running transactions**:
   
   ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.threshold = '0s';
+  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '0s';
   ~~~
 
 - **All queries**:

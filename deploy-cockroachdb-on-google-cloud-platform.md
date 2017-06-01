@@ -24,12 +24,11 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Recommendations
 
-Decide how you want to access your Admin UI:
+- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
-- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
-
-For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- Decide how you want to access your Admin UI:
+  - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
+  - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
 {{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
 

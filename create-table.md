@@ -6,8 +6,6 @@ toc: false
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
-By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
-
 <div id="toc"></div>
 
 ## Required Privileges
@@ -49,6 +47,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 </div>
 
+{{site.data.alerts.callout_success}}To create a table from the results of a <code>SELECT</code> statement, use <a href="create-table-as.html"><code>CREATE TABLE AS</code></a>.
+{{site.data.alerts.end}}
+
 ## Parameters
 
 Parameter | Description
@@ -60,6 +61,10 @@ Parameter | Description
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
+
+## Table-Level Replication
+
+By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
 ## Examples
 
@@ -237,6 +242,35 @@ In this example, we'll show a series of tables using different formats of foreig
 ### Create a Table that Mirrors Key-Value Storage
 
 {% include faq/simulate-key-value-store.html %}
+
+### Create a Table from a `SELECT` Statement
+
+You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
+
+~~~ sql
+> SELECT * FROM customers WHERE state = 'NY';
+~~~
+~~~
++----+---------+-------+
+| id |  name   | state |
++----+---------+-------+
+|  6 | Dorotea | NY    |
+| 15 | Thales  | NY    |
++----+---------+-------+
+~~~
+~~~ sql
+> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+
+> SELECT * FROM customers_ny;
+~~~
+~~~
++----+---------+-------+
+| id |  name   | state |
++----+---------+-------+
+|  6 | Dorotea | NY    |
+| 15 | Thales  | NY    |
++----+---------+-------+
+~~~
 
 ### Show the Definition of a Table
 
