@@ -45,7 +45,6 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | balance | DECIMAL	| true	  | NULL	| {}	  |
 | names	  | STRING	| true	  | NULL	| {}	  |
 +---------+---------+---------+---------+---------+
-(3 rows)
 ~~~
 
 ### ADD MULTIPLE COLUMNS
@@ -59,16 +58,16 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~ 
 
 ~~~
-+---------+---------+---------+---------+---------+
-| Field	  | Type	| Null	  | Default	| Indices |
-+---------+---------+---------+---------+---------+
-| id	  | INT		| false	  | NULL	|{primary}|
-| balance | DECIMAL	| true	  | NULL	| {}	  |
-| names	  | STRING	| true	  | NULL	| {}	  |
-| location| STRING	| true	  | NULL	| {}	  |
-| amount  | DECIMAL	| true	  | NULL	| {}	  |
-+---------+---------+---------+---------+---------+
-(5 rows)
++-----------+-----------+-----------+-----------+-----------+
+| Field	  	| Type		| Null	  	| Default	| Indices 	|
++-----------+-----------+-----------+-----------+-----------+
+| id	  	| INT		| false	  	| NULL		|{primary}	|
+| balance 	| DECIMAL	| true	  	| NULL		| {}	  	|
+| names	  	| STRING	| true	  	| NULL		| {}	  	|
+| location	| STRING	| true	  	| NULL		| {}	  	|
+| amount  	| DECIMAL	| true	  	| NULL		| {}	  	|
++-----------+-----------+-----------+-----------+-----------+
+
 ~~~
 
 ### ADD A NON NULL COLUMN WITH A DEFAULT VALUE
