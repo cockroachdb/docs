@@ -27,7 +27,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
-### ADD A SINGLE COLUMN
+### Add a Single Column
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
@@ -48,7 +48,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 
-### ADD MULTIPLE COLUMNS
+### Add Multiple Columns
 
 ~~~ sql
 > ALTER TABLE account ADD COLUMN location STRING, ADD COLUMN amount DECIMAL;
@@ -71,41 +71,41 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~
 
-### ADD A NON NULL COLUMN WITH A DEFAULT VALUE
+### Add a Non Null Column with a Default Value
 
 ~~~ sql
 > ALTER TABLE account ADD COLUMN amount DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~ 
 
 
-### ADD A NON NULL COLUMN WITH UNIQUE VALUES
+### Add a Non Null Column with Unique Values
 
 ~~~ sql
 > ALTER TABLE account ADD COLUMN amount DECIMAL UNIQUE NOT NULL;
 ~~~ 
  
 
-### ADD A COLUMN WITH COLLATION
+### Add a Column with Collation
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING COLLATE en;
 ~~~ 
  
 
-### ADD A COLUMN TO A NEW COLUMN FAMILY
+### Add a Column to a New Column Family
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING CREATE FAMILY new_family;
 ~~~ 
 
 
-### ADD A COLUMN TO AN EXISTING COLUMN FAMILY
+### Add a Column to an Existing Column Family
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING FAMILY existing_family;
 ~~~
 
-### ADD A COLUMN USING CREATE IF NOT EXISTS FAMILY
+### Add a Column Using CREATE IF NOT EXISTS FAMILY
 
 Use the CREATE IF NOT EXISTS FAMILY keyword to assign a new column to an existing family or, if the family doesn’t exist, to a new family. For example, the following would assign the new column to the existing family f1; if that family didn’t exist, it would create a new family and assign the column to it:
 
