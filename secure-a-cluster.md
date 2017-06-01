@@ -1,6 +1,6 @@
 ---
-title: Secure a Cluster
-summary: Learn how to secure a CockroachDB cluster with authentication and encryption.
+title: Start a Local Cluster (Secure)
+summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: false
 asciicast: true
 ---
@@ -10,7 +10,7 @@ asciicast: true
     <a href="secure-a-cluster.html"><button class="filter-button current"><strong>Secure</strong></button></a>
 </div>
 
-Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start a secure, multi-node cluster locally, using TLS encryption to protect network communication.
+Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start a secure multi-node cluster locally, using [TLS certificates](create-security-certificates.html) to encrypt network communication.
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 

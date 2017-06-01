@@ -1,6 +1,6 @@
 ---
-title: Start a Cluster
-summary: Run a multi-node CockroachDB cluster locally with each node listening on a different port.
+title: Start a Local Cluster (Insecure)
+summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: false
 toc_not_nested: true
 asciicast: true
@@ -11,7 +11,7 @@ asciicast: true
     <a href="secure-a-cluster.html"><button class="filter-button">Secure</button></a>
 </div>
 
-Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start an insecure, multi-node cluster locally.
+Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start an insecure multi-node cluster locally.
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 

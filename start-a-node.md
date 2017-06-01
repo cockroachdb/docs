@@ -25,7 +25,7 @@ $ cockroach start --help
 
 ## Flags
 
-The `start` command supports the following [general-use](#general) and [logging](#logging) flags. 
+The `start` command supports the following [general-use](#general) and [logging](#logging) flags.
 
 {{site.data.alerts.callout_success}}When adding a node to an existing cluster, include the <code>--join</code> flag.{{site.data.alerts.end}}
 
@@ -116,7 +116,7 @@ Field | Description
 
 ### Start a local cluster
 
-This example demonstrates starting up three nodes locally. See [Start a Cluster](start-a-local-cluster.html) and [Secure a Cluster](secure-a-cluster.html) for a detailed walkthrough.
+This example demonstrates starting up three nodes locally. See [Start a Local Cluster (Insecure)](start-a-local-cluster.html) and [Start a Local Cluster (Secure)](secure-a-cluster.html) for a detailed walkthrough.
 
 ~~~ shell
 # Insecure:
