@@ -14,7 +14,7 @@ This page helps with general troubleshooting steps that apply to many different 
 
 If you run into issues with CockroachDB, there are a few steps you can always take:
  
-- Check your [logs](debug-and-error-logs.html) for errors related to your issue. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or check the logs from all of the nodes in your cluster.
+- Check your [logs](debug-and-error-logs.html) for errors related to your issue. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](debug-zip.html).
 
 - [Stop](stop-a-node.html) and [restart](start-a-node.html) problematic nodes with the `--logtostderr` flag. This option prints logs to your terminal through `stderr`, letting you see all of your cluster's activities as they occur.
 
