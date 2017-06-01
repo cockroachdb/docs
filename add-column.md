@@ -122,7 +122,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
-# Add a Column Using CREATE IF NOT EXISTS FAMILY
+### Add a Column Using CREATE IF NOT EXISTS FAMILY
 
 Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an existing family or, if the family doesn’t exist, to a new family. For example, the following would assign the new column to the existing family f1; if that family didn’t exist, it would create a new family and assign the column to it:
 
