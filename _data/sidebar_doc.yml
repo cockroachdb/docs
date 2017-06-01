@@ -12,7 +12,7 @@ entries:
           url: /install-cockroachdb.html
 
           thirdlevel:
-            - title: Start a Cluster
+            - title: Start a Local Cluster
               thirdlevelitems:
 
                 - title: From Binary
