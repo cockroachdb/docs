@@ -104,20 +104,20 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
 ~~~ 
  
-### Add a Column to a Column Family
+### Add a Column and Assign it to a Column Family
 
+#### Add a Column and Assign it to a New Column Family
 ~~~ sql
-# Add a Column to a New Column Family
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
 ~~~ 
 
+#### Add a Column and Assign it to an Existing Column Family
 ~~~ sql
-# Add a Column to an Existing Column Family
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
+#### Add a Column and Create a New Column Family if Column Family Does Not Exist
 ~~~ sql
-# Add a Column Using CREATE IF NOT EXISTS FAMILY
 > ALTER TABLE accounts ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f1;
 ~~~
 
