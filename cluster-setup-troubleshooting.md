@@ -97,7 +97,7 @@ Proceed through the following steps until you locate the source of the issue wit
     {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, you will need to change the <code>--port</code>, <code>--http-port</code>, and <code>--store</code> flags. For an example of this, see <a href="start-a-local-cluster.html#step-2-add-nodes-to-the-cluster">Start a Local Cluster</a>.{{site.data.alerts.end}}
 
     Errors at this stage potentially include:
-    - The same port and host issues from [running a single node](#start-a-single-node-cluster).
+    - The same port and host issues from [running a single node](#1-start-a-single-node-cluster).
     - [Networking issues](#networking-troubleshooting)
     - [Nodes not joining the cluster](#node-wont-join-cluster)
 

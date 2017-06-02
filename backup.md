@@ -26,13 +26,13 @@ Dependent objects should be backed up at the same time as the objects they depen
 
 Object | Depends On
 -------|-----------
-Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](restore.html#skipmissingforeignkeys))
+Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys))
 [Views](views.html) | The tables used in the view's `SELECT` statement
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy)
 
 ### Users and Privileges
 
-Every backup you create includes `system.users`, which stores your users and their passwords. To restore your users, you must use [this procedure](restore.html#restoring-users-from-systemusers-backup).
+Every backup you create includes `system.users`, which stores your users and their passwords. To restore your users, you must use [this procedure](restore.html#restoring-users-from-system-users-backup).
 
 Restored tables inherit privilege grants from the target database; they do not preserve privilege grants from the backed up table because the restoring cluster may have different users.
 

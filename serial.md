@@ -117,7 +117,7 @@ In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCRE
 
 ## Supported Casting & Conversion
 
-[Values of type `SERIAL` can be converted to other types like any `INT` values](int.html#supported-casting--conversion).
+[Values of type `SERIAL` can be converted to other types like any `INT` values](int.html#supported-casting-conversion).
 
 ## See Also
 

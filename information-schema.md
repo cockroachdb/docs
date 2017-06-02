@@ -19,10 +19,10 @@ To perform introspection on objects, you can either read from the related `infor
 Object | Information Schema View| SHOW .
 -------|--------------|--------
 Columns | [columns](#columns)| [`SHOW COLUMNS`](show-columns.html)
-Constraints | [key_column_usage](#keycolumnusage), [table_constraints](#tableconstraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
+Constraints | [key_column_usage](#key_column_usage), [table_constraints](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [schemata](#schemata)| [`SHOW DATABASE`](show-database.html)
 Indexes | [statistics](#statistics)| [`SHOW INDEX`](show-index.html)
-Privileges | [schema_privileges](#schemaprivileges), [table_privileges](#tableprivileges)| [`SHOW GRANTS`](show-grants.html)
+Privileges | [schema_privileges](#schema_privileges), [table_privileges](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
 Tables | [tables](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [tables](#tables), [views](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
 

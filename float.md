@@ -70,7 +70,7 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Supported Casting & Conversion
 
-`FLOAT` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
+`FLOAT` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
 Type | Details
 -----|--------

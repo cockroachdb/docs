@@ -14,7 +14,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table. To us
 
 ## Synopsis
 
-{% include sql/diagrams/insert.html %}
+<div>{% include sql/diagrams/insert.html %}</div>
 
 ## Parameters
 
