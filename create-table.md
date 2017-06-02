@@ -28,21 +28,27 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 {% include sql/diagrams/create_table.html %}
 
 **column_def ::=**
+
 {% include sql/diagrams/column_def.html %}
 
 **col_qual_list ::=**
+
 {% include sql/diagrams/col_qual_list.html %}
 
 **index_def ::=**
+
 {% include sql/diagrams/index_def.html %}
 
 **family_def ::=**
+
 {% include sql/diagrams/family_def.html %}
 
 **table_constraint ::=**
+
 {% include sql/diagrams/table_constraint.html %}
 
 **opt_interleave ::=**
+
 {% include sql/diagrams/opt_interleave.html %}
 
 </div>

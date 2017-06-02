@@ -84,34 +84,34 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. Create a table with a `SERIAL` column.
 
-   ~~~ sql
-   > CREATE TABLE increment (a SERIAL PRIMARY KEY);
-   ~~~
+    ~~~ sql
+    > CREATE TABLE increment (a SERIAL PRIMARY KEY);
+    ~~~
 
 2. Run four transactions for inserting rows.
 
-   ~~~ sql
-   > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
-   > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
-   > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
-   > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
-   ~~~
+    ~~~ sql
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
+    ~~~
 
 3. View the rows created.
 
-   ~~~ sql
-   > SELECT * from increment;
-   ~~~
-   ~~~
-   +---+
-   | a |
-   +---+
-   | 2 |
-   | 4 |
-   +---+
-   ~~~
+    ~~~ sql
+    > SELECT * from increment;
+    ~~~
+    ~~~
+    +---+
+    | a |
+    +---+
+    | 2 |
+    | 4 |
+    +---+
+    ~~~
 
-   Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
+    Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster.
 

@@ -29,14 +29,14 @@ How you add constraints depends on the number of columns you want to constrain, 
 
 - **One column of a new table** has its constraints defined after the column's data type. For example, this statement applies the Primary Key constraint to `foo.a`:
 
-  ``` sql
-  > CREATE TABLE foo (a INT PRIMARY KEY);
-  ```
+    ``` sql
+    > CREATE TABLE foo (a INT PRIMARY KEY);
+    ```
 - **Multiple columns of a new table** have their constraints defined after the table's columns. For example, this statement applies the Primary Key constraint to `foo`'s columns `a` and `b`:
 
-  ``` sql
-  > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
-  ```
+    ``` sql
+    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
+    ```
 
   {{site.data.alerts.callout_info}}The Default Value and Not Null constraints cannot be applied to multiple columns.{{site.data.alerts.end}}
 
