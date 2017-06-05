@@ -182,6 +182,62 @@ SQL code samples are broken into two sections: commands and responses.
 
   Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
 
+### Lists
+
+For each item of a numbered list, use the step number followed by a period, e.g., `1.`.
+
+For each item of a bulleted list, use the `-` character.
+
+#### Nesting Lists
+
+To nest a list under a list item, start the list on the next line (no empty line), and indent the new list four spaces, for example:
+
+```
+1. This is a step.
+    - This is a bullet.
+    - This is a bullet.
+    - This is a bullet.
+
+2. This is a step.
+```
+
+#### Nesting Paragraphs or Code Blocks
+
+To nest a paragraph or code block under a list item, insert an empty line and then indent the paragraph or code block 4 spaces, for example:
+
+```
+1. This is a step.
+
+    This is a nested paragraph.
+
+    ~~~ shell
+    $ command
+    ~~~
+```
+
+Similarly, to nest a paragraph or code block under a *nested* list item, insert an empty line and then indent the paragraph or code block 8 spaces, for example:
+
+```
+1. This is a step.
+    - This is a bullet.
+
+        ~~~ shell
+        $ command
+        ~~~
+    - This is a bullet.
+
+        ~~~ shell
+        $ command
+        ~~~
+    - This is a bullet.
+
+        ~~~ shell
+        $ command
+        ~~~
+
+2. This is a step.
+```
+
 ### Notes, Warnings, & Tips
 
 Our docs use three classes of highlighted text.
