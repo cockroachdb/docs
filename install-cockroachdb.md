@@ -79,7 +79,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on macOS. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
+<p>There are four ways to install CockroachDB on macOS. See <a href="{{site.data.strings.version}}.html" data-eventcategory=“mac-releasenotes-download”>Release Notes</a> for what's new in the latest version. </p>
 
 <div id="mac-installs" class="clearfix">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -200,7 +200,7 @@ $(document).ready(function(){
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz" data-eventcategory=“mac-source-download”>latest CockroachDB source archive</a>.</p>
   </li>
   <li>
     <p>Extract the sources:</p>
@@ -302,7 +302,7 @@ $(document).ready(function(){
 </div>
 
 <div id="linuxinstall" style="display: none;">
-<p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version.</p>
+<p>There are three ways to install CockroachDB on Linux. See <a href="{{site.data.strings.version}}.html" data-eventcategory="linux-releasenotes-download">Release Notes</a> for what's new in the latest version.</p>
 
 <div id="linux-installs" class="clearfix">
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
@@ -388,7 +388,7 @@ $(document).ready(function(){
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz">latest CockroachDB source archive</a>.</p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-latest.src.tgz" data-eventcategory=“linux-source-download”>latest CockroachDB source archive</a>.</p>
   </li>
   <li>
     <p>Extract the sources:</p>
@@ -494,7 +494,7 @@ $(document).ready(function(){
 
 <div id="windowsinstall" style="display: none;">
 
-<p>There are two ways to install CockroachDB on Windows. See <a href="{{site.data.strings.version}}.html">Release Notes</a> for what's new in the latest version. </p>
+<p>There are two ways to install CockroachDB on Windows. See <a href="{{site.data.strings.version}}.html" data-eventcategory="windows-releasenotes-download">Release Notes</a> for what's new in the latest version. </p>
 
 <div id="windows-installs" class="clearfix">
 <a href="#download-the-binary-windows" class="install-button windows-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="windows-binary">Download the <div class="c2a">Binary</div></a>
@@ -508,7 +508,7 @@ $(document).ready(function(){
 
 <ol>
   <li>
-    <p>Download and extract the latest <a href="https://binaries.cockroachdb.com/cockroach-v1.0-rc.2.windows-6.2-amd64.zip">CockroachDB archive for Windows</a>.</p>
+    <p>Download and extract the latest <a href="https://binaries.cockroachdb.com/cockroach-v1.0-rc.2.windows-6.2-amd64.zip" data-eventcategory="windows-binary-download">CockroachDB archive for Windows</a>.</p>
   </li>
   <li>
     <p>Open PowerShell, navigate to the directory containing the binary, and make sure the CockroachDB executable works:</p>
