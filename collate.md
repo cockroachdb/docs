@@ -28,17 +28,17 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 
 - **Column syntax**: `STRING COLLATE <collation>`. For example:
 
-  ~~~ sql
-  > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
-  ~~~
+    ~~~ sql
+    > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
+    ~~~
 
-  {{site.data.alerts.callout_info}}You can also use any of the <a href="string.html#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}You can also use any of the <a href="string.html#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
 
 - **Value syntax**: `<STRING value> COLLATE <collation>`. For example:
 
-  ~~~ sql
-  > INSERT INTO foo VALUES ('dog' COLLATE en);
-  ~~~
+    ~~~ sql
+    > INSERT INTO foo VALUES ('dog' COLLATE en);
+    ~~~
 
 ## Examples
 

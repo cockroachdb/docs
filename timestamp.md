@@ -78,7 +78,7 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 ## Supported Casting & Conversion
 
-`TIMESTAMP` values can be [cast](data-types.html#data-type-conversions--casts) to any of the following data types:
+`TIMESTAMP` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
 Type | Details
 -----|--------

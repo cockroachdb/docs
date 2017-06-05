@@ -25,7 +25,7 @@ The notion of "restoring a database" simply restores all of the tables and views
 Because this process is designed for disaster recovery, CockroachDB expects that the tables do not currently exist in the [target database](#target-database). This means the target database must have not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html) or [`DROP VIEW`](drop-view.html) and then restore them.
-- [Restore the table or view into a different database](#intodb).
+- [Restore the table or view into a different database](#into_db).
 
 However, because the `RESTORE` feature is designed for disaster recovery, 
 
@@ -35,7 +35,7 @@ Dependent objects must be restored at the same time as the objects they depend o
 
 Object | Depends On
 -------|-----------
-Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skipmissingforeignkeys))
+Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys))
 [Views](views.html) | The tables used in the view's `SELECT` statement
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy)
 
@@ -43,7 +43,7 @@ Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCE
 
 By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
 
-- You can choose to [change the target database](#intodb).
+- You can choose to [change the target database](#into_db).
 - If it no longer exists, you must [create the target database](create-database.html). 
 
 The target database must have not have tables or views with the same name as the tables or views you're restoring.
@@ -52,7 +52,7 @@ The target database must have not have tables or views with the same name as the
 
 Table and view users/privileges are not restored. Restored tables and views instead inherit the privileges of the database into which they're restored.
 
-However, every backup includes `system.users`, so you can [restore users and their passwords](#restoring-users-from-systemusers-backup).
+However, every backup includes `system.users`, so you can [restore users and their passwords](#restoring-users-from-system-users-backup).
 
 Table-level privileges must be [granted to users](grant.html) after the restore is complete.
 
@@ -121,7 +121,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 #### `skip_missing_foreign_keys`
 
 ----|----------
-**Description** | If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skipmissingforeignkeys) and then have it restored.
+**Description** | If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skip_missing_foreign_keys) and then have it restored.
 **Key** | `skip_missing_foreign_keys`
 **Value** | *No value*
 **Example** | `WITH OPTIONS ("skip_missing_foreign_keys")`
@@ -156,7 +156,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 ### Restore into a Different Database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](#intodb) option, you can control the target database.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](#into_db) option, you can control the target database.
 
 ~~~ sql
 > RESTORE bank.customers FROM 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -165,7 +165,7 @@ WITH OPTIONS ('into_db' = 'newdb');
 
 ### Remove the Foreign Key Before Restore
 
-By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](#skipmissingforeignkeys) option you can remove the Foreign Key constraint from the table and then restore it.
+By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
 
 ~~~ sql
 > RESTORE bank.accounts FROM 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'

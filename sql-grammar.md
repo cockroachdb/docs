@@ -21,4 +21,4 @@ a[name]:focus {
 This page describes the full CockroachDB SQL grammar. However, as a starting point, it's best to reference our <a href="sql-statements.html">SQL statements pages</a> first, which provide detailed explanations and examples.
 {{site.data.alerts.end}}
 
-{% include sql/diagrams/grammar.html %}
+<div>{% include sql/diagrams/grammar.html %}</div>

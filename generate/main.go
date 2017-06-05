@@ -425,12 +425,12 @@ func main() {
 				},
 				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"}},
 				{
-					name: "rollback_transaction",
-					stmt: "transaction_stmt",
-					inline: []string{"opt_to_savepoint"},
-					match: []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")},
-					replace: map[string]string{"'TRANSACTION'": "", "'TO'": "'TO' 'SAVEPOINT'","savepoint_name": "cockroach_restart"},
-					unlink: []string{"cockroach_restart"},
+					name:    "rollback_transaction",
+					stmt:    "transaction_stmt",
+					inline:  []string{"opt_to_savepoint"},
+					match:   []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")},
+					replace: map[string]string{"'TRANSACTION'": "", "'TO'": "'TO' 'SAVEPOINT'", "savepoint_name": "cockroach_restart"},
+					unlink:  []string{"cockroach_restart"},
 				},
 				{name: "savepoint_stmt", inline: []string{"savepoint_name"}},
 				{
@@ -496,7 +496,7 @@ func main() {
 				{name: "table_constraint", inline: []string{"constraint_elem", "opt_storing", "storing"}},
 				{
 					name:    "truncate_stmt",
-					inline: []string{"opt_table", "relation_expr_list", "opt_drop_behavior"},
+					inline:  []string{"opt_table", "relation_expr_list", "opt_drop_behavior"},
 					replace: map[string]string{"relation_expr": "table_name"},
 					unlink:  []string{"table_name"},
 					//inline:  []string{"opt_table", "relation_expr_list", "relation_expr", "opt_drop_behavior"},
@@ -574,6 +574,10 @@ func main() {
 						replaceTo := fmt.Sprintf(`<a xlink:href="sql-grammar.html#%s" xlink:title="%s">`, to, to)
 						body = strings.Replace(body, replaceFrom, replaceTo, -1)
 					}
+					// Wrap the output in a <div> so that the Markdown parser
+					// doesn't attempt to parse the inside of the contained
+					// <svg> as Markdown.
+					body = fmt.Sprintf(`<div>%s</div>`, body)
 					if err := ioutil.WriteFile(filepath.Join(baseDir, fmt.Sprintf("%s.html", name)), []byte(body), 0644); err != nil {
 						log.Fatal(s.name, err)
 					}
