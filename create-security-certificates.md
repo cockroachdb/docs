@@ -96,70 +96,70 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Create the CA certificate and key pair
 
-1. 	Create a safe directory for the CA key:
+1. Create a safe directory for the CA key:
 
-	~~~ shell
-	$ mkdir my-safe-directory
-	~~~
+    ~~~ shell
+    $ mkdir my-safe-directory
+    ~~~
 
-2. 	Generate the CA certificate and key:
+2. Generate the CA certificate and key:
 
-	~~~ shell
-	$ cockroach cert create-ca \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
 
-	$ ls -l certs
-	~~~
+    $ ls -l certs
+    ~~~
 
-	~~~
-	-rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
-	~~~
+    ~~~
+    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
+    ~~~
 
 ### Create the certificate and key pairs for nodes
 
-1. 	Create the certificate and key for the first node:
+1. Create the certificate and key for the first node:
 
-	~~~ shell
-	$ cockroach cert create-node \
-	node1.example.com \
-	node1.another-example.com \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
+    ~~~ shell
+    $ cockroach cert create-node \
+    node1.example.com \
+    node1.another-example.com \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
 
-	$ ls -l certs
-	~~~
+    $ ls -l certs
+    ~~~
 
-	~~~
-	-rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
-	-rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:36 node.crt
-	-rw-------  1 maxroach  maxroach  1.6K Apr 19 09:36 node.key
-	~~~
+    ~~~
+    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
+    -rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:36 node.crt
+    -rw-------  1 maxroach  maxroach  1.6K Apr 19 09:36 node.key
+    ~~~
 
-2. 	Upload the files to the first node.
+2. Upload the files to the first node.
 
-3. 	Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+3. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
 
-	~~~ shell
-	$ cockroach cert create-node \
-	node2.example.com \
-	node2.another-example.com \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key \
-	--overwrite
+    ~~~ shell
+    $ cockroach cert create-node \
+    node2.example.com \
+    node2.another-example.com \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key \
+    --overwrite
 
-	$ ls -l certs
-	~~~
+    $ ls -l certs
+    ~~~
 
-	~~~
-	-rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
-	-rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:40 node.crt
-	-rw-------  1 maxroach  maxroach  1.6K Apr 19 09:40 node.key
-	~~~
+    ~~~
+    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
+    -rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:40 node.crt
+    -rw-------  1 maxroach  maxroach  1.6K Apr 19 09:40 node.key
+    ~~~
 
-4. 	Upload the files to the second node.
+4. Upload the files to the second node.
 
-5. 	Repeat for each additional node.
+5. Repeat for each additional node.
 
 ### Create the certificate and key pair for a client
 

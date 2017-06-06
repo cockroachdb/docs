@@ -314,76 +314,74 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with its datacenter location specified in the `--locality` flag:
 
-   ~~~ shell
-   # Start the three nodes in datacenter 1:
-   $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
-   $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-1 \
-   --join=<node1 hostname>:27257
+    ~~~ shell
+    # Start the three nodes in datacenter 1:
+    $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
+    $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-1 \
+    --join=<node1 hostname>:27257
 
-   # Start the three nodes in datacenter 2:
-   $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-2 \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-2 \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-2 \
-   --join=<node1 hostname>:27257
-   ~~~
+    # Start the three nodes in datacenter 2:
+    $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-2 \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-2 \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-2 \
+    --join=<node1 hostname>:27257
+    ~~~
 
 2. On any node, configure a replication zone for the database used by application 1:
 
-   ~~~ shell
-   # Create a YAML file with the replica count set to 5:
-   $ cat app1_zone.yaml
-   ~~~
+    ~~~ shell
+    # Create a YAML file with the replica count set to 5:
+    $ cat app1_zone.yaml
+    ~~~
 
-   ~~~
-   num_replicas: 5
-   ~~~
+    ~~~
+    num_replicas: 5
+    ~~~
 
-   ~~~ shell
-   # Apply the replication zone to the database used by application 1:
-   $ cockroach zone set app1_db --insecure -f app1_zone.yaml
-   ~~~
+    ~~~ shell
+    # Apply the replication zone to the database used by application 1:
+    $ cockroach zone set app1_db --insecure -f app1_zone.yaml
+    ~~~
 
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
-     ttlseconds: 86400
-   num_replicas: 5
-   constraints: []
-   ~~~
-
-   Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 86400
+    num_replicas: 5
+    constraints: []
+    ~~~
+    Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
 
 3. On any node, configure a replication zone for the database used by application 2:
 
-   ~~~ shell
-   # Create a YAML file with 1 datacenter as a required constraint:
-   $ cat app2_zone.yaml
-   ~~~
+    ~~~ shell
+    # Create a YAML file with 1 datacenter as a required constraint:
+    $ cat app2_zone.yaml
+    ~~~
 
-   ~~~
-   constraints: [+datacenter=us-2]
-   ~~~
+    ~~~
+    constraints: [+datacenter=us-2]
+    ~~~
 
-   ~~~ shell
-   # Apply the replication zone to the database used by application 2:
-   $ cockroach zone set app2_db --insecure -f app2_zone.yaml
-   ~~~
+    ~~~ shell
+    # Apply the replication zone to the database used by application 2:
+    $ cockroach zone set app2_db --insecure -f app2_zone.yaml
+    ~~~
 
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
      ttlseconds: 86400
-   num_replicas: 3
-   constraints: [+datacenter=us-2]
-   ~~~
-
-   The required constraint will force application 2's data to be replicated only within the `us-2` datacenter.
+    num_replicas: 3
+    constraints: [+datacenter=us-2]
+    ~~~
+    The required constraint will force application 2's data to be replicated only within the `us-2` datacenter.
 
 ### Stricter Replication for a Specific Table
 
@@ -397,53 +395,52 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with `ssd` or `hdd` specified as store attributes:
 
-   ~~~ shell
-   # Start the 5 nodes with SSD storage:
-   $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
-   $ cockroach start --insecure --host=<node2 hostname> --store=path=node2,attrs=ssd \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node3 hostname> --store=path=node3,attrs=ssd \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node4 hostname> --store=path=node4,attrs=ssd \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node5 hostname> --store=path=node5,attrs=ssd \
-   --join=<node1 hostname>:27257
+    ~~~ shell
+    # Start the 5 nodes with SSD storage:
+    $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
+    $ cockroach start --insecure --host=<node2 hostname> --store=path=node2,attrs=ssd \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node3 hostname> --store=path=node3,attrs=ssd \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node4 hostname> --store=path=node4,attrs=ssd \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node5 hostname> --store=path=node5,attrs=ssd \
+    --join=<node1 hostname>:27257
 
-   # Start the 2 nodes with HDD storage:
-   $ cockroach start --insecure --host=<node6 hostname> --store=path=node6,attrs=hdd \
-   --join=<node1 hostname>:27257
-   $ cockroach start --insecure --host=<node7 hostname> --store=path=node2,attrs=hdd \
-   --join=<node1 hostname>:27257
-   ~~~
+    # Start the 2 nodes with HDD storage:
+    $ cockroach start --insecure --host=<node6 hostname> --store=path=node6,attrs=hdd \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node7 hostname> --store=path=node2,attrs=hdd \
+    --join=<node1 hostname>:27257
+    ~~~
 
 2. On any node, configure a replication zone for the table that must be replicated more strictly:
 
-   ~~~ shell
-   # Create a YAML file with the replica count set to 5
-   # and the ssd attribute as a positive constraint:
-   $ cat table_zone.yaml
-   ~~~
+    ~~~ shell
+    # Create a YAML file with the replica count set to 5
+    # and the ssd attribute as a positive constraint:
+    $ cat table_zone.yaml
+    ~~~
 
-   ~~~
-   num_replicas: 5
-   constraints: [ssd]
-   ~~~
+    ~~~
+    num_replicas: 5
+    constraints: [ssd]
+    ~~~
 
-   ~~~ shell
-   # Apply the replication zone to the table:
-   $ cockroach zone set db.important_table --insecure -f table_zone.yaml
-   ~~~
+    ~~~ shell
+    # Apply the replication zone to the table:
+    $ cockroach zone set db.important_table --insecure -f table_zone.yaml
+    ~~~
 
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
      ttlseconds: 86400
-   num_replicas: 5
-   constraints: [ssd]
-   ~~~
-
-   Data in the table will be replicated 5 times, and the positive constraint will place data in the table on nodes with `ssd` drives whenever possible.
+    num_replicas: 5
+    constraints: [ssd]
+    ~~~
+    Data in the table will be replicated 5 times, and the positive constraint will place data in the table on nodes with `ssd` drives whenever possible.
 
 ## See Also
 

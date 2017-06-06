@@ -31,9 +31,9 @@ z = byte-size (can set them with set cluster setting = 32 MiB)
 
 To view the current settings for a running cluster:
 
-1. 	Connect [the built-in SQL client](use-the-built-in-sql-client.html) to any node of the cluster.
+1. Connect [the built-in SQL client](use-the-built-in-sql-client.html) to any node of the cluster.
 
-2. 	Execute the `SHOW ALL CLUSTER SETTINGS` statement:
+2. Execute the `SHOW ALL CLUSTER SETTINGS` statement:
 
 	~~~ sql
 	> SHOW ALL CLUSTER SETTINGS;
@@ -53,9 +53,9 @@ Before changing a cluster setting, please note the following:
 
 To change a setting for a running cluster:
 
-1.	Connect the [built-in SQL client](use-the-built-in-sql-client.html) to any node of the cluster.
+1. Connect the [built-in SQL client](use-the-built-in-sql-client.html) to any node of the cluster.
 
-2.	Execute the `SET CLUSTER SETTING` statement with the relevant setting name and value:
+2. Execute the `SET CLUSTER SETTING` statement with the relevant setting name and value:
 
 	~~~ sql
 	> SET CLUSTER SETTING <setting name> = <setting value>;

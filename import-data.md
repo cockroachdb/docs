@@ -32,15 +32,15 @@ Which `pg_dump` command you want to use depends on whether you want to import yo
 
 - Entire database:
 
-  ~~~ shell
-  $ pg_dump [database] > [filename].sql
-  ~~~
+    ~~~ shell
+    $ pg_dump [database] > [filename].sql
+    ~~~
 
 - Specific tables:
 
-  ~~~ shell
-  $ pg_dump -t [table] [table's schema] > [filename].sql
-  ~~~
+    ~~~ shell
+    $ pg_dump -t [table] [table's schema] > [filename].sql
+    ~~~
 
 For more details, see PostgreSQL's documentation on [`pg_dump`](https://www.postgresql.org/docs/9.1/static/app-pgdump.html).
 
@@ -49,9 +49,8 @@ For more details, see PostgreSQL's documentation on [`pg_dump`](https://www.post
 After generating the `.sql` file, you need to perform a few editing steps before importing it:
 
 1. Remove all statements from the file besides the `CREATE TABLE` and `COPY` statements.
-2. Manually add the table's [`PRIMARY KEY`](primary-key.html#syntax) constraint to the `CREATE TABLE` statement. 
-
-   This has to be done manually because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
+2. Manually add the table's [`PRIMARY KEY`](primary-key.html#syntax) constraint to the `CREATE TABLE` statement.
+  This has to be done manually because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
 3. Review any other [constraints](constraints.html) to ensure they're properly listed on the table.
 4. Remove any [unsupported elements](sql-feature-support.html), such as arrays.
 

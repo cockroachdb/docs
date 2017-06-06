@@ -34,9 +34,9 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 ## Step 1. Start the first node
 
-1. 	SSH to your first machine.
+1. SSH to your first machine.
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -50,7 +50,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new CockroachDB cluster with a single node:
+3. Start a new CockroachDB cluster with a single node:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -63,9 +63,9 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by starting and joining additional nodes.
 
-1. 	SSH to another machine.
+1. SSH to another machine.
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -79,7 +79,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new node that joins the cluster using the first node's address:
+3. Start a new node that joins the cluster using the first node's address:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -89,7 +89,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
 
-4.	Repeat these steps for each node you want to add.
+4. Repeat these steps for each node you want to add.
 
 ## Step 3. Test your cluster
 
@@ -97,9 +97,9 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1. 	SSH to your first node.
+1. SSH to your first node.
 
-2.	Launch the built-in SQL client and create a database:
+2. Launch the built-in SQL client and create a database:
 
 	~~~ shell
 	$ cockroach sql --insecure
@@ -109,15 +109,15 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	> CREATE DATABASE insecurenodetest;
 	~~~
 
-3. 	In another terminal window, SSH to another node.
+3. In another terminal window, SSH to another node.
 
-4.	Launch the built-in SQL client:
+4. Launch the built-in SQL client:
 
 	~~~ shell
 	$ cockroach sql --insecure
 	~~~
 
-5.	View the cluster's databases, which will include `insecurenodetest`:
+5. View the cluster's databases, which will include `insecurenodetest`:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -135,7 +135,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	(5 rows)
 	~~~
 
-6.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 4. Set up HAProxy load balancers
 
@@ -148,15 +148,15 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. 	SSH to the machine where you want to run HAProxy.
+1. SSH to the machine where you want to run HAProxy.
 
-2.	Install HAProxy:
+2. Install HAProxy:
 
 	~~~ shell
 	$ apt-get install haproxy
 	~~~
 
-3.	Install CockroachDB from our latest binary:
+3. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
@@ -170,7 +170,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-4. 	Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
+4. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
 
 	~~~ shell
 	$ cockroach gen haproxy --insecure \
@@ -210,13 +210,13 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
-5. 	Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
+5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
 	~~~ shell
 	$ haproxy -f haproxy.cfg
 	~~~
 
-6.	Repeat these steps for each additional instance of HAProxy you want to run.
+6. Repeat these steps for each additional instance of HAProxy you want to run.
 
 ## Step 5. Test load balancing
 
@@ -224,9 +224,9 @@ Now that HAProxy is running, it can serve as the client gateway to the cluster. 
 
 To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1.	[Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
 
-2.	Launch the built-in SQL client, with the `--host` flag set to the address of one of the HAProxy servers:
+2. Launch the built-in SQL client, with the `--host` flag set to the address of one of the HAProxy servers:
 
 	~~~ shell
 	$ cockroach sql --insecure \
@@ -234,7 +234,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	--port=26257
 	~~~
 
-3.	View the cluster's databases:
+3. View the cluster's databases:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -254,7 +254,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	As you can see, HAProxy redirected the query to one of the CockroachDB nodes.
 
-4. 	Check which node you were redirected to:
+4. Check which node you were redirected to:
 
 	~~~ sql
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
@@ -268,7 +268,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	(1 row)
 	~~~
 
-5.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 6. Configure replication
 
@@ -292,7 +292,7 @@ On this page, verify that the cluster is running as expected:
 
 1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
 
-   Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--host` flag. This prevents the node from receiving replicas and working as part of the cluster.
+    Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--host` flag. This prevents the node from receiving replicas and working as part of the cluster.
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 

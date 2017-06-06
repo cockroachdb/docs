@@ -15,13 +15,13 @@ Use the following guides to deploy CockroachDB to popular cloud platforms:
 
 If we don't have a guide for your platform, you can deploy CockroachDB to any cloud environment using the following steps:
 
-1.	Create firewall rules to allow TCP communication on the following ports:
-	- **26257** (`tcp:26257`) for nodes to join clusters and connect with applications
-	- **8080** (`tcp:8080`) to expose your Admin UI
+1. Create firewall rules to allow TCP communication on the following ports:
+  - **26257** (`tcp:26257`) for nodes to join clusters and connect with applications
+  - **8080** (`tcp:8080`) to expose your Admin UI
 
 2. Manually deploy CockroachDB using one of the following steps:
-   - [Secure deployments](manual-deployment.html)
-   - [Insecure deployments](manual-deployment-insecure.html) *(not recommended for production)*
+  - [Secure deployments](manual-deployment.html)
+  - [Insecure deployments](manual-deployment-insecure.html) *(not recommended for production)*
 
 ## See Also
 

@@ -54,10 +54,10 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 Digital Ocean offers fully-managed load balancers to distribute traffic between Droplets.
 
-1. 	[Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
+1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
 	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
 	- Configure health checks to use HTTP port **8080** and path `/health`.
-2. 	Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
 
@@ -78,13 +78,13 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 4. Start the first node
 
-1. 	SSH to your Droplet:
+1. SSH to your Droplet:
 
 	~~~ shell
 	$ ssh <username>@<node1 external IP address>
 	~~~
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -98,7 +98,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
+3. Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -110,13 +110,13 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
 
-1. 	SSH to your Droplet:
+1. SSH to your Droplet:
 
 	~~~
 	$ ssh <username>@<additional node external IP address>
 	~~~
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -130,7 +130,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new node that joins the cluster using the first node's internal IP address:
+3. Start a new node that joins the cluster using the first node's internal IP address:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -139,7 +139,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 internal IP address>:26257
 	~~~
 
-4.	Repeat these steps for each Droplet you want to use as a node.
+4. Repeat these steps for each Droplet you want to use as a node.
 
 ## Step 6. Test your cluster
 
@@ -147,13 +147,13 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1. 	SSH to your first node:
+1. SSH to your first node:
 
 	~~~ shell
 	$ ssh <username>@<node1 external IP address>
 	~~~
 
-2.	Launch the built-in SQL client and create a database:
+2. Launch the built-in SQL client and create a database:
 
 	~~~ shell
 	$ cockroach sql --insecure
@@ -162,19 +162,19 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	> CREATE DATABASE insecurenodetest;
 	~~~
 
-3. 	In another terminal window, SSH to another node:
+3. In another terminal window, SSH to another node:
 
 	~~~ shell
 	$ ssh <username>@<node2 external IP address>
 	~~~
 
-4.	Launch the built-in SQL client:
+4. Launch the built-in SQL client:
 
 	~~~ shell
 	$ cockroach sql --insecure
 	~~~
 
-5.	View the cluster's databases, which will include `insecurenodetest`:
+5. View the cluster's databases, which will include `insecurenodetest`:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -192,7 +192,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	(5 rows)
 	~~~
 
-6.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Test load balancing
 
@@ -200,9 +200,9 @@ The Digital Ocean Load Balancer created in [step 2](#step-2-set-up-load-balancin
 
 To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1.	[Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
 
-2.	Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
+2. Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
 
 	~~~ shell
 	$ cockroach sql --insecure \
@@ -210,7 +210,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	--port=26257
 	~~~
 
-3.	View the cluster's databases:
+3. View the cluster's databases:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -230,7 +230,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
 
-4. 	Check which node you were redirected to:
+4. Check which node you were redirected to:
 
 	~~~ sql
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
@@ -244,7 +244,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	(1 row)
 	~~~
 
-5.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 8. Monitor the cluster
 
@@ -254,7 +254,7 @@ On this page, verify that the cluster is running as expected:
 
 1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
 
-   Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
+  Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 

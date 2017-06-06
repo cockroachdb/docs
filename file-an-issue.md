@@ -14,7 +14,6 @@ Before filing an issue:
   - Review our [troubleshooting documentation](troubleshooting-overview.html).
   - Check our [open issues](https://github.com/cockroachdb/cockroach/issues) for existing tickets related to your problem. Specfically, the [known limitation](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+is%3Aissue+label%3Aknown-limitation), [UX surprise](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Aux-surprise) and [SQL semantics](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Asql-semantics) flags. If you've encountered one of these issues, please leave a comment about your use case.
   - Use our [support resources](support-resources.html), including:
-
     - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
     - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
     - [Gitter](https://gitter.im/cockroachdb/cockroach)
@@ -33,13 +32,11 @@ To file an issue in GitHub, we need the following information:
 
 5. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
    
-   ~~~ shell
-   $ grep -F '[config]' cockroach-data/logs/cockroach.log
-   ~~~~
-
-   {{site.data.alerts.callout_info}}You might need to replace <code>cockroach-data/logs</code> with the location of your <a href="debug-and-error-logs.html">logs</a>.{{site.data.alerts.end}}
-
-   If the logs are not available, please include the output of `cockroach version` for each node in the cluster.
+    ~~~ shell
+    $ grep -F '[config]' cockroach-data/logs/cockroach.log
+    ~~~~
+    {{site.data.alerts.callout_info}}You might need to replace <code>cockroach-data/logs</code> with the location of your <a href="debug-and-error-logs.html">logs</a>.{{site.data.alerts.end}}
+    If the logs are not available, please include the output of `cockroach version` for each node in the cluster.
 
 ### Template
 

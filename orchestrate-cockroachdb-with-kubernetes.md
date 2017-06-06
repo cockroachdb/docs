@@ -77,35 +77,35 @@ Kubectl is now configured to use the cluster.
 
 2. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
 
-   ~~~ shell
-   $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
-   ~~~
+    ~~~ shell
+    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    ~~~
 
 2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
-   ~~~ shell
-   $ kubectl get persistentvolumes
-   ~~~
+    ~~~ shell
+    $ kubectl get persistentvolumes
+    ~~~
 
-   ~~~
-   NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
-   pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
-   pvc-52fd3a39-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-1             27s
-   pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
-   ~~~
+    ~~~
+    NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
+    pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
+    pvc-52fd3a39-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-1             27s
+    pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
+    ~~~
 
 3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
 
-   ~~~ shell
-   $ kubectl get pods
-   ~~~
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
 
-   ~~~
-   NAME            READY     STATUS    RESTARTS   AGE
-   cockroachdb-0   1/1       Running   0          2m
-   cockroachdb-1   1/1       Running   0          2m
-   cockroachdb-2   1/1       Running   0          2m
-   ~~~
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          2m
+    cockroachdb-1   1/1       Running   0          2m
+    cockroachdb-2   1/1       Running   0          2m
+    ~~~
 
 </div>
 
@@ -113,49 +113,49 @@ Kubectl is now configured to use the cluster.
 
 1. Download the [`minikube.sh`](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/minikube.sh) script:
 
-   ~~~ shell
-   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/minikube.sh
-   ~~~
+    ~~~ shell
+    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/minikube.sh
+    ~~~
 
 2. Download the [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) configuration file:
 
-   ~~~ shell
-   $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
-   ~~~
+    ~~~ shell
+    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    ~~~
 
 3. Run the script:
 
-   ~~~ shell
-   $ sh minikube.sh
-   ~~~
+    ~~~ shell
+    $ sh minikube.sh
+    ~~~
 
-   The script automates the process of creating [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) and [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims). It also runs the `kubectl create` command against the `cockroachdb-statefulset.yaml` file to create the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/).
+    The script automates the process of creating [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) and [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims). It also runs the `kubectl create` command against the `cockroachdb-statefulset.yaml` file to create the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/).
 
 3. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
-   ~~~ shell
-   $ kubectl get persistentvolumes
-   ~~~
+    ~~~ shell
+    $ kubectl get persistentvolumes
+    ~~~
 
-   ~~~
-   NAME      CAPACITY   ACCESSMODES   STATUS    CLAIM                           REASON    AGE
-   pv0       1Gi        RWO           Bound     default/datadir-cockroachdb-0             27s
-   pv1       1Gi        RWO           Bound     default/datadir-cockroachdb-1             26s
-   pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
-   ~~~
+    ~~~
+    NAME      CAPACITY   ACCESSMODES   STATUS    CLAIM                           REASON    AGE
+    pv0       1Gi        RWO           Bound     default/datadir-cockroachdb-0             27s
+    pv1       1Gi        RWO           Bound     default/datadir-cockroachdb-1             26s
+    pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
+    ~~~
 
 4. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
 
-   ~~~ shell
-   $ kubectl get pods
-   ~~~
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
 
-   ~~~
-   NAME            READY     STATUS    RESTARTS   AGE
-   cockroachdb-0   1/1       Running   0          2m
-   cockroachdb-1   1/1       Running   0          2m
-   cockroachdb-2   1/1       Running   0          2m
-   ~~~
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          2m
+    cockroachdb-1   1/1       Running   0          2m
+    cockroachdb-2   1/1       Running   0          2m
+    ~~~
 
 </div>
 
@@ -165,31 +165,31 @@ Kubectl is now configured to use the cluster.
 
 1. Start the [built-in SQL client](use-the-built-in-sql-client.html) in a one-off interactive pod, using the `cockroachdb-public` hostname to access the CockroachDB cluster:
 
-   ~~~ shell
-   $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-   -- sql --insecure --host=cockroachdb-public
-   ~~~
+    ~~~ shell
+    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
+    -- sql --insecure --host=cockroachdb-public
+    ~~~
 
 2. Run some [CockroachDB SQL statements](sql-statements.html):
 
-   ~~~ sql
-   > CREATE DATABASE bank;
+    ~~~ sql
+    > CREATE DATABASE bank;
 
-   > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
 
-   > INSERT INTO bank.accounts VALUES (1234, 10000.50);
+    > INSERT INTO bank.accounts VALUES (1234, 10000.50);
 
-   > SELECT * FROM bank.accounts;
-   ~~~
+    > SELECT * FROM bank.accounts;
+    ~~~
 
-   ~~~ shell
-   +------+----------+
-   |  id  | balance  |
-   +------+----------+
-   | 1234 | 10000.50 |
-   +------+----------+
-   (1 row)
-   ~~~
+    ~~~ shell
+    +------+----------+
+    |  id  | balance  |
+    +------+----------+
+    | 1234 | 10000.50 |
+    +------+----------+
+    (1 row)
+    ~~~
 
 4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit and delete the temporary pod.
 
@@ -201,34 +201,34 @@ To see this in action:
 
 1. Kill one of CockroachDB nodes:
 
-   ~~~ shell
-   $ kubectl delete pod cockroachdb-2
-   ~~~
+    ~~~ shell
+    $ kubectl delete pod cockroachdb-2
+    ~~~
 
-   ~~~
-   pod "cockroachdb-2" deleted
-   ~~~
+    ~~~
+    pod "cockroachdb-2" deleted
+    ~~~
 
 2. Verify that the pod was restarted:
 
-   ~~~ shell
-   $ kubectl get pod cockroachdb-2
-   ~~~
-   ~~~
-   NAME            READY     STATUS              RESTARTS   AGE
-   cockroachdb-2   0/1       ContainerCreating   0          3s
-   ~~~
+    ~~~ shell
+    $ kubectl get pod cockroachdb-2
+    ~~~
+    ~~~
+    NAME            READY     STATUS              RESTARTS   AGE
+    cockroachdb-2   0/1       ContainerCreating   0          3s
+    ~~~
 
 3. Wait a bit and then verify that the pod is ready:
 
-   ~~~ shell
-   $ kubectl get pod cockroachdb-2
-   ~~~
+    ~~~ shell
+    $ kubectl get pod cockroachdb-2
+    ~~~
 
-   ~~~
-   NAME            READY     STATUS    RESTARTS   AGE
-   cockroachdb-2   1/1       Running   0          1m
-   ~~~
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-2   1/1       Running   0          1m
+    ~~~
 
 ## Step 6. Scale the cluster
 
@@ -236,12 +236,11 @@ To see this in action:
 
 The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
-1.  Add a worker node:
+1. Add a worker node:
+  - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
+  - On AWS, resize your [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
 
-    - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
-    - On AWS, resize your [Auto Scaling Group](http://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
-
-2.  Use the `kubectl scale` command to add a pod to your StatefulSet:
+2. Use the `kubectl scale` command to add a pod to your StatefulSet:
 
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -251,7 +250,7 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
     statefulset "cockroachdb" scaled
     ~~~
 
-3.  Verify that a fourth pod was added successfully:
+3. Verify that a fourth pod was added successfully:
 
     ~~~ shell
     $ kubectl get pods
@@ -305,10 +304,10 @@ To shut down the CockroachDB cluster:
 
 1. Use the `kubectl delete` command to clean up all of the resources you created, including the logs and remote persistent volumes:
 
-   ~~~ shell
-   $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
-   -l app=cockroachdb
-   ~~~
+    ~~~ shell
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
+    -l app=cockroachdb
+    ~~~
 
 2. Run the `cluster/kube-down.sh` script in the `kubernetes` directory to stop Kubernetes.
 
