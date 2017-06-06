@@ -39,6 +39,10 @@ The timeseries data used to power the graphs in the admin UI is stored within th
 
 As of the 1.0 release, there is no way to change the number of days before timeseries data gets truncated. As a workaround, however, you can start each node with the `COCKROACH_METRICS_SAMPLE_INTERVAL` environment variable set higher than its default of `10s` to store fewer data points. For example, you could set it to `1m` to only collect data every 1 minute, which would result in storing 6x less timeseries data than the default setting.
 
+## Why does CockroachDB default to "opt-out" when collecting anonymized cluster usage details?
+
+Collecting information about CockroachDB's real world usage helps us prioritize the development of product features. We choose our default as "opt-out" to strengthen the information we receive from our collection efforts, but we also make a careful effort to send only anonymous, aggregate usage statistics. See [Diagnostics Reporting](diagnostics-reporting.html) for a detailed look at what information is sent and how to opt-out.
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)

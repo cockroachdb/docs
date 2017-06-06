@@ -4,7 +4,7 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: false
 ---
 
-By default, each node of a CockroachDB cluster shares diagnostic details with Cockroach Labs on an hourly basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, each node of a CockroachDB cluster shares anonymous usage details with Cockroach Labs on an hourly basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page explains the details that get shared and how to opt out of sharing.
 
