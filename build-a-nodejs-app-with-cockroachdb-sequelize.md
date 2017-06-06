@@ -35,7 +35,7 @@ $ npm install sequelize sequelize-cockroachdb
 The following code uses the [Sequelize](http://docs.sequelizejs.com/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/sequelize-basic-sample.js" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/sequelize-basic-sample.js" download>download it directly</a>.
 
 ~~~ js
 {% include app/sequelize-basic-sample.js %}

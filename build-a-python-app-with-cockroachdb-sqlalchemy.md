@@ -38,7 +38,7 @@ The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/late
 ])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed. Also note that the [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
 ~~~ python
 {% include app/sqlalchemy-basic-sample.py %}

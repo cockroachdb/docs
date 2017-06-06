@@ -1472,7 +1472,7 @@
     ],
     [
       0.005086,
-      "--2017-02-08 17:33:01--  https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/basic-sample.py\r\n"
+      "--2017-02-08 17:33:01--  https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/basic-sample.py\r\n"
     ],
     [
       0.013878,
@@ -1912,7 +1912,7 @@
     ],
     [
       0.004864,
-      "--2017-02-08 17:33:21--  https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.py\r\n"
+      "--2017-02-08 17:33:21--  https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.py\r\n"
     ],
     [
       0.011853,

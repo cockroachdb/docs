@@ -28,7 +28,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
 You can copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/basic-sample.cpp" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/basic-sample.cpp" download>download it directly</a>.
 
 ~~~ cpp
 {% include app/basic-sample.cpp %}
@@ -40,7 +40,7 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 {{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
-You can copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/txn-sample.cpp" download>download it directly</a>.
+You can copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.cpp" download>download it directly</a>.
 
 ~~~ cpp
 {% include app/txn-sample.cpp %}
