@@ -37,14 +37,14 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1.	Create a `certs` directory and a safe directory to keep your CA key:
+1. Create a `certs` directory and a safe directory to keep your CA key:
 
 	~~~ shell
 	$ mkdir certs
 	$ mkdir my-safe-directory
 	~~~
 
-2.	Create the CA key pair:
+2. Create the CA key pair:
 
 	~~~ shell
 	$ cockroach cert create-ca \
@@ -52,7 +52,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-3.	Create a client key pair for the `root` user:
+3. Create a client key pair for the `root` user:
 
 	~~~ shell
 	$ cockroach cert create-client \
@@ -62,7 +62,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	~~~
 
 
-4.	Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
 	~~~ shell
 	$ cockroach cert create-node \
@@ -80,7 +80,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-5.	Upload the certificates to first node:
+5. Upload the certificates to first node:
 
 	~~~ shell
 	# Create the certs directory:
@@ -95,7 +95,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	<username>@<node1 address>:~/certs
 	~~~
 
-6.	Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
 
 	~~~ shell
 	$ cockroach cert create-node --overwrite\
@@ -113,7 +113,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-7.	Upload the certificates to the second node:
+7. Upload the certificates to the second node:
 
 	~~~ shell
 	# Create the certs directory:
@@ -128,13 +128,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	<username>@<node2 address>:~/certs
 	~~~
 
-8.	Repeat steps 6 and 7 for each additional node.
+8. Repeat steps 6 and 7 for each additional node.
 
 ## Step 2. Start the first node
 
-1. 	SSH to your first machine.
+1. SSH to your first machine.
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -148,7 +148,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new CockroachDB cluster with a single node:
+3. Start a new CockroachDB cluster with a single node:
 
 	~~~ shell
 	$ cockroach start --background \
@@ -162,9 +162,9 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by starting and joining additional nodes.
 
-1. 	SSH to another machine.
+1. SSH to another machine.
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
@@ -178,7 +178,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new node that joins the cluster using the first node's address:
+3. Start a new node that joins the cluster using the first node's address:
 
 	~~~ shell
 	$ cockroach start --background  \
@@ -189,15 +189,15 @@ At this point, your cluster is live and operational but contains only a single n
 
 	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
 
-4.	Repeat these steps for each node you want to add.
+4. Repeat these steps for each node you want to add.
 
 ## Step 4. Test your cluster
 
 CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1. 	SSH to your first node.
+1. SSH to your first node.
 
-2.	Launch the built-in SQL client and create a database:
+2. Launch the built-in SQL client and create a database:
 
 	~~~ shell
 	$ cockroach sql \
@@ -208,16 +208,16 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 	> CREATE DATABASE securenodetest;
 	~~~
 
-3. 	In other terminal window, SSH to another node.
+3. In other terminal window, SSH to another node.
 
-4.	Launch the built-in SQL client:
+4. Launch the built-in SQL client:
 
 	~~~ shell
 	$ cockroach sql \
 	--certs-dir=certs
 	~~~
 
-5.	View the cluster's databases, which will include `securenodetest`:
+5. View the cluster's databases, which will include `securenodetest`:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -236,7 +236,7 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 	(5 rows)
 	~~~
 
-6.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 5. Set up HAProxy load balancers
 
@@ -249,15 +249,15 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. 	SSH to the machine where you want to run HAProxy.
+1. SSH to the machine where you want to run HAProxy.
 
-2.	Install HAProxy:
+2. Install HAProxy:
 
 	~~~ shell
 	$ apt-get install haproxy
 	~~~
 
-3.	Install CockroachDB from our latest binary:
+3. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
@@ -271,7 +271,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-4. 	Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any instance running a CockroachDB node and [security flags](create-security-certificates.html) pointing to the CA cert and the client cert and key:
+4. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any instance running a CockroachDB node and [security flags](create-security-certificates.html) pointing to the CA cert and the client cert and key:
 
 	~~~ shell
 	$ cockroach gen haproxy \
@@ -312,13 +312,13 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
-5. 	Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
+5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
 	~~~ shell
 	$ haproxy -f haproxy.cfg
 	~~~
 
-6.	Repeat these steps for each additional instance of HAProxy you want to run.
+6. Repeat these steps for each additional instance of HAProxy you want to run.
 
 ## Step 6. Test load balancing
 
@@ -326,7 +326,7 @@ Now that HAProxy is running, it can serve as the client gateway to the cluster. 
 
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-1.	On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any HAProxy server and security flags pointing to the CA cert and the client cert and key:
+1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any HAProxy server and security flags pointing to the CA cert and the client cert and key:
 
 	~~~ shell
 	$ cockroach sql \
@@ -334,7 +334,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	--host=<haproxy address>
 	~~~
 
-2.	View the cluster's databases:
+2. View the cluster's databases:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -354,7 +354,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 	As you can see, HAProxy redirected the query to one of the CockroachDB nodes.
 
-3. 	Check which node you were redirected to:
+3. Check which node you were redirected to:
 
 	~~~ sql
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
@@ -368,7 +368,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	(1 row)
 	~~~
 
-4.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Configure replication
 
@@ -390,11 +390,11 @@ View your cluster's Admin UI by going to `https://<any node's address>:8080`.
 
 On this page, verify that the cluster is running as expected:
 
-1.	Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
+1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
 
 	Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--host` flag. This prevents the node from receiving replicas and working as part of the cluster.
 
-2. 	Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
+2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
 {% include prometheus-callout.html %}
 

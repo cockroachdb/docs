@@ -14,8 +14,8 @@ If you're having trouble starting or scaling your cluster, this page will help y
 
 To use this guide, it's important to understand some of CockroachDB's terminology:
 
-   - A **Cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
-   - **Nodes** are single instances of the `cockroach` binary running on a machine. It's possible (though atypical) to have multiple nodes running on a single machine.
+  - A **Cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
+  - **Nodes** are single instances of the `cockroach` binary running on a machine. It's possible (though atypical) to have multiple nodes running on a single machine.
 
 ### Using This Guide
 
@@ -31,10 +31,10 @@ Proceed through the following steps until you locate the source of the issue wit
 
 1. Stop any running `cockroach` processes and remove any old data:
 
-     ~~~ shell
-     $ pkill -9 cockroach
-     $ rm -r testStore
-     ~~~
+    ~~~ shell
+    $ pkill -9 cockroach
+    $ rm -r testStore
+    ~~~
 
 2. Start a single insecure node and log all activity to your terminal:
 
@@ -130,9 +130,8 @@ However, to efficiently troubleshoot the issue, it's important to understand whe
 - Every node in the cluster should be able to `ping` each other node on the hostnames or IP addresses you use in the `--join`, `--host`, or `--advertise-host` flags.
 
 - Every node should be able to connect to other nodes on the port you're using for CockroachDB (**26257** by default) through `telnet` or `nc`:
-
-   - `telnet [other node host] 26257`
-   - `nc [other node host] 26257`
+  - `telnet [other node host] 26257`
+  - `nc [other node host] 26257`
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 

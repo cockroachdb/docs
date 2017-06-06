@@ -48,34 +48,32 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 2. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
 
 3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following rules to it:
+    - **Admin UI support**:
 
-   - **Admin UI support**:
+        | Field | Recommended Value |
+        |-------|-------------------|
+        | Name | **cockroachadmin** |
+        | Priority | Any value > 1000 |
+        | Source | **CIDR block** |
+        | IP address range | Your local network’s IP ranges |
+        | Service | **Custom** |
+        | Protocol | **TCP** |
+        | Port range | **8080** |
+        | Action | **Allow** |
+    - **Application support:**
 
-     | Field | Recommended Value |
-     |-------|-------------------|
-     | Name | **cockroachadmin** |
-     | Priority | Any value > 1000 |
-     | Source | **CIDR block** |
-     | IP address range | Your local network’s IP ranges |
-     | Service | **Custom** |
-     | Protocol | **TCP** |
-     | Port range | **8080** |
-     | Action | **Allow** |
-
-   - **Application support**:
-
-     {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure Virtual Network, you won't need to create a firewall rule for your application to communicate with your load balancer.{{site.data.alerts.end}}
-
-     | Field | Recommended Value |
-     |-------|-------------------|
-     | Name | **cockroachapp** |
-     | Priority | Any value > 1000 |
-     | Source | **CIDR block** |
-     | IP address range | Your application’s IP ranges |
-     | Service | **Custom** |
-     | Protocol | **TCP** |
-     | Port range | **26257** |
-     | Action | **Allow** |
+        {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you won't need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
+    
+        | Field | Recommended Value |
+        |-------|-------------------|
+        | Name | **cockroachapp** |
+        | Priority | Any value > 1000 |
+        | Source | **CIDR block** |
+        | IP address range | Your application’s IP ranges |
+        | Service | **Custom** |
+        | Protocol | **TCP** |
+        | Port range | **26257** |
+        | Action | **Allow** |
 
 ## Step 2. Create VMs
 
@@ -96,23 +94,23 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 Microsoft Azure offers fully-managed load balancing to distribute traffic between instances.
 
-1. 	[Add Azure load balancing](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview). Be sure to:
+1. [Add Azure load balancing](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview). Be sure to:
 	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
 	- Configure health checks to use HTTP port **8080** and path `/health`.
 
-2. 	Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Azure's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
 
 ## Step 4. Start the first node
 
-1. 	SSH to your VM:
+1. SSH to your VM:
 
 	~~~ shell
 	$ ssh <username>@<node1 external IP address>
 	~~~
 
-2.	Install the latest CockroachDB binary:
+2. Install the latest CockroachDB binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
@@ -126,7 +124,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new CockroachDB cluster with a single node:
+3. Start a new CockroachDB cluster with a single node:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -140,13 +138,13 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
 
-1. 	SSH to your VM:
+1. SSH to your VM:
 
 	~~~
 	$ ssh <username>@<additional node external IP address>
 	~~~
 
-2.	Install CockroachDB from our latest binary:
+2. Install CockroachDB from our latest binary:
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
@@ -160,7 +158,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
-3. 	Start a new node that joins the cluster using the first node's internal IP address:
+3. Start a new node that joins the cluster using the first node's internal IP address:
 
 	~~~ shell
 	$ cockroach start --insecure \
@@ -169,7 +167,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 internal IP address>:26257
 	~~~
 
-4.	Repeat these steps for each VM you want to use as a node.
+4. Repeat these steps for each VM you want to use as a node.
 
 ## Step 6. Test your cluster
 
@@ -178,13 +176,13 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
 
-1. 	SSH to your first node:
+1. SSH to your first node:
 
 	~~~ shell
 	$ ssh <username>@<node2 external IP address>
 	~~~
 
-2.	Launch the built-in SQL client and create a database:
+2. Launch the built-in SQL client and create a database:
 
 	~~~ shell
 	$ cockroach sql --insecure
@@ -193,19 +191,19 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	> CREATE DATABASE insecurenodetest;
 	~~~
 
-3. 	In another terminal window, SSH to another node:
+3. In another terminal window, SSH to another node:
 
 	~~~ shell
 	$ ssh <username>@<node3 external IP address>
 	~~~
 
-4.	Launch the built-in SQL client:
+4. Launch the built-in SQL client:
 
 	~~~ shell
 	$ cockroach sql --insecure
 	~~~
 
-5.	View the cluster's databases, which will include `insecurenodetest`:
+5. View the cluster's databases, which will include `insecurenodetest`:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -223,7 +221,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	(5 rows)
 	~~~
 
-6.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Test load balancing
 
@@ -231,9 +229,9 @@ The Azure load balancer created in [step 3](#step-3-set-up-load-balancing) can s
 
 To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
-1.	[Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
 
-2.	Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
+2. Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
 
 	~~~ shell
 	$ cockroach sql --insecure \
@@ -241,7 +239,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	--port=26257
 	~~~
 
-3.	View the cluster's databases:
+3. View the cluster's databases:
 
 	~~~ sql
 	> SHOW DATABASES;
@@ -261,7 +259,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
 
-4. 	Check which node you were redirected to:
+4. Check which node you were redirected to:
 
 	~~~ sql
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
@@ -275,7 +273,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	(1 row)
 	~~~
 
-5.	Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
 ## Step 8. Monitor the cluster
 

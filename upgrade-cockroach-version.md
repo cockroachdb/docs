@@ -22,70 +22,63 @@ For each node in your cluster, complete the following steps.
 1. Connect to the node.
 
 2. Download and install the CockroachDB binary you want to use:
+    - **Mac**:
 
-   - **Mac**:
+        ~~~ shell
+        $ curl -O https://binaries.cockroachdb.com/    cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
+        $ tar xfz cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
+    
+        # Optional: Place cockroach in your $PATH
+        $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/    cockroach
+        ~~~
+    - **Linux**:
 
-     ~~~ shell
-     $ curl -O https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
-     $ tar xfz cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
+        ~~~ shell
+        $ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
+        $ tar xfz cockroach-{{site.data.strings.version}}.linux-amd64.tgz 
+    
+        # Optional: Place cockroach in your $PATH
+        $ cp -i cockroach-{{site.data.strings.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+        ~~~
 
-     # Optional: Place cockroach in your $PATH
-     $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-     ~~~
+3. Stop the `cockroach` process. Without a process manager, use this command:
 
-   - **Linux**:
-
-     ~~~ shell
-     $ wget https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.linux-amd64.tgz
-     $ tar xfz cockroach-{{site.data.strings.version}}.linux-amd64.tgz 
-
-     # Optional: Place cockroach in your $PATH
-     $ cp -i cockroach-{{site.data.strings.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-     ~~~
-
-3. If you're running with a process manager, have it stop `cockroach`.
-
-   Without a process manager, use this command:
-
-   ~~~ shell
-   $ pkill cockroach
-   ~~~
+    ~~~ shell
+    $ pkill cockroach
+    ~~~
 
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
+    - **Mac**:
 
-   - **Mac**:
+        ~~~ shell
+        $ i="$(which cockroach)"; mv "$i" "$i"_old
+        $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/    cockroach
+        ~~~
+    - **Linux**:
 
-     ~~~ shell
-     $ i="$(which cockroach)"; mv "$i" "$i"_old
-     $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-     ~~~
-
-   - **Linux**:
-
-     ~~~ shell
-     $ i="$(which cockroach)"; mv "$i" "$i"_old
-     $ cp -i cockroach-{{site.data.strings.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-     ~~~
-
-   If you leave versioned binaries on your servers, you don't need to do anything.
+        ~~~ shell
+        $ i="$(which cockroach)"; mv "$i" "$i"_old
+        $ cp -i cockroach-{{site.data.strings.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+        ~~~
+        
+    If you leave versioned binaries on your servers, you don't need to do anything.
 
 5. If you're running with a process manager, have the node rejoin the cluster by starting it.
+    
+    Without a process manager, use this command:
 
-   Without a process manager, use this command:
-
-   ~~~ shell
-   $ cockroach start --join=[any other node's IP address] [other flags]
-   ~~~
-
-   `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as its `--host`.
+    ~~~ shell
+    $ cockroach start --join=[any other node's IP address] [other flags]
+    ~~~
+    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it    --host`.
 
 6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](explore-the-admin-ui.html).
 
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
-   ~~~ shell
-   $ rm /usr/local/bin/cockroach_old
-   ~~~
+    ~~~ shell
+    $ rm /usr/local/bin/cockroach_old
+    ~~~
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 

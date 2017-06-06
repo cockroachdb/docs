@@ -39,9 +39,9 @@ Now that you have a database and a user, you'll run code to create a table and i
 1. Create a new directory `myapp`.
 2. Create a file `myapp/project.clj` and populate it with the following code, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/project.clj" download>download it directly</a>. Be sure to place the file in the subdirectory `src/test` in your project.
 
-   ~~~ clojure
-   {% include app/project.clj %}
-   ~~~
+    ~~~ clojure
+    {% include app/project.clj %}
+    ~~~
 
 3. Create a file `myapp/src/test/util.clj` and populate it with the code from <a href="https://raw.githubusercontent.com/cockroachdb/docs/gh-pages/_includes/app/util.clj" download>this file</a>. Be sure to place the file in the subdirectory `src/test` in your project.
 

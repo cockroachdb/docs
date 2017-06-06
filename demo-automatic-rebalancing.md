@@ -111,16 +111,16 @@ $ block_writer -duration 1m
 Once it's running, `block_writer` will output the number of rows written per second:
 
 ~~~ shell
-    1s:  776.7/sec   776.7/sec
-    2s:  696.3/sec   736.7/sec
-    3s:  659.9/sec   711.1/sec
-    4s:  557.4/sec   672.6/sec
-    5s:  485.0/sec   635.1/sec
-    6s:  563.5/sec   623.2/sec
-    7s:  725.2/sec   637.7/sec
-    8s:  779.2/sec   655.4/sec
-    9s:  859.0/sec   678.0/sec
-   10s:  960.4/sec   706.1/sec
+ 1s:  776.7/sec   776.7/sec
+ 2s:  696.3/sec   736.7/sec
+ 3s:  659.9/sec   711.1/sec
+ 4s:  557.4/sec   672.6/sec
+ 5s:  485.0/sec   635.1/sec
+ 6s:  563.5/sec   623.2/sec
+ 7s:  725.2/sec   637.7/sec
+ 8s:  779.2/sec   655.4/sec
+ 9s:  859.0/sec   678.0/sec
+10s:  960.4/sec   706.1/sec
 ~~~
 
 ## Step 4. Watch the replica count increase
