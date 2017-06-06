@@ -48,22 +48,20 @@ We'll review your changes, providing feedback and guidance as necessary. Also, T
 
 If you want to regularly contribute to the CockroachDB docs, there are a few things we recommend:
 
-1. Note that our "master" branch is called `gh-pages`.
-
-2. Make it easy to bring updated docs into your fork by tracking us upstream:
+1. Make it easy to bring updated docs into your fork by tracking us upstream:
 
     ``` shell
-    $ git remote add --track gh-pages upstream https://github.com/cockroachdb/docs.git
+    $ git remote add --track master upstream https://github.com/cockroachdb/docs.git
     ```
 
-3. When you're ready to make your next round of changes, get our latest docs:
+2. When you're ready to make your next round of changes, get our latest docs:
 
     ``` shell
     $ git fetch upstream
-    $ git merge upstream/gh-pages
+    $ git merge upstream/master
     ```
 
-4. Repeat the write, build, push, pull flow from the [Get Started](#get-started) section above.
+3. Repeat the write, build, push, pull flow from the [Get Started](#get-started) section above.
 
 ## Docs Structure
 
