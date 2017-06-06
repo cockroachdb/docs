@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# run runs a command in the builder container.
+run() {
+  echo "$@"
+  "$(dirname "$0")"/builder run "$@"
+}
+
+# Step 1. Build the docs.
+run bundle exec jekyll build --baseurl=env.BUILD_VCS_NUMBER
+
+# Step 2. Upload the docs to S3.
+run aws s3 sync --quiet --region=us-east-1 ./_site s3://cockroach-docs-review/"$BUILD_VCS_NUMBER"/
+
+# Step 3. Post a link to the docs on the GitHub pull request. We do this before
+# running HTMLProofer to provide fast feedback. HTMLProofer can take upwards of
+# five minutes to complete. No need to do this in the container.
+curl \
+  --header "Authorization: token $GITHUB_TOKEN" \
+  --data "{\"body\": \"http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/\"}" \
+  "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
+
+# Step 4. Run HTML proofer.
+run bundle exec rake htmlproofer

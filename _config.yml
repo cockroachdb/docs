@@ -14,7 +14,7 @@ redcarpet:
   - tables
   - with_toc_data
 
-exclude: ["set-application-name.md", "vendor"]
+exclude: ["ci", "set-application-name.md", "vendor"]
 
 defaults:
   -
