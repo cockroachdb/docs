@@ -43,6 +43,12 @@ As of the 1.0 release, there is no way to change the number of days before times
 
 Collecting information about CockroachDB's real world usage helps us prioritize the development of product features. We choose our default as "opt-in" to strengthen the information we receive from our collection efforts, but we also make a careful effort to send only anonymous, aggregate usage statistics. See [Diagnostics Reporting](diagnostics-reporting.html) for a detailed look at what information is sent and how to opt-out.
 
+## What happens when node clocks are not properly synchronized?
+
+By default, CockroachDB's maximum allowed clock offset is 500ms. When a node detects that its clock offset, relative to other nodes, is half of the maximum allowed (250ms), it spontaneously shuts down. This is well in advance of the maximum offset, beyond which [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is not guaranteed and stale reads and write skew could occur. With NTP or other clock synchronization software running on each node, there's very little risk of ever exceeding the maximum offset and encountering such anomolies, and even on well-functioning hardware not running synchronization software, slow clock drift is most common, which CockroachDB handles safely.
+
+The one rare case to note is when a node's clock suddenly jumps beyond the maximum offset before the node detects it. Although extremely unlikely, this could occur, for example, when running CockroachDB inside a VM and the VM hypervisor decides to migrate the VM to different hardware with a different time. In this case, there can be a small window of time between when the node's clock becomes unsynchronized and when the node spontaneously shuts down. During this window, it would be possible for a client to read stale data and write data derived from stale reads.
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
