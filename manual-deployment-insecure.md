@@ -40,11 +40,11 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+	$ tar -xf cockroach-{{ site.data.strings.version }}.linux-amd64.tgz  \
+	--strip=1 cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach
 
 	# Move the binary:
 	$ sudo mv cockroach /usr/local/bin
@@ -69,11 +69,11 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	# Get the latest CockroachDB tarball:
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+	$ tar -xf cockroach-{{ site.data.strings.version }}.linux-amd64.tgz  \
+	--strip=1 cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach
 
 	# Move the binary:
 	$ sudo mv cockroach /usr/local/bin
@@ -160,11 +160,11 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-latest.linux-amd64.tgz
+	$ wget https://binaries.cockroachdb.com/cockroach-{{ site.data.strings.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-latest.linux-amd64.tgz  \
-	--strip=1 cockroach-latest.linux-amd64/cockroach
+	$ tar -xf cockroach-{{ site.data.strings.version }}.linux-amd64.tgz  \
+	--strip=1 cockroach-{{ site.data.strings.version }}.linux-amd64/cockroach
 
 	# Move the binary.
 	$ sudo mv cockroach /usr/local/bin
