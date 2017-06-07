@@ -82,6 +82,10 @@ $ cockroach start --insecure --host=localhost --vmodule=executor=2
 
 Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column should perform just as well.
 
+## How does CockroachDB sort results when `ORDER BY` is not used?
+
+When an [`ORDER BY`](select.html#sorting-retrieved-values) clause is not used in a `SELECT` query, retrieved rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
