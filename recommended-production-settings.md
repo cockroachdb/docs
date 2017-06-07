@@ -42,7 +42,7 @@ For details about controlling the number and location of replicas, see [Configur
 
 ## Clock Synchronization
 
-CockroachDB needs moderately accurate time to preserve data consistency, so it's important to run [NTP](http://www.ntp.org/) or other clock synchronization software on each machine. If clocks drift too far apart, nodes will self-terminate, but this mechanism is not fail-safe and data consistency guarantees may be lost.
+{% include faq/clock-synchronization.html %}
 
 ## Cache Size
 
