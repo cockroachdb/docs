@@ -16,21 +16,15 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 The user must have the `DROP` [privilege](privileges.html) on the database and on all tables in the database. 
 
-## Usage
+## Parameters
 
-To remove a database from a CockroachDB cluster, use the `DROP DATABASE` statement followed by a database name:
+Parameter | Description
+----------|------------
+`IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
+`name`  | The name of the database you want to drop.
 
-~~~ sql
-> DROP DATABASE db1;
-~~~
 
-To avoid an error in case the database does not exist, you can include `IF EXISTS`:
-
-~~~ sql
-> DROP DATABASE IF EXISTS db1;
-~~~
-
-## Example
+## Examples
 
 ~~~ sql
 > SHOW DATABASES;
@@ -51,6 +45,9 @@ To avoid an error in case the database does not exist, you can include `IF EXIST
 ~~~
 pq: database "db2" does not exist
 ~~~
+
+To avoid an error in case the database does not exist, you can include `IF EXISTS`:
+
 ~~~ sql
 > DROP DATABASE IF EXISTS db2;
 
