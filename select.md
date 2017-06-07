@@ -35,7 +35,7 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | `INTERSECT` | Only retrieve rows that exist in both the preceding and following `SELECT` statements. Returns distinct values. |
 | `EXCEPT` | Only retrieve rows that are in the preceding `SELECT` statement but not in the following `SELECT` statement.  Returns distinct values.|
 | `ALL` | Include duplicate rows in the returned values of `UNION`, `INTERSECT`, or `EXCEPT`. |
-| `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column. |
+| `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column.<br><br>When `ORDER BY` is not included in a query, CockroachDB returns rows as they become available from relevant nodes. Otherwise, the rows are not sorted by any consistent criteria.|
 | `LIMIT limit_val` | Only retrieve `limit_val` number of rows. |
 | `OFFSET offset_val` | Do not include the first `offset_value` number of rows.<br/><br/>`OFFSET` is often used in conjunction with `LIMIT` to "paginate" through retrieved rows. |
 
@@ -409,7 +409,6 @@ WHERE state_opened IN ('AZ', 'NY');
 +-----------------+
 ~~~
 
-
 #### Intersect: Retrieve Intersection of Two Queries
 
 `INTERSECT` finds only values that are present in both `SELECT` queries.
@@ -454,9 +453,11 @@ FROM accounts;
 
 ### Sorting Retrieved Values
 
-#### Order Retrieved Rows by One Column
+You can use an `ORDER BY` clause to sort retrieved rows by one or more columns.
 
-By default, retrieved tables are sorted by the source table's Primary Key. However, you can change that so it's sorted by any column.
+{{site.data.alerts.callout_info}}When <code>ORDER BY</code> is not included in a query, CockroachDB retrieves rows as they become available from relevant nodes. Otherwise, the rows are not sorted by any consistent criteria.{{site.data.alerts.end}}
+
+#### Order Retrieved Rows by One Column
 
 ~~~ sql
 > SELECT *
