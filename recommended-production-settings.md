@@ -5,16 +5,30 @@ toc: false
 toc_not_nested: true
 ---
 
-This page provides recommended settings for production deployments. 
+This page provides recommended settings for production deployments.
 
 <div id="toc"></div>
+
+## Hardware
+
+Use at least 3 nodes for a replicated cluster, with each node having at least 2 GB of RAM.
+
+For best performance:
+
+- Use SSDs over HDDs.
+- Use larger/more powerful nodes. Adding more CPU is usually more beneficial than adding more RAM.
+
+For best resiliency:
+
+- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
+- Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
 
 ## Cluster Topology
 
 When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
 
-- Run at least three nodes to ensure that a majority of replicas (2/3) remains available if a node fails. 
- 
+- Use at least three nodes to ensure that a majority of replicas (2/3) remains available if a node fails.
+
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
 - Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
@@ -43,8 +57,8 @@ CockroachDB can use a large number of open file descriptors, often more than is 
 
 For each CockroachDB node:
 
-- At a **minimum**, the file descriptors limit must be 1956 (1700 per store plus 256 for networking). If the limit is below this threshold, the node will not start. 
-- It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth. 
+- At a **minimum**, the file descriptors limit must be 1956 (1700 per store plus 256 for networking). If the limit is below this threshold, the node will not start.
+- It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth.
 - When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 10000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores.
 
 ### Increase the File Descriptors Limit
@@ -130,13 +144,13 @@ $(document).ready(function(){
 
 To adjust the file descriptors limit for a single process in Mac OS X Yosemite and later, you must create a property list configuration file with the hard limit set to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
-For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows: 
+For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows:
 
 1.  Check the current limits:
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    10240          10240      
+    maxfiles    10240          10240
     ~~~
 
     The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
@@ -174,7 +188,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    35000          35000      
+    maxfiles    35000          35000
     ~~~
 
 #### Older versions
@@ -187,7 +201,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    10240          10240      
+    maxfiles    10240          10240
     ~~~
 
     The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
@@ -198,13 +212,13 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     limit maxfiles 35000 35000
     ~~~
 
-3.  Save the file, and restart the system for the new limits to take effect. 
+3.  Save the file, and restart the system for the new limits to take effect.
 
 4.  Verify the new limits:
 
     ~~~ shell
     $ launchctl limit maxfiles
-    maxfiles    35000          35000      
+    maxfiles    35000          35000
     ~~~
 
 </div>
@@ -247,7 +261,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 #### With Systemd
 
-Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd): 
+Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
 
 1.  Edit the service definition to configure the maximum number of open files:
 
