@@ -5,3 +5,5 @@ Railroad.jar
 .sass-cache
 _site
 .jekyll-metadata
+bootstrap
+vendor/

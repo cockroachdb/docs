@@ -14,8 +14,7 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
     ``` shell
     $ cd path/to/docs
-    $ gem install bundler
-    $ bundle
+    $ make bootstrap
     ```
 
 3. Learn the essentials of our [Docs Structure](#docs-structure).
@@ -299,7 +298,7 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 1.  From the root directory of your clone, run:
 
     ``` shell
-    $ jekyll serve --incremental
+    $ make serve
     ```
 
 2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
@@ -313,5 +312,5 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 3.  Run automated tests against the Jekyll-generate HTML files to check for problems (broken links, missing alt texts for images, etc.):
 
     ``` shell
-    $ htmlproofer ./_site --allow-hash-href true
+    $ make test
     ```
