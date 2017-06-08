@@ -12,8 +12,28 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
+# Install all our ruby dependencies in an isolated environment. We
+# depend on gem being installed globally, but not bundler. (Go
+# developers sometimes manage to install
+# https://github.com/golang/tools/tree/master/cmd/bundle in a location
+# that conflicts with the ruby tool of the same name)
+export GEM_HOME := vendor
+export PATH := $(GEM_HOME)/bin:$(PATH)
+
+# HACK: Make has a fast path and a slow path for command execution,
+# but the fast path uses the PATH variable from when make was started,
+# not the one we set on the previous line. In order for the above
+# line to have any effect, we must force make to always take the slow path.
+# Setting the SHELL variable to a value other than the default (/bin/sh)
+# is one way to do this globally.
+# http://stackoverflow.com/questions/8941110/how-i-could-add-dir-to-path-in-makefile/13468229#13468229
+export SHELL := $(shell which bash)
+ifeq ($(SHELL),)
+$(error bash is required)
+endif
+
 .PHONY: all
-all: generate
+all: bootstrap
 
 # The generate target regenerates the SQL diagrams and function lists.
 # It assumes that the docs repo is checked out in a $GOPATH/src directory,
@@ -22,3 +42,16 @@ all: generate
 generate:
 	cd generate && go run main.go
 	cd generate && go run *.go funcs
+
+.PHONY: serve
+serve: bootstrap
+	bundle exec jekyll serve --incremental
+
+.PHONY: test
+test: bootstrap
+	bundle exec rake htmlproofer
+
+bootstrap: Gemfile.lock
+	gem install bundler
+	bundle install
+	touch $@
