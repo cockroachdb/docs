@@ -611,7 +611,8 @@ type stmtSpec struct {
 	match, exclude []*regexp.Regexp
 	unlink         []string
 	relink         map[string]string
-    nosplit		   bool
+	nosplit        bool
+
 }
 
 func runBNF(addr string) ([]byte, error) {
