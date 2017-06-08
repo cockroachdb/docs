@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const name = "../../../cockroach/sql/parser/sql.y"
+const name = "../../../cockroach/pkg/sql/parser/sql.y"
 
 func TestLex(t *testing.T) {
 	b, err := ioutil.ReadFile(name)

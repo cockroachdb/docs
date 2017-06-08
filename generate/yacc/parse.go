@@ -2,19 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package parse builds parse trees for configurations as defined by conf.
-// Clients should use that package to construct configurations rather than this
-// one, which provides shared internal data structures not intended for general
-// use.
+// Copied from Go's text/template/parse package and modified for yacc.
+
+// Package yacc parses .y files.
 package yacc
 
 import (
 	"fmt"
 	"runtime"
-	"strings"
 )
 
-// Tree is the representation of a single parsed configuration.
+// Tree is the representation of a single parsed file.
 type Tree struct {
 	Name        string // name of the template represented by the tree.
 	Productions []*ProductionNode
@@ -25,6 +23,7 @@ type Tree struct {
 	peekCount int
 }
 
+// Parse parses the yacc file text with optional name.
 func Parse(name, text string) (t *Tree, err error) {
 	t = New(name)
 	t.text = text
@@ -47,13 +46,6 @@ func (t *Tree) backup() {
 	t.peekCount++
 }
 
-// backup2 backs the input stream up two tokens.
-// The zeroth token is already there.
-func (t *Tree) backup2(t1 item) {
-	t.token[1] = t1
-	t.peekCount = 2
-}
-
 // peek returns but does not consume the next token.
 func (t *Tree) peek() item {
 	if t.peekCount > 0 {
@@ -73,51 +65,16 @@ func New(name string) *Tree {
 	}
 }
 
-// ErrorContext returns a textual representation of the location of the node in the input text.
-func (t *Tree) ErrorContext(n Node) (location, context string) {
-	pos := int(n.Position())
-	text := t.text[:pos]
-	byteNum := strings.LastIndex(text, "\n")
-	if byteNum == -1 {
-		byteNum = pos // On first line.
-	} else {
-		byteNum++ // After the newline.
-		byteNum = pos - byteNum
-	}
-	lineNum := 1 + strings.Count(text, "\n")
-	context = n.String()
-	context = strings.TrimSpace(context)
-	context = strings.Replace(context, "\n", "\\n", -1)
-	if len(context) > 20 {
-		context = fmt.Sprintf("%.20s...", context)
-	}
-	return fmt.Sprintf("%s:%d:%d", t.Name, lineNum, byteNum), context
-}
-
 // errorf formats the error and terminates processing.
 func (t *Tree) errorf(format string, args ...interface{}) {
 	format = fmt.Sprintf("parse: %s:%d: %s", t.Name, t.lex.lineNumber(), format)
 	panic(fmt.Errorf(format, args...))
 }
 
-// error terminates processing.
-func (t *Tree) error(err error) {
-	t.errorf("%s", err)
-}
-
 // expect consumes the next token and guarantees it has the required type.
 func (t *Tree) expect(expected itemType, context string) item {
 	token := t.next()
 	if token.typ != expected {
-		t.unexpected(token, context)
-	}
-	return token
-}
-
-// expectOneOf consumes the next token and guarantees it has one of the required types.
-func (t *Tree) expectOneOf(expected1, expected2 itemType, context string) item {
-	token := t.next()
-	if token.typ != expected1 && token.typ != expected2 {
 		t.unexpected(token, context)
 	}
 	return token
@@ -130,8 +87,7 @@ func (t *Tree) unexpected(token item, context string) {
 
 // recover is the handler that turns panics into returns from the top level of Parse.
 func (t *Tree) recover(errp *error) {
-	e := recover()
-	if e != nil {
+	if e := recover(); e != nil {
 		if _, ok := e.(runtime.Error); ok {
 			panic(e)
 		}
@@ -140,7 +96,6 @@ func (t *Tree) recover(errp *error) {
 		}
 		*errp = e.(error)
 	}
-	return
 }
 
 // startParse initializes the parser, using the lexer.
@@ -153,10 +108,8 @@ func (t *Tree) stopParse() {
 	t.lex = nil
 }
 
-// Parse parses the template definition string to construct a representation of
-// the template for execution. If either action delimiter string is empty, the
-// default ("{{" or "}}") is used. Embedded template definitions are added to
-// the treeSet map.
+// Parse parses the yacc string to construct a representation of
+// the file for analysis.
 func (t *Tree) Parse(text string) (err error) {
 	defer t.recover(&err)
 	t.startParse(lex(t.Name, text))
@@ -166,7 +119,7 @@ func (t *Tree) Parse(text string) (err error) {
 	return nil
 }
 
-// parse is the top-level parser for a conf.
+// parse is the top-level parser for a file.
 // It runs to EOF.
 func (t *Tree) parse() {
 	for {
@@ -184,7 +137,9 @@ func (t *Tree) parse() {
 func (t *Tree) parseProduction(p *ProductionNode) {
 	const context = "production"
 	t.expect(itemColon, context)
-	t.expect(itemNL, context)
+	if t.peek().typ == itemNL {
+		t.next()
+	}
 	expectExpr := true
 	for {
 		token := t.next()
@@ -224,7 +179,9 @@ func (t *Tree) parseExpression(e *ExpressionNode) {
 			e.Items = append(e.Items, Item{token.val, TypLiteral})
 		case itemExpr:
 			e.Command = token.val
-			t.expect(itemNL, context)
+			if t.peek().typ == itemNL {
+				t.next()
+			}
 			return
 		case itemPct, itemComment:
 			// ignore
