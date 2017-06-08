@@ -23,15 +23,13 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 | Parameter | Description |
 |-----------|-------------|
 | `IF EXISTS` | Rename the table only if a table with the current name exists; if one does not exist, do not return an error. |
-| `relation_expr` | The current name of the table. |
-| `qualified_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
+| `current_name` | The current name of the table. |
+| `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
 
 
 ## Examples
 
 ### Rename a table
-
-To rename a table, use the `ALTER TABLE` statement followed by the current table name in `database.table` format, the `RENAME TO` statement, and the new table name in `database.table` format:
 
 ~~~ sql
 > SHOW TABLES FROM db1;
@@ -46,9 +44,6 @@ To rename a table, use the `ALTER TABLE` statement followed by the current table
 ~~~
 ~~~ sql
 > ALTER TABLE db1.table1 RENAME TO db1.tablea
-~~~
-~~~
-RENAME TABLE
 ~~~
 ~~~ sql
 > SHOW TABLES FROM db1;
@@ -106,9 +101,6 @@ To move a table from one database to another, use the above syntax but specify t
 ~~~
 ~~~ sql
 > ALTER TABLE db1.tablea RENAME TO db2.tablea
-~~~
-~~~
-RENAME TABLE
 ~~~
 ~~~ sql
 > SHOW TABLES FROM db1;
