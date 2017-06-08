@@ -17,7 +17,7 @@ C Compiler:  4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)
 
 The `cockroach version` command outputs the following fields:
 
-Field | Description 
+Field | Description
 ------|------------
 `Build Tag` | The CockroachDB version.
 `Build Time` | The date and time when the binary was built.
