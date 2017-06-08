@@ -519,6 +519,9 @@ entries:
     - title: Releases
       items:
 
+        - title: 1.0.2
+          url: /v1.0.2.html
+
         - title: 1.0.1
           url: /v1.0.1.html
 
