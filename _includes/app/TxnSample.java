@@ -58,9 +58,10 @@ public class TxnSample {
                 if(e.getErrorCode() == 40001) {
                     // Signal the database that we will attempt a retry.
                     conn.rollback(sp);
+                } else {
+                    // This is a not a serialization failure, pass it up the chain.
+                    throw e;
                 }
-                // This is a not a serialization failure, pass it up the chain.
-                throw e;
             }
         }
     }
