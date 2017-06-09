@@ -61,7 +61,7 @@ The `BACKUP` process minimizes its impact to the cluster's performance by distri
 For best performance, we also recommend always starting backups with a timestamp at least 10 seconds in the past. For example:
 
 ~~~ sql
-> BACKUP...AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10')`;
+> BACKUP...AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries).
@@ -121,21 +121,21 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ~~~ sql
 > BACKUP bank.customers TO 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 ### Backup Multiple Tables
 
 ~~~ sql
 > BACKUP bank.customers, bank.accounts TO 'azure://acme-co-backup/tables-accounts-customers-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00');
 ~~~
 
 ### Backup an Entire Database
 
 ~~~ sql
 > BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 ### Create Incremental Backups
@@ -146,14 +146,14 @@ Incremental backups must be based off of full backups you've already created.
 > BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' 
 INCREMENTAL FROM 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 , 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00'
 ~~~
 
 ### Create Backups as of a Specific System Time
 
 ~~~ sql
 > BACKUP bank.customers TO 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME '2016-03-27 12:45:00';
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 ## See Also
