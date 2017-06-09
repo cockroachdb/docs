@@ -48,7 +48,7 @@ Full backups contain an unreplicated copy of your data and can always be used to
 
 #### Incremental Backups
 
-Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). 
+Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups).
 
 You can only create incremental backups within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
 
@@ -58,10 +58,10 @@ You can configure garbage collection periods on a per-table basis using the `ttl
 
 The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes; more details about this architectural concept forthcoming), with no two nodes backing up the same data.
 
-For best performance, we also recommend always starting backups with a timestamp at least 10 seconds in the past. For example:
+For best performance, we also recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
 ~~~ sql
-> BACKUP...AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10')`;
+> BACKUP...AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries).
@@ -121,21 +121,21 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ~~~ sql
 > BACKUP bank.customers TO 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 ### Backup Multiple Tables
 
 ~~~ sql
 > BACKUP bank.customers, bank.accounts TO 'azure://acme-co-backup/tables-accounts-customers-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00');
 ~~~
 
 ### Backup an Entire Database
 
 ~~~ sql
 > BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
 ### Create Incremental Backups
@@ -143,17 +143,10 @@ AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
 Incremental backups must be based off of full backups you've already created.
 
 ~~~ sql
-> BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' 
+> BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 INCREMENTAL FROM 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 , 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME (current_timestamp() - INTERVAL '0:0:10');
-~~~
-
-### Create Backups as of a Specific System Time
-
-~~~ sql
-> BACKUP bank.customers TO 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME '2016-03-27 12:45:00';
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00'
 ~~~
 
 ## See Also
