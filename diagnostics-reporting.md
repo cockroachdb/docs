@@ -14,7 +14,7 @@ This page explains the details that get shared and how to opt out of sharing.
 
 ## What Gets Shared
 
-When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
+When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis, as well as crash reports as they occur. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
 
 ### Storage Details
 
@@ -202,13 +202,44 @@ This JSON example shows an excerpt of what query statistics look like when sent 
 
 ## Opt Out of Diagnostics Reporting
 
+### At Cluster Startup
+
+To make sure that absolutely no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET` method described below.
+
+### After Cluster Startup
+
 To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following `SET CLUSTER SETTING` statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
 
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
 ~~~
 
-This change will not be instantaneous, as it must be propagated to other nodes in the cluster. If you want to make sure that no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET` method described above.
+This change will not be instantaneous, as it must be propagated to other nodes in the cluster.
+
+## Check the State of Diagnostics Reporting
+
+To check the state of the diagnostics reporting, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following `SHOW CLUSTER SETTING` statement:
+
+~~~ sql
+> SHOW CLUSTER SETTING diagnostics.reporting.enabled;
+~~~
+
+~~~
++-------------------------------+
+| diagnostics.reporting.enabled |
++-------------------------------+
+| false                         |
++-------------------------------+
+(1 row)
+~~~
+
+If the setting is `false`, diagnostics reporting is off; if the setting is `true`, diagnostics reporting is on.
+
+Also, if you opted out [at cluster startup](#at-cluster-startup), you can find the following message in the [logs](debug-and-error-logs.html) to confirm that diagnostics reporting is off:
+
+~~~
+using local environment variables: COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=1
+~~~
 
 ## See Also
 
