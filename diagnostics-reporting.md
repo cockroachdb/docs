@@ -202,13 +202,38 @@ This JSON example shows an excerpt of what query statistics look like when sent 
 
 ## Opt Out of Diagnostics Reporting
 
-To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following `SET CLUSTER SETTING` statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
+### At Cluster Initialization
+
+To make sure that absolutely no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET CLUSTER SETTING` method described below.
+
+### After Cluster Initialization
+
+To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
 
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
 ~~~
 
-This change will not be instantaneous, as it must be propagated to other nodes in the cluster. If you want to make sure that no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET` method described above.
+This change will not be instantaneous, as it must be propagated to other nodes in the cluster.
+
+## Check the State of Diagnostics Reporting
+
+To check the state of diagnostics reporting, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement:
+
+~~~ sql
+> SHOW CLUSTER SETTING diagnostics.reporting.enabled;
+~~~
+
+~~~
++-------------------------------+
+| diagnostics.reporting.enabled |
++-------------------------------+
+| false                         |
++-------------------------------+
+(1 row)
+~~~
+
+If the setting is `false`, diagnostics reporting is off; if the setting is `true`, diagnostics reporting is on.
 
 ## See Also
 

@@ -63,7 +63,7 @@ Statement | Usage
 [`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.
 [`SAVEPOINT`](savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), start a retryable transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
-[`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
 ## Privilege Management Statements
 
@@ -79,13 +79,9 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`SET DATABASE`](set-database.html) | Set the default database for the session.
-[`SET TIME ZONE`](set-time-zone.html) | Set the default time zone for the session.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
-[`SHOW ALL`](show-all.html) | List all current run-time settings.
-[`SHOW DATABASE`](show-database.html) | List the default database for the session.
-[`SHOW TIME ZONE`](show-time-zone.html) | View the default time zone for the session.
-[`SHOW TRANSACTION`](show-transaction.html) | View the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SET`](set-vars.html) | Set the current session parameters.
+[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
+[`SHOW`](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster Management Statements
 

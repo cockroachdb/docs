@@ -408,7 +408,14 @@ func main() {
 				{name: "rename_column", stmt: "rename_stmt", inline: []string{"opt_column"}, match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' ('COLUMN'|name)")}, replace: map[string]string{"relation_expr": "table_name", "name 'TO'": "current_name 'TO'"}, unlink: []string{"table_name", "current_name"}},
 				{name: "rename_database", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'DATABASE'")}},
 				{name: "rename_index", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'INDEX'")}, inline: []string{"table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
-				{name: "rename_table", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}},
+				{
+					name:    "rename_table",
+					stmt:    "rename_stmt",
+					match:   []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")},
+					replace: map[string]string{"relation_expr": "current_name", "qualified_name": "new_name"},
+					unlink:  []string{"current_name"},
+					relink:  map[string]string{"new_name": "name"},
+				},
 				{
 					name:    "restore",
 					stmt:    "backup_stmt",
@@ -447,29 +454,50 @@ func main() {
 					nosplit: true,
 				},
 				{
-					name:    "set_application_name",
-					stmt:    "set_stmt",
-					inline:  []string{"set_rest", "set_rest_more", "generic_set"},
-					match:   []*regexp.Regexp{regexp.MustCompile("'SET' var_name .* var_list")},
-					replace: map[string]string{"var_name": "'APPLICATION_NAME'", "var_list": "application_name"},
-					unlink:  []string{"application_name"},
-				},
-				{
-					name:   "set_time_zone",
+					name:   "set_var",
 					stmt:   "set_stmt",
-					inline: []string{"set_rest", "set_rest_more", "generic_set"},
-					match:  []*regexp.Regexp{regexp.MustCompile("'SET' 'TIME'")},
+					inline: []string{"set_rest", "set_rest_more", "generic_set", "var_list"},
+					exclude: []*regexp.Regexp{
+						regexp.MustCompile(`'SET' . 'TRANSACTION'`),
+						regexp.MustCompile(`'SET' 'TRANSACTION'`),
+						regexp.MustCompile(`'SET' 'SESSION' var_name`),
+						regexp.MustCompile(`'SET' 'SESSION' 'TRANSACTION'`),
+						regexp.MustCompile("'SET' 'CLUSTER'"),
+					},
+					replace: map[string]string{
+						"'=' 'DEFAULT'":  "'=' 'DEFAULT' | 'SET' ( 'SESSION' | ) 'TIME' 'ZONE' ( var_value | 'DEFAULT' | 'LOCAL' ) | 'SET' ( 'SESSION' | ) 'NAMES' ( var_value | 'DEFAULT' )",
+						"'SET' var_name": "'SET' ( 'SESSION' | ) var_name",
+					},
 				},
 				{
-					name:    "set_database",
-					stmt:    "set_stmt",
-					inline:  []string{"set_rest", "set_rest_more", "generic_set"},
-					match:   []*regexp.Regexp{regexp.MustCompile("'SET' var_name .* var_list")},
-					replace: map[string]string{"var_name": "'DATABASE'", "var_list": "database_name"},
-					unlink:  []string{"database_name"},
+					name:   "set_cluster_setting",
+					stmt:   "set_stmt",
+					inline: []string{"set_rest", "set_rest_more", "generic_set", "var_list"},
+					match: []*regexp.Regexp{
+						regexp.MustCompile("'SET' 'CLUSTER'"),
+					},
 				},
 				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"}},
-				{name: "show_all", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'ALL'")}},
+				{
+					name: "show_var",
+					stmt: "show_stmt",
+					exclude: []*regexp.Regexp{
+						regexp.MustCompile("'SHOW' 'ALL' 'CLUSTER'"),
+						regexp.MustCompile("'SHOW' 'IN"),       // INDEX, INDEXES
+						regexp.MustCompile("'SHOW' '[B-HJ-Z]"), // Keep ALL and IDENT.
+					},
+					replace: map[string]string{"identifier": "var_name"},
+				},
+				{
+					name: "show_cluster_setting",
+					stmt: "show_stmt",
+					match: []*regexp.Regexp{
+						regexp.MustCompile("'SHOW'.* 'CLUSTER'"),
+					},
+					exclude: []*regexp.Regexp{
+						regexp.MustCompile("'SHOW' 'CLUSTER' 'SETTING' 'ALL'"),
+					},
+				},
 				{name: "show_columns", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'COLUMNS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_create_table", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'TABLE'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
@@ -490,7 +518,6 @@ func main() {
 				{name: "show_index", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'INDEX'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_keys", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'KEYS'")}},
 				{name: "show_tables", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TABLES'")}},
-				{name: "show_timezone", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TIME' 'ZONE'")}},
 				{name: "show_transaction", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TRANSACTION'")}},
 				{name: "show_users", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'USERS'")}},
 				{name: "table_constraint", inline: []string{"constraint_elem", "opt_storing", "storing"}},

@@ -55,8 +55,8 @@ As a workaround, [execute the file from the command line](use-the-built-in-sql-c
 When executing an [`ALTER TABLE ADD COLUMN`](add-column.html) statement with a [`DEFAULT`](default-value.html) expression, new values generated:
 
 - use the default [search path](sql-name-resolution.html#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
-- use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`](set-time-zone.html).
-- have no default database regardless of the default database configured in the current session via [`SET DATABASE`](set-database.html), so you must specify the database of any tables they reference.
+- use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`](set-vars.html).
+- have no default database regardless of the default database configured in the current session via [`SET DATABASE`](set-vars.html), so you must specify the database of any tables they reference.
 - use the transaction timestamp for the `statement_timestamp()` function regardless of the time at which the `ALTER` statement was issued.
 
 ## Load-based lease rebalancing in uneven latency deployments
