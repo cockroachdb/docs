@@ -28,8 +28,10 @@ Special syntax cases:
 
 | Syntax | Equivalent to |
 |--------|---------------|
+| `USE ...` | `SET database = ...`
 | `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...`
-| `SET TIME ZONE ...` | Special syntax because the variable name contains a space. See [`SET TIME ZONE`](#set-time-zone) below.
+| `SET TIME ZONE ...` | SET "time zone" = ...`
+| `SET NAMES ...` | `SET client_encoding = ...`. This is provided for compatibility with PostgreSQL client only.
 
 {{site.data.alerts.callout_info}}The `SET` statement for session settings in unrelated to the other [`SET TRANSACTION`](set-transaction.html) statement.{{site.data.alerts.end}}
 
@@ -40,7 +42,7 @@ Special syntax cases:
 | `application_name`              | The current application name for statistics collection. | Empty string.                                                                                                                                                                                                         | Yes
 | `database`                      | The default database for the current session. | Database in connection string, or empty if not specified.                                                                                                                                                                       | Yes
 | `search_path`                   | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility).                                                          | Yes
-| `time zone`                     | The default time zone for the current session. See [`SET TIME ZONE` notes](#set-time-zone) below. | "`UTC`"                                                                                                                                                                     | Yes
+| `time zone`                     | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`. | "`UTC`" | Yes
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified.  | Yes
 | `client_encoding`               | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A                                                                                                                                                                           | No
 | `client_min_messages`           | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`on`". | N/A                                                                                                                                                                             | No
@@ -105,43 +107,10 @@ is e.g. relevant for `search_path`:
 (1 row)
 ~~~
 
-## `SET TIME ZONE`
-
-The statement `SET TIME ZONE`
-can configure the default time zone for the current session.
-
-### Synopsis
-
-{% include sql/diagrams/set_time_zone.html %}
-
-### Parameters
-
-Parameter | Description
-----------|------------
-`zone_value` | The time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
-
-### Examples
-
-#### Set the time zone as part of a `TIMESTAMP` value (recommended)
+### Set the default time zone via `SET TIME ZONE`
 
 ~~~ sql
-> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
-> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00');
-> SELECT * FROM timestamps;
-~~~
-~~~
-+---+---------------------------+
-| a |             b             |
-+---+---------------------------+
-| 1 | 2016-03-26 15:10:10+00:00 |
-+---+---------------------------+
-# Note that the timestamp returned is UTC-05:00, which is the equivalent of EST.
-~~~
-
-#### Set the default time zone via `SET TIME ZONE`
-
-~~~ sql
-> SET TIME ZONE 'EST';
+> SET TIME ZONE 'EST'; -- same as SET "time zone" = 'EST'
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
@@ -153,7 +122,7 @@ Parameter | Description
 (1 row)
 ~~~
 ~~~ sql
-> SET TIME ZONE DEFAULT;
+> SET TIME ZONE DEFAULT; -- same as SET "time zone" = DEFAULT
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
