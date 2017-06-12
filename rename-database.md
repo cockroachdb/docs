@@ -84,6 +84,6 @@ pq: the new database name "db3" already exists
 
 - [`CREATE DATABASE`](create-database.html)
 - [`SHOW DATABASES`](show-databases.html)
-- [`SET DATABASE`](set-database.html)
+- [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
