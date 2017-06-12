@@ -39,7 +39,7 @@ be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
 Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
-PostgreSQL wire protocol. 
+PostgreSQL wire protocol.
 
 ## Size
 

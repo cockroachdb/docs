@@ -20,7 +20,7 @@ Object | Information Schema View| SHOW .
 -------|--------------|--------
 Columns | [columns](#columns)| [`SHOW COLUMNS`](show-columns.html)
 Constraints | [key_column_usage](#key_column_usage), [table_constraints](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
-Databases | [schemata](#schemata)| [`SHOW DATABASE`](show-database.html)
+Databases | [schemata](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [statistics](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [schema_privileges](#schema_privileges), [table_privileges](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
 Tables | [tables](#tables)| [`SHOW TABLES`](show-tables.html)
@@ -167,11 +167,11 @@ Column | Description
 
 ## See Also
 
+- [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
 - [`SHOW CREATE TABLE`](show-create-table.html)
 - [`SHOW CREATE VIEW`](show-create-view.html)
-- [`SHOW DATABASE`](show-database.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)
