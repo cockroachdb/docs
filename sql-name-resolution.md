@@ -24,18 +24,18 @@ function names in [value expressions](sql-expressions.html):
 - If the name is *qualified* (i.e., the name already tells where to look), use this information.
   For example, `SELECT * FROM db1.orders` will look up "`orders`" only in `db1`.
 - If the name is *unqualified*:
-  - Try to find the name in the "default database" as set by [`SET DATABASE`](set-database.html).
+  - Try to find the name in the "default database" as set by [`SET DATABASE`](set-vars.html).
   - Try to find the name using the [search path](#search-path).
   - If the name is not found, produce an error.
 
 ## Search Path
 
-In addition to the default database configurable via [`SET DATABASE`](set-database.html), unqualified names are also looked up in the current session's *search path*.
+In addition to the default database configurable via [`SET DATABASE`](set-vars.html), unqualified names are also looked up in the current session's *search path*.
 
 The search path is a session variable containing a list of databases,
 or *namespaces*, where names are looked up.
 
-The current search path can set using `SET SEARCH_PATH` and can be inspected using `SHOW SEARCH_PATH` or [`SHOW ALL`](show-all.html).
+The current search path can set using `SET SEARCH_PATH` and can be inspected using [`SHOW SEARCH_PATH` or `SHOW ALL`](show-vars.html).
 
 By default, the search path for new columns includes just
 `pg_catalog`, so that queries can use PostgreSQL compatibility
@@ -44,5 +44,5 @@ prefix them with "`pg_catalog.`" every time.
 
 ## See Also
 
-- [`SET DATABASE`](set-database.html)
-- [`SHOW ALL`](show-all.html)
+- [`SET`](set-vars.html)
+- [`SHOW`](show-vars.html)
