@@ -61,6 +61,9 @@ To avoid an error in case the database does not exist, you can include `IF EXIST
 +----------+
 ~~~
 
+{{site.data.alerts.callout_danger}}<code>DROP DATABASE</code> drops <em>all</em> tables within the database as well as objects dependent on the tables without listing the tables or the dependent objects. This can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
+
+
 ## See Also
 
 - [`CREATE DATABASE`](create-database.html)
