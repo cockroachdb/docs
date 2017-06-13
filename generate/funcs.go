@@ -45,9 +45,9 @@ type operation struct {
 
 func (o operation) String() string {
 	if o.right == "" {
-		return fmt.Sprintf("`%s`%s", o.op, linkTypeName(o.left))
+		return fmt.Sprintf("<code>%s</code>%s", o.op, linkTypeName(o.left))
 	}
-	return fmt.Sprintf("%s `%s` %s", linkTypeName(o.left), o.op, linkTypeName(o.right))
+	return fmt.Sprintf("%s <code>%s</code> %s", linkTypeName(o.left), o.op, linkTypeName(o.right))
 }
 
 type operations []operation
@@ -116,11 +116,13 @@ func GenerateOperators() []byte {
 	sort.Strings(opstrs)
 	b := new(bytes.Buffer)
 	for _, op := range opstrs {
-		fmt.Fprintf(b, "`%s` | Return\n", op)
-		fmt.Fprintf(b, "--- | ---\n")
+		fmt.Fprintf(b, "<table><thead>\n")
+		fmt.Fprintf(b, "<tr><td><code>%s</code></td><td>Return</td></tr>\n", op)
+		fmt.Fprintf(b, "</thead><tbody>\n")
 		for _, v := range ops[op] {
-			fmt.Fprintf(b, "%s | %s\n", v.String(), linkTypeName(v.ret))
+			fmt.Fprintf(b, "<tr><td>%s</td><td>%s</td></tr>\n", v.String(), linkTypeName(v.ret))
 		}
+		fmt.Fprintf(b, "</tbody></table>")
 		fmt.Fprintln(b)
 	}
 	return b.Bytes()
