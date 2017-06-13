@@ -17,7 +17,7 @@ toc: true
 The following table lists all CockroachDB operators from highest to lowest precedence, i.e., the order in which they will be evaluated within a statement. Operators with the same precedence are left associative. This means that those operators are grouped together starting from the left and moving right.
 
 | Order of Precedence | Operator | Name | Operator Arity |
-| --- |
+| ------------------- | -------- | ---- | -------------- |
 | 1 | `.` | Member field access operator | binary |
 | 2 | `::` | Type cast | binary |
 | 3 | `-` | Unary minus | unary |
