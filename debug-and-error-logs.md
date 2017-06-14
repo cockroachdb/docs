@@ -43,7 +43,7 @@ Command | `INFO` messages | `WARNING` and above messages
 
 ### Output Locations
 
-Based on the command's flags and the message's [severity level](#severity-levels), CockroachDB does one of the following: 
+Based on the command's flags and the message's [severity level](#severity-levels), CockroachDB does one of the following:
 
 - [Writes the message to a file](#write-to-file)
 - [Prints it to `stderr`](#print-to-stderr)
@@ -102,22 +102,22 @@ To help troubleshoot [query performance issues](query-behavior-troubleshooting.h
 ### Enable Query Logging
 
 - **Long-running transactions**:
-  
-  ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '[time]';
-  ~~~
 
-  The `[time]` parameter accepts common time specifiers, such as `100ms` or `2s`.
+    ~~~ sql
+    > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '[time]';
+    ~~~
+
+    The `[time]` parameter accepts common time specifiers, such as `100ms` or `2s`.
 
 - **All queries**:
 
-  ~~~ sql
-  > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
-  ~~~
+    ~~~ sql
+    > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
+    ~~~
 
 ### Details
 
-After you enable query logging, whenever nodes process SQL statements, they generate messages with an `INFO` [severity level](#severity-levels). 
+After you enable query logging, whenever nodes process SQL statements, they generate messages with an `INFO` [severity level](#severity-levels).
 
 By default, these messages will get [written to files](#write-to-file), but are ultimate handled by whatever logging behavior you set for [`cockroach start`](start-a-node.html#logging).
 
@@ -132,16 +132,16 @@ After finding which queries are slow, use [`EXPLAIN`](explain.html) to examine t
 Once you're done troubleshooting, you should disable query logging to prevent it from unnecessarily consuming resources.
 
 - **Long-running transactions**:
-  
-  ~~~ sql
-  > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '0s';
-  ~~~
+
+    ~~~ sql
+    > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '0s';
+    ~~~
 
 - **All queries**:
 
-  ~~~ sql
-  > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
-  ~~~
+    ~~~ sql
+    > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
+    ~~~
 
 ## See Also
 
