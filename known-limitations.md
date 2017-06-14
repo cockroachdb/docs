@@ -251,7 +251,7 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ## Schema changes between executions of prepared statements
 
-When the schema of a table targeted by a `PREPARE` statement changes before the prepared statement is executed, CockroachDB should return an error. Instead, CockroachDB incorrectly allows the prepared statement to return results based on the changed table schema, for example:
+When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB should return an error. Instead, CockroachDB incorrectly allows the prepared statement to return results based on the changed table schema, for example:
 
 ~~~ sql
 > CREATE TABLE users (id INT PRIMARY KEY);
@@ -274,7 +274,7 @@ When the schema of a table targeted by a `PREPARE` statement changes before the 
 (1 row)
 ~~~
 
-Also, a prepared [`INSERT`](insert.html) or [`UPSERT`](upsert.html) statement executed via the pgwire protocol (not via `PREPARE` and `EXECUTE` keywords) acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
+Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
 
 - If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
 - If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
