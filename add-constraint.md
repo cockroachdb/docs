@@ -21,7 +21,7 @@ The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not N
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table. 
+The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
@@ -51,11 +51,66 @@ Adding the [Check constraint](check.html) requires that all of a column's values
 
 ### Add the Foreign Key Constraint
 
-Adding the [Foreign Key constraint](foreign-key.html) requires that all of a column's values are equal to an existing value in the column it references.
+Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
-``` sql
-> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer) REFERENCEs customers (id);
-```
+For example, let's say you have two simple tables, `orders` and `customers`:
+
+~~~ sql
+> SHOW CREATE TABLE customers;
+~~~
+
+~~~
++-----------+-------------------------------------------------+
+|   Table   |                   CreateTable                   |
++-----------+-------------------------------------------------+
+| customers | CREATE TABLE customers (␤                       |
+|           |     id INT NOT NULL,␤                           |
+|           |     "name" STRING NOT NULL,␤                    |
+|           |     address STRING NULL,␤                       |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤ |
+|           |     FAMILY "primary" (id, "name", address)␤     |
+|           | )                                               |
++-----------+-------------------------------------------------+
+(1 row)
+~~~
+
+~~~ sql
+> SHOW CREATE TABLE orders;
+~~~
+
+~~~
++--------+-------------------------------------------------------------------------------------------------------------+
+| Table  |                                                 CreateTable                                                 |
++--------+-------------------------------------------------------------------------------------------------------------+
+| orders | CREATE TABLE orders (␤                                                                                      |
+|        |     id INT NOT NULL,␤                                                                                       |
+|        |     customer_id INT NULL,␤                                                                                  |
+|        |     status STRING NOT NULL,␤                                                                                |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                             |
+|        |     FAMILY "primary" (id, customer_id, status),␤                                                            |
+|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))␤ |
+|        | )                                                                                                           |
++--------+-------------------------------------------------------------------------------------------------------------+
+(1 row)
+~~~
+
+To ensure that each value in the `orders.customer_id` column matches a unique value in the `orders.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
+
+~~~ sql
+> CREATE INDEX ON orders (customer_id);
+~~~
+
+Then you add the Foreign Key constraint:
+
+~~~ sql
+> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id);
+~~~
+
+If you had tried to add the constraint before indexing the column, you would have received an error:
+
+~~~
+pq: foreign key requires an existing index on columns ("customer_id")
+~~~
 
 ## See Also
 
