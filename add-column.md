@@ -1,10 +1,10 @@
 ---
 title: ADD COLUMN
-summary: Use the ADD COLUMN statement to add columns to tables. 
+summary: Use the ADD COLUMN statement to add columns to tables.
 toc: false
 ---
 
-The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables. 
+The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
 
 <div id="toc"></div>
 
@@ -14,7 +14,7 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table. 
+The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `table_name` | The name of the table to which you want to add the column. |
 | `name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  |
 | `typename` | The [data type](data-types.html) of the new column. |
-| `col_qualification` | A list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html). |
+| `col_qualification` | A list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>Note that it is not possible to add a column with the [Foreign Key](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the Foreign Key constraint to the column. |
 
 ## Examples
 
@@ -31,11 +31,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
-~~~ 
+~~~
 
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
-~~~ 
+~~~
 
 ~~~
 +-----------+-------------------+-------+---------+-----------+
@@ -55,7 +55,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
-~~~ 
+~~~
 
 ~~~
 +-----------+-------------------+-------+---------+-----------+
@@ -74,11 +74,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
-~~~ 
+~~~
 
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
-~~~ 
+~~~
 ~~~
 +-----------+-------------------+-------+---------------------------+-----------+
 |   Field   |       Type        | Null  |          Default          |  Indices  |
@@ -96,20 +96,20 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
-~~~ 
- 
+~~~
+
 ### Add a Column with Collation
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
-~~~ 
- 
+~~~
+
 ### Add a Column and Assign it to a Column Family
 
 #### Add a Column and Assign it to a New Column Family
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
-~~~ 
+~~~
 
 #### Add a Column and Assign it to an Existing Column Family
 ~~~ sql
