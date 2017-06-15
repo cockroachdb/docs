@@ -11,7 +11,10 @@ This page provides recommended settings for production deployments.
 
 ## Hardware
 
-Hardware decisions are scenario- and workload-dependent, but the minimum recommendations are to use at least 3 nodes for a replicated cluster, with each node having at least 1 CPU and 2 GB of RAM.
+Minimum recommendations:
+
+- For a replicated cluster, use at least 3 nodes to ensure availability if a single node fails (see [Cluster Topology](#cluster-topology) for more details).
+- Each node should have sufficient CPU, RAM, network, and storage capacity to handle your workload, but the bare minimum is 1 CPU and 2 GB of RAM per node. More data, complex workloads, higher concurrency, and faster performance require additional resources.
 
 For best performance:
 
