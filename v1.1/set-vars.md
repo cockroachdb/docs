@@ -114,7 +114,26 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-### Set the default time zone via `SET TIME ZONE`
+## `SET TIME ZONE`
+
+{{site.data.alerts.callout_danger}}As a best practice, we recommend not using this setting and avoid setting a session time for your database. We instead recommend converting UTC values to the appropriate time zone on the client side.{{site.data.alerts.end}}
+
+You can control your client's default time zone for the current session with `SET TIME ZONE`. This will apply a session offset to all [`TIMESTAMP WITH TIME ZONE`](timestamp.html) values.
+
+{{site.data.alerts.callout_info}}With setting `SET TIME ZONE`, CockroachDB uses UTC as the default time zone.{{site.data.alerts.end}}
+
+`SET TIME ZONE` uses a special syntax form used to configure the `"time zone"` session parameter because `SET` cannot assign to parameter names containing spaces.
+
+### Parameters
+
+The time zone value indicates the time zone for the current session.
+
+This value can be a string representation of a local system-defined
+time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
+negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
+`LOCAL`, or `0` sets the session time zone to `UTC`.
+
+### Example: Set the Default Time Zone via `SET TIME ZONE`
 
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "time zone" = 'EST'
