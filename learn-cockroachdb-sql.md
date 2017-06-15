@@ -52,7 +52,7 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 
 ## Set the Default Database
 
-To set the default database, use the [`SET DATABASE`](set-database.html) statement:
+To set the default database, use the [`SET`](set-vars.html#examples) statement:
 
 ~~~ sql
 > SET DATABASE = bank;

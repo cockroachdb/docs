@@ -29,7 +29,7 @@ Parameter | Description
 
 ### Show tables in the default database
 
-This example assumes that the `bank` database has been set as the default database for the session, either via the [`SET DATABASE`](set-database.html) statement or in the client's connection string.
+This example assumes that the `bank` database has been set as the default database for the session, either via the [`SET`](set-vars.html) statement or in the client's connection string.
 
 ~~~ sql
 > SHOW TABLES;
