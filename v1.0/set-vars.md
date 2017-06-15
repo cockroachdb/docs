@@ -111,10 +111,13 @@ The following demonstrates how to assign a list of values:
 
 ## `SET TIME ZONE`
 
-The statement `SET TIME ZONE` can configure the default time zone for
-the current session. This is a special syntax form used to configure
-the `"time zone"` session parameter; the special syntax is necessary
-because `SET` cannot assign to parameter names containing spaces.
+{{site.data.alerts.callout_danger}}As a best practice, we recommend not using this setting and avoid setting a session time for your database. We instead recommend converting UTC values to the appropriate time zone on the client side.{{site.data.alerts.end}}
+
+You can control your client's default time zone for the current session with `SET TIME ZONE`. This will apply a session offset to all [`TIMESTAMP WITH TIME ZONE`](timestamp.html) values.
+
+{{site.data.alerts.callout_info}}With setting `SET TIME ZONE`, CockroachDB uses UTC as the default time zone.{{site.data.alerts.end}}
+
+`SET TIME ZONE` uses a special syntax form used to configure the `"time zone"` session parameter because `SET` cannot assign to parameter names containing spaces.
 
 ### Parameters
 
