@@ -23,7 +23,7 @@ Each of the following SQL statements control transactions in some way.
 | [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction. |
 | [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority. |
 | [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began. |
-| [`SHOW TRANSACTION`](show-transaction.html) | Retrieve a transaction's [priority](#transaction-priorities) or [isolation level](#isolation-levels). |
+| [`SHOW`](show-vars.html) | Display the current transaction settings. |
 
 ## Syntax
 
@@ -180,7 +180,12 @@ For greater detail, here's the process a retryable transaction goes through.
 
 	In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
-## Transaction Priorities
+## Transaction Parameters
+
+Each transaction is controlled by two parameters: its priority and its
+isolation level. The following two sections detail these further.
+
+### Transaction Priorities
 
 Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in high-contention scenarios, the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
 
@@ -194,9 +199,11 @@ Alternately, the client can set the priority immediately after the transaction i
 > SET TRANSACTION PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
+The client can also display the current priority of the transaction with [`SHOW TRANSACTION PRIORITY`](show-vars.html).
+
 {{site.data.alerts.callout_info}}When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.{{site.data.alerts.end}}
 
-## Isolation Levels
+### Isolation Levels
 
 CockroachDB supports two transaction isolation levels: `SERIALIZABLE` and `SNAPSHOT`. By default, transactions use the `SERIALIZABLE` isolation level, but the client can explicitly set a transaction's isolation when starting the transaction:
 
@@ -210,15 +217,17 @@ Alternately, the client can set the isolation level immediately after the transa
 > SET TRANSACTION ISOLATION LEVEL <SERIALIZABLE | SNAPSHOT>;
 ~~~
 
+The client can also display the current isolation level of the transaction with [`SHOW TRANSACTION ISOLATION LEVEL`](show-vars.html).
+
 {{site.data.alerts.callout_info}}For a detailed discussion of isolation in CockroachDB transactions, see <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>.{{site.data.alerts.end}}
 
-### Serializable Isolation
+#### Serializable Isolation
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default.
 
 Unlike `SNAPSHOT`, `SERIALIZABLE` isolation permits no anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT` isolation for high contention workloads.
 
-### Snapshot Isolation
+#### Snapshot Isolation
 
 With `SNAPSHOT` isolation, a transaction behaves as if it were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT` isolation permits the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.
 
@@ -247,4 +256,5 @@ For more information about the relationship between these levels, see [this pape
 - [`ROLLBACK`](rollback-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
+- [`SHOW`](show-vars.html)
 - [Retryable function code samples](build-an-app-with-cockroachdb.html)

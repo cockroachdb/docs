@@ -84,7 +84,8 @@ SET
 
 ## See Also
 
-- [Transactions](transactions.html)
+- [`SET`](set-vars.html)
+- [Transaction parameters](transactions.html#transaction-parameters)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
