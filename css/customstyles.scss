@@ -633,6 +633,10 @@ a.accordion-toggle {
   margin-bottom: 0;
 }
 
+.tooltip-inner {
+  white-space: nowrap;
+}
+
 @import "components/search";
 @import "components/callout";
 @import "components/toc";
