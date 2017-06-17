@@ -37,6 +37,7 @@ function txnWrapper(client, op, next) {
         if (err) {
           return handleError(err);
         }
+        var opResults = arguments;
 
         // If we reach this point, release and commit.
         client.query('RELEASE SAVEPOINT cockroach_restart', function (err) {
@@ -44,7 +45,7 @@ function txnWrapper(client, op, next) {
             return handleError(err);
           }
           released = true;
-          return done();
+          return done.apply(null, opResults);
         });
       });
     },
@@ -57,7 +58,14 @@ function txnWrapper(client, op, next) {
           next(err);
         });
       } else {
-        client.query('COMMIT', next);
+        var txnResults = arguments;
+        client.query('COMMIT', function(err) {
+          if (err) {
+            return next(err);
+          } else {
+            return next.apply(null, txnResults);
+          }
+        });
       }
     });
   });
