@@ -22,9 +22,9 @@ The user revoking privileges must have the `GRANT` privilege on the target datab
 
 Parameter | Description
 ----------|------------
-`table_name` | A comma-separated list of table names. Alternatively, to revoke privileges for all tables, use `*`. 
-`database_name` | A comma-separated list of database names.<br><br>Privileges revoked for databases will be revoked for any new tables created in the databases.
-`user_name` | A comma-separated list of [users](create-and-manage-users.html).
+`table_name` | The name of the table for which you want to revoke privileges. To revoke privileges for multiple tables, use a comma-separated list of table names. To revoke privileges for all tables, use `*`. 	
+`database_name` | The name of the database for which you want to revoke privileges. To revoke privileges for multiple databases, use a comma-separated list of database names.<br><br>Privileges revoked for databases will be revoked for any new tables created in the databases.
+`user_name` | The name of the users from whom you want to revoke privileges. To revoke privileges from multiple users, use a comma-separated list of [users](create-and-manage-users.html).
 
 
 ## Examples
