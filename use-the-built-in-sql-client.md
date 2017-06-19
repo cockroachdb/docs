@@ -86,28 +86,29 @@ In these examples, we connect a SQL shell to a **secure cluster**.
 $ cockroach sql \
 --certs-dir=certs \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 
 # Using the --url flag:
 $ cockroach sql \
---url="postgresql://maxroach@roachcluster.com:26257/critterdb?sslcert=certs/client.maxroach.crt&sslkey=certs/client.maxroach.key&sslmode=verify-full&sslroot=certs/ca.crt"
+--url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslcert=certs/client.maxroach.crt&sslkey=certs/client.maxroach.key&sslmode=verify-full&sslroot=certs/ca.crt"
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
+
 
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql --insecure \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 
 # Using the --url flag:
 $ cockroach sql \
---url="postgresql://maxroach@roachnode1.com:26257/critterdb?sslmode=disable"
+--url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslmode=disable"
 ~~~
 
 ### Execute SQL statement within the SQL shell
@@ -140,7 +141,7 @@ In these examples, we use the `--execute` flag to execute statements from the co
 $ cockroach sql --insecure \
 --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 ~~~
@@ -156,7 +157,7 @@ $ cockroach sql --insecure \
 --execute="CREATE TABLE roaches (name STRING, country STRING)" \
 --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 ~~~
@@ -170,7 +171,7 @@ In this example, we use the `echo` command to execute statements from the comman
 
 ~~~ shell
 # Statements with the echo command:
-$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=roachcluster.com --port=26257 --database=critterdb
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=12.345.67.89 --port=26257 --database=critterdb
 +----------+
 |  Table   |
 +----------+
@@ -196,7 +197,7 @@ $ cockroach sql --insecure \
 --pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 ~~~
@@ -215,7 +216,7 @@ $ cockroach sql --insecure \
 --pretty=false \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 ~~~
@@ -233,7 +234,7 @@ When piping output to another command or a file, the default is reversed. Pretty
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 
@@ -252,7 +253,7 @@ $ cockroach sql --insecure \
 --pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
 
@@ -285,7 +286,7 @@ INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbande
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
---host=roachcluster.com \
+--host=12.345.67.89 \
 --port=26257 \
 --database=critterdb \
 < statements.sql
