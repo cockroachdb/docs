@@ -81,6 +81,9 @@ entries:
                 - title: Automatic Rebalancing
                   url: /demo-automatic-rebalancing.html
 
+                - title: Cloud Migration
+                  url: /demo-cloud-migration.html
+
     - title: Develop
       items:
 
