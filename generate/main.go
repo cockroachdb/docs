@@ -423,7 +423,15 @@ func main() {
 					},
 					unlink: []string{"destination", "timestamp", "full_backup_location", "incremental_backup_location"},
 				},
-				{name: "revoke_stmt", inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"}},
+				{
+					name: "revoke_stmt", 
+					inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"},
+					replace: map[string]string{
+						"table_pattern_list": "table_name ( ',' table_name )*",
+						"name_list": "database_name ( ',' database_name )*",
+						"'FROM' name ( ',' name )*": "'FROM' user_name ( ',' user_name )*"},
+					unlink: []string{"table_name","database_name","user_name"}, 
+				},
 				{
 					name:    "rollback_transaction",
 					stmt:    "transaction_stmt",
