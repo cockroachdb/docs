@@ -9,7 +9,7 @@ run() {
 }
 
 # Step 1. Build the docs.
-run bundle exec jekyll build --baseurl=env.BUILD_VCS_NUMBER
+run bundle exec jekyll build --baseurl="/$BUILD_VCS_NUMBER"
 
 # Step 2. Upload the docs to S3.
 run aws s3 sync --quiet --region=us-east-1 ./_site s3://cockroach-docs-review/"$BUILD_VCS_NUMBER"/

@@ -44,10 +44,7 @@
                 }
 
             });
-
         </script>
-
-        {% assign sidebar = site.data.sidebar_doc.entries %}
 
         <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
             <div class="sidenav-arrow"><img src="images/sidenav-arrow.svg" alt="Sidenav arrow"></div>
@@ -59,46 +56,38 @@
                     </form>
                 </div>
             </li>
-            {% for entry in sidebar %}
-                {% for subcategory in entry.subcategories %}
-                <li class="tier-1"><a href="#">{{ subcategory.title }}<div class="arrow-down"></div></a>
-                    <ul>
-                        {% for item in subcategory.items %}
-                            {% if item.external_url %}
-                            <li class="tier-2"><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
-                            {% elsif page.url == item.url or item.alternate_urls contains page.url%}
-                            <li class="active tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
-                            {% else %}
-                            <li class="tier-2"><a href="{{item.url | replace: "/",""}}">{{item.title}}</a></li>
-                            {% endif %}
-                        {% for thirdlevel in item.thirdlevel %}
-                            <li class="tier-2">
-                                <a href="#">
-                                  {{ thirdlevel.title }}
-                                  {% if thirdlevel.thirdlevelitems %}
-                                    <div class="arrow-down"></div>
-                                  {% endif %}
-                                </a>
-                                <ul>
-                                    {% for deeplevel in thirdlevel.thirdlevelitems %}
-                                        {% if deeplevel.external_url %}
-                                        <li class="tier-3"><a href="{{deeplevel.external_url}}" target="_blank">{{deeplevel.title}}</a></li>
-                                        {% elsif page.url == deeplevel.url or deeplevel.alternate_urls contains page.url %}
-                                        <li class="active tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
-                                        {% else %}
-                                        <li class="tier-3"><a href="{{deeplevel.url | replace: "/",""}}">{{deeplevel.title}}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </li>
-                {% endfor %}
-            {% endfor %}
-        {% if subcategory.class == "series" %}</ul>{% else %}</ul>{% endif %}
 
+            <script>
+                (function () {
+                  var baseUrl = "{{ site.baseurl }}";
+
+                  function renderItems(items, tier) {
+                    if (!items || items.length == 0)
+                        return $();
+
+                    var lis = items.map(function (item) {
+                      var url = item.urls && (baseUrl + item.urls[0]) || "#";
+                      var subitems = renderItems(item.items, tier + 1);
+                      var a = $("<a>")
+                        .attr("href", url)
+                        .html(item.title);
+                      if (subitems.length > 0) {
+                        a.append(" ").append($("<div>").addClass("arrow-down"));
+                      }
+                      return $("<li>")
+                        .addClass("tier-" + tier)
+                        .toggleClass("active", (item.urls || []).indexOf("{{ page.url }}") !== -1)
+                        .append(a)
+                        .append(subitems);
+                    });
+
+                    return $("<ul>").append(lis);
+                  }
+
+                  document.write(renderItems({% include sidebar-data.json %}, 1).html());
+                })()
+            </script>
+        </ul>
     </div>
        <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
     <script>$("li.active").parents('li').toggleClass("active");</script>
