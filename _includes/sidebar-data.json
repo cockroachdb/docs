@@ -133,6 +133,12 @@
             "urls": [
               "/demo-automatic-rebalancing.html"
             ]
+          },
+          {
+            "title": "Cloud Migration",
+            urls: [
+              "/demo-cloud-migration.html"
+            ]
           }
         ]
       }
