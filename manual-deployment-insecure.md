@@ -102,7 +102,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 2. Launch the built-in SQL client and create a database:
 
 	~~~ shell
-	$ cockroach sql --insecure
+	$ cockroach sql --insecure --host=<node1 internal address>
 	~~~
 
 	~~~ sql
@@ -114,7 +114,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 4. Launch the built-in SQL client:
 
 	~~~ shell
-	$ cockroach sql --insecure
+	$ cockroach sql --insecure --host=<node's internal address>
 	~~~
 
 5. View the cluster's databases, which will include `insecurenodetest`:
