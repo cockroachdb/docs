@@ -201,7 +201,8 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 	~~~ shell
 	$ cockroach sql \
-	--certs-dir=certs
+	--certs-dir=certs \
+	--host=<node1 address>
 	~~~
 
 	~~~ sql
@@ -215,6 +216,7 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 	~~~ shell
 	$ cockroach sql \
 	--certs-dir=certs
+	--host=<node's IP address>
 	~~~
 
 5. View the cluster's databases, which will include `securenodetest`:
