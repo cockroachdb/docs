@@ -25,11 +25,11 @@ For each node in your cluster, complete the following steps.
     - **Mac**:
 
         ~~~ shell
-        $ curl -O https://binaries.cockroachdb.com/    cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
+        $ curl -O https://binaries.cockroachdb.com/cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
         $ tar xfz cockroach-{{site.data.strings.version}}.darwin-10.9-amd64.tgz
     
         # Optional: Place cockroach in your $PATH
-        $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/    cockroach
+        $ cp -i cockroach-{{site.data.strings.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
         ~~~
     - **Linux**:
 
