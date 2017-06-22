@@ -304,29 +304,29 @@ To shut down the CockroachDB cluster:
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
-  ~~~ shell
-  $ minikube stop
-  ~~~
+    ~~~ shell
+    $ minikube stop
+    ~~~
 
-  ~~~
-  Stopping local Kubernetes cluster...
-  Machine stopped.
-  ~~~
+    ~~~
+    Stopping local Kubernetes cluster...
+    Machine stopped.
+    ~~~
 
-  You can restore the cluster to its previous state with `minikube start`.
+    You can restore the cluster to its previous state with `minikube start`.
 
 - **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
 
-  ~~~ shell
-  $ minikube delete
-  ~~~
+    ~~~ shell
+    $ minikube delete
+    ~~~
 
-  ~~~
-  Deleting local Kubernetes cluster...
-  Machine deleted.
-  ~~~
+    ~~~
+    Deleting local Kubernetes cluster...
+    Machine deleted.
+    ~~~
 
-  {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
 
 </div>
 
