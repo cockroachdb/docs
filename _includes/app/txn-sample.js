@@ -93,7 +93,7 @@ function transferFunds(client, from, to, amount, next) {
           // Add amount to account 2.
           client.query('UPDATE accounts SET balance = balance + $1 WHERE id = $2', [amount, to], next);
         }, function (updateResult, next) {
-          // Fetch update account balances after updates
+          // Fetch account balances after updates.
           client.query('SELECT id, balance FROM accounts', function (err, selectResult) {
             next(err, selectResult ? selectResult.rows : null);
           });
