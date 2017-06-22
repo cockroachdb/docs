@@ -9,6 +9,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: Jun 22, 2017
+      version: v1.1-alpha.20170622
     - date: Jun 8, 2017
       version: v1.1-alpha.20170608
     - date: Jun 1, 2017
