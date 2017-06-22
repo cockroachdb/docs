@@ -84,15 +84,20 @@ function transferFunds(client, from, to, amount, next) {
     var acctBal = results.rows[0].balance;
     if (acctBal >= amount) {
       // Perform the transfer.
-      async.series([
+      async.waterfall([
         function (next) {
           // Subtract amount from account 1.
           client.query('UPDATE accounts SET balance = balance - $1 WHERE id = $2', [amount, from], next);
         },
-        function (next) {
+        function (updateResult, next) {
           // Add amount to account 2.
           client.query('UPDATE accounts SET balance = balance + $1 WHERE id = $2', [amount, to], next);
-        },
+        }, function (updateResult, next) {
+          // Fetch update account balances after updates
+          client.query('SELECT id, balance FROM accounts', function (err, selectResult) {
+            next(err, selectResult ? selectResult.rows : null);
+          });
+        }
       ], next);
     } else {
       next(new Error('insufficient funds'));
@@ -123,19 +128,11 @@ pg.connect(config, function (err, client, done) {
       finish();
     }
 
-    // Check account balances after the transaction.
-    client.query('SELECT id, balance FROM accounts', function (err, results) {
-      if (err) {
-        console.error('error querying accounts', err);
-        finish();
-      }
-
-      console.log('Balances after transfer:');
-      results.rows.forEach(function (row) {
-        console.log(row);
-      });
-
-      finish();
+    console.log('Balances after transfer:');
+    results.forEach(function (result) {
+      console.log(result);
     });
+
+    finish();
   });
 });
