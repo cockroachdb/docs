@@ -45,7 +45,7 @@ As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.ht
 $ cockroach sql --insecure -e 'CREATE DATABASE bank'
 ~~~
 
-Then [grant privileges](grant.html) to the `maxroach` user
+Then [grant privileges](grant.html) to the `maxroach` user.
 
 ~~~ shell
 $ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
