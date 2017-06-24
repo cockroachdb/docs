@@ -105,7 +105,10 @@ function transferFunds(client, from, to, amount, next) {
   });
 }
 
-pg.connect(config, function (err, client, done) {
+// Create a pool.
+var pool = new pg.Pool(config);
+
+pool.connect(function (err, client, done) {
   // Closes communication with the database and exits.
   var finish = function () {
     done();
