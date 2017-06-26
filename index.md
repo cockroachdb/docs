@@ -83,56 +83,21 @@ CockroachDB is an open source database for building global, scalable cloud servi
 
 ## [Recent Blog Posts](https://www.cockroachlabs.com/blog/)
 
+{% for post in site.data.blog_posts limit:5 %}
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/cockroachdb-hearts-activerecord-ruby-on-rails/">
-        <div class="blog-post">
-            <div class="blog-title">CockroachDB Loves ActiveRecord (and Ruby on Rails!)</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Jordan Lewis</span> on <span class="meta-emphasis">Jun 15, 2017</span></div>
+        <a href="{{ post.link }}">
+        <div class="blog-post {% if forloop.last %}last-entry{% endif %}">
+            <div class="blog-title">{{ post.title }}</div>
+            <div class="blog-meta">
+                Written by <span class="meta-emphasis">{{ post.creator }}</span>
+                on <span class="meta-emphasis">{{ post.pub_date | date:'%b %-d, %Y' }}</span>
+            </div>
         </div>
         </a>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/">
-        <div class="blog-post">
-            <div class="blog-title">Local and Distributed Query Processing in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael ‘kena’ Poss</span> on <span class="meta-emphasis">Jun 8, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/coming-soon-what-to-expect-in-cockroachdb-1-0/">
-        <div class="blog-post">
-            <div class="blog-title">The Path from Beta to 1.0</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Diana Hsieh</span> on <span class="meta-emphasis">Jun 1, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/cockroachdb-1-0-release/">
-        <div class="blog-post">
-            <div class="blog-title">CockroachDB 1.0 is Production-Ready</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">May 10, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/unicode-collation-in-cockroachdb.md/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">Implementing Unicode Collation in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">David Eisenstat</span> on <span class="meta-emphasis">Apr 13, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
+{% endfor %}
 <div class="row">
     <div class="col-xs-12">
         <div class="view-blog"><a href="https://www.cockroachlabs.com/blog">View All Posts</a></div>
