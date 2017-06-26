@@ -27,23 +27,14 @@ Also, feel free to watch this process in action before going through the steps y
 <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:22" title="Start a Local Cluster"></asciinema-player>
 -->
 
-<div class="highlight highlight--clipboard">
-{% include copy-clipboard.html %}
-<pre><code>This is an example of copy to clipboard functionality</code></pre></div>
-
-<div class="highlight highlight--clipboard">
-{% include copy-clipboard.html %}
-<pre><code>$ This is an example of copy to clipboard functionality \
-that spans multiple lines \
-strips backlashes and converts to a single line</code></pre></div>
-
 ## Step 1. Start the first node
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --host=localhost
 ~~~
-
+{% include copy-clipboard.html %}
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
 build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}

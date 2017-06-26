@@ -246,10 +246,10 @@ $(function() {
       // revert any previously copied snippets
       $('.copy-clipboard--copied').removeClass('copy-clipboard--copied')
         .find('.copy-clipboard__text').text('copy');
-      return $(trigger).siblings('pre').find('code')[0];
+      return $(trigger).next().find('code')[0];
     },
     text: function(trigger) {
-      var text = $(trigger).siblings('pre').find('code').text();
+      var text = $(trigger).next().find('code').text();
       text = text.replace(/\\\n/g, '');
       return text;
     }

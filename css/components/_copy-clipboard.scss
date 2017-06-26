@@ -1,7 +1,9 @@
 .copy-clipboard {
-  position: absolute;
-  top: 15px;
-  right: 17px;
+  position: relative;
+  margin-top: 15px;
+  margin-right: 17px;
+  float: right;
+  z-index: 1;
   @include avenir_bl(12px);
   line-height: 1.17;
   letter-spacing: 1.2px;
