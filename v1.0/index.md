@@ -83,57 +83,21 @@ CockroachDB is an open source database for building global, scalable cloud servi
 
 ## [Recent Blog Posts](https://www.cockroachlabs.com/blog/)
 
+{% for post in site.data.blog_posts limit:5 %}
 <div class="row">
     <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/">
-        <div class="blog-post">
-            <div class="blog-title">On the Way to Better SQL Joins in CockroachDB</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Raphael Poss</span> on <span class="meta-emphasis">Feb 9, 2017</span></div>
+        <a href="{{ post.link }}">
+        <div class="blog-post {% if forloop.last %}last-entry{% endif %}">
+            <div class="blog-title">{{ post.title }}</div>
+            <div class="blog-meta">
+                Written by <span class="meta-emphasis">{{ post.creator }}</span>
+                on <span class="meta-emphasis">{{ post.pub_date | date:'%b %-d, %Y' }}</span>
+            </div>
         </div>
         </a>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/journey-to-design-for-enterprise/">
-        <div class="blog-post">
-            <div class="blog-title">Journey to Design for Enterprise</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Kuan Luo</span> on <span class="meta-emphasis">Feb 2, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/fighting-unconscious-bias-cockroach-labs/">
-        <div class="blog-post">
-            <div class="blog-title">How We're Fighting Unconscious Bias</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Lindsay Grenawalt</span> on <span class="meta-emphasis">Jan 26, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">
-        <div class="blog-post">
-            <div class="blog-title">How We're Building a Business to Last</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Spencer Kimball</span> on <span class="meta-emphasis">Jan 19, 2017</span></div>
-        </div>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <a href="https://www.cockroachlabs.com/blog/enriching-log-messages-using-go-contexts/">
-        <div class="blog-post last-entry">
-            <div class="blog-title">Enriching Log Messages Using Go Contexts</div>
-            <div class="blog-meta">Written by <span class="meta-emphasis">Radu Berinde</span> on <span class="meta-emphasis">Dec 15, 2016</span></div>
-        </div>
-        </a>
-    </div>
-</div>
+{% endfor %}
 <div class="row">
     <div class="col-xs-12">
         <div class="view-blog"><a href="https://www.cockroachlabs.com/blog">View All Posts</a></div>
