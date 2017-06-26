@@ -34,7 +34,7 @@ Also, feel free to watch this process in action before going through the steps y
 $ cockroach start --insecure \
 --host=localhost
 ~~~
-{% include copy-clipboard.html %}
+
 ~~~
 CockroachDB node starting at {{site.data.strings.start_time}}
 build:      CCL {{site.data.strings.version}} @ {{site.data.strings.build_time}}
