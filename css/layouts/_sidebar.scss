@@ -18,7 +18,7 @@ body.sidenav-open {
 }
 
 .col-sidebar {
-  background-color: $cl_gray;
+  background-color: $cl_gray_light;
 
   @include at-query($max, $screen-md) {
     position: fixed;

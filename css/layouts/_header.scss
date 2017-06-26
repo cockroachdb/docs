@@ -46,7 +46,7 @@ nav.mobile_expanded {
 	visibility: hidden;
 
 	a {
-		border-bottom: 1px solid $cl_border;
+		border-bottom: 1px solid $cl_gray_medium;
 		@include avenir_h(14px);
 		line-height: 19px;
 		text-transform: uppercase;
@@ -105,7 +105,7 @@ header {
 	float:left;
 	background:#fff;
 	padding: 15px;
-	border-bottom: 1px solid $cl_border;
+	border-bottom: 1px solid $cl_gray_medium;
   @include groovy(all);
 
 	.logo {
@@ -275,10 +275,10 @@ header {
 		}
 
   	.hamburger:hover {
-  		border-color: $cl_green_hover;
+  		border-color: $cl_green_dark;
 
   		.hamburger_inner {
-	  		border-color: $cl_green_hover;
+	  		border-color: $cl_green_dark;
   		}
   	}
 
