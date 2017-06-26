@@ -1417,69 +1417,41 @@ li.search-wrap {
   font-size: 14px; }
 
 .bs-callout {
-  padding: 20px;
-  margin: 20px 0;
+  padding: 30px 40px 30px 30px;
+  margin: 30px 0;
   border-left: 5px solid #eee;
-  font-family: 'AvenirLTStd-Book', serif;
-  font-size: 16px;
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 18px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 30px;
   color: #142848; }
-
-.bs-callout h4 {
-  margin-top: 0;
-  margin-bottom: 5px; }
-
-.bs-callout p:last-child {
-  margin-bottom: 0; }
-
-.bs-callout code {
-  border-radius: 3px; }
-
-.bs-callout + .bs-callout {
-  margin-top: -5px; }
-
-.bs-callout-default {
-  border-left-color: #777; }
-
-.bs-callout-default h4 {
-  color: #777; }
-
-.bs-callout-primary {
-  border-left-color: #428bca; }
-
-.bs-callout-primary h4 {
-  color: #428bca; }
-
-.bs-callout-success {
-  background-color: rgba(248, 245, 225, 0.4);
-  border-left-color: #5cb85c; }
-
-.bs-callout-success h4 {
-  color: #5cb85c; }
-
-.bs-callout-danger {
-  background-color: rgba(217, 83, 79, 0.07);
-  border-left-color: #d9534f; }
-
-.bs-callout-danger h4 {
-  color: #d9534f; }
-
-.bs-callout-warning {
-  border-left-color: #f0ad4e;
-  background-color: rgba(248, 245, 225, 0.4); }
-
-.bs-callout-warning h4 {
-  color: #f0ad4e; }
-
-.bs-callout-info {
-  background-color: #ECF7FF;
-  border-left-color: #142848; }
-
-.bs-callout-info h4 {
-  color: #5bc0de; }
+  .bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px; }
+  .bs-callout p:last-child {
+    margin-bottom: 0; }
+  .bs-callout code {
+    border-radius: 2px;
+    border: 1px solid #DADADA; }
+  .bs-callout + .bs-callout {
+    margin-top: -5px; }
+  .bs-callout--success {
+    background-color: #F0FFE8;
+    border-left-color: #54B30E; }
+    .bs-callout--success h4 {
+      color: #54B30E; }
+  .bs-callout--danger {
+    background-color: #FCF4F3;
+    border-left-color: #D9534F; }
+    .bs-callout--danger h4 {
+      color: #D9534F; }
+  .bs-callout--info {
+    background-color: #ECF7FF;
+    border-left-color: #142848; }
+    .bs-callout--info h4 {
+      color: #142848; }
 
 #toc > ul {
   background-color: #F0FFE8;

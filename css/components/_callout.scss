@@ -1,61 +1,53 @@
 .bs-callout {
-    padding: 20px;
-    margin: 20px 0;
-    border-left: 5px solid #eee;
-    @include avenir_bk(16px);
-    line-height: 30px;
-    color: $cl_blue;
-}
-.bs-callout h4 {
+  padding: 30px 40px 30px 30px;
+  margin: 30px 0;
+  border-left: 5px solid #eee;
+  @include avenir_r(18px);
+  line-height: 30px;
+  color: $cl_blue;
+
+  h4 {
     margin-top: 0;
     margin-bottom: 5px;
-}
-.bs-callout p:last-child {
+  }
+
+  p:last-child {
     margin-bottom: 0;
-}
-.bs-callout code {
-    border-radius: 3px;
-}
-.bs-callout+.bs-callout {
+  }
+
+  code {
+    border-radius: 2px;
+    border: 1px solid $cl_gray_medium;
+  }
+
+  + .bs-callout {
     margin-top: -5px;
-}
-.bs-callout-default {
-    border-left-color: #777;
-}
-.bs-callout-default h4 {
-    color: #777;
-}
-.bs-callout-primary {
-    border-left-color: #428bca;
-}
-.bs-callout-primary h4 {
-    color: #428bca;
-}
-.bs-callout-success {
-    background-color: rgba(248,245,225,0.4);
-    border-left-color: #5cb85c;
-}
-.bs-callout-success h4 {
-    color: #5cb85c;
-}
-.bs-callout-danger {
-    background-color: rgba(217,83,79, .07);
-    border-left-color: #d9534f;
-}
-.bs-callout-danger h4 {
-    color: #d9534f;
-}
-.bs-callout-warning {
-    border-left-color: #f0ad4e;
-    background-color: rgba(248,245,225,0.4);
-}
-.bs-callout-warning h4 {
-    color: #f0ad4e;
-}
-.bs-callout-info {
+  }
+
+  &--success {
+    background-color: $cl_green_light;
+    border-left-color: $cl_green;
+
+    h4 {
+      color: $cl_green;
+    }
+  }
+
+  &--danger {
+    background-color: $cl_warning_light;
+    border-left-color: $cl_warning;
+
+    h4 {
+      color: $cl_warning;
+    }
+  }
+
+  &--info {
     background-color: $cl_blue_pale;
     border-left-color: $cl_blue;
-}
-.bs-callout-info h4 {
-    color: #5bc0de;
+
+    h4 {
+      color: $cl_blue;
+    }
+  }
 }
