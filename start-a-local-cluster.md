@@ -29,6 +29,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 ## Step 1. Start the first node
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --host=localhost

@@ -3087,4 +3087,49 @@ img.mfp-img {
   padding-right: 30px;
   white-space: nowrap; }
 
+.copy-clipboard {
+  position: relative;
+  margin-top: 15px;
+  margin-right: 17px;
+  float: right;
+  z-index: 1;
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.17;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #a2a2a2;
+  -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  .copy-clipboard__text {
+    display: inline-block; }
+  .copy-clipboard svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+    vertical-align: top; }
+    .copy-clipboard svg .st0 {
+      -webkit-transition: fill 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      -moz-transition: fill 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      -o-transition: fill 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+      transition: fill 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  .copy-clipboard #copy-check {
+    display: none; }
+  .copy-clipboard:hover {
+    cursor: pointer;
+    color: #4c4c4c; }
+    .copy-clipboard:hover .st0 {
+      fill: #4c4c4c; }
+  .copy-clipboard--copied #copy-icon {
+    display: none; }
+  .copy-clipboard--copied #copy-check {
+    display: inline-block; }
+  .copy-clipboard--copied:hover {
+    color: #a2a2a2; }
+
 /*# sourceMappingURL=customstyles.css.map */
