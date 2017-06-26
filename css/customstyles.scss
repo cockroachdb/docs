@@ -68,6 +68,14 @@ h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: 'AvenirLTStd-Heavy', sans-serif;
 }
 
+pre, code {
+  background-color: $cl_code_background;
+  font-family: 'Monaco';
+  font-size: 14px;
+  line-height: 25px;
+  color: $cl_blue;
+}
+
 @import "layouts/header";
 @import "layouts/sidebar";
 @import "layouts/landing-page";
