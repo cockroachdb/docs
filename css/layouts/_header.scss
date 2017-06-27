@@ -48,9 +48,9 @@ nav.mobile_expanded {
 	a {
 		border-bottom: 1px solid $cl_gray_medium;
 		@include avenir_h(14px);
-		line-height: 19px;
+		line-height: 20px;
+		letter-spacing: 1.5px;
 		text-transform: uppercase;
-		letter-spacing: 1.6px;
 		width: 100%;
 		float: left;
 		color: $cl_blue;
@@ -68,7 +68,7 @@ nav.mobile_expanded {
 	.mobile-menu-products {
 		float: left;
 		@include avenir_h(14px);
-		letter-spacing: 1.3px;
+		letter-spacing: 1.5px;
 		color: $cl_blue;
 		text-transform: uppercase;
 		padding: 25px 0 30px 20px;
@@ -78,7 +78,7 @@ nav.mobile_expanded {
 			position: relative;
 			display: block;
 			@include avenir_h(12px);
-			line-height: 20px;
+			line-height: 15px;
 			letter-spacing: normal;
 			text-transform: none;
 			border-bottom: none;
@@ -91,7 +91,7 @@ nav.mobile_expanded {
 				max-width: inherit;
 				max-height: inherit;
 				left: -17px;
-				top: 10px;
+				top: 7px;
 				width: 10px;
 				height: 2px;
 				background-color: rgba(19,40,72,0.2);
@@ -136,14 +136,13 @@ header {
 		display:none;
 
 		a:not(.button--header) {
-			@include avenir_h(12px);
 			color: $cl_blue;
-			letter-spacing: 1.3px;
+			@include button-text;
 			text-transform:uppercase;
+			line-height: 40px;
 			float:left;
 			margin:0 10px;
 			padding:0;
-			line-height: 40px;
 			text-decoration: none;
 			@include groovy(color);
 
@@ -183,8 +182,7 @@ header {
 
 				.products-dropdown {
 					&__title {
-						@include adelle_b(18px);
-						line-height: 30px;
+						@include subhead-adelle-sm;
 						color: $cl_blue;
 						text-transform: none;
 						letter-spacing: normal;
@@ -214,7 +212,7 @@ header {
 			padding: 0;
 			@include avenir_h(12px);
 			line-height: 40px;
-			letter-spacing: 1.3px;
+			letter-spacing: 1.5px;
 			text-transform: uppercase;
 			@include groovy(color);
 

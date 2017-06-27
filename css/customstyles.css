@@ -174,9 +174,9 @@ nav.mobile_expanded {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 19px;
+    line-height: 20px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    letter-spacing: 1.6px;
     width: 100%;
     float: left;
     color: #142848;
@@ -197,7 +197,7 @@ nav.mobile_expanded {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: 1.3px;
+    letter-spacing: 1.5px;
     color: #142848;
     text-transform: uppercase;
     padding: 25px 0 30px 20px;
@@ -210,7 +210,7 @@ nav.mobile_expanded {
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 20px;
+      line-height: 15px;
       letter-spacing: normal;
       text-transform: none;
       border-bottom: none;
@@ -222,7 +222,7 @@ nav.mobile_expanded {
         max-width: inherit;
         max-height: inherit;
         left: -17px;
-        top: 10px;
+        top: 7px;
         width: 10px;
         height: 2px;
         background-color: rgba(19, 40, 72, 0.2); }
@@ -257,18 +257,19 @@ header {
   header nav.desktop {
     display: none; }
     header nav.desktop a:not(.button--header) {
-      font-family: 'AvenirLTStd-Heavy', serif;
+      color: #142848;
+      font-family: 'AvenirLTStd-Black', serif;
       font-size: 12px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      color: #142848;
-      letter-spacing: 1.3px;
+      line-height: 15px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      line-height: 40px;
       float: left;
       margin: 0 10px;
       padding: 0;
-      line-height: 40px;
       text-decoration: none;
       -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
       -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -335,7 +336,7 @@ header {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       line-height: 40px;
-      letter-spacing: 1.3px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
       -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
