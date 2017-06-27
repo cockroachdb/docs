@@ -25,8 +25,7 @@
   p {
     padding: 5px 0 10px;
     margin: 0;
-    @include avenir_r(14px);
-    line-height: 20px;
+    @include caption;
   }
 
   &:hover {
@@ -63,15 +62,14 @@
   overflow: auto;
 
   .blog-title {
-    @include avenir_r(14px);
-    line-height: 20px;
+    @include caption;
     color: $cl_blue;
     margin-bottom: 5px;
   }
 
   .blog-meta {
     @include avenir_o(12px);
-    line-height: 28px;
+    line-height: 28px; // vertical spacing
     color: $cl_gray;
 
     .meta-emphasis {
@@ -104,8 +102,8 @@
   text-align: right;
 
   a {
+    @include button-text;
     text-transform: uppercase;
-    @include avenir_bl(12px);
     color: $cl_gray;
 
     &:hover {
