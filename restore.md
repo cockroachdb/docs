@@ -27,7 +27,7 @@ Because this process is designed for disaster recovery, CockroachDB expects that
 - [`DROP TABLE`](drop-table.html) or [`DROP VIEW`](drop-view.html) and then restore them.
 - [Restore the table or view into a different database](#into_db).
 
-However, because the `RESTORE` feature is designed for disaster recovery, 
+However, because the `RESTORE` feature is designed for disaster recovery,
 
 ### Object Dependencies
 
@@ -44,7 +44,7 @@ Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCE
 By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
 
 - You can choose to [change the target database](#into_db).
-- If it no longer exists, you must [create the target database](create-database.html). 
+- If it no longer exists, you must [create the target database](create-database.html).
 
 The target database must have not have tables or views with the same name as the tables or views you're restoring.
 
@@ -178,7 +178,7 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 ~~~ sql
 > RESTORE system.users FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-WITH OPTIONS ("into_db" = "newdb");
+WITH OPTIONS ('into_db' = 'newdb');
 
 > INSERT INTO system.users SELECT * FROM newdb.users;
 
