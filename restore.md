@@ -27,7 +27,7 @@ Because this process is designed for disaster recovery, CockroachDB expects that
 - [`DROP TABLE`](drop-table.html) or [`DROP VIEW`](drop-view.html) and then restore them.
 - [Restore the table or view into a different database](#into_db).
 
-However, because the `RESTORE` feature is designed for disaster recovery, 
+However, because the `RESTORE` feature is designed for disaster recovery,
 
 ### Object Dependencies
 
@@ -44,7 +44,7 @@ Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCE
 By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
 
 - You can choose to [change the target database](#into_db).
-- If it no longer exists, you must [create the target database](create-database.html). 
+- If it no longer exists, you must [create the target database](create-database.html).
 
 The target database must have not have tables or views with the same name as the tables or views you're restoring.
 
@@ -115,14 +115,14 @@ You can include the following options as key-value pairs in the `kv_option_list`
 - **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but don't want to drop it.
 - **Key**: `into_db`
 - **Value**: The name of the database you want to use
-- **Example**: `WITH OPTIONS ("into_db" = "newdb")`
+- **Example**: `WITH OPTIONS ('into_db' = 'newdb')`
 
 #### `skip_missing_foreign_keys`
 
 - **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skip_missing_foreign_keys) and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
-- **Example**: `WITH OPTIONS ("skip_missing_foreign_keys")`
+- **Example**: `WITH OPTIONS ('skip_missing_foreign_keys')`
 
 ## Examples
 
@@ -178,7 +178,7 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 ~~~ sql
 > RESTORE system.users FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-WITH OPTIONS ("into_db" = "newdb");
+WITH OPTIONS ('into_db' = 'newdb');
 
 > INSERT INTO system.users SELECT * FROM newdb.users;
 
