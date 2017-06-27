@@ -138,7 +138,7 @@ section.footer {
 
 			a {
 				color: $cl_blue_dark;
-				@include avenir_bk(14px);
+				@include avenir_r(14px);
 				line-height: 34px;
 				text-transform: none;
 				@include groovy(color);
@@ -179,7 +179,7 @@ section.footer {
 	.copyright {
 		margin: 10px 0 0;
 		text-align: center;
-		@include avenir_m(14px);
+		@include avenir_h(14px);
 		color: $cl_blue;
 		line-height: 20px;
 

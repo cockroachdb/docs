@@ -183,8 +183,7 @@ header {
 
 				.products-dropdown {
 					&__title {
-						@include adelle(18px);
-						font-weight: bold;
+						@include adelle_b(18px);
 						line-height: 30px;
 						color: $cl_blue;
 						text-transform: none;

@@ -5,33 +5,9 @@
     - Usage docs: http://shopify.github.io/Timber/#sass-mixins
 ==============================================================================*/
 @font-face {
-  font-family: 'Adelle-Regular';
-  src: url("../fonts/Adelle-Regular.eot");
-  src: url("../fonts/Adelle-Regular.woff2") format("woff2"), url("../fonts/Adelle-Regular.woff") format("woff"), url("../fonts/Adelle-Regular.ttf") format("truetype"), url("../fonts/Adelle-Regular.svg#Adelle-Regular") format("svg"), url("../fonts/Adelle-Regular.eot?#iefix") format("embedded-opentype");
-  font-weight: normal;
-  font-style: normal; }
-@font-face {
-  font-family: 'AvenirLTStd-Black';
-  src: url("../fonts/AvenirLTStd-Black.eot");
-  src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
-  font-weight: normal;
-  font-style: normal; }
-@font-face {
-  font-family: 'AvenirLTStd-Light';
-  src: url("../fonts/AvenirLTStd-Light.eot");
-  src: url("../fonts/AvenirLTStd-Light.woff2") format("woff2"), url("../fonts/AvenirLTStd-Light.woff") format("woff"), url("../fonts/AvenirLTStd-Light.ttf") format("truetype"), url("../fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light") format("svg"), url("../fonts/AvenirLTStd-Light.eot?#iefix") format("embedded-opentype");
-  font-weight: normal;
-  font-style: normal; }
-@font-face {
-  font-family: 'AvenirLTStd-Heavy';
-  src: url("../fonts/AvenirLTStd-Heavy.eot");
-  src: url("../fonts/AvenirLTStd-Heavy.woff2") format("woff2"), url("../fonts/AvenirLTStd-Heavy.woff") format("woff"), url("../fonts/AvenirLTStd-Heavy.ttf") format("truetype"), url("../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy") format("svg"), url("../fonts/AvenirLTStd-Heavy.eot?#iefix") format("embedded-opentype");
-  font-weight: normal;
-  font-style: normal; }
-@font-face {
-  font-family: 'AvenirLTStd-Book';
-  src: url("../fonts/AvenirLTStd-Book.eot");
-  src: url("../fonts/AvenirLTStd-Book.woff2") format("woff2"), url("../fonts/AvenirLTStd-Book.woff") format("woff"), url("../fonts/AvenirLTStd-Book.ttf") format("truetype"), url("../fonts/AvenirLTStd-Book.svg#AvenirLTStd-Book") format("svg"), url("../fonts/AvenirLTStd-Book.eot?#iefix") format("embedded-opentype");
+  font-family: 'Adelle-Bold';
+  src: url("../fonts/Adelle-Bold.eot");
+  src: url("../fonts/Adelle-Bold.woff2") format("woff2"), url("../fonts/Adelle-Bold.woff") format("woff"), url("../fonts/Adelle-Bold.ttf") format("truetype"), url("../fonts/Adelle-Bold.svg#Adelle-Bold") format("svg"), url("../fonts/Adelle-Bold.eot?#iefix") format("embedded-opentype");
   font-weight: normal;
   font-style: normal; }
 @font-face {
@@ -47,9 +23,15 @@
   font-weight: normal;
   font-style: normal; }
 @font-face {
-  font-family: 'AvenirLTStd-Medium';
-  src: url("../fonts/AvenirLTStd-Medium.eot");
-  src: url("../fonts/AvenirLTStd-Medium.woff2") format("woff2"), url("../fonts/AvenirLTStd-Medium.woff") format("woff"), url("../fonts/AvenirLTStd-Medium.ttf") format("truetype"), url("../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium") format("svg"), url("../fonts/AvenirLTStd-Medium.eot?#iefix") format("embedded-opentype");
+  font-family: 'AvenirLTStd-Heavy';
+  src: url("../fonts/AvenirLTStd-Heavy.eot");
+  src: url("../fonts/AvenirLTStd-Heavy.woff2") format("woff2"), url("../fonts/AvenirLTStd-Heavy.woff") format("woff"), url("../fonts/AvenirLTStd-Heavy.ttf") format("truetype"), url("../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy") format("svg"), url("../fonts/AvenirLTStd-Heavy.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'AvenirLTStd-Black';
+  src: url("../fonts/AvenirLTStd-Black.eot");
+  src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
   font-weight: normal;
   font-style: normal; }
 html {
@@ -58,7 +40,7 @@ html {
 body {
   height: 100%;
   color: #142848;
-  font-family: 'AvenirLTStd-Book', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -66,7 +48,7 @@ body {
 
 p {
   color: #142848;
-  font-family: 'AvenirLTStd-Book', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -83,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 40px; }
 
 h1 {
-  font-family: 'Adelle-Regular', serif;
+  font-family: 'Adelle-Bold', serif;
   font-size: 40px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -94,7 +76,7 @@ h1 {
   margin-bottom: 10px; }
 
 h2 {
-  font-family: 'Adelle-Regular', serif;
+  font-family: 'Adelle-Bold', serif;
   font-size: 30px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -300,12 +282,11 @@ header {
           padding-right: 50px;
           border-bottom: solid 2px #e6e6e6; }
         header nav.desktop .products-dropdown a .products-dropdown__title {
-          font-family: 'Adelle-Regular', serif;
+          font-family: 'Adelle-Bold', serif;
           font-size: 18px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          font-weight: bold;
           line-height: 30px;
           color: #142848;
           text-transform: none;
@@ -477,7 +458,7 @@ body.sidenav-open .col-content {
 
 .collapsed-header {
   display: none;
-  font-family: 'AvenirLTStd-Medium', serif;
+  font-family: 'AvenirLTStd-Heavy', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -529,7 +510,7 @@ body.sidenav-open .col-content {
       padding: 0;
       margin-left: 10px;
       color: #142848;
-      font-family: 'AvenirLTStd-Medium', serif;
+      font-family: 'AvenirLTStd-Heavy', serif;
       font-size: 18px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -550,7 +531,7 @@ body.sidenav-open .col-content {
         .nav > li > ul > li:last-of-type {
           margin-bottom: 0; }
         .nav > li > ul > li > a {
-          font-family: 'AvenirLTStd-Medium', serif;
+          font-family: 'AvenirLTStd-Heavy', serif;
           font-size: 16px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -568,7 +549,7 @@ body.sidenav-open .col-content {
             padding: 0;
             list-style: none; }
             .nav > li > ul > li > ul > li > a {
-              font-family: 'AvenirLTStd-Medium', serif;
+              font-family: 'AvenirLTStd-Heavy', serif;
               font-size: 16px;
               font-weight: normal;
               -webkit-font-smoothing: antialiased;
@@ -617,7 +598,7 @@ body.sidenav-open .col-content {
   top: 0px;
   position: relative; }
   .roach h3 {
-    font-family: 'Adelle-Regular', serif;
+    font-family: 'Adelle-Bold', serif;
     font-size: 26px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -634,7 +615,7 @@ body.sidenav-open .col-content {
   .roach p {
     padding: 5px 0 10px;
     margin: 0;
-    font-family: 'AvenirLTStd-Book', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -660,7 +641,7 @@ body.sidenav-open .col-content {
   border-bottom: none;
   overflow: auto; }
   .blog-post .blog-title {
-    font-family: 'AvenirLTStd-Book', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -836,7 +817,7 @@ section.footer {
           text-align: left; } }
       section.footer .footer-nav li a {
         color: #111D39;
-        font-family: 'AvenirLTStd-Book', serif;
+        font-family: 'AvenirLTStd-Roman', serif;
         font-size: 14px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
@@ -876,7 +857,7 @@ section.footer {
   section.footer .copyright {
     margin: 10px 0 0;
     text-align: center;
-    font-family: 'AvenirLTStd-Medium', serif;
+    font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1464,7 +1445,7 @@ li.search-wrap {
     font-size: 90%;
     list-style: none; }
     #toc > ul li a {
-      font-family: 'AvenirLTStd-Book', serif;
+      font-family: 'AvenirLTStd-Roman', serif;
       font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -1488,7 +1469,7 @@ li.search-wrap {
       padding: 0; }
   #toc > ul:before {
     content: "On This Page";
-    font-family: 'AvenirLTStd-Book', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 20px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1501,13 +1482,13 @@ li.search-wrap {
   color: inherit;
   padding: 0px; }
 
-#os-tabs {
+avenir_r#os-tabs {
   margin: 30px 0; }
-  #os-tabs button {
+  avenir_r#os-tabs button {
     border: 1px solid #dddddd;
     background-color: #ffffff;
     color: #142848;
-    font-family: 'AvenirLTStd-Medium', serif;
+    font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1518,12 +1499,12 @@ li.search-wrap {
     position: relative;
     bottom: -2px;
     float: left; }
-    #os-tabs button:hover {
+    avenir_r#os-tabs button:hover {
       border: 1px solid #54B30E; }
-    #os-tabs button.current {
+    avenir_r#os-tabs button.current {
       border: 1px solid #54B30E;
       background-color: #F0FFE8; }
-    #os-tabs button:after {
+    avenir_r#os-tabs button:after {
       position: absolute;
       font-family: 'FontAwesome';
       content: "\f078";
@@ -1535,21 +1516,21 @@ li.search-wrap {
       transform: translate(-50%, 0);
       z-index: 5;
       font-size: 55px; }
-    #os-tabs button#mac {
+    avenir_r#os-tabs button#mac {
       margin: 0 2% 2% 0; }
-      #os-tabs button#mac:after {
+      avenir_r#os-tabs button#mac:after {
         content: "\f179"; }
-    #os-tabs button#linux {
+    avenir_r#os-tabs button#linux {
       margin: 0 2% 2% 0; }
-      #os-tabs button#linux:after {
+      avenir_r#os-tabs button#linux:after {
         content: "\f17c"; }
-    #os-tabs button#windows {
+    avenir_r#os-tabs button#windows {
       margin: 0 2% 0 0; }
-      #os-tabs button#windows:after {
+      avenir_r#os-tabs button#windows:after {
         content: "\f17a"; }
-    #os-tabs button#source {
+    avenir_r#os-tabs button#source {
       margin: 0 2% 0 0; }
-      #os-tabs button#source:after {
+      avenir_r#os-tabs button#source:after {
         content: "\f1c6"; }
 
 .install-button {
@@ -1557,7 +1538,7 @@ li.search-wrap {
   border: 1px solid #dddddd;
   background-color: #ffffff;
   text-align: center;
-  font-family: 'AvenirLTStd-Light', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
   font-size: 12px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1602,7 +1583,7 @@ li.search-wrap {
     border: 1px solid #dddddd;
     background-color: #ffffff;
     text-align: center;
-    font-family: 'AvenirLTStd-Light', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 12px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1634,7 +1615,7 @@ li.search-wrap {
     width: auto;
     padding: 15px 40px;
     float: none;
-    font-family: 'AvenirLTStd-Light', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1653,7 +1634,7 @@ li.search-wrap {
 
   .filters .filter-button {
     margin: 0 0.5%;
-    font-family: 'AvenirLTStd-Light', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1691,7 +1672,7 @@ li.search-wrap {
   background-color: #54B30E;
   width: 600px; }
   #newsletter-popout .news-header {
-    font-family: 'Adelle-Regular', serif;
+    font-family: 'Adelle-Bold', serif;
     font-size: 36px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1766,7 +1747,7 @@ li.search-wrap {
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   #newsletter-footer-popout .news-header {
-    font-family: 'Adelle-Regular', serif;
+    font-family: 'Adelle-Bold', serif;
     font-size: 25px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1821,7 +1802,7 @@ li.search-wrap {
       text-align: center;
       width: 100%;
       color: #FFFFFF;
-      font-family: 'AvenirLTStd-Book', serif;
+      font-family: 'AvenirLTStd-Roman', serif;
       font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -1885,7 +1866,7 @@ li.search-wrap {
   .hubspot-install-form .install-form .submitted-message {
     text-align: left;
     width: 100%;
-    font-family: 'AvenirLTStd-Book', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1896,7 +1877,7 @@ li.search-wrap {
   #newsletter-footer-popout {
     padding: 20px 0; }
     #newsletter-footer-popout .news-header {
-      font-family: 'Adelle-Regular', serif;
+      font-family: 'Adelle-Bold', serif;
       font-size: 25px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -2197,7 +2178,7 @@ polygon.regexp {
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
-  font-family: 'AvenirLTStd-Book', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -2219,7 +2200,7 @@ polygon.regexp {
   vertical-align: bottom;
   background-color: #F0FFE8;
   color: #142848 !important;
-  font-family: 'AvenirLTStd-Book', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -2235,7 +2216,7 @@ polygon.regexp {
     border-color: #54B30E;
     color: #54B30E !important; }
 
-/* Feedback popup and hubspot form 
+/* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
 * http://dimsemenov.com/plugins/magnific-popup/
 * Copyright (c) 2016 Dmitry Semenov; */
@@ -2869,7 +2850,7 @@ img.mfp-img {
 .help-widget {
   position: relative; }
   .help-widget__tooltip {
-    font-family: 'AvenirLTStd-Book', serif;
+    font-family: 'AvenirLTStd-Roman', serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -2907,7 +2888,7 @@ img.mfp-img {
         transform: translate(15px, -50%);
         display: block; } }
   .help-widget__button {
-    font-family: 'AvenirLTStd-Medium', serif;
+    font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;

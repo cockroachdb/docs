@@ -14,7 +14,7 @@
       list-style: none;
 
       a {
-        @include avenir_bk(14px);
+        @include avenir_r(14px);
         line-height: 30px;
         color: $cl_blue;
 
@@ -49,7 +49,7 @@
 
     &:before {
       content: "On This Page";
-      @include avenir_bk(20px);
+      @include avenir_r(20px);
       line-height: 27px;
       color: $cl_blue;
       display: block;
@@ -61,4 +61,4 @@
     color: inherit;
     padding: 0px;
   }
-} 
+}

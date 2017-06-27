@@ -1,59 +1,11 @@
 @font-face {
-  font-family: 'Adelle-Regular';
-  src: url('../fonts/Adelle-Regular.eot');
-  src: url('../fonts/Adelle-Regular.woff2') format('woff2'),
-       url('../fonts/Adelle-Regular.woff') format('woff'),
-       url('../fonts/Adelle-Regular.ttf') format('truetype'),
-       url('../fonts/Adelle-Regular.svg#Adelle-Regular') format('svg'),
-       url('../fonts/Adelle-Regular.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Black';
-  src: url('../fonts/AvenirLTStd-Black.eot');
-  src: url('../fonts/AvenirLTStd-Black.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Black.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Black.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black') format('svg'),
-       url('../fonts/AvenirLTStd-Black.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Light';
-  src: url('../fonts/AvenirLTStd-Light.eot');
-  src: url('../fonts/AvenirLTStd-Light.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Light.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Light.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light') format('svg'),
-       url('../fonts/AvenirLTStd-Light.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Heavy';
-  src: url('../fonts/AvenirLTStd-Heavy.eot');
-  src: url('../fonts/AvenirLTStd-Heavy.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Heavy.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Heavy.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy') format('svg'),
-       url('../fonts/AvenirLTStd-Heavy.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Book';
-  src: url('../fonts/AvenirLTStd-Book.eot');
-  src: url('../fonts/AvenirLTStd-Book.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Book.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Book.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Book.svg#AvenirLTStd-Book') format('svg'),
-       url('../fonts/AvenirLTStd-Book.eot?#iefix') format('embedded-opentype');
+  font-family: 'Adelle-Bold';
+  src: url('../fonts/Adelle-Bold.eot');
+  src: url('../fonts/Adelle-Bold.woff2') format('woff2'),
+       url('../fonts/Adelle-Bold.woff') format('woff'),
+       url('../fonts/Adelle-Bold.ttf') format('truetype'),
+       url('../fonts/Adelle-Bold.svg#Adelle-Bold') format('svg'),
+       url('../fonts/Adelle-Bold.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -83,24 +35,37 @@
 }
 
 @font-face {
-  font-family: 'AvenirLTStd-Medium';
-  src: url('../fonts/AvenirLTStd-Medium.eot');
-  src: url('../fonts/AvenirLTStd-Medium.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Medium.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Medium.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium') format('svg'),
-       url('../fonts/AvenirLTStd-Medium.eot?#iefix') format('embedded-opentype');
+  font-family: 'AvenirLTStd-Heavy';
+  src: url('../fonts/AvenirLTStd-Heavy.eot');
+  src: url('../fonts/AvenirLTStd-Heavy.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Heavy.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Heavy.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy') format('svg'),
+       url('../fonts/AvenirLTStd-Heavy.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'AvenirLTStd-Black';
+  src: url('../fonts/AvenirLTStd-Black.eot');
+  src: url('../fonts/AvenirLTStd-Black.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Black.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Black.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black') format('svg'),
+       url('../fonts/AvenirLTStd-Black.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-@mixin adelle($size) { font-family: 'Adelle-Regular', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
+@mixin font-props {
+  font-weight:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-@mixin avenir_bk($size) { font-family: 'AvenirLTStd-Book', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_bl($size) { font-family: 'AvenirLTStd-Black', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_h($size) { font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_l($size) { font-family: 'AvenirLTStd-Light', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_m($size) { font-family: 'AvenirLTStd-Medium', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_o($size) { font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
-@mixin avenir_r($size) { font-family: 'AvenirLTStd-Roman', serif; font-size:$size; font-weight:normal; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing: grayscale; }
+@mixin adelle_b($size) {font-family: 'Adelle-Bold', serif; font-size:$size; @include font-props;}
+@mixin avenir_r($size) {font-family: 'AvenirLTStd-Roman', serif; font-size:$size; @include font-props;}
+@mixin avenir_o($size) {font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; @include font-props;}
+@mixin avenir_h($size) {font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; @include font-props;}
+@mixin avenir_bl($size) {font-family: 'AvenirLTStd-Black', serif; font-size:$size; @include font-props;}

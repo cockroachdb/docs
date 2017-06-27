@@ -22,7 +22,7 @@
 	width: 600px;
 
 	.news-header {
-		@include adelle(36px);
+		@include adelle_b(36px);
 		color: #FFFFFF;
 		line-height: 48px;
 	}
@@ -70,7 +70,7 @@
 				}
 
 			.hs-button {
-				
+
 				background-color: $cl_blue;
 				color: #FFFFFF;
 				border:none;
@@ -84,7 +84,7 @@
 				-moz-border-bottom-right-radius: 20px;
 				border-bottom-right-radius: 20px;
 				padding: 0 25px 0 15px;
-				
+
 			}
 		}
 	}
@@ -108,7 +108,7 @@
 	@include groovy(all);
 
 	.news-header {
-		@include adelle(25px);
+		@include adelle_b(25px);
 		color: #FFFFFF;
 		line-height: 33px;
 	}
@@ -149,7 +149,7 @@
 			}
 
 		.hs-button {
-			
+
 			background-color: $cl_blue;
 			color: #FFFFFF;
 			border:none;
@@ -165,7 +165,7 @@
 			padding: 0 25px 0 15px;
 			@include avenir_bl(12px);
 			text-transform: uppercase;
-			
+
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -176,7 +176,7 @@
 			text-align: center;
 			width: 100%;
 			color: #FFFFFF;
-			@include avenir_bk(16px);
+			@include avenir_r(16px);
 		}
 	}
 
@@ -193,7 +193,7 @@
 }
 
 .hubspot-install-form {
-	
+
 
 	.install-form {
 		float: left;
@@ -231,7 +231,7 @@
 			}
 
 		.hs-button {
-			
+
 			background-color: $cl_green;
 			color: #FFFFFF;
 			border: 2px solid #DDDDDD;
@@ -248,7 +248,7 @@
 			padding: 0 25px 0 15px;
 			@include avenir_bl(12px);
 			text-transform: uppercase;
-			
+
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -258,7 +258,7 @@
 		.submitted-message {
 			text-align: left;
 			width: 100%;
-			@include avenir_bk(16px);
+			@include avenir_r(16px);
 		}
 	}
 }
@@ -268,10 +268,10 @@
 @media (min-width: 768px) {
 	#newsletter-footer-popout {
 		padding: 20px 0;
-		
+
 
 		.news-header {
-			@include adelle(25px);
+			@include adelle_b(25px);
 			color: #FFFFFF;
 			line-height: 33px;
 		}

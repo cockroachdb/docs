@@ -95,7 +95,7 @@ body.sidenav-open {
 
 .collapsed-header {
   display: none;
-  @include avenir_m(16px);
+  @include avenir_h(16px);
   line-height: 20px;
   position: absolute;
 
@@ -166,7 +166,7 @@ body.sidenav-open {
       padding: 0;
       margin-left: 10px;
       color: $cl_blue;
-      @include avenir_m(18px);
+      @include avenir_h(18px);
       line-height: 20px;
 
       @include at-query($min, $screen-md) {
@@ -191,7 +191,7 @@ body.sidenav-open {
         }
 
         > a {
-          @include avenir_m(16px);
+          @include avenir_h(16px);
           line-height: 20px;
 
           @include at-query($min, $screen-md) {
@@ -211,7 +211,7 @@ body.sidenav-open {
             list-style: none;
 
             > a {
-              @include avenir_m(16px);
+              @include avenir_h(16px);
               line-height: 20px;
 
               @include at-query($min, $screen-md) {

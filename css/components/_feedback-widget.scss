@@ -3,7 +3,7 @@
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: $cl_green_light; 
+  background-color: $cl_green_light;
   font-size: 0;
   line-height: 0;
 
@@ -16,13 +16,13 @@
 #feedback-prompt p {
   line-height: 0;
 }
-  
+
 .feedback-question {
   display: inline-block;
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
-  @include avenir_bk(16px);
+  @include avenir_r(16px);
 }
 
 @media screen and (max-width: 767px){
@@ -44,7 +44,7 @@
   vertical-align: bottom;
   background-color: $cl_green_light;
   color: $cl_blue !important;
-  @include avenir_bk(16px);
+  @include avenir_r(16px);
   text-align: center;
   text-decoration: none !important;
   text-transform: uppercase;
@@ -63,7 +63,7 @@
 
 }
 
-/* Feedback popup and hubspot form 
+/* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
 * http://dimsemenov.com/plugins/magnific-popup/
 * Copyright (c) 2016 Dmitry Semenov; */

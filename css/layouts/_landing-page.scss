@@ -7,7 +7,7 @@
   position: relative;
 
   h3 {
-    @include adelle(26px);
+    @include adelle_b(26px);
     line-height: 40px;
     color: $cl_green;
     margin-top: 20px;
@@ -27,7 +27,7 @@
   p {
     padding: 5px 0 10px;
     margin: 0;
-    @include avenir_bk(14px);
+    @include avenir_r(14px);
     line-height: 20px;
   }
 
@@ -65,7 +65,7 @@
   overflow: auto;
 
   .blog-title {
-    @include avenir_bk(14px);
+    @include avenir_r(14px);
     line-height: 20px;
     color: $cl_blue;
     margin-bottom: 5px;

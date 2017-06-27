@@ -9,12 +9,12 @@ html {
 body {
   height: 100%;
   color: $cl_blue;
-  @include avenir_bk(16px);
+  @include avenir_r(16px);
 }
 
 p {
   color: $cl_blue;
-  @include avenir_bk(16px);
+  @include avenir_r(16px);
   line-height: 30px;
 
   strong, b {
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  @include adelle(40px);
+  @include adelle_b(40px);
   color: $cl_green;
   line-height: 1.1;
   margin-top:40px;
@@ -35,7 +35,7 @@ h1 {
 }
 
 h2 {
-  @include adelle(30px);
+  @include adelle_b(30px);
   line-height:35px;
   color: $cl_blue;
 
