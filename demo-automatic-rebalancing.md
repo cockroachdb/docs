@@ -19,21 +19,31 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 
 {{site.data.alerts.callout_success}}See <a href="start-a-local-cluster.html">Start a Local Cluster</a> for details about <code>cockroach start</code> options.{{site.data.alerts.end}}
 
+In a new terminal, start node 1:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=scale-node1 \
 --host=localhost
+~~~
 
-# In a new terminal, start node 2:
+In a new terminal, start node 2:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --store=scale-node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
+~~~
 
-# In a new terminal, start node 3:
+In a new terminal, start node 3:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --store=scale-node3 \
 --host=localhost \
@@ -44,13 +54,12 @@ $ cockroach start --insecure \
 
 In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node to verify that the cluster is live:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -69,6 +78,7 @@ $ cockroach sql --insecure
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -79,6 +89,7 @@ In CockroachDB, you use [replication zones](configure-replication-zones.html) to
 
 However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure -f -
 ~~~
@@ -98,12 +109,14 @@ CockroachDB provides a number of [example programs in Go](https://github.com/coc
 
 Download and install the program:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ go get github.com/cockroachdb/examples-go/block_writer
 ~~~
 
 Then run the program for 1 minute, long enough to generate plenty of ranges:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ block_writer -duration 1m
 ~~~
@@ -131,18 +144,24 @@ Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the r
 
 ## Step 5. Add 2 more nodes
 
-Adding capacity is as simple as starting more nodes and joining them to the running cluster:
+Adding capacity is as simple as starting more nodes and joining them to the running cluster.
 
+In a new terminal, start node 4:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# In a new terminal, start node 4:
 $ cockroach start --insecure \
 --store=scale-node4 \
 --host=localhost \
 --port=26260 \
 --http-port=8083 \
 --join=localhost:26257
+~~~
 
-# In a new terminal, start node 5:
+In a new terminal, start node 5:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --store=scale-node5 \
 --host=localhost \
@@ -165,6 +184,7 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 ~~~

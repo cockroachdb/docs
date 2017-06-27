@@ -62,6 +62,7 @@ At this point, your cluster is live and operational. With just one node, you can
 
 In a new terminal, add the second node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=node2 \
@@ -73,6 +74,7 @@ $ cockroach start --insecure \
 
 In a new terminal, add the third node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=node3 \
@@ -90,22 +92,30 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 
 {{site.data.alerts.callout_info}}The SQL client is built into the <code>cockroach</code> binary, so nothing extra is needed.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
@@ -120,23 +130,23 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 Exit the SQL shell on node 1:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 Then connect the SQL shell to node 2, this time specifying the node's non-default port:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26258
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 {{site.data.alerts.callout_info}}In a real deployment, all nodes would likely use the default port <code>26257</code>, and so you wouldn't need to set the <code>--port</code> flag.{{site.data.alerts.end}}
 
 Now run the same `SELECT` query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -154,6 +164,7 @@ As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
 Exit the SQL shell on node 2:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -178,13 +189,12 @@ Once you're done with your test cluster, switch to the terminal running the firs
 
 At this point, with 2 nodes still online, the cluster remains operational because a majority of replicas are available. To verify that the cluster has tolerated this "failure", connect the built-in SQL shell to nodes 2 or 3. You can do this in the same terminal or in a new terminal.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26258
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -200,6 +210,7 @@ $ cockroach sql --insecure --port=26258
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -210,6 +221,7 @@ Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL + C**
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data node2 node3
 ~~~
@@ -220,6 +232,7 @@ If you decide to use the cluster for further testing, you'll need to restart at 
 
 Restart the first node from the parent directory of `cockroach-data/`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --host=localhost
@@ -230,6 +243,7 @@ $ cockroach start --insecure \
 
 In a new terminal, restart the second node from the parent directory of `node2/`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=node2 \
@@ -241,6 +255,7 @@ $ cockroach start --insecure \
 
 In a new terminal, restart the third node from the parent directory of `node3/`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=node3 \

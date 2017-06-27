@@ -16,13 +16,19 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 {{site.data.alerts.callout_success}}See <a href="start-a-local-cluster.html">Start a Local Cluster</a> for details about <code>cockroach start</code> options.{{site.data.alerts.end}}
 
+In a new terminal, start node 1:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=fault-node1 \
 --host=localhost
+~~~
 
-# In a new terminal, start node 2:
+In a new terminal, start node 2:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --store=fault-node2 \
 --host=localhost \
@@ -30,7 +36,10 @@ $ cockroach start --insecure \
 --http-port=8081 \
 --join=localhost:26257
 
-# In a new terminal, start node 3:
+In a new terminal, start node 3:
+
+{% include copy-clipboard.html %}
+~~~~ shell
 $ cockroach start --insecure \
 --store=fault-node3 \
 --host=localhost \
@@ -43,13 +52,18 @@ $ cockroach start --insecure \
 
 In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
+~~~
+
+~~~
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -68,6 +82,7 @@ $ cockroach sql --insecure
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -78,6 +93,7 @@ In the terminal running node 2, press **CTRL + C** to stop the node.
 
 Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --insecure --port=26258
 ~~~
@@ -91,13 +107,12 @@ ok
 
 Switch to the terminal for the built-in SQL shell and reconnect the shell to node 1 (port `26257`) or node 3 (port `26259`):
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26259
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -118,6 +133,7 @@ As you see, despite one node being offline, the cluster continues uninterrupted 
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -126,9 +142,10 @@ Exit the SQL shell:
 
 In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="fault1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data startrek | cockroach sql --insecure
-</code></pre>
-</div>
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach gen example-data startrek | cockroach sql --insecure
+~~~
 
 ~~~
 CREATE DATABASE
@@ -143,13 +160,12 @@ INSERT 200
 
 Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26259
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -167,6 +183,7 @@ $ cockroach sql --insecure --port=26259
 (5 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -181,6 +198,7 @@ $ cockroach sql --insecure --port=26259
 (2 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.episodes LIMIT 10;
 ~~~
@@ -205,6 +223,7 @@ $ cockroach sql --insecure --port=26259
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -213,6 +232,7 @@ Exit the SQL shell:
 
 Switch to the terminal for node 2, and rejoin the node to the cluster, using the same command that you used in step 1:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=fault-node2 \
@@ -238,13 +258,12 @@ nodeID:     2
 
 Switch to the terminal for the built-in SQL shell, connect the shell to the rejoined node 2 (port `26258`), and check for the `startrek` data that was added while the node was offline:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26258
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.episodes LIMIT 10;
 ~~~
@@ -279,6 +298,7 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 Now, to prepare the cluster for a permanent node failure, open a new terminal and add a fourth node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=fault-node4 \
@@ -306,6 +326,7 @@ Again, switch to the terminal running node 2 and press **CTRL + C** to stop it.
 
 Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --insecure --port=26258
 ~~~
@@ -334,6 +355,7 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5
 ~~~
