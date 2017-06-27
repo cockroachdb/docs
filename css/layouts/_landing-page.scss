@@ -7,8 +7,6 @@
   position: relative;
 
   h3 {
-    @include adelle_b(26px);
-    line-height: 40px;
     color: $cl_green;
     margin-top: 20px;
     margin-bottom: 5px;

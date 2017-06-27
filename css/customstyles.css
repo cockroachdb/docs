@@ -39,40 +39,53 @@ html {
 
 body {
   height: 100%;
-  color: #142848;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 16px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-
-p {
-  color: #142848;
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  line-height: 25px;
+  color: #142848; }
+  @media screen and (min-width: 992px) {
+    body {
+      font-size: 18px;
+      line-height: 30px; } }
+
+p {
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
+  color: #142848; }
+  @media screen and (min-width: 992px) {
+    p {
+      font-size: 18px;
+      line-height: 30px; } }
   p strong, p b {
     font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; }
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 25px; }
+    @media screen and (min-width: 992px) {
+      p strong, p b {
+        font-size: 18px;
+        line-height: 30px; } }
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 40px; }
 
 h1 {
   font-family: 'Adelle-Bold', serif;
-  font-size: 40px;
+  font-size: 36px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 45px;
   color: #54B30E;
-  line-height: 1.1;
-  margin-top: 40px;
   margin-bottom: 10px; }
 
 h2 {
@@ -81,34 +94,39 @@ h2 {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 35px;
+  line-height: 40px;
   color: #142848; }
   h2.clickable-header {
     cursor: pointer; }
 
 h3 {
   font-family: 'AvenirLTStd-Heavy', serif;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #142848;
-  text-transform: uppercase; }
+  line-height: 35px;
+  text-transform: uppercase;
+  color: #142848; }
   h3.clickable-header {
     cursor: pointer; }
   h3 strong, h3 b {
     font-family: 'AvenirLTStd-Black', serif;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
 
 h4 {
-  font-family: 'AvenirLTStd-Heavy', sans-serif;
-  font-size: 120%; }
+  font-family: 'AvenirLTStd-Heavy', serif;
+  font-size: 18px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 30px; }
 
-h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
+pre {
+  overflow: auto; }
 
 pre, code {
   background-color: #F3F3F3;
@@ -598,12 +616,6 @@ body.sidenav-open .col-content {
   top: 0px;
   position: relative; }
   .roach h3 {
-    font-family: 'Adelle-Bold', serif;
-    font-size: 26px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 40px;
     color: #54B30E;
     margin-top: 20px;
     margin-bottom: 5px;
@@ -873,18 +885,6 @@ section.footer {
         text-align: left;
         margin-top: 15px; } }
 
-.gi-2x {
-  font-size: 2em; }
-
-.gi-3x {
-  font-size: 3em; }
-
-.gi-4x {
-  font-size: 4em; }
-
-.gi-5x {
-  font-size: 5em; }
-
 .breadcrumb > .active {
   color: #777 !important; }
 
@@ -905,12 +905,6 @@ h6:target:before {
 
 .post-content ol li, .post-content ul li {
   margin: 10px 0px; }
-
-.pageSummary {
-  font-size: 13px;
-  display: block;
-  margin-bottom: 15px;
-  padding-left: 20px; }
 
 .post-summary {
   margin-bottom: 12px; }
@@ -974,37 +968,13 @@ table th[class*="col-"] {
 table td:first-child {
   min-width: 200px; }
 
-table.boldFirstColumn td:first-child {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
-
 table tr td {
   hyphens: auto; }
 
-p.external a {
-  text-align: right;
-  font-size: 12px;
-  font-color: #0088cc;
-  display: inline; }
-
-#definition-box-container div a.active {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
-
-p.post-meta {
-  font-size: 80%;
-  color: #777; }
-
-.entry-date {
-  font-size: 14px;
-  font-size: 0.875rem;
-  line-height: 1.71429;
-  margin-bottom: 0;
-  text-transform: uppercase; }
-
 .filter-options {
   margin-bottom: 20px; }
-
-.filter-options button {
-  margin: 3px; }
+  .filter-options button {
+    margin: 3px; }
 
 .post-content a.fa-rss {
   color: orange; }
@@ -1015,14 +985,6 @@ p.post-meta {
 
 .post-content .rssfeedLink {
   color: #248EC2; }
-
-/* FAQ page */
-#accordion .panel-heading {
-  font-size: 12px; }
-
-a.accordion-toggle, a.accordion-collapsed {
-  font-size: 14px;
-  text-decoration: none; }
 
 dl dt p {
   margin-left: 20px; }
@@ -1040,11 +1002,6 @@ dl.dl-horizontal dd {
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:focus, .navbar-inverse .navbar-nav > .open > a:hover {
   border-radius: 5px; }
 
-span.projectTitle {
-  font-family: 'Open Sans';
-  /*font-family: Helvetica;*/
-  /*font-weight: bold;*/ }
-
 @media (max-width: 767px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
     color: #444; } }
@@ -1059,10 +1016,6 @@ figcaption {
   padding-top: 6px;
   max-width: 90%;
   margin-bottom: 20px; }
-
-.siteTagline {
-  margin: 20px 0px;
-  font-size: 17px; }
 
 table.dataTable thead {
   background-color: #444; }
@@ -1109,10 +1062,6 @@ span.myLabel {
 button.cursorNorm {
   cursor: default; }
 
-a.dropdown-toggle, .navbar-inverse .navbar-nav > li > a {
-  margin-left: 10px;
-  font-family: 'Open Sans'; }
-
 hr.faded {
   border: 0;
   height: 1px;
@@ -1130,21 +1079,6 @@ hr.shaded {
   width: 100%;
   margin-bottom: 10px; }
 
-.fa-6x {
-  font-size: 900%; }
-
-.fa-7x {
-  font-size: 1100%; }
-
-.fa-8x {
-  font-size: 1300%; }
-
-.fa-9x {
-  font-size: 1500%; }
-
-.fa-10x {
-  font-size: 1700%; }
-
 i.border {
   padding: 10px 20px;
   background-color: whitesmoke;
@@ -1156,18 +1090,6 @@ i.border {
 
 a[data-toggle] {
   color: #248EC2; }
-
-.summary {
-  font-size: 120%;
-  margin: 20px 0px 20px 0px;
-  padding-left: 10px; }
-
-.summary:before {
-  content: "Summary: ";
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
-
-a.fa.fa-envelope-o.mailto {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
 
 .alert, .callout {
   overflow: hidden; }
@@ -1181,17 +1103,6 @@ li img {
 .tab-content {
   padding: 15px;
   background-color: #FAFAFA; }
-
-span.tagTitle {
-  font-family: 'AvenirLTStd-Medium', sans-serif; }
-
-li.activeSeries {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
-
-.seriesContext .dropdown-menu li.active {
-  font-family: 'AvenirLTStd-Heavy', sans-serif;
-  margin-left: 43px;
-  font-size: 18px; }
 
 .alert-warning {
   color: #444; }
@@ -1237,21 +1148,6 @@ ol.series li {
   margin-left: 40px;
   padding-left: 0px; }
 
-.siteTagline {
-  font-size: 300%;
-  font-family: 'AvenirLTStd-Heavy', sans-serif;
-  color: silver;
-  font-family: monospace;
-  text-align: center;
-  line-height: 10px; }
-
-.versionTagline {
-  text-align: center;
-  margin-bottom: 20px;
-  font-family: monospace;
-  font-color: silver;
-  color: #444; }
-
 #mysidebar .nav ul {
   background-color: #FAFAFA; }
 
@@ -1280,8 +1176,7 @@ span.muted {
   color: #C0C0C0; }
 
 table code {
-  background-color: transparent;
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
+  background-color: transparent; }
 
 .highlight .err {
   color: #a61717;
@@ -1303,20 +1198,8 @@ pre, table code {
   word-wrap: break-word;
   /* Internet Explorer 5.5+ */ }
 
-pre {
-  /*margin: 25px 0px;*/
-  overflow: auto; }
-
-.panel-heading {
-  font-family: 'AvenirLTStd-Heavy', sans-serif; }
-
 #json-box-container pre {
   margin: 0px; }
-
-p.dataType {
-  display: block;
-  font-color: gray;
-  font-size: 80%; }
 
 dd {
   margin-left: 20px; }
@@ -1331,12 +1214,6 @@ dd {
 
 .alert {
   margin-bottom: 10px; }
-
-.kbCaption {
-  padding: 5px;
-  font-family: courier;
-  background-color: #dedede;
-  text-align: center; }
 
 a.accordion-toggle {
   font-style: normal; }
