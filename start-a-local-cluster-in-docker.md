@@ -194,4 +194,4 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
-- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
+- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, fault tolerance, and cloud migration
