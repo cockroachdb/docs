@@ -14,6 +14,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Start a 1-node cluster
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --insecure \
 --store=repdemo-node1 \
@@ -24,9 +25,10 @@ $ cockroach start --insecure \
 
 In a new terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication1-gen-data"><span class="gp noselect shellterminal"></span>cockroach gen example-data intro | cockroach sql --insecure
-</code></pre>
-</div>
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach gen example-data intro | cockroach sql --insecure
+~~~
 
 ~~~
 CREATE DATABASE
@@ -42,13 +44,18 @@ INSERT 1
 
 In the same terminal, open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
+~~~
+
+~~~
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -65,6 +72,7 @@ $ cockroach sql --insecure
 (4 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM intro;
 ~~~
@@ -78,6 +86,7 @@ $ cockroach sql --insecure
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
 ~~~
@@ -113,22 +122,29 @@ $ cockroach sql --insecure
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 ## Step 3. Add two nodes
 
+In a new terminal, add node 2:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# In a new terminal, add node 2:
 $ cockroach start --insecure \
 --store=repdemo-node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
 --join=localhost:26257
+~~~
 
-# In a new terminal, add node 3:
+In a new terminal, add node 3:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --store=repdemo-node3 \
 --host=localhost \
@@ -147,9 +163,10 @@ Open the Admin UI at `http://localhost:8080` and click **View nodes list** on th
 
 As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code data-eventcategory="replication2-zone-edit"><span class="gp noselect shellterminal"></span><span class="nb">echo</span> <span class="s1">'num_replicas: 5'</span> | cockroach zone <span class="nb">set</span> .default --insecure -f -
-</code></pre>
-</div>
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+~~~
 
 ~~~
 range_min_bytes: 1048576
@@ -162,16 +179,22 @@ constraints: []
 
 ## Step 6. Add two more nodes
 
+In a new terminal, add node 4:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# In a new terminal, add node 4:
 $ cockroach start --insecure \
 --host=localhost \
 --store=repdemo-node4 \
 --port=26260 \
 --http-port=8083 \
 --join=localhost:26257
+~~~
 
-# In a new termional, add node 5:
+In a new termional, add node 5:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start --insecure \
 --host=localhost \
 --store=repdemo-node5 \
@@ -194,6 +217,7 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf repdemo-node1 repdemo-node2 repdemo-node3 repdemo-node4 repdemo-node5
 ~~~
