@@ -250,7 +250,7 @@ $(function() {
     },
     text: function(trigger) {
       var text = $(trigger).next().find('code').text();
-      text = text.replace(/\\\n(?=.)|(^[\r\n]+|\.|[\r\n]+$)/g, '');
+      text = text.replace(/\\\n(?=.)|(^[\r\n]+|[\r\n]+$)/g, '');
       return text;
     }
   });
