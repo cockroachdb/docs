@@ -29,7 +29,7 @@
 
 	.news-subheader {
 		@include avenir_r(18px);
-		line-height: 28px;
+		line-height: 30px;
 		margin-bottom: 20px;
 		padding: 30px 50px 0;
 	}
@@ -70,7 +70,6 @@
 				}
 
 			.hs-button {
-
 				background-color: $cl_blue;
 				color: #FFFFFF;
 				border:none;
@@ -149,7 +148,6 @@
 			}
 
 		.hs-button {
-
 			background-color: $cl_blue;
 			color: #FFFFFF;
 			border:none;
@@ -163,9 +161,8 @@
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
-			@include avenir_bl(12px);
+			@include button-text;
 			text-transform: uppercase;
-
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -222,16 +219,13 @@
 				padding: 0 15px 0 25px;
 				width: 150px;
 			}
-
-
 		}
 
 		.inputs-list {
-				display: none !important;
-			}
+			display: none !important;
+		}
 
 		.hs-button {
-
 			background-color: $cl_green;
 			color: #FFFFFF;
 			border: 2px solid #DDDDDD;
@@ -246,7 +240,7 @@
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
-			@include avenir_bl(12px);
+			@include button-text;
 			text-transform: uppercase;
 
 		}
@@ -269,11 +263,9 @@
 	#newsletter-footer-popout {
 		padding: 20px 0;
 
-
 		.news-header {
-			@include adelle_b(25px);
+			@include subhead-adelle-lg;
 			color: #FFFFFF;
-			line-height: 33px;
 		}
 
 		.popout-form {

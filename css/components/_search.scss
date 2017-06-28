@@ -6,7 +6,7 @@
     top: 10px;
     left: 15px;
     color: $cl-green;
-    font-size: 20px;
+    font-size: 20px; // icon sizing
   }
 
   #search-input {
@@ -20,7 +20,7 @@
     transition: all 0.15s ease 0s;
     margin-bottom: 20px;
     font-size: 16px;
-    line-height: 40px;
+    line-height: 40px; // vertical positioning
 
     &::-webkit-input-placeholder {
       color: #bcbcbc;
@@ -41,12 +41,13 @@ li.search-wrap {
   margin-top: 30px;
 }
 .search-title {
-  font-size: 20px;
+  // font-size: 20px;
 }
 .search-link {
   color: #999988;
-  font-size: 14px;
+  @include caption;
+  margin-bottom: 5px;
 }
 .search-snippet {
-  font-size: 14px;
+  @include caption;
 }

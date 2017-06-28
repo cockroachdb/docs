@@ -1,4 +1,4 @@
-avenir_r#os-tabs {
+#os-tabs {
 	margin: 30px 0;
 
 	button {
@@ -71,7 +71,7 @@ avenir_r#os-tabs {
 	background-color: #ffffff;
 	text-align: center;
 	@include avenir_r(12px);
-	line-height: 12px;
+	line-height: 15px;
 	color: $cl_blue !important;
 	text-decoration: none !important;
 	padding: 15px 0;
@@ -132,7 +132,7 @@ avenir_r#os-tabs {
 		background-color: #ffffff;
 		text-align: center;
 		@include avenir_r(12px);
-		line-height: 12px;
+		line-height: 15px;
 		color: $cl_blue !important;
 		text-decoration: none !important;
 		padding: 15px;
@@ -176,7 +176,8 @@ avenir_r#os-tabs {
 		float: none;
 
 		@include avenir_r(16px);
-		line-height: 16px;
+		// this breaks the styleguide a bit, but 25 was too much space
+		line-height: 20px;
 
 		.c2a {
 			@include avenir_h(16px);
@@ -194,7 +195,7 @@ avenir_r#os-tabs {
 		.filter-button {
 			margin: 0 0.5%;
 			@include avenir_r(16px);
-			line-height: 16px;
+			line-height: 20px;
 		}
 	}
 }

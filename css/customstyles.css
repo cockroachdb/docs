@@ -1267,15 +1267,23 @@ li.search-wrap {
 .search-item {
   margin-top: 30px; }
 
-.search-title {
-  font-size: 20px; }
-
 .search-link {
   color: #999988;
-  font-size: 14px; }
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px;
+  margin-bottom: 5px; }
 
 .search-snippet {
-  font-size: 14px; }
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px; }
 
 .bs-callout {
   padding: 30px 40px 30px 30px;
@@ -1322,7 +1330,6 @@ li.search-wrap {
   #toc > ul li {
     margin: 0 0 0 5px;
     padding: 0 0 0 20px;
-    font-size: 90%;
     list-style: none; }
     #toc > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
@@ -1330,7 +1337,7 @@ li.search-wrap {
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 30px;
+      line-height: 20px;
       color: #142848; }
       #toc > ul li a:hover {
         color: #54B30E;
@@ -1341,6 +1348,7 @@ li.search-wrap {
       #toc > ul li a:first-child:before {
         position: absolute;
         content: '•';
+        top: -3px;
         left: -20px; }
       #toc > ul li a:first-child:hover:before {
         color: #142848; }
@@ -1350,11 +1358,11 @@ li.search-wrap {
   #toc > ul:before {
     content: "On This Page";
     font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 27px;
+    line-height: 30px;
     color: #142848;
     display: block;
     padding-bottom: 15px; }
@@ -1362,9 +1370,9 @@ li.search-wrap {
   color: inherit;
   padding: 0px; }
 
-avenir_r#os-tabs {
+#os-tabs {
   margin: 30px 0; }
-  avenir_r#os-tabs button {
+  #os-tabs button {
     border: 1px solid #dddddd;
     background-color: #ffffff;
     color: #142848;
@@ -1379,12 +1387,12 @@ avenir_r#os-tabs {
     position: relative;
     bottom: -2px;
     float: left; }
-    avenir_r#os-tabs button:hover {
+    #os-tabs button:hover {
       border: 1px solid #54B30E; }
-    avenir_r#os-tabs button.current {
+    #os-tabs button.current {
       border: 1px solid #54B30E;
       background-color: #F0FFE8; }
-    avenir_r#os-tabs button:after {
+    #os-tabs button:after {
       position: absolute;
       font-family: 'FontAwesome';
       content: "\f078";
@@ -1396,21 +1404,21 @@ avenir_r#os-tabs {
       transform: translate(-50%, 0);
       z-index: 5;
       font-size: 55px; }
-    avenir_r#os-tabs button#mac {
+    #os-tabs button#mac {
       margin: 0 2% 2% 0; }
-      avenir_r#os-tabs button#mac:after {
+      #os-tabs button#mac:after {
         content: "\f179"; }
-    avenir_r#os-tabs button#linux {
+    #os-tabs button#linux {
       margin: 0 2% 2% 0; }
-      avenir_r#os-tabs button#linux:after {
+      #os-tabs button#linux:after {
         content: "\f17c"; }
-    avenir_r#os-tabs button#windows {
+    #os-tabs button#windows {
       margin: 0 2% 0 0; }
-      avenir_r#os-tabs button#windows:after {
+      #os-tabs button#windows:after {
         content: "\f17a"; }
-    avenir_r#os-tabs button#source {
+    #os-tabs button#source {
       margin: 0 2% 0 0; }
-      avenir_r#os-tabs button#source:after {
+      #os-tabs button#source:after {
         content: "\f1c6"; }
 
 .install-button {
@@ -1423,7 +1431,7 @@ avenir_r#os-tabs {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 12px;
+  line-height: 15px;
   color: #142848 !important;
   text-decoration: none !important;
   padding: 15px 0;
@@ -1468,7 +1476,7 @@ avenir_r#os-tabs {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 12px;
+    line-height: 15px;
     color: #142848 !important;
     text-decoration: none !important;
     padding: 15px;
@@ -1500,7 +1508,7 @@ avenir_r#os-tabs {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 16px; }
+    line-height: 20px; }
     .install-button .c2a {
       font-family: 'AvenirLTStd-Heavy', serif;
       font-size: 16px;
@@ -1519,7 +1527,7 @@ avenir_r#os-tabs {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 16px; } }
+    line-height: 20px; } }
 .filters-big .filter-button {
   height: 65px;
   margin: 15px 15px 10px 0px;
@@ -1565,7 +1573,7 @@ avenir_r#os-tabs {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 28px;
+    line-height: 30px;
     margin-bottom: 20px;
     padding: 30px 50px 0; }
   #newsletter-popout #hubspot-popup-form {
@@ -1675,6 +1683,8 @@ avenir_r#os-tabs {
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      line-height: 15px;
+      letter-spacing: 1.5px;
       text-transform: uppercase; }
     #newsletter-footer-popout .popout-form .hs-error-msgs, #newsletter-footer-popout .popout-form .hs-form-required {
       display: none !important; }
@@ -1740,6 +1750,8 @@ avenir_r#os-tabs {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 15px;
+    letter-spacing: 1.5px;
     text-transform: uppercase; }
   .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
     display: none !important; }
@@ -1758,12 +1770,12 @@ avenir_r#os-tabs {
     padding: 20px 0; }
     #newsletter-footer-popout .news-header {
       font-family: 'Adelle-Bold', serif;
-      font-size: 25px;
+      font-size: 24px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      color: #FFFFFF;
-      line-height: 33px; }
+      line-height: 35px;
+      color: #FFFFFF; }
     #newsletter-footer-popout .popout-form {
       margin-top: 15px;
       float: left; }

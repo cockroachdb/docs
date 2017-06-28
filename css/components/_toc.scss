@@ -10,12 +10,10 @@
     li {
       margin: 0 0 0 5px;
       padding: 0 0 0 20px;
-      font-size: 90%;
       list-style: none;
 
       a {
-        @include avenir_r(14px);
-        line-height: 30px;
+        @include caption;
         color: $cl_blue;
 
         &:hover {
@@ -31,6 +29,7 @@
         &:before {
           position: absolute;
           content: '•';
+          top: -3px;
           left: -20px;
         }
 
@@ -49,8 +48,8 @@
 
     &:before {
       content: "On This Page";
-      @include avenir_r(20px);
-      line-height: 27px;
+      @include avenir_r(18px);
+      line-height: 30px;
       color: $cl_blue;
       display: block;
       padding-bottom:15px;
