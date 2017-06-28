@@ -1,6 +1,6 @@
-@mixin button(){
+@mixin button() {
+	@include button-text;
 	text-transform: uppercase;
-	letter-spacing: 1.3px;
 	@include rounded(100px);
 	@include groovy(all);
 	display: inline-block;
@@ -9,11 +9,8 @@
 
 .button--primary {
 	@include button();
-	@include avenir_bl(12px);
-	line-height: 12px;
 	color: #FFFFFF;
 	padding: 18px 25px 16px;
-
 	background-color: $cl_green;
 
 	&:focus {
@@ -28,8 +25,6 @@
 
 .button--secondary {
 	@include button();
-	@include avenir_bl(12px);
-	line-height: 12px;
 	color: $cl_green;
 	line-height: 40px;
 	text-align: center;
@@ -49,13 +44,13 @@
 
 .button--header {
 	@include button();
+	height: 30px;
 	@include avenir_bl(10px);
 	line-height: 10px;
 	background-color: $cl_green;
 	padding: 8px 16px;
 	color: #FFFFFF;
 	margin-right: 15px;
-
 
 	&:focus {
 		color: #FFFFFF;
@@ -67,7 +62,8 @@
 		border: 2px solid $cl_green;
 	}
 
-	@include at-query($min, $screen-sm){
+	@include at-query($min, $screen-sm) {
+		height: 40px;
 		font-size: 12px;
 		line-height: 12px;
 		margin-left: 10px;
@@ -78,7 +74,6 @@
 .contribute {
 	.btn-contribute {
 		@include button();
-		@include avenir_bl(12px);
 		background-color: transparent;
 		border: none;
 		color: #142848;

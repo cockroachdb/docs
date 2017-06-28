@@ -2122,8 +2122,11 @@ polygon.regexp {
 
 .white-popup .hbspt-form label {
   color: #142848;
-  font-family: 'AvenirLTStd-Light', serif;
-  font-size: 17px;
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2583,8 +2586,14 @@ img.mfp-img {
     opacity: 1; }
 
 .button--primary {
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1.3px;
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   border-radius: 100px;
@@ -2594,12 +2603,6 @@ img.mfp-img {
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
   border: 2px solid #54B30E;
-  font-family: 'AvenirLTStd-Black', serif;
-  font-size: 12px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 12px;
   color: #FFFFFF;
   padding: 18px 25px 16px;
   background-color: #54B30E; }
@@ -2610,8 +2613,14 @@ img.mfp-img {
     color: #54B30E; }
 
 .button--secondary {
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1.3px;
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   border-radius: 100px;
@@ -2621,12 +2630,6 @@ img.mfp-img {
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
   border: 2px solid #54B30E;
-  font-family: 'AvenirLTStd-Black', serif;
-  font-size: 12px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 12px;
   color: #54B30E;
   line-height: 40px;
   text-align: center;
@@ -2640,8 +2643,14 @@ img.mfp-img {
     color: #FFFFFF; }
 
 .button--header {
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1.3px;
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   border-radius: 100px;
@@ -2651,6 +2660,7 @@ img.mfp-img {
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
   border: 2px solid #54B30E;
+  height: 30px;
   font-family: 'AvenirLTStd-Black', serif;
   font-size: 10px;
   font-weight: normal;
@@ -2669,14 +2679,21 @@ img.mfp-img {
     border: 2px solid #54B30E; }
   @media screen and (min-width: 768px) {
     .button--header {
+      height: 40px;
       font-size: 12px;
       line-height: 12px;
       margin-left: 10px;
       padding: 12px 30px; } }
 
 .contribute .btn-contribute {
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1.3px;
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   border-radius: 100px;
@@ -2686,11 +2703,6 @@ img.mfp-img {
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
   border: 2px solid #54B30E;
-  font-family: 'AvenirLTStd-Black', serif;
-  font-size: 12px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: transparent;
   border: none;
   color: #142848;
@@ -2747,7 +2759,8 @@ img.mfp-img {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 25px;
+    line-height: 20px;
+    line-height: 20px;
     color: #FFFFFF;
     white-space: nowrap;
     padding: 0 10px;
@@ -2888,8 +2901,13 @@ img.mfp-img {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.17;
-  letter-spacing: 1.2px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-transform: uppercase;
   color: #a2a2a2;
   -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
