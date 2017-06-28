@@ -10,9 +10,9 @@ section.footer {
 		padding-bottom: 60px;
 	}
 
-	ul li {
-		line-height: 22px;
-	}
+	// ul li {
+	// 	line-height: 20px;
+	// }
 
 	.container {
 		padding: 0;
@@ -76,13 +76,13 @@ section.footer {
 
 					@include at-query($min, $screen-sm) {
 						text-align: left;
-						line-height: 34px;
+						// line-height: 34px;
 					}
 
-					@include at-query($min, $screen-md) {
-						text-align: left;
-						line-height: 24px;
-					}
+					// @include at-query($min, $screen-md) {
+					// 	text-align: left;
+					// 	line-height: 24px;
+					// }
 				}
 
 				li.header {
@@ -122,11 +122,13 @@ section.footer {
 		li {
 			color: $cl_blue;
 			text-transform: uppercase;
-			list-style:none;
+			list-style: none;
 			text-align: left;
-			padding:0;
-			margin:0 20px 0 0;
-			text-indent:0;
+			padding: 0;
+			margin: 0 20px 0 0;
+			text-indent: 0;
+			font-size: 14px;
+			line-height: 20px;
 
 			@include at-query($min, $screen-sm) {
 				width:100%;
@@ -139,32 +141,31 @@ section.footer {
 			a {
 				color: $cl_blue_dark;
 				@include avenir_r(14px);
-				line-height: 34px;
+				line-height: 20px;
 				text-transform: none;
+				display: block;
+				margin-bottom: 10px;
 				@include groovy(color);
 
 				&:hover {
 					color: $cl_green;
 				}
 
-				@include at-query($min, $screen-sm) {
-					line-height: 24px;
-				}
+				// @include at-query($min, $screen-sm) {
+				// 	line-height: 24px;
+				// }
 			}
 		}
 
 		li.header a {
 			width:100%;
 			margin-bottom:5px;
-			@include avenir_h(12px);
-			line-height: 17px;
-			letter-spacing: 1.3px;
+			@include button-text;
 			display: block;
 			text-transform: uppercase;
 
 			@include at-query($min, $screen-sm) {
-				margin-bottom: 12px;
-				font-size: 13px;
+				margin-bottom: 15px;
 			}
 		}
 
@@ -179,9 +180,8 @@ section.footer {
 	.copyright {
 		margin: 10px 0 0;
 		text-align: center;
-		@include avenir_h(14px);
+		@include avenir_r(14px);
 		color: $cl_blue;
-		line-height: 20px;
 
 		@include at-query($min, $screen-sm) {
 			width: 100%;
