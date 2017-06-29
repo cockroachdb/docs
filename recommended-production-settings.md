@@ -26,6 +26,8 @@ For best resiliency:
 - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
 
+{% include azure-warning.html %}
+
 ## Cluster Topology
 
 When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
