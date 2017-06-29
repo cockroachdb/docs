@@ -135,9 +135,9 @@
             ]
           },
           {
-            "title": "Cloud Migration",
+            "title": "Automatic Cloud Migration",
             urls: [
-              "/demo-cloud-migration.html"
+              "/demo-automatic-cloud-migration.html"
             ]
           }
         ]

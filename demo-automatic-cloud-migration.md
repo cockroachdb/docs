@@ -1,5 +1,5 @@
 ---
-title: Cloud Migration
+title: Automatic Cloud Migration
 summary: Use a local cluster to simulate migrating from one cloud platform to another.
 toc: false
 ---
