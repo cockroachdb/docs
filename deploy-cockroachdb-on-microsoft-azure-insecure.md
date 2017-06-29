@@ -63,7 +63,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
     - **Application support:**
 
         {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you won't need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
-    
+
         | Field | Recommended Value |
         |-------|-------------------|
         | Name | **cockroachapp** |
@@ -83,6 +83,8 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 - Selecting the same continent for all of your VMs for best performance.
 
 When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
+
+{% include azure-warning.html %}
 
 ## Step 3. Set up load balancing
 
