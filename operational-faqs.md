@@ -43,6 +43,10 @@ As of the 1.0 release, there is no way to change the number of days before times
 
 Collecting information about CockroachDB's real world usage helps us prioritize the development of product features. We choose our default as "opt-in" to strengthen the information we receive from our collection efforts, but we also make a careful effort to send only anonymous, aggregate usage statistics. See [Diagnostics Reporting](diagnostics-reporting.html) for a detailed look at what information is sent and how to opt-out.
 
+## What happens when node clocks are not properly synchronized?
+
+{% include faq/clock-synchronization.html %}
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
