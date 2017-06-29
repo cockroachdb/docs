@@ -195,4 +195,4 @@ Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Cloud Migration](demo-cloud-migration.html)
+- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)

@@ -366,4 +366,4 @@ Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cloud Migration](demo-cloud-migration.html)
+- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
