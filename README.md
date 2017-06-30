@@ -1,4 +1,4 @@
-# CockroachDB Docs 
+# CockroachDB Docs
 
 This repository contains the source files for the CockroachDB documentation available at [cockroachlabs.com/docs](https://cockroachlabs.com/docs).
 
