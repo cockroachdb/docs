@@ -10,7 +10,7 @@ The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
 ## Synopsis
 
-{% include sql/diagrams/update.html %}
+{% include sql/{{ page.version.version }}/diagrams/update.html %}
 
 ## Required Privileges
 

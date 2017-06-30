@@ -7,7 +7,7 @@ toc: true
 
 ## Synopsis
 
-{% include sql/diagrams/table.html %}
+{% include sql/{{ page.version.version }}/diagrams/table.html %}
 
 ## Privileges
 

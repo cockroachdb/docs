@@ -26,7 +26,7 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 ## Synopsis
 
-{% include sql/diagrams/explain.html %}
+{% include sql/{{ page.version.version }}/diagrams/explain.html %}
 
 ## Required Privileges
 

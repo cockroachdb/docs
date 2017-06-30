@@ -20,7 +20,7 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
-{% include sql/diagrams/show_constraints.html %}
+{% include sql/{{ page.version.version }}/diagrams/show_constraints.html %}
 
 ## Parameters
 

@@ -12,7 +12,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction isol
 
 ## Synopsis
 
-{% include sql/diagrams/set_transaction.html %}
+{% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}
 
 ## Required Privileges
 

@@ -16,7 +16,7 @@ The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include sql/diagrams/delete.html %}
+{% include sql/{{ page.version.version }}/diagrams/delete.html %}
 
 ## Parameters
 

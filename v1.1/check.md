@@ -33,7 +33,7 @@ Check constraints can be defined at the [table level](#table-level). However, if
 
 ### Column Level
 
-{% include sql/diagrams/check_column_level.html %}
+{% include sql/{{ page.version.version }}/diagrams/check_column_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|
@@ -58,7 +58,7 @@ Check constraints can be defined at the [table level](#table-level). However, if
 
 ### Table Level
 
-{% include sql/diagrams/check_table_level.html %}
+{% include sql/{{ page.version.version }}/diagrams/check_table_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|
