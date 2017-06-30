@@ -23,7 +23,7 @@ $(function() {
       $footer = $('section.footer'),
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-    $versionSwitcher = $('#version-switcher'),
+    $versionSwitcher = $('#version-switcher');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
