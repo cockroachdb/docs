@@ -22,7 +22,7 @@
             </a>
 
             <nav class="desktop" role="navigation">
-                <a href="{{ "/frequently-asked-questions.html" | relative_url }}" class="menu-item {% if page.url == "/frequently-asked-questions.html" %}current-menu-item{% endif %}" data-proofer-ignore>FAQ</a>
+                <a href="{{ "/stable/frequently-asked-questions.html" | relative_url }}" class="menu-item {% if page.name == "frequently-asked-questions.md" %}current-menu-item{% endif %}" data-proofer-ignore>FAQ</a>
                 <div class="menu-item-products menu-item">
           				Product
           				<div class="products-dropdown">
@@ -36,11 +36,11 @@
           					</a>
           				</div>
           			</div>
-                <a href="{{ "/" | relative_url }}" class="menu-item {% if page.url != "/frequently-asked-questions.html" %}current-menu-item{% endif %}" data-proofer-ignore>Docs</a>
+                <a href="{{ "/stable" | relative_url }}" class="menu-item {% if page.name != "frequently-asked-questions.md" %}current-menu-item{% endif %}" data-proofer-ignore>Docs</a>
                 <a href="https://www.cockroachlabs.com/community/" class="menu-item" data-proofer-ignore>Community</a>
                 <a href="https://www.cockroachlabs.com/about/" class="menu-item" data-proofer-ignore>About</a>
                 <a href="https://www.cockroachlabs.com/blog/" class="menu-item" data-proofer-ignore>Blog</a>
-                <a href="{{ "/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
+                <a href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
             </nav>
             <nav class="mobile" role="navigation">
                 <a href="#" title="Expand Menu" class="hamburger">
@@ -49,7 +49,7 @@
                     <span></span>
                     <span></span>
                 </a>
-                <a target="_blank" href="{{ "/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
+                <a target="_blank" href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
             </nav>
 
         </div>
