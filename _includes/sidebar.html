@@ -55,6 +55,10 @@
 
         <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
             <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
+            <div class="collapsed-header">
+              <div id="ch-breadcrumbs" class="collapsed-header__pre"></div>
+              <div id="ch-title"></div>
+            </div>
             <li class="search-wrap">
                 <div class="search">
                     <span class="fa fa-search"></span>
@@ -89,7 +93,7 @@
                     return "stable";
                   })();
 
-                  function renderItems(items, tier) {
+                  function renderItems(items, paths) {
                     if (!items || items.length == 0)
                         return $();
 
@@ -97,7 +101,13 @@
                       var urls = (item.urls || []).map(function (url) {
                           return baseUrl + url.replace("${VERSION}", pageVersion);
                       });
-                      var subitems = renderItems(item.items, tier + 1);
+                      var active = (urls.indexOf(location.pathname) !== -1);
+                      if (active) {
+                        $("#ch-breadcrumbs")
+                          .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
+                        $("#ch-title").html(item.title);
+                      }
+                      var subitems = renderItems(item.items, paths.concat(item.title));
                       var a = $("<a>")
                         .attr("href", urls[0] || "#")
                         .html(item.title);
@@ -105,8 +115,8 @@
                         a.append(" ").append($("<div>").addClass("arrow-down"));
                       }
                       return $("<li>")
-                        .addClass("tier-" + tier)
-                        .toggleClass("active", urls.indexOf(location.pathname) !== -1)
+                        .addClass("tier-" + (paths.length + 1))
+                        .toggleClass("active", active)
                         .append(a)
                         .append(subitems);
                     });
@@ -114,7 +124,7 @@
                     return $("<ul>").append(lis);
                   }
 
-                  document.write(renderItems({% include {{ page.sidebar_data }} %}, 1).html());
+                  document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
                 })()
             </script>
         </ul>
