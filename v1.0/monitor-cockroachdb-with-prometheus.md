@@ -1,6 +1,6 @@
 ---
 title: Monitor CockroachDB with Prometheus
-summary:
+summary: Use Prometheus to monitor CockroachDB.
 toc: false
 ---
 
