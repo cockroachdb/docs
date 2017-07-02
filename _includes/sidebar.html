@@ -53,12 +53,9 @@
             });
         </script>
 
-        <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
+        <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
             <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
-            <div class="collapsed-header">
-              <div id="ch-breadcrumbs" class="collapsed-header__pre"></div>
-              <div id="ch-title"></div>
-            </div>
+            <div class="collapsed-header">Docs Menu</div>
             <li class="search-wrap">
                 <div class="search">
                     <span class="fa fa-search"></span>
@@ -103,9 +100,11 @@
                       });
                       var active = (urls.indexOf(location.pathname) !== -1);
                       if (active) {
-                        $("#ch-breadcrumbs")
+                        var breadcrumbs = $("<div>")
+                          .addClass("collapsed-header__pre")
                           .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
-                        $("#ch-title").html(item.title);
+                        var title = $("<div>").html(item.title);
+                        $(".collapsed-header").empty().append(breadcrumbs, title);
                       }
                       var subitems = renderItems(item.items, paths.concat(item.title));
                       var a = $("<a>")
