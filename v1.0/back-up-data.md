@@ -13,7 +13,7 @@ CockroachDB offers the following methods to back up your cluster's data:
 
 We recommend creating daily backups of your data as an operational best practice. 
 
-However, Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention.
+However, because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 ## Restore
 
