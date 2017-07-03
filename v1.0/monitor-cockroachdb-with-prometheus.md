@@ -1,6 +1,6 @@
 ---
 title: Monitor CockroachDB with Prometheus
-summary: 
+summary: Use Prometheus to monitor CockroachDB.
 toc: false
 ---
 
@@ -12,7 +12,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 ## Before You Begin
 
-Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](cloud-deployment.html). 
+Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](cloud-deployment.html).
 
 ## Step 1. Install Prometheus
 
@@ -23,7 +23,7 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
 3. Make sure Prometheus installed successfully:
 
     ~~~ shell
-    $ prometheus -version
+    $ prometheus --version
     ~~~
 
     ~~~
@@ -36,19 +36,20 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
 ## Step 2. Configure Prometheus
 
 1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) and [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules) for CockroachDB:
-   
+
     ~~~ shell
     # Configuration file:
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml \
-    -O prometheus.y    
+    -O prometheus.yml
     # Aggregation rules:
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules
     ~~~
+
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
     - `scrape_interval: 10s` defines the scrape interval.
-    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint f    scraping time series metrics.  
+    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint f    scraping time series metrics.
     - `scheme: 'http'` specifies that the cluster being scraped is insecure.
-    - `targets: ['localhost:8080']` specifies the hostname and `http-port` of the Cockroach    node to collect time series metrics on. 
+    - `targets: ['localhost:8080']` specifies the hostname and `http-port` of the Cockroach    node to collect time series metrics on.
 
 2. Edit the configuration file to match your deployment scenario:
 
@@ -60,10 +61,10 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
 
 ## Step 3. Start Prometheus
 
-1. Start the Prometheus server, with the `-config.file` flag pointing to the configuration file:
+1. Start the Prometheus server, with the `--config.file` flag pointing to the configuration file:
 
     ~~~ shell
-    $ prometheus -config.file=prometheus.yml
+    $ prometheus --config.file=prometheus.yml
     ~~~
 
     ~~~
@@ -99,7 +100,7 @@ Although Prometheus lets you graph metrics, [Grafana](http://grafana.org/) is a 
     Access | Direct
 
 4. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards) for CockroachDB:
-   
+
     ~~~ shell
     # runtime dashboard: node status, including uptime, memory, and cpu.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/runtime.json
@@ -127,7 +128,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 3. Make sure Alertmanager installed successfully:
 
     ~~~ shell
-    $ alertmanager -version
+    $ alertmanager --version
     ~~~
 
     ~~~
@@ -138,24 +139,24 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
     ~~~
 
 4. Download the [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules) for CockroachDB to the `rules/` directory, where the Prometheus config expects to find it:
-   
+
     ~~~ shell
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules
     ~~~
 
 5. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `simple.yml`, to specify the desired receivers for notifications.
 
-6. Start the Alertmanager server, with the `-config.file` flag pointing to the configuration file:
+6. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
     ~~~ shell
-    $ alertmanager -config.file=simple.yml
+    $ alertmanager --config.file=simple.yml
     ~~~
 
-7. In the shell running Prometheus, use **CTRL + C** to stop Prometheus and then restart it with the `-config.file` flag pointing to the Prometheus configuration file and the `-alertmanager.url` flag pointing to the machine running Alertmanager:
+7. In the shell running Prometheus, use **CTRL + C** to stop Prometheus and then restart it with the `--config.file` flag pointing to the Prometheus configuration file and the `--alertmanager.url` flag pointing to the machine running Alertmanager:
 
     ~~~ shell
-    $ prometheus -config.file=prometheus.yml \
-    -alertmanager.url=<hostname of machine running alertmanager>:9093
+    $ prometheus --config.file=prometheus.yml \
+    --alertmanager.url=<hostname of machine running alertmanager>:9093
     ~~~
 
 8. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
