@@ -40,7 +40,7 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
     ~~~ shell
     # Configuration file:
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml \
-    -O prometheus.y
+    -O prometheus.yml
     # Aggregation rules:
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules
     ~~~
