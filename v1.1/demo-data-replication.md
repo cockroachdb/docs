@@ -191,7 +191,7 @@ $ cockroach start --insecure \
 --join=localhost:26257
 ~~~
 
-In a new termional, add node 5:
+In a new terminal, add node 5:
 
 {% include copy-clipboard.html %}
 ~~~ shell
