@@ -8,12 +8,12 @@
     width: 100%;
 
     li {
-      margin: 0 0 0 5px;
+      margin: 0 0 10px 5px;
       padding: 0 0 0 20px;
       list-style: none;
 
       a {
-        @include caption;
+        @include paragraph-type;
         color: $cl_blue;
 
         &:hover {
@@ -29,7 +29,7 @@
         &:before {
           position: absolute;
           content: '•';
-          top: -3px;
+          top: -5px;
           left: -20px;
         }
 

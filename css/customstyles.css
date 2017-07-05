@@ -1183,9 +1183,6 @@ ol.series li {
 span.muted {
   color: #C0C0C0; }
 
-table code {
-  background-color: transparent; }
-
 .highlight .err {
   color: #a61717;
   background-color: transparent !important; }
@@ -1340,17 +1337,21 @@ li.search-wrap {
   margin: 0;
   width: 100%; }
   #toc > ul li {
-    margin: 0 0 0 5px;
+    margin: 0 0 10px 5px;
     padding: 0 0 0 20px;
     list-style: none; }
     #toc > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 20px;
+      line-height: 25px;
       color: #142848; }
+      @media screen and (min-width: 992px) {
+        #toc > ul li a {
+          font-size: 18px;
+          line-height: 30px; } }
       #toc > ul li a:hover {
         color: #54B30E;
         text-decoration: none;
@@ -1360,7 +1361,7 @@ li.search-wrap {
       #toc > ul li a:first-child:before {
         position: absolute;
         content: '•';
-        top: -3px;
+        top: -5px;
         left: -20px; }
       #toc > ul li a:first-child:hover:before {
         color: #142848; }
