@@ -1,13 +1,13 @@
 //Mixins*
-@mixin rounded($val){ 
+@mixin rounded($val){
 	-webkit-border-radius: $val;
 	   -moz-border-radius: $val;
-	        border-radius: $val;  
+	        border-radius: $val;
 }
 
 @mixin rotate($degrees) {
   -webkit-transform: rotate($degrees);
-      -ms-transform: rotate($degrees); 
+      -ms-transform: rotate($degrees);
        -o-transform: rotate($degrees);
           transform: rotate($degrees);
 }

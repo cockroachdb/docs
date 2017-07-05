@@ -210,7 +210,7 @@ header {
 			float: left;
 			margin: 0 10px;
 			padding: 0;
-			@include avenir_h(12px);
+			@include avenir_bl(12px);
 			line-height: 40px;
 			letter-spacing: 1.5px;
 			text-transform: uppercase;

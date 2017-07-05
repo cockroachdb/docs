@@ -19,7 +19,7 @@ CockroachDB is an open source database for building global, scalable cloud servi
     }
 </style>
 
-{{site.data.alerts.callout_info}}<span id="party">🎉</span>CockroachDB 1.0 is now available! Get more details in <a href="https://www.cockroachlabs.com/blog/cockroachdb-1-0-release">this blog post</a>.{{site.data.alerts.end}}
+<div class="bs-callout bs-callout--info"><span id="party">🎉</span>CockroachDB 1.0 is now available! Get more details in <a href="https://www.cockroachlabs.com/blog/cockroachdb-1-0-release">this blog post</a>.</div>
 
 <div class="row">
     <div class="col-md-4">

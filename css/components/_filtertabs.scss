@@ -188,6 +188,10 @@
 		.install-button {
 			width: auto;
 			margin-right: 0;
+
+			&:nth-child(-n+3) {
+				margin-right: 0;
+			}
 		}
 	}
 

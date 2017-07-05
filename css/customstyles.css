@@ -76,7 +76,11 @@ p {
         line-height: 30px; } }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 40px; }
+  margin-top: 40px;
+  margin-bottom: 20px; }
+  @media screen and (min-width: 768px) {
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 50px; } }
 
 h1 {
   font-family: 'Adelle-Bold', serif;
@@ -85,8 +89,7 @@ h1 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 45px;
-  color: #54B30E;
-  margin-bottom: 10px; }
+  color: #142848; }
 
 h2 {
   font-family: 'Adelle-Bold', serif;
@@ -98,6 +101,8 @@ h2 {
   color: #142848; }
   h2.clickable-header {
     cursor: pointer; }
+  h2 code {
+    font-size: 18px; }
 
 h3 {
   font-family: 'AvenirLTStd-Heavy', serif;
@@ -106,7 +111,6 @@ h3 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 35px;
-  text-transform: uppercase;
   color: #142848; }
   h3.clickable-header {
     cursor: pointer; }
@@ -134,6 +138,9 @@ pre, code {
   font-size: 14px;
   line-height: 25px;
   color: #142848; }
+
+code {
+  border: 1px solid #DADADA; }
 
 body.menu_open {
   overflow: hidden; }
@@ -330,7 +337,7 @@ header {
       float: left;
       margin: 0 10px;
       padding: 0;
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'AvenirLTStd-Black', serif;
       font-size: 12px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -529,7 +536,7 @@ body.sidenav-open .col-content {
       padding: 0;
       margin-left: 10px;
       color: #142848;
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'AvenirLTStd-Roman', serif;
       font-size: 18px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -550,7 +557,7 @@ body.sidenav-open .col-content {
         .nav > li > ul > li:last-of-type {
           margin-bottom: 0; }
         .nav > li > ul > li > a {
-          font-family: 'AvenirLTStd-Heavy', serif;
+          font-family: 'AvenirLTStd-Roman', serif;
           font-size: 16px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -568,7 +575,7 @@ body.sidenav-open .col-content {
             padding: 0;
             list-style: none; }
             .nav > li > ul > li > ul > li > a {
-              font-family: 'AvenirLTStd-Heavy', serif;
+              font-family: 'AvenirLTStd-Roman', serif;
               font-size: 16px;
               font-weight: normal;
               -webkit-font-smoothing: antialiased;
@@ -619,8 +626,14 @@ body.sidenav-open .col-content {
   .roach h3 {
     color: #54B30E;
     margin-top: 20px;
-    margin-bottom: 5px;
-    text-transform: initial; }
+    margin-bottom: 0;
+    text-transform: initial;
+    font-family: 'AvenirLTStd-Heavy', serif;
+    font-size: 18px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 30px; }
   .roach a img {
     height: 80px; }
   .roach a:hover {
@@ -1102,7 +1115,7 @@ li img {
 .alert-warning {
   color: #444; }
 
-div.alert code, h2 code, h3 code {
+div.alert code, h3 code {
   background-color: transparent !important;
   text-transform: none; }
 
@@ -1203,7 +1216,7 @@ dd {
   margin: 0px;
   margin-bottom: 6px; }
 
-.note code, .alert code, .warning code, div#toc code, h2 code, h3 code, h4 code {
+.note code, .alert code, .warning code, div#toc code, h3 code, h4 code {
   color: inherit;
   padding: 0px; }
 
@@ -1278,7 +1291,7 @@ li.search-wrap {
   line-height: 20px; }
 
 .bs-callout {
-  padding: 30px 40px 30px 30px;
+  padding: 30px 40px 30px 25px;
   margin: 30px 0;
   border-left: 5px solid #eee;
   font-family: 'AvenirLTStd-Roman', serif;
@@ -1298,15 +1311,22 @@ li.search-wrap {
     border: 1px solid #DADADA; }
   .bs-callout + .bs-callout {
     margin-top: -5px; }
+  .bs-callout__label {
+    font-family: 'AvenirLTStd-Heavy', serif;
+    font-size: 18px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 30px; }
   .bs-callout--success {
     background-color: #F0FFE8;
     border-left-color: #54B30E; }
-    .bs-callout--success h4 {
+    .bs-callout--success h4, .bs-callout--success .bs-callout__label {
       color: #54B30E; }
   .bs-callout--danger {
     background-color: #FCF4F3;
     border-left-color: #D9534F; }
-    .bs-callout--danger h4 {
+    .bs-callout--danger h4, .bs-callout--danger .bs-callout__label {
       color: #D9534F; }
   .bs-callout--info {
     background-color: #ECF7FF;
@@ -1349,7 +1369,7 @@ li.search-wrap {
       padding: 0; }
   #toc > ul:before {
     content: "On This Page";
-    font-family: 'AvenirLTStd-Roman', serif;
+    font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 18px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1511,6 +1531,8 @@ li.search-wrap {
   #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;
     margin-right: 0; }
+    #mac-installs .install-button:nth-child(-n+3), #linux-installs .install-button:nth-child(-n+3), #windows-installs .install-button:nth-child(-n+3) {
+      margin-right: 0; }
 
   .filters .filter-button {
     margin: 0 0.5%;
@@ -1707,11 +1729,17 @@ li.search-wrap {
   .hubspot-install-form .install-form .hs_email label {
     display: none; }
   .hubspot-install-form .install-form .hs_email input {
-    border: 2px solid #DDDDDD;
+    height: 40px;
+    font-family: 'AvenirLTStd-Roman', serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 40px;
+    color: #142848;
+    border: 1px solid #DADADA;
     border-right: none;
     outline: none;
-    height: 40px;
-    line-height: 35px;
     -webkit-border-top-left-radius: 20px;
     -moz-border-top-left-radius: 20px;
     border-top-left-radius: 20px;
@@ -1720,16 +1748,24 @@ li.search-wrap {
     border-bottom-left-radius: 20px;
     padding: 0 15px 0 25px;
     width: 150px; }
+    .hubspot-install-form .install-form .hs_email input::-webkit-input-placeholder {
+      color: #A2A2A2; }
+    .hubspot-install-form .install-form .hs_email input:-moz-placeholder {
+      color: #A2A2A2; }
+    .hubspot-install-form .install-form .hs_email input::-moz-placeholder {
+      color: #A2A2A2; }
+    .hubspot-install-form .install-form .hs_email input:-ms-input-placeholder {
+      color: #A2A2A2; }
+    .hubspot-install-form .install-form .hs_email input:placeholder-shown {
+      color: #A2A2A2; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {
-    background-color: #54B30E;
+    background-color: #142848;
     color: #FFFFFF;
-    border: 2px solid #DDDDDD;
-    border-left: none;
+    border: none;
     outline: none;
     height: 40px;
-    line-height: 35px;
     -webkit-border-top-right-radius: 20px;
     -moz-border-top-right-radius: 20px;
     border-top-right-radius: 20px;
@@ -1744,6 +1780,7 @@ li.search-wrap {
     -moz-osx-font-smoothing: grayscale;
     line-height: 15px;
     letter-spacing: 1.5px;
+    line-height: 40px;
     text-transform: uppercase; }
   .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
     display: none !important; }
@@ -2063,10 +2100,11 @@ polygon.regexp {
   margin-right: 15px;
   vertical-align: bottom;
   font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 30px; }
 
 @media screen and (max-width: 767px) {
   .feedback-question {
@@ -2085,13 +2123,12 @@ polygon.regexp {
   background-color: #F0FFE8;
   color: #142848 !important;
   font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   text-decoration: none !important;
-  text-transform: uppercase;
   line-height: 40px;
   border: 1px solid #142848;
   border-radius: 5px;
@@ -2705,17 +2742,16 @@ img.mfp-img {
     color: #54B30E; }
   .contribute .btn-contribute:hover {
     color: #54B30E; }
-.contribute .dropdown-toggle {
-  font-family: 'AvenirLTStd-Heavy', serif; }
 .contribute .dropdown-menu {
   border: none;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.06), 0 0 5px 0 rgba(0, 0, 0, 0.06); }
 .contribute .dropdown-menu > li > a {
-  line-height: 20px;
-  font-family: 'AvenirLTStd-Medium', serif;
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
-  font-size: 14px;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px;
   color: #142848;
   margin: 7px 0 7px; }
   .contribute .dropdown-menu > li > a:focus {

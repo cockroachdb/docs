@@ -22,7 +22,8 @@
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
-  @include avenir_r(16px);
+  @include avenir_r(18px);
+  line-height: 30px;
 }
 
 @media screen and (max-width: 767px){
@@ -44,10 +45,10 @@
   vertical-align: bottom;
   background-color: $cl_green_light;
   color: $cl_blue !important;
-  @include avenir_r(16px);
+  @include avenir_r(18px);
   text-align: center;
   text-decoration: none !important;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   line-height: 40px;
   border: 1px solid $cl_blue;
   border-radius: 5px;

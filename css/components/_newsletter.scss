@@ -205,11 +205,13 @@
 			}
 
 			input {
-				border: 2px solid #DDDDDD;
+				height: 40px;
+				@include avenir_r(14px);
+				line-height: 40px;
+				color: $cl_blue;
+				border: 1px solid $cl_gray_medium;
 				border-right: none;
 				outline:none;
-				height: 40px;
-				line-height: 35px;
 				-webkit-border-top-left-radius: 20px;
 				-moz-border-top-left-radius: 20px;
 				border-top-left-radius: 20px;
@@ -218,6 +220,22 @@
 				border-bottom-left-radius: 20px;
 				padding: 0 15px 0 25px;
 				width: 150px;
+
+				&::-webkit-input-placeholder {
+					color: $cl_gray;
+				}
+				&:-moz-placeholder {
+					color: $cl_gray;
+				}
+				&::-moz-placeholder {
+					color: $cl_gray;
+				}
+				&:-ms-input-placeholder {
+					color: $cl_gray;
+				}
+				&:placeholder-shown {
+					color: $cl_gray;
+				}
 			}
 		}
 
@@ -226,13 +244,13 @@
 		}
 
 		.hs-button {
-			background-color: $cl_green;
+			background-color: $cl_blue;
 			color: #FFFFFF;
-			border: 2px solid #DDDDDD;
-			border-left: none;
+			// border: 2px solid #DDDDDD;
+			// border-left: none;
+			border: none;
 			outline:none;
 			height: 40px;
-			line-height: 35px;
 			-webkit-border-top-right-radius: 20px;
 			-moz-border-top-right-radius: 20px;
 			border-top-right-radius: 20px;
@@ -241,6 +259,7 @@
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
 			@include button-text;
+			line-height: 40px;
 			text-transform: uppercase;
 
 		}

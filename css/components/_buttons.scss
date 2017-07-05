@@ -90,23 +90,15 @@
 		}
 	}
 
-	.dropdown-toggle {
-		font-family: 'AvenirLTStd-Heavy', serif;
-	}
-
 	.dropdown-menu {
 		border: none;
 		box-shadow: 0 0 15px 0 rgba(0,0,0,0.06), 0 0 5px 0 rgba(0,0,0,0.06);
 	}
 
 	.dropdown-menu > li > a {
-		line-height: 20px;
-		font-family: 'AvenirLTStd-Medium', serif;
-		font-weight: normal;
-		-webkit-font-smoothing: antialiased;
-		font-size: 14px;
-			color: #142848;
-			margin: 7px 0 7px;
+		@include caption;
+		color: #142848;
+		margin: 7px 0 7px;
 
 		&:focus {
 			text-decoration: none;

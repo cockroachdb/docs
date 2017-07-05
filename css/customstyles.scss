@@ -24,13 +24,17 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 40px;
+  margin-bottom: 20px;
+
+  @include at-query($min, $screen-sm) {
+    margin-top: 50px;
+  }
 }
 
 h1 {
   @include adelle_b(36px);
   line-height: 45px;
-  color: $cl_green;
-  margin-bottom: 10px;
+  color: $cl_blue;
 }
 
 h2 {
@@ -41,12 +45,16 @@ h2 {
   &.clickable-header {
     cursor: pointer;
   }
+
+  // for code snippets in section headers
+  code {
+    font-size: 18px;
+  }
 }
 
 h3 {
   @include avenir_h(24px);
   line-height: 35px;
-  text-transform: uppercase;
   color: $cl_blue;
 
   &.clickable-header {
@@ -73,6 +81,10 @@ pre, code {
   font-size: 14px;
   line-height: 25px;
   color: $cl_blue;
+}
+
+code {
+  border: 1px solid $cl_gray_medium;
 }
 
 @import "layouts/header";
@@ -359,7 +371,7 @@ li img {
   color: #444;
 }
 
-div.alert code, h2 code, h3 code {
+div.alert code, h3 code {
   background-color: transparent !important;
   text-transform: none;
 }
@@ -479,7 +491,7 @@ dd {
   margin-bottom:6px;
 }
 
-.note code, .alert code, .warning code, div#toc code, h2 code, h3 code, h4 code {
+.note code, .alert code, .warning code, div#toc code, h3 code, h4 code {
   color: inherit;
   padding: 0px;
 }

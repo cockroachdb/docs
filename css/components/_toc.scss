@@ -48,7 +48,7 @@
 
     &:before {
       content: "On This Page";
-      @include avenir_r(18px);
+      @include avenir_h(18px);
       line-height: 30px;
       color: $cl_blue;
       display: block;
