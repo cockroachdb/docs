@@ -78,7 +78,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 - **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
 
-GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/?hl=en_US). This service lets you to use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
+GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/?hl=en_US). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
 {{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across zones. You might also consider using the HAProxy load balancer (see <a href="manual-deployment.html">Manual Deployment</a> for guidance).{{site.data.alerts.end}}
 
@@ -87,7 +87,7 @@ To use GCE's TCP Proxy Load Balancing service:
 1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances).
     - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp27257` as the **Port name** and `26257` as the **Port number**.
 2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
-3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#configure_load_balancer). This includes setting up TCP health checks.
+3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#configure_load_balancer).
     - During backend configuration, create a health check, setting the **Protocol** to `HTTPS`, the **Port** to `8080`, and the **Request path** to `/health`.
     - During frontend configuration, reserve a static IP address and note the IP address and the port you select. You'll use this address and port for all client connections.
 4. [Create a firewall rule](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
