@@ -10,7 +10,7 @@ toc_not_nested: true
   <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
-This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's managed load balancing service to distribute client traffic.
+This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
@@ -40,10 +40,10 @@ You must have [SSH access](https://cloud.google.com/compute/docs/instances/conne
 
 CockroachDB requires TCP communication on two ports:
 
-- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
+- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
 - **8080** (`tcp:8080`) for exposing your Admin UI
 
-Inter-node and load balancer-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to accept data from applications external to GCE and expose your admin UI, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/networking).
+Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to expose your admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/networking).
 
 ### Creating Firewall Rules
 
@@ -61,15 +61,9 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 
 #### Application Data
 
-{{site.data.alerts.callout_success}}If your application is also hosted on GCE, you won't need to create a firewall rule for your application to communicate with your load balancer.{{site.data.alerts.end}}
+Applications will not connect directly to your CockroachDB nodes. Instead, they'll connect to GCE's TCP Proxy Load Balancing service, which automatically routes traffic to the instances that are closest to the user. Because this service is implemented at the edge of the Google Cloud, you'll need to create a firewall rule to allow traffic from the load balancer and health checker to your instances. This is covered in [Step 3](#step-3-set-up-tcp-proxy-load-balancing).
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Name | **cockroachapp** |
-| Source filter | IP ranges |
-| Source IP ranges | Your application's IP ranges |
-| Allowed protocols... | **tcp:26257** |
-| Target tags | **cockroachdb** |
+{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across zones. You might also consider using the HAProxy load balancer (see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance).{{site.data.alerts.end}}
 
 ## Step 2. Create instances
 
@@ -78,9 +72,9 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 - Running at least 3 nodes to ensure survivability.
 - Selecting the same continent for all of your instances for best performance.
 
-If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Management** tab, in the **Tags** field, enter **cockroachdb**.
+If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
 
-## Step 3. Set up load balancing
+## Step 3. Set up TCP Proxy Load Balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -88,18 +82,20 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 - **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
 
-GCE offers fully-managed [TCP load balancing](https://cloud.google.com/compute/docs/load-balancing/network/?hl=en_US) to distribute traffic between instances. To configure TCP load balancing in the GCE Console:
+GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/?hl=en_US). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
-1. Go to **Networking** > **Load balancing**.
-2. Click **Create Load Balancer**.
-3. Under **TCP Load Balancing**, click **Start configuration**.
-4. Specify that traffic will be **From Internet to my VMs**, and select **No (TCP)** for connection termination.
-5. Enter a name for the TCP load balancer.
-6. For **Backend configuration**, select your instances and their region. Also, if you create a health check, use the HTTP protocol, port **8080**, and the `/health` request path.
-7. For **Frontend configuration**, use a static IP address with port **26257**.
-8. Save the load balancer and note the provisioned frontend IP address. You'll use this later to test load balancing and to connect your application to the cluster.
+{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across zones. You might also consider using the HAProxy load balancer (see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance).{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of GCE's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
+To use GCE's TCP Proxy Load Balancing service:
+
+1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances).
+    - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp27257` as the **Port name** and `26257` as the **Port number**.
+2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
+3. [Configure Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#configure_load_balancer).
+    - During backend configuration, create a health check, setting the **Protocol** to `HTTP`, the **Port** to `8080`, and the **Request path** to `/health`.
+    - During frontend configuration, reserve a static IP address and choose a port. Note this address/port combination, as you'll use it for all of you client connections.
+4. [Create a firewall rule](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
+    - Be sure to set **Source IP ranges** to `130.211.0.0/22` and `35.191.0.0/16` and set **Target tags** to `cockroachdb` (not to the value specified in the linked instructions).
 
 ## Step 4. Start the first node
 
@@ -219,7 +215,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 ## Step 7. Test load balancing
 
-The GCE load balancer created in [step 3](#step-3-set-up-load-balancing) can serve as the client gateway to the cluster. Instead of connecting directly to a CockroachDB node, clients can connect to the load balancer, which will then redirect the connection to a CockroachDB node.
+The GCE load balancer created in [step 3](#step-3-set-up-tcp-proxy-load-balancing) can serve as the client gateway to the cluster. Instead of connecting directly to a CockroachDB node, clients connect to the load balancer, which will then redirect the connection to a CockroachDB node.
 
 To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
@@ -230,7 +226,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	~~~ shell
 	$ cockroach sql --insecure \
 	--host=<load balancer IP address> \
-	--port=26257
+	--port=<load balancer port>
 	~~~
 
 3. View the cluster's databases:
@@ -262,7 +258,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	+---------+
 	| node_id |
 	+---------+
-	|       3 |
+	|       1 |
 	+---------+
 	(1 row)
 	~~~
