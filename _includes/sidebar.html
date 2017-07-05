@@ -53,11 +53,20 @@
             });
         </script>
 
-        <ul id="mysidebar" class="nav {% if page.url == '/' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
+        <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
             <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
             <div class="collapsed-header">
-              <div id="ch-breadcrumbs" class="collapsed-header__pre"></div>
-              <div id="ch-title"></div>
+              Docs Menu
+              {% comment %}
+                On pages that match a sidebar entry, the JavaScript below
+                injects the following HTML.
+                <div class="collapsed-header__pre">
+                  Breadcrumb level 1
+                  <div class=\"arrow-down arrow-down--pre\"></div>
+                  Breadcrumb level 2
+                </div>
+                <div>Page title</div>
+              {% endcomment %}
             </div>
             <li class="search-wrap">
                 <div class="search">
@@ -93,6 +102,23 @@
                     return "stable";
                   })();
 
+                  // Given a sidebar hierarchy (see _data/sidebar-data-v1.0.json
+                  // for an example), returns a jQuery <ul> element with the
+                  // following structure:
+                  //
+                  // <ul>
+                  //   <li class="tier-1">
+                  //    <a href="{{ item.url }}">{{ item.title }}</a>
+                  //     <ul>
+                  //       {% for item in item.items %}
+                  //         <li class="tier-2">...</li>
+                  //       {% endfor %}
+                  //     </ul>
+                  //   </li>
+                  // </ul>
+                  //
+                  // Additionally injects breadcrumbs for the active sidebar
+                  // entry, if any, into the `.collapsed-header` element above.
                   function renderItems(items, paths) {
                     if (!items || items.length == 0)
                         return $();
@@ -103,9 +129,14 @@
                       });
                       var active = (urls.indexOf(location.pathname) !== -1);
                       if (active) {
-                        $("#ch-breadcrumbs")
+                        // This mutation inside an otherwise pure function is
+                        // unfortunate, but doing it here avoids a separate
+                        // traversal of the sidebar data.
+                        var breadcrumbs = $("<div>")
+                          .addClass("collapsed-header__pre")
                           .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
-                        $("#ch-title").html(item.title);
+                        var title = $("<div>").html(item.title);
+                        $(".collapsed-header").empty().append(breadcrumbs, title);
                       }
                       var subitems = renderItems(item.items, paths.concat(item.title));
                       var a = $("<a>")
