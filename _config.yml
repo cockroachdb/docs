@@ -20,16 +20,16 @@ versions:
 
 release_info:
   v1.0:
-    version: v1.0.2
-    build_time: 2017/06/15 12:56:53 (go1.8.3)
-    start_time: 2017-06-15 10:29:13.675508543 -0400 EDT
+    version: v1.0.3
+    build_time: 2017/07/06 12:56:53 (go1.8.3)
+    start_time: 2017-07-06 10:29:13.675508543 -0400 EDT
   v1.1:
     name: v1.1-alpha
     version: v1.1-alpha.20170622
     build_time: 2017/06/22 11:43:06
     start_time: 2017-06-22 11:43:07.546315789 -0400 EDT
 
-exclude: ["ci", "set-application-name.md", "vendor"]
+exclude: ["ci", "vendor"]
 
 defaults:
   -
