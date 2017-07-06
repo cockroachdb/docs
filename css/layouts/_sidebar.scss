@@ -19,6 +19,7 @@ body.sidenav-open {
 
 .col-sidebar {
   background-color: $cl_gray_light;
+  position: relative;
 
   @include at-query($max, $screen-md) {
     position: fixed;
@@ -31,7 +32,7 @@ body.sidenav-open {
   }
 
   @include at-query($min, $screen-sm) {
-    top: 71px;
+    padding-top: 71px;
   }
 
   @include at-query($min, $screen-md){
@@ -54,6 +55,12 @@ body.sidenav-open {
         }
       }
     }
+  }
+}
+
+.sidebar-row {
+  @include at-query($min, $screen-md) {
+    display: flex;
   }
 }
 
@@ -279,5 +286,30 @@ body.sidenav-open {
         width: 100%;
       }
     }
+  }
+}
+
+a:not([href]) {
+  color: #aaa;
+}
+
+#version-switcher {
+  background: #fff;
+  border-top: 1px solid $cl_gray_medium;
+  bottom: 0;
+  padding-right: 10px;
+  padding-top: 10px;
+  position: fixed;
+  width: 220px;
+
+  @include at-query($max, $screen-md) {
+    .nav > li { margin-bottom: 10px; }
+    .nav > li > ul { border-left: none; margin-left: 0; }
+    .nav > li > a,
+    .nav > li > ul > li > a { font-size: 14px; }
+    border-top-width: 1px;
+    border-right: 1px solid $cl_gray_medium;
+    left: 0;
+    width: 180px;
   }
 }

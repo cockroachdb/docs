@@ -1,0 +1,54 @@
+module JekyllVersions
+  class Version
+    REGEX = /^v[0-9]+\.[0-9]+$/
+
+    include Comparable
+
+    attr_reader :version
+
+    def self.from_path(config, path)
+      if v = path.split('/').find { |p| REGEX =~ p }
+        Version.new(config, v)
+      end
+    end
+
+    def initialize(config, v)
+      @config = config
+      @version = v
+    end
+
+    def name
+      if @config.release_info[version] && (name = @config.release_info[version]['name'])
+        name
+      else
+        version
+      end
+    end
+
+    def tag
+      @config.versions.key(version)
+    end
+
+    def slug
+      tag || version
+    end
+
+    def stable?
+      tag == 'stable'
+    end
+
+    def to_liquid
+      { 'name' => name, 'version' => version, 'tag' => tag }
+    end
+
+    def <=>(other)
+      version <=> other.version
+    end
+
+    alias_method :eql?, :==
+
+    def hash
+      version.hash
+    end
+  end
+end

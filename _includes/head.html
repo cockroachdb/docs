@@ -4,14 +4,14 @@
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{{page.tags}}{% if page.tags %}, {% endif %} {{page.keywords}}">
 <title>{{ page.title }} | {{ site.site_title }}</title>
-<link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{% if page.url != '/index.html' %}{{ page.url }}{% endif %}" data-proofer-ignore>
-<link rel="shortcut icon" href="images/favicon.png" type="image/png">
+<link rel="canonical" href="{{ page.canonical | absolute_url }}">
+<link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
-<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="css/lavish-bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/customstyles.css">
-<link rel="stylesheet" type="text/css" href="css/theme-blue.css">
-{% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="css/asciinema-player.css">{% endif %}
+<link rel="stylesheet" type="text/css" href="{{ 'css/font-awesome.min.css' | relative_url }}">
+<link rel="stylesheet" type="text/css" href="{{ 'css/lavish-bootstrap.css' | relative_url }}">
+<link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
+<link rel="stylesheet" type="text/css" href="{{ 'css/theme-blue.css' | relative_url }}">
+{% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/asciinema-player.css' | relative_url }}">{% endif %}
 
 <script>
 var pageConfig = {
@@ -19,14 +19,14 @@ var pageConfig = {
 };
 </script>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery.cookie.min.js"></script>
-<script src="js/jquery.navgoco.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/toc.js"></script>
-<script src="js/clipboard.min.js"></script>
-<script src="js/customscripts.js"></script>
-<script src="js/anchor.js"></script>
+<script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
+<script src="{{ 'js/jquery.cookie.min.js' | relative_url }}"></script>
+<script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}"></script>
+<script src="{{ 'js/bootstrap.min.js' | relative_url }}"></script>
+<script src="{{ 'js/toc.js' | relative_url }}"></script>
+<script src="{{ 'js/clipboard.min.js' | relative_url }}"></script>
+<script src="{{ 'js/customscripts.js' | relative_url }}"></script>
+<script src="{{ 'js/anchor.js' | relative_url }}"></script>
 <script src="//js.hsforms.net/forms/v2.js"></script>
 {% if page.optimizely == true %}<script src="https://cdn.optimizely.com/js/7825500667.js"></script>{% endif %}
-{% if page.asciicast == true %}<script src="js/asciinema-player.js"></script>{% endif %}
+{% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}

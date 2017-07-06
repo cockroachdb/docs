@@ -8,8 +8,14 @@ run() {
   "$(dirname "$0")"/builder run "$@"
 }
 
+baseurl=/$BUILD_VCS_NUMBER
+
 # Step 1. Build the docs.
-run bundle exec jekyll build --baseurl="/$BUILD_VCS_NUMBER"
+cat > _config_prod.yml <<EOF
+url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
+baseurl: $baseurl
+EOF
+run bundle exec jekyll build --config _config.yml,_config_prod.yml
 
 # Step 2. Upload the docs to S3.
 run aws s3 sync --quiet --region=us-east-1 ./_site s3://cockroach-docs-review/"$BUILD_VCS_NUMBER"/
@@ -23,4 +29,4 @@ curl \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
 # Step 4. Run HTML proofer.
-run bundle exec rake htmlproofer
+run env JEKYLL_BASEURL="$baseurl" bundle exec rake htmlproofer

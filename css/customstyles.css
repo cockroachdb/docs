@@ -425,7 +425,8 @@ body.sidenav-open .col-content {
   overflow: hidden; }
 
 .col-sidebar {
-  background-color: #F3F3F3; }
+  background-color: #F3F3F3;
+  position: relative; }
   @media screen and (max-width: 992px) {
     .col-sidebar {
       position: fixed;
@@ -443,7 +444,7 @@ body.sidenav-open .col-content {
       transition: box-shadow 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); } }
   @media screen and (min-width: 768px) {
     .col-sidebar {
-      top: 71px; } }
+      padding-top: 71px; } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
       background-color: transparent;
@@ -456,6 +457,10 @@ body.sidenav-open .col-content {
     transform: translateY(14px); }
     .col-sidebar--scrolled .nav--collapsed .sidenav-arrow img {
       transform: rotate(0deg); }
+
+@media screen and (min-width: 992px) {
+  .sidebar-row {
+    display: flex; } }
 
 #mysidebar {
   padding-top: 10px;
@@ -621,6 +626,32 @@ body.sidenav-open .col-content {
   .nav li.active li.active a {
     width: 100%; }
 
+a:not([href]) {
+  color: #aaa; }
+
+#version-switcher {
+  background: #fff;
+  border-top: 1px solid #DADADA;
+  bottom: 0;
+  padding-right: 10px;
+  padding-top: 10px;
+  position: fixed;
+  width: 220px; }
+  @media screen and (max-width: 992px) {
+    #version-switcher {
+      border-top-width: 1px;
+      border-right: 1px solid #DADADA;
+      left: 0;
+      width: 180px; }
+      #version-switcher .nav > li {
+        margin-bottom: 10px; }
+      #version-switcher .nav > li > ul {
+        border-left: none;
+        margin-left: 0; }
+      #version-switcher .nav > li > a,
+      #version-switcher .nav > li > ul > li > a {
+        font-size: 14px; } }
+
 .roach {
   border: 1px solid #DADADA;
   margin-bottom: 20px;
@@ -749,6 +780,7 @@ body.sidenav-open .col-content {
         padding-left: 55px; } }
 
 section.footer {
+  background: #fff;
   position: relative;
   padding: 30px 20px 20px; }
   @media screen and (min-width: 768px) {
@@ -1248,6 +1280,9 @@ a.accordion-toggle {
 .post-title-main {
   margin-top: 0;
   margin-bottom: 0; }
+
+.tooltip-inner {
+  white-space: nowrap; }
 
 .search {
   position: relative; }

@@ -13,6 +13,8 @@ function renderTOC() {
   });
 }
 
+var $versionSwitcher, versionSwitcherBottom = Infinity;
+
 $(function() {
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
@@ -21,6 +23,7 @@ $(function() {
       $footer = $('section.footer'),
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
+    $versionSwitcher = $('#version-switcher');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
@@ -87,17 +90,11 @@ $(function() {
   $(window).on('scroll', function(){
     _viewport_width = window.innerWidth;
 
-    if(_viewport_width > 992) {
-      //prevent sidebar from overlapping footer
-      footertotop = $footer.position().top;
-      scrolltop = $(document).scrollTop() + $sidebar.outerHeight() + 170;
-      difference = scrolltop-footertotop;
-
-      if (scrolltop > footertotop) {
-        $sidebar.css('padding-top',  65-difference);
-      } else {
-        $sidebar.css('padding-top', '');
-      }
+    if (_viewport_width > 992) {
+      if ($(window).scrollTop() + $(window).height() <= versionSwitcherBottom)
+        $versionSwitcher.css('position', 'fixed');
+      else
+        $versionSwitcher.css('position', 'absolute');
     } else { // mobile
       $sidebar.css('padding-top', 10);
 
@@ -183,10 +180,10 @@ $(function() {
         var $active = $('#mysidebar .active');
         if ($active.length > 0) {
           // if active drawer, we want to preserve that on expand
-          $('li.search-wrap').slideDown(250);
+          $('#mysidebar li.search-wrap').slideDown(250);
           $active.slideDown(250);
 
-          $lastActive = $('li.active:last');
+          $lastActive = $('#mysidebar li.active:last');
           if ($lastActive.hasClass('tier-3')) {
             $lastActive.siblings('li').slideDown(250);
           } else if ($lastActive.hasClass('tier-2')) {
@@ -202,9 +199,11 @@ $(function() {
           // otherwise, this should show top level
           $('#mysidebar li').slideDown(250);
         }
+        $versionSwitcher.slideUp();
       } else {
         $('body').removeClass('sidenav-open')
         collapseSideNav();
+        $versionSwitcher.slideDown();
       }
     }
   };
@@ -250,7 +249,7 @@ $(function() {
     },
     text: function(trigger) {
       var text = $(trigger).next().find('code').text();
-      text = text.replace(/\\\n(?=.)|(^[\r\n]+|\.|[\r\n]+$)/g, '');
+      text = text.replace(/\\\n(?=.)|(^[\r\n]+|[\r\n]+$)/g, '');
       return text;
     }
   });
@@ -259,4 +258,14 @@ $(function() {
     $(e.trigger).addClass('copy-clipboard--copied');
     $(e.trigger).find('.copy-clipboard__text').text('copied');
   });
+
+  $('[data-tooltip]').tooltip();
 });
+
+$(window).load(function () {
+  // The computation of the version switcher's position needs to wait for
+  // all fonts and images to load.
+  $versionSwitcher.css('position', 'absolute');
+  versionSwitcherBottom = $versionSwitcher.offset().top + $versionSwitcher.outerHeight();
+  $versionSwitcher.css('position', 'fixed');
+})

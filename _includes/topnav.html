@@ -1,16 +1,16 @@
 <!-- Mobile Side Navigation -->
 <nav class="mobile_expanded" role="navigation">
-    <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item" data-proofer-ignore>FAQ</a>
+    <a href="{{ "/frequently-asked-questions.html" | relative_url }}" class="menu-item" data-proofer-ignore>FAQ</a>
     <div class="mobile-menu-products">
   		Product
   		<a href="https://www.cockroachlabs.com/product/cockroachdb-core/" data-proofer-ignore>CockroachDB Core</a>
   		<a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/" data-proofer-ignore>CockroachDB Enterprise</a>
   	</div>
-    <a href="{{ "/" | prepend:site.baseurl }}" class="menu-item" data-proofer-ignore>Docs</a>
+    <a href="{{ "/" | relative_url }}" class="menu-item" data-proofer-ignore>Docs</a>
     <a href="https://www.cockroachlabs.com/community/" class="menu-item" data-proofer-ignore>Community</a>
     <a href="https://www.cockroachlabs.com/about/" class="menu-item" data-proofer-ignore>About</a>
     <a href="https://www.cockroachlabs.com/blog/" class="menu-item" data-proofer-ignore>Blog</a>
-    <a href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="menu-item" data-proofer-ignore>Install</a>
+    <a href="{{ "/install-cockroachdb.html" | relative_url }}" class="menu-item" data-proofer-ignore>Install</a>
 </nav>
 
 <!-- Desktop / Tablet Navigation -->
@@ -18,11 +18,11 @@
     <div class="container">
         <div class="row">
             <a class="logo" href="/" title="Cockroach Labs">
-                <img src="images/CL_Logo_Horizontal.png" width="100%" alt="Cockroach Labs" />
+                <img src="{{ 'images/CL_Logo_Horizontal.png' | relative_url }}" width="100%" alt="Cockroach Labs" />
             </a>
 
             <nav class="desktop" role="navigation">
-                <a href="{{ "/frequently-asked-questions.html" | prepend:site.baseurl }}" class="menu-item {% if page.url == "/frequently-asked-questions.html" %}current-menu-item{% endif %}" data-proofer-ignore>FAQ</a>
+                <a href="{{ "/stable/frequently-asked-questions.html" | relative_url }}" class="menu-item {% if page.name == "frequently-asked-questions.md" %}current-menu-item{% endif %}" data-proofer-ignore>FAQ</a>
                 <div class="menu-item-products menu-item">
           				Product
           				<div class="products-dropdown">
@@ -36,11 +36,11 @@
           					</a>
           				</div>
           			</div>
-                <a href="{{ "/" | prepend:site.baseurl }}" class="menu-item {% if page.url != "/frequently-asked-questions.html" %}current-menu-item{% endif %}" data-proofer-ignore>Docs</a>
+                <a href="{{ "/stable" | relative_url }}" class="menu-item {% if page.name != "frequently-asked-questions.md" %}current-menu-item{% endif %}" data-proofer-ignore>Docs</a>
                 <a href="https://www.cockroachlabs.com/community/" class="menu-item" data-proofer-ignore>Community</a>
                 <a href="https://www.cockroachlabs.com/about/" class="menu-item" data-proofer-ignore>About</a>
                 <a href="https://www.cockroachlabs.com/blog/" class="menu-item" data-proofer-ignore>Blog</a>
-                <a href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="button--header menu-item" data-proofer-ignore>Install</a>
+                <a href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
             </nav>
             <nav class="mobile" role="navigation">
                 <a href="#" title="Expand Menu" class="hamburger">
@@ -49,7 +49,7 @@
                     <span></span>
                     <span></span>
                 </a>
-                <a target="_blank" href="{{ "/install-cockroachdb.html" | prepend:site.baseurl }}" class="button--header menu-item" data-proofer-ignore>Install</a>
+                <a target="_blank" href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Install</a>
             </nav>
 
         </div>
