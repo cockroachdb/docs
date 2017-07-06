@@ -27,11 +27,14 @@ Once you're ready to contribute:
 
 1. Create a new local branch for your work:
 
-   ``` shell
-   $ cd path/to/docs
-   $ git checkout -b "<your branch name>"
+    ``` shell
+    $ cd path/to/docs
+    $ git checkout -b "<your branch name>"
+    ```
 
 3. Make your changes.
+
+    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v1.0 are in the `v1.0` directory, whereas docs for CockroachDB v1.1 are in the `v1.1` directory.
 
 4. [Build and test the docs locally](#build-and-test-the-docs-locally).
 
@@ -64,23 +67,65 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 
 ## Docs Structure
 
+- [Pages](#pages)
+- [Sidebar](#sidebar)
+
 ### Pages
 
-Each docs page must be an `.md` file in the root directory of the repository, must be written in the [kramdown](http://kramdown.gettalong.org/quickref.html) dialect of Markdown, and must start with the following front-matter:
+We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v1.0 are in the `v1.0` directory, whereas docs for CockroachDB v1.1 are in the `v1.1` directory.
+
+Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown, and must start with the following front-matter:
 
 ```
 ---
 title: Title of Page
 summary: Short description of page for SEO
-toc: false
 ---
 ```
 
-- `title`: Used as the h1 header.
-- `summary`: Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar.
-- `toc`: Adds an auto-generated table of contents to the page. See [Page TOC](#page-toc) for full details.
+Field | Description | Default
+------|-------------|--------
+`title`| Used as the h1 header. | Nothing
+`summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. | Nothing
 
-Optionally, you can specify in the front-matter a list of allowed hashes
+Optionally, you can specify other fields in the front-matter:
+
+Field | Description | Default
+------|-------------|--------
+`toc` | Adds an auto-generated table of contents to the top of the page. Usually, we accept the `false` default and place the TOC after the introduction. See [Page TOC](#page-toc) for more details. | `false`
+`toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
+`allowed_hashes` | Specifies a list of allowed hashes that don't correspond to a section heading on the page. | Nothing
+`asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
+`feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
+`contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
+`optimizely` | Adds code required to include the page in A/B testing. See [A/B Testing](#ab-testing) for more details. | `false`
+`twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
+
+#### Page TOC
+
+The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 and h3 headers or just all h2 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.
+
+-   To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
+
+-   To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
+
+    ``` html
+    <div id="toc"></div>
+    ```
+
+-   To omit a page TOC from the page, set `toc: false` in the page's front-matter.
+
+-   By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
+
+#### Auto-Included Content
+
+Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
+
+The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
+
+#### Allowed Hashes
+
+In a page's front-matter, you can specify a list of allowed hashes
 that don't correspond to a section heading on the page. This is
 currently used for pages with JavaScript toggle buttons, where the
 toggle to activate by default can be specified in the URL hash. If you
@@ -96,45 +141,7 @@ Here's an example from a page with OS toggles:
 allowed_hashes: [os-mac, os-linux, os-windows]
 ```
 
-### Page TOC
-
-The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 headers or all h2 and h3 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.
-
-#### TOC Placement
-
--   To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
-
--   To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
-
-    ``` html
-    <div id="toc"></div>
-    ```
-
--   To omit a page TOC from the page, set `toc: false` in the page's front-matter.
-
-#### TOC Levels
-
-By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
-
-### Sidebar
-
-The [`_data/sidebar_doc.yml`](_data/sidebar_doc.yml) YAML file controls which pages appear in the docs sidebar. If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.
-
-For each item in the sidebar, there are three possible YAML fields:
-
-Field | Description
-------|------------
-`title` | The page title, as displayed in the sidebar. This can be different from the actual page title.
-`url` | The URL of the page to link to, formatted as `/<page-name>.html`, e.g., `/learn-cockroachdb-sql.html`.
-`alternate_urls` | The URLs of other pages that should highlight this title in the sidebar, as a comma-separated list within square brackets, e.g., `[/build-a-go-app-with-cockroachdb-gorm.html]`. It's possible to list alternate URLs one-per-line, [indented appropriately](http://yaml.org/spec/1.2/spec.html#id2759963), but for now, it's recommended to use the bracketed list format instead.
-
-### Auto-Included Content
-
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
-
-The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
-
-### Asciicasts
+#### Asciicasts
 
 1. [Install asciinema](https://asciinema.org/docs/installation).
 2. Size your shell window to be a bit narrowing than our code blocks.
@@ -150,17 +157,30 @@ The syntax for including content is `{% include <filepath> %}`, for example, `{%
   <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
   ```
 
-### Feedback Widget
+#### Feedback Widget
 
 We show "Yes/No" feedback buttons at the bottom of every page by default. To remove these buttons from a page, set `feedback: false` in the page's front-matter.
 
-### Contributing Options
+#### Contributing Options
 
 We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
 
-### A/B Testing
+#### A/B Testing
 
 We use [Optimizely](https://www.optimizely.com/) to A/B test changes across our website. To include a page in A/B testing, you must add the necessary JavaScript by setting `optimizely: true` in the page's front-matter.
+
+### Sidebar
+
+For each documented version of CockroachDB, a JSON file in the `_includes` directory controls which pages appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](_includes/sidebar_data-v1.0.json).
+
+If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.
+
+For each page in the sidebar, there are two possible fields:
+
+Field | Description
+------|------------
+`title` | The page title, as displayed in the sidebar. This can be different from the actual page title.
+`urls` | A list of URLs, each formatted as `/${VERSION}/<page-name>.html`, e.g., `/${VERSION}/learn-cockroachdb-sql.html`. The first URL is the page to link to. The subsequent URLs are pages that should highlight this title in the sidebar.
 
 ## Style Guide
 
@@ -192,6 +212,17 @@ SQL code samples are broken into two sections: commands and responses.
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
 
   Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
+
+#### Copy to Clipboard
+
+Many of our code blocks are written so user can copy and paste them directly into a terminal. To make that easier, you can add a "copy to clipboard" feature by placing `{% include copy-clipboard.html %}` on the line directly preceding the code block, for example:
+
+```
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq
+~~~
+```
 
 ### Lists
 
