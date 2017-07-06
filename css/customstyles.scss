@@ -23,11 +23,11 @@ p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 40px;
+  margin-top: 60px;
   margin-bottom: 20px;
 
   @include at-query($min, $screen-sm) {
-    margin-top: 50px;
+    margin-top: 70px;
   }
 }
 
@@ -64,6 +64,10 @@ h3 {
   strong, b {
     @include avenir_bl(24px);
   }
+
+  code {
+    font-size: 16px;
+  }
 }
 
 h4 {
@@ -85,6 +89,10 @@ pre, code {
 
 code {
   border: 1px solid $cl_gray_medium;
+}
+
+ul {
+  padding-left: 25px;
 }
 
 @import "layouts/header";
@@ -137,8 +145,14 @@ caption {
 }
 
 th {
+  @include avenir_h(18px);
   text-align: left;
   padding: 15px 8px 15px 8px;
+}
+
+tbody tr:hover {
+  // what is theme-blue.css? overwriting requires important
+  background-color: $cl_gray_light !important;
 }
 
 table > thead > tr > th,
@@ -371,7 +385,7 @@ li img {
   color: #444;
 }
 
-div.alert code, h3 code {
+div.alert code {
   background-color: transparent !important;
   text-transform: none;
 }
@@ -487,7 +501,7 @@ dd {
   margin-bottom:6px;
 }
 
-.note code, .alert code, .warning code, div#toc code, h3 code, h4 code {
+.note code, .alert code, .warning code, div#toc code {
   color: inherit;
   padding: 0px;
 }

@@ -48,10 +48,10 @@
 
   &--info {
     background-color: $cl_blue_pale;
-    border-left-color: $cl_blue;
+    border-left-color: $cl_blue_note;
 
-    h4 {
-      color: $cl_blue;
+    h4, .bs-callout__label {
+      color: $cl_blue_note;
     }
   }
 }

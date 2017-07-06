@@ -37,7 +37,7 @@
 }
 
 .yes-button, .no-button {
-  width: 40px;
+  width: 70px;
   height: 40px;
   margin: 0 5px;
   padding: 0;
@@ -45,18 +45,19 @@
   vertical-align: bottom;
   background-color: $cl_green_light;
   color: $cl_blue !important;
-  @include avenir_r(18px);
+  @include button-text;
+  line-height: 40px;
+  text-transform: uppercase;
   text-align: center;
   text-decoration: none !important;
-  // text-transform: uppercase;
-  line-height: 40px;
   border: 1px solid $cl_blue;
-  border-radius: 5px;
+  border-radius: 100px;
   outline: none;
+  @include groovy(background-color);
 
   &:hover {
-    border-color: $cl_green;
-    color: $cl_green !important;
+    background-color: $cl_blue;
+    color: #fff !important;
   }
 }
 
@@ -80,11 +81,11 @@
 
 .white-popup .hbspt-form label {
   color: #142848;
-  @include avenir_r(16px);
+  @include avenir_r(18px);
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 28px;
+  line-height: 30px;
 }
 
 .white-popup .hbspt-form ul {

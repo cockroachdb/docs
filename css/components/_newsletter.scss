@@ -236,6 +236,10 @@
 				&:placeholder-shown {
 					color: $cl_gray;
 				}
+
+				&:focus {
+					border-color: $cl_green_bright;
+				}
 			}
 		}
 
@@ -257,9 +261,9 @@
 			-webkit-border-bottom-right-radius: 20px;
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
-			padding: 0 25px 0 15px;
+			padding: 0 25px 0 20px;
 			@include button-text;
-			line-height: 40px;
+			line-height: 42px;
 			text-transform: uppercase;
 
 		}

@@ -26,6 +26,10 @@
       color: #bcbcbc;
     }
 
+    &:focus {
+      border-color: $cl_green_bright;
+    }
+
     @media (min-width: $screen-md) {
       width: 90%;
       margin-bottom: 30px;

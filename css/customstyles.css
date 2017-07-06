@@ -76,11 +76,11 @@ p {
         line-height: 30px; } }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 40px;
+  margin-top: 60px;
   margin-bottom: 20px; }
   @media screen and (min-width: 768px) {
     h1, h2, h3, h4, h5, h6 {
-      margin-top: 50px; } }
+      margin-top: 70px; } }
 
 h1 {
   font-family: 'Adelle-Bold', serif;
@@ -120,6 +120,8 @@ h3 {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
+  h3 code {
+    font-size: 16px; }
 
 h4 {
   font-family: 'AvenirLTStd-Heavy', serif;
@@ -141,6 +143,9 @@ pre, code {
 
 code {
   border: 1px solid #DADADA; }
+
+ul {
+  padding-left: 25px; }
 
 body.menu_open {
   overflow: hidden; }
@@ -265,7 +270,7 @@ header {
     display: none; }
     header nav.desktop a:not(.button--header) {
       color: #142848;
-      font-family: 'AvenirLTStd-Black', serif;
+      font-family: 'AvenirLTStd-Heavy', serif;
       font-size: 12px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -337,7 +342,7 @@ header {
       float: left;
       margin: 0 10px;
       padding: 0;
-      font-family: 'AvenirLTStd-Black', serif;
+      font-family: 'AvenirLTStd-Heavy', serif;
       font-size: 12px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -930,8 +935,16 @@ caption {
   text-align: left; }
 
 th {
+  font-family: 'AvenirLTStd-Heavy', serif;
+  font-size: 18px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: left;
   padding: 15px 8px 15px 8px; }
+
+tbody tr:hover {
+  background-color: #F3F3F3 !important; }
 
 table > thead > tr > th,
 table > tbody > tr > th,
@@ -1115,7 +1128,7 @@ li img {
 .alert-warning {
   color: #444; }
 
-div.alert code, h3 code {
+div.alert code {
   background-color: transparent !important;
   text-transform: none; }
 
@@ -1213,7 +1226,7 @@ dd {
   margin: 0px;
   margin-bottom: 6px; }
 
-.note code, .alert code, .warning code, div#toc code, h3 code, h4 code {
+.note code, .alert code, .warning code, div#toc code {
   color: inherit;
   padding: 0px; }
 
@@ -1258,6 +1271,8 @@ a.accordion-toggle {
     line-height: 40px; }
     .search #search-input::-webkit-input-placeholder {
       color: #bcbcbc; }
+    .search #search-input:focus {
+      border-color: #69CC00; }
     @media (min-width: 992px) {
       .search #search-input {
         width: 90%;
@@ -1327,9 +1342,9 @@ li.search-wrap {
       color: #D9534F; }
   .bs-callout--info {
     background-color: #ECF7FF;
-    border-left-color: #142848; }
-    .bs-callout--info h4 {
-      color: #142848; }
+    border-left-color: #3A7DE0; }
+    .bs-callout--info h4, .bs-callout--info .bs-callout__label {
+      color: #3A7DE0; }
 
 #toc > ul {
   background-color: #F0FFE8;
@@ -1759,6 +1774,8 @@ li.search-wrap {
       color: #A2A2A2; }
     .hubspot-install-form .install-form .hs_email input:placeholder-shown {
       color: #A2A2A2; }
+    .hubspot-install-form .install-form .hs_email input:focus {
+      border-color: #69CC00; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {
@@ -1773,7 +1790,7 @@ li.search-wrap {
     -webkit-border-bottom-right-radius: 20px;
     -moz-border-bottom-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding: 0 25px 0 15px;
+    padding: 0 25px 0 20px;
     font-family: 'AvenirLTStd-Black', serif;
     font-size: 12px;
     font-weight: normal;
@@ -1781,7 +1798,7 @@ li.search-wrap {
     -moz-osx-font-smoothing: grayscale;
     line-height: 15px;
     letter-spacing: 1.5px;
-    line-height: 40px;
+    line-height: 42px;
     text-transform: uppercase; }
   .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
     display: none !important; }
@@ -2115,7 +2132,7 @@ polygon.regexp {
     line-height: 20px;
     font-size: 14px; } }
 .yes-button, .no-button {
-  width: 40px;
+  width: 70px;
   height: 40px;
   margin: 0 5px;
   padding: 0;
@@ -2123,20 +2140,27 @@ polygon.regexp {
   vertical-align: bottom;
   background-color: #F0FFE8;
   color: #142848 !important;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 18px;
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  line-height: 40px;
+  text-transform: uppercase;
   text-align: center;
   text-decoration: none !important;
-  line-height: 40px;
   border: 1px solid #142848;
-  border-radius: 5px;
-  outline: none; }
+  border-radius: 100px;
+  outline: none;
+  -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+  transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   .yes-button:hover, .no-button:hover {
-    border-color: #54B30E;
-    color: #54B30E !important; }
+    background-color: #142848;
+    color: #fff !important; }
 
 /* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
@@ -2153,14 +2177,14 @@ polygon.regexp {
 .white-popup .hbspt-form label {
   color: #142848;
   font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 28px; }
+  line-height: 30px; }
 
 .white-popup .hbspt-form ul {
   margin-top: 10px; }
