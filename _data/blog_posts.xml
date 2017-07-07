@@ -6,8 +6,17 @@
     <description>Recent content in Blog on Cockroach Labs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 27 Jun 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jul 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.cockroachlabs.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Survey of Rounding Implementations in Go</title>
+      <link>https://www.cockroachlabs.com/blog/rouding-implementations-in-go/</link>
+      <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Matt Jibson</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/rouding-implementations-in-go/</guid>
+      <description>Rounding in Go is hard to do correctly. That is, given a float64, truncate the fractional part (anything right of the decimal point), and add one to the truncated value if the fractional part was &amp;gt;= 0.5. This problem doesn&amp;rsquo;t come up often, but it does enough that as of this writing, the second hit on Google for golang round is a closed issue from the Go project, which declined to add a Round function to the math package.</description>
+    </item>
     
     <item>
       <title>The Limits of the CAP Theorem</title>
@@ -73,10 +82,10 @@ A brief introduction is in order. While databases aren’t generally considered 
     
     <item>
       <title>Implementing Unicode Collation in CockroachDB</title>
-      <link>https://www.cockroachlabs.com/blog/unicode-collation-in-cockroachdb.md/</link>
+      <link>https://www.cockroachlabs.com/blog/unicode-collation-in-cockroachdb/</link>
       <pubDate>Thu, 13 Apr 2017 00:00:00 +0000</pubDate>
       <dc:creator>David Eisenstat</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/unicode-collation-in-cockroachdb.md/</guid>
+      <guid>https://www.cockroachlabs.com/blog/unicode-collation-in-cockroachdb/</guid>
       <description>CockroachDB recently gained support for Unicode collation, a standard for ordering strings in the different ways that our users around the world expect. This post describes the motivation for Unicode collation as well as the implementation challenges in providing collated strings as a first-class type.
 Collated strings are documented here. Note that CockroachDB doesn’t support every use of collation that PostgreSQL does, due in part to implementation deficiencies that we plan to address and in part because we believe that the bugs and performance problems caused by implicit type conversions outweigh their convenience.</description>
     </item>
@@ -496,16 +505,6 @@ First, a little context about CockroachDB for those new to the project.</descrip
       <dc:creator>Spencer Kimball</dc:creator>
       <guid>https://www.cockroachlabs.com/blog/living-without-atomic-clocks/</guid>
       <description>It&amp;#8217;s a fact that the design of CockroachDB is based on Google&amp;#8217;s Spanner data storage system. One of the most surprising and inspired facets of Spanner is its use of atomic clocks and GPS clocks to give participating nodes really accurate wall time synchronization. The designers of Spanner call this &amp;#8216;TrueTime&amp;#8217;, and it provides a tight bound on clock offset between any two nodes in the system. TrueTime enables high levels of external consistency.</description>
-    </item>
-    
-    <item>
-      <title>What can we learn from our GitHub stars?</title>
-      <link>https://www.cockroachlabs.com/blog/what-can-we-learn-from-our-github-stars/</link>
-      <pubDate>Wed, 10 Feb 2016 15:22:37 +0000</pubDate>
-      <dc:creator>Spencer Kimball</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/what-can-we-learn-from-our-github-stars/</guid>
-      <description>It’s been almost two years since CockroachDB became a GitHub project. In that time, the project has racked up more than 6,000 GitHub stars, which is a simple way for GitHub users to bookmark repositories that interest them. Naturally, we’ve wondered how people find out about our project. Are there things we could do to accelerate awareness and interest?
-I decided to dedicate my Free Friday (our version of 20% time) to stargazers, a tool to query the CockroachDB repository for information about its GitHub stars and analyze the results.</description>
     </item>
     
   </channel>
