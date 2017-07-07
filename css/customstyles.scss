@@ -73,6 +73,10 @@ h3 {
 h4 {
   @include avenir_h(18px);
   line-height: 30px;
+
+  code {
+    font-size: 18px;
+  }
 }
 
 pre {

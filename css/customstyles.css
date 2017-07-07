@@ -130,6 +130,8 @@ h4 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 30px; }
+  h4 code {
+    font-size: 18px; }
 
 pre {
   overflow: auto; }
@@ -616,7 +618,8 @@ body.sidenav-open .col-content {
     @media screen and (min-width: 992px) {
       .nav li.active > a {
         border-bottom: none;
-        margin-bottom: 0; } }
+        margin-bottom: 0;
+        padding-bottom: 0; } }
     .nav li.active > a > code {
       color: #54B30E; }
     .nav li.active > a .arrow-down {
@@ -1416,7 +1419,7 @@ li.search-wrap {
       #toc > ul li a:first-child:hover:before {
         color: #142848; }
     #toc > ul li > ul {
-      margin: 0;
+      margin: 10px 0 0;
       padding: 0; }
   #toc > ul:before {
     content: "On This Page";

@@ -267,6 +267,7 @@ body.sidenav-open {
       @include at-query($min, $screen-md) {
         border-bottom: none;
         margin-bottom: 0;
+        padding-bottom: 0;
       }
 
       > code {
