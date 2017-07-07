@@ -2,8 +2,7 @@
   padding: 30px 40px 30px 25px;
   margin: 30px 0;
   border-left: 5px solid #eee;
-  @include avenir_r(18px);
-  line-height: 30px;
+  @include paragraph-type;
   color: $cl_blue;
 
   h4 {

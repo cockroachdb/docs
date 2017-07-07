@@ -118,7 +118,7 @@
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 30px;
   }
 }

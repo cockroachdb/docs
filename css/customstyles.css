@@ -48,7 +48,7 @@ body {
   color: #142848; }
   @media screen and (min-width: 992px) {
     body {
-      font-size: 18px;
+      font-size: 17px;
       line-height: 30px; } }
 
 p {
@@ -61,7 +61,7 @@ p {
   color: #142848; }
   @media screen and (min-width: 992px) {
     p {
-      font-size: 18px;
+      font-size: 17px;
       line-height: 30px; } }
   p strong, p b {
     font-family: 'AvenirLTStd-Heavy', serif;
@@ -75,12 +75,19 @@ p {
         font-size: 18px;
         line-height: 30px; } }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   margin-top: 60px;
   margin-bottom: 20px; }
   @media screen and (min-width: 768px) {
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2 {
       margin-top: 70px; } }
+
+h3, h4, h5, h6 {
+  margin-top: 40px;
+  margin-bottom: 20px; }
+  @media screen and (min-width: 768px) {
+    h3, h4, h5, h6 {
+      margin-top: 50px; } }
 
 h1 {
   font-family: 'Adelle-Bold', serif;
@@ -1345,12 +1352,16 @@ li.search-wrap {
   margin: 30px 0;
   border-left: 5px solid #eee;
   font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 30px;
+  line-height: 25px;
   color: #142848; }
+  @media screen and (min-width: 992px) {
+    .bs-callout {
+      font-size: 17px;
+      line-height: 30px; } }
   .bs-callout h4 {
     margin-top: 0;
     margin-bottom: 5px; }
@@ -1403,7 +1414,7 @@ li.search-wrap {
       color: #142848; }
       @media screen and (min-width: 992px) {
         #toc > ul li a {
-          font-size: 18px;
+          font-size: 17px;
           line-height: 30px; } }
       #toc > ul li a:hover {
         color: #54B30E;
@@ -1414,8 +1425,9 @@ li.search-wrap {
       #toc > ul li a:first-child:before {
         position: absolute;
         content: '•';
-        top: -5px;
-        left: -20px; }
+        top: -6px;
+        left: -20px;
+        font-size: 14px; }
       #toc > ul li a:first-child:hover:before {
         color: #142848; }
     #toc > ul li > ul {

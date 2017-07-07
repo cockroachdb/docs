@@ -81,7 +81,7 @@ CockroachDB is an open source database for building global, scalable cloud servi
     </div>
 </div>
 
-## [Recent Blog Posts](https://www.cockroachlabs.com/blog/)
+## Recent Blog Posts
 
 <div class="row">
     <div class="col-xs-12">

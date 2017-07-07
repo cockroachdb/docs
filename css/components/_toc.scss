@@ -29,8 +29,9 @@
         &:before {
           position: absolute;
           content: '•';
-          top: -5px;
+          top: -6px;
           left: -20px;
+          font-size: 14px;
         }
 
         &:hover {
