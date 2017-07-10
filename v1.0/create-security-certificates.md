@@ -98,8 +98,13 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 1. Create two directories:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ mkdir my-safe-directory
     ~~~
     - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
@@ -107,11 +112,15 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 2. Generate the CA certificate and key:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ ls -l certs
     ~~~
 
@@ -124,13 +133,17 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 1. Generate the certificate and key for the first node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
     node1.another-example.com \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ ls -l certs
     ~~~
 
@@ -145,6 +158,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 3. Delete the local copy of the first node's certificate and key:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -153,13 +167,17 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 4. Create the certificate and key for the second node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
     node2.another-example.com \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ ls -l certs
     ~~~
 
@@ -176,12 +194,16 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Create the certificate and key pair for a client
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
 --certs-dir=certs \
 --ca-key=my-safe-directory/ca.key
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 $ ls -l certs
 ~~~
 
@@ -196,6 +218,7 @@ total 40
 
 ### List certificates and keys
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs
