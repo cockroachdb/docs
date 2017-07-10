@@ -1,20 +1,19 @@
 .roach {
-  border: 1px solid $cl_border;
+  border: 1px solid $cl_gray_medium;
   margin-bottom: 20px;
   padding: 10px;
   text-align: center;
   top: 0px;
-  position: relative; 
+  position: relative;
 
   h3 {
-    @include adelle(26px);
-    line-height: 40px;
     color: $cl_green;
     margin-top: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 0;
     text-transform: initial;
+    @include subhead-avenir-sm;
   }
-  
+
   a {
     img {
       height: 80px;
@@ -27,13 +26,12 @@
   p {
     padding: 5px 0 10px;
     margin: 0;
-    @include avenir_bk(14px);
-    line-height: 20px;
+    @include caption;
   }
 
   &:hover {
     border-color: $cl_green;
-    background-color: $cl_gray;
+    background-color: $cl_gray_light;
   }
 
   &.full-roach {
@@ -59,22 +57,21 @@
 }
 
 .blog-post {
-  border: 1px solid $cl_border;
+  border: 1px solid $cl_gray_medium;
   padding: 10px 20px;
   border-bottom: none;
   overflow: auto;
 
   .blog-title {
-    @include avenir_bk(14px);
-    line-height: 20px;
+    @include caption;
     color: $cl_blue;
     margin-bottom: 5px;
   }
 
   .blog-meta {
     @include avenir_o(12px);
-    line-height: 28px;
-    color: $cl_gray_text;
+    line-height: 28px; // vertical spacing
+    color: $cl_gray;
 
     .meta-emphasis {
       color: $cl_green;
@@ -82,11 +79,11 @@
   }
 
   &.last-entry {
-    border-bottom: 1px solid $cl_border;
+    border-bottom: 1px solid $cl_gray_medium;
   }
 
   &:hover {
-    background-color: $cl_gray;
+    background-color: $cl_gray_light;
   }
 
   @include at-query($min, $screen-sm){
@@ -104,11 +101,11 @@
 .view-blog {
   margin-top: 15px;
   text-align: right;
-  
+
   a {
+    @include button-text;
     text-transform: uppercase;
-    @include avenir_bl(12px);
-    color: $cl_gray_text;
+    color: $cl_gray;
 
     &:hover {
       border-bottom: none;

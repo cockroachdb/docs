@@ -5,7 +5,7 @@
 		border: 1px solid #dddddd;
 		background-color: #ffffff;
 		color: $cl_blue;
-		@include avenir_m(16px);
+		@include avenir_h(16px);
 		outline: 0;
 		width: 32%;
 		padding: 75px 0 5px;
@@ -70,8 +70,8 @@
 	border: 1px solid #dddddd;
 	background-color: #ffffff;
 	text-align: center;
-	@include avenir_l(12px);
-	line-height: 12px;
+	@include avenir_r(12px);
+	line-height: 15px;
 	color: $cl_blue !important;
 	text-decoration: none !important;
 	padding: 15px 0;
@@ -131,8 +131,8 @@
 		border: 1px solid #dddddd;
 		background-color: #ffffff;
 		text-align: center;
-		@include avenir_l(12px);
-		line-height: 12px;
+		@include avenir_r(12px);
+		line-height: 15px;
 		color: $cl_blue !important;
 		text-decoration: none !important;
 		padding: 15px;
@@ -175,8 +175,9 @@
 		padding: 15px 40px;
 		float: none;
 
-		@include avenir_l(16px);
-		line-height: 16px;
+		@include avenir_r(16px);
+		// this breaks the styleguide a bit, but 25 was too much space
+		line-height: 20px;
 
 		.c2a {
 			@include avenir_h(16px);
@@ -187,14 +188,18 @@
 		.install-button {
 			width: auto;
 			margin-right: 0;
+
+			&:nth-child(-n+3) {
+				margin-right: 0;
+			}
 		}
 	}
 
 	.filters {
 		.filter-button {
 			margin: 0 0.5%;
-			@include avenir_l(16px);
-			line-height: 16px;
+			@include avenir_r(16px);
+			line-height: 20px;
 		}
 	}
 }

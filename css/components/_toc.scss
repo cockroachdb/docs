@@ -8,14 +8,12 @@
     width: 100%;
 
     li {
-      margin: 0 0 0 5px;
+      margin: 0 0 10px 5px;
       padding: 0 0 0 20px;
-      font-size: 90%;
       list-style: none;
 
       a {
-        @include avenir_bk(14px);
-        line-height: 30px;
+        @include paragraph-type;
         color: $cl_blue;
 
         &:hover {
@@ -31,6 +29,7 @@
         &:before {
           position: absolute;
           content: '•';
+          top: -5px;
           left: -20px;
         }
 
@@ -42,15 +41,15 @@
       }
 
       > ul {
-        margin: 0;
+        margin: 10px 0 0;
         padding: 0;
       }
     }
 
     &:before {
       content: "On This Page";
-      @include avenir_bk(20px);
-      line-height: 27px;
+      @include avenir_h(18px);
+      line-height: 30px;
       color: $cl_blue;
       display: block;
       padding-bottom:15px;
@@ -61,4 +60,4 @@
     color: inherit;
     padding: 0px;
   }
-} 
+}

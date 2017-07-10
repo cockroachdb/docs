@@ -22,14 +22,14 @@
 	width: 600px;
 
 	.news-header {
-		@include adelle(36px);
+		@include adelle_b(36px);
 		color: #FFFFFF;
 		line-height: 48px;
 	}
 
 	.news-subheader {
 		@include avenir_r(18px);
-		line-height: 28px;
+		line-height: 30px;
 		margin-bottom: 20px;
 		padding: 30px 50px 0;
 	}
@@ -70,7 +70,6 @@
 				}
 
 			.hs-button {
-				
 				background-color: $cl_blue;
 				color: #FFFFFF;
 				border:none;
@@ -84,7 +83,7 @@
 				-moz-border-bottom-right-radius: 20px;
 				border-bottom-right-radius: 20px;
 				padding: 0 25px 0 15px;
-				
+
 			}
 		}
 	}
@@ -108,7 +107,7 @@
 	@include groovy(all);
 
 	.news-header {
-		@include adelle(25px);
+		@include adelle_b(25px);
 		color: #FFFFFF;
 		line-height: 33px;
 	}
@@ -149,7 +148,6 @@
 			}
 
 		.hs-button {
-			
 			background-color: $cl_blue;
 			color: #FFFFFF;
 			border:none;
@@ -163,9 +161,8 @@
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
-			@include avenir_bl(12px);
+			@include button-text;
 			text-transform: uppercase;
-			
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -176,7 +173,7 @@
 			text-align: center;
 			width: 100%;
 			color: #FFFFFF;
-			@include avenir_bk(16px);
+			@include avenir_r(16px);
 		}
 	}
 
@@ -193,7 +190,7 @@
 }
 
 .hubspot-install-form {
-	
+
 
 	.install-form {
 		float: left;
@@ -208,11 +205,13 @@
 			}
 
 			input {
-				border: 2px solid #DDDDDD;
+				height: 40px;
+				@include avenir_r(14px);
+				line-height: 40px;
+				color: $cl_blue;
+				border: 1px solid $cl_gray_medium;
 				border-right: none;
 				outline:none;
-				height: 40px;
-				line-height: 35px;
 				-webkit-border-top-left-radius: 20px;
 				-moz-border-top-left-radius: 20px;
 				border-top-left-radius: 20px;
@@ -221,34 +220,52 @@
 				border-bottom-left-radius: 20px;
 				padding: 0 15px 0 25px;
 				width: 150px;
+
+				&::-webkit-input-placeholder {
+					color: $cl_gray;
+				}
+				&:-moz-placeholder {
+					color: $cl_gray;
+				}
+				&::-moz-placeholder {
+					color: $cl_gray;
+				}
+				&:-ms-input-placeholder {
+					color: $cl_gray;
+				}
+				&:placeholder-shown {
+					color: $cl_gray;
+				}
+
+				&:focus {
+					border-color: $cl_green_bright;
+				}
 			}
-
-
 		}
 
 		.inputs-list {
-				display: none !important;
-			}
+			display: none !important;
+		}
 
 		.hs-button {
-			
-			background-color: $cl_green;
+			background-color: $cl_blue;
 			color: #FFFFFF;
-			border: 2px solid #DDDDDD;
-			border-left: none;
+			// border: 2px solid #DDDDDD;
+			// border-left: none;
+			border: none;
 			outline:none;
 			height: 40px;
-			line-height: 35px;
 			-webkit-border-top-right-radius: 20px;
 			-moz-border-top-right-radius: 20px;
 			border-top-right-radius: 20px;
 			-webkit-border-bottom-right-radius: 20px;
 			-moz-border-bottom-right-radius: 20px;
 			border-bottom-right-radius: 20px;
-			padding: 0 25px 0 15px;
-			@include avenir_bl(12px);
+			padding: 0 25px 0 20px;
+			@include button-text;
+			line-height: 42px;
 			text-transform: uppercase;
-			
+
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -258,7 +275,7 @@
 		.submitted-message {
 			text-align: left;
 			width: 100%;
-			@include avenir_bk(16px);
+			@include avenir_r(16px);
 		}
 	}
 }
@@ -268,12 +285,10 @@
 @media (min-width: 768px) {
 	#newsletter-footer-popout {
 		padding: 20px 0;
-		
 
 		.news-header {
-			@include adelle(25px);
+			@include subhead-adelle-lg;
 			color: #FFFFFF;
-			line-height: 33px;
 		}
 
 		.popout-form {

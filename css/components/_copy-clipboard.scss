@@ -4,16 +4,14 @@
   margin-right: 17px;
   float: right;
   z-index: 1;
+  @include button-text;
   @include avenir_bl(12px);
-  line-height: 1.17;
-  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: #a2a2a2;
   @include groovy(color);
 
   &__text {
     display: inline-block;
-
   }
 
   svg {
