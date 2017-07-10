@@ -196,6 +196,10 @@ $(document).ready(function(){
         <td>CMake</td>
         <td>Versions 3.81+ are known to work.</td>
       </tr>
+      <tr>
+        <td>Autoconf</td>
+        <td>Version 2.68 or higher is required.</td>
+      </tr>
     </table>
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
@@ -381,8 +385,8 @@ $(document).ready(function(){
         <td>Versions 3.81+ are known to work.</td>
       </tr>
       <tr>
-        <td><a href="https://tukaani.org/xz/">XZ Utils</a></td>
-        <td>Versions 5.2.3+ are known to work.</td>
+        <td>Autoconf</td>
+        <td>Version 2.68 or higher is required.</td>
       </tr>
     </table>
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
