@@ -96,11 +96,14 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Create the CA certificate and key pair
 
-1. Create a safe directory for the CA key:
+1. Create two directories:
 
     ~~~ shell
+    $ mkdir certs
     $ mkdir my-safe-directory
     ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and  then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
 2. Generate the CA certificate and key:
 
@@ -113,53 +116,9 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     ~~~
 
     ~~~
-    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
+    total 8
+    -rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:12 ca.crt
     ~~~
-
-### Create the certificate and key pairs for nodes
-
-1. Create the certificate and key for the first node:
-
-    ~~~ shell
-    $ cockroach cert create-node \
-    node1.example.com \
-    node1.another-example.com \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key
-
-    $ ls -l certs
-    ~~~
-
-    ~~~
-    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
-    -rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:36 node.crt
-    -rw-------  1 maxroach  maxroach  1.6K Apr 19 09:36 node.key
-    ~~~
-
-2. Upload the files to the first node.
-
-3. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
-
-    ~~~ shell
-    $ cockroach cert create-node \
-    node2.example.com \
-    node2.another-example.com \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key \
-    --overwrite
-
-    $ ls -l certs
-    ~~~
-
-    ~~~
-    -rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
-    -rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:40 node.crt
-    -rw-------  1 maxroach  maxroach  1.6K Apr 19 09:40 node.key
-    ~~~
-
-4. Upload the files to the second node.
-
-5. Repeat for each additional node.
 
 ### Create the certificate and key pair for a client
 
@@ -173,12 +132,69 @@ $ ls -l certs
 ~~~
 
 ~~~
--rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:35 ca.crt
--rw-r--r--  1 maxroach  maxroach  1.1K Apr 19 09:39 client.maxroach.crt
--rw-------  1 maxroach  maxroach  1.6K Apr 19 09:39 client.maxroach.key
--rw-r--r--  1 maxroach  maxroach  1.2K Apr 19 09:36 node.crt
--rw-------  1 maxroach  maxroach  1.6K Apr 19 09:36 node.key
+total 24
+-rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:12 ca.crt
+-rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:13 client.maxroach.crt
+-rw-------  1 maxroach  maxroach  1.6K Jul 10 14:13 client.maxroach.key
 ~~~
+
+### Create the certificate and key pairs for nodes
+
+1. Generate the certificate and key for the first node:
+
+    ~~~ shell
+    $ cockroach cert create-node \
+    node1.example.com \
+    node1.another-example.com \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+
+    $ ls -l certs
+    ~~~
+
+    ~~~
+    total 40
+    -rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:12 ca.crt
+    -rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:13 client.maxroach.crt
+    -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:13 client.maxroach.key
+    -rw-r--r--  1 maxroach  maxroach  1.2K Jul 10 14:16 node.crt
+    -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:16 node.key
+    ~~~
+
+2. Upload the files to the first node.
+
+3. Delete the local copy of the first node's certificate and key:
+
+    ~~~ shell
+    $ rm -rf certs/node.crt certs/node.key
+    ~~~
+
+    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
+
+4. Create the certificate and key for the second node:
+
+    ~~~ shell
+    $ cockroach cert create-node \
+    node2.example.com \
+    node2.another-example.com \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+
+    $ ls -l certs
+    ~~~
+
+    ~~~
+    total 40
+    -rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:12 ca.crt
+    -rw-r--r--  1 maxroach  maxroach  1.1K Jul 10 14:13 client.maxroach.crt
+    -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:13 client.maxroach.key
+    -rw-r--r--  1 maxroach  maxroach  1.2K Jul 10 14:17 node.crt
+    -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:17 node.key
+    ~~~
+
+5. Upload the files to the second node.
+
+6. Repeat steps 3 - 5 for each additional node.
 
 ### List certificates and keys
 
@@ -189,13 +205,14 @@ $ cockroach cert list \
 
 ~~~
 Certificate directory: certs
-+-----------------------+---------------------+---------------------+---------------+
-|         Usage         |  Certificate File   |      Key File       |     Notes     |
-+-----------------------+---------------------+---------------------+---------------+
-| Certificate Authority | ca.crt              |                     |               |
-| Node                  | node.crt            | node.key            |               |
-| Client                | client.maxroach.crt | client.maxroach.key | user=maxroach |
-+-----------------------+---------------------+---------------------+---------------+
++-----------------------+---------------------+---------------------+------------+--------------------------------------------------------+-------+
+|         Usage         |  Certificate File   |      Key File       |  Expires   |                         Notes                          | Error |
++-----------------------+---------------------+---------------------+------------+--------------------------------------------------------+-------+
+| Certificate Authority | ca.crt              |                     | 2027/07/18 | num certs: 1                                           |       |
+| Node                  | node.crt            | node.key            | 2022/07/14 | addresses: node2.example.com,node2.another-example.com |       |
+| Client                | client.maxroach.crt | client.maxroach.key | 2022/07/14 | user: maxroach                                         |       |
++-----------------------+---------------------+---------------------+------------+--------------------------------------------------------+-------+
+(3 rows)
 ~~~
 
 ## See Also

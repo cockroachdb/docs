@@ -37,12 +37,14 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory and a safe directory to keep your CA key:
+1. Create two directories:
 
-	~~~ shell
-	$ mkdir certs
-	$ mkdir my-safe-directory
-	~~~
+    ~~~ shell
+    $ mkdir certs
+    $ mkdir my-safe-directory
+    ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and  then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
 2. Create the CA key pair:
 
@@ -52,11 +54,18 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-3. Create a client key pair for the `root` user:
+3. Create a client key pair for the `root` user and/or for any other user who will need to connect to the cluster
 
 	~~~ shell
 	$ cockroach cert create-client \
 	root \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
+
+	~~~ shell
+	$ cockroach cert create-client \
+	maxroach \
 	--certs-dir=certs \
 	--ca-key=my-safe-directory/ca.key
 	~~~
@@ -90,15 +99,25 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	$ scp certs/ca.crt \
 	certs/client.root.crt \
 	certs/client.root.key \
+	certs/client.maxroach.crt \
+	certs/client.maxroach.key \
 	certs/node.crt \
 	certs/node.key \
 	<username>@<node1 address>:~/certs
 	~~~
 
-6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+6. Delete the local copy of the node certificate and key:
+
+    ~~~ shell
+    $ rm -rf certs/node.crt certs/node.key
+    ~~~
+
+    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
+
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
 	~~~ shell
-	$ cockroach cert create-node --overwrite\
+	$ cockroach cert create-node \
 	<node2 internal IP address> \
 	<node2 external IP address> \
 	<node2 hostname>  \
@@ -113,7 +132,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-7. Upload the certificates to the second node:
+8. Upload the certificates to the second node:
 
 	~~~ shell
 	# Create the certs directory:
@@ -123,12 +142,14 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	$ scp certs/ca.crt \
 	certs/client.root.crt \
 	certs/client.root.key \
+	certs/client.maxroach.crt \
+	certs/client.maxroach.key \
 	certs/node.crt \
 	certs/node.key \
 	<username>@<node2 address>:~/certs
 	~~~
 
-8. Repeat steps 6 and 7 for each additional node.
+9. Repeat steps 6 - 8 for each additional node.
 
 ## Step 2. Start the first node
 

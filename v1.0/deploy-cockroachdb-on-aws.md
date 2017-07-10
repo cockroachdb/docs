@@ -104,12 +104,14 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory and a safe directory to keep your CA key:
+1. Create two directories:
 
     ~~~ shell
     $ mkdir certs
     $ mkdir my-safe-directory
     ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
 2. Create the CA key pair:
 
@@ -167,10 +169,18 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     <username>@<node1 external IP address>:~/certs
     ~~~
 
-6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+6. Delete the local copy of the node certificate and key:
 
     ~~~ shell
-    $ cockroach cert create-node --overwrite\
+    $ rm -rf certs/node.crt certs/node.key
+    ~~~
+
+    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
+
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the AWS load balancer:
+
+    ~~~ shell
+    $ cockroach cert create-node \
     <node2 internal IP address> \
     <node2 external IP address> \
     <node2 hostname>  \
@@ -183,7 +193,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-7. Upload the certificates to the second node:
+8. Upload the certificates to the second node:
 
     ~~~ shell
     # Create the certs directory:
@@ -199,7 +209,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     <username>@<node2 external IP address>:~/certs
     ~~~
 
-8. Repeat steps 6 and 7 for each additional node.
+9. Repeat steps 6 - 8 for each additional node.
 
 ## Step 5. Start the first node
 
