@@ -1425,9 +1425,8 @@ li.search-wrap {
       #toc > ul li a:first-child:before {
         position: absolute;
         content: '•';
-        top: -6px;
-        left: -20px;
-        font-size: 14px; }
+        top: -5px;
+        left: -20px; }
       #toc > ul li a:first-child:hover:before {
         color: #152849; }
     #toc > ul li > ul {
