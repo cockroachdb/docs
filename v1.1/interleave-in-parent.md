@@ -67,7 +67,7 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 ## Syntax
 
-{% include sql/diagrams/interleave.html %}
+{% include sql/{{ page.version.version }}/diagrams/interleave.html %}
 
 ## Parameters
 

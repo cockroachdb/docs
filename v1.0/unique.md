@@ -24,7 +24,7 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ### Column Level
 
-{% include sql/diagrams/unique_column_level.html %}
+{% include sql/{{ page.version.version }}/diagrams/unique_column_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|
@@ -47,7 +47,7 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ### Table Level
 
-{% include sql/diagrams/unique_table_level.html %}
+{% include sql/{{ page.version.version }}/diagrams/unique_table_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|

@@ -12,7 +12,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 ## Synopsis
 
-{% include sql/diagrams/rollback_transaction.html %}
+{% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
 
 ## Required Privileges
 

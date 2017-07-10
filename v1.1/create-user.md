@@ -22,7 +22,7 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include sql/diagrams/create_user.html %}
+{% include sql/{{ page.version.version }}/diagrams/create_user.html %}
 
 ## Parameters
 

@@ -11,7 +11,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 ## Synopsis
 
-{% include sql/diagrams/show_grants.html %}
+{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}
 
 ## Required Privileges
 

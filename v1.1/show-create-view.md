@@ -14,7 +14,7 @@ The user must have any [privilege](privileges.html) on the target view.
 
 ## Synopsis
 
-{% include sql/diagrams/show_create_view.html %}
+{% include sql/{{ page.version.version }}/diagrams/show_create_view.html %}
 
 ## Parameters
 

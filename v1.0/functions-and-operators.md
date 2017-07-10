@@ -6,11 +6,11 @@ toc: true
 
 ## Built-in Functions
 
-{% include sql/functions.md %}
+{% include sql/{{ page.version.version }}/functions.md %}
 
 ## Aggregate Functions
 
-{% include sql/aggregates.md %}
+{% include sql/{{ page.version.version }}/aggregates.md %}
 
 ## Operators
 
@@ -57,7 +57,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported Operations
 
-{% include sql/operators.md %}
+{% include sql/{{ page.version.version }}/operators.md %}
 
 <!--
 ## `CAST()`

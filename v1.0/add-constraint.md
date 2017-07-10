@@ -17,7 +17,7 @@ The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not N
 
 ## Synopsis
 
-{% include sql/diagrams/add_constraint.html %}
+{% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
 
 ## Required Privileges
 
