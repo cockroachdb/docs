@@ -229,6 +229,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     $ sudo docker service create \
     --replicas 1 \
     --name cockroachdb-1 \
+    --hostname cockroachdb-1 \
     --network cockroachdb \
     --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
     --stop-grace-period 60s \
@@ -236,7 +237,6 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-1-crt,target=node.crt \
     --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
-    --advertise-host=cockroachdb-1 \
     --logtostderr \
     --certs-dir=/run/secrets
     ~~~
@@ -245,6 +245,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     - `sudo docker service create`: The Docker command to create a new service.
     - `--replicas`: The number of containers controlled by the service. Since each service will control one container running one CockroachDB node, this will always be `1`.
     - `--name`: The name for the service.
+    - `--hostname`: The hostname of the container. It will listen for connections on this address.
     - `--network`: The overlay network for the container to join. See [Step 4. Create an overlay network](#step-4-create-an-overlay-network) for more details.
     - `--mount`: This flag mounts a local volume called `cockroachdb-1`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
     {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.{{site.data.alerts.end}}
@@ -259,6 +260,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     $ sudo docker service create \
     --replicas 1 \
     --name cockroachdb-2 \
+    --hostname cockroachdb-2 \
     --network cockroachdb \
     --stop-grace-period 60s \
     --mount type=volume,source=cockroachdb-2,target=/cockroach/cockroach-data,volume-driver=local \
@@ -266,7 +268,6 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-2-crt,target=node.crt \
     --secret source=cockroachdb-2-key,target=node.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
-    --advertise-host=cockroachdb-2 \
     --logtostderr \
     --certs-dir=/run/secrets \
     --join=cockroachdb-1:26257
@@ -275,6 +276,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     $ sudo docker service create \
     --replicas 1 \
     --name cockroachdb-3 \
+    --hostname cockroachdb-3 \
     --network cockroachdb \
     --mount type=volume,source=cockroachdb-3,target=/cockroach/cockroach-data,volume-driver=local \
     --stop-grace-period 60s \
@@ -282,7 +284,6 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-3-crt,target=node.crt \
     --secret source=cockroachdb-3-key,target=node.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
-    --advertise-host=cockroachdb-3 \
     --logtostderr \
     --certs-dir=/run/secrets \
     --join=cockroachdb-1:26257
@@ -315,6 +316,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     $ sudo docker service create \
     --replicas 1 \
     --name cockroachdb-1 \
+    --hostname cockroachdb-1 \
     --network cockroachdb \
     --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
     --stop-grace-period 60s \
@@ -322,7 +324,6 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-1-crt,target=node.crt \
     --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
-    --advertise-host=cockroachdb-1 \
     --logtostderr \
     --certs-dir=/run/secrets \
     --join=cockroachdb-2:26257
