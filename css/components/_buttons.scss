@@ -76,7 +76,7 @@
 		@include button();
 		background-color: transparent;
 		border: none;
-		color: #142848;
+		color: $cl_blue;
 		line-height: 40px;
 		padding: 0;
 		text-align: center;
@@ -97,7 +97,7 @@
 
 	.dropdown-menu > li > a {
 		@include caption;
-		color: #142848;
+		color: $cl_blue;
 		margin: 7px 0 7px;
 
 		&:focus {
