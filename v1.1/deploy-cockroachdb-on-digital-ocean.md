@@ -29,8 +29,8 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 - Set up your Droplets using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
 
 - Decide how you want to access your Admin UI:
-	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
-	- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
+    - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
+    - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
 ## Step 1. Create Droplets
 
@@ -50,8 +50,8 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 Digital Ocean offers fully-managed load balancers to distribute traffic between Droplets.
 
 1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
-	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
-	- Configure health checks to use HTTP port **8080** and path `/health`.
+    - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
+    - Configure health checks to use HTTP port **8080** and path `/health`.
 2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
@@ -81,131 +81,140 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory and a safe directory to keep your CA key:
+1. Create two directories:
 
-	~~~ shell
-	$ mkdir certs
-	$ mkdir my-safe-directory
-	~~~
+    ~~~ shell
+    $ mkdir certs
+    $ mkdir my-safe-directory
+    ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and  then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
 2. Create the CA key pair:
 
-	~~~ shell
-	$ cockroach cert create-ca \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
-	~~~
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 3. Create a client key pair for the `root` user:
 
-	~~~ shell
-	$ cockroach cert create-client \
-	root \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
-	~~~
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the Digital Ocean Load Balancer:
+    - `<node internal IP address>`, which is the node Droplet's **Private IP**.
+    - `<node external IP address>`, which is the node Droplet's **ipv4** address.
+    - `<node hostname>`, which is the node Droplet's **Name**.
+    - `<other common names for node>`, which include any domain names you point to the node Droplet.
+    - `localhost` and `127.0.0.1`
+    - `<load balancer IP address>`, which is the Digital Ocean Load Balancer's provisioned **IP Address**.
+    - `<load balancer hostname>`, which is the Digital Ocean Load Balancer's **Name**.
 
-	- `<node internal IP address>`, which is the node Droplet's **Private IP**.
-	- `<node external IP address>`, which is the node Droplet's **ipv4** address.
-	- `<node hostname>`, which is the node Droplet's **Name**.
-	- `<other common names for node>`, which include any domain names you point to the node Droplet.
-	- `localhost` and `127.0.0.1`
-	- `<load balancer IP address>`, which is the Digital Ocean Load Balancer's provisioned **IP Address**.
-	- `<load balancer hostname>`, which is the Digital Ocean Load Balancer's **Name**.
-
-	~~~ shell
-	$ cockroach cert create-node \
-	<node1 internal IP address> \
-	<node1 external IP address> \
-	<node1 hostname>  \
-	<other common names for node1> \
-	localhost \
-	127.0.0.1 \
-	<load balancer IP address> \
-	<load balancer hostname> \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
-	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node1 internal IP address> \
+    <node1 external IP address> \
+    <node1 hostname>  \
+    <other common names for node1> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 5. Upload the certificates to the first node:
 
-	~~~ shell
-	# Create the certs directory:
-	$ ssh <username>@<node1 external IP address> "mkdir certs"
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<node1 external IP address> "mkdir certs"
 
-	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-	$ scp certs/ca.crt \
-	certs/client.root.crt \
-	certs/client.root.key \
-	certs/node.crt \
-	certs/node.key \
-	<username>@<node1 external IP address>:~/certs
-	~~~
+    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/client.root.crt \
+    certs/client.root.key \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 external IP address>:~/certs
+    ~~~
 
-6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+6. Delete the local copy of the node certificate and key:
 
-	~~~ shell
-	$ cockroach cert create-node --overwrite\
-	<node2 internal IP address> \
-	<node2 external IP address> \
-	<node2 hostname>  \
-	<other common names for node2> \
-	localhost \
-	127.0.0.1 \
-	<load balancer IP address> \
-	<load balancer hostname> \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
-	~~~
+    ~~~ shell
+    $ rm certs/node.crt certs/node.key
+    ~~~
 
-7. Upload the certificates to the second node:
+    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
 
-	~~~ shell
-	# Create the certs directory:
-	$ ssh <username>@<node2 external IP address> "mkdir certs"
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the Digital Ocean Load Balancer:
 
-	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
-	$ scp certs/ca.crt \
-	certs/client.root.crt \
-	certs/client.root.key \
-	certs/node.crt \
-	certs/node.key \
-	<username>@<node2 external IP address>:~/certs
-	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node2 internal IP address> \
+    <node2 external IP address> \
+    <node2 hostname>  \
+    <other common names for node2> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
-8. Repeat steps 6 and 7 for each additional node.
+8. Upload the certificates to the second node:
+
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<node2 external IP address> "mkdir certs"
+
+    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/client.root.crt \
+    certs/client.root.key \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 external IP address>:~/certs
+    ~~~
+
+9. Repeat steps 6 - 8 for each additional node.
 
 ## Step 5. Start the first node
 
 1. SSH to your Droplet:
 
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node1 external IP address>
+    ~~~
 
 2. Install the latest CockroachDB binary:
 
-	~~~ shell
-	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+    ~~~ shell
+    # Get the latest CockroachDB tarball.
+    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
-	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
+    # Extract the binary.
+    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
-	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
-	~~~
+    # Move the binary.
+    $ sudo mv cockroach /usr/local/bin
+    ~~~
 
 3. Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
 
-	~~~ shell
-	$ cockroach start --background \
-	--certs-dir=certs \
-	--advertise-host=<node1 internal IP address>
-	~~~
+    ~~~ shell
+    $ cockroach start --background \
+    --certs-dir=certs \
+    --advertise-host=<node1 internal IP address>
+    ~~~
 
 ## Step 6. Add nodes to the cluster
 
@@ -213,32 +222,32 @@ At this point, your cluster is live and operational but contains only a single n
 
 1. SSH to your Droplet:
 
-	~~~
-	$ ssh <username>@<additional node external IP address>
-	~~~
+    ~~~
+    $ ssh <username>@<additional node external IP address>
+    ~~~
 
 2. Install the latest CockroachDB binary:
 
-	~~~ shell
-	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+    ~~~ shell
+    # Get the latest CockroachDB tarball.
+    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
-	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
+    # Extract the binary.
+    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
-	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
-	~~~
+    # Move the binary.
+    $ sudo mv cockroach /usr/local/bin
+    ~~~
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
 
-	~~~ shell
-	$ cockroach start --background  \
-	--certs-dir=certs \
-	--advertise-host=<node internal IP address> \
-	--join=<node1 internal IP address>:26257
-	~~~
+    ~~~ shell
+    $ cockroach start --background  \
+    --certs-dir=certs \
+    --advertise-host=<node internal IP address> \
+    --join=<node1 internal IP address>:26257
+    ~~~
 
 4. Repeat these steps for each Droplet you want to use as a node.
 
@@ -250,52 +259,52 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 
 1. SSH to your first node:
 
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node1 external IP address>
+    ~~~
 
 2. Launch the built-in SQL client and create a database:
 
-	~~~ shell
-	$ cockroach sql \
-	--certs-dir=certs
-	~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs
+    ~~~
 
-	~~~ sql
-	> CREATE DATABASE securenodetest;
-	~~~
+    ~~~ sql
+    > CREATE DATABASE securenodetest;
+    ~~~
 
 3. In another terminal window, SSH to another node:
 
-	~~~ shell
-	$ ssh <username>@<node3 external IP address>
-	~~~
+    ~~~ shell
+    $ ssh <username>@<node3 external IP address>
+    ~~~
 
 4. Launch the built-in SQL client:
 
-	~~~ shell
-	$ cockroach sql \
-	--certs-dir=certs
-	~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs
+    ~~~
 
 5. View the cluster's databases, which will include `securenodetest`:
 
-	~~~ sql
-	> SHOW DATABASES;
-	~~~
+    ~~~ sql
+    > SHOW DATABASES;
+    ~~~
 
-	~~~
-	+--------------------+
-	|      Database      |
-	+--------------------+
-	| crdb_internal      |
-	| information_schema |
-	| securenodetest     |
-	| pg_catalog         |
-	| system             |
-	+--------------------+
-	(5 rows)
-	~~~
+    ~~~
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | crdb_internal      |
+    | information_schema |
+    | securenodetest     |
+    | pg_catalog         |
+    | system             |
+    +--------------------+
+    (5 rows)
+    ~~~
 
 6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
@@ -307,45 +316,45 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address and security flags pointing to the CA cert and the client cert and key:
 
-	~~~ shell
-	$ cockroach sql \
-	--certs-dir=certs \
-	--host=<load balancer IP address>
-	~~~
+    ~~~ shell
+    $ cockroach sql \
+    --certs-dir=certs \
+    --host=<load balancer IP address>
+    ~~~
 
 2. View the cluster's databases:
 
-	~~~ sql
-	> SHOW DATABASES;
-	~~~
-	~~~
-	+--------------------+
-	|      Database      |
-	+--------------------+
-	| crdb_internal      |
-	| information_schema |
-	| securenodetest     |
-	| pg_catalog         |
-	| system             |
-	+--------------------+
-	(5 rows)
-	~~~
+    ~~~ sql
+    > SHOW DATABASES;
+    ~~~
+    ~~~
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | crdb_internal      |
+    | information_schema |
+    | securenodetest     |
+    | pg_catalog         |
+    | system             |
+    +--------------------+
+    (5 rows)
+    ~~~
 
-	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
+    As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
 
 3. Check which node you were redirected to:
 
-	~~~ sql
-	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
-	~~~
-	~~~
-	+---------+
-	| node_id |
-	+---------+
-	|       3 |
-	+---------+
-	(1 row)
-	~~~
+    ~~~ sql
+    > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
+    ~~~
+    ~~~
+    +---------+
+    | node_id |
+    +---------+
+    |       3 |
+    +---------+
+    (1 row)
+    ~~~
 
 4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
@@ -359,7 +368,7 @@ On this page, verify that the cluster is running as expected:
 
 1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
 
-	Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
+    Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
 
 2. Click the **Databases** tab on the left to verify that `securenodetest` is listed.
 
