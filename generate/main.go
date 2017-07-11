@@ -547,6 +547,8 @@ func main() {
 				{
 					name:    "update_stmt",
 					inline:  []string{"relation_expr_opt_alias", "set_clause_list", "set_clause", "single_set_clause", "multiple_set_clause", "ctext_row", "ctext_expr_list", "ctext_expr", "from_clause", "from_list", "where_clause", "returning_clause"},
+					replace: map[string]string{"relation_expr": "table_name", "qualified_name": "column_name", "qualified_name_list": "column_name_list"},
+					relink: map[string]string{"table_name": "relation_expr", "column_name": "qualified_name", "column_name_list": "qualified_name_list"},
 					nosplit: true,
 				},
 				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: []*regexp.Regexp{regexp.MustCompile("'UPSERT'")}},
