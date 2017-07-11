@@ -37,7 +37,7 @@ The variable name is case insensitive. The value can be a list of one or more it
 | `application_name`              | The current application name for statistics collection. | Empty string.                                                                                                                                                                                                         | Yes |
 | `database`                      | The default database for the current session. | Database in connection string, or empty if not specified.                                                                                                                                                                       | Yes |
 | `search_path`                   | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility).                                                          | Yes |
-| `time zone`                     | The default time zone for the current session. See [`SET TIME ZONE` notes](#set-time-zone) below. | `UTC`                                                                                                                                                                       | Yes |
+| `time zone`                     | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`. | `UTC`                                                                                                                                                                       | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified.  | Yes |
 | `client_encoding`               | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A                                                                                                                                                                           | No  |
 | `client_min_messages`           | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`on`". | N/A                                                                                                                                                                             | No  |
@@ -46,11 +46,12 @@ The variable name is case insensitive. The value can be a list of one or more it
 
 Special syntax cases:
 
-| Syntax | Equivalent to |
-|--------|---------------|
-| `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` |
-| `SET TIME ZONE ...` | Special syntax because the variable name contains a space. See [`SET TIME ZONE`](#set-time-zone) below. |
-
+| Syntax | Equivalent to | Notes |
+|--------|---------------|-------|
+| `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
+| `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
+| `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
+| `SET TIME ZONE ...` | `SET "time zone" = ...` | This is provided for compatibility with PostgreSQL clients.
 
 ## Examples
 
@@ -109,26 +110,10 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-## `SET TIME ZONE`
-
-The statement `SET TIME ZONE` can configure the default time zone for
-the current session. This is a special syntax form used to configure
-the `"time zone"` session parameter; the special syntax is necessary
-because `SET` cannot assign to parameter names containing spaces.
-
-### Parameters
-
-The time zone value indicates the time zone for the current session.
-
-This value can be a string representation of a local system-defined
-time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
-negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
-`LOCAL`, or `0` sets the session time zone to `UTC`.
-
-### Example: Set the Default Time Zone via `SET TIME ZONE`
+### Set the default time zone via `SET TIME ZONE`
 
 ~~~ sql
-> SET TIME ZONE 'EST';
+> SET TIME ZONE 'EST'; -- same as SET "time zone" = 'EST'
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
@@ -140,7 +125,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 (1 row)
 ~~~
 ~~~ sql
-> SET TIME ZONE DEFAULT;
+> SET TIME ZONE DEFAULT; -- same as SET "time zone" = DEFAULT
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
