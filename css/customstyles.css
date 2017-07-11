@@ -145,7 +145,7 @@ pre {
 
 pre, code {
   background-color: #F3F3F3;
-  font-family: 'Monaco';
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 14px;
   line-height: 25px;
   color: #152849; }
