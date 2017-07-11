@@ -75,13 +75,15 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
-- A client key pair for the `root` user
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP address provisioned for the Digital Ocean Load Balancer.
+- A client key pair for the `root` user.
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create two directories:
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
+
+2. Create two directories:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -92,24 +94,14 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
-    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload the files to your nodes.
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
     - `my-safe-directory`: You'll generate your CA key in this directory and  then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
-2. Create the CA key pair:
+3. Create the CA certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key
-    ~~~
-
-3. Create a client key pair for the `root` user:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach cert create-client \
-    root \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
@@ -138,7 +130,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-5. Upload the certificates to the first node:
+5. Upload certificates to the first node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -148,10 +140,8 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+    # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
-    certs/client.root.crt \
-    certs/client.root.key \
     certs/node.crt \
     certs/node.key \
     <username>@<node1 external IP address>:~/certs
@@ -183,7 +173,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-8. Upload the certificates to the second node:
+8. Upload certificates to the second node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -193,16 +183,26 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+    # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
-    certs/client.root.crt \
-    certs/client.root.key \
     certs/node.crt \
     certs/node.key \
     <username>@<node2 external IP address>:~/certs
     ~~~
 
 9. Repeat steps 6 - 8 for each additional node.
+
+10. Create a client certificate and key for the `root` user:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+    {{site.data.alerts.callout_success}}In later steps, you'll use the <code>root</code> user's certificate to run <a href="cockroach-commands.html"><code>cockroach</code></a> client commands from your local machine. If you might also want to run <code>cockroach</code> client commands directly on a node (e.g., for local debugging), you'll need to copy the <code>root</code> user's certificate and key to that node as well.{{site.data.alerts.end}}
 
 ## Step 5. Start the first node
 
@@ -291,41 +291,33 @@ At this point, your cluster is live and operational but contains only a single n
 
 CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
 
-To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
+To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-1. SSH to your first node:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ssh <username>@<node1 external IP address>
-    ~~~
-
-2. Launch the built-in SQL client and create a database:
+1. On your local machine, connect the built-in SQL client to node 1, with the `--host` flag set to the address of node 1 and security flags pointing to the CA cert and the client cert and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs
+    --certs-dir=certs \
+    --host=<node1 address>
     ~~~
+
+2. Create a `securenodetest` database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE securenodetest;
     ~~~
 
-3. In another terminal window, SSH to another node:
+3. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ssh <username>@<node3 external IP address>
-    ~~~
-
-4. Launch the built-in SQL client:
+4. Connect the built-in SQL client to node 2, with the `--host` flag set to the address of node 2 and security flags pointing to the CA cert and the client cert and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs
+    --certs-dir=certs \
+    --host=<node2 address>
     ~~~
 
 5. View the cluster's databases, which will include `securenodetest`:
