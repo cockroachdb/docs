@@ -31,39 +31,40 @@ For guidance on cluster topology, clock synchronization, and file descriptor lim
 
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
-- A certificate authority (CA) key pair (`ca.crt` and `ca.key`)
-- A client key pair for the `root` user
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP addresses and common names for machines running HAProxy.
+- A client key pair for the `root` user.
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. Create a `certs` directory and a safe directory to keep your CA key:
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
 
-	~~~ shell
-	$ mkdir certs
-	$ mkdir my-safe-directory
-	~~~
+2. Create two directories:
 
-2. Create the CA key pair:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir my-safe-directory
+    ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
+
+3. Create the CA certificate and key:
+
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach cert create-ca \
 	--certs-dir=certs \
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-3. Create a client key pair for the `root` user:
-
-	~~~ shell
-	$ cockroach cert create-client \
-	root \
-	--certs-dir=certs \
-	--ca-key=my-safe-directory/ca.key
-	~~~
-
-
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach cert create-node \
 	<node1 internal IP address> \
@@ -80,25 +81,37 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-5. Upload the certificates to first node:
+5. Upload certificates to the first node:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	# Create the certs directory:
 	$ ssh <username>@<node1 address> "mkdir certs"
+	~~~
 
-	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	{% include copy-clipboard.html %}
+	~~~ shell
+	# Upload the CA certificate and node certificate and key:
 	$ scp certs/ca.crt \
-	certs/client.root.crt \
-	certs/client.root.key \
 	certs/node.crt \
 	certs/node.key \
 	<username>@<node1 address>:~/certs
 	~~~
 
-6. Create the certificate and key for the second node, using the `--overwrite` flag to replace the files created for the first node:
+6. Delete the local copy of the node certificate and key:
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm certs/node.crt certs/node.key
+    ~~~
+
+    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
+
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the HAProxy instances:
+
+    {% include copy-clipboard.html %}
 	~~~ shell
-	$ cockroach cert create-node --overwrite\
+	$ cockroach cert create-node \
 	<node2 internal IP address> \
 	<node2 external IP address> \
 	<node2 hostname>  \
@@ -113,22 +126,36 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	--ca-key=my-safe-directory/ca.key
 	~~~
 
-7. Upload the certificates to the second node:
+8. Upload certificates to the second node:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	# Create the certs directory:
 	$ ssh <username>@<node2 address> "mkdir certs"
+	~~~
 
-	# Upload the CA certificate, client (root) certificate and key, and node certificate and key:
+	{% include copy-clipboard.html %}
+	~~~ shell
+	# Upload the CA certificate and node certificate and key:
 	$ scp certs/ca.crt \
-	certs/client.root.crt \
-	certs/client.root.key \
 	certs/node.crt \
 	certs/node.key \
 	<username>@<node2 address>:~/certs
 	~~~
 
-8. Repeat steps 6 and 7 for each additional node.
+9. Repeat steps 6 - 8 for each additional node.
+
+10. Create a client certificate and key for the `root` user:
+
+    {% include copy-clipboard.html %}
+	~~~ shell
+	$ cockroach cert create-client \
+	root \
+	--certs-dir=certs \
+	--ca-key=my-safe-directory/ca.key
+	~~~
+
+    {{site.data.alerts.callout_success}}In later steps, you'll use the <code>root</code> user's certificate to run <a href="cockroach-commands.html"><code>cockroach</code></a> client commands from your local machine. If you might also want to run <code>cockroach</code> client commands directly on a node (e.g., for local debugging), you'll need to copy the <code>root</code> user's certificate and key to that node as well.{{site.data.alerts.end}}
 
 ## Step 2. Start the first node
 
@@ -136,20 +163,28 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 2. Install CockroachDB from our latest binary:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	# Get the latest CockroachDB tarball:
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+	~~~
 
+	{% include copy-clipboard.html %}
+	~~~ shell
 	# Extract the binary:
 	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
+	~~~
 
+	{% include copy-clipboard.html %}
+	~~~ shell
 	# Move the binary:
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
 3. Start a new CockroachDB cluster with a single node:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach start --background \
 	--certs-dir=certs \
@@ -166,20 +201,28 @@ At this point, your cluster is live and operational but contains only a single n
 
 2. Install CockroachDB from our latest binary:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	# Get the latest CockroachDB tarball:
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+	~~~
 
+	{% include copy-clipboard.html %}
+	~~~ shell
 	# Extract the binary:
 	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
+	~~~
 
+	{% include copy-clipboard.html %}
+	~~~ shell
 	# Move the binary:
 	$ sudo mv cockroach /usr/local/bin
 	~~~
 
 3. Start a new node that joins the cluster using the first node's address:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach start --background  \
 	--certs-dir=certs \
@@ -193,32 +236,40 @@ At this point, your cluster is live and operational but contains only a single n
 
 ## Step 4. Test your cluster
 
-CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
+CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
 
-1. SSH to your first node.
+To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-2. Launch the built-in SQL client and create a database:
+1. On your local machine, launch the built-in SQL client with the `--host` flag set to the address of node 1 and security flags pointing to the CA cert and the client cert and key:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach sql \
-	--certs-dir=certs
+	--certs-dir=certs \
+	--host=<node1 address>
 	~~~
 
+2. Create a `securenodetest` database:
+
+    {% include copy-clipboard.html %}
 	~~~ sql
 	> CREATE DATABASE securenodetest;
 	~~~
 
-3. In other terminal window, SSH to another node.
+3. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-4. Launch the built-in SQL client:
+4. Launch the built-in SQL client with the `--host` flag set to the address of node 2 and security flags pointing to the CA cert and the client cert and key:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach sql \
-	--certs-dir=certs
+	--certs-dir=certs \
+	--host=<node2 address>
 	~~~
 
 5. View the cluster's databases, which will include `securenodetest`:
 
+    {% include copy-clipboard.html %}
 	~~~ sql
 	> SHOW DATABASES;
 	~~~
@@ -249,30 +300,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. SSH to the machine where you want to run HAProxy.
+1. On your local machine, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
-2. Install HAProxy:
-
-	~~~ shell
-	$ apt-get install haproxy
-	~~~
-
-3. Install CockroachDB from our latest binary:
-
-	~~~ shell
-	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
-
-	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
-
-	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
-	~~~
-
-4. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any instance running a CockroachDB node and [security flags](create-security-certificates.html) pointing to the CA cert and the client cert and key:
-
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach gen haproxy \
 	--certs-dir=certs \
@@ -312,8 +342,25 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
+2. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
+
+	{% include copy-clipboard.html %}
+	~~~ shell
+	$ scp haproxy.cfg <username>@<haproxy address>:~/
+	~~~
+
+3. SSH to the machine where you want to run HAProxy.
+
+4. Install HAProxy:
+
+    {% include copy-clipboard.html %}
+	~~~ shell
+	$ apt-get install haproxy
+	~~~
+
 5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ haproxy -f haproxy.cfg
 	~~~
@@ -326,8 +373,9 @@ Now that HAProxy is running, it can serve as the client gateway to the cluster. 
 
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any HAProxy server and security flags pointing to the CA cert and the client cert and key:
+1. On your local machine, launch the built-in SQL client with the `--host` flag set to the address of any HAProxy server and security flags pointing to the CA cert and the client cert and key:
 
+    {% include copy-clipboard.html %}
 	~~~ shell
 	$ cockroach sql \
 	--certs-dir=certs \
@@ -336,9 +384,11 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 2. View the cluster's databases:
 
+    {% include copy-clipboard.html %}
 	~~~ sql
 	> SHOW DATABASES;
 	~~~
+
 	~~~
 	+--------------------+
 	|      Database      |
@@ -356,9 +406,11 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 3. Check which node you were redirected to:
 
+    {% include copy-clipboard.html %}
 	~~~ sql
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
 	~~~
+
 	~~~
 	+---------+
 	| node_id |
