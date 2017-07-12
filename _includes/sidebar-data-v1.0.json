@@ -135,7 +135,7 @@
             ]
           },
           {
-            "title": "Automatic Cloud Migration",
+            "title": "Cross-Cloud Deployment & Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
             ]
