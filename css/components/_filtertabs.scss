@@ -76,6 +76,8 @@
 	padding: 15px 0;
 	float: left;
 	position: relative;
+	border: 2px solid #fff;
+	border-bottom: none;
 
 	@include at-query($min, $screen-sm) {
 		width: auto;

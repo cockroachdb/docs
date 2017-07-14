@@ -1512,7 +1512,9 @@ li.search-wrap {
   text-decoration: none !important;
   padding: 15px 0;
   float: left;
-  position: relative; }
+  position: relative;
+  border: 2px solid #fff;
+  border-bottom: none; }
   @media screen and (min-width: 768px) {
     .install-button {
       width: auto;
