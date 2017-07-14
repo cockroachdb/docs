@@ -265,7 +265,9 @@ $(function() {
 $(window).load(function () {
   // The computation of the version switcher's position needs to wait for
   // all fonts and images to load.
-  $versionSwitcher.css('position', 'absolute');
-  versionSwitcherBottom = $versionSwitcher.offset().top + $versionSwitcher.outerHeight();
-  $versionSwitcher.css('position', 'fixed');
+  if ($versionSwitcher.length > 0) {
+    $versionSwitcher.css('position', 'absolute');
+    versionSwitcherBottom = $versionSwitcher.offset().top + $versionSwitcher.outerHeight();
+    $versionSwitcher.css('position', 'fixed');
+  }
 })

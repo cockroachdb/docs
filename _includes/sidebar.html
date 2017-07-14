@@ -81,6 +81,13 @@
                 (function () {
                   var baseUrl = "{{ site.baseurl }}";
 
+                  var isVersionDirectory = function (d) {
+                    // Version directories either are one of the named version
+                    // aliases specifed in _config.yml or have the form "vX.X",
+                    // like "v1.0" or "v1.10".
+                    return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
+                  };
+
                   // We derive the version from the URL rather than hardcoding
                   // `page.version` so that the source of pages for "named"
                   // versions, like stable and edge, can be identical to the
@@ -95,7 +102,7 @@
                       .split('/');
                     // The version is the first directory component in the URL,
                     // if it exists.
-                    if (pathComponents.length > 1) {
+                    if (pathComponents.length > 1 && isVersionDirectory(pathComponents[0])) {
                       return pathComponents[0];
                     }
                     // Non-versioned pages link to stable docs.
