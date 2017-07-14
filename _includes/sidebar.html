@@ -95,7 +95,7 @@
                       .split('/');
                     // The version is the first directory component in the URL,
                     // if it exists.
-                    if (pathComponents.length > 1) {
+                    if (pathComponents.length > 1 && /^v\d.\d$/.test(pathComponents[0])) {
                       return pathComponents[0];
                     }
                     // Non-versioned pages link to stable docs.

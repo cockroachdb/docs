@@ -78,7 +78,7 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 
 ## Compatibility with Past Releases
 
-Using the [`beta-20160714`](../beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../beta-20160629.html) release. 
+Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release. 
 
 ## See Also
 

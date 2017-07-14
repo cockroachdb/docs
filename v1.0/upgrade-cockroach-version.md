@@ -85,4 +85,4 @@ For each node in your cluster, complete the following steps.
 ## See Also
 
 - [View Version Details](view-version-details.html)
-- [Release notes for our latest version](../{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
