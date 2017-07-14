@@ -1529,11 +1529,14 @@ li.search-wrap {
     .install-button {
       padding: 15px 25px; } }
   .install-button:hover {
+    color: #54B30E !important;
     border-bottom: none !important; }
   .install-button.current {
     border: 2px solid #DADADA;
     border-top: 2px solid #54B30E;
     border-bottom: 2px #fff; }
+    .install-button.current:hover {
+      color: #152849 !important; }
     .install-button.current:after {
       content: '';
       position: absolute;

@@ -97,6 +97,7 @@
 	}
 
 	&:hover {
+		color: $cl_green !important;
 		border-bottom: none !important;
 	}
 
@@ -104,6 +105,10 @@
 		border: 2px solid $cl_gray_medium;
 		border-top: 2px solid $cl_green;
 		border-bottom: 2px #fff;
+
+		&:hover {
+			color: $cl_blue !important;
+		}
 
 		&:after {
 			content: '';
