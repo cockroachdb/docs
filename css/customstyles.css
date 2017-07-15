@@ -1500,7 +1500,6 @@ li.search-wrap {
 
 .install-button {
   display: inline-block;
-  border: 1px solid #dddddd;
   background-color: #ffffff;
   text-align: center;
   font-family: 'AvenirLTStd-Roman', serif;
@@ -1512,18 +1511,53 @@ li.search-wrap {
   color: #152849 !important;
   text-decoration: none !important;
   padding: 15px 0;
-  float: left; }
+  float: left;
+  position: relative;
+  border: 2px solid #fff;
+  border-bottom: none; }
+  @media screen and (min-width: 768px) {
+    .install-button {
+      width: auto;
+      padding: 15px 25px;
+      float: none;
+      font-size: 16px;
+      line-height: 20px; } }
+  @media screen and (min-width: 992px) {
+    .install-button {
+      padding: 15px; } }
+  @media screen and (min-width: 1200px) {
+    .install-button {
+      padding: 15px 25px; } }
   .install-button:hover {
-    border: 1px solid #54B30E; }
+    color: #54B30E !important;
+    border-bottom: none !important; }
   .install-button.current {
-    border: 1px solid #54B30E;
-    background-color: #F0FFE8; }
+    border: 2px solid #DADADA;
+    border-top: 2px solid #54B30E;
+    border-bottom: 2px #fff; }
+    .install-button.current:hover {
+      color: #152849 !important; }
+    .install-button.current:after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      bottom: -2px;
+      left: 0;
+      background: #fff; }
   .install-button .c2a {
     font-family: 'AvenirLTStd-Heavy', serif;
     font-size: 12px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
+    @media (min-width: 700px) {
+      .install-button .c2a {
+        display: inline-block;
+        font-size: 16px; } }
+
+.install-wrap {
+  border-bottom: 2px solid #DADADA; }
 
 #mac-installs .install-button {
   width: 24.25%; }
@@ -1575,23 +1609,6 @@ li.search-wrap {
 @media (min-width: 700px) {
   #os-tabs button {
     width: 150px; }
-
-  .install-button {
-    width: auto;
-    padding: 15px 40px;
-    float: none;
-    font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 16px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 20px; }
-    .install-button .c2a {
-      font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 16px;
-      font-weight: normal;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale; }
 
   #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;

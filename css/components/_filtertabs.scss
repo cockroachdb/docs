@@ -67,7 +67,6 @@
 
 .install-button {
 	display: inline-block;
-	border: 1px solid #dddddd;
 	background-color: #ffffff;
 	text-align: center;
 	@include avenir_r(12px);
@@ -76,19 +75,64 @@
 	text-decoration: none !important;
 	padding: 15px 0;
 	float: left;
+	position: relative;
+	border: 2px solid #fff;
+	border-bottom: none;
+
+	@include at-query($min, $screen-sm) {
+		width: auto;
+		padding: 15px 25px;
+		float: none;
+		font-size: 16px;
+		// this breaks the styleguide a bit, but 25 was too much space
+		line-height: 20px;
+	}
+
+	@include at-query($min, $screen-md) {
+		padding: 15px;
+	}
+
+	@include at-query($min, $screen-lg) {
+		padding: 15px 25px;
+	}
 
 	&:hover {
-		border: 1px solid $cl_green;
+		color: $cl_green !important;
+		border-bottom: none !important;
 	}
 
 	&.current {
-		border: 1px solid $cl_green;
-		background-color: #F0FFE8;
+		border: 2px solid $cl_gray_medium;
+		border-top: 2px solid $cl_green;
+		border-bottom: 2px #fff;
+
+		&:hover {
+			color: $cl_blue !important;
+		}
+
+		&:after {
+			content: '';
+			position: absolute;
+			height: 2px;
+			width: 100%;
+			bottom: -2px;
+			left: 0;
+			background: #fff;
+		}
 	}
 
 	.c2a {
 		@include avenir_h(12px);
+
+		@media (min-width: 700px) {
+			display: inline-block;
+			font-size: 16px;
+		}
 	}
+}
+
+.install-wrap {
+	border-bottom: 2px solid $cl_gray_medium;
 }
 
 #mac-installs {
@@ -167,20 +211,6 @@
 	#os-tabs {
 		button {
 			width: 150px;
-		}
-	}
-
-	.install-button {
-		width: auto;
-		padding: 15px 40px;
-		float: none;
-
-		@include avenir_r(16px);
-		// this breaks the styleguide a bit, but 25 was too much space
-		line-height: 20px;
-
-		.c2a {
-			@include avenir_h(16px);
 		}
 	}
 
