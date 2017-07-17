@@ -1087,6 +1087,12 @@
         "title": "CockroachDB Features",
         "items": [
           {
+            "title": "Multi-Active Availability",
+            "urls": [
+              "/${VERSION}/multi-active-availability.html"
+            ]
+          },
+          {
             "title": "Simplified Deployment",
             "urls": [
               "/${VERSION}/simplified-deployment.html"
