@@ -1,6 +1,7 @@
 ---
 title: CockroachDB Docs
-summary: CockroachDB is an open source database for building global, scalable cloud services that survive disasters.
+summary: CockroachDB documentation with details on installation, getting started, building an app, deployment, orchestration, and more.
+tags: install, build an app, deploy
 type: first_page
 homepage: true
 toc: false

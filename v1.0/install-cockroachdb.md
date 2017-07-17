@@ -1,6 +1,7 @@
 ---
 title: Install CockroachDB
-summary: Simple instructions for installing CockroachDB on Mac, Linux, or Windows.
+summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes.
+tags: download, binary, homebrew
 toc: false
 allowed_hashes: [os-mac, os-linux, os-windows]
 ---

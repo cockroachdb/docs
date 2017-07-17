@@ -1,6 +1,7 @@
 ---
 title: CockroachDB in Comparison
-summary: Learn how CockroachDB compares to other popular databases.
+summary: Learn how CockroachDB compares to other popular databases like PostgreSQL, Cassandra, MongoDB, Google Cloud Spanner, and more.
+tags: mongodb, mysql, dynamodb
 toc: false
 optimizely: true
 ---
