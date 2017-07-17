@@ -2,33 +2,33 @@
   "title": "Releases",
   "items": [
     {
-      "title": "1.0.3",
+      "title": "v1.0.3",
       "urls": [
-        "/v1.0.3.html"
+        "/releases/v1.0.3.html"
       ]
     },
     {
-      "title": "1.0.2",
+      "title": "v1.0.2",
       "urls": [
-        "/v1.0.2.html"
+        "/releases/v1.0.2.html"
       ]
     },
     {
-      "title": "1.0.1",
+      "title": "v1.0.1",
       "urls": [
-        "/v1.0.1.html"
+        "/releases/v1.0.1.html"
       ]
     },
     {
-      "title": "1.0.0",
+      "title": "v1.0",
       "urls": [
-        "/v1.0.html"
+        "/releases/v1.0.html"
       ]
     },
     {
       "title": "All Releases",
       "urls": [
-        "/releases.html"
+        "/releases/"
       ]
     }
   ]
