@@ -98,6 +98,7 @@ Field | Description | Default
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
 `contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
+`redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
 `optimizely` | Adds code required to include the page in A/B testing. See [A/B Testing](#ab-testing) for more details. | `false`
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 
@@ -165,6 +166,12 @@ We show "Yes/No" feedback buttons at the bottom of every page by default. To rem
 
 We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
 
+#### Client-Side Redirects
+
+We use the [JekyllRedirectFrom](https://github.com/jekyll/jekyll-redirect-from) plugin to ensure that multiple URLs resolve to a single page. This is most useful in cases where we change the filename or directory structure of a page.
+
+For example, if `v1.0.html` page were moved from the root level to `releases/v1.0.html`, you would add `redirect-from: v1.0.html` to the page's front-matter to ensure that `https://cockroachlabs.com/docs/v1.0.html` gets redirected to `https:/cockroachlabs.com/docs/releases/v1.0.html`.
+
 #### A/B Testing
 
 We use [Optimizely](https://www.optimizely.com/) to A/B test changes across our website. To include a page in A/B testing, you must add the necessary JavaScript by setting `optimizely: true` in the page's front-matter.
@@ -182,7 +189,6 @@ Field | Type | Description
 `title` | String | At the top level, this field defines the title for a section of the sidenav, e.g., `Get Started`. Within the `items` field, `title` defines either the title for a subsection or the title for a page, which can be different from the actual page title. See the [JSON Example](#json-example) below for more clarity.
 `items` | Array of objects | The pages in a section of the sidenav.
 `urls` | Array of strings | The URLs for a page in the sidenav, each formatted as `/${VERSION}/<page-name>.html`, e.g., `/${VERSION}/learn-cockroachdb-sql.html`. The first URL is the page to link to. The subsequent URLs are pages that should highlight this title in the sidebar.
-
 
 #### JSON Example
 
