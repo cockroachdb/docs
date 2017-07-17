@@ -383,7 +383,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
+    > SHOW node_id;
     ~~~
 
     ~~~
@@ -393,6 +393,13 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
     |       3 |
     +---------+
     (1 row)
+    ~~~
+
+    The `node_id` [session variable](show-vars.html) used above is an alias for the following query, which you can use as well:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
     ~~~
 
 4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.

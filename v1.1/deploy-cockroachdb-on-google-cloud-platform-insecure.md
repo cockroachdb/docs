@@ -251,16 +251,25 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 4. Check which node you were redirected to:
 
-	~~~ sql
-	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
-	~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW node_id;
+    ~~~
+
 	~~~
 	+---------+
 	| node_id |
 	+---------+
-	|       1 |
+	|       3 |
 	+---------+
 	(1 row)
+	~~~
+
+    The `node_id` [session variable](show-vars.html) used above is an alias for the following query, which you can use as well:
+
+    {% include copy-clipboard.html %}
+	~~~ sql
+	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
 	~~~
 
 5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.

@@ -32,17 +32,17 @@ The variable name is case insensitive. The value can be a list of one or more it
 
 ### Supported Variables
 
-| Variable name                   | Description  | Initial value | Can be viewed with [`SHOW`](show-vars.html)? |
-|---------------------------------|--------------|---------------|----------------------------------------------|
-| `application_name`              | The current application name for statistics collection. | Empty string.                                                                                                                                                                                                         | Yes |
-| `database`                      | The default database for the current session. | Database in connection string, or empty if not specified.                                                                                                                                                                       | Yes |
-| `search_path`                   | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility).                                                          | Yes |
-| `time zone`                     | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`. | `UTC`                                                                                                                                                                       | Yes |
-| `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified.  | Yes |
-| `client_encoding`               | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A                                                                                                                                                                           | No  |
-| `client_min_messages`           | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`on`". | N/A                                                                                                                                                                             | No  |
-| `standard_conforming_strings`   | Ignored; recognized for compatibility with PostgreSQL clients. | N/A                                                                                                                                                                                                            | No  |
-| `extra_float_digits`            | Ignored; recognized for compatibility with PostgreSQL clients. | N/A                                                                                                           | No  |
+| Variable name | Description  | Initial value | Can be viewed with [`SHOW`](show-vars.html)? |
+|---------------|--------------|---------------|----------------------------------------------|
+| `application_name` | The current application name for statistics collection. | Empty string | Yes |
+| `client_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A | No |
+| `client_min_messages` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`on`". | N/A | No |
+| `database` | The default database for the current session. | Database in connection string, or empty if not specified | Yes |
+| `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified  | Yes |
+| `extra_float_digits` | Ignored; recognized for compatibility with PostgreSQL clients. | N/A | No |
+| `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility) | Yes |
+| `standard_conforming_strings` | Ignored; recognized for compatibility with PostgreSQL clients. | N/A | No |
+| `time zone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`. | `UTC` | Yes |
 
 Special syntax cases:
 

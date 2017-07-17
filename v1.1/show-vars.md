@@ -28,22 +28,24 @@ It may be enclosed in double quotes; this is useful if the variable name itself 
 
 ### Supported variables
 
-| Variable name                   | Description                                     | Initial value |  Can be modified with [`SET`](set-vars.html)? |
-|---------------------------------|-------------------------------------------------|---------------|-----------------------------------------------|
-| `database`                      | The default database for the current session.   | Database in connection string, or empty if not specified.                                                                                                                       | Yes |
-| `search_path`                   | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{pg_catalog}` (for ORM compatibility).            | Yes |
-| `session_user`                  | The user connected for the current session.     | User in connection string.                                                                                                                                                      | No  |
-| `time zone`                     | The default time zone for the current session   | `UTC`                                                                                                                                                                           | Yes |
-| `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified.  | Yes |
-| `transaction isolation level`   | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `SERIALIZABLE`                                                                         | Yes |
-| `transaction priority`          | The priority of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `NORMAL`                                                                                      | Yes |
-| `transaction status`            | The state of the current transaction. See [Transactions](transactions.html) for more details. | `NoTxn`                                                                                                                           | No |
-| `server_version`                | The version of PostgreSQL that CockroachDB emulates. | Version-dependent.                                                                                                                                                         | No |
-| `client_min_messages`           | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
-| `client_encoding`               | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
-| `extra_float_digits`            | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
-| `max_index_keys`                | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
-| `standard_conforming_strings`   | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| Variable name | Description | Initial value |  Can be modified with [`SET`](set-vars.html)? |
+|---------------|-------------|---------------|-----------------------------------------------|
+| `application_name` | The current application name for statistics collection. | Empty string | Yes |
+| `client_encoding` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `database` | The default database for the current session. | Database in connection string, or empty if not specified. | Yes |
+| `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified | Yes |
+| `extra_float_digits` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `max_index_keys` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `node_id` | The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
+| `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{pg_catalog}` (for ORM compatibility) | Yes |
+| `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
+| `session_user` | The user connected for the current session. | User in connection string | No |
+| `standard_conforming_strings` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `time zone` | The default time zone for the current session   | `UTC` | Yes |
+| `transaction isolation level` | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `SERIALIZABLE` | Yes |
+| `transaction priority` | The priority of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `NORMAL` | Yes |
+| `transaction status` | The state of the current transaction. See [Transactions](transactions.html) for more details. | `NoTxn` | No |
 
 Special syntax cases supported for compatibility:
 
@@ -89,6 +91,7 @@ Special syntax cases supported for compatibility:
 | distsql                       | off          |
 | extra_float_digits            |              |
 | max_index_keys                |           32 |
+| node_id                       |            1 |
 | search_path                   | pg_catalog   |
 | server_version                | 9.5.0        |
 | session_user                  | root         |
