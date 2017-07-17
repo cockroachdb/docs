@@ -8,12 +8,9 @@ section.footer {
 	}
 
 	@include at-query($min, $screen-md) {
-		padding-bottom: 60px;
+		border-top: 1px solid $cl_gray_medium;
+		padding: 60px;
 	}
-
-	// ul li {
-	// 	line-height: 20px;
-	// }
 
 	.container {
 		padding: 0;
@@ -54,12 +51,12 @@ section.footer {
 		}
 
 		&__social {
-			border-top: solid 1px #e2e2e2;
+			border-top: solid 1px $cl_gray_medium;
 			padding-top: 35px;
 
 			@include at-query($min, $screen-sm) {
 				border-top: none;
-				border-left: solid 1px #e2e2e2;
+				border-left: solid 1px $cl_gray_medium;
 				width: 34%;
 				padding-top: 0;
 				padding-left: 60px;

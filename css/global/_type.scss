@@ -36,7 +36,7 @@
 }
 
 @mixin headline-4 { // global h4
-  @include adelle_b(18px);
+  @include adelle_b(17px);
   line-height: 30px;
 
   @include at-query($min, $screen-md) {
@@ -46,7 +46,7 @@
 }
 
 @mixin headline-4--avenir {
-  @include avenir_r(18px);
+  @include avenir_r(17px);
   line-height: 30px;
 
   @include at-query($min, $screen-md) {
@@ -74,7 +74,7 @@
 }
 
 @mixin subhead-adelle-sm {
-  @include adelle_b(18px);
+  @include adelle_b(17px);
   line-height: 30px;
 }
 
@@ -84,7 +84,7 @@
 }
 
 @mixin subhead-avenir-sm {
-  @include avenir_h(18px);
+  @include avenir_h(17px);
   line-height: 30px;
 }
 
@@ -123,12 +123,12 @@
   }
 }
 
-@mixin paragraph-type--avenir-h {
+@mixin paragraph-type--heavy {
   @include avenir_h(16px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 30px;
   }
 }

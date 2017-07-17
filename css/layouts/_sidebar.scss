@@ -116,7 +116,7 @@ body.sidenav-open {
   border: solid $cl_blue;
   border-width: 0 2px 2px 0;
   padding: 2px;
-  margin-left: 10px;
+  margin-left: 4px;
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
@@ -173,18 +173,17 @@ body.sidenav-open {
       padding: 0;
       margin-left: 10px;
       color: $cl_blue;
-      @include avenir_r(18px);
+      @include avenir_r(17px);
       line-height: 20px;
 
       @include at-query($min, $screen-md) {
-        font-size: 16px;
         line-height: 30px;
       }
     }
 
     > ul {
       border-left: 1px solid $cl_green_bright;
-      margin: 0 0 0 15px;
+      margin: 7px 0 0 15px;
       padding: 0;
 
       //2nd level
@@ -226,10 +225,6 @@ body.sidenav-open {
               }
             }
           }
-        }
-
-        .arrow-down {
-          margin-left: 6px;
         }
       }
     }
