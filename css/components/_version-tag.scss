@@ -1,0 +1,40 @@
+.version-tag {
+  position: relative;
+  @include paragraph-type--avenir-h;
+
+  &:before {
+    content: '\f1d8';
+    font-family: FontAwesome;
+    font-size: 12px;
+    margin-right: 5px;
+
+    @include at-query($min, $screen-sm) {
+      position: absolute;
+      margin-right: 0;
+      top: -5px;
+      left: -25px;
+    }
+  }
+}
+
+// we don't want the tags to show in the actual content headers
+.clickable-header {
+  .version-tag {
+    display: none;
+  }
+}
+
+#toc {
+  .version-tag {
+    display: inline-block;
+    @include caption;
+    margin-left: 25px;
+
+    &:before {
+      position: absolute;
+      font-size: 13px;
+      top: 0px;
+      left: -20px;
+    }
+  }
+}

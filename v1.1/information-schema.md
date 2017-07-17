@@ -148,9 +148,9 @@ Column | Description
 `TABLE_TYPE` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `VERSION` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table.
 
-### user_privileges
+### user_privileges <div class="version-tag">New in v1.1</div>
 
-The `user_privileges` view identifies global [privileges](privileges.html).
+<span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global [privileges](privileges.html).
 
 {{site.data.alerts.callout_info}}Currently, CockroachDB does not support global privileges for non-<code>root</code> users. Therefore, this view contains global privileges only for <code>root</code>.
 {{site.data.alerts.end}}

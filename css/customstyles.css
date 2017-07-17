@@ -3059,4 +3059,46 @@ img.mfp-img {
   .copy-clipboard--copied:hover {
     color: #a2a2a2; }
 
+.version-tag {
+  position: relative;
+  font-family: 'AvenirLTStd-Heavy', serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px; }
+  @media screen and (min-width: 992px) {
+    .version-tag {
+      font-size: 18px;
+      line-height: 30px; } }
+  .version-tag:before {
+    content: '\f1d8';
+    font-family: FontAwesome;
+    font-size: 12px;
+    margin-right: 5px; }
+    @media screen and (min-width: 768px) {
+      .version-tag:before {
+        position: absolute;
+        margin-right: 0;
+        top: -5px;
+        left: -25px; } }
+
+.clickable-header .version-tag {
+  display: none; }
+
+#toc .version-tag {
+  display: inline-block;
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px;
+  margin-left: 25px; }
+  #toc .version-tag:before {
+    position: absolute;
+    font-size: 13px;
+    top: 0px;
+    left: -20px; }
+
 /*# sourceMappingURL=customstyles.css.map */
