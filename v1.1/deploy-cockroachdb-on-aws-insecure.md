@@ -250,11 +250,13 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 
 	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
 
-4. Check which node you were redirected to:
+4. Use the `node_id` [session variable](show-vars.html) to check which node you were redirected to:
 
-	~~~ sql
-	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
-	~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW node_id;
+    ~~~
+
 	~~~
 	+---------+
 	| node_id |
