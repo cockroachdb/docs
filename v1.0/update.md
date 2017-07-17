@@ -103,7 +103,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update using SELECT statement
+### Update Using `SELECT` Statement
 ~~~ sql
 > UPDATE accounts SET (balance, customer) = 
     (SELECT balance, customer FROM accounts WHERE id = 2) 
@@ -219,7 +219,7 @@ conn.set_session(autocommit=True)
 # Open a cursor to perform database operations.
 cur = conn.cursor()
 
-# Insert two rows into the "accounts" table
+# Update a row in the "accounts" table
 # and return the "id" value.
 cur.execute(
     'UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id'
@@ -260,7 +260,7 @@ conn = PG.connect(
     port: 26257
 )
 
-# Insert two rows into the "accounts" table
+# Update a row in the "accounts" table
 # and return the "id" value.
 conn.exec(
     'UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id'
@@ -310,7 +310,7 @@ func main() {
                 log.Fatal("error connecting to the database: ", err)
         }
 
-        // Insert two rows into the "accounts" table
+        // Update a row in the "accounts" table
         // and return the "id" value.
         rows, err := db.Query(
                 "UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id",
@@ -371,7 +371,7 @@ pg.connect(config, function (err, client, done) {
   }
   async.waterfall([
     function (next) {
-      // Insert two rows into the "accounts" table
+      // Update a row in the "accounts" table
       // and return the "id" value.
       client.query(
         `UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id`,
@@ -381,7 +381,7 @@ pg.connect(config, function (err, client, done) {
   ],
   function (err, results) {
     if (err) {
-      console.error('error inserting into and selecting from accounts', err);
+      console.error('error updating and selecting from accounts', err);
       finish();
     }
     // Print out the returned value.
