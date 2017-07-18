@@ -8,12 +8,12 @@
     width: 100%;
 
     li {
-      margin: 0 0 10px 5px;
+      margin: 0 0 5px 5px;
       padding: 0 0 0 20px;
       list-style: none;
 
       a {
-        @include paragraph-type;
+        @include caption;
         color: $cl_blue;
 
         &:hover {
@@ -29,8 +29,8 @@
         &:before {
           position: absolute;
           content: '•';
-          top: -5px;
-          left: -20px;
+          top: -2px;
+          left: -18px;
         }
 
         &:hover {
@@ -48,8 +48,7 @@
 
     &:before {
       content: "On This Page";
-      @include avenir_h(18px);
-      line-height: 30px;
+      @include subhead-avenir-sm;
       color: $cl_blue;
       display: block;
       padding-bottom:15px;
