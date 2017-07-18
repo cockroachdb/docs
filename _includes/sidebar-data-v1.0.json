@@ -717,9 +717,9 @@
     "title": "Deploy",
     "items": [
       {
-        "title": "Recommended Production Settings",
+        "title": "Production Deployment Guide",
         "urls": [
-          "/${VERSION}/recommended-production-settings.html"
+          "/${VERSION}/deploy-cockroachdb-to-production.html"
         ]
       },
       {
