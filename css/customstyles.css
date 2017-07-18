@@ -72,8 +72,11 @@ p {
     line-height: 25px; }
     @media screen and (min-width: 992px) {
       p strong, p b {
-        font-size: 18px;
+        font-size: 17px;
         line-height: 30px; } }
+  @media screen and (min-width: 992px) {
+    p {
+      margin: 20px 0; } }
 
 h1, h2 {
   margin-top: 60px;
@@ -109,7 +112,7 @@ h2 {
   h2.clickable-header {
     cursor: pointer; }
   h2 code {
-    font-size: 18px; }
+    font-size: 17px; }
 
 h3 {
   font-family: 'AvenirLTStd-Heavy', serif;
@@ -132,13 +135,13 @@ h3 {
 
 h4 {
   font-family: 'AvenirLTStd-Heavy', serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 30px; }
   h4 code {
-    font-size: 18px; }
+    font-size: 17px; }
 
 pre {
   overflow: auto; }
@@ -155,6 +158,9 @@ code {
 
 ul {
   padding-left: 25px; }
+
+a code:hover {
+  text-decoration: underline; }
 
 body.menu_open {
   overflow: hidden; }
@@ -323,7 +329,7 @@ header {
           border-bottom: solid 2px #e6e6e6; }
         header nav.desktop .products-dropdown a .products-dropdown__title {
           font-family: 'Adelle-Bold', serif;
-          font-size: 18px;
+          font-size: 17px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -518,7 +524,7 @@ body.sidenav-open .col-content {
   border: solid #152849;
   border-width: 0 2px 2px 0;
   padding: 2px;
-  margin-left: 10px;
+  margin-left: 4px;
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
@@ -556,18 +562,17 @@ body.sidenav-open .col-content {
       margin-left: 10px;
       color: #152849;
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       line-height: 20px; }
       @media screen and (min-width: 992px) {
         .nav > li > a {
-          font-size: 16px;
           line-height: 30px; } }
     .nav > li > ul {
       border-left: 1px solid #69CC00;
-      margin: 0 0 0 15px;
+      margin: 7px 0 0 15px;
       padding: 0; }
       .nav > li > ul > li {
         margin: 0 0 7px 15px;
@@ -603,8 +608,6 @@ body.sidenav-open .col-content {
               @media screen and (min-width: 992px) {
                 .nav > li > ul > li > ul > li > a {
                   font-size: 14px; } }
-        .nav > li > ul > li .arrow-down {
-          margin-left: 6px; }
   .nav a {
     background-color: transparent;
     display: inline-block; }
@@ -675,7 +678,7 @@ a:not([href]) {
     margin-bottom: 0;
     text-transform: initial;
     font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -798,7 +801,8 @@ section.footer {
       padding: 50px 60px 20px; } }
   @media screen and (min-width: 992px) {
     section.footer {
-      padding-bottom: 60px; } }
+      border-top: 1px solid #DADADA;
+      padding: 60px; } }
   section.footer .container {
     padding: 0; }
     @media screen and (min-width: 768px) {
@@ -829,12 +833,12 @@ section.footer {
       section.footer .footer__flex-wrap {
         width: 69%; } }
   section.footer .footer__social {
-    border-top: solid 1px #e2e2e2;
+    border-top: solid 1px #DADADA;
     padding-top: 35px; }
     @media screen and (min-width: 768px) {
       section.footer .footer__social {
         border-top: none;
-        border-left: solid 1px #e2e2e2;
+        border-left: solid 1px #DADADA;
         width: 34%;
         padding-top: 0;
         padding-left: 60px; } }
@@ -957,8 +961,10 @@ h6:target:before {
 
 .post-content img {
   margin: 12px 0px 3px 0px; }
-
-.post-content ol li, .post-content ul li {
+@media screen and (min-width: 992px) {
+  .post-content ul, .post-content ol {
+    margin-bottom: 20px; } }
+.post-content ul li, .post-content ol li {
   margin: 10px 0px; }
 
 .post-summary {
@@ -978,7 +984,7 @@ caption {
 
 th {
   font-family: 'AvenirLTStd-Heavy', serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1374,7 +1380,7 @@ li.search-wrap {
     margin-top: -5px; }
   .bs-callout__label {
     font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1401,21 +1407,17 @@ li.search-wrap {
   margin: 0;
   width: 100%; }
   #toc > ul li {
-    margin: 0 0 10px 5px;
+    margin: 0 0 5px 5px;
     padding: 0 0 0 20px;
     list-style: none; }
     #toc > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 25px;
+      line-height: 20px;
       color: #152849; }
-      @media screen and (min-width: 992px) {
-        #toc > ul li a {
-          font-size: 17px;
-          line-height: 30px; } }
       #toc > ul li a:hover {
         color: #54B30E;
         text-decoration: none;
@@ -1425,8 +1427,8 @@ li.search-wrap {
       #toc > ul li a:first-child:before {
         position: absolute;
         content: '•';
-        top: -5px;
-        left: -20px; }
+        top: -2px;
+        left: -18px; }
       #toc > ul li a:first-child:hover:before {
         color: #152849; }
     #toc > ul li > ul {
@@ -1435,7 +1437,7 @@ li.search-wrap {
   #toc > ul:before {
     content: "On This Page";
     font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1665,7 +1667,7 @@ li.search-wrap {
     line-height: 48px; }
   #newsletter-popout .news-subheader {
     font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -2075,7 +2077,7 @@ polygon.regexp {
   .highlight .go {
     color: #888888; }
   .highlight .gp {
-    color: #555555; }
+    color: #A2A2A2; }
   .highlight .gs {
     font-weight: bold; }
   .highlight .gu {
@@ -2184,7 +2186,7 @@ polygon.regexp {
   margin-right: 15px;
   vertical-align: bottom;
   font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2217,7 +2219,7 @@ polygon.regexp {
   text-transform: uppercase;
   text-align: center;
   text-decoration: none !important;
-  border: 1px solid #152849;
+  border: 2px solid #152849;
   border-radius: 100px;
   outline: none;
   -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2226,7 +2228,8 @@ polygon.regexp {
   transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
   .yes-button:hover, .no-button:hover {
     background-color: #152849;
-    color: #fff !important; }
+    color: #fff !important;
+    border-bottom: 2px solid #152849 !important; }
 
 /* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
@@ -2241,16 +2244,13 @@ polygon.regexp {
   margin: 20px auto; }
 
 .white-popup .hbspt-form label {
-  color: #152849;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 18px;
+  font-family: 'AvenirLTStd-Heavy', serif;
+  font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  line-height: 30px;
+  color: #152849; }
 
 .white-popup .hbspt-form ul {
   margin-top: 10px; }
@@ -2933,7 +2933,7 @@ img.mfp-img {
       border-color: #152849; }
     @media screen and (min-width: 768px) {
       .help-widget__button {
-        font-size: 18px;
+        font-size: 17px;
         line-height: 44px;
         width: 90px; } }
   .help-widget.help-forum {
@@ -3038,7 +3038,6 @@ img.mfp-img {
   .copy-clipboard svg {
     width: 12px;
     height: 12px;
-    margin-left: 5px;
     vertical-align: top; }
     .copy-clipboard svg .st0 {
       -webkit-transition: fill 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -3069,7 +3068,7 @@ img.mfp-img {
   line-height: 25px; }
   @media screen and (min-width: 992px) {
     .version-tag {
-      font-size: 18px;
+      font-size: 17px;
       line-height: 30px; } }
   .version-tag:before {
     content: '\f1d8';

@@ -1,6 +1,6 @@
 .version-tag {
   position: relative;
-  @include paragraph-type--avenir-h;
+  @include paragraph-type--heavy;
 
   &:before {
     content: '\f1d8';

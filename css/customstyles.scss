@@ -18,7 +18,11 @@ p {
   color: $cl_blue;
 
   strong, b {
-    @include paragraph-type--avenir-h;
+    @include paragraph-type--heavy;
+  }
+
+  @include at-query($min, $screen-md) {
+    margin: 20px 0;
   }
 }
 
@@ -57,7 +61,7 @@ h2 {
 
   // for code snippets in section headers
   code {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 
@@ -80,11 +84,10 @@ h3 {
 }
 
 h4 {
-  @include avenir_h(18px);
-  line-height: 30px;
+  @include subhead-avenir-sm;
 
   code {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 
@@ -106,6 +109,10 @@ code {
 
 ul {
   padding-left: 25px;
+}
+
+a code:hover {
+  text-decoration: underline;
 }
 
 @import "layouts/header";
@@ -132,10 +139,16 @@ h6:target:before {
   img {
     margin: 12px 0px 3px 0px;
   }
-}
 
-.post-content ol li, .post-content ul li {
-margin: 10px 0px;
+  ul, ol {
+    @include at-query($min, $screen-md) {
+      margin-bottom: 20px;
+    }
+  }
+
+  ul li, ol li {
+    margin: 10px 0px;
+  }
 }
 
 .post-summary {
@@ -158,7 +171,7 @@ caption {
 }
 
 th {
-  @include avenir_h(18px);
+  @include avenir_h(17px);
   text-align: left;
   padding: 15px 8px 15px 8px;
 }

@@ -52,6 +52,29 @@ By default, the `sql` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
+## SQL Shell Welcome
+
+When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
+
+~~~ shell
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+#
+# Server version: CCL {{page.release_info.version}} (darwin amd64, built 2017/07/13 11:43:06, go1.8) (same version as client)
+# Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
+#
+# Enter \? for a brief introduction.
+#
+>
+~~~
+
+The **Version** and **Cluster ID** details are particularly noteworthy:
+
+- When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
+- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
+- Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
+
 ## SQL Shell Commands
 
 The following commands can be used within the interactive SQL shell:

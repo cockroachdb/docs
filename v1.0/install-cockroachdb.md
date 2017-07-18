@@ -1,6 +1,7 @@
 ---
 title: Install CockroachDB
-summary: Simple instructions for installing CockroachDB on Mac, Linux, or Windows.
+summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes.
+tags: download, binary, homebrew
 toc: false
 allowed_hashes: [os-mac, os-linux, os-windows]
 ---
@@ -79,7 +80,7 @@ $(document).ready(function(){
 </div>
 
 <div id="macinstall">
-<p>There are four ways to install CockroachDB on macOS. See <a href="../{{page.release_info.version}}.html">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. </p>
+<p>There are four ways to install CockroachDB on macOS. See <a href="../releases/{{page.release_info.version}}.html">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. </p>
 
 <div id="mac-installs" class="clearfix install-wrap">
 <a href="#download-the-binary" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
@@ -302,7 +303,7 @@ $(document).ready(function(){
 </div>
 
 <div id="linuxinstall" style="display: none;">
-<p>There are three ways to install CockroachDB on Linux. See <a href="../{{page.release_info.version}}.html" data-eventcategory="linux-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}.</p>
+<p>There are three ways to install CockroachDB on Linux. See <a href="../releases/{{page.release_info.version}}.html" data-eventcategory="linux-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}.</p>
 
 <div id="linux-installs" class="clearfix install-wrap">
 <a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
@@ -494,7 +495,7 @@ $(document).ready(function(){
 
 <div id="windowsinstall" style="display: none;">
 
-<p>There are two ways to install CockroachDB on Windows. See <a href="../{{page.release_info.version}}.html" data-eventcategory="windows-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. </p>
+<p>There are two ways to install CockroachDB on Windows. See <a href="../releases/{{page.release_info.version}}.html" data-eventcategory="windows-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. </p>
 
 <div id="windows-installs" class="clearfix install-wrap">
 <a href="#download-the-binary-windows" class="install-button windows-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="windows-binary">Download the <div class="c2a">Binary</div></a>
