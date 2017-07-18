@@ -1,5 +1,9 @@
 module JekyllVersions
  class JekyllGenerator < Jekyll::Generator
+    # Ensure we run after JekyllRedirectFrom so we can apply version aliases
+    # (e.g. stable) to redirects.
+    priority :lowest
+
     def initialize(config)
       @config = Config.new(config)
     end
@@ -27,7 +31,7 @@ module JekyllVersions
         end
 
         @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-          @site, page.basename + page.output_ext, vp.url) if vp.stable?
+          @site, vp.basename, vp.url) if vp.stable?
       end
 
       @config.versions.each do |name, version|
