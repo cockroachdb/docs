@@ -4,6 +4,9 @@ site_title: Cockroach Labs
 url: "https://www.cockroachlabs.com"
 baseurl: "/docs"
 
+gems:
+- jekyll-sitemap
+
 highlighter: rouge
 markdown: redcarpet
 
