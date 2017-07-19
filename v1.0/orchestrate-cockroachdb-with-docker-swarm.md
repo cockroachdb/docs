@@ -320,6 +320,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --network cockroachdb \
     --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
     --stop-grace-period 60s \
+    --publish 8080:8080 \
     --secret source=ca-crt,target=ca.crt \
     --secret source=cockroachdb-1-crt,target=node.crt \
     --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
@@ -339,6 +340,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     - `--mount`: This flag mounts a local volume called `cockroachdb-1`. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
     {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.{{site.data.alerts.end}}
     - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
+    - `--publish`: This flag makes the Admin UI accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
     - `--secret`: These flags identify the secrets to use in securing the node. They must reference the secret names defined in step 5. For the node and client certificate and key secrets, the `source` field identifies the relevant secret, and the `target` field defines the name to be used in `cockroach start` and `cockroach sql` flags. For the node and client key secrets, the `mode` field also sets the file permissions to `0600`; if this isn't set, Docker will assign a default file permission of `0444`, which will not work with CockroachDB's built-in SQL client.
     - `cockroachdb/cockroach:{{page.release_info.version}} start ...`: The CockroachDB command to [start a node](start-a-node.html) in the container, instruct other cluster members to talk to it using its persistent network address, `cockroachdb-1`, and to use the relevant Docker secrets to authenticate and encrypt communication.
 
@@ -422,6 +424,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --network cockroachdb \
     --mount type=volume,source=cockroachdb-1,target=/cockroach/cockroach-data,volume-driver=local \
     --stop-grace-period 60s \
+    --publish 8080:8080 \
     --secret source=ca-crt,target=ca.crt \
     --secret source=cockroachdb-1-crt,target=node.crt \
     --secret source=cockroachdb-1-key,target=node.key,mode=0600 \
@@ -457,40 +460,28 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
 
     Because we included the `root` user's client certificate and key in the nodes' service definitions, we can use the client cert and key to start the [built-in SQL client](use-the-built-in-sql-client.html) securely in the same container as a node.
 
-3. Run some [CockroachDB SQL statements](sql-statements.html):
+3. Create a `securenodetest` database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE DATABASE bank;
+    > CREATE DATABASE securenodetest;
     ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-    ~~~
+4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO bank.accounts VALUES (1234, 10000.50);
-    ~~~
+## Step 8. Monitor the cluster
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT * FROM bank.accounts;
-    ~~~
+To view your cluster's Admin UI, open a browser and go to `https://<any node's external IP address>:8080`.
 
-    ~~~ shell
-    +------+---------+
-    |  id  | balance |
-    +------+---------+
-    | 1234 | 10000.5 |
-    +------+---------+
-    (1 row)
-    ~~~
+{{site.data.alerts.callout_info}}It's possible to access the Admin UI from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition. However, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.{{site.data.alerts.end}}
 
-4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit.
+On this page, verify that the cluster is running as expected:
 
-## Step 8. Simulate node failure
+1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
+
+2. Click the **Databases** tab on the left to verify that `securenodetest` is listed.
+
+## Step 9. Simulate node failure
 
 Since we have three service definitions, one for each node, Docker Swarm will ensure that there are three nodes running at all times. If a node fails, Docker Swarm will automatically create another node with the same network identity and storage.
 
@@ -525,7 +516,9 @@ To see this in action:
     4a58f86e3ced        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   7 seconds ago       Up 1 seconds        8080/tcp, 26257/tcp   cockroachdb-2.1.cph86kmhhcp8xzq6a1nxtk9ng
     ~~~
 
-## Step 9. Scale the cluster
+4. Back in the Admin UI, click **View nodes list** on the right and verify that all 3 nodes are live.
+
+## Step 10. Scale the cluster
 
 To increase the number of nodes in your CockroachDB cluster:
 
