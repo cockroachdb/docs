@@ -3065,7 +3065,8 @@ img.mfp-img {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px; }
+  line-height: 25px;
+  color: #3A7DE0; }
   @media screen and (min-width: 992px) {
     .version-tag {
       font-size: 17px;

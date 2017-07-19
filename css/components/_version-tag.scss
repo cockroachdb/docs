@@ -1,6 +1,7 @@
 .version-tag {
   position: relative;
   @include paragraph-type--heavy;
+  color: $cl_blue_note;
 
   &:before {
     content: '\f1d8';
