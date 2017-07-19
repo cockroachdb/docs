@@ -17,14 +17,7 @@
   }
 }
 
-// we don't want the tags to show in the actual content headers
-.clickable-header {
-  .version-tag {
-    display: none;
-  }
-}
-
-#toc {
+#toc, .clickable-header {
   .version-tag {
     display: inline-block;
     @include caption;
