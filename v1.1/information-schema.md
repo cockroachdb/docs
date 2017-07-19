@@ -150,7 +150,7 @@ Column | Description
 
 ### user_privileges <div class="version-tag">New in v1.1</div>
 
-<span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global [privileges](privileges.html).
+The `user_privileges` view identifies global [privileges](privileges.html).
 
 {{site.data.alerts.callout_info}}Currently, CockroachDB does not support global privileges for non-<code>root</code> users. Therefore, this view contains global privileges only for <code>root</code>.
 {{site.data.alerts.end}}
