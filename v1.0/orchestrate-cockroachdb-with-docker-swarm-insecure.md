@@ -48,6 +48,7 @@ On each instance:
 
 2. Confirm that the Docker daemon is running in the background:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker version
     ~~~
@@ -58,11 +59,12 @@ On each instance:
 
     Take note of the output for `docker swarm init` as it includes the command you'll use in the next step. It should look like this:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker swarm init --advertise-addr 10.142.0.2
     ~~~
 
-    ~~~ shell
+    ~~~
     Swarm initialized: current node (414z67gr5cgfalm4uriu4qdtm) is now a manager.
 
     To add a worker to this swarm, run the following command:
@@ -76,23 +78,25 @@ On each instance:
 
 2. On the other two instances, [create a worker node joined to the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/) by running the `docker swarm join` command in the output from step 1, for example:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker swarm join \
          --token SWMTKN-1-5vwxyi6zl3cc62lqlhi1jrweyspi8wblh2i3qa7kv277fgy74n-e5eg5c7ioxypjxlt3rpqorh15 \
          10.142.0.2:2377
     ~~~
 
-    ~~~ shell
+    ~~~
     This node joined a swarm as a worker.
     ~~~
 
 3. On the instance running your manager node, verify that your swarm is running:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker node ls
     ~~~
 
-    ~~~ shell
+    ~~~
     ID                           HOSTNAME    STATUS  AVAILABILITY  MANAGER STATUS
     414z67gr5cgfalm4uriu4qdtm *  instance-1  Ready   Active        Leader
     ae144s35dx1p1lcegh6bblyed    instance-2  Ready   Active
@@ -103,6 +107,7 @@ On each instance:
 
 On the instance running your manager node, create an overlay network so that the containers in your swarm can talk to each other:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ sudo docker network create --driver overlay cockroachdb
 ~~~
@@ -111,6 +116,7 @@ $ sudo docker network create --driver overlay cockroachdb
 
 1. On the instance running your manager node, create the first service that the others will join to:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker service create \
     --replicas 1 \
@@ -123,6 +129,7 @@ $ sudo docker network create --driver overlay cockroachdb
     --logtostderr \
     --insecure
     ~~~
+
     This command creates a service that starts a container, joins it to the overlay network, and starts the first CockroachDB node inside the container mounted to a local volume for persistent storage. Let's look at each part:
     - `sudo docker service create`: The Docker command to create a new service.
     - `--replicas`: The number of containers controlled by the service. Since each service will control one container running one CockroachDB node, this will always be `1`.
@@ -136,6 +143,7 @@ $ sudo docker network create --driver overlay cockroachdb
 
 2. On the same instance, create the services to start two other CockroachDB nodes and join them to the cluster:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Start the second service:
     $ sudo docker service create \
@@ -149,7 +157,10 @@ $ sudo docker network create --driver overlay cockroachdb
     --join=cockroachdb-1:26257 \
     --logtostderr \
     --insecure
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     # Start the third service:
     $ sudo docker service create \
     --replicas 1 \
@@ -170,6 +181,7 @@ $ sudo docker network create --driver overlay cockroachdb
 
 3. Verify that all three services were created successfully:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker service ls
     ~~~
@@ -180,13 +192,18 @@ $ sudo docker network create --driver overlay cockroachdb
     dr81a756gaa6  cockroachdb-2  replicated  1/1       cockroachdb/cockroach:{{page.release_info.version}}
     il4m7op1afg9  cockroachdb-3  replicated  1/1       cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
+
     {{site.data.alerts.callout_success}}The service definitions tell the CockroachDB nodes to log to <code>stderr</code>, so if you ever need access to a node's logs for troubleshooting, use <a href="https://docs.docker.com/engine/reference/commandline/logs/"><code>sudo docker logs &lt;container id&gt;</code></a> from the instance on which the container is running.{{site.data.alerts.end}}
 
 4. Remove the first service and recreate it again with the `--join` flag to ensure that, if the first node restarts, it will rejoin the original cluster via the the second service, `cockroachdb-2`, instead of initiating a new cluster:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker service rm cockroachdb-1
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ sudo docker service create \
     --replicas 1 \
     --name cockroachdb-1 \
@@ -204,33 +221,45 @@ $ sudo docker network create --driver overlay cockroachdb
 
 1. On any instance, use the `sudo docker ps` command to get the ID of the container running the CockroachDB node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker ps | grep cockroachdb
     ~~~
 
-    ~~~ shell
+    ~~~
     9539871cc769        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   2 minutes ago        Up 2 minutes         8080/tcp, 26257/tcp   cockroachdb-1.1.0wigdh8lx0ylhuzm4on9bbldq
     ~~~
 
 2. Use the `sudo docker exec` command to open the built-in SQL shell in interactive mode inside the container:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker exec -it 9539871cc769 ./cockroach sql --insecure
     ~~~
 
 2. Run some [CockroachDB SQL statements](sql-statements.html):
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > INSERT INTO bank.accounts VALUES (1234, 10000.50);
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
 
-    ~~~ shell
+    ~~~
     +------+---------+
     |  id  | balance |
     +------+---------+
@@ -249,19 +278,25 @@ To see this in action:
 
 1. On any instance, use the `sudo docker ps` command to get the ID of the container running the CockroachDB node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker ps | grep cockroachdb
+    ~~~
+
+    ~~~
     9539871cc769        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   10 minutes ago        Up 10 minutes         8080/tcp, 26257/tcp   cockroachdb-0.1.0wigdh8lx0ylhuzm4on9bbldq
     ~~~
 
 2. Use `sudo docker kill` to remove the container, which implicitly stops the node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker kill 9539871cc769
     ~~~
 
 3. Verify that the node was restarted in a new container:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo docker ps | grep cockroachdb
     ~~~
@@ -283,8 +318,12 @@ To increase the number of nodes in your CockroachDB cluster:
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ sudo docker service rm cockroachdb-0 cockroachdb-1 cockroachdb-2
+~~~
+
+~~~
 cockroachdb-0
 cockroachdb-1
 cockroachdb-2
@@ -292,11 +331,18 @@ cockroachdb-2
 
 You may want to remove the persistent volumes used by the services as well. To do this, on each instance:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Identify the name of the local volume:
 $ sudo docker volume ls
-cockroachdb-0
+~~~
 
+~~~
+cockroachdb-0
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 # Remove the local volume:
 $ sudo docker volume rm cockroachdb-0
 ~~~
