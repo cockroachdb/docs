@@ -539,8 +539,12 @@ To increase the number of nodes in your CockroachDB cluster:
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ sudo docker service rm cockroachdb-1 cockroachdb-2 cockroachdb-3
+~~~
+
+~~~
 cockroachdb-1
 cockroachdb-2
 cockroachdb-3
@@ -548,20 +552,36 @@ cockroachdb-3
 
 You may want to remove the persistent volumes and secrets used by the services as well. To do this, on each instance:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Identify the name of the local volume:
 $ sudo docker volume ls
-cockroachdb-1
+~~~
 
+~~~
+cockroachdb-1
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 # Remove the local volume:
 $ sudo docker volume rm cockroachdb-1
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Identify the name of secrets:
 $ sudo docker secrets ls
+~~~
+
+~~~
 ca-crt
 cockroachdb-1-crt
 cockroachdb-1-key
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Remove the secrets:
 $ sudo docker secret rm ca-crt cockroachdb-1-crt cockroachdb-1-key
 ~~~
