@@ -36,7 +36,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `application_name` | The current application name for statistics collection. | Empty string | Yes |
 | `database` | The default database for the current session. | Database in connection string, or empty if not specified. | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified | Yes |
-| `node_id` | The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
+| `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
 | `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{pg_catalog}` (for ORM compatibility) | Yes |
 | `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
 | `session_user` | The user connected for the current session. | User in connection string | No |
