@@ -52,7 +52,7 @@ By default, the `sql` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## SQL Shell Welcome
+## SQL Shell Welcome <div class="version-tag">Changed in v1.1</div>
 
 When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
 
