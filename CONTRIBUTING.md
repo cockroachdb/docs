@@ -106,23 +106,41 @@ Field | Description | Default
 
 The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 and h3 headers or just all h2 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.
 
--   To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
+- To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
 
--   To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
+- To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
 
     ``` html
     <div id="toc"></div>
     ```
 
--   To omit a page TOC from the page, set `toc: false` in the page's front-matter.
+- To omit a page TOC from the page, set `toc: false` in the page's front-matter.
 
--   By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
+- By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
 
 #### Auto-Included Content
 
 Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
+
+#### Version Tags
+
+New and changed features should be called out in the documentation using version tags.
+
+- To add a version tag to a paragraph, place `<span class="version-tag">New in vX.X:</span>` at the start of the paragraph, e.g:
+
+    ```
+    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global priveleges.
+    ```
+
+- To add a version tag to a heading, place `<div class="version-tag">New in vX.X</div>` to the right of the heading, e.g.:
+
+    ```
+    ## SQL Shell Welcome <div class="version-tag">New in v1.1</div>
+    ```
+
+When calling out a change, rather than something new, change `New in vX.X` to `Changed in vX.X`.
 
 #### Allowed Hashes
 
