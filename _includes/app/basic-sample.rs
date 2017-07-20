@@ -7,8 +7,10 @@ fn main() {
         .unwrap();
 
     // Insert two rows into the "accounts" table.
-    conn.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)", &[])
-        .unwrap();
+    conn.execute(
+        "INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)",
+        &[],
+    ).unwrap();
 
     // Print out the balances.
     println!("Initial balances:");
