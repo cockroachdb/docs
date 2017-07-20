@@ -134,7 +134,7 @@ New and changed features should be called out in the documentation using version
     <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global priveleges.
     ```
 
-- To add a version tag to a heading, place `<div class="version-tag">New in vX.X</div>` to the right of the heading, e.g.:
+- To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, e.g.:
 
     ```
     ## SQL Shell Welcome <div class="version-tag">New in v1.1</div>
