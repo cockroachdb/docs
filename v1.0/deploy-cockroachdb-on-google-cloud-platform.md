@@ -39,7 +39,7 @@ CockroachDB requires TCP communication on two ports:
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
 - **8080** (`tcp:8080`) for exposing your Admin UI
 
-Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to expose your admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/networking).
+Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to expose your admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/vpc/firewalls).
 
 ### Creating Firewall Rules
 
@@ -78,7 +78,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 - **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
 
-GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/?hl=en_US). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
+GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
 {{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across zones. You might also consider using the HAProxy load balancer (see <a href="manual-deployment.html">Manual Deployment</a> for guidance).{{site.data.alerts.end}}
 
