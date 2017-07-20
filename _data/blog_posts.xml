@@ -6,15 +6,35 @@
     <description>Recent content in Blog on Cockroach Labs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jul 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.cockroachlabs.com/blog/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Product Design is a Work in Progress</title>
+      <link>https://www.cockroachlabs.com/blog/product-design-wip/</link>
+      <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Kuan Luo</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/product-design-wip/</guid>
+      <description>The design team at Cockroach Labs recently doubled in size (Hooray!). During the hiring process, I got many questions about the company culture, specific projects that a new product designer would be working on, and of course, personal growth. The most common question, however, was surprisingly about what exactly a product designer does.
+Product design encompasses a wide range of responsibilities. Depending on the person and their company, the typical day of a product designer can vary quite a bit.</description>
+    </item>
+    
+    <item>
+      <title>Hackathon Wins: My Experience With CockroachDB at NWHacks 2017</title>
+      <link>https://www.cockroachlabs.com/blog/hackathon-wins-nwhacks-2017/</link>
+      <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Trevin Wong</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/hackathon-wins-nwhacks-2017/</guid>
+      <description>After winning the Best Node.js App using CockroachDB prize at NWHacks 2017, University of British Columbia student Trevin Wong writes about his experience with the database at the March event.
+As I awoke to the noise of the SkyTrain, and the rays of sunlight streaming down on my face, I opened my eyes groggily to a beautiful mid-March day. Today was the start of nwHacks2017, touted as the biggest hackathon to hit the Northwest.</description>
+    </item>
+    
+    <item>
       <title>Survey of Rounding Implementations in Go</title>
-      <link>https://www.cockroachlabs.com/blog/rouding-implementations-in-go/</link>
+      <link>https://www.cockroachlabs.com/blog/rounding-implementations-in-go/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <dc:creator>Matt Jibson</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/rouding-implementations-in-go/</guid>
+      <guid>https://www.cockroachlabs.com/blog/rounding-implementations-in-go/</guid>
       <description>Rounding in Go is hard to do correctly. That is, given a float64, truncate the fractional part (anything right of the decimal point), and add one to the truncated value if the fractional part was &amp;gt;= 0.5. This problem doesn&amp;rsquo;t come up often, but it does enough that as of this writing, the second hit on Google for golang round is a closed issue from the Go project, which declined to add a Round function to the math package.</description>
     </item>
     
@@ -486,25 +506,6 @@ Most of us who once paid close attention to incoming changes have since lost the
       <guid>https://www.cockroachlabs.com/blog/efficient-documentation-using-sql-grammar-diagrams/</guid>
       <description>As CockroachDB approaches beta, user documentation has become increasingly important, and one of the meatiest requirements is documentation of our SQL implementation. For inspiration, I researched how other databases have documented SQL. The most effective example I found was SQLite’s grammar diagrams.Figure 1: Example of the alter table statement in SQLite&amp;#8217;s grammar diagrams.
 These diagrams feature easy-to-understand railroad diagrams showing the possible options for a SQL statement. Compared to a text representation, these visual diagrams give users an intuitive way to explore the grammar and discover features.</description>
-    </item>
-    
-    <item>
-      <title>Adventures in Performance Debugging</title>
-      <link>https://www.cockroachlabs.com/blog/adventures-performance-debugging/</link>
-      <pubDate>Fri, 11 Mar 2016 14:00:27 +0000</pubDate>
-      <dc:creator>Peter Mattis</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/adventures-performance-debugging/</guid>
-      <description>As we’ve built CockroachDB, correctness has been our primary concern. But as we’ve drawn closer to our beta launch, we’ve had to start paying significantly more attention to performance. The design of CockroachDB always kept performance and scalability in mind, but when you start measuring performance, there are inevitably surprises. This is the story of the detection, investigation, and fix of just one performance bug.
-First, a little context about CockroachDB for those new to the project.</description>
-    </item>
-    
-    <item>
-      <title>Living Without Atomic Clocks</title>
-      <link>https://www.cockroachlabs.com/blog/living-without-atomic-clocks/</link>
-      <pubDate>Wed, 17 Feb 2016 15:01:25 +0000</pubDate>
-      <dc:creator>Spencer Kimball</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/living-without-atomic-clocks/</guid>
-      <description>It&amp;#8217;s a fact that the design of CockroachDB is based on Google&amp;#8217;s Spanner data storage system. One of the most surprising and inspired facets of Spanner is its use of atomic clocks and GPS clocks to give participating nodes really accurate wall time synchronization. The designers of Spanner call this &amp;#8216;TrueTime&amp;#8217;, and it provides a tight bound on clock offset between any two nodes in the system. TrueTime enables high levels of external consistency.</description>
     </item>
     
   </channel>
