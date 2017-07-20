@@ -10,7 +10,7 @@ twitter: true
 contribute: false
 ---
 
-CockroachDB is an open source database for building global, scalable cloud services that survive disasters.
+CockroachDB is a cloud-native SQL database for building global, scalable cloud services that survive disasters.
 
 <style>
     #party {
@@ -44,7 +44,7 @@ CockroachDB is an open source database for building global, scalable cloud servi
             <a href="demo-data-replication.html">
                 <img src="{{ 'images/scientist_catrina.png' | relative_url }}" alt="Examine Core Benefits"/>
                 <h3>Explore Benefits</h3>
-                <p>See replication, easy scaling, and fault-tolerance in real-time.</p>
+                <p>See replication, rebalancing, and fault-tolerance in real-time.</p>
             </a>
         </div>
     </div>
