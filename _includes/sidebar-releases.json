@@ -27,8 +27,19 @@
     },
     {
       "title": "All Releases",
-      "urls": [
-        "/releases/"
+      "items": [
+        {
+          "title": "Production",
+          "urls": [
+            "/releases/"
+          ]
+        },
+        {
+          "title": "Testing (Alphas & Betas)",
+          "urls": [
+            "/releases/#testing-releases"
+          ]
+        }
       ]
     }
   ]
