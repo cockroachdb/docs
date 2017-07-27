@@ -259,9 +259,9 @@ body {
   font-size: 16px;
   line-height:28px;
   font-weight: normal;
-  /*color: #77777a;*/ 
+  /*color: #77777a;*/
   color: #142848;
-  background-color: white; 
+  background-color: white;
   /*background-color: #FF8700;*/
   /*background-color: #2ABBB0;*/
   /*background-color: #E0E1DD;*/
@@ -309,7 +309,7 @@ a:focus {
 .post-content .roach a:hover {
   color: #46a417;
   border-bottom: none;
-} 
+}
 
 img {
   vertical-align: middle;
@@ -543,10 +543,10 @@ dd {
   .dl-horizontal dd:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .dl-horizontal dd:after {
     clear: both;
@@ -555,10 +555,10 @@ dd {
   .dl-horizontal dd:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .dl-horizontal dd:after {
     clear: both;
@@ -5221,7 +5221,7 @@ body.modal-open,
   padding: 0 5px;
 }
 .tooltip-inner {
-  max-width: 200px;
+  /*max-width: 200px;*/
   padding: 3px 8px;
   color: #ffffff;
   text-align: center;
@@ -6166,5 +6166,3 @@ td.visible-print {
         float: left;
     }
 }
-
-
