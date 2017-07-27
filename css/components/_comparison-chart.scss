@@ -1,0 +1,117 @@
+.comparison-chart {
+  max-width: 100%;
+  text-align: center;
+
+  // we only want one column besides CockrochDB on mobile
+  &__column-two {
+    display: none;
+  }
+
+  tr {
+    &:hover, &:focus {
+      background-color: inherit !important;
+    }
+
+    &:nth-child(even) {
+      background: rgba(243, 243, 243, 0.5);
+
+      &:hover, &:focus {
+        background: rgba(243, 243, 243, 0.5) !important;
+      }
+    }
+  }
+
+  th {
+    border-top: none;
+    border-bottom: 2px solid $cl_blue;
+    @include avenir_h(14px);
+    color: $cl_blue;
+  }
+
+  td {
+    vertical-align: middle;
+    border: none;
+    border-left: 1px solid $cl_gray_light;
+
+    &:first-child {
+      min-width: auto;
+      border-left: none;
+    }
+  }
+
+  &__feature {
+    text-align: left;
+
+    a[data-toggle="tooltip"] {
+      @include avenir_r(12px);
+      line-height: 20px;
+      font-weight: normal;
+      color: $cl_blue;
+    }
+  }
+
+  .comparison-chart__link {
+    color: $cl_blue;
+    position: relative;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: 5px;
+      top: 50%;
+      right: -12px;
+      background: #6fc42d;
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+    }
+
+    &:after {
+      -webkit-transform: rotate(-40deg);
+              transform: rotate(-40deg);
+      width: 15px;
+      margin-top: -2px;
+      right: -24px;
+    }
+  }
+}
+
+//
+// select2 overrides
+//
+.select2-container {
+  .select2-selection {
+    border: none;
+    outline: none;
+
+    &__rendered {
+      text-align: center;
+      color: $cl_blue !important;
+    }
+  }
+
+  .select2-results {
+    .select2-results__options {
+      max-height: none;
+      // overflow-x: visible;
+    }
+
+    &__option {
+      text-align: center;
+      @include caption;
+      border-bottom: 1px solid $cl_gray_light;
+      padding: 15px 0;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .select2-dropdown {
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+}
