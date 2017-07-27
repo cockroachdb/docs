@@ -3130,13 +3130,11 @@ img.mfp-img {
   .comparison-chart td {
     vertical-align: middle;
     border: none;
-    border-left: 1px solid #F3F3F3; }
+    border-left: 1px solid #F3F3F3;
+    min-width: 130px; }
     .comparison-chart td:first-child {
       min-width: auto;
       border-left: none; }
-    @media screen and (min-width: 768px) {
-      .comparison-chart td {
-        min-width: 80px; } }
     @media screen and (min-width: 992px) {
       .comparison-chart td {
         min-width: 180px; } }
@@ -3151,7 +3149,8 @@ img.mfp-img {
     line-height: 20px;
     font-weight: normal;
     color: #152849;
-    text-align: left; }
+    text-align: left;
+    min-width: none; }
     @media screen and (min-width: 768px) {
       .comparison-chart__feature {
         font-size: 17px;
@@ -3190,8 +3189,10 @@ img.mfp-img {
   outline: none; }
   .select2-container .select2-selection .select2-selection__rendered {
     text-align: center;
-    color: #152849;
-    padding-right: 5px; }
+    color: #152849; }
+    @media screen and (min-width: 992px) {
+      .select2-container .select2-selection .select2-selection__rendered {
+        padding-right: 5px; } }
   .select2-container .select2-selection .select2-selection__arrow b {
     border-color: #A2A2A2 transparent transparent transparent;
     border-width: 6px 6px 0 6px;

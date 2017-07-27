@@ -45,14 +45,11 @@
     vertical-align: middle;
     border: none;
     border-left: 1px solid $cl_gray_light;
+    min-width: 130px;
 
     &:first-child {
       min-width: auto;
       border-left: none;
-    }
-
-    @include at-query($min, $screen-sm) {
-      min-width: 80px;
     }
 
     @include at-query($min, $screen-md) {
@@ -70,6 +67,7 @@
     font-weight: normal;
     color: $cl_blue;
     text-align: left;
+    min-width: none;
 
     @include at-query($min, $screen-sm) {
       font-size: 17px;
@@ -130,7 +128,10 @@
     .select2-selection__rendered {
       text-align: center;
       color: $cl_blue;
-      padding-right: 5px;
+
+      @include at-query($min, $screen-md) {
+        padding-right: 5px;
+      }
     }
 
     .select2-selection__arrow b {
