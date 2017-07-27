@@ -2,8 +2,8 @@ $(function() {
   function updateChart(db, column) {
     $('.comparison-chart__column-'+column+' span.support').each(function() {
       var dbs = $(this).data('dbs');
+      $(this).hide();
       if (dbs.indexOf(db) != -1) {
-        $(this).siblings('.support').hide();
         $(this).fadeIn(500);
       }
     });
