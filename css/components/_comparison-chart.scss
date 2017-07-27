@@ -1,10 +1,14 @@
 .comparison-chart {
-  max-width: 100%;
+  width: 100%;
   text-align: center;
 
   // we only want one column besides CockrochDB on mobile
   &__column-two {
     display: none;
+
+    @include at-query($min, $screen-sm) {
+      display: table-cell;
+    }
   }
 
   tr {
@@ -19,6 +23,10 @@
         background: rgba(243, 243, 243, 0.5) !important;
       }
     }
+
+    &:last-of-type {
+      border-bottom: 1px solid $cl_gray_light;
+    }
   }
 
   th {
@@ -26,6 +34,11 @@
     border-bottom: 2px solid $cl_blue;
     @include avenir_h(14px);
     color: $cl_blue;
+    text-align: center;
+
+    @include at-query($min, $screen-sm) {
+      font-size: 17px;
+    }
   }
 
   td {
@@ -37,16 +50,37 @@
       min-width: auto;
       border-left: none;
     }
+
+    @include at-query($min, $screen-sm) {
+      min-width: 80px;
+    }
+
+    @include at-query($min, $screen-md) {
+      min-width: 180px;
+    }
+
+    span.gray {
+      color: $cl_gray_medium;
+    }
   }
 
   &__feature {
     text-align: left;
+
+    @include at-query($min, $screen-sm) {
+      padding: 20px 15px 20px;
+    }
 
     a[data-toggle="tooltip"] {
       @include avenir_r(12px);
       line-height: 20px;
       font-weight: normal;
       color: $cl_blue;
+
+      @include at-query($min, $screen-sm) {
+        font-size: 17px;
+        line-height: 30px;
+      }
     }
   }
 
@@ -79,6 +113,10 @@
 //
 // select2 overrides
 //
+.select2 {
+  width: 100% !important;
+}
+
 .select2-container {
   .select2-selection {
     border: none;
@@ -106,6 +144,10 @@
         border-bottom: none;
       }
     }
+  }
+
+  &--open .select2-dropdown {
+    top: 5px;
   }
 
   .select2-dropdown {

@@ -45,11 +45,11 @@ This page shows you how key features of CockroachDB stack up against other datab
       <a href="#" data-toggle="tooltip" title="Automatic and continuous rebalancing of data between the nodes of a cluster.">Automated Scaling</a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
       <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
       <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-scale">Yes</a></td>
@@ -73,11 +73,11 @@ This page shows you how key features of CockroachDB stack up against other datab
       <a href="#" data-toggle="tooltip" title="Automatic repair of missing data after failures, using unaffected replicas as sources.">Automated Repair</a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
       <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
       <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-survive-failures">Yes</a></td>
@@ -87,12 +87,12 @@ This page shows you how key features of CockroachDB stack up against other datab
       <a href="#" data-toggle="tooltip" title="Once a transaction is committed, all reads are guaranteed to see it.">Strongly Consistent Replication</a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "Cassandra"]'>Optional</span>
       <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "Cassandra"]'>Optional</span>
       <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
     </td>
@@ -103,12 +103,12 @@ This page shows you how key features of CockroachDB stack up against other datab
       <a href="#" data-toggle="tooltip" title="Guarantee that progress can be made as long as any majority of nodes is available (e.g., 3 of 5).">Consensus-Based Replication</a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
       <span class="support" data-dbs='["Cassandra"]'>Optional</span>
       <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
       <span class="support" data-dbs='["Cassandra"]'>Optional</span>
       <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
     </td>
@@ -119,14 +119,14 @@ This page shows you how key features of CockroachDB stack up against other datab
       <a href="#" data-toggle="tooltip" title="Correctly committed transactions across a distributed cluster, whether it’s a few nodes in a single location or many nodes in multiple datacenters.">Distributed Transactions</a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support" data-dbs='["DynamoDB"]'>No*</span>
+      <span class="support gray" data-dbs='["DynamoDB"]'>No*</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
+      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support" data-dbs='["DynamoDB"]'>No*</span>
+      <span class="support gray" data-dbs='["DynamoDB"]'>No*</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#does-cockroachdb-support-distributed-transactions">Yes</a></td>
   </tr>
@@ -136,14 +136,14 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support" data-dbs='["Cassandra"]'>No</span>
+      <span class="support gray" data-dbs='["Cassandra"]'>No</span>
       <span class="support" data-dbs='["HBase"]'>Row-only</span>
       <span class="support" data-dbs='["DynamoDB"]'>Row-only*</span>
       <span class="support" data-dbs='["MongoDB"]'>Document-only</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support" data-dbs='["Cassandra"]'>No</span>
+      <span class="support gray" data-dbs='["Cassandra"]'>No</span>
       <span class="support" data-dbs='["HBase"]'>Row-only</span>
       <span class="support" data-dbs='["DynamoDB"]'>Row-only*</span>
       <span class="support" data-dbs='["MongoDB"]'>Document-only</span>
@@ -168,12 +168,12 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Yes</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
+      <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
       <span class="support" data-dbs='["Spanner"]'>Read-only</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Yes</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
+      <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
       <span class="support" data-dbs='["Spanner"]'>Read-only</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#why-is-cockroachdb-sql">Yes</a></td>
@@ -184,11 +184,11 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>Yes</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support gray" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>Yes</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support gray" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>No</span>
     </td>
     <td><a class="comparison-chart__link" href="contribute-to-cockroachdb.html">Yes</a></td>
   </tr>
@@ -198,12 +198,12 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "Cassandra", "HBase", "MongoDB"]'>Optional</span>
-      <span class="support" data-dbs='["PostgreSQL"]'>No</span>
+      <span class="support gray" data-dbs='["PostgreSQL"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "Cassandra", "HBase", "MongoDB"]'>Optional</span>
-      <span class="support" data-dbs='["PostgreSQL"]'>No</span>
+      <span class="support gray" data-dbs='["PostgreSQL"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
     <td>Optional</td>
