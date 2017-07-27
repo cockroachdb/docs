@@ -3,7 +3,8 @@ $(function() {
     $('.comparison-chart__column-'+column+' span.support').each(function() {
       var dbs = $(this).data('dbs');
       if (dbs.indexOf(db) != -1) {
-        $(this).show().siblings('.support').hide();
+        $(this).siblings('.support').hide();
+        $(this).fadeIn(500);
       }
     });
 
