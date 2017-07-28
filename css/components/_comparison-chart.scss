@@ -1,6 +1,8 @@
 .comparison-chart {
   width: 100%;
   text-align: center;
+  table-layout: fixed;
+  word-wrap: break-word;
 
   // we only want one column besides CockrochDB on mobile
   &__column-two {
@@ -35,9 +37,18 @@
     @include avenir_h(14px);
     color: $cl_blue;
     text-align: center;
+    padding: 20px 0;
 
     @include at-query($min, $screen-sm) {
       font-size: 17px;
+    }
+
+    &:first-of-type {
+      width: 158px;
+
+      @include at-query($min, $screen-sm) {
+        width: 200px;
+      }
     }
   }
 
@@ -45,15 +56,11 @@
     vertical-align: middle;
     border: none;
     border-left: 1px solid $cl_gray_light;
-    min-width: 130px;
+    padding: 20px 0;
 
     &:first-child {
       min-width: auto;
       border-left: none;
-    }
-
-    @include at-query($min, $screen-md) {
-      min-width: 180px;
     }
 
     span.gray {
@@ -61,18 +68,18 @@
     }
   }
 
-  &__feature {
+  td.comparison-chart__feature {
     @include avenir_r(12px);
     line-height: 20px;
     font-weight: normal;
     color: $cl_blue;
     text-align: left;
-    min-width: none;
+    padding: 20px 15px;
 
     @include at-query($min, $screen-sm) {
       font-size: 17px;
       line-height: 30px;
-      padding: 20px 15px 20px;
+      padding: 20px 5px 20px 15px;
     }
 
     a[data-toggle="tooltip"] {
@@ -90,6 +97,8 @@
   .comparison-chart__link {
     color: $cl_blue;
     position: relative;
+    @include groovy(all);
+    margin-right: 15px;
 
     &:before, &:after {
       content: '';
@@ -110,6 +119,10 @@
       margin-top: -2px;
       right: -24px;
     }
+  }
+
+  .comparison-chart__cockroach {
+    margin-right: 10px;
   }
 }
 
@@ -149,7 +162,7 @@
         border-width: 6px 6px 0 6px;
         margin-top: -5px;
         left: -6px;
-        top: -3px;
+        top: -4px;
       }
     }
   }
@@ -197,6 +210,14 @@
     border-width: 0 6px 6px 6px;
     margin-top: -5px;
     left: -6px;
-    top: 7px;
+    top: 8px;
   }
+}
+
+.select2-container--default .select2-results__option {
+  @include groovy(all);
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: $cl_green;
 }

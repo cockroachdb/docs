@@ -184,7 +184,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
-    <td>No</td>
+    <td><span class="gray comparison-chart__cockroach">No</span></td>
   </tr>
   <tr>
     <td class="comparison-chart__feature">
@@ -239,7 +239,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support gray" data-dbs='["PostgreSQL"]'>No</span>
       <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
     </td>
-    <td>Optional</td>
+    <td><span class="comparison-chart__cockroach">Optional</span></td>
   </tr>
   <tr>
     <td class="comparison-chart__feature">
