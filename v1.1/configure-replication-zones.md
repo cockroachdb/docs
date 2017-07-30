@@ -46,7 +46,7 @@ Field | Description
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `86400` (24 hours)
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3`
-`constraints` | A comma-separated list of positive, required, and/or prohibited constraints influencing the location of replicas. See [Replica Constraints](#replication-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node, if possible.
+`constraints` | A comma-separated list of required and/or prohibited constraints influencing the location of replicas. See [Constraints in Replication Zones](#constraints-in-replication-zones) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
 
 ### Replication Constraints
 
@@ -69,11 +69,10 @@ Attribute Type | Description
 The node-level and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance:
 
 - When locality is the only consideration for replication, it's recommended to set locality on nodes without specifying any constraints in zone configurations. In the absence of constraints, CockroachDB attempts to spread replicas evenly across the cluster based on locality.
-- When additional or different constraints are needed, positive constraints are generally sufficient. Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country or on a specific type of machine.
+- Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country or on a specific type of machine.
 
 Constraint Type | Description | Syntax
 ----------------|-------------|-------
-**Positive** | When placing replicas, the cluster will prefer nodes/stores with as many matching attributes as possible. When there are no matching nodes/stores with capacity, replicas will be placed wherever there is capacity. | `[ssd]`
 **Required** | When placing replicas, the cluster will consider only nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added. | `[+ssd]`
 **Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added. | `[-ssd]`
 
@@ -459,13 +458,13 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     ~~~ shell
     # Create a YAML file with the replica count set to 5
-    # and the ssd attribute as a positive constraint:
+    # and the ssd attribute as a required constraint:
     $ cat table_zone.yaml
     ~~~
 
     ~~~
     num_replicas: 5
-    constraints: [ssd]
+    constraints: [+ssd]
     ~~~
 
     ~~~ shell
@@ -479,9 +478,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
     gc:
      ttlseconds: 86400
     num_replicas: 5
-    constraints: [ssd]
+    constraints: [+ssd]
     ~~~
-    Data in the table will be replicated 5 times, and the positive constraint will place data in the table on nodes with `ssd` drives whenever possible.
+    Data in the table will be replicated 5 times, and the required constraint will place data in the table on nodes with `ssd` drives.
 
 ### Tweaking the Replication of System Ranges
 
