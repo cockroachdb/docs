@@ -34,7 +34,8 @@
   th {
     border-top: none;
     border-bottom: 2px solid $cl_blue;
-    @include avenir_h(14px);
+    @include avenir_h(12px);
+    line-height: 28px; // vertical spacing
     color: $cl_blue;
     text-align: center;
     padding: 20px 0;
@@ -56,7 +57,15 @@
     vertical-align: middle;
     border: none;
     border-left: 1px solid $cl_gray_light;
-    padding: 20px 0;
+    @include avenir_r(12px);
+    line-height: 20px;
+    padding: 10px 0;
+
+    @include at-query($min, $screen-sm) {
+      font-size: 17px;
+      line-height: 30px;
+      padding: 20px 0;
+    }
 
     &:first-child {
       min-width: auto;
@@ -74,7 +83,7 @@
     font-weight: normal;
     color: $cl_blue;
     text-align: left;
-    padding: 20px 15px;
+    padding: 10px 15px;
 
     @include at-query($min, $screen-sm) {
       font-size: 17px;
@@ -148,22 +157,13 @@
     }
 
     .select2-selection__arrow b {
-      border-color: $cl_gray transparent transparent transparent;
-      border-width: 6px 6px 0 6px;
-      margin-top: -3px;
-
-      &:after {
-        position: absolute;
-        content: '';
-        height: 2px;
-        width: 3px;
-        border-style: solid;
-        border-color: #fff transparent transparent transparent;
-        border-width: 6px 6px 0 6px;
-        margin-top: -5px;
-        left: -6px;
-        top: -4px;
-      }
+      border: solid $cl_blue;
+      border-width: 0 2px 2px 0;
+      padding: 2px;
+      top: 10px;
+      transition: transform 0.2s ease, margin-bottom 0.2s ease;
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
     }
   }
 
@@ -197,21 +197,13 @@
 }
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-  border-color: transparent transparent $cl_gray transparent;
-  border-width: 0 6px 6px 6px;
-
-  &:after {
-    position: absolute;
-    content: '';
-    height: 2px;
-    width: 3px;
-    border-style: solid;
-    border-color: transparent transparent #fff transparent;
-    border-width: 0 6px 6px 6px;
-    margin-top: -5px;
-    left: -6px;
-    top: 8px;
-  }
+  border: solid $cl_blue;
+  border-width: 2px 0 0 2px;
+  padding: 2px;
+  top: 14px;
+  transition: transform 0.2s ease, margin-bottom 0.2s ease;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 
 .select2-container--default .select2-results__option {
