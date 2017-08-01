@@ -3251,7 +3251,7 @@ img.mfp-img {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   border-bottom: 1px solid #F3F3F3;
-  padding: 15px 0;
+  padding: 20px 0;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);

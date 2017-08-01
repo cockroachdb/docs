@@ -170,7 +170,7 @@
       text-align: center;
       @include caption--small;
       border-bottom: 1px solid $cl_gray_light;
-      padding: 15px 0;
+      padding: 20px 0;
       @include groovy(all);
 
       @include at-query($min, $screen-sm) {
