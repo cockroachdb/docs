@@ -1,18 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
-    <title>icon_info</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Docs" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Docs-COMPARISON-CHART" transform="translate(-683.000000, -557.000000)" fill="#DADADA">
-            <g id="Group-5" transform="translate(515.000000, 342.000000)">
-                <g id="icon_info" transform="translate(168.000000, 215.000000)">
-                    <g id="Shape">
-                        <path d="M8.69824219,16.6982422 C10.8203106,16.6982422 12.8544792,15.8554698 14.3554745,14.3554745 C15.8554698,12.8545042 16.6982422,10.8202356 16.6982422,8.69824219 C16.6982422,6.57624882 15.8554698,4.54200518 14.3554745,3.04100987 C12.8545042,1.54101455 10.8202356,0.698242188 8.69824219,0.698242188 C6.57624882,0.698242188 4.54200518,1.54101455 3.04100987,3.04100987 C1.54101455,4.54198018 0.698242188,6.57624882 0.698242188,8.69824219 C0.698242188,10.8202356 1.54101455,12.8544792 3.04100987,14.3554745 C4.54198018,15.8554698 6.57624882,16.6982422 8.69824219,16.6982422 Z M8.69824219,2.69828594 C10.2890622,2.69828594 11.8154824,3.33010896 12.9404789,4.45608044 C14.0664504,5.58107693 14.6982734,7.10732216 14.6982734,8.69831719 C14.6982734,10.2893122 14.0664504,11.8155574 12.9404789,12.9405539 C11.8154824,14.0665254 10.2892372,14.6983484 8.69824219,14.6983484 C7.10724716,14.6983484 5.58100193,14.0665254 4.45600544,12.9405539 C3.33003396,11.8155574 2.69821094,10.2893122 2.69821094,8.69831719 C2.69821094,7.10732216 3.33003396,5.58107693 4.45600544,4.45608044 C5.58100193,3.33010896 7.10724716,2.69828594 8.69824219,2.69828594 Z M9.69823906,12.9482539 L7.69824531,12.9482539 L7.69824531,7.94826953 L9.69823906,7.94826953 L9.69823906,12.9482539 Z M9.69823906,6.44827422 L7.69824531,6.44827422 L7.69824531,4.44828047 L9.69823906,4.44828047 L9.69823906,6.44827422 Z" fill-rule="nonzero"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" xml:space="preserve" width="16" height="16"><g class="nc-icon-wrapper" fill="#a2a2a2"><circle fill="#a2a2a2" cx="8" cy="4.5" r="1" data-cap="butt" data-color="color-2" data-stroke="none"></circle>
+<circle fill="none" stroke="#a2a2a2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="8" cy="8" r="7.5" data-cap="butt"></circle>
+<line fill="none" stroke="#a2a2a2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="8" y1="12" x2="8" y2="8" data-cap="butt" data-color="color-2"></line>
+</g></svg>

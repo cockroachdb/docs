@@ -35,7 +35,7 @@
     border-bottom: 2px solid $cl_blue;
     @include avenir_h(12px);
     line-height: 28px; // vertical spacing
-    color: $cl_blue;
+    color: $cl_green;
     text-align: center;
     padding: 20px 0;
 
@@ -149,7 +149,7 @@
 
     .select2-selection__rendered {
       text-align: center;
-      color: $cl_blue;
+      color: $cl_green;
 
       @include at-query($min, $screen-md) {
         padding-right: 5px;
@@ -168,9 +168,14 @@
 
     &__option {
       text-align: center;
-      @include caption;
+      @include caption--small;
       border-bottom: 1px solid $cl_gray_light;
       padding: 15px 0;
+      @include groovy(all);
+
+      @include at-query($min, $screen-sm) {
+        font-size: 17px;
+      }
 
       &:last-of-type {
         border-bottom: none;
@@ -180,10 +185,6 @@
 
   &--open .select2-dropdown {
     top: 5px;
-  }
-
-  &--focus .select2-selection .select2-selection__rendered {
-    color: $cl_green;
   }
 
   .select2-dropdown {
@@ -196,14 +197,6 @@
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
   display: none;
-}
-
-.select2-container--default .select2-results__option {
-  @include groovy(all);
-
-  @include at-query($min, $screen-sm) {
-    font-size: 17px;
-  }
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected],

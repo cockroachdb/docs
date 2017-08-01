@@ -14,13 +14,13 @@ This page shows you how key features of CockroachDB stack up against other datab
     <th></th>
     <th>
       <select data-column="one">
-        <option value="MySQL" selected>MySQL</option>
+        <option value="MySQL">MySQL</option>
         <option value="PostgreSQL">PostgreSQL</option>
         <option value="Oracle">Oracle</option>
         <option value="SQL Server">SQL Server</option>
         <option value="Cassandra">Cassandra</option>
         <option value="HBase">HBase</option>
-        <option value="MongoDB">MongoDB</option>
+        <option value="MongoDB" selected>MongoDB</option>
         <option value="DynamoDB">DynamoDB</option>
         <option value="Spanner">Spanner</option>
       </select>
