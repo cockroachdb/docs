@@ -23,13 +23,15 @@ $(function() {
       $footer = $('section.footer'),
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-    $versionSwitcher = $('#version-switcher');
+      $versionSwitcher = $('#version-switcher');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
     $sidebar.css({height: sideNavHeight});
     $('#mysidebar li').hide();
+    $('#version-switcher .tier-1 ul').slideUp();
+    $('#version-switcher').removeClass('open');
   }
 
   // Separate function to configure sidenav on window resize
@@ -199,11 +201,11 @@ $(function() {
           // otherwise, this should show top level
           $('#mysidebar li').slideDown(250);
         }
-        $versionSwitcher.slideUp();
+        $versionSwitcher.slideDown();
       } else {
         $('body').removeClass('sidenav-open')
         collapseSideNav();
-        $versionSwitcher.slideDown();
+        $versionSwitcher.slideUp();
       }
     }
   };
