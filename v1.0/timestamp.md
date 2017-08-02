@@ -4,13 +4,34 @@ summary: The TIMESTAMP data type stores a date and time pair in UTC, whereas TIM
 toc: false
 ---
 
-The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC, whereas `TIMESTAMPTZ` stores a date and time pair with a time zone offset from UTC. 
+The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC.
 
 <div id="toc"></div>
 
+## Time Zone Details
+
+`TIMESTAMP` has two variants:
+
+- `TIMESTAMP WITH TIME ZONE` converts `TIMESTAMP` values from UTC to the client's session time zone (unless another time zone is specified for the value). However, it is conceptually important to note that `TIMESTAMP WITH TIME ZONE` *does not* store any time zone data.
+
+   {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default `TIMESTAMP WITH TIME ZONE` values display in UTC.{{site.data.alerts.end}}
+
+- `TIMESTAMP WITHOUT TIME ZONE` presents all `TIMESTAMP` values in UTC.
+
+The difference between these two types is that `TIMESTAMP WITH TIME ZONE` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMP WITH TIME ZONE` values.
+
+### Best Practices
+
+We recommend always using the `...WITH TIME ZONE` variant because the `...WITHOUT TIME ZONE` variant can sometimes lead to unexpected behaviors when it ignores a session offset. 
+
+However, we also recommend you avoid setting a session time for your database. Instead, convert values from the default time zone (UTC) on the client side.
+
 ## Aliases
 
-In CockroachDB, `TIMESTAMP WITHOUT TIME ZONE` is an alias for `TIMESTAMP` and `TIMESTAMP WITH TIME ZONE` is an alias for `TIMESTAMPTZ`.
+In CockroachDB, the following are aliases:
+
+- `TIMESTAMP`, `TIMESTAMP WITHOUT TIME ZONE`
+- `TIMESTAMPTZ`, `TIMESTAMP WITH TIME ZONE`
 
 ## Syntax
 
