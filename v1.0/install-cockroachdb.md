@@ -93,7 +93,9 @@ $(document).ready(function(){
   <h2>Download the Binary</h2>
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB {{ page.release_info.version }} archive for OS X</a>.</p>
+      <p>Download the CockroachDB archive for OS X:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="gp" data-eventcategory="mac-binary-step1">$ </span>curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz</code></pre></div>
     </li>
     <li>
       <p>Extract the binary:</p>
@@ -316,7 +318,10 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB {{ page.release_info.version }} archive for Linux</a>.</p>
+      <p>Download the CockroachDB archive for Linux:</p>
+
+      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz</code></pre>
+      </div>
     </li>
     <li>
       <p>Extract the binary:</p>
