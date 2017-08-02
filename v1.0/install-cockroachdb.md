@@ -89,27 +89,27 @@ $(document).ready(function(){
 <a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
-<div id="download-the-binary" class="install-option">
+<div id="download-the-binary" class="install-option" markdown="1">
   <h2>Download the Binary</h2>
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB {{ page.release_info.version }} archive for OS X</a>.</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz">CockroachDB archive</a> for OS X, and extract the binary:</p>
+
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="gp" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz \
+| tar -xJ</code></pre></div>
+      
+      {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
     </li>
     <li>
-      <p>Extract the binary:</p>
+      <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step2"><span class="gp" data-eventcategory="mac-binary-step2">$ </span>tar xfz cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz</code></pre></div>
-    </li>
-    <li>
-      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
-
-      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step4"><span class="gp" data-eventcategory="mac-binary-step4">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
@@ -128,13 +128,13 @@ $(document).ready(function(){
     </li>
   </ol>
 <h2 id="whats-next">What's Next?</h2>
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<p><a href="">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 
 {% include diagnostics-callout.html %}
 
 </div>
 
-<div id="use-homebrew" class="install-option" style="display: none;">
+<div id="use-homebrew" class="install-option" style="display: none;" markdown="1">
   <h2>Use Homebrew</h2>
 
   <ol>
@@ -144,12 +144,12 @@ $(document).ready(function(){
     <li>
       <p>Instruct Homebrew to install CockroachDB:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroach</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="gp" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroach</code></pre></div>
     </li>
     <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-homebrew-step3"><span class="gp" data-eventcategory="mac-homebrew-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
@@ -174,7 +174,7 @@ $(document).ready(function(){
 
 </div>
 
-<div id="build-from-source" class="install-option" style="display: none;">
+<div id="build-from-source" class="install-option" style="display: none;" markdown="1">
 <h2>Build from Source</h2>
 <ol>
   <li>
@@ -197,19 +197,24 @@ $(document).ready(function(){
         <td>CMake</td>
         <td>Versions 3.81+ are known to work.</td>
       </tr>
+      <tr>
+        <td>Autoconf</td>
+        <td>Version 2.68 or higher is required.</td>
+      </tr>
     </table>
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" data-eventcategory="mac-source-download">CockroachDB {{ page.release_info.version }} source archive</a>.</p>
-  </li>
-  <li>
-    <p>Extract the sources:</p>
-    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-{{ page.release_info.version }}.src.tgz</code></pre></div></p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz">CockroachDB {{ page.release_info.version }} source archive</a>, and extract the sources:</p>
+
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-source-download"><span class="gp" data-eventcategory="mac-source-download">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz \
+| tar -xJ</code></pre></div>
+      
+      {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
   </li>
   <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -218,7 +223,7 @@ $(document).ready(function(){
   <li>
   <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
+  {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
   <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
@@ -226,7 +231,7 @@ $(document).ready(function(){
   <li>
     <p>Make sure the CockroachDB executable works:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-source-step5"><span class="gp" data-eventcategory="mac-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
@@ -263,20 +268,20 @@ $(document).ready(function(){
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>$ docker version</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code>$ docker version</code></pre>
     </div>
     <p>If you don't see the server listed, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
     </div>
   </li>
   <li>
     <p>Make sure the CockroachDB executable works:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step4"><span class="gp" data-eventcategory="mac-docker-step4">$ </span>docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
@@ -316,24 +321,24 @@ $(document).ready(function(){
 
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz" data-eventcategory="linux-binary-step1">CockroachDB {{ page.release_info.version }} archive for Linux</a>.</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz">CockroachDB archive</a> for Linux, and extract the binary:</p>
+
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz \
+| tar  xvz</code></pre></div>
+      
+      {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
+
     </li>
     <li>
-      <p>Extract the binary:</p>
+      <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>tar xfz cockroach-{{ page.release_info.version }}.linux-amd64.tgz</code></pre>
-      </div>
-    </li>
-    <li>
-      <p>Move the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
-
-      <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step3"><span class="gp" data-eventcategory="linux-binary-step3">$ </span>cockroach version</code></pre></div>
     </li>
     <li>
       <p>Get future release notes emailed to you:</p>
@@ -382,22 +387,23 @@ $(document).ready(function(){
         <td>Versions 3.81+ are known to work.</td>
       </tr>
       <tr>
-        <td><a href="https://tukaani.org/xz/">XZ Utils</a></td>
-        <td>Versions 5.2.3+ are known to work.</td>
+        <td>Autoconf</td>
+        <td>Version 2.68 or higher is required.</td>
       </tr>
     </table>
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" data-eventcategory="linux-source-download">CockroachDB {{ page.release_info.version }} source archive</a>.</p>
-  </li>
-  <li>
-    <p>Extract the sources:</p>
-    <p><div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>tar xfz cockroach-{{ page.release_info.version }}.src.tgz</code></pre></div></p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz">CockroachDB {{ page.release_info.version }} source archive</a>, and extract the sources:</p>
+
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.src.tgz \
+| tar  xvz</code></pre></div>
+      
+      {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
   </li>
   <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -407,7 +413,7 @@ $(document).ready(function(){
 
   <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
 
-  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
+  {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
   <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
   <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
@@ -415,7 +421,7 @@ $(document).ready(function(){
   <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step5"><span class="gp" data-eventcategory="linux-source-step5">$ </span>cockroach version</code></pre></div>
   </li>
   <li>
       <p>Get future release notes emailed to you:</p>
@@ -452,22 +458,22 @@ $(document).ready(function(){
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo docker version</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code>$ sudo docker version</code></pre>
     </div>
     <p>If you don't see the server listed, start the Docker daemon. </p>
 
-    <div class="bs-callout bs-callout-info">On Linux, Docker needs sudo privileges.</div>
+    {{site.data.alerts.callout_info}}On Linux, Docker needs sudo privileges.{{site.data.alerts.end}}
   </li>
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
     </div>
   </li>
   <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="highlighter-rouge"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step4"><span class="gp" data-eventcategory="linux-docker-step4">$ </span>sudo docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
@@ -514,7 +520,7 @@ $(document).ready(function(){
   <li>
     <p>Open PowerShell, navigate to the directory containing the binary, and make sure the CockroachDB executable works:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-{{ page.release_info.version }}.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-{{ page.release_info.version }}.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
@@ -563,12 +569,12 @@ $(document).ready(function(){
   <li>
     <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
-    <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre></div>
   </li>
   <li>
       <p>Make sure the CockroachDB executable works:</p>
 
-      <div class="language-powershell highlighter-rouge"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="nb" data-eventcategory="win-docker-step4">PS </span>C:\Users\username&gt; docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="win-docker-step4"><span class="nb" data-eventcategory="win-docker-step4">PS </span>C:\Users\username&gt; docker run --rm cockroachdb/cockroach:{{page.release_info.version}} version</code></pre></div>
   </li>
   <li>
     <p>Get future release notes emailed to you:</p>
