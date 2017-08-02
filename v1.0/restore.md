@@ -27,8 +27,6 @@ Because this process is designed for disaster recovery, CockroachDB expects that
 - [`DROP TABLE`](drop-table.html) or [`DROP VIEW`](drop-view.html) and then restore them.
 - [Restore the table or view into a different database](#into_db).
 
-However, because the `RESTORE` feature is designed for disaster recovery,
-
 ### Object Dependencies
 
 Dependent objects must be restored at the same time as the objects they depend on.
