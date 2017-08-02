@@ -78,6 +78,12 @@ $(function() {
       $mobile_menu.css('visibility', 'visible');
     }
 
+    if (_viewport_width >= 992) {
+      $('#version-switcher').slideDown();
+    } else {
+      $('#version-switcher').slideUp();
+    }
+
     // chrome on android fires a resize event on scroll, this will make sure
     // these only fire on an actual resize event
     if (_viewport_width != cachedWidth) {

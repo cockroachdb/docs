@@ -300,10 +300,19 @@ a:not([href]) {
   @include at-query($min, $screen-md) {
     width: 220px;
     display: block;
+    background: #fff;
+    left: auto;
+  }
+
+  @include at-query($min, $screen-lg) {
+    width: 250px;
+    margin-left: 5px;
   }
 
   &.open {
-    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);    
+    @include at-query($max, $screen-md) {
+      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
   }
 
   .tier-1 {
@@ -316,6 +325,11 @@ a:not([href]) {
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
+      border-bottom: 1px solid $cl_gray_medium;
+
+      @include at-query($min, $screen-md) {
+        padding: 0 15px 0 5px;
+      }
 
       .version-name {
         @include avenir_h(16px);
@@ -334,6 +348,10 @@ a:not([href]) {
     border-left: none;
     margin: 0;
     padding: 20px 0;
+
+    @include at-query($min, $screen-md) {
+      padding-bottom: 0;
+    }
   }
 
   .tier-2 {
@@ -345,6 +363,7 @@ a:not([href]) {
       line-height: 16px; // vertical spacing
       text-transform: none;
       letter-spacing: normal;
+      border-bottom: none;
     }
 
     &.active a {

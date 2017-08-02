@@ -653,9 +653,16 @@ a:not([href]) {
   @media screen and (min-width: 992px) {
     #version-switcher {
       width: 220px;
-      display: block; } }
-  #version-switcher.open {
-    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); }
+      display: block;
+      background: #fff;
+      left: auto; } }
+  @media screen and (min-width: 1200px) {
+    #version-switcher {
+      width: 250px;
+      margin-left: 5px; } }
+  @media screen and (max-width: 992px) {
+    #version-switcher.open {
+      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); } }
   #version-switcher .tier-1 {
     margin: 0; }
     #version-switcher .tier-1 a {
@@ -670,7 +677,11 @@ a:not([href]) {
       letter-spacing: 1.5px;
       line-height: 50px;
       text-transform: uppercase;
-      color: #152849; }
+      color: #152849;
+      border-bottom: 1px solid #DADADA; }
+      @media screen and (min-width: 992px) {
+        #version-switcher .tier-1 a {
+          padding: 0 15px 0 5px; } }
       #version-switcher .tier-1 a .version-name {
         font-family: 'AvenirLTStd-Heavy', serif;
         font-size: 16px;
@@ -686,6 +697,9 @@ a:not([href]) {
     border-left: none;
     margin: 0;
     padding: 20px 0; }
+    @media screen and (min-width: 992px) {
+      #version-switcher .nav li ul {
+        padding-bottom: 0; } }
   #version-switcher .tier-2 {
     margin: 0; }
     #version-switcher .tier-2 a {
@@ -697,7 +711,8 @@ a:not([href]) {
       -moz-osx-font-smoothing: grayscale;
       line-height: 16px;
       text-transform: none;
-      letter-spacing: normal; }
+      letter-spacing: normal;
+      border-bottom: none; }
     #version-switcher .tier-2.active a {
       color: #54B30E; }
 
