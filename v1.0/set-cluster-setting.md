@@ -35,13 +35,13 @@ The variable name is case-insensitive.
 You can configure a cluster so that new sessions automatically try to run queries [in a distributed fashion](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/):
 
 ~~~ sql
-> SET CLUSTER SETTING sql.default.distsql = 1;
+> SET CLUSTER SETTING sql.defaults.distsql = 1;
 ~~~
 
 You can also disable distributed execution for all new sessions:
 
 ~~~ sql
-> SET CLUSTER SETTING sql.default.distsql = 0;
+> SET CLUSTER SETTING sql.defaults.distsql = 0;
 ~~~
 
 ### Disable Automatic Diagnostic Reporting
