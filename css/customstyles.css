@@ -689,7 +689,9 @@ a:not([href]) {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 20px;
-        color: #54B30E; }
+        color: #54B30E;
+        text-transform: none;
+        letter-spacing: normal; }
       #version-switcher .tier-1 a .arrow-down {
         float: right;
         margin-top: 21px; }

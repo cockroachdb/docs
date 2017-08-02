@@ -78,7 +78,7 @@ $(function() {
       $mobile_menu.css('visibility', 'visible');
     }
 
-    if (_viewport_width >= 992) {
+    if (_viewport_width > 992) {
       $('#version-switcher').slideDown();
     } else {
       $('#version-switcher').slideUp();

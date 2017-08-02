@@ -335,6 +335,8 @@ a:not([href]) {
         @include avenir_h(16px);
         line-height: 20px;
         color: $cl_green;
+        text-transform: none;
+        letter-spacing: normal;
       }
 
       .arrow-down {
