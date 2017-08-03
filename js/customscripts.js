@@ -79,9 +79,9 @@ $(function() {
     }
 
     if (_viewport_width > 992) {
-      $('#version-switcher').slideDown();
+      $('#version-switcher').show();
     } else {
-      $('#version-switcher').slideUp();
+      $('#version-switcher').hide();
     }
 
     // chrome on android fires a resize event on scroll, this will make sure
