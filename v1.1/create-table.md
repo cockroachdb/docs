@@ -31,9 +31,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 {% include sql/{{ page.version.version }}/diagrams/column_def.html %}
 
-**col_qual_list ::=**
+**col_qualification ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/col_qual_list.html %}
+{% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
 
 **index_def ::=**
 

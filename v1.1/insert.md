@@ -16,6 +16,8 @@ The user must have the `INSERT` [privilege](privileges.html) on the table. To us
 
 <div>{% include sql/{{ page.version.version }}/diagrams/insert.html %}</div>
 
+<div markdown="1">
+
 ## Parameters
 
 <style>
@@ -167,6 +169,8 @@ If you don't list column names, the statement will use the columns of the table 
 ### Insert and Return Values
 
 In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `unique_rowid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
+
+</div>
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
@@ -499,3 +503,5 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 - [`UPSERT`](upsert.html)
 - [Other SQL Statements](sql-statements.html)
+
+

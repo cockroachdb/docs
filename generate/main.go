@@ -185,7 +185,7 @@ func main() {
 				// TODO(mjibson): improve SELECT display
 				{
 					name:   "add_column",
-					stmt:   "alter_table_stmt",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'ADD' ('COLUMN')? ?('IF' 'NOT' 'EXISTS')? ?name")},
 					replace: map[string]string{
@@ -196,7 +196,7 @@ func main() {
 				},
 				{
 					name:   "add_constraint",
-					stmt:   "alter_table_stmt",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "table_constraint"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'ADD' 'CONSTRAINT' name constraint_elem")},
 					replace: map[string]string{"opt_validate_behavior ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' opt_column name alter_column_default | 'ALTER' opt_column name 'DROP' 'NOT' 'NULL' | 'DROP' opt_column 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' opt_column name opt_drop_behavior | 'ADD' ( 'CONSTRAINT' name constraint_elem | constraint_elem ) opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
@@ -205,7 +205,7 @@ func main() {
 				},
 				{
 					name:   "alter_column",
-					stmt:   "alter_table_stmt",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "alter_column_default"},
 					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'ALTER' ")},
 					replace: map[string]string{"( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name ( 'SET' 'DEFAULT' a_expr | 'DROP' 'DEFAULT' ) | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' ( 'COLUMN' |  ) name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
@@ -213,7 +213,8 @@ func main() {
 					unlink: []string{"table_name"},
 				},
 				{
-					name:   "alter_table_stmt",
+					name:   "alter_table",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "column_def", "opt_drop_behavior", "alter_column_default", "opt_column", "opt_set_data", "table_constraint"},
 					replace: map[string]string{
 						"'VALIDATE' 'CONSTRAINT' name": "",
@@ -223,9 +224,9 @@ func main() {
 					nosplit: true,
 				},
 				{
-					name:    "alter_view_stmt",
-					stmt:    "rename_stmt",
-					match:   []*regexp.Regexp{regexp.MustCompile("'ALTER' 'VIEW'")},
+					name:    "alter_view",
+					stmt:    "alter_rename_view_stmt",
+					inline:  []string{"opt_transaction"},
 					replace: map[string]string{"relation_expr": "view_name", "qualified_name": "name"}, unlink: []string{"view_name", "name"},
 				},
 				{
@@ -243,11 +244,18 @@ func main() {
 				},
 				{
 					name:    "begin_transaction",
-					stmt:    "transaction_stmt",
-					inline:  []string{"opt_transaction", "opt_transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"},
-					match:   []*regexp.Regexp{regexp.MustCompile("'BEGIN'")},
-					exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")},
-					replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"},
+					stmt:    "begin_stmt",
+					inline:  []string{"opt_transaction", "begin_transaction", "transaction_mode_list", "transaction_mode", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"},
+					exclude: []*regexp.Regexp{regexp.MustCompile("'START'")},
+					replace: map[string]string{
+						"'ISOLATION' 'LEVEL'":                                                                           "'ISOLATION LEVEL'",
+						" | transaction_read_mode":                                                                      "",
+						" transaction_read_mode":                                                                        "",
+						"'READ' 'UNCOMMITTED' | 'READ' 'COMMITTED' | 'SNAPSHOT' | 'REPEATABLE' 'READ' | 'SERIALIZABLE'": "'SNAPSHOT' | 'SERIALIZABLE'",
+						"'READ' 'UNCOMMITTED'": "'SNAPSHOT'",
+						"'READ' 'COMMITTED'":   "'SNAPSHOT'",
+						"'REPEATABLE' 'READ'":  "'SERIALIZABLE'",
+					},
 				},
 				{
 					name:    "check_column_level",
@@ -261,14 +269,19 @@ func main() {
 					replace: map[string]string{"stmt_list": "'CREATE' 'TABLE' table_name '(' ( column_def ( ',' column_def )* ) ( 'CONSTRAINT' name | ) 'CHECK' '(' check_expr ')' ( table_constraints | ) ')'"},
 					unlink:  []string{"table_name", "check_expr", "table_constraints"},
 				},
-				{name: "column_def"},
-				{name: "col_qual_list", stmt: "col_qual_list", inline: []string{"col_qualification", "col_qualification_elem"}, replace: map[string]string{"| 'REFERENCES' qualified_name opt_name_parens": ""}},
+				{
+					name:    "column_def",
+					stmt:    "column_def",
+					replace: map[string]string{"col_qual_list": " ( | ( col_qualification ( col_qualification )* ) )"},
+				},
+				{name: "col_qualification", stmt: "col_qualification", inline: []string{"col_qualification_elem"}},
 				{
 					name:   "commit_transaction",
-					stmt:   "transaction_stmt",
+					stmt:   "commit_stmt",
 					inline: []string{"opt_transaction"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'COMMIT'|'END'")},
 				},
+				{name: "cancel", stmt: "cancel_query_stmt"},
 				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
 				{
 					name:   "create_index_stmt",
@@ -301,7 +314,7 @@ func main() {
 				{name: "delete_stmt", inline: []string{"relation_expr_opt_alias", "where_clause", "returning_clause", "target_list", "target_elem"}},
 				{
 					name:   "drop_column",
-					stmt:   "alter_table_stmt",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "opt_drop_behavior"},
 					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'DROP' 'COLUMN'")},
 					replace: map[string]string{
@@ -312,7 +325,7 @@ func main() {
 				},
 				{
 					name:   "drop_constraint",
-					stmt:   "alter_table_stmt",
+					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd"},
 					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'DROP' 'CONSTRAINT'")},
 					replace: map[string]string{
@@ -323,12 +336,12 @@ func main() {
 				},
 				{
 					name:  "drop_database",
-					stmt:  "drop_stmt",
+					stmt:  "drop_database_stmt",
 					match: []*regexp.Regexp{regexp.MustCompile("'DROP' 'DATABASE'")},
 				},
 				{
 					name:    "drop_index",
-					stmt:    "drop_stmt",
+					stmt:    "drop_index_stmt",
 					match:   []*regexp.Regexp{regexp.MustCompile("'DROP' 'INDEX'")},
 					inline:  []string{"opt_drop_behavior", "table_name_with_index_list", "table_name_with_index"},
 					replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"},
@@ -336,7 +349,7 @@ func main() {
 				{name: "drop_stmt", inline: []string{"table_name_list", "any_name", "qualified_name_list", "qualified_name"}},
 				{
 					name:    "drop_table",
-					stmt:    "drop_stmt",
+					stmt:    "drop_table_stmt",
 					inline:  []string{"opt_drop_behavior", "table_name_list"},
 					match:   []*regexp.Regexp{regexp.MustCompile("'DROP' 'TABLE'")},
 					replace: map[string]string{"any_name": "table_name"},
@@ -344,7 +357,7 @@ func main() {
 				},
 				{
 					name:    "drop_view",
-					stmt:    "drop_stmt",
+					stmt:    "drop_view_stmt",
 					inline:  []string{"opt_drop_behavior", "table_name_list"},
 					match:   []*regexp.Regexp{regexp.MustCompile("'DROP' 'VIEW'")},
 					replace: map[string]string{"any_name": "view_name"},
@@ -405,13 +418,13 @@ func main() {
 					unlink:  []string{"table_name", "column_name", "table_constraints"},
 				},
 				{name: "release_savepoint", stmt: "release_stmt", inline: []string{"savepoint_name"}},
-				{name: "rename_column", stmt: "rename_stmt", inline: []string{"opt_column"}, match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' ('COLUMN'|name)")}, replace: map[string]string{"relation_expr": "table_name", "name 'TO'": "current_name 'TO'"}, unlink: []string{"table_name", "current_name"}},
-				{name: "rename_database", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'DATABASE'")}},
-				{name: "rename_index", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'INDEX'")}, inline: []string{"table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
-				{name: "rename_table", stmt: "rename_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}, replace: map[string]string{"relation_expr": "current_name", "qualified_name": "new_name"}, unlink: []string{"current_name"}, relink: map[string]string{"new_name": "name"}},
+				{name: "rename_column", stmt: "alter_rename_table_stmt", inline: []string{"opt_column"}, match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' ('COLUMN'|name)")}, replace: map[string]string{"relation_expr": "table_name", "name 'TO'": "current_name 'TO'"}, unlink: []string{"table_name", "current_name"}},
+				{name: "rename_database", stmt: "alter_rename_database_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'DATABASE'")}},
+				{name: "rename_index", stmt: "alter_rename_index_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'INDEX'")}, inline: []string{"table_name_with_index"}, replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"}},
+				{name: "rename_table", stmt: "alter_rename_table_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}, replace: map[string]string{"relation_expr": "current_name", "qualified_name": "new_name"}, unlink: []string{"current_name"}, relink: map[string]string{"new_name": "name"}},
 				{
 					name:    "restore",
-					stmt:    "backup_stmt",
+					stmt:    "restore_stmt",
 					inline:  []string{"targets", "table_pattern_list", "name_list", "opt_as_of_clause", "opt_with_options"},
 					match:   []*regexp.Regexp{regexp.MustCompile("'RESTORE'")},
 					exclude: []*regexp.Regexp{regexp.MustCompile("'RESTORE' 'DATABASE'")},
@@ -424,17 +437,17 @@ func main() {
 					unlink: []string{"destination", "timestamp", "full_backup_location", "incremental_backup_location"},
 				},
 				{
-					name: "revoke_stmt", 
+					name:   "revoke_stmt",
 					inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"},
 					replace: map[string]string{
-						"table_pattern_list": "table_name ( ',' table_name )*",
-						"name_list": "database_name ( ',' database_name )*",
+						"table_pattern_list":        "table_name ( ',' table_name )*",
+						"name_list":                 "database_name ( ',' database_name )*",
 						"'FROM' name ( ',' name )*": "'FROM' user_name ( ',' user_name )*"},
-					unlink: []string{"table_name","database_name","user_name"}, 
+					unlink: []string{"table_name", "database_name", "user_name"},
 				},
 				{
 					name:    "rollback_transaction",
-					stmt:    "transaction_stmt",
+					stmt:    "rollback_stmt",
 					inline:  []string{"opt_to_savepoint"},
 					match:   []*regexp.Regexp{regexp.MustCompile("'ROLLBACK'")},
 					replace: map[string]string{"'TRANSACTION'": "", "'TO'": "'TO' 'SAVEPOINT'", "savepoint_name": "cockroach_restart"},
@@ -457,7 +470,7 @@ func main() {
 				{
 					name:   "set_var",
 					stmt:   "set_stmt",
-					inline: []string{"set_rest", "set_rest_more", "generic_set", "var_list"},
+					inline: []string{"set_session_stmt", "set_rest_more", "generic_set", "var_list"},
 					exclude: []*regexp.Regexp{
 						regexp.MustCompile(`'SET' . 'TRANSACTION'`),
 						regexp.MustCompile(`'SET' 'TRANSACTION'`),
@@ -474,12 +487,12 @@ func main() {
 				{
 					name:   "set_cluster_setting",
 					stmt:   "set_stmt",
-					inline: []string{"set_rest", "set_rest_more", "generic_set", "var_list"},
+					inline: []string{"set_csetting_stmt", "generic_set", "var_list"},
 					match: []*regexp.Regexp{
 						regexp.MustCompile("'SET' 'CLUSTER'"),
 					},
 				},
-				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_rest", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"}},
+				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_transaction_stmt", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"}},
 				{
 					name: "show_var",
 					stmt: "show_stmt",
@@ -548,7 +561,7 @@ func main() {
 					name:    "update_stmt",
 					inline:  []string{"relation_expr_opt_alias", "set_clause_list", "set_clause", "single_set_clause", "multiple_set_clause", "ctext_row", "ctext_expr_list", "ctext_expr", "from_clause", "from_list", "where_clause", "returning_clause"},
 					replace: map[string]string{"relation_expr": "table_name", "qualified_name": "column_name", "qualified_name_list": "column_name_list"},
-					relink: map[string]string{"table_name": "relation_expr", "column_name": "qualified_name", "column_name_list": "qualified_name_list"},
+					relink:  map[string]string{"table_name": "relation_expr", "column_name": "qualified_name", "column_name_list": "qualified_name_list"},
 					nosplit: true,
 				},
 				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: []*regexp.Regexp{regexp.MustCompile("'UPSERT'")}},
@@ -619,7 +632,7 @@ func main() {
 	}
 
 	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
-	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "v1.0", "diagrams"), "Base directory for html output.")
+	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "v1.1", "diagrams"), "Base directory for html output.")
 	rootCmd.Flags().StringVar(&filter, "filter", "", "Filter statement names")
 	rootCmd.Flags().BoolVar(&printBNF, "bnf", false, "Print BNF only; don't generate railroad diagrams")
 	rootCmd.Flags().StringVar(&railroadJar, "railroad", "Railroad.jar", "Location of Railroad.jar; empty to use website")

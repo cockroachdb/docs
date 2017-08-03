@@ -28,9 +28,9 @@ release_info:
     start_time: 2017-07-27 10:29:13.675508543 -0400 EDT
   v1.1:
     name: v1.1-alpha
-    version: v1.1-alpha.20170720
-    build_time: 2017/07/20 15:21:15 (go1.8.3)
-    start_time: 2017-07-20 18:53:43.318460386 -0400 EDT
+    version: v1.1-alpha.20170803
+    build_time: 2017/08/03 15:21:15 (go1.8.3)
+    start_time: 2017-08-03 18:53:43.318460386 -0400 EDT
 
 exclude: ["ci", "vendor"]
 
