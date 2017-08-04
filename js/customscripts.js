@@ -31,7 +31,7 @@ $(function() {
     $sidebar.css({height: sideNavHeight});
     $('#mysidebar li').hide();
     $('#version-switcher .tier-1 ul').slideUp();
-    $('#version-switcher').removeClass('open');
+    $versionSwitcher.removeClass('open');
   }
 
   // Separate function to configure sidenav on window resize
@@ -69,7 +69,7 @@ $(function() {
     }
   });
 
-  $(window).resize(function(e){
+  $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
 
     if(_viewport_width > 768) {
@@ -79,9 +79,9 @@ $(function() {
     }
 
     if (_viewport_width > 992) {
-      $('#version-switcher').show();
+      $versionSwitcher.show();
     } else {
-      $('#version-switcher').hide();
+      $versionSwitcher.hide();
     }
 
     // chrome on android fires a resize event on scroll, this will make sure
@@ -99,10 +99,15 @@ $(function() {
     _viewport_width = window.innerWidth;
 
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() <= versionSwitcherBottom)
-        $versionSwitcher.css('position', 'fixed');
-      else
-        $versionSwitcher.css('position', 'absolute');
+      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
+        $versionSwitcher.css({'position': 'absolute', 'bottom': '70px'});
+      } else {
+        $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
+      }
+      // if ($(window).scrollTop() + $(window).height() <= versionSwitcherBottom)
+      //   $versionSwitcher.css('position', 'fixed');
+      // else
+      //   $versionSwitcher.css('position', 'absolute');
     } else { // mobile
       $sidebar.css('padding-top', 10);
 
@@ -269,13 +274,3 @@ $(function() {
 
   $('[data-tooltip]').tooltip();
 });
-
-$(window).load(function () {
-  // The computation of the version switcher's position needs to wait for
-  // all fonts and images to load.
-  if ($versionSwitcher.length > 0) {
-    $versionSwitcher.css('position', 'absolute');
-    versionSwitcherBottom = $versionSwitcher.offset().top + $versionSwitcher.outerHeight();
-    $versionSwitcher.css('position', 'fixed');
-  }
-})
