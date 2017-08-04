@@ -37,10 +37,11 @@ $(function() {
   // Separate function to configure sidenav on window resize
   // We don't want to animate, so collapseSideNav() won't work
   function sidenavOnResize(winWidth) {
+    $('body').removeClass('sidenav-open');
+
     if (winWidth > 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
-      $('body').removeClass('sidenav-open');
       $sidebar.removeClass('nav--collapsed');
       $sidebar.css('height', '');
     } else {
@@ -104,10 +105,6 @@ $(function() {
       } else {
         $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
       }
-      // if ($(window).scrollTop() + $(window).height() <= versionSwitcherBottom)
-      //   $versionSwitcher.css('position', 'fixed');
-      // else
-      //   $versionSwitcher.css('position', 'absolute');
     } else { // mobile
       $sidebar.css('padding-top', 10);
 
