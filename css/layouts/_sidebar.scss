@@ -366,6 +366,10 @@ a:not([href]) {
       text-transform: none;
       letter-spacing: normal;
       border-bottom: none;
+
+      &:hover {
+        color: $cl_green;
+      }
     }
 
     &.active a {

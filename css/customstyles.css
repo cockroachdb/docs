@@ -728,6 +728,8 @@ a:not([href]) {
       text-transform: none;
       letter-spacing: normal;
       border-bottom: none; }
+      #version-switcher .tier-2 a:hover {
+        color: #54B30E; }
     #version-switcher .tier-2.active a {
       color: #54B30E; }
 
