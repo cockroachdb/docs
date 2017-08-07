@@ -743,6 +743,17 @@
         ]
       },
       {
+        "title": "Performance Optimization",
+        "items": [
+          {
+            "title": "Parallel Statement Execution",
+            "urls": [
+              "/${VERSION}/parallel-statement-execution.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Information Schema",
         "urls": [
           "/${VERSION}/information-schema.html"
