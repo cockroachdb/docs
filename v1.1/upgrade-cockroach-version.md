@@ -27,7 +27,7 @@ For each node in your cluster, complete the following steps.
         ~~~ shell
         $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
         $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-    
+
         # Optional: Place cockroach in your $PATH
         $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
         ~~~
@@ -35,17 +35,27 @@ For each node in your cluster, complete the following steps.
 
         ~~~ shell
         $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz 
-    
+        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+
         # Optional: Place cockroach in your $PATH
         $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
         ~~~
 
-3. Stop the `cockroach` process. Without a process manager, use this command:
+3. Stop the `cockroach` process.
+
+    Without a process manager, use this command:
 
     ~~~ shell
     $ pkill cockroach
     ~~~
+
+    Then verify that the process has stopped:
+
+    ~~~ shell
+    $ ps aux | grep cockroach
+    ~~~
+
+    Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
 
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
     - **Mac**:
@@ -60,11 +70,11 @@ For each node in your cluster, complete the following steps.
         $ i="$(which cockroach)"; mv "$i" "$i"_old
         $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
         ~~~
-        
+
     If you leave versioned binaries on your servers, you don't need to do anything.
 
 5. If you're running with a process manager, have the node rejoin the cluster by starting it.
-    
+
     Without a process manager, use this command:
 
     ~~~ shell
