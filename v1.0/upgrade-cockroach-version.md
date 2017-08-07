@@ -24,19 +24,39 @@ For each node in your cluster, complete the following steps.
 2. Download and install the CockroachDB binary you want to use:
     - **Mac**:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
+        # Get the CockroachDB tarball:
         $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+        ~~~
 
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Extract the binary:
+        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
         # Optional: Place cockroach in your $PATH
         $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
         ~~~
     - **Linux**:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
+        # Get the CockroachDB tarball:
         $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+        ~~~
 
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Extract the binary:
+        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
         # Optional: Place cockroach in your $PATH
         $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
         ~~~
@@ -45,12 +65,14 @@ For each node in your cluster, complete the following steps.
 
     Without a process manager, use this command:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ pkill cockroach
     ~~~
 
     Then verify that the process has stopped:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ ps aux | grep cockroach
     ~~~
@@ -60,14 +82,24 @@ For each node in your cluster, complete the following steps.
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
     - **Mac**:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
         $ i="$(which cockroach)"; mv "$i" "$i"_old
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
         $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
         ~~~
     - **Linux**:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
         $ i="$(which cockroach)"; mv "$i" "$i"_old
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
         $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
         ~~~
 
@@ -77,8 +109,9 @@ For each node in your cluster, complete the following steps.
 
     Without a process manager, use this command:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --join=[any other node's IP address] [other flags]
+    $ cockroach start --join=[IP address of any other node] [other flags]
     ~~~
     `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it    --host`.
 
@@ -86,6 +119,7 @@ For each node in your cluster, complete the following steps.
 
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~
