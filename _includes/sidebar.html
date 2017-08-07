@@ -1,202 +1,212 @@
-    <!-- Sidebar Column -->
-    <div class="col-md-3 col-sidebar">
+<div class="col-md-3 col-sidebar">
+  <script>
+    $(document).ready(function() {
+      // Initialize navgoco with default options
+      var $sidebar = $('#mysidebar'),
+          $versionSwitcher = $('#version-switcher').find('ul.nav')
+          $maincontent = $('#main-content'), $contentcol = $('.content-col');
 
-        <script>
+      var navgocoOptions = {
+        caretHtml: '',
+        accordion: true,
+        openClass: 'active', // open
+        save: false, // leave false or nav highlighting doesn't work right
+        cookie: {
+          name: 'navgoco',
+          expires: false,
+          path: '/'
+        },
+        slide: {
+          duration: 150,
+          easing: 'swing'
+        }
+      };
 
-            $(document).ready(function() {
-                // Initialize navgoco with default options
-                var $sidebar = $('#mysidebar'),
-                    $versionSwitcher = $('#version-switcher').find('ul.nav')
-                    $maincontent = $('#main-content'), $contentcol = $('.content-col');
+      function adjustMinHeight() {
+        setTimeout(function() {
+          var height = $sidebar.outerHeight();
+          if(height > 475) {
+            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
+            $contentcol.css({ 'min-height' : 625 + (height - 475) });
+          } else {
+            $maincontent.animate({ 'min-height' : 625 }, 200);
+            $contentcol.css({ 'min-height' : 625 });
+          }
+        }, 400);
+      }
 
-                var navgocoOptions = {
-                    caretHtml: '',
-                    accordion: true,
-                    openClass: 'active', // open
-                    save: false, // leave false or nav highlighting doesn't work right
-                    cookie: {
-                        name: 'navgoco',
-                        expires: false,
-                        path: '/'
-                    },
-                    slide: {
-                        duration: 150,
-                        easing: 'swing'
-                    }
-                };
+      function closeVersionSwitcher() {
+        $('#version-switcher .tier-1 ul').slideUp();
+        $('#version-switcher').removeClass('open');
+      }
 
-                $sidebar.navgoco($.extend(navgocoOptions, {
-                    onToggleAfter: function(){
-                        adjustMinHeight();
-                    }
-                }));
-                $sidebar.show();
+      $sidebar.navgoco($.extend(navgocoOptions, {
+        onToggleAfter: function() {
+          adjustMinHeight();
+          if ($(this.el).attr('id') == 'mysidebar' &&
+              $('#version-switcher').hasClass('open')) {
+            closeVersionSwitcher();
+          }
+        }
+      }));
 
-                $versionSwitcher.navgoco(navgocoOptions);
-                $versionSwitcher.show();
+      $versionSwitcher.navgoco($.extend(navgocoOptions, {
+        onToggleBefore: function() {
+          $('#version-switcher').toggleClass('open');
+        }
+      }));
 
-                adjustMinHeight();
+      $sidebar.show();
+      $versionSwitcher.show();
+      adjustMinHeight();
+    });
+  </script>
 
-                function adjustMinHeight(){
-                    setTimeout(function(){
-                        var height = $sidebar.outerHeight();
-                        if(height > 475){
-                            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
-                            $contentcol.css({ 'min-height' : 625 + (height - 475) });
-                        }else{
-                            $maincontent.animate({ 'min-height' : 625 }, 200);
-                            $contentcol.css({ 'min-height' : 625 });
-                        }
-                    }, 400);
-                }
-
-            });
-        </script>
-
-        <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
-            <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
-            <div class="collapsed-header">
-              Docs Menu
-              {% comment %}
-                On pages that match a sidebar entry, the JavaScript below
-                injects the following HTML.
-                <div class="collapsed-header__pre">
-                  Breadcrumb level 1
-                  <div class=\"arrow-down arrow-down--pre\"></div>
-                  Breadcrumb level 2
-                </div>
-                <div>Page title</div>
-              {% endcomment %}
-            </div>
-            <li class="search-wrap">
-                <div class="search">
-                    <span class="fa fa-search"></span>
-                    <form method="GET" action="{{ 'search.html' | relative_url }}">
-                        <input type="text" id="search-input" name="q" placeholder="Search">
-                    </form>
-                </div>
-            </li>
-
-            <script>
-                (function () {
-                  var baseUrl = "{{ site.baseurl }}";
-
-                  var isVersionDirectory = function (d) {
-                    // Version directories either are one of the named version
-                    // aliases specifed in _config.yml or have the form "vX.X",
-                    // like "v1.0" or "v1.10".
-                    return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
-                  };
-
-                  // We derive the version from the URL rather than hardcoding
-                  // `page.version` so that the source of pages for "named"
-                  // versions, like stable and edge, can be identical to the
-                  // source for the underlying version, like v1.0 or v1.1.
-                  // Otherwise, the sidebar for a `stable` page would
-                  // inappropriately link to the underlying `v1.0` page instead
-                  // of the `stable` alias.
-                  var pageVersion = (function () {
-                    var pathComponents = location.pathname
-                      .replace(baseUrl, '')
-                      .replace(/^\//, '')
-                      .split('/');
-                    // The version is the first directory component in the URL,
-                    // if it exists.
-                    if (pathComponents.length > 1 && isVersionDirectory(pathComponents[0])) {
-                      return pathComponents[0];
-                    }
-                    // Non-versioned pages link to stable docs.
-                    return "stable";
-                  })();
-
-                  // Given a sidebar hierarchy (see _data/sidebar-data-v1.0.json
-                  // for an example), returns a jQuery <ul> element with the
-                  // following structure:
-                  //
-                  // <ul>
-                  //   <li class="tier-1">
-                  //    <a href="{{ item.url }}">{{ item.title }}</a>
-                  //     <ul>
-                  //       {% for item in item.items %}
-                  //         <li class="tier-2">...</li>
-                  //       {% endfor %}
-                  //     </ul>
-                  //   </li>
-                  // </ul>
-                  //
-                  // Additionally injects breadcrumbs for the active sidebar
-                  // entry, if any, into the `.collapsed-header` element above.
-                  function renderItems(items, paths) {
-                    if (!items || items.length == 0)
-                        return $();
-
-                    var lis = items.map(function (item) {
-                      var urls = (item.urls || []).map(function (url) {
-                          return baseUrl + url.replace("${VERSION}", pageVersion);
-                      });
-                      var active = (urls.indexOf(location.pathname) !== -1);
-                      if (active) {
-                        // This mutation inside an otherwise pure function is
-                        // unfortunate, but doing it here avoids a separate
-                        // traversal of the sidebar data.
-                        var breadcrumbs = $("<div>")
-                          .addClass("collapsed-header__pre")
-                          .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
-                        var title = $("<div>").html(item.title);
-                        $(".collapsed-header").empty().append(breadcrumbs, title);
-                      }
-                      var subitems = renderItems(item.items, paths.concat(item.title));
-                      var a = $("<a>")
-                        .attr("href", urls[0] || "#")
-                        .html(item.title);
-                      if (subitems.length > 0) {
-                        a.append(" ").append($("<div>").addClass("arrow-down"));
-                      }
-                      return $("<li>")
-                        .addClass("tier-" + (paths.length + 1))
-                        .toggleClass("active", active)
-                        .append(a)
-                        .append(subitems);
-                    });
-
-                    return $("<ul>").append(lis);
-                  }
-
-                  document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
-                })()
-            </script>
-        </ul>
-
-        {% if page.version %}
-            <div id="version-switcher">
-                <ul class="nav" style="display: none">
-                    <li class="tier-1">
-                        <a href="#">
-                            Version: {{ page.version.name }}
-                            <div class="arrow-down"></div>
-                        </a>
-                        <ul>
-                            {% for v in page.versions %}
-                                <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
-                                    <a
-                                    {% if v.url %}href="{{ v.url | relative_url }}"
-                                    {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
-                                        {{ v.version.name }}
-                                        {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
-
-        <script>
-            $("#version-switcher").change(function () {
-                location.href = $(this).val();
-            });
-        </script>
+  <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
+    <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
+    <div class="collapsed-header">
+      Docs Menu
+      {% comment %}
+        On pages that match a sidebar entry, the JavaScript below
+        injects the following HTML.
+        <div class="collapsed-header__pre">
+          Breadcrumb level 1
+          <div class=\"arrow-down arrow-down--pre\"></div>
+          Breadcrumb level 2
+        </div>
+        <div>Page title</div>
+      {% endcomment %}
     </div>
-       <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
-    <script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
+    <li class="search-wrap">
+      <div class="search">
+        <span class="fa fa-search"></span>
+        <form method="GET" action="{{ 'search.html' | relative_url }}">
+          <input type="text" id="search-input" name="q" placeholder="Search">
+        </form>
+      </div>
+    </li>
+
+    <script>
+      (function () {
+        var baseUrl = "{{ site.baseurl }}";
+
+        var isVersionDirectory = function (d) {
+          // Version directories either are one of the named version
+          // aliases specifed in _config.yml or have the form "vX.X",
+          // like "v1.0" or "v1.10".
+          return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
+        };
+
+        // We derive the version from the URL rather than hardcoding
+        // `page.version` so that the source of pages for "named"
+        // versions, like stable and edge, can be identical to the
+        // source for the underlying version, like v1.0 or v1.1.
+        // Otherwise, the sidebar for a `stable` page would
+        // inappropriately link to the underlying `v1.0` page instead
+        // of the `stable` alias.
+        var pageVersion = (function () {
+          var pathComponents = location.pathname
+            .replace(baseUrl, '')
+            .replace(/^\//, '')
+            .split('/');
+          // The version is the first directory component in the URL,
+          // if it exists.
+          if (pathComponents.length > 1 && isVersionDirectory(pathComponents[0])) {
+            return pathComponents[0];
+          }
+          // Non-versioned pages link to stable docs.
+          return "stable";
+        })();
+
+        // Given a sidebar hierarchy (see _data/sidebar-data-v1.0.json
+        // for an example), returns a jQuery <ul> element with the
+        // following structure:
+        //
+        // <ul>
+        //   <li class="tier-1">
+        //    <a href="{{ item.url }}">{{ item.title }}</a>
+        //     <ul>
+        //       {% for item in item.items %}
+        //         <li class="tier-2">...</li>
+        //       {% endfor %}
+        //     </ul>
+        //   </li>
+        // </ul>
+        //
+        // Additionally injects breadcrumbs for the active sidebar
+        // entry, if any, into the `.collapsed-header` element above.
+        function renderItems(items, paths) {
+          if (!items || items.length == 0)
+              return $();
+
+          var lis = items.map(function (item) {
+            var urls = (item.urls || []).map(function (url) {
+                return baseUrl + url.replace("${VERSION}", pageVersion);
+            });
+            var active = (urls.indexOf(location.pathname) !== -1);
+            if (active) {
+              // This mutation inside an otherwise pure function is
+              // unfortunate, but doing it here avoids a separate
+              // traversal of the sidebar data.
+              var breadcrumbs = $("<div>")
+                .addClass("collapsed-header__pre")
+                .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
+              var title = $("<div>").html(item.title);
+              $(".collapsed-header").empty().append(breadcrumbs, title);
+            }
+            var subitems = renderItems(item.items, paths.concat(item.title));
+            var a = $("<a>")
+              .attr("href", urls[0] || "#")
+              .html(item.title);
+            if (subitems.length > 0) {
+              a.append(" ").append($("<div>").addClass("arrow-down"));
+            }
+            return $("<li>")
+              .addClass("tier-" + (paths.length + 1))
+              .toggleClass("active", active)
+              .append(a)
+              .append(subitems);
+          });
+
+          return $("<ul>").append(lis);
+        }
+
+        document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
+      })();
+    </script>
+  </ul>
+
+  {% if page.version %}
+    <div id="version-switcher">
+      <ul class="nav" style="display: none">
+        <li class="tier-1">
+          <a href="#">
+            Version: <span class="version-name">{{ page.version.name }}</span>
+            <div class="arrow-down"></div>
+          </a>
+          <ul>
+            {% for v in page.versions %}
+              <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
+                <a
+                {% if v.url %}href="{{ v.url | relative_url }}"
+                {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
+                  {{ v.version.name }}
+                  {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  {% endif %}
+
+  <script>
+    $("#version-switcher").change(function () {
+      location.href = $(this).val();
+    });
+  </script>
+</div>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
+<script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>

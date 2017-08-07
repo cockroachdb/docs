@@ -31,7 +31,7 @@ body.menu_open {
 		}
 	}
 
-	#content, .col-sidebar {
+	#content, .col-sidebar, #version-switcher {
 		margin-left:-200px;
 	}
 }
@@ -45,7 +45,7 @@ nav.mobile_expanded {
 	overflow: auto;
 	visibility: hidden;
 
-	a {
+	a:not(.mobile-menu-dropdown__parent-link) {
 		border-bottom: 1px solid $cl_gray_medium;
 		@include avenir_h(14px);
 		line-height: 20px;
@@ -65,16 +65,20 @@ nav.mobile_expanded {
 		background: #efefef;
 	}
 
-	.mobile-menu-products {
+	.mobile-menu-dropdown {
 		float: left;
 		@include avenir_h(14px);
 		letter-spacing: 1.5px;
 		color: $cl_blue;
 		text-transform: uppercase;
 		padding: 25px 0 30px 20px;
-		border-bottom: 1px solid #DADBE2;
+		border-bottom: 1px solid $cl_gray_medium;
 
-		a {
+		&__parent-link {
+			color: $cl_blue;
+		}
+
+		a:not(.mobile-menu-dropdown__parent-link) {
 			position: relative;
 			display: block;
 			@include avenir_h(12px);
@@ -91,7 +95,7 @@ nav.mobile_expanded {
 				max-width: inherit;
 				max-height: inherit;
 				left: -17px;
-				top: 7px;
+				top: 10px;
 				width: 10px;
 				height: 2px;
 				background-color: rgba(19,40,72,0.2);
@@ -130,6 +134,14 @@ header {
 
 	.container {
 		position:relative;
+
+	  @include at-query($min, $screen-sm) {
+	    padding-right: 0;
+	  }
+
+		@include at-query($min, $screen-md) {
+			padding-right: 15px;
+		}
 	}
 
 	nav.desktop {
@@ -157,8 +169,10 @@ header {
 			float:right;
 		}
 
-		.products-dropdown {
-			// display: none;
+		//
+		// dropdown nav items
+		//
+		.menu-dropdown {
 			position: absolute;
 			max-width: 280px;
 			margin-left: -31px;
@@ -170,17 +184,18 @@ header {
 			opacity: 0;
 			pointer-events: none;
 			transition: opacity 0.4s ease;
+			z-index: 1;
 
 			a {
 				padding: 20px 30px;
 				margin: 0;
 
-				&:first-child {
+				&:not(:last-child) {
 					padding-right: 50px;
 					border-bottom: solid 2px #e6e6e6;
 				}
 
-				.products-dropdown {
+				.menu-dropdown {
 					&__title {
 						@include subhead-adelle-sm;
 						color: $cl_blue;
@@ -199,14 +214,14 @@ header {
 				}
 
 				&:hover {
-					.products-dropdown__title {
+					.menu-dropdown__title {
 						color: $cl_green;
 					}
 				}
 			}
 		}
 
-		.menu-item-products {
+		.menu-item-dropdown {
 			float: left;
 			margin: 0 10px;
 			padding: 0;
@@ -216,6 +231,14 @@ header {
 			text-transform: uppercase;
 			@include groovy(color);
 
+			&__parent-link {
+				height: 40px;
+
+				a {
+					margin: 0;
+				}
+			}
+
 			&.current-menu-item {
 				color: $cl_green;
 			}
@@ -224,7 +247,7 @@ header {
 				cursor: pointer;
 				color: $cl_green;
 
-				.products-dropdown {
+				.menu-dropdown {
 					opacity: 1;
 					pointer-events: all;
 				}

@@ -23,22 +23,25 @@ $(function() {
       $footer = $('section.footer'),
       footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-    $versionSwitcher = $('#version-switcher');
+      $versionSwitcher = $('#version-switcher');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
     $sidebar.css({height: sideNavHeight});
     $('#mysidebar li').hide();
+    $('#version-switcher .tier-1 ul').slideUp();
+    $versionSwitcher.removeClass('open');
   }
 
   // Separate function to configure sidenav on window resize
   // We don't want to animate, so collapseSideNav() won't work
   function sidenavOnResize(winWidth) {
+    $('body').removeClass('sidenav-open');
+
     if (winWidth > 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
-      $('body').removeClass('sidenav-open');
       $sidebar.removeClass('nav--collapsed');
       $sidebar.css('height', '');
     } else {
@@ -67,13 +70,19 @@ $(function() {
     }
   });
 
-  $(window).resize(function(e){
+  $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
 
     if(_viewport_width > 768) {
       $('body').removeClass('menu_open');
     } else {
       $mobile_menu.css('visibility', 'visible');
+    }
+
+    if (_viewport_width > 992) {
+      $versionSwitcher.show();
+    } else {
+      $versionSwitcher.hide();
     }
 
     // chrome on android fires a resize event on scroll, this will make sure
@@ -91,10 +100,11 @@ $(function() {
     _viewport_width = window.innerWidth;
 
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() <= versionSwitcherBottom)
-        $versionSwitcher.css('position', 'fixed');
-      else
-        $versionSwitcher.css('position', 'absolute');
+      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
+        $versionSwitcher.css({'position': 'absolute', 'bottom': '70px'});
+      } else {
+        $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
+      }
     } else { // mobile
       $sidebar.css('padding-top', 10);
 
@@ -199,11 +209,11 @@ $(function() {
           // otherwise, this should show top level
           $('#mysidebar li').slideDown(250);
         }
-        $versionSwitcher.slideUp();
+        $versionSwitcher.slideDown();
       } else {
         $('body').removeClass('sidenav-open')
         collapseSideNav();
-        $versionSwitcher.slideDown();
+        $versionSwitcher.slideUp();
       }
     }
   };
@@ -261,13 +271,3 @@ $(function() {
 
   $('[data-tooltip]').tooltip();
 });
-
-$(window).load(function () {
-  // The computation of the version switcher's position needs to wait for
-  // all fonts and images to load.
-  if ($versionSwitcher.length > 0) {
-    $versionSwitcher.css('position', 'absolute');
-    versionSwitcherBottom = $versionSwitcher.offset().top + $versionSwitcher.outerHeight();
-    $versionSwitcher.css('position', 'fixed');
-  }
-})

@@ -68,6 +68,11 @@
 		line-height: 12px;
 		margin-left: 10px;
 		padding: 12px 30px;
+		margin-right: 5px;
+	}
+
+	@include at-query($min, $screen-md) {
+		margin-right: 15px;
 	}
 }
 
