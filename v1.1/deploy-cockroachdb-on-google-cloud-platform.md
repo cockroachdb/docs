@@ -30,8 +30,6 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
   - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
   - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
 
-{{site.data.alerts.callout_success}}<strong><a href="https://www.terraform.io/">Terraform</a></strong> users can deploy CockroachDB using the <a href="https://github.com/cockroachdb/cockroach/blob/master/cloud/gce">configuration files and instructions in the our GitHub repo's <code>gce</code>directory</a>.{{site.data.alerts.end}}
-
 ## Step 1. Configure your network
 
 CockroachDB requires TCP communication on two ports:
