@@ -33,8 +33,8 @@ Parameter | Description
 `qualified_name_list` | A comma-separated list of column names, in parentheses.
 `select_stmt` | A comma-separated list of column values or [value expressions](sql-expressions.html) for a single row, in parentheses. To insert values into multiple rows, use a comma-separated list of parentheses. Alternately, you can use [`SELECT`](select.html) statements to retrieve values from other tables and insert them as new rows. See the [Insert a Single Row](#insert-a-single-row), [Insert Multiple Rows](#insert-multiple-rows), [Insert from a `SELECT` Statement](#insert-from-a-select-statement) examples below.<br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
-`on_conflict` | Normally, when inserted values conflict with a Unique constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`](update.html) statement is also supported here). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update Values `ON CONFLICT`](#update-values-on-conflict) and [Do Not Update Values `ON CONFLICT`](#do-not-update-values-on-conflict) examples below.<br><br>Note that it's not possible to update the same row twice with a single `INSERT ON CONFLICT` statement. Also, if the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error.<br><br>As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`](upsert.html) statement. However, `UPSERT` does not let you specify the column with the unique constraint; it assumes that the column is the primary key. Using `ON CONFLICT` is therefore more flexible.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>To return nothing in the response, not even the number of rows affected, use `RETURNING NOTHING`.<br><br>For `INSERT` statements with `ON CONFLICT` clauses, `RETURNING` is not supported, and `RETURNING NOTHING` is supported only within a [transaction](transactions.html).
+`on_conflict` | Normally, when inserted values conflict with a Unique constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`](update.html) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update Values `ON CONFLICT`](#update-values-on-conflict) and [Do Not Update Values `ON CONFLICT`](#do-not-update-values-on-conflict) examples below.<br><br>Note that it's not possible to update the same row twice with a single `INSERT ON CONFLICT` statement. Also, if the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error.<br><br>As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`](upsert.html) statement. However, `UPSERT` does not let you specify the column with the unique constraint; it assumes that the column is the primary key. Using `ON CONFLICT` is therefore more flexible.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
 ## Examples
 
@@ -423,7 +423,7 @@ IDs:
 
 ### Update Values `ON CONFLICT`
 
-When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called <code>excluded</code>. This example demonstrates how you use the columns in the temporary <code>excluded</code> table to apply updates on conflict:
+When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict:
 
 ~~~ sql
 > INSERT INTO accounts (id, balance)
@@ -439,6 +439,27 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 +----+---------+
 |  8 |   500.5 |
 +----+---------+
+~~~
+
+<span class="version-tag">New in v1.1:</span> You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
+
+~~~ sql
+> INSERT INTO accounts (id, balance)
+    VALUES (8, 700)
+    ON CONFLICT (id)
+    DO UPDATE SET balance = excluded.balance
+    WHERE excluded.balance > accounts.balance;
+
+> SELECT * FROM accounts WHERE id = 8;
+~~~
+
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  8 |     800 |
++----+---------+
+(1 row)
 ~~~
 
 ### Do Not Update Values `ON CONFLICT`
