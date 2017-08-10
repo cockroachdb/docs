@@ -10,7 +10,7 @@ CockroachDB supports parallel execution of independent [`INSERT`](insert.html), 
 
 ## Why Use Parallel Statement Execution
 
-Normally, applications usually issue multiple SQL statements within a single transaction and SQL engines execute each statement sequentially. Because the statements are executed locally, the results can be delivered fast. But CockroachDB being a distributed database, execution of statements takes longer than normal SQL engines because of high round-trip latencies required for consensus. To counteract the issue and optimize performance, CockroachDB supports parallel execution of SQL statements. Thus, despite the higher latency of single data-modifying statements, the overall latency of multiple such statements can be reduced.
+Normally, applications issue multiple SQL statements within a single transaction and SQL engines execute each statement sequentially. Because the statements are executed locally, the results can be delivered fast. But CockroachDB being a distributed database, execution of SQL statements takes longer than normal SQL engines because of high round-trip latencies required for consensus. To counteract the issue and optimize performance, CockroachDB supports parallel execution of SQL statements. Thus, despite the higher latency of single data-modifying statements, the overall execution latency of multiple statements can be reduced.
 
 ## How Parallel Statement Execution Works
 
@@ -22,9 +22,9 @@ Normal execution of SQL statements returns a successful return value immediately
 
 If two consecutive statements are not independent, and yet a `RETURNING NOTHING` clause is added to the statements, CockroachDB will detect the dependence and serialize the execution. You can thus use the `RETURNING NOTHING` clause with SQL statements without worrying about their dependence.
 
-### Delayed execution of dependent statements 
+### Delayed execution of sequentially-executed statements 
 
-To execute statements in parallel, the independent statements should have a `RETURNING NOTHING` clause, while the dependent statements do not have the `RETURNING NOTHING` clause. Consider a scenario where a dependent statement follows a batch of independent statements. The dependent statement will be executed after all the independent statements are done executing. Thus it may seem as if the dependent statement is taking longer to execute, but it's in fact waiting on the independent statements. Even then, the total time required for parallel execution of independent statements followed by the execution of the dependent statement should be less than time required for the sequential execution of all statements. 
+The SQL statements to be executed in parallel should have a `RETURNING NOTHING` clause, while sequentially-executed statements do not have the `RETURNING NOTHING` clause. Consider a scenario where a sequentially-executed SQL statement follows a batch of parallely-executed statements within a single transaction. The sequentially-executed statement will be executed after all the parallel statements are done executing. Thus it may seem as if the sequentially-executed statement is taking longer to execute, but it's in fact waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the SQL statement should be less than time required for the sequential execution of all statements. 
 
 ### Error message mismatch
 
@@ -109,7 +109,7 @@ SELECT * FROM accounts;
 (5 rows)
 ~~~
 
-The execution timeline for the parallel execution of the independent statements is:
+The execution timeline for the parallel execution of the statements is:
 
 BEGIN &nbsp; &nbsp; &nbsp; INSERT-----\INSERT &nbsp; &nbsp; &nbsp; COMMIT
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INSERT-----\INSERT </p>
