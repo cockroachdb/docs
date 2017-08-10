@@ -97,7 +97,7 @@ $(document).ready(function(){
 
       {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="gp" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz \
 | tar -xJ</code></pre></div>
-      
+
       {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
     </li>
     <li>
@@ -209,16 +209,18 @@ $(document).ready(function(){
 
     {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="mac-source-download"><span class="gp" data-eventcategory="mac-source-download">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz \
 | tar -xJ</code></pre></div>
-      
+
       {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
   </li>
   <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
-    <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
+    {{site.data.alerts.callout_info}}The default binary contains core open-source functionality covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.{{site.data.alerts.end}}
   </li>
   <li>
   <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
@@ -325,7 +327,7 @@ $(document).ready(function(){
 
       {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz \
 | tar  xvz</code></pre></div>
-      
+
       {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
 
     </li>
@@ -398,16 +400,18 @@ $(document).ready(function(){
 
     {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step2"><span class="gp" data-eventcategory="linux-binary-step2">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.src.tgz \
 | tar  xvz</code></pre></div>
-      
+
       {{site.data.alerts.callout_info}}You can also download other versions of the binary listed on our <a href="../releases/">Releases page</a>.{{site.data.alerts.end}}
   </li>
   <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}<br><span class="gp noselect shellterminal"></span>make build</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
     <p>The build process can take 10+ minutes, so please be patient.</p>
 
-    <p><div class="bs-callout bs-callout-info">The default binary contains core open-source functionally covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.</div></p>
+    {{site.data.alerts.callout_info}}The default binary contains core open-source functionality covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.{{site.data.alerts.end}}
   </li>
   <li>
 
