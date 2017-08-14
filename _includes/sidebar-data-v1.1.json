@@ -841,10 +841,52 @@
     "items": [
       {
         "title": "Explore the Admin UI",
-        "urls": [
-          "/${VERSION}/explore-the-admin-ui.html"
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/explore-the-admin-ui.html"
+            ]
+          },
+          {
+            "title": "Runtime Dashboard",
+            "urls": [
+              "/${VERSION}/admin_ui_runtime_dashboard.html"
+            ]
+          },
+          {
+            "title": "SQL Dashboard",
+            "urls": [
+              "/${VERSION}/admin_ui_sql_dashboard.html"
+            ]
+          },
+          {
+            "title": "Storage Dashboard",
+            "urls": [
+              "/${VERSION}/admin_ui_storage_dashboard.html"
+            ]
+          },
+          {
+            "title": "Replication Dashboard",
+            "urls": [
+              "/${VERSION}/admin_ui_replication_dashboard.html"
+            ]
+          },
+          {
+            "title": "Databases Page",
+            "urls": [
+              "/${VERSION}/admin_ui_databases_page.html"
+            ]
+          },
+          {
+            "title": "Jobs Page",
+            "urls": [
+              "/${VERSION}/admin_ui_jobs_page.html"
+            ]
+          },
         ]
       },
+      
       {
         "title": "Monitor CockroachDB with Prometheus",
         "urls": [
