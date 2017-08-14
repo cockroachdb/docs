@@ -4,17 +4,17 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: false
 ---
 
-By default, each node of a CockroachDB cluster shares anonymous usage details with Cockroach Labs on an hourly basis. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, the Admin UI and each node of a CockroachDB cluster shares anonymous usage details with Cockroach Labs. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page explains the details that get shared and how to opt out of sharing.
 
-{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="explore-the-admin-ui.html">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="admin-ui-overview">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ## What Gets Shared
 
-When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis, as well as crash reports as they occur. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
+When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis, as well as crash reports as they occur. If the Admin UI is accessed, the anonymized user information and page views are shared. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
 
 ### Storage Details
 
@@ -197,6 +197,88 @@ This JSON example shows an excerpt of what query statistics look like when sent 
          ...
       }
    }
+}
+~~~
+
+### Admin UI Details
+
+CockroachDB uses the Identify and Page methods of [Segment](https://segment.com/)'s analytics.js library to collect anonymized data about the Admin UI usage. The following Admin UI metrics are shared:
+
+#### Identity event
+
+Admin UI shares the following anonymized information once per Admin UI session:
+
+Detail | Description
+-------|------------
+User ID | The GUID of the cluster.
+Enterprise | Whether or not the user is an enterprise license user.
+User Agent | The browser used to access the Admin UI.
+Version | The CockroachDB cluster version.
+
+#### Page events
+
+Admin UI shares the following anonymized information about page views in batches of 20 page views:
+
+Detail | Description
+-------|------------
+User ID | The GUID of the cluster.
+Name | The anonymized name of the Admin UI page or dashboard you navigate to.
+Path | The anonymized path of the Admin UI page or dashboard you navigate to.
+
+#### Example
+
+This JSON example shows what anonymized Admin UI identity information looks like when sent to Segment:
+
+~~~ json
+{
+  "_metadata": {},
+  "context": {
+      "library": {
+         "name": "analytics-node",
+         "version": "3.0.0"
+      }
+   },
+  "messageId": "node-jFua5Hxj5peINPk0rAOGkCKgls60CiHF",
+  "timestamp": "2017-09-19T15:21:16.972Z",
+  "traits": {
+      "enterprise": true,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36",
+      "version": "v1.1-alpha.20170817-980-g3b098cd"
+   },
+  "type": "identify",
+  "userId": "55bcbd902-f912-4a3e-91a0-56ca9de17ab7",
+  "writeKey": "5Vbp8WMYDmZTfCwE0uiUqEdAcTiZWFDb",
+  "sentAt": "2017-09-19T15:21:27.095Z",
+  "integrations": {},
+  "receivedAt": "2017-09-19T15:21:27.169Z",
+  "originalTimestamp": "2017-09-19T15:21:16.898Z"
+},
+~~~
+
+This JSON example shows what anonymized Admin UI page views information looks like when sent to Segment:
+
+~~~ json
+{
+  "_metadata": {},
+  "context": {
+      "library": {
+         "name": "analytics-node",
+         "version": "3.0.0"
+      }
+  },
+  "messageId": "node-xuStnk7A2i30FDPdC51rpqxEU9gmym84",
+  "name": "/cluster",
+  "properties": {
+      "path": "/cluster"
+   },
+  "timestamp": "2017-09-19T11:23:16.391Z",
+  "type": "page",
+  "userId": "c98564c4-5b95-40d3-82cc-bb18937930e1",
+  "writeKey": "5Vbp8WMYDmZTfCwE0uiUqEdAcTiZWFDb",
+  "sentAt": "2017-09-16T11:23:17.390Z",
+  "integrations": {},
+  "receivedAt": "2017-09-16T11:23:26.412Z",
+  "originalTimestamp": "2017-09-16T11:23:07.369Z"
 }
 ~~~
 

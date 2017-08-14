@@ -163,7 +163,7 @@ When you're done, exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](admin-ui-access-and-navigate.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
 
 <img src="{{ 'images/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

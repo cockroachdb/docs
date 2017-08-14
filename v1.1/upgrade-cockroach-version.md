@@ -135,7 +135,7 @@ For each node in your cluster, complete the following steps.
     ~~~
     `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it `--host`.
 
-6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](explore-the-admin-ui.html).
+6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](admin-ui-access-and-navigate.html).
 
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
