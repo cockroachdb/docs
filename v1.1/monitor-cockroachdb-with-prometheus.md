@@ -156,7 +156,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 
     ~~~ shell
     $ prometheus --config.file=prometheus.yml \
-    --alertmanager.url=<hostname of machine running alertmanager>:9093
+    --alertmanager.url=<address of machine running alertmanager>:9093
     ~~~
 
 8. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
