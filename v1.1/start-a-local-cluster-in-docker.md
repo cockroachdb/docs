@@ -23,11 +23,11 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include start_in_docker/v1.1/mac-linux-steps.md %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include start_in_docker/v1.1/mac-linux-steps.md %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-windows">
@@ -163,7 +163,7 @@ When you're done, exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](explore-the-admin-ui.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](admin-ui-overview.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
 
 <img src="{{ 'images/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

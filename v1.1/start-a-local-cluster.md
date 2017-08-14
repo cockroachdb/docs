@@ -171,7 +171,7 @@ Exit the SQL shell on node 2:
 
 ## Step 4. Monitor the cluster
 
-To access the [Admin UI](explore-the-admin-ui.html) for your cluster, point a browser to `http://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup:
+To access the [Admin UI](admin-ui-overview.html) for your cluster, point a browser to `http://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup:
 
 <img src="{{ 'images/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
