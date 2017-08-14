@@ -78,7 +78,7 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
     ~~~
 
 2. Point your browser to `http://<hostname of machine running prometheus>:9090`, where you can use the Prometheus UI to query, aggregate, and graph CockroachDB time series metrics.
-  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to `<hostname of a CockroachDB node>:8080/_status/vars`.
+  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to `http://<hostname of a CockroachDB node>:8080/_status/vars`.
   - For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
 
 ## Step 4. Visualize metrics in Grafana
@@ -156,7 +156,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 
     ~~~ shell
     $ prometheus --config.file=prometheus.yml \
-    --alertmanager.url=<hostname of machine running alertmanager>:9093
+    --alertmanager.url=http://<hostname of machine running alertmanager>:9093
     ~~~
 
 8. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
