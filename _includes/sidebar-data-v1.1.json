@@ -445,6 +445,18 @@
             ]
           },
           {
+            "title": "<code>SHOW QUERIES</code>",
+            "urls": [
+              "/${VERSION}/show-queries.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW SESSIONS</code>",
+            "urls": [
+              "/${VERSION}/show-sessions.html"
+            ]
+          },
+          {
             "title": "<code>SHOW TABLES</code>",
             "urls": [
               "/${VERSION}/show-tables.html"
@@ -852,15 +864,9 @@
         ]
       },
       {
-        "title": "View Node Details",
+        "title": "Manage Long-Running Queries",
         "urls": [
-          "/${VERSION}/view-node-details.html"
-        ]
-      },
-      {
-        "title": "View Version Details",
-        "urls": [
-          "/${VERSION}/view-version-details.html"
+          "/${VERSION}/manage-long-running-queries.html"
         ]
       },
       {
@@ -897,6 +903,18 @@
         "title": "Generate CockroachDB Resources",
         "urls": [
           "/${VERSION}/generate-cockroachdb-resources.html"
+        ]
+      },
+      {
+        "title": "View Node Details",
+        "urls": [
+          "/${VERSION}/view-node-details.html"
+        ]
+      },
+      {
+        "title": "View Version Details",
+        "urls": [
+          "/${VERSION}/view-version-details.html"
         ]
       },
       {
