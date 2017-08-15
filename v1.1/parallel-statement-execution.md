@@ -4,7 +4,7 @@ summary: The parallel statement execution feature allows parallel execution of m
 toc: false
 ---
 
-CockroachDB supports parallel execution of independent [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single transaction. Parallel execution of SQL statements reduces the overall execution time of multiple SQL statements.
+CockroachDB supports parallel execution of multiple independent [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single transaction. Parallel execution of SQL statements reduces the overall execution time of multiple SQL statements.
 
 <div id="toc"></div>
 
@@ -28,7 +28,7 @@ If two consecutive statements are not independent, and yet a `RETURNING NOTHING`
 
 The SQL statements to be executed in parallel should have a `RETURNING NOTHING` clause, while sequentially-executed statements do not have the `RETURNING NOTHING` clause. Consider a scenario where a sequentially-executed SQL statement follows a batch of parallely-executed statements within a single transaction. The sequentially-executed statement will be executed after all the parallel statements are done executing. Thus it may seem as if the sequentially-executed statement is taking longer to execute, but it's in fact waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the SQL statement should be less than time required for the sequential execution of all statements. 
 
-### Error message handling with 
+### Error message mismatch
 
 It is possible to see a mismatch in the error message being displayed and the statement being executed. Consider a scenario where a sequentially-executed statement is executed after a batch of statements executed in parallel, and one of the parallel statements results in an error. Now because the `RETURNING NOTHING` clause is used with the parallel statements, CockroachDB cannot return the error for the parallel statement. The error message for the parallel statement is then reported on the next sequential statement. Thus you might see a mismatch with the error message to the statement being executed. 
 
