@@ -64,11 +64,6 @@ The following pairs of statements are dependent since reordering them will affec
 > UPDATE a SET y = false WHERE y = true;
 ~~~
 
-## Required Privileges
-
-The user must have the `INSERT`, `UPDATE`, `DELETE`, and `UPSERT` [privileges](privileges.html) on the table.
-
-
 ## Example
 
 ~~~ sql
