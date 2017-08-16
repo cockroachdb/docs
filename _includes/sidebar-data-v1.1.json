@@ -673,7 +673,14 @@
             "urls": [
               "/${VERSION}/bytes.html"
             ]
+          },
+          {
+            "title": "<code>UUID</code>",
+            "urls": [
+              "/${VERSION}/uuid.html"
+            ]
           }
+          
         ]
       },
       {
