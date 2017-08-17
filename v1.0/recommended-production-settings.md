@@ -289,4 +289,4 @@ CockroachDB does not yet provide a native Windows binary. Once that's available,
 
 #### Attributions
 
-This section, "File Descriptors Limit", is a derivative of [Open File Limits](http://docs.basho.com/riak/kv/2.1.4/using/performance/open-files-limit/) by Riak, used under Creative Commons Attribution 3.0 Unported License.
+This section, "File Descriptors Limit", is a derivative of the chapter *Open File Limits* From the Riak LV 2.1.4 documentation, used under Creative Commons Attribution 3.0 Unported License.
