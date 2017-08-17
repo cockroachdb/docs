@@ -691,6 +691,12 @@
             "urls": [
               "/${VERSION}/bytes.html"
             ]
+          },
+          {
+            "title": "<code>ARRAYS</code>",
+            "urls": [
+              "/${VERSION}/array.html"
+            ]
           }
         ]
       },
