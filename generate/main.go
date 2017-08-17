@@ -531,6 +531,7 @@ func main() {
 					unlink: []string{"table_name", "database_name", "user_name"},
 				},
 				{name: "show_index", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'INDEX'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
+				{name: "show_jobs", stmt: "show_jobs_stmt"},
 				{name: "show_keys", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'KEYS'")}},
 				{name: "show_queries", stmt: "show_queries_stmt"},
 				{name: "show_sessions", stmt: "show_sessions_stmt"},
