@@ -127,7 +127,7 @@ See [Install Client Drivers](install-client-drivers.html) for more details.
 
 ## Why does CockroachDB use the PostgreSQL wire protocol instead of the MySQL protocol?
 
-CockroachDB uses the PostgreSQL wire protocol because it is better documented than the MySQL protocol and the PostgreSQL license is better for us than the MySQL license.
+CockroachDB uses the PostgreSQL wire protocol because it is better documented than the MySQL protocol, and because PostgreSQL has a liberal Open Source license, similar to BSD or MIT licenses, whereas MySQL has the more restrictive GNU General Public License.
 
 Note, however, that the protocol used doesn't significantly impact how easy it is to port applications. Swapping out SQL network drivers is rather straightforward in nearly every language. What makes it hard to move from one database to another is the dialect of SQL in use. CockroachDB's dialect is based on PostgreSQL as well.
 
