@@ -11,10 +11,14 @@
   <div id="content">
     <div id="main-content" class="container">
       <div class="row sidebar-row">
-        {% include sidebar.html %}
-        <div class="col-md-9 content-col {% if page.url == '/' %}content-col--landing{% endif %}">
-          {{content}}
-        </div>
+        {% if page.no_sidebar == true %}
+          <div class="col-md-10 col-md-offset-1 content-col">
+        {% else %}
+          {% include sidebar.html %}
+          <div class="col-md-9 content-col content-col-border {% if page.url == '/' %}content-col--landing{% endif %}">
+        {% endif %}
+            {{content}}
+          </div>
       </div>
     </div>
     {% include footer.html %}
@@ -25,6 +29,5 @@
   {% if page.twitter == true %}
     {% include twitter_analytics.html %}
   {% endif %}
-
 </body>
 </html>
