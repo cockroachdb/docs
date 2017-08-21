@@ -16,8 +16,6 @@ As a command generates messages, CockroachDB uses the [command](#commands)'s [lo
 
 Each node's logs detail only the internal activity of that node without visibility into the behavior of other nodes in the cluster. When troubleshooting, this means that you must identify the node where the problem occurred or [collect the logs from all active nodes in your cluster](debug-zip.html).
 
-{{site.data.alerts.callout_info}}You can also <a href="#log-queries">log queries</a> your cluster receives.{{site.data.alerts.end}}
-
 ### Commands
 
 All [`cockroach` commands](cockroach-commands.html) support logging. However, it's important to note:
@@ -92,56 +90,6 @@ By default, commands besides `cockroach start` discard messages with the `INFO` 
 {% include custom/logging-flags.md %}
 
 The `--log-backtrace-at`, `--verbosity`, and `--v` flags are intended for internal debugging by CockroachDB contributors.
-
-## Log Queries
-
-To help troubleshoot [query performance issues](query-behavior-troubleshooting.html#performance-issues), you can use [cluster-wide settings](cluster-settings.html) to enable logging for long-running SQL transactions or all queries, regardless of time.
-
-{{site.data.alerts.callout_danger}}These settings makes <em>all</em> queries slower and causes nodes to consume more memory. You should <a href="#disable-query-logging">disable query logging</a> as soon as you're done troubleshooting the query's issues.{{site.data.alerts.end}}
-
-### Enable Query Logging
-
-- **Long-running transactions**:
-
-    ~~~ sql
-    > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '[time]';
-    ~~~
-
-    The `[time]` parameter accepts common time specifiers, such as `100ms` or `2s`.
-
-- **All queries**:
-
-    ~~~ sql
-    > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
-    ~~~
-
-### Details
-
-After you enable query logging, whenever nodes process SQL statements, they generate messages with an `INFO` [severity level](#severity-levels).
-
-By default, these messages will get [written to files](#write-to-file), but are ultimate handled by whatever logging behavior you set for [`cockroach start`](start-a-node.html#logging).
-
-### Improve Query Performance
-
-After finding which queries are slow, use [`EXPLAIN`](explain.html) to examine them. It's possible that the query is slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index](create-index.html).
-
-*(More guidance around query performance optimization forthcoming.)*
-
-### Disable Query Logging
-
-Once you're done troubleshooting, you should disable query logging to prevent it from unnecessarily consuming resources.
-
-- **Long-running transactions**:
-
-    ~~~ sql
-    > SET CLUSTER SETTING sql.trace.txn.enable_threshold = '0s';
-    ~~~
-
-- **All queries**:
-
-    ~~~ sql
-    > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
-    ~~~
 
 ## See Also
 

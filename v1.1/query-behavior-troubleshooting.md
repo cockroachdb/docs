@@ -1,6 +1,6 @@
 ---
 title: Query Behavior Troubleshooting
-summary: Learn how to troubleshoot issues with specific queries with CockroachDB 
+summary: Learn how to troubleshoot issues with specific queries with CockroachDB
 toc: false
 ---
 
@@ -14,15 +14,15 @@ If your queries return unexpected results, there are several possibilities:
 
 - You’ve encountered a [known limitation](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+is%3Aissue+label%3Aknown-limitation), [UX surprise](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Aux-surprise) or other problem with [SQL semantics](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Asql-semantics). Feel free to leave a comment on the existing issue indicating that you’ve encountered a problem as well.
 - Your application has a bug. It's always worthwhile to check and double-check your application’s logic before filing an issue. That said, you can always [reach out for support](support-resources.html).
- - CockroachDB has a bug. Please [file an issue](file-an-issue.html).
+- CockroachDB has a bug. Please [file an issue](file-an-issue.html).
 
 ## Performance Issues
 
-If your queries take much longer than expected, there are a few things you can check into:
+If queries are taking longer than expected to process, there are a few things you can check into:
 
 - Review your deployment's monitoring. General network latency or partitioning events can affect query response times.
 
-- [Log and debug long-running queries/transactions](debug-and-error-logs.html#log-queries).
+- [Identify and cancel long-running queries](manage-long-running-queries.html).
 
 If you're still unable to determine why the query executes slowly, please [file an issue](file-an-issue.html).
 
