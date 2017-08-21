@@ -1,19 +1,19 @@
 ---
 title: UUID
-summary: The UUID data type .
+summary: The UUID data type stores 128-bit Universal Unique Identifiers.
 toc: false
 ---
 
-The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt). 
+<span class="version-tag">New in v1.1:</span> The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt). 
 
 <div id="toc"></div>
 
 ## Syntax
-`UUID` can be expressed using the following formats:
+A `UUID` value can be expressed using the following formats:
 
 Format | Description 
 -------|-------------
-Standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format. | Hyphen-seperated groups of 8, 4, 4, 4, 12 hexadecimal digits<br><br> Example: acde070d-8c4c-4f0d-9d8a-162843c10333
+Standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-seperated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: acde070d-8c4c-4f0d-9d8a-162843c10333
 With braces | The standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.<br><br>Example: {acde070d-8c4c-4f0d-9d8a-162843c10333}
 As Bytes | UUID value specified as bytes.<br><br>Example: b'kafef00ddeadbeed'
 UUID used as a URN | UUID can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: 'urn:uuid:63616665-6630-3064-6465-616462656564'
@@ -120,7 +120,7 @@ To auto-generate unique row IDs, you can cast UUID as bytes and use the uuid_v4(
 (1 row)
 ~~~
 
-{{site.data.alerts.callout_info}}When using UUID with uuid_v4() as the default value, consecutively generated IDs will be spread across different key-value ranges (and therefore likely across different nodes).{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When using <code>UUID</code> with <code>uuid_v4()</code> as the default value, consecutively generated IDs will be spread across different key-value ranges (and therefore likely across different nodes).{{site.data.alerts.end}}
 
 ## Supported Casting & Conversion
 
