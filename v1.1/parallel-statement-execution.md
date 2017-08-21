@@ -4,19 +4,19 @@ summary: The parallel statement execution feature allows parallel execution of m
 toc: false
 ---
 
-CockroachDB supports parallel execution of multiple independent [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single transaction. Parallel execution of SQL statements reduces the overall execution time of multiple SQL statements.
+CockroachDB supports parallel execution of independent [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](https://www.cockroachlabs.com/docs/dev/transactions.html). Executing such statements in parallel reduces their overall execution time.
 
 <div id="toc"></div>
 
 ## Why Use Parallel Statement Execution
 
-To maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires majority of replicas to agree on a write before committing it. Thus writes to CockroachDB require coordination between globally-distributed nodes. Communication between these nodes takes time and contributes to communication latency. Executing SQL statements sequentially, as in traditional SQL engines, leads to higher cumulative communication latency.
+To maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/), which requires majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, as in traditional SQL engines, leads to higher cumulative communication latency.
 
-Parallel execution of statements can help reduce the communication latency. With parallel statement execution, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
+With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
 
 ## How Parallel Statement Execution Works
 
-SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if they operate on independent tables and their execution can be safely reordered without affecting their results. 
+SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
 
 Normal execution of SQL statements returns a return value immediately from the server. After the return value is received, the next SQL statement is executed. Appending the `RETURNING NOTHING` clause with SQL statements prevents the server from sending return values and allows CockroachDB to execute the statements in parallel. Thus to execute statements in parallel, append the `RETURNING NOTHING` suffix to the SQL statements. 
 
@@ -36,16 +36,14 @@ On encountering the error, CockroachDB will stop the execution of all parallel s
 
 ## Independent SQL statements
 
-As mentioned earlier, CockroachDB considers SQL statements within a single transaction to be independent if they operate on independent tables and their execution can be safely reordered without affecting their results. 
+As mentioned earlier, CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
 
-For example, the following statements are considered independent since they operate on two independent tables and reordering the statements will not affect the results:
+For example, the following statements are considered independent since reordering the statements will not affect the results:
 
 ~~~ sql
 > INSERT INTO a VALUES (100);
 > INSERT INTO b VALUES (100);
 ~~~
-
-The following statements are not considered independent since they operate on the same table:
 
 ~~~ sql
 > INSERT INTO a VALUES (100);
