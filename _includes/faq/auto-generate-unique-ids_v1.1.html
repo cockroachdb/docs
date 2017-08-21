@@ -10,9 +10,9 @@ On insert, the `unique_rowid()` function generates a default value from the time
 > CREATE TABLE test (id BYTES PRIMARY KEY DEFAULT uuid_v4(), name STRING);
 ~~~
 
-Because `BYTES` values are 128-bit, much larger than `INT` values at 64-bit, there is virtually no chance of generating non-unique values.
+Alternatively, you can use a [`UUID`](uuid.md) column with the `uuid_v4()` function cast to `UUID` as the default value:
 
-Alternatively, you can cast UUID as bytes and use the uuid_v4() function. 
+Because `BYTES` and `UUID` values are 128-bit, much larger than `INT` values at 64-bit, there is virtually no chance of generating non-unique values.
 
 ~~~ sql
 > CREATE TABLE new_test (id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID, name STRING);
