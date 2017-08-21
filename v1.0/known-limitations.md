@@ -18,6 +18,8 @@ As a workaround, when you need to remove all rows from a large table:
 2. Use [`DROP TABLE`](drop-table.html) to remove the table.
 3. Use [`CREATE TABLE`](create-table.html) with the output from step 1 to recreate the table.
 
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17016">#17016</a>.{{site.data.alerts.end}}
+
 ## Schema changes within transactions
 
 Within a single [transaction](transactions.html):
