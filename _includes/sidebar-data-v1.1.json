@@ -211,6 +211,12 @@
             ]
           },
           {
+            "title": "<code>CANCEL QUERY</code>",
+            "urls": [
+              "/${VERSION}/cancel-query.html"
+            ]
+          },
+          {
             "title": "<code>COMMIT</code>",
             "urls": [
               "/${VERSION}/commit-transaction.html"

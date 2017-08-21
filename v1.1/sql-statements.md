@@ -88,10 +88,10 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
+[`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](cluster-settings.html#view-current-cluster-settings) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
-[`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) | Set a cluster-wide setting.
 
 ## Backup & Restore Statements (Enterprise)
 
