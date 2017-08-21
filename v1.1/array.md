@@ -4,18 +4,19 @@ summary: The ARRAYS data type stores
 toc: false
 ---
 
-The `ARRAY` data type creates one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
+The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
 
 <div id="toc"></div>
 
-{{site.data.alerts.callout_info}} CockroachDB does not support nested arrays, indexing on arrays, and ordering by arrays.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.{{site.data.alerts.end}}
 
 ## Syntax
-A column of data type `ARRAY` can be created in the following ways:
+
+A value of data type `ARRAY` can be expressed in the following ways:
 
 
-- Appending square brackets ([]) to any non-array [data type](data-types.html) in column definition.
-- Adding the term `ARRAY` to any non-array [data type](data-types.html) in column definition.
+- Appending square brackets (`[]`) to any non-array [data type](data-types.html).
+- Adding the term `ARRAY` to any non-array [data type](data-types.html).
 
 ## Size
 
