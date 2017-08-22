@@ -19,7 +19,7 @@ As Bytes | UUID value specified as bytes.<br><br>Example: b'kafef00ddeadbeed'
 UUID used as a URN | UUID can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: 'urn:uuid:63616665-6630-3064-6465-616462656564'
 
 ## Size
-A `UUID` column is 128 bits in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+A `UUID` value is 128 bits in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
 
 ## Examples
 
@@ -103,7 +103,7 @@ A `UUID` column is 128 bits in width, but the total storage size is likely to be
 
 ### Create a table with auto-generated unique row IDs
 
-To auto-generate unique row IDs, you can cast UUID as bytes and use the uuid_v4() function. 
+To auto-generate unique row IDs, you can cast `UUID` as bytes and use the `uuid_v4()` function. 
 
 ~~~ sql
 > CREATE TABLE w (id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID, name STRING);
