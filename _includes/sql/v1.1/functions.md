@@ -269,7 +269,7 @@ Function &rarr; Returns | Description
 <code>array_cat(input: anyarray[], anyarray[])&rarr;anyarray[]</code> | <span class="funcdesc"> Concatenates arrays.
 <code>array_remove(input: anyarray[], anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Removes the specified element from the array.
 <code>array_replace(input: anyarray[], anyelement, anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Replaces the specified element with the new element.
-<code>array_position(input: anyarray[], anyelement)&rarr;int</code> | <span class="funcdesc"> Returns the position specified element in the array.
+<code>array_position(input: anyarray[], anyelement)&rarr;int</code> | <span class="funcdesc"> Returns the position of the specified element in the array.
 
 ### System Info Functions
 
