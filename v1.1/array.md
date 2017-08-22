@@ -4,7 +4,7 @@ summary: The ARRAYS data type stores
 toc: false
 ---
 
-The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
+<span class="version-tag">New in v1.1:</span>The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
 
 <div id="toc"></div>
 
