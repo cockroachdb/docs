@@ -60,6 +60,72 @@ The size of a `ARRAY` value is variable, but it's recommended to keep values und
 (1 row)
 ~~~
 
+### Accessing an array element using array index
+{{site.data.alerts.callout_info}} Arrays in CockroachDB are 1-indexed. {{site.data.alerts.end}}
+
+~~~ sql
+> SELECT (ARRAY['a', 'b', 'c'])[2];
+~~~
+~~~
++---------------------------+
+| (ARRAY['a', 'b', 'c'])[2] |
++---------------------------+
+| b                         |
++---------------------------+
+(1 row)
+~~~
+
+### Appending an element to an array
+#### Using the array_append function
+
+~~~ sql
+> SELECT ARRAY[1, 2, 3];
+~~~
+~~~
++----------------+
+| ARRAY[1, 2, 3] |
++----------------+
+| {1,2,3}        |
++----------------+
+(1 row)
+~~~
+~~~ sql
+> SELECT array_append(ARRAY[1, 2, 3], 4);
+~~~
+~~~
++--------------------------------+
+| array_append(ARRAY[1, 2, 3], 4) |
++--------------------------------+
+| {1,2,3,4}                      |
++--------------------------------+
+(1 row)
+~~~
+
+#### Using the append (`||`) operator
+~~~ sql
+> SELECT ARRAY['a','b','c'];
+~~~
+~~~
++----------------------+
+| ARRAY['a', 'b', 'c'] |
++----------------------+
+| {"a","b","c"}        |
++----------------------+
+(1 row)
+~~~
+~~~ sql
+SELECT ARRAY['a', 'b', 'c'] || 'd';
+~~~
+~~~
++-----------------------------+
+| ARRAY['a', 'b', 'c'] || 'd' |
++-----------------------------+
+| {"a","b","c","d"}           |
++-----------------------------+
+(1 row)
+~~~
+
+
 ## See Also
 
 [Data Types](data-types.html)
