@@ -260,17 +260,6 @@ Function &rarr; Returns | Description
 <code>translate(input: <a href="string.html">string</a>, find: <a href="string.html">string</a>, replace: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">In `input`, replaces the first character from `find` with the first character in `replace`; repeat for each character in `find`. <br/><br/>For example, `translate('doggie', 'dog', '123');` returns `1233ie`.</span>
 <code>upper(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code> | <span class="funcdesc">Converts all characters in `val`to their to their upper-case equivalents.</span>
 
-### Array Functions
-
-Function &rarr; Returns | Description
---- | ---
-<code>array_append(input: anyarray[], anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Appends the specified element to the end of the array.
-<code>array_prepend(input: anyarray[], anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Appends the specified element to the beginning of the array.
-<code>array_cat(input: anyarray[], anyarray[])&rarr;anyarray[]</code> | <span class="funcdesc"> Concatenates arrays.
-<code>array_remove(input: anyarray[], anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Removes the specified element from the array.
-<code>array_replace(input: anyarray[], anyelement, anyelement)&rarr;anyarray[]</code> | <span class="funcdesc"> Replaces the specified element with the new element.
-<code>array_position(input: anyarray[], anyelement)&rarr;int</code> | <span class="funcdesc"> Returns the position of the specified element in the array.
-
 ### System Info Functions
 
 Function &rarr; Returns | Description
