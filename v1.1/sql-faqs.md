@@ -80,7 +80,7 @@ $ cockroach start --insecure --host=localhost --vmodule=executor=2
 
 ## Does CockroachDB support a UUID type?
 
-Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column should perform just as well.
+Yes. For more details, see [`UUID`](https://www.cockroachlabs.com/docs/uuid.html).
 
 ## How does CockroachDB sort results when `ORDER BY` is not used?
 
