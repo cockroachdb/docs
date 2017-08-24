@@ -201,3 +201,41 @@ Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`]
 
 - If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
 - If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
+
+## Dropping an interleaved index prevents DDL operations
+
+When you [drop an interleaved index](drop-index.html) on a table, future DDL operations on the table will fail, for example:
+
+~~~ sql
+> CREATE TABLE t1 (id1 INT PRIMARY KEY, id2 INT, id3 INT);
+
+> CREATE INDEX c ON t1 (id2)
+      STORING (id1, id3)
+      INTERLEAVE IN PARENT t1 (id2);
+
+> DROP INDEX t1@c;
+~~~
+
+~~~ sql
+> DROP TABLE t1;
+~~~
+
+~~~
+pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exist
+~~~
+
+~~~ sql
+> TRUNCATE TABLE t1;
+~~~
+
+~~~
+pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exist
+~~~
+
+~~~ sql
+> ALTER TABLE t1 RENAME COLUMN id3 TO id4;
+~~~
+
+~~~
+pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exist
+~~~
