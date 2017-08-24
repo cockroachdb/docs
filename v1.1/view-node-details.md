@@ -6,6 +6,8 @@ toc: false
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
+For details about using the `cockroach node` command to prepare nodes for permanent removal, or for reintroduction after removal, see [Decommission a Node](decommission-a-node.html) and [Recommission a Node](recommission-a-node.html).
+
 <div id="toc"></div>
 
 ## Subcommands
@@ -14,6 +16,8 @@ Subcommand | Usage
 -----------|------
 `ls` | List the ID of each node in the cluster.
 `status` | View the status of one or all nodes.
+`decommission` | Decommission one or more nodes for removal. See [Decommission a Node](decommission-a-node.html) for more details.
+`recommission` | Recommission one or more previously removed nodes. See [Recommission a Node](recommission-a-node.html) for more details.
 
 ## Synopsis
 
@@ -120,4 +124,6 @@ $ cockroach node status --insecure
 
 ## See Also
 
-[Other Cockroach Commands](cockroach-commands.html)
+- [Other Cockroach Commands](cockroach-commands.html)
+- [Decommission a Node](decommission-a-node.html)
+- [Recommission a Node](recommission-a-node.html)
