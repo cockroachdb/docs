@@ -871,12 +871,6 @@
         ]
       },
       {
-        "title": "Stop a Node",
-        "urls": [
-          "/${VERSION}/stop-a-node.html"
-        ]
-      },
-      {
         "title": "Create Security Certificates",
         "urls": [
           "/${VERSION}/create-security-certificates.html"
@@ -921,6 +915,18 @@
         "title": "Upgrade a Cluster's Version",
         "urls": [
           "/${VERSION}/upgrade-cockroach-version.html"
+        ]
+      },
+      {
+        "title": "Stop a Node",
+        "urls": [
+          "/${VERSION}/stop-a-node.html"
+        ]
+      },
+      {
+        "title": "Remove Nodes",
+        "urls": [
+          "/${VERSION}/remove-nodes.html"
         ]
       },
       {
