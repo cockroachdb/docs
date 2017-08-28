@@ -197,6 +197,8 @@ Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP 
 
 ## Counting distinct rows in a table
 
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17833">#17833</a>.{{site.data.alerts.end}}
+
 When using `count(DISTINCT a.*)` to count distinct rows in a table based on a subset of the columns, as opposed to `count(*)`, the results are almost always incorrect, for example:
 
 ~~~ sql

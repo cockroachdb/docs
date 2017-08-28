@@ -128,42 +128,6 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, the node will either crash or report a memory capacity error. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
-## Counting distinct rows in a table
-
-When using `count(DISTINCT a.*)` to count distinct rows in a table based on a subset of the columns, as opposed to `count(*)`, the results are almost always incorrect, for example:
-
-~~~ sql
-> CREATE TABLE t (a INT, b INT);
-
-> INSERT INTO t VALUES (1, 2), (1, 3), (2, 1);
-
-> SELECT count(DISTINCT t.*) FROM t;
-~~~
-
-~~~
-+---------------------+
-| count(DISTINCT t.*) |
-+---------------------+
-|                   1 |
-+---------------------+
-(1 row)
-~~~
-
-As a workaround, list the columns explicitly, for example:
-
-~~~ sql
-> SELECT count(DISTINCT (t.a, t.b)) FROM t;
-~~~
-
-~~~
-+----------------------------+
-| count(DISTINCT (t.a, t.b)) |
-+----------------------------+
-|                          3 |
-+----------------------------+
-(1 row)
-~~~
-
 ## Query planning for `OR` expressions
 
 Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it can't use both conditions at once.
