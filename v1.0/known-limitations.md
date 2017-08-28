@@ -10,6 +10,8 @@ This page describes limitations we've identified in the [CockroachDB 1.0](../rel
 
 ## Removing all rows from large tables
 
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17016">#17016</a>.{{site.data.alerts.end}}
+
 When removing all rows from a table via a [`TRUNCATE`](truncate.html) statement or a [`DELETE`](delete.html#delete-all-rows) statement without a `WHERE` clause, CockroachDB batches the entire operation as a single [transaction](transactions.html). For large tables, this can cause the nodes containing the table data to either crash or exhibit poor performance due to elevated memory and CPU usage.
 
 As a workaround, when you need to remove all rows from a large table:
@@ -17,8 +19,6 @@ As a workaround, when you need to remove all rows from a large table:
 1. Use [`SHOW CREATE TABLE`](show-create-table.html) to get the table schema.
 2. Use [`DROP TABLE`](drop-table.html) to remove the table.
 3. Use [`CREATE TABLE`](create-table.html) with the output from step 1 to recreate the table.
-
-{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17016">#17016</a>.{{site.data.alerts.end}}
 
 ## Schema changes within transactions
 
@@ -120,6 +120,8 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ## Quoting collation locales containing uppercase letters
 
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
+
 Quoting a [collation](collate.html) locale containing uppercase letters results in an error, for example:
 
 ~~~ sql
@@ -140,22 +142,22 @@ As a workaround, make the locale lowercase or remove the quotes, for example:
 > CREATE TABLE b (c STRING COLLATE DE);
 ~~~
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
-
 ## Creating views with array types
-
-Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
 
+Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
+
 ## Dropping a database containing views
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
 
 When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
 database containing the tables fails silently.
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
-
 ## Qualifying a column that comes from a view
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
 
 It is not possible to fully qualify a column that comes from a view because the view gets replaced by an anonymous subquery, for example:
 
@@ -170,8 +172,6 @@ It is not possible to fully qualify a column that comes from a view because the 
 ~~~
 pq: source name "caps" not found in FROM clause
 ~~~
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
 
 ## Write and update limits for a single transaction
 
@@ -196,6 +196,8 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, the node will either crash or report a memory capacity error. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
 ## Counting distinct rows in a table
+
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17833">#17833</a>.{{site.data.alerts.end}}
 
 When using `count(DISTINCT a.*)` to count distinct rows in a table based on a subset of the columns, as opposed to `count(*)`, the results are almost always incorrect, for example:
 
@@ -233,6 +235,8 @@ As a workaround, list the columns explicitly, for example:
 
 ## Running on Windows as a non-admin user
 
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
+
 By default, CockroachDB periodically rotates the file it writes logs to, as well as a symlink pointing to the file it's currently using. However, on Windows, non-admin users cannot create symlinks, which prevents CockroachDB from starting because it cannot create logs.
 
 To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, e.g.:
@@ -240,8 +244,6 @@ To resolve this issue, non-admin users must log to `stdout` (instead of files) b
 ~~~ shell
 $ cockroach.exe start --log-dir= --insecure
 ~~~
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
 
 ## Query planning for `OR` expressions
 
@@ -282,6 +284,8 @@ Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`]
 - If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
 
 ## Dropping an index interleaved into another index on the same table
+
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
 
 In the unlikely case that you [interleave](interleave-in-parent.html) an index into another index on the same table and then [drop](drop-index.html) the interleaved index, future DDL operations on the table will fail.
 
