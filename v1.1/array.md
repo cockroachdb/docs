@@ -6,6 +6,8 @@ toc: false
 
 <span class="version-tag">New in v1.1:</span>The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
 
+The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
+
 <div id="toc"></div>
 
 {{site.data.alerts.callout_info}} CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.{{site.data.alerts.end}}
@@ -64,64 +66,81 @@ The size of a `ARRAY` value is variable, but it's recommended to keep values und
 {{site.data.alerts.callout_info}} Arrays in CockroachDB are 1-indexed. {{site.data.alerts.end}}
 
 ~~~ sql
-> SELECT (ARRAY['a', 'b', 'c'])[2];
+> SELECT * FROM c;
 ~~~
 ~~~
-+---------------------------+
-| (ARRAY['a', 'b', 'c'])[2] |
-+---------------------------+
-| b                         |
-+---------------------------+
++------------+
+|     d      |
++------------+
+| {10,20,30} |
++------------+
+(1 row)
+~~~
+
+~~~ sql
+> SELECT d[2] FROM c;
+~~~
+~~~
++------+
+| d[2] |
++------+
+|   20 |
++------+
 (1 row)
 ~~~
 
 ### Appending an element to an array
-#### Using the array_append function
+
+#### Using the `array_append` function
 
 ~~~ sql
-> SELECT ARRAY[1, 2, 3];
+> SELECT * FROM c;
 ~~~
 ~~~
-+----------------+
-| ARRAY[1, 2, 3] |
-+----------------+
-| {1,2,3}        |
-+----------------+
++------------+
+|     d      |
++------------+
+| {10,20,30} |
++------------+
 (1 row)
 ~~~
 ~~~ sql
-> SELECT array_append(ARRAY[1, 2, 3], 4);
+> UPDATE c SET d = array_append(d, 40) WHERE d[3] = 30;
+
+> SELECT * FROM c;
 ~~~
 ~~~
-+--------------------------------+
-| array_append(ARRAY[1, 2, 3], 4) |
-+--------------------------------+
-| {1,2,3,4}                      |
-+--------------------------------+
++---------------+
+|       d       |
++---------------+
+| {10,20,30,40} |
++---------------+
 (1 row)
 ~~~
 
 #### Using the append (`||`) operator
 ~~~ sql
-> SELECT ARRAY['a','b','c'];
+> SELECT * FROM c;
 ~~~
 ~~~
-+----------------------+
-| ARRAY['a', 'b', 'c'] |
-+----------------------+
-| {"a","b","c"}        |
-+----------------------+
++---------------+
+|       d       |
++---------------+
+| {10,20,30,40} |
++---------------+
 (1 row)
 ~~~
 ~~~ sql
-SELECT ARRAY['a', 'b', 'c'] || 'd';
+> UPDATE c SET d = d || 50 WHERE d[4] = 40;
+
+> SELECT * FROM c;
 ~~~
 ~~~
-+-----------------------------+
-| ARRAY['a', 'b', 'c'] || 'd' |
-+-----------------------------+
-| {"a","b","c","d"}           |
-+-----------------------------+
++------------------+
+|        d         |
++------------------+
+| {10,20,30,40,50} |
++------------------+
 (1 row)
 ~~~
 
