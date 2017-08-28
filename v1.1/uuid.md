@@ -25,7 +25,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 ### Create a table with manually-entered `UUID` values
 
-#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.
+#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 
 ~~~ sql
 > CREATE TABLE v (token uuid);
@@ -44,7 +44,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 (1 row)
 ~~~
 
-#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.
+#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces
 
 ~~~ sql
 > INSERT INTO v VALUES ('{63616665-6630-3064-6465-616462656563}');
@@ -62,7 +62,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 (2 rows)
 ~~~
 
-#### Create a table with `UUID` in byte format.
+#### Create a table with `UUID` in byte format
 
 ~~~ sql
 > INSERT INTO v VALUES (b'kafef00ddeadbeed');
@@ -81,7 +81,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 (3 rows)
 ~~~
 
-#### Create a table with `UUID` used as URN.
+#### Create a table with `UUID` used as URN
 
 ~~~ sql
 > INSERT INTO v VALUES ('urn:uuid:63616665-6630-3064-6465-616462656564');

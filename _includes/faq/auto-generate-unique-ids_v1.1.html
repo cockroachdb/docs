@@ -1,4 +1,4 @@
-To auto-generate unique row IDs, use the [`UUID`](uuid.md) column with the `uuid_v4()` function cast to `UUID` as the default value:
+To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `uuid_v4()` function cast to `UUID` as the default value:
 
 ~~~ sql
 > CREATE TABLE new_test (id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID, name STRING);
