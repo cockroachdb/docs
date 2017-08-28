@@ -119,6 +119,7 @@ The size of a `ARRAY` value is variable, but it's recommended to keep values und
 ~~~
 
 #### Using the append (`||`) operator
+
 ~~~ sql
 > SELECT * FROM c;
 ~~~
