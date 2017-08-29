@@ -12,7 +12,7 @@ CockroachDB supports parallel execution of independent [`INSERT`](insert.html), 
 
 To understand why parallel statement execution is required, let's consider a sample scenario to demonstrate how SQL statements are executed. 
 
-Consider a scenario where a user's last name, favorite movie, and favorite song are to be updated on a social networking application. Suppose the database has three tables: username, movies, and songs, that need to be updated to update the user information. Also suppose that the user's ID is 1. Then the traditional transaction to update the user's information is as follows:
+Consider a scenario where a user's last name, favorite movie, and favorite song are to be updated on a social networking application. Suppose the database has three tables: username, movies, and songs, that need to be updated to update the user information. Then the traditional transaction to update the user's information is as follows:
 
 ~~~ sql
 > BEGIN;
