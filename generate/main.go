@@ -519,6 +519,13 @@ func main() {
 				{name: "show_create_view", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'VIEW'")}, replace: map[string]string{"var_name": "view_name"}, unlink: []string{"view_name"}},
 				{name: "show_databases", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'DATABASES'")}},
 				{
+					name:    "show_backup",
+					stmt:    "show_backup_stmt",
+					match:   []*regexp.Regexp{regexp.MustCompile("'SHOW' 'BACKUP'")},
+					replace: map[string]string{"string_or_placeholder": "location"},
+					unlink: []string{"location"},
+				},
+				{
 					name:   "show_grants",
 					stmt:   "show_stmt",
 					inline: []string{"on_privilege_target_clause", "targets", "for_grantee_clause", "grantee_list", "table_pattern_list", "name_list"},

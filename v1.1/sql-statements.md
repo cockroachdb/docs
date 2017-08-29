@@ -28,6 +28,8 @@ Statement | Usage
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
+[`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
+[`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
@@ -103,3 +105,4 @@ Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
+[`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
