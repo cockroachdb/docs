@@ -4,7 +4,7 @@ summary: The SHOW BACKUP statement lists the contents of a backup.
 toc: false
 ---
 
-The `SHOW BACKUP` [statement](sql-statements.html) list the contents of a backup created
+<span class="version-tag">New in v1.1:</span> The `SHOW BACKUP` [statement](sql-statements.html) list the contents of a backup created
 with the [`BACKUP` statement](backup.html).
 
 <div id="toc"></div>
