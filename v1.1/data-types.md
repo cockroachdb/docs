@@ -21,6 +21,7 @@ Type | Description | Example
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
+[`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec` 
 
 ## Data Type Conversions & Casts
 
