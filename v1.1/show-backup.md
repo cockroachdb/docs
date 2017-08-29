@@ -4,8 +4,7 @@ summary: The SHOW BACKUP statement lists the contents of a backup.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW BACKUP` [statement](sql-statements.html) list the contents of a backup created
-with the [`BACKUP` statement](backup.html).
+<span class="version-tag">New in v1.1:</span> The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of an enterprise backup created with the [`BACKUP`](backup.html) statement.
 
 <div id="toc"></div>
 
@@ -21,7 +20,7 @@ Only the `root` user can run `SHOW BACKUP`.
 
 Parameter | Description
 ----------|------------
-`location` | The location of the backup to inspect.
+`location` | The location of the backup to inspect. For more details, see [Backup File URLs](backup.html#backup-file-urls).
 
 ## Response
 
