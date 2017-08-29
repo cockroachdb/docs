@@ -12,13 +12,13 @@ CockroachDB supports parallel execution of independent [`INSERT`](insert.html), 
 
 To understand why parallel statement execution is required, let's consider a sample scenario to demonstrate how SQL statements are executed. 
 
-Consider a scenario where a user's last name, favorite movie, and favorite song are to be updated on a social networking application. Suppose the database has three tables: username, movies, and songs, that need to be updated to update the user information. Then the traditional transaction to update the user's information is as follows:
+Consider a scenario where a user's last name, favorite movie, and favorite song are to be updated on a social networking application. Suppose the database has three tables: users, favorite_movies, and favorite_songs, that need to be updated to update the user information. Then the traditional transaction to update the user's information is as follows:
 
 ~~~ sql
 > BEGIN;
-> UPDATE username SET last_name = 'Smith' WHERE userid = 1;
-> UPDATE movies SET favorite_movie = 'The Matrix' WHERE userid = 1;
-> UPDATE songs SET favorite_song = 'All this time' WHERE userid = 1;
+> UPDATE users SET last_name = 'Smith' WHERE id = 1;
+> UPDATE favorite_movies SET movies = 'The Matrix' WHERE user_id = 1;
+> UPDATE favorite_songs SET songs = 'All this time' WHERE user_id = 1;
 > COMMIT;
 ~~~
 
@@ -26,7 +26,7 @@ In this case, the statements are executed sequentially, with each statement bein
 
 <img src="{{ 'images/Sequential_Statement_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution Error Mismatch" style="border:1px solid #eee;max-width:100%" />
 
-Traditional SQL engines execute the statements sequentially. But in case of globally-distributed CockroachDB clusters, sequential execution of statements adds to aggregate latency. This is because to maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, especially when each statement requires long-distance communication, leads to higher cumulative latency.
+SQL engines traditionally execute the statements sequentially. In case of single-node databases, execution of the statements does not involve any communication latency. But in case of globally-distributed CockroachDB clusters, statement execution results in communication latency. This is because to maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, especially when each statement requires long-distance communication, leads to higher cumulative latency.
 
 With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
 
@@ -34,15 +34,15 @@ With parallel statement execution, however, multiple SQL statements within a tra
 
 SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
 
-As seen earlier, sequential execution of SQL statements returns a return value after executing the statement. The client can send the next statement to be executed only after it receives the return value from the server. In CockroachDB, appending the `RETURNING NOTHING` clause with SQL statements causes the server to send an acknowledgement immediately instead of completing the execution and then sending the return value to the client. The client can then send the next statement to be executed on receiving the acknowledgement. This allows CockroachDB to execute the statements in parallel. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING` suffix and is executed sequentially.
+As seen earlier, sequential execution of SQL statements sends a return value after executing the statement. The client can send the next statement to be executed only after it receives the return value from the server. In CockroachDB, appending the `RETURNING NOTHING` clause with SQL statements causes the server to send an acknowledgement immediately instead of completing the execution and then sending the return value to the client. The client can then send the next statement to be executed on receiving the acknowledgement. This allows CockroachDB to execute the statements in parallel. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING` suffix and is executed sequentially.
 
 In our sample scenario, the transaction would be as follows:
 
 ~~~ sql
 > BEGIN;
-> UPDATE username SET last_name = 'Smith' WHERE userid = 1 RETURNING NOTHING;
-> UPDATE movies SET favorite_movie = 'The Matrix' WHERE userid = 1 RETURNING NOTHING;
-> UPDATE songs SET favorite_song = 'All this time' WHERE userid = 1 RETURNING NOTHING;
+> UPDATE users SET last_name = 'Smith' WHERE id = 1 RETURNING NOTHING;
+> UPDATE favorite_movies SET movies = 'The Matrix' WHERE user_id = 1 RETURNING NOTHING;
+> UPDATE favorite_songs SET songs = 'All this time' WHERE user_id = 1 RETURNING NOTHING;
 > COMMIT;
 ~~~
 
@@ -74,13 +74,13 @@ Revisiting our sample scenario, suppose an error occurs while executing the seco
 
 If two consecutive statements are not independent, and yet a `RETURNING NOTHING` clause is added to the statements, CockroachDB will detect the dependence and serialize the execution. You can thus use the `RETURNING NOTHING` clause with SQL statements without worrying about their dependence.
 
-Revising our sample scenario, suppose we want to create a new user on the social networking app. We need to create entries for the last name of the user, their favorite movie, and favorite song. We need to insert entries into three tables: username, movies, and songs. The transaction would be as follows:
+Revising our sample scenario, suppose we want to create a new user on the social networking app. We need to create entries for the last name of the user, their favorite movie, and favorite song. We need to insert entries into three tables: users, favorite_movies, and favorite_songs. The transaction would be as follows:
 
 ~~~ sql
 > BEGIN;
-> INSERT INTO username VALUES last_name = 'Pavlo' WHERE userid = 2 RETURNING NOTHING;
-> INSERT INTO movies VALUES favorite_movie = 'Godfather' WHERE userid = 2 RETURNING NOTHING;
-> INSERT INTO songs VALUES favorite_song = 'Remember' WHERE userid = 2 RETURNING NOTHING;
+> INSERT INTO users VALUES last_name = 'Pavlo' WHERE id = 2 RETURNING NOTHING;
+> INSERT INTO favorite_movies VALUES movies = 'Godfather' WHERE user_id = 2 RETURNING NOTHING;
+> INSERT INTO facvorite_songs VALUES songs = 'Remember' WHERE user_id = 2 RETURNING NOTHING;
 > COMMIT;
 ~~~
 
