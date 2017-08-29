@@ -22,11 +22,11 @@ Consider a scenario where a user's last name, favorite movie, and favorite song 
 > COMMIT;
 ~~~
 
-In this case, the statements are executed sequentially, with each statement being executed to completion before its results are returned to the client. After the return value is received by the client, the next SQL statement is delivered and executed. This is often described as a "conversational API" and the following conceptual diagram demonstrates why:
+In this case, the statements are executed sequentially, with each statement being executed to completion before its results are returned to the client. After the return value is received by the client, the next SQL statement is delivered and executed. This is often described as a "conversational API", as demonstrated by the following conceptual diagram:
 
 <img src="{{ 'images/Sequential_Statement_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution Error Mismatch" style="border:1px solid #eee;max-width:100%" />
 
-Traditional SQL engines execute the statements sequentially. But in case of globally-distributed CockroachDB clusters, sequential execution of statements adds to aggregate latency. This is because to maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, especially when each statement requires long distance communication, leads to higher cumulative latency.
+Traditional SQL engines execute the statements sequentially. But in case of globally-distributed CockroachDB clusters, sequential execution of statements adds to aggregate latency. This is because to maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, especially when each statement requires long-distance communication, leads to higher cumulative latency.
 
 With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
 
@@ -34,7 +34,7 @@ With parallel statement execution, however, multiple SQL statements within a tra
 
 SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
 
-As seen earlier, sequential execution of SQL statements returns a return value immediately from the server. The next statement is executed only after the return value is received. Appending the `RETURNING NOTHING` clause with SQL statements stops the server from sending return values and allows CockroachDB to execute the statements in parallel. To execute statements in parallel, append the `RETURNING NOTHING` suffix to the SQL statements. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING` suffix and is executed sequentially.
+As seen earlier, sequential execution of SQL statements returns a return value immediately from the server. The client sends the next statement to be executed only after it receives the return value from the server. In CockroachDB, appending the `RETURNING NOTHING` clause with SQL statements causes the server to send an acknowledgement immediately instead of completing the execution and then sending the return value to the client. The client sends the next statement to be executed on receiving the acknowledgement. This allows CockroachDB to execute the statements in parallel. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING` suffix and is executed sequentially.
 
 In our sample scenario, the transaction would be as follows:
 
@@ -54,7 +54,7 @@ The following conceptual diagram shows how the transaction is executed sequentia
 
 ### Perceived delay in execution of barrier statements 
 
-As stated earlier, barrier statements are executed only after all parallel statements have finished executing. So it may seem as if the barrier statement is taking longer to execute, but it's in fact waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the SQL statement should be less than time required for the sequential execution of all statements. 
+As stated earlier, barrier statements are executed only after all parallel statements have finished executing. So it may seem as if the barrier statement is taking longer to execute, but it's in fact waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the barrier statement should be less than time required for the sequential execution of all statements. 
 
 Referring to the previous diagram, all `UPDATE` statements are executed to completion before executing `COMMIT`. Hence it might seem as if `COMMIT` is taking longer to execute, but it is, in fact, waiting on the `UPDATE` statements to finish executing.
 
