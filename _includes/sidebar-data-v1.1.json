@@ -187,6 +187,18 @@
             ]
           },
           {
+            "title": "<code>ALTER DATABASE</code>",
+            "urls": [
+              "/${VERSION}/alter-database.html"
+            ]
+          },
+          {
+            "title": "<code>ALTER INDEX</code>",
+            "urls": [
+              "/${VERSION}/alter-index.html"
+            ]
+          },
+          {
             "title": "<code>ALTER TABLE</code>",
             "urls": [
               "/${VERSION}/alter-table.html"
@@ -400,6 +412,12 @@
             "title": "<code>SHOW</code> &lt;session variable&gt;",
             "urls": [
               "/${VERSION}/show-vars.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW BACKUP</code>",
+            "urls": [
+              "/${VERSION}/show-backup.html"
             ]
           },
           {
