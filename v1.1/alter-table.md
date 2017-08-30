@@ -8,6 +8,10 @@ The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a 
 
 {{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
 
+<div id="toc"></div>div>
+
+## Subcommands
+
 For information on using `ALTER TABLE`, see the documents for its relevant subcommands.
 
 Subcommand | Description
@@ -20,3 +24,7 @@ Subcommand | Description
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.
 [`RENAME TABLE`](rename-table.html) | Change the names of tables.
 `SPLIT AT` | *(Documentation pending)* Potentially improve performance by identifying ideal locations to split data in the key-value layer.
+
+## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+
+{% include custom/schema-change-view-job.md %}
