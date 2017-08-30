@@ -856,9 +856,10 @@ a:not([href]) {
     #content #main-content {
       min-height: 625px; }
       #content #main-content .content-col {
-        border-left: 1px solid #DADADA;
         min-height: 625px;
-        padding-left: 55px; } }
+        padding-left: 55px; }
+        #content #main-content .content-col-border {
+          border-left: 1px solid #DADADA; } }
 
 section.footer {
   background: #fff;

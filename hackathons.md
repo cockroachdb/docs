@@ -4,6 +4,7 @@ summary: Get Up & Running with CockroachDB at a Hackathon
 toc: false
 toc_not_nested: true
 twitter: true
+no_sidebar: true
 ---
 
 Hello, hackers! Here you'll find everything you need to get up and running with CockroachDB. While this guide is lengthy, it includes not only details about deploying CockroachDB, but also helps you avoid common pitfalls when using a database.
@@ -49,9 +50,9 @@ To install CockroachDB, you have two options. Which you choose depends on how yo
     ~~~ shell
     $ cockroach version
     ~~~
- 
+
     You should see an output that looks somewhat like this:
- 
+
     ~~~
     Build Tag:    v1.0.3
 Build Time:   2017/07/06 17:44:09
@@ -116,9 +117,9 @@ Build Type:   release
     ~~~ shell
     $ cockroach start --insecure --background
     ~~~
- 
+
     You'll receive a response like:
-    
+
     ~~~
     CockroachDB node starting at 2017-08-17 16:42:18.303618399 +0700 ICT
     build:      CCL v1.0.3 @ 2017/07/06 17:44:09 (go1.8.3)
@@ -230,13 +231,13 @@ Here's how to do that:
     ~~~
 
     If this is the only database you're using, you can set it as the default database:
-    
+
     ~~~ sql
     > SET DATABASE = db_name;
     ~~~
 
 2. Create tables for your data:
-  
+
     ~~~ sql
     > CREATE TABLE tbl_name (
       col1 TYPE PRIMARY KEY,
@@ -411,7 +412,7 @@ router.post('/endpoint', function(req, res){
   try {
     results = await db.query(query.text, query.values);
     res.send(results);
-  } 
+  }
   catch(error) {
     debug(error);
     return res.status(500).json({success: false, data: error});
