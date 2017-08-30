@@ -74,6 +74,14 @@ To automate backups, you must have a client send the `BACKUP` statement to the c
 
 Once the backup is complete, your client will receive a `BACKUP` response.
 
+## Viewing and Controlling Backups Jobs
+
+Whenever you initiate a backup, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+
+After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+
+{{site.data.alerts.callout_info}}Job-related statements require CockroachDB v1.1 or greater.{{site.data.alerts.end}}
+
 ## Synopsis
 
 {% include sql/{{ page.version.version }}/diagrams/backup.html %}

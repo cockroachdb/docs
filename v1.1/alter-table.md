@@ -20,3 +20,7 @@ Subcommand | Description
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.
 [`RENAME TABLE`](rename-table.html) | Change the names of tables.
 `SPLIT AT` | *(Documentation pending)* Potentially improve performance by identifying ideal locations to split data in the key-value layer.
+
+## Viewing Schema Changes
+
+{% include custom/schema-change-view-job.md %}
