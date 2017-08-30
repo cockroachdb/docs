@@ -223,6 +223,12 @@
             ]
           },
           {
+            "title": "<code>CANCEL JOB</code>",
+            "urls": [
+              "/${VERSION}/cancel-job.html"
+            ]
+          },
+          {
             "title": "<code>CANCEL QUERY</code>",
             "urls": [
               "/${VERSION}/cancel-query.html"
@@ -331,6 +337,12 @@
             ]
           },
           {
+            "title": "<code>PAUSE JOB</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/pause-job.html"
+            ]
+          },
+          {
             "title": "<code>RENAME COLUMN</code>",
             "urls": [
               "/${VERSION}/rename-column.html"
@@ -364,6 +376,12 @@
             "title": "<code>RESTORE</code> (Enterprise)",
             "urls": [
               "/${VERSION}/restore.html"
+            ]
+          },
+          {
+            "title": "<code>RESUME JOB</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/resume-job.html"
             ]
           },
           {
@@ -466,6 +484,12 @@
             "title": "<code>SHOW INDEX</code>",
             "urls": [
               "/${VERSION}/show-index.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW JOBS</code>",
+            "urls": [
+              "/${VERSION}/show-jobs.html"
             ]
           },
           {

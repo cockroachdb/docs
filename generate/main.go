@@ -281,6 +281,7 @@ func main() {
 					inline: []string{"opt_transaction"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'COMMIT'|'END'")},
 				},
+				{name: "cancel_job", stmt: "cancel_job_stmt", replace: map[string]string{"a_expr": "job_id"}},
 				{name: "cancel_query", stmt: "cancel_query_stmt", replace: map[string]string{"a_expr": "query_id"}, unlink: []string{"query_id"}},
 				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
 				{
@@ -405,6 +406,7 @@ func main() {
 					unlink:  []string{"table_name", "column_name", "column_type", "table_constraints"},
 				},
 				{name: "opt_interleave", replace: map[string]string{"name_list": "interleave_prefix"}, unlink: []string{"interleave_prefix"}},
+				{name: "pause_job", stmt: "pause_stmt", replace: map[string]string{"a_expr": "job_id"}},
 				{
 					name:    "primary_key_column_level",
 					stmt:    "stmt_block",
@@ -436,6 +438,7 @@ func main() {
 					},
 					unlink: []string{"destination", "timestamp", "full_backup_location", "incremental_backup_location"},
 				},
+				{name: "resume_job", stmt: "resume_stmt", replace: map[string]string{"a_expr": "job_id"}},
 				{
 					name:   "revoke_stmt",
 					inline: []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list"},
@@ -492,7 +495,11 @@ func main() {
 						regexp.MustCompile("'SET' 'CLUSTER'"),
 					},
 				},
-				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_transaction_stmt", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"}},
+				{
+					name:   "set_transaction",
+					stmt:   "set_stmt",
+					inline: []string{"set_transaction_stmt", "transaction_mode_list"},
+				},
 				{
 					name: "show_var",
 					stmt: "show_stmt",
@@ -523,7 +530,7 @@ func main() {
 					stmt:    "show_backup_stmt",
 					match:   []*regexp.Regexp{regexp.MustCompile("'SHOW' 'BACKUP'")},
 					replace: map[string]string{"string_or_placeholder": "location"},
-					unlink: []string{"location"},
+					unlink:  []string{"location"},
 				},
 				{
 					name:   "show_grants",
