@@ -93,15 +93,31 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](cluster-settings.html#view-current-cluster-settings) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
+
+## Query Management Statements
+
+Statement | Usage
+----------|------------
+[`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
+
+## Job Management Statements
+
+Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
+
+Statement | Usage
+----------|------------
+[`CANCEL JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Cancel a `BACKUP` or `RESTORE` job.
+[`PAUSE JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Pause a `BACKUP` or `RESTORE` job.
+[`RESUME JOB`](resume-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Resume paused `BACKUP` or `RESTORE` jobs.
+[`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
 ## Backup & Restore Statements (Enterprise)
 
-The following statements are availably only to [enterprise license](https://www.cockroachlabs.com/pricing/) users.
+The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) users.
 
 {{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 

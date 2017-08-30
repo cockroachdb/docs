@@ -25,6 +25,10 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `table_name` | The name of the table with the constraint you want to drop. |
 | `name` | The name of the constraint you want to drop. |
 
+## Viewing Schema Changes
+
+{% include custom/schema-change-view-job.md %}
+
 ## Example
 
 ~~~ sql
