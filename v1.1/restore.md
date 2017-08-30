@@ -4,9 +4,9 @@ summary: Restore your CockroachDB cluster to a cloud storage services such as AW
 toc: false
 ---
 
-{{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to our <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> only users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/">enterprise</a> users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise license-generated backup](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -66,6 +66,14 @@ Restore Type | Parameters
 ## Performance
 
 The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
+
+## Viewing and Controlling Restore Jobs
+
+Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+
+After the restore has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+
+{{site.data.alerts.callout_info}}Job-related statements require CockroachDB v1.1 or greater.{{site.data.alerts.end}}
 
 ## Synopsis
 

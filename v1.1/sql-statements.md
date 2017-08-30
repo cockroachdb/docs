@@ -95,9 +95,20 @@ Statement | Usage
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 
+## Jobs Management Statements
+
+Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
+
+Statement | Usage
+----------|------------
+[`CANCEL JOB`](pause-job.html) | _(Enterprise)_ Cancel a `BACKUP` or `RESTORE` job.
+[`PAUSE JOB`](pause-job.html) | _(Enterprise)_ Pause a `BACKUP` or `RESTORE` job.
+[`RESUME JOB`](resume-job.html) | _(Enterprise)_ Resume paused `BACKUP` or `RESTORE` jobs.
+[`SHOW JOBS`](show-jobs.html) | View information on jobs.
+
 ## Backup & Restore Statements (Enterprise)
 
-The following statements are availably only to [enterprise license](https://www.cockroachlabs.com/pricing/) users.
+The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) users.
 
 {{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 

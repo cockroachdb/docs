@@ -31,6 +31,10 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
 | `constraint_elem` | The [Check](check.html), [Foreign Keys](foreign-key.html), [Unique](unique.html) constraint you want to add. <br/><br/>Adding/changing a Default constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's Primary Key is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). |
 
+## Viewing Schema Changes
+
+{% include custom/schema-change-view-job.md %}
+
 ## Examples
 
 ### Add the Unique Constraint

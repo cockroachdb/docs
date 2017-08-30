@@ -26,6 +26,10 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `name` | The name of the column you want to modify. |
 | `a_expr` | The new Default Value you want to use. |
 
+## Viewing Schema Changes
+
+{% include custom/schema-change-view-job.md %}
+
 ## Examples
 
 ### Set or Change a Default Value

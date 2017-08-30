@@ -4,7 +4,7 @@ summary: Back up your CockroachDB cluster to a cloud storage services such as AW
 toc: false
 ---
 
-{{site.data.alerts.callout_danger}}The <code>BACKUP</code> feature is only available to <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users. For non-enterprise backups, see <a href="sql-dump.html"><code>cockroach dump</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}The <code>BACKUP</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/">enterprise</a> users. For non-enterprise backups, see <a href="sql-dump.html"><code>cockroach dump</code></a>.{{site.data.alerts.end}}
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) creates full or incremental backups of your cluster's schemas and data that are consistent as of a given timestamp. These backups can be stored on the platforms you're already using, including AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
@@ -73,6 +73,14 @@ We recommend automating daily backups of your cluster.
 To automate backups, you must have a client send the `BACKUP` statement to the cluster.
 
 Once the backup is complete, your client will receive a `BACKUP` response.
+
+## Viewing and Controlling Backups Jobs
+
+Whenever you initiate a backup, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+
+After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+
+{{site.data.alerts.callout_info}}Job-related statements require CockroachDB v1.1 or greater.{{site.data.alerts.end}}
 
 ## Synopsis
 
