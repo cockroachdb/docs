@@ -391,6 +391,7 @@ func main() {
 					unlink:  []string{"table_name", "column_name", "parent_table", "table_constraints"},
 				},
 				{name: "index_def", inline: []string{"opt_storing", "storing", "index_params", "opt_name"}},
+				{name: "import_table", stmt: "import_stmt"},
 				{
 					name:   "insert_stmt",
 					inline: []string{"insert_target", "insert_rest", "returning_clause"},
