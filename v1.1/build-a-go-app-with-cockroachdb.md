@@ -74,12 +74,12 @@ With the default `SERIALIZABLE` isolation level, CockroachDB may require the [cl
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ mkdir -p $GOPATH/github.com/cockroachdb
+$ mkdir -p $GOPATH/src/github.com/cockroachdb
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cd $GOPATH/github.com/cockroachdb
+$ cd $GOPATH/src/github.com/cockroachdb
 ~~~
 
 {% include copy-clipboard.html %}
