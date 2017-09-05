@@ -87,7 +87,7 @@ GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/com
 To use GCE's TCP Proxy Load Balancing service:
 
 1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances).
-    - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp27257` as the **Port name** and `26257` as the **Port number**.
+    - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp26257` as the **Port name** and `26257` as the **Port number**.
 2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
 3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#configure_load_balancer).
     - During backend configuration, create a health check, setting the **Protocol** to `HTTP`, the **Port** to `8080`, and the **Request path** to `/health`.

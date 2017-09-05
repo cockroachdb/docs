@@ -203,7 +203,7 @@ We also have other resources on indexes:
 
 ### Create a Table with Auto-Generated Unique Row IDs
 
-{% include faq/auto-generate-unique-ids.html %}
+{% include faq/auto-generate-unique-ids_v1.1.html %}
 
 ### Create a Table with Foreign Keys
 

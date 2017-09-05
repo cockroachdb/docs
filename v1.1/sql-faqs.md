@@ -12,7 +12,7 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
-{% include faq/auto-generate-unique-ids.html %}
+{% include faq/auto-generate-unique-ids_v1.1.html %}
 
 ## How do I get the last ID/SERIAL value inserted into a table?
 
@@ -80,7 +80,7 @@ $ cockroach start --insecure --host=localhost --vmodule=executor=2
 
 ## Does CockroachDB support a UUID type?
 
-Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column should perform just as well.
+Yes. For more details, see [`UUID`](uuid.html).
 
 ## How does CockroachDB sort results when `ORDER BY` is not used?
 

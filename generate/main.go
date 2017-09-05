@@ -281,7 +281,7 @@ func main() {
 					inline: []string{"opt_transaction"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'COMMIT'|'END'")},
 				},
-				{name: "cancel", stmt: "cancel_query_stmt"},
+				{name: "cancel_query", stmt: "cancel_query_stmt", replace: map[string]string{"a_expr": "query_id"}, unlink: []string{"query_id"}},
 				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
 				{
 					name:   "create_index_stmt",
@@ -519,6 +519,13 @@ func main() {
 				{name: "show_create_view", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'VIEW'")}, replace: map[string]string{"var_name": "view_name"}, unlink: []string{"view_name"}},
 				{name: "show_databases", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'DATABASES'")}},
 				{
+					name:    "show_backup",
+					stmt:    "show_backup_stmt",
+					match:   []*regexp.Regexp{regexp.MustCompile("'SHOW' 'BACKUP'")},
+					replace: map[string]string{"string_or_placeholder": "location"},
+					unlink: []string{"location"},
+				},
+				{
 					name:   "show_grants",
 					stmt:   "show_stmt",
 					inline: []string{"on_privilege_target_clause", "targets", "for_grantee_clause", "grantee_list", "table_pattern_list", "name_list"},
@@ -531,7 +538,10 @@ func main() {
 					unlink: []string{"table_name", "database_name", "user_name"},
 				},
 				{name: "show_index", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'INDEX'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
+				{name: "show_jobs", stmt: "show_jobs_stmt"},
 				{name: "show_keys", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'KEYS'")}},
+				{name: "show_queries", stmt: "show_queries_stmt"},
+				{name: "show_sessions", stmt: "show_sessions_stmt"},
 				{name: "show_tables", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TABLES'")}},
 				{name: "show_transaction", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TRANSACTION'")}},
 				{name: "show_users", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'USERS'")}},

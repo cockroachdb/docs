@@ -1,9 +1,10 @@
 ---
-title: Hackathon Guide
+title: CockroachDB Hackathon Guide
 summary: Get Up & Running with CockroachDB at a Hackathon
 toc: false
 toc_not_nested: true
 twitter: true
+no_sidebar: true
 ---
 
 Hello, hackers! Here you'll find everything you need to get up and running with CockroachDB. While this guide is lengthy, it includes not only details about deploying CockroachDB, but also helps you avoid common pitfalls when using a database.
@@ -19,6 +20,14 @@ However, a lot of this information is easy to adapt if you're using different te
 
 <div id="toc"></div>
 
+## Quick Start: Code Sample Repo
+
+To get you started quickly, Cockroach Labs offers [a simple Express-based Node.js app on GitHub](https://github.com/sploiselle/bankofroach).
+
+To use the app, you'll still need to install and start `cockroach`, but if you've already done that process, this will make it easy to get started.
+
+<a href="https://github.com/sploiselle/bankofroach" type="button" class="btn btn-primary" style="color:#FFF;">Get the code sample</a>
+
 ## 1. Install CockroachDB
 
 To install CockroachDB, you have two options. Which you choose depends on how you want to work with your team:
@@ -26,88 +35,138 @@ To install CockroachDB, you have two options. Which you choose depends on how yo
 - **Locally** on a single machine. This is useful to get started, but can be challenging because only one person can access the database at a time.
 - **Remotely** on a cloud hosting provider. This option can give everyone on your team access to the database, but can be more difficult to configure because you have to deal with your VM's networking rules.
 
-### Locally
+<script>
+$(document).ready(function(){
 
-1. Download the CockroachDB archive, and extract the binary:
+    $('#newsletter-footer-popout').hide();
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz \
-    | tar -xJ
-    ~~~
+    install_button = $('.install-button');
 
-2. Copy the binary into your `PATH` so it's easy to execute `cockroach` commands from any shell:
+    install_button.on('click', function(e){
+      e.preventDefault();
+      var hash = $(this).prop("hash");
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin
-    ~~~
+      install_button.removeClass('current');
+      $(this).addClass('current');
+      $(hash).show();
 
-3. Make sure the CockroachDB executable works:
+    });
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach version
-    ~~~
- 
-    You should see an output that looks somewhat like this:
- 
-    ~~~
-    Build Tag:    v1.0.3
+    $('#remoteinstall').hide();
+
+    //handle click event for os-tab buttons
+    $('.install-button').on('click', function(){
+        $('#install-tabs').find('a').removeClass('current');
+        $(this).addClass('current');
+
+        if($(this).is('#local')){ toggleLocal(); }
+        if($(this).is('#remote')){ toggleRemote(); }
+    });
+
+    function toggleLocal(){
+        $("#localinstall").show();
+        $("#remoteinstall").hide();
+    }
+
+    function toggleRemote(){
+        //$("#remoteinstall").show();
+        $("#localinstall").hide();
+    }
+});
+
+</script>
+
+<div id="install-tabs" class="clearfix install-wrap">
+<a href="#localinstall" id="local" class="install-button current" data-eventaction="local-install"><div class="c2a">Locally</div></a>
+<a href="#remoteinstall" id="remote" class="install-button" data-eventaction="remote-install"><div class="c2a">Remotely</div></a>
+</div>
+
+<div id="localinstall" class="install-option">
+<ol>
+    <li>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz">CockroachDB archive</a> for OS X, and extract the binary:</p>
+
+      <div class="copy-clipboard">
+        <div class="copy-clipboard__text">copy</div>
+        <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
+        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
+      </div>
+      <div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz \
+| tar -xJ</code></pre></div>
+    </li>
+    <li>
+      <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html"><code>cockroach</code> commands</a> from any shell:</p>
+
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
+      <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+    </li>
+    <li>
+      <p>Make sure the CockroachDB executable works:</p>
+
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>cockroach version</code></pre></div>
+
+      <p>You should see an output that looks somewhat like this:</p>
+
+      <pre class="highlight"><code>Build Tag:    v1.0.3
 Build Time:   2017/07/06 17:44:09
 Distribution: CCL
 Platform:     darwin amd64
 Go Version:   go1.8.3
 C Compiler:   4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)
 Build SHA-1:  b692a7cc7acc57022d1441034b93b85d860b7e86
-Build Type:   release
-    ~~~
+Build Type:   release</code></pre>
+      </li>
+  </ol>
+</div>
 
-### Remotely
+<div id="remoteinstall" class="install-option">
 
-1. SSH to your machine:
+<ol>
+    <li>
+      <p>SSH to your machine:</p>
 
-    ~~~ shell
-    $ ssh <username>@<ip address>
-    ~~~
+      <div class="copy-clipboard">
+        <div class="copy-clipboard__text">copy</div>
+        <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
+        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
+      </div>
+      <div class="highlight"><pre class="highlight"><code><span class="gp">$ </span> ssh &lt;username&gt;@&lt;ip address&gt;</code></pre></div>
 
-2. Download and unpack the binary on the remote machine:
+    <li>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz">CockroachDB archive</a> for OS X, and extract the binary:</p>
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz \
-    | tar  xvz
-    ~~~
+      <div class="copy-clipboard">
+        <div class="copy-clipboard__text">copy</div>
+        <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
+        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
+      </div>
+      <div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz \
+| tar  xvz</code></pre></div>
+    </li>
+    <li>
+      <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-3. Copy the binary into your `PATH` so it's easy to execute `cockroach` commands from any shell:
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
+      <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+    </li>
+    <li>
+      <p>Make sure the CockroachDB executable works:</p>
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
-    ~~~
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>cockroach version</code></pre></div>
 
-    {{site.data.alerts.callout_success}}If you get a permissions error, prefix the command with <code>sudo</code>.{{site.data.alerts.end}}
+      <p>You should see an output that looks somewhat like this:</p>
 
-4. Make sure the CockroachDB executable works:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach version
-    ~~~
-
-    You should see an output that looks somewhat like this:
-
-    ~~~
-    Build Tag:    v1.0.3
-    Build Time:   2017/07/06 17:44:09
-    Distribution: CCL
-    Platform:     darwin amd64
-    Go Version:   go1.8.3
-    C Compiler:   4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)
-    Build SHA-1:  b692a7cc7acc57022d1441034b93b85d860b7e86
-    Build Type:   release
-    ~~~
-
+      <pre class="highlight"><code>Build Tag:    v1.0.3
+Build Time:   2017/07/06 17:44:09
+Distribution: CCL
+Platform:     linux amd64
+Go Version:   go1.8.3
+C Compiler:   4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)
+Build SHA-1:  b692a7cc7acc57022d1441034b93b85d860b7e86
+Build Type:   release</code></pre>
+      </li>
+  </ol>
+</div>
 ## 2. Start Your Node
 
 1. On your machine, start your node:
@@ -118,20 +177,20 @@ Build Type:   release
     ~~~
  
     You'll receive a response like:
-    
+
     ~~~
     CockroachDB node starting at 2017-08-17 16:42:18.303618399 +0700 ICT
     build:      CCL v1.0.3 @ 2017/07/06 17:44:09 (go1.8.3)
     admin:      http://localhost:8080
     sql:        postgresql://root@localhost:26257?sslmode=disable
-    logs:       /Users/sloiselle/cockroach-data/logs
+    logs:       /Users/me/cockroach-data/logs
     store[0]:   path=/Users/you/cockroach-data
     status:     started new node
     clusterID:  e929ac5a-0958-419a-b5ec-d568efe1d755
     nodeID:     1
     ~~~
 
-    {{site.data.alerts.callout_success}}<img src="http://emojis.slackmojis.com/emojis/images/1471119455/979/deal_with_it_parrot.gif?1471119455" /> You should definitely note that URL that displays in the <code>sql</code> row. This is your node's connection string, which you'll need to connect it to your app.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}<img src="http://emojis.slackmojis.com/emojis/images/1471119455/979/deal_with_it_parrot.gif?1471119455" alt="flashing parrot gif" /> You should definitely note that URL that displays in the <code>sql</code> row. This is your node's connection string, which you'll need to connect it to your app.{{site.data.alerts.end}}
 
 2. Check that you can connect to the built-in SQL client:
 
@@ -172,8 +231,8 @@ CockroachDB is a SQL database, which also means that it's a relational database 
 
 Relational databases are typically structured kind of like this:
 
-1. Databases, which contain...
-2. Tables, which contain...
+1. Databases, which contain one or more...
+2. Tables, which contain one or more...
 3. Columns, which represent types of data
 4. Rows, which represent individual "observations" of the types of data
 
@@ -188,6 +247,7 @@ So, if you want to use a database for a typical OO program you would:
 
 - Create one database
 - Create a table for each class, which has columns of the same types as the class' attribute
+- Write a row of data to the table to represent each instantiation of the class
 
 This should help you understand how you want to model your data, but it's also possible to store slightly different types of information in your database, as long as it's all structured.
 
@@ -198,9 +258,9 @@ There are two major elements you should plan in your database:
 - Uniquely identifying rows with a `PRIMARY KEY`
 - Using columns to relate tables together with `FOREIGN KEY`s
 
-#### `PRIMARY KEY`
+#### Primary Key
 
-**tl;dr**: You need a column to uniquely identify each row, called a `PRIMARY KEY`.
+{{site.data.alerts.callout_success}}<strong>tl;dr</strong>: You need a column to uniquely identify each row, called a <code>PRIMARY KEY</code>.{{site.data.alerts.end}}
 
 With a database, it's important to plan to create a column (or columns) that can uniquely identify each row––in relational databases (including CockroachDB) this is known as a `PRIMARY KEY`. This column:
 
@@ -209,13 +269,17 @@ With a database, it's important to plan to create a column (or columns) that can
 
 One "gotcha" with CockroachDB is that you currently cannot add a `PRIMARY KEY` after creating a table. For hackathon apps, it's really not a big deal, but it's good practice to be mindful of this decision.
 
-#### Relating Tables
+#### Foreign Key
 
-**tl;dr**: Tables might need columns to relate them to other tables, called a `FOREIGN KEY`.
+{{site.data.alerts.callout_success}}<strong>tl;dr</strong>: To relate two tables together use a <code>FOREIGN KEY</code>, which represents a column from one table in another.{{site.data.alerts.end}}
 
-Though this typically works itself out with a solid OO design, it's important to understand tables that you want to relate with one another and ensure that you include columns that will let you do that.
+Though this typically works itself out with a solid object-oriented design, it's important to understand tables that you want to relate with one another and ensure that you include columns that will let you do that.
 
 For instance, if you have tables for `customers` and the `orders` they place, you would want to include a column in the `orders` table that lets you identify which row from the `customers` table it relates to; typically the `PRIMARY KEY` of the referenced table. This is often called a `FOREIGN KEY`.
+
+By creating this relationship you can easily do things like find all of a user's orders, or do more complicated things like filter `order` data based on data that exists only in the `customers` table with a `JOIN` (more on that later).
+
+SQL offers an explicit `FOREIGN KEY` constraint, which can ensure your data remains consistent. However, it's also possible to 
 
 ## 3. Implement Your Schema
 
@@ -230,13 +294,13 @@ Here's how to do that:
     ~~~
 
     If this is the only database you're using, you can set it as the default database:
-    
+
     ~~~ sql
     > SET DATABASE = db_name;
     ~~~
 
 2. Create tables for your data:
-  
+
     ~~~ sql
     > CREATE TABLE tbl_name (
       col1 TYPE PRIMARY KEY,
@@ -276,7 +340,7 @@ A few notes about using `FOREIGN KEY`:
 
 Now that you have a schema, let's put some data in the database!
 
-CockroachDB offers tyical "CRUD" operations using standard SQL keywords:
+CockroachDB offers typical "CRUD" operations using standard SQL keywords:
 
 CRUD Operation | SQL Keyword
 ---------------|------------
@@ -285,7 +349,7 @@ Read | `SELECT`
 Update | `UPDATE`
 Delete | `DELETE`
 
-Below are some quick examples of what these statements look like (and you can find more of them in our [documentation](http://127.0.0.1:4000/docs/stable/sql-statements.html)).
+Below are some quick examples of what these statements look like (and you can find more of them in our [documentation](sql-statements.html)).
 
 #### `INSERT` Example
 
@@ -357,7 +421,7 @@ $ npm install bluebird --save
 ~~~
 
 {% include copy-clipboard.html %}
-~~~
+~~~ shell
 $ npm install pg-promise --save
 ~~~
 
@@ -411,7 +475,7 @@ router.post('/endpoint', function(req, res){
   try {
     results = await db.query(query.text, query.values);
     res.send(results);
-  } 
+  }
   catch(error) {
     debug(error);
     return res.status(500).json({success: false, data: error});

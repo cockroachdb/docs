@@ -28,6 +28,8 @@ Statement | Usage
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
+[`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
+[`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
@@ -87,8 +89,11 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`SHOW ALL CLUSTER SETTINGS`](cluster-settings.html#view-current-cluster-settings) | List the current cluster-wide settings.
+[`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) | Set a cluster-wide setting.
+[`SHOW ALL CLUSTER SETTINGS`](cluster-settings.html#view-current-cluster-settings) | List the current cluster-wide settings.
+[`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
+[`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 
 ## Backup & Restore Statements (Enterprise)
 
@@ -100,3 +105,4 @@ Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
+[`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
