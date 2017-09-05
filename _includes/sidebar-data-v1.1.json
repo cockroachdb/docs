@@ -906,21 +906,15 @@
         ]
       },
       {
-        "title": "Stop or Remove a Node",
+        "title": "Stop a Node",
         "urls": [
           "/${VERSION}/stop-a-node.html"
         ]
       },
       {
-        "title": "Decommission a Node",
+        "title": "Remove Nodes",
         "urls": [
-          "/${VERSION}/decommission-a-node.html"
-        ]
-      },
-      {
-        "title": "Recommission a Node",
-        "urls": [
-          "/${VERSION}/recommission-a-node.html"
+          "/${VERSION}/remove-nodes.html"
         ]
       },
       {

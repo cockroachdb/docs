@@ -16,7 +16,7 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-[`quit`](stop-a-node.html) | <span class="version-tag">Changed in v1.1:</span>  Temporarily stop a node or permanently remove a node that has been decommissioned.
+[`quit`](stop-a-node.html) | <span class="version-tag">Changed in v1.1:</span> Temporarily stop a node or permanently remove a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`user`](create-and-manage-users.html) | Get, set, list, and remove users.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
