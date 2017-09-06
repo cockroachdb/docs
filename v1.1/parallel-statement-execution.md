@@ -10,9 +10,25 @@ CockroachDB supports parallel execution of independent [`INSERT`](insert.html), 
 
 ## Why Use Parallel Statement Execution
 
-To understand why parallel statement execution is required, let's first understand sequential execution of SQL statements.
+SQL engines traditionally execute the SQL statements sequentially. The server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed. 
 
-Consider a scenario where we want to update a user's last name, favorite movie, and favorite song on a social networking application. Suppose the database has three tables: users, favorite_movies, and favorite_songs, that need to be updated to update the user information. Then the traditional transaction to update the user's information is as follows:
+In the case of a traditional single-node SQL database, statements are executed on the single machine, and so the execution does not result in any communication latency. However, in the case of a globally-distributed and replicated database like CockroachDB, execution of statements can span multiple nodes. The coordination between nodes results in communication latency. Executing SQL statements sequentially results in higher cumulative latency.
+
+With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
+
+## When to use Parallel Statement Execution
+
+SQL statements within a single transaction can be executed in parallel if the statements are [independent](parallel-statement-execution.html#independent-sql-statements). CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
+
+## How Parallel Statement Execution Works
+
+Let's understand how sequential and parallel execution works in the following scenario:
+
+
+- Suppose we want to update a user's last name, favorite movie, and favorite song on a social networking application.
+- The database has three tables that need to be updated: `users`, `favorite_movies`, and `favorite_songs`.
+
+Then the traditional transaction to update the user's information is as follows:
 
 ~~~ sql
 > BEGIN;
@@ -22,19 +38,11 @@ Consider a scenario where we want to update a user's last name, favorite movie, 
 > COMMIT;
 ~~~
 
-In this case, the server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed. This is often described as a "conversational API," as demonstrated by the following conceptual diagram:
+While executing the SQL statements in the transaction sequentially, the server sends a return value after executing a statement. The client can send the next statement to be executed only after it receives the return value of the previous statement. This is often described as a "conversational API," as demonstrated by the following conceptual diagram:
 
-<img src="{{ 'images/Sequential_Statement_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution Error Mismatch" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/Sequential_Statement_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution" style="border:1px solid #eee;max-width:100%" />
 
-SQL engines traditionally execute the statements sequentially. In case of single-node databases, execution of the statements does not involve any communication latency. However, in case of globally-distributed CockroachDB clusters, statement execution results in communication latency. To maintain strong consistency across a globally-distributed cluster, CockroachDB replicates writes using the Raft [consensus protocol](https://www.cockroachlabs.com/blog/consensus-made-thrive/). The protocol requires a majority of replicas to agree before a write is committed. Replicas always live on separate nodes, and communication between these nodes takes time. Executing SQL statements sequentially, especially when each statement requires long-distance communication, leads to higher cumulative latency.
-
-With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency over multiple SQL statements. 
-
-## How Parallel Statement Execution Works
-
-SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
-
-As seen earlier, while executing SQL statements sequentially, the server sends a return value after executing a statement. The client can send the next statement to be executed only after it receives the return value of the previous statement. To execute statements in parallel, the client should be able to send the next statement to be executed without waiting for the return value of the earlier statement. In CockroachDB, on appending the `RETURNING NOTHING` clause with SQL statements,  the server sends an acknowledgment immediately, instead of waiting to complete the statement execution and then sending the return value to the client. The client sends the next statement to be executed on receiving the acknowledgment. This allows CockroachDB to execute the statements in parallel. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING` clause. The server executes a barrier statement sequentially.
+The SQL statements in our sample scenario can be executed in parallel since they are independent of each other. To execute statements in parallel, the client should be able to send the next statement to be executed without waiting for the return value of the earlier statement. In CockroachDB, on appending the `RETURNING NOTHING` clause with SQL statements,  the server sends an acknowledgment immediately, instead of waiting to complete the statement execution and sending the return value to the client. The client sends the next statement to be executed on receiving the acknowledgment. This allows CockroachDB to execute the statements in parallel. The statements are executed in parallel until CockroachDB encounters a **barrier statement**. A barrier statement is any statement without the `RETURNING NOTHING clause. The server executes a barrier statement sequentially.
 
 In our sample scenario, the transaction would be as follows:
 
@@ -62,11 +70,7 @@ Referring to the previous diagram, the server executes all `UPDATE` statements t
 
 In case of parallel statement execution, you might see a mismatch in the error message being displayed and the statement being executed. 
 
-Because the `RETURNING NOTHING` clause is used with parallel statements, CockroachDB cannot return the error for the parallel statement. The server reports the error message for the parallel statement after the next barrier statement. 
-
-On encountering the error, CockroachDB stops the execution of all parallel statements and [aborts and retries the transaction](transactions.html#error-handling). So even if an error message mismatch occurs, the result is the same as aborting the transaction.
-
-Revisiting our sample scenario, suppose an error occurs while executing the second `UPDATE` statement. In sequential execution, the transaction is aborted and the error message is sent immediately. However, in case of parallel execution, the transaction is aborted and the error message is sent after `COMMIT`. The following diagram illustrates the concept of error message mismatch:
+With sequential execution, as soon as an error happens, the transaction is aborted and an error message is sent to the client. However, with parallel execution, the message is sent not when the error is encountered but after the next barrier statement. This can result in the client receiving an error message that doesn't match the statement being executed. The following diagram illustrates this concept:
 
 <img src="{{ 'images/Parallel_Statement_Execution_Error_Mismatch.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution Error Mismatch" style="border:1px solid #eee;max-width:100%" />
 
