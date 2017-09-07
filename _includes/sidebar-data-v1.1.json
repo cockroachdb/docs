@@ -325,6 +325,12 @@
             ]
           },
           {
+            "title": "<code>IMPORT TABLE</code>",
+            "urls": [
+              "/${VERSION}/import-table.html"
+            ]
+          },
+          {
             "title": "<code>INSERT</code>",
             "urls": [
               "/${VERSION}/insert.html"
@@ -692,7 +698,7 @@
             "urls": [
               "/${VERSION}/uuid.html"
             ]
-          }          
+          }
         ]
       },
       {

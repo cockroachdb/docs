@@ -15,6 +15,7 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
+[`IMPORT TABLE`](import-table.html) | Imports an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select.html) | Select rows from a table.
 [`TRUNCATE`](truncate.html) | Deletes all rows from specified tables.
