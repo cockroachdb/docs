@@ -92,7 +92,7 @@ That being said, if you’re up for the challenge there are a few prerequisites.
 
 Pitfalls:
 
-- Avoid submitting an [RFC]((https://github.com/cockroachdb/cockroach/tree/master/docs/RFCS) for a complex project before approaching the CockroachDB first with a high-level description. The risk is that you spend a lot of effort on writing a RFC and the CockroachDB team then decides the project doesn't fit on the roadmap.
+- Avoid submitting an [RFC](https://github.com/cockroachdb/cockroach/tree/master/docs/RFCS) for a complex project before approaching the CockroachDB first with a high-level description. The risk is that you spend a lot of effort on writing a RFC and the CockroachDB team then decides the project doesn't fit on the roadmap.
 - If you fork the CockroachDB repository and start working on a complex project in your fork without following the process above, **chances are extremely slim** that your functionality will eventually be merged in the main CockroachDB distribution. The reason for this is that we will not agree to merge any code changes that have not been validated step by step (i.e., commit by commit) in accordance with our quality standards, and we are not yet able to validate these quality standards on external repositories.
 
 In situations where we will not be able to support your team through an implementation, we will do our best to communicate why we are making that decision.
