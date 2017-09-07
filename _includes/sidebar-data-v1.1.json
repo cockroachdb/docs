@@ -978,6 +978,12 @@
         ]
       },
       {
+        "title": "Rotate Security Certificates",
+        "urls": [
+          "/${VERSION}/certificate-rotation.html"
+        ]
+      },
+      {
         "title": "Generate CockroachDB Resources",
         "urls": [
           "/${VERSION}/generate-cockroachdb-resources.html"
