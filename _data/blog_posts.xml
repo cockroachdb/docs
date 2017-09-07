@@ -6,8 +6,35 @@
     <description>Recent content in Blog on Cockroach Labs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 30 Aug 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.cockroachlabs.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Cross-Cloud Migration</title>
+      <link>https://www.cockroachlabs.com/blog/cross-cloud-migration/</link>
+      <pubDate>Wed, 30 Aug 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Jesse Seldess</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/cross-cloud-migration/</guid>
+      <description>As a CockroachDB Tech Writer, when I document a new feature, generally, I first try to learn the business value behind it, then I test the feature thoroughly, and then I try to write up concise, informative guidance for users. Sometimes, the business value and usage aren’t unique to CockroachDB (it’s a SQL database, after all, and SQL has been around for a while). Other times, I get to document capabilities so novel and powerful that straight-up user documentation just doesn’t seem enough.</description>
+    </item>
+    
+    <item>
+      <title>Navigating the Exercise-Based Interview</title>
+      <link>https://www.cockroachlabs.com/blog/navigating-tech-writer/</link>
+      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Amruta Ranade</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/navigating-tech-writer/</guid>
+      <description>Interviewing at Cockroach Labs comes with a twist. The interviewing process is unconventional by design&amp;mdash;especially for non-engineering positions. The interviews are exercise-based, focused on practical, day-in-the-life style work tasks. Additionally, resumes are removed from the process to fight unconscious bias. The process is crafted thoughtfully and customized for each role being hired for, but it can be a bit daunting for candidates who are used to traditional interviews. As someone who recently experienced the process first-hand, I thought it would be beneficial for potential candidates to hear about my interviewing experience and gain insight into the process.</description>
+    </item>
+    
+    <item>
+      <title>Implementing Backup</title>
+      <link>https://www.cockroachlabs.com/blog/implementing-backup/</link>
+      <pubDate>Wed, 09 Aug 2017 00:00:00 +0000</pubDate>
+      <dc:creator>Daniel Harrison</dc:creator>
+      <guid>https://www.cockroachlabs.com/blog/implementing-backup/</guid>
+      <description>Consistent, Distributed, Incremental: Pick Three Almost all widely used database systems include the ability to backup and restore a snapshot of their data. The replicated nature of CockroachDB&amp;rsquo;s distributed architecture means that the cluster survives the loss of disks or nodes, and yet many users still want to make regular backups. This led us to develop distributed backup and restore, the first feature available in our CockroachDB Enterprise offering.</description>
+    </item>
     
     <item>
       <title>Product Design is a Work in Progress</title>
@@ -476,36 +503,6 @@ Introduction to indexes Tables are internally organized according to a certain c
       <dc:creator>Raphael ‘kena’ Poss</dc:creator>
       <guid>https://www.cockroachlabs.com/blog/diy-jepsen-testing-cockroachdb/</guid>
       <description>img { display: block; margin-left: auto; margin-right: auto; } pre { white-space: pre-wrap; }  We at Cockroach Labs absolutely love Aphyr’s work. We are avid readers of the Jepsen series – which some know as a high quality review of the correctness and consistency claims of modern database systems, but which we really know as “Aphyr’s hunting tales about the highest profile bugs in our industry.” Most of us read each new blog entry with a mix of thrill, excitement, and curiosity about which new system will be eviscerated and which exotic error will be discovered next.</description>
-    </item>
-    
-    <item>
-      <title>CockroachDB Skitters into Beta</title>
-      <link>https://www.cockroachlabs.com/blog/cockroachdb-skitters-beta/</link>
-      <pubDate>Wed, 30 Mar 2016 14:45:53 +0000</pubDate>
-      <dc:creator>Spencer Kimball</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/cockroachdb-skitters-beta/</guid>
-      <description>We introduced Cockroach Labs last June with a simple yet ambitious mission: Make Data Easy.
-We’ve spent the intervening months moving CockroachDB from an alpha stage product to launching CockroachDB beta. In the process, the team has nearly tripled in size and development has accelerated to a blistering pace. We’ve supplemented our original investment led by Peter Fenton of Benchmark with an additional round of funding, led by Mike Volpi of Index Ventures.</description>
-    </item>
-    
-    <item>
-      <title>Creating a Digestible GitHub Digest</title>
-      <link>https://www.cockroachlabs.com/blog/creating-a-digestible-github-digest/</link>
-      <pubDate>Wed, 23 Mar 2016 13:00:30 +0000</pubDate>
-      <dc:creator>Spencer Kimball</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/creating-a-digestible-github-digest/</guid>
-      <description>If you&amp;#8217;ve ever &amp;#8220;watched&amp;#8221; a busy GitHub repository, your email inbox has discovered what it feels like to step in front of a firehose. If the project in question has active code reviewers, the problem is often worse by an order of magnitude. Every comment yields another email to all watchers. The CockroachDB repository’s weekly average is at 81 pull requests and 440 notification-generating comments.
-Most of us who once paid close attention to incoming changes have since lost the ability to do so; these days, monitoring the stream requires a superhuman effort.</description>
-    </item>
-    
-    <item>
-      <title>Efficient Documentation Using SQL Grammar Diagrams</title>
-      <link>https://www.cockroachlabs.com/blog/efficient-documentation-using-sql-grammar-diagrams/</link>
-      <pubDate>Wed, 16 Mar 2016 13:00:31 +0000</pubDate>
-      <dc:creator>Matt Jibson</dc:creator>
-      <guid>https://www.cockroachlabs.com/blog/efficient-documentation-using-sql-grammar-diagrams/</guid>
-      <description>As CockroachDB approaches beta, user documentation has become increasingly important, and one of the meatiest requirements is documentation of our SQL implementation. For inspiration, I researched how other databases have documented SQL. The most effective example I found was SQLite’s grammar diagrams.Figure 1: Example of the alter table statement in SQLite&amp;#8217;s grammar diagrams.
-These diagrams feature easy-to-understand railroad diagrams showing the possible options for a SQL statement. Compared to a text representation, these visual diagrams give users an intuitive way to explore the grammar and discover features.</description>
     </item>
     
   </channel>
