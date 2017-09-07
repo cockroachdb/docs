@@ -6,7 +6,7 @@ toc: false
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
-The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove a Node](remove-a-node.html) for more details.
+The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 
 <div id="toc"></div>
 
