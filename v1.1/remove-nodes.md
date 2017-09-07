@@ -5,9 +5,9 @@ toc: false
 toc_not_nested: true
 ---
 
-This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
+<span class="version-tag">New in v1.1:</span> This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
 
-To temporarily stop a node, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html), see [Stop a Node](stop-a-node.html).
+For information about temporarily stopping a node, see [Stop a Node](stop-a-node.html).
 
 <div id="toc"></div>
 
@@ -15,13 +15,13 @@ To temporarily stop a node, for example, during the process of [upgrading your c
 
 ### How It Works
 
-To understand what happens during node decommissioning, it's important to understand three concepts:
+When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all **range replicas** and **range leases** off the node so that it can be safely shut down.
+
+Basic terms:
 
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 - **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
-
-When you decommission a node, CockroachDB lets the node finish in-flight requests and transfers all range replicas and range leases off the node so that it can be safely shut down.
 
 ### Considerations
 
@@ -174,9 +174,9 @@ Open the Admin UI, click **View nodes list** in the **Summary** area, and note t
 
 ### Step 2. Mark the dead node as decommissioned
 
-SSH to any live node in the cluster and run the `cockroach node decommission` command with the ID of the node to officially decommission:
+SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to officially decommission:
 
-{{site.data.alerts.callout_info}}Be sure to include <code>--wait=live</code>. If not specified, this flag defaults to <code>--wait=all</code>, which will cause the <code>node decommission</code> command to hang indefinitely.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}Be sure to include <code>--wait=live</code>. If not specified, this flag defaults to <code>--wait=all</code>, which will cause the <code>node decommission</code> command to hang indefinitely.{{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~ shell
@@ -231,9 +231,9 @@ In the Admin UI, go to the **Replication** dashboard and hover over the **Replic
 
 ### Step 3. Decommission the nodes
 
-SSH to any live node in the cluster and run the `cockroach node decommission` command with the IDs of the nodes to officially decommission:
+SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to officially decommission:
 
-{{site.data.alerts.callout_info}}If there's a chance that one or more of the nodes will be offline during this process, be sure to include <code>--wait=live</code>. This will ensure that the command will not wait indefinitely for dead nodes to finish decommissioning.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}If there's a chance that one or more of the nodes will be offline during this process, be sure to include <code>--wait=live</code>. This will ensure that the command will not wait indefinitely for dead nodes to finish decommissioning.{{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~ shell
@@ -328,11 +328,11 @@ Open the Admin UI, click **View nodes list** in the **Summary** area, and note t
 
 <div style="text-align: center;"><img src="{{ 'images/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
-{{site.data.alerts.callout_success}}If a decommissioned node is still live, it will be listed under <strong>Live Nodes</strong> but its replica count should be 0. In this case, you must <a href="stop-a-node.html">stop the node</a> before you can recommission it.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If a decommissioned node is still live, it will be listed under <strong>Live Nodes</strong> but its replica count should be 0. In this case, you must <a href="stop-a-node.html">stop the node</a> before you can recommission it.{{site.data.alerts.end}}
 
 ### Step 2. Recommission the nodes
 
-SSH to one of the live nodes and execute the `cockroach node recommission` command with the IDs of the nodes to recommission:
+SSH to one of the live nodes and execute the [`cockroach node recommission`](view-node-details.html) command with the IDs of the nodes to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~ shell
@@ -403,7 +403,7 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 |  2 | 192.241.239.201:26257 | 91a299d | 2017-09-07 18:16:05 | 2017-09-07 16:30:45 | true    |               134 | false              | false       |
 |  3 | 67.207.91.36:26257    | 91a299d | 2017-09-07 18:16:06 | 2017-09-07 16:31:06 | true    |               136 | false              | false       |
 |  4 | 138.197.12.74:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:44:23 | true    |                 1 | true               | true        |
-|  5 | 174.138.50.192:26257  | 73336d4 | 2017-09-07 18:16:07 | 2017-09-07 17:12:57 | true    |                 3 | true               | true        |
+|  5 | 174.138.50.192:26257  | 91a299d | 2017-09-07 18:16:07 | 2017-09-07 17:12:57 | true    |                 3 | true               | true        |
 +----+-----------------------+---------+---------------------+---------------------+---------+-------------------+--------------------+-------------+
 (5 rows)
 ~~~
