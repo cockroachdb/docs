@@ -1,10 +1,15 @@
 ---
 title: Create Security Certificates
-summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys.
+summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: false
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [command](cockroach-commands.html) with the appropriate subcommands and flags.
+A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [OpenSSL commands](https://wiki.openssl.org/index.php/).
+
+<div class="filters filters-big clearfix">
+  <button class="filter-button current"><strong>Cockroach Cert Commands</strong></button>
+  <a href="create-security-certificates-openssl.html"><button class="filter-button">OpenSSL Commands</button></a>
+</div>
 
 When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
@@ -45,7 +50,7 @@ $ cockroach cert create-ca \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
 
-# Create a node certificate and key, specifying all addresses at which the node can be reached:
+# Create a node certificate and key:
 $ cockroach cert create-node \
  [node-hostname] \
  [node-other-hostname] \
