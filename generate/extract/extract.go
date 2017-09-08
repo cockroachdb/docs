@@ -312,37 +312,31 @@ func Simplify(name string, prods Productions) Productions {
 }
 
 func simplifySelfRefList(name string, prods Productions) Productions {
-	if len(prods) != 2 {
-		return nil
+	// First check we have sequences everywhere, and that the production
+	// is a prefix of at least one of them.
+	// Split the sequences in leaf and recursive groups:
+	// X := A | B | X C | X D
+	// Group 1: A | B
+	// Group 2: C | D
+	// Final: (A | B) (C | D)*
+	var group1, group2 Group
+	for _, p := range prods {
+		s, ok := p.(Sequence)
+		if !ok {
+			return nil
+		}
+		if len(s) > 0 && s[0] == Token(name) {
+			group2 = append(group2, Sequence(s[1:]))
+		} else {
+			group1 = append(group1, s)
+		}
 	}
-	s1, ok := prods[0].(Sequence)
-	if !ok {
-		return nil
-	}
-	s2, ok := prods[1].(Sequence)
-	if !ok {
-		return nil
-	}
-	if e := simplifySelfRefListProd(name, s1, s2); e != nil {
-		return e
-	}
-	return simplifySelfRefListProd(name, s2, s1)
-}
-
-func simplifySelfRefListProd(name string, s1, s2 Sequence) Productions {
-	if len(s1) != 1 || len(s2) != 3 {
-		return nil
-	}
-	if s2[2] != s1[0] || s2[0] != Token(name) {
-		return nil
-	}
-	if _, ok := s2[1].(Literal); !ok {
+	if len(group2) == 0 {
+		// Not a recursive rule; do nothing.
 		return nil
 	}
 	return Productions{
-		Sequence{
-			s1[0], Repeat{Sequence{s2[1], s1[0]}},
-		},
+		Sequence{group1, Repeat{group2}},
 	}
 }
 
