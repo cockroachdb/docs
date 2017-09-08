@@ -124,6 +124,7 @@ func main() {
 		filter      string
 		printBNF    bool
 		railroadJar string
+		maxWorkers  int
 	)
 
 	rootCmd := &cobra.Command{
@@ -578,19 +579,20 @@ func main() {
 				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: []*regexp.Regexp{regexp.MustCompile("'UPSERT'")}},
 			}
 
+			sem := make(chan struct{}, maxWorkers) // max number of concurrent workers
 			for _, s := range specs {
-				if s.name != "truncate_stmt" {
-					//continue
-				}
 				wg.Add(1)
+				sem <- struct{}{}
 				go func(s stmtSpec) {
 					defer wg.Done()
+					defer func() { <-sem }()
 					if filter != "" && filter != s.name {
 						return
 					}
 					if s.stmt == "" {
 						s.stmt = s.name
 					}
+					fmt.Fprintf(os.Stderr, "processing statement %q...\n", s.stmt)
 					g, err := runParse(br(), s.inline, s.stmt, false, s.nosplit, s.match, s.exclude)
 					if err != nil {
 						log.Fatalf("%s: %s\n%s", s.name, err, g)
@@ -642,6 +644,7 @@ func main() {
 		},
 	}
 
+	rootCmd.Flags().IntVar(&maxWorkers, "max-workers", 1, "maximum number of concurrent workers")
 	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
 	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "v1.1", "diagrams"), "Base directory for html output.")
 	rootCmd.Flags().StringVar(&filter, "filter", "", "Filter statement names")

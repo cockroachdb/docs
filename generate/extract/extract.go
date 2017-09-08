@@ -10,7 +10,6 @@ import (
 	"net/url"
 	"os/exec"
 	"regexp"
-	"runtime"
 	"strings"
 	"sync"
 	"unicode"
@@ -26,16 +25,12 @@ var (
 	reIsExpr  = regexp.MustCompile("^[a-z_]+$")
 	reIsIdent = regexp.MustCompile("^[A-Z_0-9]+$")
 	rrLock    sync.Mutex
-
-	javaThrottle = make(chan struct{}, runtime.NumCPU())
 )
 
 func GenerateRRJar(jar string, bnf []byte) ([]byte, error) {
-	// The JVM is expensive to run; limit how many we start at once.
-	javaThrottle <- struct{}{}
-	defer func() {
-		<-javaThrottle
-	}()
+	// Note: the RR generator is already multithreaded.  The
+	// -max-workers setting at the toplevel is probably already
+	// optimally set to 1.
 
 	// JAR generation is enabled by placing Railroad.jar (ask mjibson for a link)
 	// in the generate directory.
