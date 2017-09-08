@@ -258,12 +258,12 @@ func main() {
 				{
 					name:    "begin_transaction",
 					stmt:    "begin_stmt",
-					inline:  []string{"opt_transaction", "begin_transaction", "transaction_mode_list", "transaction_mode", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level"},
+					inline:  []string{"opt_transaction", "begin_transaction", "transaction_mode", "transaction_iso_level", "transaction_user_priority", "user_priority", "iso_level", "transaction_mode_list", "opt_comma", "transaction_read_mode"},
 					exclude: []*regexp.Regexp{regexp.MustCompile("'START'")},
 					replace: map[string]string{
-						"'ISOLATION' 'LEVEL'":                                                                           "'ISOLATION LEVEL'",
-						" | transaction_read_mode":                                                                      "",
-						" transaction_read_mode":                                                                        "",
+						"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'",
+						//" | transaction_read_mode":                                                                      "",
+						//" transaction_read_mode":                                                                        "",
 						"'READ' 'UNCOMMITTED' | 'READ' 'COMMITTED' | 'SNAPSHOT' | 'REPEATABLE' 'READ' | 'SERIALIZABLE'": "'SNAPSHOT' | 'SERIALIZABLE'",
 						"'READ' 'UNCOMMITTED'": "'SNAPSHOT'",
 						"'READ' 'COMMITTED'":   "'SNAPSHOT'",
