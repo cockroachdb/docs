@@ -537,7 +537,7 @@ func main() {
 					stmt:    "show_backup_stmt",
 					match:   []*regexp.Regexp{regexp.MustCompile("'SHOW' 'BACKUP'")},
 					replace: map[string]string{"string_or_placeholder": "location"},
-					unlink: []string{"location"},
+					unlink:  []string{"location"},
 				},
 				{
 					name:   "show_grants",
