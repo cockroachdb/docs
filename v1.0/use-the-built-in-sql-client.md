@@ -60,7 +60,7 @@ Command | Usage
 --------|------------
 `\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\|` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
+` \\| ` | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\set <option>` | Enable a client-side option. See the table below for available options.<br><br>To see current settings, use `\set` without any options.
 `\unset <option>` | Disable a client-side option. See the table below for available options.
 `\?`<br>`help` | View this help within the shell.
