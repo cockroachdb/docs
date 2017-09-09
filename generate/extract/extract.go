@@ -8,9 +8,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"os/exec"
 	"regexp"
-	"runtime"
 	"strings"
 	"sync"
 	"unicode"
@@ -26,16 +26,12 @@ var (
 	reIsExpr  = regexp.MustCompile("^[a-z_]+$")
 	reIsIdent = regexp.MustCompile("^[A-Z_0-9]+$")
 	rrLock    sync.Mutex
-
-	javaThrottle = make(chan struct{}, runtime.NumCPU())
 )
 
 func GenerateRRJar(jar string, bnf []byte) ([]byte, error) {
-	// The JVM is expensive to run; limit how many we start at once.
-	javaThrottle <- struct{}{}
-	defer func() {
-		<-javaThrottle
-	}()
+	// Note: the RR generator is already multithreaded.  The
+	// -max-workers setting at the toplevel is probably already
+	// optimally set to 1.
 
 	// JAR generation is enabled by placing Railroad.jar (ask mjibson for a link)
 	// in the generate directory.
@@ -276,6 +272,7 @@ func (g Grammar) ExtractProduction(name string, descend, nosplit bool, match, ex
 
 func (g Grammar) Inline(names ...string) error {
 	for _, name := range names {
+		fmt.Fprintf(os.Stderr, "replacing %q...\n", name)
 		p, ok := g[name]
 		if !ok {
 			return fmt.Errorf("unknown name: %s", name)
@@ -315,37 +312,31 @@ func Simplify(name string, prods Productions) Productions {
 }
 
 func simplifySelfRefList(name string, prods Productions) Productions {
-	if len(prods) != 2 {
-		return nil
+	// First check we have sequences everywhere, and that the production
+	// is a prefix of at least one of them.
+	// Split the sequences in leaf and recursive groups:
+	// X := A | B | X C | X D
+	// Group 1: A | B
+	// Group 2: C | D
+	// Final: (A | B) (C | D)*
+	var group1, group2 Group
+	for _, p := range prods {
+		s, ok := p.(Sequence)
+		if !ok {
+			return nil
+		}
+		if len(s) > 0 && s[0] == Token(name) {
+			group2 = append(group2, Sequence(s[1:]))
+		} else {
+			group1 = append(group1, s)
+		}
 	}
-	s1, ok := prods[0].(Sequence)
-	if !ok {
-		return nil
-	}
-	s2, ok := prods[1].(Sequence)
-	if !ok {
-		return nil
-	}
-	if e := simplifySelfRefListProd(name, s1, s2); e != nil {
-		return e
-	}
-	return simplifySelfRefListProd(name, s2, s1)
-}
-
-func simplifySelfRefListProd(name string, s1, s2 Sequence) Productions {
-	if len(s1) != 1 || len(s2) != 3 {
-		return nil
-	}
-	if s2[2] != s1[0] || s2[0] != Token(name) {
-		return nil
-	}
-	if _, ok := s2[1].(Literal); !ok {
+	if len(group2) == 0 {
+		// Not a recursive rule; do nothing.
 		return nil
 	}
 	return Productions{
-		Sequence{
-			s1[0], Repeat{Sequence{s2[1], s1[0]}},
-		},
+		Sequence{group1, Repeat{group2}},
 	}
 }
 
