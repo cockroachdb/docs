@@ -16,15 +16,15 @@ Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-[`quit`](stop-a-node.html) | Drain and shutdown a node.
+[`quit`](stop-a-node.html) | <span class="version-tag">Changed in v1.1:</span> Temporarily stop a node or permanently remove a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`user`](create-and-manage-users.html) | Get, set, list, and remove users.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
-[`node`](view-node-details.html) | List node IDs and show their status.
+[`node`](view-node-details.html) | <span class="version-tag">Changed in v1.1:</span> List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 [`debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
-[`gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, and example data.
-[`version`](view-version-details.html) | Output CockroachDB version and dependency details.
+[`gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
+[`version`](view-version-details.html) | Output CockroachDB version details.
 
 ## Environment Variables
 
