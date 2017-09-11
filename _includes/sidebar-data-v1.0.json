@@ -811,12 +811,6 @@
         ]
       },
       {
-        "title": "Stop a Node",
-        "urls": [
-          "/${VERSION}/stop-a-node.html"
-        ]
-      },
-      {
         "title": "Create Security Certificates",
         "urls": [
           "/${VERSION}/create-security-certificates.html"
@@ -852,21 +846,15 @@
         ]
       },
       {
-        "title": "View Node Details",
-        "urls": [
-          "/${VERSION}/view-node-details.html"
-        ]
-      },
-      {
-        "title": "View Version Details",
-        "urls": [
-          "/${VERSION}/view-version-details.html"
-        ]
-      },
-      {
         "title": "Upgrade a Cluster's Version",
         "urls": [
           "/${VERSION}/upgrade-cockroach-version.html"
+        ]
+      },
+      {
+        "title": "Stop a Node",
+        "urls": [
+          "/${VERSION}/stop-a-node.html"
         ]
       },
       {
@@ -897,6 +885,18 @@
         "title": "Generate CockroachDB Resources",
         "urls": [
           "/${VERSION}/generate-cockroachdb-resources.html"
+        ]
+      },
+      {
+        "title": "View Node Details",
+        "urls": [
+          "/${VERSION}/view-node-details.html"
+        ]
+      },
+      {
+        "title": "View Version Details",
+        "urls": [
+          "/${VERSION}/view-version-details.html"
         ]
       },
       {
