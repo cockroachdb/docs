@@ -138,6 +138,7 @@ Flag | Description
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | Not currently implemented.
 `--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
@@ -305,6 +306,29 @@ Alternately, you can pass the YAML content via the standard input:
 
 ~~~ shell
 $ echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
+~~~
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
+
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .default --insecure --echo-sql -f -
+~~~
+
+~~~
+> BEGIN
+> SAVEPOINT cockroach_restart
+> SELECT config FROM system.zones WHERE id = $1
+> UPSERT INTO system.zones (id, config) VALUES ($1, $2)
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 90000
+num_replicas: 5
+constraints: []
+> RELEASE SAVEPOINT cockroach_restart
+> COMMIT
 ~~~
 
 ## Scenario-based Examples

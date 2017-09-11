@@ -25,7 +25,7 @@ $ cockroach sql <flags> < file-containing-statements.sql
 $ cockroach sql --help
 ~~~
 
-## Flags
+## Flags <span class="version-tag">Changed in v1.1</span>
 
 The `sql` command supports the following [general-use](#general) and [logging](#logging) flags.
 
@@ -38,11 +38,13 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--pretty` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below.
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
+`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
+`--unsafe-updates` | <span class="version-tag">New in v1.1:</span> Allow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `false`<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
@@ -69,7 +71,7 @@ When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a w
 >
 ~~~
 
-The **Version** and **Cluster ID** details are particularly noteworthy:
+<span class="version-tag">New in v1.1:</span> The **Version** and **Cluster ID** details are particularly noteworthy:
 
 - When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
 - When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
@@ -84,15 +86,22 @@ Command | Usage
 `\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\set <option>` | Enable a client-side option. See the table below for available options.<br><br>To see current settings, use `\set` without any options.
-`\unset <option>` | Disable a client-side option. See the table below for available options.
+`\set <option>` | Enable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options-changed-in-v1-1).<br><br>To see current settings, use `\set` without any options.
+`\unset <option>` | Disable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options-changed-in-v1-1).
 `\?`<br>`help` | View this help within the shell.
+
+### SQL Shell Options <span class="version-tag">Changed in v1.1</span>
+
+To see current settings, use `\set` without any options. To enable or disable a shell option, use `\set <option>` or `\unset <option>`.
 
 Client Options | Description
 ---------------|------------
-`CHECK_SYNTAX` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset CHECK_SYNTAX`.
-`NORMALIZE_HISTORY` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `CHECK_SYNTAX` is enabled as well. To disable this option, run `\unset NORMALIZE_HISTORY`.
-`ERREXIT` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set ERREXIT`.
+`echo` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
+`errexit` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set errexti`.
+`check_syntax` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
+`normalize_history` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `check_syntax` is enabled as well. To disable this option, run `\unset normalize_history`.
+`show_times` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset show_times`.
+`smart_prompt` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
 ## SQL Shell Shortcuts
 
@@ -119,7 +128,6 @@ $ cockroach sql \
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
-
 
 ~~~ shell
 # Using standard connection flags:
@@ -157,7 +165,7 @@ This example assume that we have already started the SQL shell (see examples abo
 
 ### Execute SQL statements from the command line
 
-In these examples, we use the `--execute` flag to execute statements from the command line.
+In these examples, we use the `--execute` flag to execute statements from the command line:
 
 ~~~ shell
 # Statements with a single --execute flag:
@@ -190,7 +198,7 @@ CREATE TABLE
 INSERT 2
 ~~~
 
-In this example, we use the `echo` command to execute statements from the command line.
+In this example, we use the `echo` command to execute statements from the command line:
 
 ~~~ shell
 # Statements with the echo command:
@@ -208,16 +216,14 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=m
 +-----------------------+---------------+
 ~~~
 
-### Print with or without pretty output
+### Control how table rows are printed
 
-In these examples, we show tables and special characters printed with and without pretty output. When pretty output is enabled, tables are printed with ASCII art and special characters are not escaped for easy human consumption. When pretty output is disabled, table rows are printed as tab-separated values, and special characters are escaped; thus, the output is easy to parse by other programs.
+In these examples, we show tables and special characters printed in various formats.
 
-When the standard output is a terminal, pretty output is enabled by default, but you can explicitly disable it with `--pretty=false`:
+When the standard output is a terminal, `--format` defaults to `pretty` and tables are printed with ASCII art and special characters are not escaped for easy human consumption:
 
 ~~~ shell
-# Using the default pretty output:
 $ cockroach sql --insecure \
---pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
 --host=12.345.67.89 \
@@ -233,10 +239,11 @@ $ cockroach sql --insecure \
 +-------+--------+
 ~~~
 
+However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
+
 ~~~ shell
-# Explicitly disabling pretty output:
 $ cockroach sql --insecure \
---pretty=false \
+--format=tsv \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
 --host=12.345.67.89 \
@@ -246,40 +253,63 @@ $ cockroach sql --insecure \
 
 ~~~
 1 row
-chick turtle
-"\U0001f425"  "\U0001f422"
+chick	turtle
+🐥	🐢
 ~~~
 
-When piping output to another command or a file, the default is reversed. Pretty output is disabled by default, but you can explicitly request it with `--pretty`:
+~~~ shell
+$ cockroach sql --insecure \
+--format=html \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~
+<table>
+<thead><tr><th>chick</th><th>turtle</th></tr></head>
+<tbody>
+<tr><td>🐥</td><td>🐢</td></tr>
+</tbody>
+</table>
+~~~
+
+When piping output to another command or a file, `--format` defaults to `tsv`:
 
 ~~~ shell
-# Using the default non-pretty output:
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+~~~ shell
 $ cat out.txt
 ~~~
 
 ~~~
 1 row
-chick turtle
-"\U0001f425"  "\U0001f422"
+chick	turtle
+🐥	🐢
 ~~~
 
+However, you can explicitly set `--format` to another format, for example, `pretty`:
+
 ~~~ shell
-# Explicitly requesting pretty output:
 $ cockroach sql --insecure \
---pretty \
+--format=pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+~~~ shell
 $ cat out.txt
 ~~~
 
@@ -289,9 +319,8 @@ $ cat out.txt
 +-------+--------+
 | 🐥    | 🐢     |
 +-------+--------+
+(1 row)
 ~~~
-
-If `--pretty` is specified without `--execute`, it will apply to the format of every table's output in the resulting interactive SQL shell.
 
 ### Execute SQL statements from a file
 
@@ -377,6 +406,106 @@ In this example, we create a table and then use `\|` to programmatically insert 
 | 8 |
 | 9 |
 +---+
+~~~
+
+### Allow potentially unsafe SQL statements
+
+The `--unsafe-updates` flag defaults to `false`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
+
+~~~ shell
+$ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
+~~~
+
+~~~
++----+------+
+| id | name |
++----+------+
+|  1 | a    |
+|  2 | b    |
+|  3 | c    |
+|  4 | d    |
+|  5 | e    |
+|  6 | f    |
+|  7 | g    |
+|  8 | h    |
+|  9 | i    |
+| 10 | j    |
++----+------+
+(10 rows)
+~~~
+
+~~~ shell
+$ cockroach sql --insecure --execute="DELETE FROM db1.t1"
+~~~
+
+~~~
+Error: pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
+Failed running "sql"
+~~~
+
+However, to allow an "unsafe" statement, you can set `--unsafe-updates=true`:
+
+~~~ shell
+$ cockroach sql --insecure --unsafe-updates=true --execute="DELETE FROM db1.t1"
+~~~
+
+~~~
+DELETE 10
+~~~
+
+{{site.data.alerts.callout_info}}Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the <code>sql_safe_updates</code> <a href="set-vars.html">session variable</a>.{{site.data.alerts.end}}
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal SQL statements sent implicitly:
+
+~~~ shell
+$ cockroach sql --insecure \
+--execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
+--execute="INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=db1
+--echo-sql
+~~~
+
+~~~
+# Server version: CockroachDB CCL f8f3c9317 (darwin amd64, built 2017/09/13 15:05:35, go1.8) (same version as client)
+# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
+> SET sql_safe_updates = TRUE
+> CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)
+CREATE TABLE
+> INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')
+INSERT 3
+~~~
+
+In this example, we start the interactive SQL shell and enable the `echo` shell option to reveal SQL statements sent implicitly:
+
+~~~ shell
+$ cockroach sql --insecure \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=db1
+~~~
+
+~~~ sql
+> \set echo
+~~~
+
+~~~ sql
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+~~~
+
+~~~
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+INSERT 3
+
+Time: 2.426534ms
+
+> SHOW TRANSACTION STATUS
+> SHOW DATABASE
 ~~~
 
 ## See Also
