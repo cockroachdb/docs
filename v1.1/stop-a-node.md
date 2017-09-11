@@ -10,6 +10,36 @@ For information about permanently removing nodes to downsize a cluster or react 
 
 <div id="toc"></div>
 
+## Overview
+
+### How It Works
+
+When you stop a node, CockroachDB lets the node finish in-flight requests and transfers all **range leases** off the node before shutting it down. If the node then stays offline for a certain amount of time (5 minutes by default), the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
+
+After that, if the node comes back online, its range replicas will determine whether or not they are still valid members of replica groups. If a range replica is still valid and any data in its range has changed, it will receive updates from another replica in the group. If a range replica is no longer valid, it will be removed from the node.
+
+Basic terms:
+
+- **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+- **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
+- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+
+### Considerations
+
+As mentioned above, by default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. Therefore, before temporarily stopping nodes, if you expect any node to be offline for longer than 5 minutes, you should first set the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to higher than the `5m0s` default.
+
+For example, let's say you're upgrading system software on a group of servers, and the nodes running on the servers may be offline for up to 15 minutes as a result. Before shutting down the nodes, you would change the `server.time_until_store_dead` cluster setting as follows:
+
+~~~ sql
+> SET CLUSTER SETTING server.time_until_store_dead = 15m0s;
+~~~
+
+After completing the system upgrades and restarting the nodes, you would then change the setting back to its default:
+
+~~~ sql
+> SET CLUSTER SETTING server.time_until_store_dead = 5m0s;
+~~~
+
 ## Synopsis
 
 ~~~ shell
