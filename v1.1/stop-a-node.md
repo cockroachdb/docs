@@ -10,6 +10,28 @@ For information about permanently removing nodes to downsize a cluster or react 
 
 <div id="toc"></div>
 
+## Overview
+
+### How It Works
+
+When you stop a node, CockroachDB lets the node finish in-flight requests and transfers all **range leases** off the node before shutting it down. If the node then stays offline for more than 5 minutes, the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
+
+After that, if the node comes back online, its range replicas will determine whether or not they are still valid members of replica groups. If a range replica is still valid and any data in its range has changed, it will receive updates from another replica in the group. If a range replica is no longer valid, it will be removed from the node.
+
+Basic terms:
+
+- **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+- **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
+- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+
+### Considerations
+
+Before temporarily stopping a node to [upgrade its version of CockroachDB](upgrade-cockroach-version.html), if you expect the node to be offline for longer than 5 minutes, you should first set the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to higher than the `5m0s` default. For example, if you think the node might be offline for up to 8 minutes, you might change this setting as follows:
+
+~~~ sql
+> SET CLUSTER SETTING server.time_until_store_dead = 10m0s;
+~~~
+
 ## Synopsis
 
 ~~~ shell
