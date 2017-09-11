@@ -25,7 +25,7 @@ $ cockroach sql <flags> < file-containing-statements.sql
 $ cockroach sql --help
 ~~~
 
-## Flags
+## Flags <span class="version-tag">Changed in v1.1</span>
 
 The `sql` command supports the following [general-use](#general) and [logging](#logging) flags.
 
@@ -38,11 +38,13 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--pretty` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [examples](#execute-sql-statements-from-the-command-line) below.
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> When using `--execute`, reveal the SQL statements sent implicitly. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-sql-client) below.
+`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
+`--unsafe-updates` | <span class="version-tag">New in v1.1:</span> Allow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `false`<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
 `--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
@@ -157,7 +159,7 @@ This example assume that we have already started the SQL shell (see examples abo
 
 ### Execute SQL statements from the command line
 
-In these examples, we use the `--execute` flag to execute statements from the command line.
+In these examples, we use the `--execute` flag to execute statements from the command line:
 
 ~~~ shell
 # Statements with a single --execute flag:
@@ -190,7 +192,7 @@ CREATE TABLE
 INSERT 2
 ~~~
 
-In this example, we use the `echo` command to execute statements from the command line.
+In this example, we use the `echo` command to execute statements from the command line:
 
 ~~~ shell
 # Statements with the echo command:
@@ -208,16 +210,39 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=m
 +-----------------------+---------------+
 ~~~
 
-### Print with or without pretty output
+### Reveal the SQL statements sent implicitly by the SQL client
 
-In these examples, we show tables and special characters printed with and without pretty output. When pretty output is enabled, tables are printed with ASCII art and special characters are not escaped for easy human consumption. When pretty output is disabled, table rows are printed as tab-separated values, and special characters are escaped; thus, the output is easy to parse by other programs.
-
-When the standard output is a terminal, pretty output is enabled by default, but you can explicitly disable it with `--pretty=false`:
+In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal the SQL statement sent implicitly:
 
 ~~~ shell
-# Using the default pretty output:
 $ cockroach sql --insecure \
---pretty \
+--execute="CREATE TABLE roaches (name STRING, country STRING)" \
+--execute="INSERT INTO roaches VALUES ('Hissing Cockroach', 'Madagascar')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~
+> SELECT * FROM crdb_internal.node_build_info
+# Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
+# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
+> SET sql_safe_updates = TRUE
+> CREATE TABLE roaches2 (name STRING, country STRING)
+CREATE TABLE
+> INSERT INTO roaches2 VALUES ('Hissing Cockroach', 'Madagascar')
+INSERT 1
+~~~
+
+### Control how table rows are printed
+
+In these examples, we show tables and special characters printed in various formats.
+
+When the standard output is a terminal, `--format` defaults to `pretty` and tables are printed with ASCII art and special characters are not escaped for easy human consumption:
+
+~~~ shell
+$ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
 --host=12.345.67.89 \
@@ -233,10 +258,11 @@ $ cockroach sql --insecure \
 +-------+--------+
 ~~~
 
+However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
+
 ~~~ shell
-# Explicitly disabling pretty output:
 $ cockroach sql --insecure \
---pretty=false \
+--format=tsv \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
 --host=12.345.67.89 \
@@ -246,40 +272,63 @@ $ cockroach sql --insecure \
 
 ~~~
 1 row
-chick turtle
-"\U0001f425"  "\U0001f422"
+chick	turtle
+🐥	🐢
 ~~~
 
-When piping output to another command or a file, the default is reversed. Pretty output is disabled by default, but you can explicitly request it with `--pretty`:
+~~~ shell
+$ cockroach sql --insecure \
+--format=html \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~
+<table>
+<thead><tr><th>chick</th><th>turtle</th></tr></head>
+<tbody>
+<tr><td>🐥</td><td>🐢</td></tr>
+</tbody>
+</table>
+~~~
+
+When piping output to another command or a file, `--format` defaults to `tsv`:
 
 ~~~ shell
-# Using the default non-pretty output:
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+~~~ shell
 $ cat out.txt
 ~~~
 
 ~~~
 1 row
-chick turtle
-"\U0001f425"  "\U0001f422"
+chick	turtle
+🐥	🐢
 ~~~
 
+However, you can explicitly set `--format` to another format, for example, `pretty`:
+
 ~~~ shell
-# Explicitly requesting pretty output:
 $ cockroach sql --insecure \
---pretty \
+--format=pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+~~~ shell
 $ cat out.txt
 ~~~
 
@@ -289,9 +338,8 @@ $ cat out.txt
 +-------+--------+
 | 🐥    | 🐢     |
 +-------+--------+
+(1 row)
 ~~~
-
-If `--pretty` is specified without `--execute`, it will apply to the format of every table's output in the resulting interactive SQL shell.
 
 ### Execute SQL statements from a file
 
@@ -378,6 +426,53 @@ In this example, we create a table and then use `\|` to programmatically insert 
 | 9 |
 +---+
 ~~~
+
+### Allow potentially unsafe SQL statements
+
+The `--unsafe-updates` flag defaults to `false`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
+
+~~~ shell
+$ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
+~~~
+
+~~~
++----+------+
+| id | name |
++----+------+
+|  1 | a    |
+|  2 | b    |
+|  3 | c    |
+|  4 | d    |
+|  5 | e    |
+|  6 | f    |
+|  7 | g    |
+|  8 | h    |
+|  9 | i    |
+| 10 | j    |
++----+------+
+(10 rows)
+~~~
+
+~~~ shell
+$ cockroach sql --insecure --execute="DELETE FROM db1.t1"
+~~~
+
+~~~
+Error: pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
+Failed running "sql"
+~~~
+
+However, to allow an "unsafe" statement, you can set `--unsafe-updates=true`:
+
+~~~ shell
+$ cockroach sql --insecure --unsafe-updates=true --execute="DELETE FROM db1.t1"
+~~~
+
+~~~
+DELETE 10
+~~~
+
+{{site.data.alerts.callout_info}}Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the <code>sql_safe_updates</code> <a href="set-vars.html">session variable</a>.{{site.data.alerts.end}}
 
 ## See Also
 
