@@ -350,6 +350,7 @@ func main() {
 				{
 					name:  "drop_database",
 					stmt:  "drop_database_stmt",
+					inline:  []string{"opt_drop_behavior"},
 					match: []*regexp.Regexp{regexp.MustCompile("'DROP' 'DATABASE'")},
 				},
 				{
