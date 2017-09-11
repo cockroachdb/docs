@@ -32,12 +32,13 @@ table tr td:nth-child(2) {
 | `DECIMAL`, `NUMERIC` | ✓ | Standard | [`DECIMAL` documentation](decimal.html) |
 | `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html) |
 | `BYTES` | ✓ | CockroachDB Extension | [`BYTES` documentation](bytes.html) |
-| Automatic key generation | ✓ | Common Extension | [`SERIAL` documentation](serial.html) |
+| Automatic key generation | ✓ | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) |
 | `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html) |
 | `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html) |
-| `AUTO INCREMENT` | Alternative | Common Extension | [`SERIAL`](serial.html) replaces support for this component. |
+| `AUTO INCREMENT` | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) |
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
-| Arrays | Planned | Standard | [GitHub Issue tracking array support](https://github.com/cockroachdb/cockroach/issues/2115) |
+| `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
+| `UUID` | ✓ | Standard | [`UUID` documentation](uuid.html) |
 | JSON | Planned | Common Extension | [GitHub Issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
@@ -156,6 +157,7 @@ table tr td:nth-child(2) {
 |-----------|-----------|------|---------|
 | Column families | ✓ | CockroachDB Extension | [Column Families documentation](https://www.cockroachlabs.com/docs/column-families.html) |
 | Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html) |
+| Parallel Statement Execution | ✓ | CockroachDB Extension | [Parallel Statement Execution documentation](parallel-statement-execution.html) |
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
 | Window functions | Partial | Standard | Perform calculations related on a selected row. |
