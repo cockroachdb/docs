@@ -55,6 +55,7 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
@@ -173,6 +174,22 @@ $ cockroach user get jpointsman --insecure
 
 ~~~ shell
 $ cockroach user rm jpointsman --insecure
+~~~
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
+
+~~~ shell
+$ cockroach user rm jpointsman --insecure --echo-sql
+~~~
+
+~~~
+> SELECT * FROM crdb_internal.node_build_info
+# Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
+# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
+> DELETE FROM system.users WHERE username=$1
+DELETE 1
 ~~~
 
 ## See Also

@@ -57,6 +57,7 @@ Flag | Description
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
@@ -340,6 +341,55 @@ INSERT INTO dump_test (id, name) VALUES
 ~~~
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
+
+~~~ shell
+$ cockroach dump startrek episodes --insecure --echo-sql --user=maxroach > backup.sql
+~~~
+
+~~~
+> SELECT cluster_logical_timestamp()
+>
+        SELECT table_id
+        FROM startrek.crdb_internal.tables
+        AS OF SYSTEM TIME '1505250368061616185.0000000000'
+        WHERE DATABASE_NAME = $1
+            AND NAME = $2
+
+>
+        SELECT COLUMN_NAME, DATA_TYPE
+        FROM "".information_schema.columns
+        AS OF SYSTEM TIME '1505250368061616185.0000000000'
+        WHERE TABLE_SCHEMA = $1
+            AND TABLE_NAME = $2
+
+>
+        SELECT COLUMN_NAME
+        FROM "".information_schema.key_column_usage
+        AS OF SYSTEM TIME '1505250368061616185.0000000000'
+        WHERE TABLE_SCHEMA = $1
+            AND TABLE_NAME = $2
+            AND CONSTRAINT_NAME = $3
+        ORDER BY ORDINAL_POSITION
+
+>
+        SELECT create_statement, descriptor_type = 'view'
+        FROM startrek.crdb_internal.create_statements
+        AS OF SYSTEM TIME '1505250368061616185.0000000000'
+        WHERE descriptor_name = $1
+            AND database_name = $2
+
+>
+        SELECT dependson_id
+        FROM startrek.crdb_internal.backward_dependencies
+        AS OF SYSTEM TIME '1505250368061616185.0000000000'
+        WHERE descriptor_id = $1
+
+> SELECT id, id, season, num, title, stardate FROM startrek.episodes AS OF SYSTEM TIME '1505250368061616185.0000000000' ORDER BY PRIMARY KEY startrek.episodes LIMIT 10000
+~~~
 
 ## See Also
 

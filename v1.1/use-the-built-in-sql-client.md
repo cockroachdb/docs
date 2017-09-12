@@ -38,7 +38,7 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
-`--echo-sql` | <span class="version-tag">New in v1.1:</span> When using `--execute`, reveal the SQL statements sent implicitly. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-sql-client) below.
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
@@ -121,7 +121,6 @@ $ cockroach sql \
 ~~~
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
-
 
 ~~~ shell
 # Using standard connection flags:
@@ -208,31 +207,6 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=m
 | American Cockroach    | United States |
 | Brownbanded Cockroach | United States |
 +-----------------------+---------------+
-~~~
-
-### Reveal the SQL statements sent implicitly by the SQL client
-
-In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal the SQL statement sent implicitly:
-
-~~~ shell
-$ cockroach sql --insecure \
---execute="CREATE TABLE roaches (name STRING, country STRING)" \
---execute="INSERT INTO roaches VALUES ('Hissing Cockroach', 'Madagascar')" \
---user=maxroach \
---host=12.345.67.89 \
---port=26257 \
---database=critterdb
-~~~
-
-~~~
-> SELECT * FROM crdb_internal.node_build_info
-# Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
-# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
-> SET sql_safe_updates = TRUE
-> CREATE TABLE roaches2 (name STRING, country STRING)
-CREATE TABLE
-> INSERT INTO roaches2 VALUES ('Hissing Cockroach', 'Madagascar')
-INSERT 1
 ~~~
 
 ### Control how table rows are printed
@@ -473,6 +447,31 @@ DELETE 10
 ~~~
 
 {{site.data.alerts.callout_info}}Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the <code>sql_safe_updates</code> <a href="set-vars.html">session variable</a>.{{site.data.alerts.end}}
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal the SQL statement sent implicitly:
+
+~~~ shell
+$ cockroach sql --insecure \
+--execute="CREATE TABLE roaches (name STRING, country STRING)" \
+--execute="INSERT INTO roaches VALUES ('Hissing Cockroach', 'Madagascar')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~
+> SELECT * FROM crdb_internal.node_build_info
+# Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
+# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
+> SET sql_safe_updates = TRUE
+> CREATE TABLE roaches2 (name STRING, country STRING)
+CREATE TABLE
+> INSERT INTO roaches2 VALUES ('Hissing Cockroach', 'Madagascar')
+INSERT 1
+~~~
 
 ## See Also
 
