@@ -44,15 +44,15 @@ For details about controlling the number and location of replicas, see [Configur
 
 {% include faq/clock-synchronization.html %}
 
-## Cache Size
+## Cache and SQL Memory Size <span class="version-tag">Changed in v1.1</span>
 
-If you run multiple applications on the same machine as a CockroachDB node, you might consider manually setting the cache size instead of using the default 25% of available memory.
+By default, each node's cache and temporary SQL memory size is `128MiB` respectively. This default is optimal for running a local development cluster with multiple nodes on a single host. When running a production cluster with one node per host, however, these defaults may lead to out-of-memory errors. To prevent such errors and improve read performance, it's recommended to manually increase the cache and SQL memory size to 25% or more of available system memory.
 
-To manually set the limit of the cache size, start the node using the [`--cache` flag](start-a-node.html#flags). For example, the following command limits a node's cache to 5GB:
+To manually increase a node's cache size and SQL memory, start the node using the [`--cache`](start-a-node.html#flags) and [`--max-sql-memory`](start-a-node.html#flags) flags:
 
-```shell
-$ cockroach start --cache=5GB <other start flags>
-```
+~~~ shell
+$ cockroach start --cache=25% --max-sql-memory=25% <other start flags>
+~~~
 
 ## File Descriptors Limit
 
