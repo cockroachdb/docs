@@ -260,12 +260,15 @@ header {
   width: 100%;
   float: left;
   background: #fff;
-  padding: 15px;
+  padding: 18px 15px;
   border-bottom: 1px solid #DADADA;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  @media screen and (min-width: 768px) {
+    header {
+      padding: 15px; } }
   header .logo {
     width: 130px;
     margin-top: 5px;
@@ -505,20 +508,17 @@ body.sidenav-open .col-content {
   right: 0;
   top: -14px;
   transition: transform 0.2s ease;
-  transform: translateY(25px);
+  transform: translateY(30px);
   width: 40px;
   height: 40px;
-  text-align: right; }
+  text-align: center; }
   @media screen and (min-width: 992px) {
     .sidenav-arrow {
       display: none; } }
-  .sidenav-arrow img {
-    width: 13px;
-    vertical-align: top;
-    transition: transform 0.2s ease;
-    transform: rotate(180deg);
-    margin-top: 11px;
-    margin-right: 9px; }
+  .sidenav-arrow .arrow-down {
+    padding: 4px;
+    margin: 13px 0 2px 7px;
+    border-width: 2px 0 0 2px; }
 
 .collapsed-header {
   display: none;
@@ -555,12 +555,10 @@ body.sidenav-open .col-content {
   margin: 0px; }
   .nav--collapsed .sidenav-arrow {
     transform: translateY(21px); }
-    .nav--collapsed .sidenav-arrow img {
-      transform: rotate(0deg); }
+    .nav--collapsed .sidenav-arrow .arrow-down {
+      border-width: 0 2px 2px 0; }
   .nav--collapsed.nav--home .sidenav-arrow {
     transform: translateY(14px); }
-    .nav--collapsed.nav--home .sidenav-arrow img {
-      transform: rotate(0deg); }
   .nav > li {
     margin-bottom: 20px;
     list-style: none; }
@@ -707,7 +705,14 @@ a:not([href]) {
         letter-spacing: normal; }
       #version-switcher .tier-1 a .arrow-down {
         float: right;
-        margin-top: 21px; }
+        margin-top: 21px;
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        margin-bottom: 0px; }
+    #version-switcher .tier-1.active .arrow-down {
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      margin-bottom: 2px; }
   #version-switcher .nav li ul {
     border-left: none;
     margin: 0;

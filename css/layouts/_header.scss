@@ -108,9 +108,13 @@ header {
 	width:100%;
 	float:left;
 	background:#fff;
-	padding: 15px;
+	padding: 18px 15px;
 	border-bottom: 1px solid $cl_gray_medium;
   @include groovy(all);
+
+	@include at-query($min, $screen-sm) {
+		padding: 15px;
+	}
 
 	.logo {
 		width:130px;

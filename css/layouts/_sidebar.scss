@@ -81,23 +81,30 @@ body.sidenav-open {
   right: 0;
   top: -14px;
   transition: transform 0.2s ease;
-  transform: translateY(25px);
+  transform: translateY(30px);
   width: 40px;
   height: 40px;
-  text-align: right;
+  // text-align: right;
+  text-align: center;
 
   @include at-query($min, $screen-md) {
     display: none;
   }
 
-  img {
-    width: 13px;
-    vertical-align: top;
-    transition: transform 0.2s ease;
-    transform: rotate(180deg);
-    margin-top: 11px;
-    margin-right: 9px;
+  .arrow-down {
+    padding: 4px;
+    margin: 13px 0 2px 7px;
+    border-width: 2px 0 0 2px;
   }
+
+  // img {
+  //   width: 13px;
+  //   vertical-align: top;
+  //   transition: transform 0.2s ease;
+  //   transform: rotate(180deg);
+  //   margin-top: 11px;
+  //   margin-right: 9px;
+  // }
 }
 
 .collapsed-header {
@@ -140,18 +147,21 @@ body.sidenav-open {
     .sidenav-arrow {
       transform: translateY(21px);
 
-      img {
-        transform: rotate(0deg);
+      .arrow-down {
+        border-width: 0 2px 2px 0;
       }
+      // img {
+      //   transform: rotate(0deg);
+      // }
     }
 
     &.nav--home {
       .sidenav-arrow {
         transform: translateY(14px);
 
-        img {
-          transform: rotate(0deg);
-        }
+        // img {
+        //   transform: rotate(0deg);
+        // }
       }
     }
   }
@@ -342,6 +352,18 @@ a:not([href]) {
       .arrow-down {
         float: right;
         margin-top: 21px;
+        // swapping the usual direction of this arrow
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        margin-bottom: 0px;
+      }
+    }
+
+    &.active {
+      .arrow-down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        margin-bottom: 2px;
       }
     }
   }
