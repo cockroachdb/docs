@@ -28,7 +28,7 @@ You must have [SSH access](https://cloud.google.com/compute/docs/instances/conne
   - Any user, connecting as `root`, can read or write any data in your cluster.
   - There is no network encryption or authentication, and thus no confidentiality.
 
-- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- For guidance on cluster topology, clock synchronization, cache and SQL memory size, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 - Decide how you want to access your Admin UI:
   - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
@@ -119,10 +119,17 @@ To use GCE's TCP Proxy Load Balancing service:
 
 3. Start a new CockroachDB cluster with a single node:
 
-	~~~ shell
+	~~~
 	$ cockroach start --insecure \
+	--host=<node1 internal address> \
+	--cache=25% \
+	--max-sql-memory=25% \
 	--background
 	~~~
+
+	This command sets the node to insecure and identifies the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory in order to improve read performance and prevent out-of-memory errors.
+
+	Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 5. Add nodes to the cluster
 
@@ -150,11 +157,16 @@ At this point, your cluster is live and operational but contains only a single n
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
 
-	~~~ shell
-	$ cockroach start --insecure \
-	--background \
-	--join=<node1 internal IP address>:26257
 	~~~
+	$ cockroach start --insecure \
+	--host=<node2 internal address> \
+	--join=<node1 internal address>:26257 \
+	--cache=25% \
+	--max-sql-memory=25% \
+	--background
+	~~~
+
+	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
 
 4. Repeat these steps for each instance you want to use as a node.
 
