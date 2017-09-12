@@ -62,7 +62,7 @@
     });
   </script>
 
-  <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
+  <ul id="mysidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
     <!-- <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div> -->
     <div class="sidenav-arrow"><div class="arrow-down"></div></div>
     <div class="collapsed-header">
@@ -211,3 +211,22 @@
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
 <script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
+
+{% if page.url == '/search.html' %}
+<script>
+$(document).ready(function() {
+  // this will make search appear instead of header in collapsed docs menu
+  $('.collapsed-header').hide();
+  $('.search-wrap').show();
+
+  // this will remove the class with custom styling for search page,
+  // so when we close the menu it reverts to normal styling
+  $('.sidenav-arrow').on('click', function() {
+    $('#mysidebar').removeClass('nav--search');
+  });
+
+  // set search input value to query string
+  $('#search-input').val(QueryString.q);
+});
+</script>
+{% endif %}

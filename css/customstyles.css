@@ -559,6 +559,10 @@ body.sidenav-open .col-content {
       border-width: 0 2px 2px 0; }
   .nav--collapsed.nav--home .sidenav-arrow {
     transform: translateY(14px); }
+  .nav--collapsed.nav--search {
+    height: 60px !important; }
+    .nav--collapsed.nav--search .sidenav-arrow {
+      transform: translateY(25px); }
   .nav > li {
     margin-bottom: 20px;
     list-style: none; }

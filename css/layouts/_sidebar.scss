@@ -164,6 +164,14 @@ body.sidenav-open {
         // }
       }
     }
+
+    &.nav--search {
+      height: 60px !important;
+      
+      .sidenav-arrow {
+        transform: translateY(25px);
+      }
+    }
   }
 
   //1st level
