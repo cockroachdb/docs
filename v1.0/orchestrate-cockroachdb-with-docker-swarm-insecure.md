@@ -307,7 +307,7 @@ To increase the number of nodes in your CockroachDB cluster:
 3. Join the instance to the swarm as a worker node (see [Step 3.2](#step-3-start-the-swarm)).
 4. Create a new service to start another node and join it to the CockroachDB cluster (see [Step 5.2](#step-5-start-the-cockroachdb-cluster)).
 
-## Step 9. Stop the cluster
+## Step 10. Stop the cluster
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
