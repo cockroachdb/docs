@@ -11,11 +11,7 @@ Because of CockroachDB's multi-active availability design, you can perform a "ro
 
 ## Considerations
 
-- For rolling upgrades to work, your cluster must be behind a load balancer or your clients must be configured to talk to multiple nodes. If your application communicates with a single node, bringing it down to upgrade its CockroachDB binary will cause your application to fail when the node goes offline.
-
-- We recommend creating scripts to upgrade CockroachDB and not attempting to do so by hand.
-
-- Bring down only one node at a time, and wait at least one minute after it rejoins the cluster to bring down the next node. This reduces the number of nodes you have offline at any point in time, minimizing the chance you'll lose a majority of the nodes in your cluster which can cause service outages.
+- Make sure your cluster is behind a load balancer, or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
 - By default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. Therefore, if you expect any nodes to be down for more than 5 minutes during a rolling upgrade, you should first set the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to higher than the `5m0s` default. For example, if you think a node might be offline for up to 8 minutes, you might change this setting as follows:
 
@@ -23,9 +19,35 @@ Because of CockroachDB's multi-active availability design, you can perform a "ro
     > SET CLUSTER SETTING server.time_until_store_dead = 10m0s;
     ~~~
 
-## Perform a Rolling Upgrade
+    After upgrading all nodes in the cluster, you would then change the setting back to its default:
+
+    ~~~ sql
+    > SET CLUSTER SETTING server.time_until_store_dead = 5m0s;
+    ~~~
+
+## Step 1. Verify cluster health
+
+1. SSH to any node in the cluster.
+
+2. Run the [`cockroach node status`](view-node-details.html) command with the `--decommission` flag.
+
+    In the response, if `is_live` is `false` for any nodes that should be live, identify why the nodes are offline and restart them before begining your upgrade.
+
+3. Run the [`cockroach node status`](view-node-details.html) command with the `--ranges` flag.
+
+    In the response, make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.
+
+## Step 2. Collect debug information
+
+Run the [`cockroach debug zip`](debug-zip.html) command to capture your cluster's state before the upgrade. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
+
+## Step 3. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
+
+{{site.data.alerts.callout_success}}We recommend creating scripts to perform these steps instead of performing them by hand.{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.{{site.data.alerts.end}}
 
 1. Connect to the node.
 
@@ -121,7 +143,7 @@ For each node in your cluster, complete the following steps.
     ~~~ shell
     $ cockroach start --join=[IP address of any other node] [other flags]
     ~~~
-    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it    --host`.
+    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it `--host`.
 
 6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](explore-the-admin-ui.html).
 
@@ -136,5 +158,7 @@ For each node in your cluster, complete the following steps.
 
 ## See Also
 
+- [View Node Details](view-node-details.html)
+- [Collect Debug Information](debug-zip.html)
 - [View Version Details](view-version-details.html)
 - [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
