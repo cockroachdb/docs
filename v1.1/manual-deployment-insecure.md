@@ -30,7 +30,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
   - Any user, connecting as `root`, can read or write any data in your cluster.
   - There is no network encryption or authentication, and thus no confidentiality.
 
-- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- For guidance on cluster topology, clock synchronization, cache and SQL memory size, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 ## Step 1. Start the first node
 
@@ -52,12 +52,17 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 3. Start a new CockroachDB cluster with a single node:
 
-	~~~ shell
+	~~~
 	$ cockroach start --insecure \
-	--host=<node1 internal address>
+	--host=<node1 internal address> \
+	--cache=25% \
+	--max-sql-memory=25% \
+	--background
 	~~~
 
-	This command sets the node to insecure and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
+	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. It also increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
+
+	Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 2. Add nodes to the cluster
 
@@ -81,10 +86,13 @@ At this point, your cluster is live and operational but contains only a single n
 
 3. Start a new node that joins the cluster using the first node's address:
 
-	~~~ shell
+	~~~
 	$ cockroach start --insecure \
 	--host=<node2 internal address> \
-	--join=<node1 internal address>:26257
+	--join=<node1 internal address>:26257 \
+	--cache=25% \
+	--max-sql-memory=25% \
+	--background
 	~~~
 
 	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.

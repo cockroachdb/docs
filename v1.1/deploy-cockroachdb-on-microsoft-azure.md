@@ -24,7 +24,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Recommendations
 
-- For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
+- For guidance on cluster topology, clock synchronization, cache and SQL memory size, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 - Decide how you want to access your Admin UI:
   - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
@@ -256,15 +256,21 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     $ sudo mv cockroach /usr/local/bin
     ~~~
 
-3. Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
+3. Start a new CockroachDB cluster with a single node:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --background \
-    --certs-dir=certs \
-    --advertise-host=<node1 internal IP address>
     ~~~
+    $ cockroach start \
+    --certs-dir=certs \
+    --advertise-host=<node1 internal IP address> \
+    --cache=25% \
+    --max-sql-memory=25% \
+    --background
+    ~~~
+
+    This command specifies the location of certificates and the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
+
+    Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, binds internal and client communication to port 26257, and binds Admin UI HTTP requests to port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 6. Add nodes to the cluster
 
@@ -301,13 +307,17 @@ At this point, your cluster is live and operational but contains only a single n
 3. Start a new node that joins the cluster using the first node's internal IP address:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --background \
-    --certs-dir=certs \
-    --advertise-host=<node internal IP address> \
-    --join=<node1 internal IP address>:26257
     ~~~
+    $ cockroach start \
+    --certs-dir=certs \
+    --advertise-host=<node2 internal IP address> \
+    --join=<node1 internal IP address>:26257 \
+    --cache=25% \
+    --max-sql-memory=25% \
+    --background
+    ~~~
+
+    The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
 
 4.  Repeat these steps for each instance you want to use as a node.
 

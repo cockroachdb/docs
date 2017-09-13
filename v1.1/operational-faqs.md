@@ -31,7 +31,7 @@ flag.
 
 ## Why is memory usage increasing despite lack of traffic?
 
-If you start a CockroachDB node on your computer and let it run for hours or days, you might notice that its memory usage steadily grows for a while before plateauing at around 25% of your computer's total memory. This is expected behavior -- like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of timeseries data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. The cache size limit defaults to 25% of the machine's memory, but can be controlled by setting the `--cache` flag when running [`cockroach start`](start-a-node.html).
+Like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of timeseries data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. For information about manually controlling the cache size, see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1).
 
 ## Why is disk usage increasing despite lack of writes?
 

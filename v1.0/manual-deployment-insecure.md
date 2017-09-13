@@ -57,7 +57,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	--host=<node1 internal address>
 	~~~
 
-	This command sets the node to insecure and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
+	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 2. Add nodes to the cluster
 
