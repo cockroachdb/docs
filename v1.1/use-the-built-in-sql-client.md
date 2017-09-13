@@ -38,7 +38,7 @@ Flag | Description
 -----|------------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
-`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
+`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
@@ -71,7 +71,7 @@ When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a w
 >
 ~~~
 
-The **Version** and **Cluster ID** details are particularly noteworthy:
+<span class="version-tag">New in v1.1:</span> The **Version** and **Cluster ID** details are particularly noteworthy:
 
 - When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
 - When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
@@ -86,15 +86,22 @@ Command | Usage
 `\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\set <option>` | Enable a client-side option. See the table below for available options.<br><br>To see current settings, use `\set` without any options.
-`\unset <option>` | Disable a client-side option. See the table below for available options.
+`\set <option>` | Enable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options).<br><br>To see current settings, use `\set` without any options.
+`\unset <option>` | Disable a client-side option. For available options, see [Shell Options](#shell-options).
 `\?`<br>`help` | View this help within the shell.
+
+### SQL Shell Options <span class="version-tag">Changed in v1.1</span>
+
+To see current settings, use `\set` without any options. To enable or disable a shell option, use `\set <option>` or `\unset <option>`.
 
 Client Options | Description
 ---------------|------------
+`ECHO` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set ECHO`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
+`ERREXIT` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set ERREXIT`.
 `CHECK_SYNTAX` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset CHECK_SYNTAX`.
 `NORMALIZE_HISTORY` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `CHECK_SYNTAX` is enabled as well. To disable this option, run `\unset NORMALIZE_HISTORY`.
-`ERREXIT` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set ERREXIT`.
+`SHOW_TIMES` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset SHOW_TIMES`.
+`SMART_PROMPT` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset SMART_PROMPT`.
 
 ## SQL Shell Shortcuts
 
@@ -450,27 +457,56 @@ DELETE 10
 
 ### Reveal the SQL statements sent implicitly by the command-line utility
 
-In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal the SQL statement sent implicitly:
+In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal SQL statements sent implicitly:
 
 ~~~ shell
 $ cockroach sql --insecure \
---execute="CREATE TABLE roaches (name STRING, country STRING)" \
---execute="INSERT INTO roaches VALUES ('Hissing Cockroach', 'Madagascar')" \
+--execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
+--execute="INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')" \
 --user=maxroach \
 --host=12.345.67.89 \
 --port=26257 \
---database=critterdb
+--database=db1
+--echo-sql
 ~~~
 
 ~~~
 > SELECT * FROM crdb_internal.node_build_info
-# Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
+# Server version: CockroachDB CCL f8f3c9317 (darwin amd64, built 2017/09/13 15:05:35, go1.8) (same version as client)
 # Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
 > SET sql_safe_updates = TRUE
-> CREATE TABLE roaches2 (name STRING, country STRING)
+> CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)
 CREATE TABLE
-> INSERT INTO roaches2 VALUES ('Hissing Cockroach', 'Madagascar')
-INSERT 1
+> INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')
+INSERT 3
+~~~
+
+In this example, we start the interactive SQL shell and enable the `ECHO` shell option to reveal SQL statements sent implicitly:
+
+~~~ shell
+$ cockroach sql --insecure \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=db1
+~~~
+
+~~~ sql
+> \set ECHO
+~~~
+
+~~~ sql
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+~~~
+
+~~~
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+INSERT 3
+
+Time: 2.426534ms
+
+> SHOW TRANSACTION STATUS
+> SHOW DATABASE
 ~~~
 
 ## See Also
