@@ -40,7 +40,7 @@ and unlimited disk space, we observe a practical limit of about 50.000
 ranges per node (3.2TB per node). Our experiments suggest the
 bottleneck is currently on CPU time. A higher capacity per node can
 thus be reached by increasing CPU core counts and RAM size according
-to needs.
+to needs. We are also working on reducing the CPU overhead per range.
 
 To estimate the maximum number of ranges across an entire cluster, one
 must consider the replication factor and the maximum number of nodes.
@@ -83,9 +83,12 @@ values of that type.
 
 Further limits apply:
 
-- the combined size of all primary key values in a single row must fit
-  within 16KB. This is the maximum key size in the underlying RocksDB
-  store on each node.
+- the combined size of all primary key values in a single row should
+  fit within a few kilobytes. Although CockroachDB might support keys
+  up to 8MB in size, which is [the maximum key size in the underlying
+  RocksDB store](https://github.com/facebook/rocksdb/wiki/RocksDB-FAQ)
+  on each node, keys larger than a few kilobytes will cause a
+  significant decrease in CockroachDB performance.
 - the combined sized of a row must fit within a fraction of the range
   size. We highly recommend this to be kept within 30% of the range
   size, although larger fractions may also work.
