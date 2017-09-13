@@ -108,7 +108,7 @@ header {
 	width:100%;
 	float:left;
 	background:#fff;
-	padding: 18px 15px;
+	padding: 14px 15px;
 	border-bottom: 1px solid $cl_gray_medium;
   @include groovy(all);
 
@@ -117,7 +117,7 @@ header {
 	}
 
 	.logo {
-		width:130px;
+		width: 180px;
 		margin-top:5px;
 		float: left;
 		line-height: 20px;

@@ -156,6 +156,8 @@ body.sidenav-open {
     }
 
     &.nav--home {
+      height: 40px !important;
+
       .sidenav-arrow {
         transform: translateY(14px);
 
@@ -167,7 +169,7 @@ body.sidenav-open {
 
     &.nav--search {
       height: 60px !important;
-      
+
       .sidenav-arrow {
         transform: translateY(25px);
       }

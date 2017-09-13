@@ -260,7 +260,7 @@ header {
   width: 100%;
   float: left;
   background: #fff;
-  padding: 18px 15px;
+  padding: 14px 15px;
   border-bottom: 1px solid #DADADA;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -270,7 +270,7 @@ header {
     header {
       padding: 15px; } }
   header .logo {
-    width: 130px;
+    width: 180px;
     margin-top: 5px;
     float: left;
     line-height: 20px;
@@ -557,8 +557,10 @@ body.sidenav-open .col-content {
     transform: translateY(21px); }
     .nav--collapsed .sidenav-arrow .arrow-down {
       border-width: 0 2px 2px 0; }
-  .nav--collapsed.nav--home .sidenav-arrow {
-    transform: translateY(14px); }
+  .nav--collapsed.nav--home {
+    height: 40px !important; }
+    .nav--collapsed.nav--home .sidenav-arrow {
+      transform: translateY(14px); }
   .nav--collapsed.nav--search {
     height: 60px !important; }
     .nav--collapsed.nav--search .sidenav-arrow {
@@ -1426,6 +1428,34 @@ li.search-wrap {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 20px; }
+
+.clear-search {
+  display: none;
+  position: absolute;
+  top: 1px;
+  right: 48px;
+  height: 38px;
+  width: 35px;
+  border-radius: 50%;
+  outline: none; }
+  @media screen and (min-width: 768px) {
+    .clear-search {
+      right: 104px; } }
+  @media screen and (min-width: 992px) {
+    .clear-search {
+      right: 20px; } }
+  .clear-search:before, .clear-search:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 11px;
+    top: 50%;
+    left: 6px;
+    margin-top: -1px;
+    background: #152849;
+    transform: rotate(45deg); }
+  .clear-search:after {
+    transform: rotate(-45deg); }
 
 .bs-callout {
   padding: 30px 40px 30px 25px;

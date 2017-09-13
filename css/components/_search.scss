@@ -55,3 +55,38 @@ li.search-wrap {
 .search-snippet {
   @include caption;
 }
+
+.clear-search {
+  display: none;
+  position: absolute;
+  top: 1px;
+  right: 48px;
+  height: 38px;
+  width: 35px;
+  border-radius: 50%;
+  outline: none;
+
+  @include at-query($min, $screen-sm) {
+    right: 104px;
+  }
+
+  @include at-query($min, $screen-md) {
+    right: 20px;
+  }
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 11px;
+    top: 50%;
+    left: 6px;
+    margin-top: -1px;
+    background: $cl_blue;
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
