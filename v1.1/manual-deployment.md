@@ -194,7 +194,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     --background
     ~~~
 
-    This command specifies the location of certificates and the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory in order to improve read performance and prevent out-of-memory errors.
+    This command specifies the location of certificates and the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
 
     Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, binds internal and client communication to port 26257, and binds Admin UI HTTP requests to port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 

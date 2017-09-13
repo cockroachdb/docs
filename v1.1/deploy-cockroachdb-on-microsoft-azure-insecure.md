@@ -134,7 +134,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 	--background
 	~~~
 
-	This command sets the node to insecure and identifies the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory in order to improve read performance and prevent out-of-memory errors.
+	This commands starts an insecure node and identifies the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
 
 	Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
