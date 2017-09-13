@@ -7,25 +7,37 @@ toc_not_nested: true
 
 Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
 
+This page shows you how to upgrade a cluster from v1.0 to a patch release in the 1.0.x series. To upgrade from v1.0.x to v1.1, see [the 1.1 version of this page](../v1.1/upgrade-cockroach-version.html).
+
 <div id="toc"></div>
 
 ## Considerations
 
-- For rolling upgrades to work, your cluster must be behind a load balancer or your clients must be configured to talk to multiple nodes. If your application communicates with a single node, bringing it down to upgrade its CockroachDB binary will cause your application to fail when the node goes offline.
+- Make sure your cluster is behind a load balancer, or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
-- We recommend creating scripts to upgrade CockroachDB and not attempting to do so by hand.
+- Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
-- Bring down only one node at a time, and wait at least one minute after it rejoins the cluster to bring down the next node. This reduces the number of nodes you have offline at any point in time, minimizing the chance you'll lose a majority of the nodes in your cluster which can cause service outages.
+## Step 1. Prepare to upgrade
 
-- By default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. Therefore, if you expect any nodes to be down for more than 5 minutes during a rolling upgrade, you should first set the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to higher than the `5m0s` default. For example, if you think a node might be offline for up to 8 minutes, you might change this setting as follows:
+Before starting the upgrade, it's important to verify the cluster's health, collect debug information, and back up the cluster's data.
 
-    ~~~ sql
-    > SET CLUSTER SETTING server.time_until_store_dead = 10m0s;
-    ~~~
+1. Run the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 
-## Perform a Rolling Upgrade
+    In the response, if any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
+
+    Also make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.Run the [`cockroach node status`](view-node-details.html) command with the `--decommission` flag against any node in the cluster.
+
+2. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
+
+3. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
+
+## Step 2. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
+
+{{site.data.alerts.callout_success}}We recommend creating scripts to perform these steps instead of performing them by hand.{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.{{site.data.alerts.end}}
 
 1. Connect to the node.
 
@@ -121,7 +133,7 @@ For each node in your cluster, complete the following steps.
     ~~~ shell
     $ cockroach start --join=[IP address of any other node] [other flags]
     ~~~
-    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it    --host`.
+    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as `--host`.
 
 6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](explore-the-admin-ui.html).
 
@@ -134,7 +146,21 @@ For each node in your cluster, complete the following steps.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
+## Step 3. Monitor the upgraded cluster
+
+After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
+
+If you experience any problems, follow these steps to troubleshoot and, if necessary, downgrade the cluster:
+
+1. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state.
+
+2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+
+3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-2-perform-the-rolling-upgrade), but this time switching each node back to the previous version in the 1.0.x series.
+
 ## See Also
 
+- [View Node Details](view-node-details.html)
+- [Collect Debug Information](debug-zip.html)
 - [View Version Details](view-version-details.html)
 - [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
