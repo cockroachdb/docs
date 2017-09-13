@@ -185,7 +185,6 @@ $ cockroach user rm jpointsman --insecure --echo-sql
 ~~~
 
 ~~~
-> SELECT * FROM crdb_internal.node_build_info
 # Server version: CockroachDB CCL f44a747ea (darwin amd64, built 2017/09/08 14:30:37, go1.8) (same version as client)
 # Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
 > DELETE FROM system.users WHERE username=$1
