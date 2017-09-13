@@ -295,7 +295,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-10. Create Docker secrets for the `root` user's certificate and key:
+12. Create Docker secrets for the `root` user's certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -528,7 +528,7 @@ To increase the number of nodes in your CockroachDB cluster:
 4. Create security resources for the node (see [Step 5.7 and 5.8](#step-5-create-security-resources)).
 5. Create a new service to start another node and join it to the CockroachDB cluster (see [Step 6.2](#step-6-start-the-cockroachdb-cluster)).
 
-## Step 10. Stop the cluster
+## Step 11. Stop the cluster
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
