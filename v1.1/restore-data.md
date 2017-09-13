@@ -8,8 +8,10 @@ How you restore your cluster's data depends on the type of [backup](back-up-data
 
 Backup Type | Restore using...
 ------------|-----------------
-[`cockroach dump`](sql-dump.html) | [Import data](import-data.html)
+[`cockroach dump`](sql-dump.html) | [Import data](import-data.html#import-from-generic-sql-dump)
 [`BACKUP`](backup.html)<br/>(*[enterprise license](https://www.cockroachlabs.com/pricing/) only*) | [`RESTORE`](restore.html)
+
+If you created a back up from another database and want to import it into CockroachDB, see [Import data](import-data.html).
 
 ## See Also
 
