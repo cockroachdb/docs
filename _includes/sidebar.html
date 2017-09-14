@@ -62,8 +62,9 @@
     });
   </script>
 
-  <ul id="mysidebar" class="nav {% if page.name == 'index.md' or page.url == '/search.html' %}nav--home{% endif %}" style="display: none">
-    <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div>
+  <ul id="mysidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
+    <!-- <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div> -->
+    <div class="sidenav-arrow"><div class="arrow-down"></div></div>
     <div class="collapsed-header">
       Docs Menu
       {% comment %}
@@ -82,6 +83,7 @@
         <span class="fa fa-search"></span>
         <form method="GET" action="{{ 'search.html' | relative_url }}">
           <input type="text" id="search-input" name="q" placeholder="Search">
+          <span class="clear-search"></span>
         </form>
       </div>
     </li>
@@ -210,3 +212,37 @@
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
 <script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
+
+{% if page.url == '/search.html' %}
+<script>
+$(document).ready(function() {
+  // this will make search appear instead of header in collapsed docs menu
+  $('.collapsed-header').hide();
+  $('.search-wrap').show();
+
+  // this will remove the class with custom styling for search page,
+  // so when we close the menu it reverts to normal styling
+  // needs to happen if any of these elements are clicked
+  $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
+    if ($('#mysidebar').hasClass('nav--search')) {
+      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
+    }
+  });
+
+  // set search input value to query string
+  $('#search-input').val(QueryString.q);
+
+  // on load, show close button if search input
+	if ($('#search-input').val() != '') $('.clear-search').show();
+
+  $('.clear-search').on('click', function() {
+    $('#search-input').val('');
+    $(this).hide();
+  });
+
+  $('#search-input').on('input', function() {
+    if ($(this).val() != '') $('.clear-search').show();
+  });
+});
+</script>
+{% endif %}
