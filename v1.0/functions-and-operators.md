@@ -33,8 +33,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `>>` | Bitwise right-shift | binary |
 | 8 | `&` | Bitwise and | binary |
 | 9 | `#` | Bitwise xor | binary |
-| 10 | `|` | Bitwise or | binary |
-| 11 | `||` | Concatenation | binary |
+| 10 | <code>&#124;</code> | Bitwise or | binary |
+| 11 | <code>&#124;&#124;</code> | Concatenation | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
 |  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
 |  | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
