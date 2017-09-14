@@ -348,10 +348,10 @@ func main() {
 					unlink: []string{"table_name"},
 				},
 				{
-					name:  "drop_database",
-					stmt:  "drop_database_stmt",
-					inline:  []string{"opt_drop_behavior"},
-					match: []*regexp.Regexp{regexp.MustCompile("'DROP' 'DATABASE'")},
+					name:   "drop_database",
+					stmt:   "drop_database_stmt",
+					inline: []string{"opt_drop_behavior"},
+					match:  []*regexp.Regexp{regexp.MustCompile("'DROP' 'DATABASE'")},
 				},
 				{
 					name:    "drop_index",
@@ -415,8 +415,10 @@ func main() {
 				{
 					name:    "import_stmt",
 					inline:  []string{"string_or_placeholder_list", "opt_with_options", "kv_option_list"},
-					replace: map[string]string{"any_name": "table_name", "'USING' string_or_placeholder": "'USING' create_table_file", "table_elem_list": "create_table_statement", "string_or_placeholder": "file_to_import", "import_data_format": "'CSV'"},
-					unlink:  []string{"table_name", "create_table_file", "create_table_statement", "file_to_import"},
+					replace: map[string]string{"any_name": "table_name", "'USING' string_or_placeholder": "'USING' create_table_file", "string_or_placeholder": "file_to_import", "import_data_format": "'CSV'"},
+					unlink:  []string{"table_name", "create_table_file", "file_to_import"},
+					exclude: []*regexp.Regexp{regexp.MustCompile("'OPTIONS'")},
+					match:   []*regexp.Regexp{regexp.MustCompile("'WITH'")},
 				},
 				{name: "interleave", stmt: "create_table_stmt", inline: []string{"opt_interleave"}, replace: map[string]string{"any_name": "table_name", "opt_table_elem_list": "table_definition", "name_list": "interleave_prefix", " name": " parent_table"}, unlink: []string{"table_name", "table_definition", "parent_table", "child_columns"}},
 				{

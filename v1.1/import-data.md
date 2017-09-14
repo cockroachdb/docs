@@ -18,7 +18,7 @@ You can execute batches of `INSERT` statements stored in `.sql` files (including
 $ cockroach sql --database=[database name] < statements.sql
 ~~~
 
-{{site.data.alerts.callout_success}}Grouping each <code>INSERT</code> statement to include approximately 500 rows will provide the best performance.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}Grouping each <code>INSERT</code> statement to include approximately 500-10,000 rows will provide the best performance. The number of rows depends on row size, column families, number of indexes; smaller rows and less complex schemas can benefit from larger groups of <code>INSERTS</code>, while larger rows and more complex schemas benefit from smaller groups.{{site.data.alerts.end}}
 
 ## Import from PostgreSQL Dump
 

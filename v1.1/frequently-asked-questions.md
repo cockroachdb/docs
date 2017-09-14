@@ -155,6 +155,8 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncrasies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
 
+If you are interested in trying to migrate your app, we recommend exporting your data from `pg_dump` (Postgres) or as a CSV (MySQL), and then [importing it into CockroachDB](import-data.html).
+
 ## Does Cockroach Labs offer a cloud database as a service?
 
 Not yet, but this is on our long-term roadmap.

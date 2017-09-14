@@ -325,6 +325,12 @@
             ]
           },
           {
+            "title": "<code>IMPORT</code> (Beta)",
+            "urls": [
+              "/${VERSION}/import.html"
+            ]
+          },
+          {
             "title": "<code>IMPORT TABLE</code>",
             "urls": [
               "/${VERSION}/import-table.html"
@@ -951,6 +957,12 @@
         "title": "Import Data",
         "urls": [
           "/${VERSION}/import-data.html"
+        ]
+      },
+      {
+        "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
+        "urls": [
+          "/${VERSION}/create-a-file-server.html"
         ]
       },
       {

@@ -15,7 +15,7 @@ This is especially useful for:
 
 ## HTTP Export Storage API
 
-CockroachDB tasks that require reading or write of external files (such as `IMPORT` and `BACKUP`) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/tmp/cockroach-exports`.
+CockroachDB tasks that require reading or write of external files (such as `IMPORT` and `BACKUP`) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
@@ -26,7 +26,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 - [Caddy](#using-caddy-as-a-file-server)
 - [nginx](#using-nginx-as-a-file-server)
 
-{{site.data.alerts.callout_info}}We do not recommend using any machines running <code>cockroach</code> as file servers. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}We do not recommend using any machines running <code>cockroach</code> as file servers. Using machines that are running cockroach as file servers could negatively impact performance if I/O operations exceed capacity.{{site.data.alerts.end}}
 
 ### Using Caddy as a File Server
 
@@ -36,15 +36,15 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
   - Command line example (with no TLS):
 
     ~~~ shell
-    caddy -root /tmp/cockroach-exports "upload / {" 'to "/tmp/cockroach-exports"' 'yes_without_tls' "}"
+    caddy -root /mnt/cockroach-exports "upload / {" 'to "/mnt/cockroach-exports"' 'yes_without_tls' "}"
     ~~~
   - `Caddyfile` example (using a key and cert):
 
     ~~~ shell
     tls key cert
-    root "/tmp/cockroach-exports"
+    root "/mnt/cockroach-exports"
     upload / {
-      to "/tmp/cockroach-exports"
+      to "/mnt/cockroach-exports"
     }
     ~~~
 
@@ -63,7 +63,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
         listen 20150;
         location / {
           dav_methods  PUT;
-          root /tmp/cockroach-exports;
+          root /mnt/cockroach-exports;
           sendfile           on;
           sendfile_max_chunk 1m;
         }
