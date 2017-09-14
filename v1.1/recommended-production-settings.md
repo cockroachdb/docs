@@ -36,7 +36,9 @@ When running a cluster with more than one node, each replica will be on a differ
 
 - Configurations with odd numbers of replicas are more robust than those with even numbers. Clusters of three and four nodes can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
 
-- When replicating across datacenters, it's recommended to use datacenters on a single continent to ensure performance (inter-continent scenarios will improve in performance soon). Also, to ensure even replication across datacenters, it's recommended to specify which datacenter each node is in using the `--locality` flag (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). If some of your datacenters are much farther apart than others, [specifying multiple levels of locality (such as country and region) is recommended](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- When replicating across datacenters, it's recommended to specify which datacenter each node is in using the `--locality` flag to ensure even replication (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). If some of your datacenters are much farther apart than others, [specifying multiple levels of locality (such as country and region) is recommended](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+
+- When replicating across datacenters, be aware that the round trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
 
 For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 
