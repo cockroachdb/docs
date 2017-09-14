@@ -86,7 +86,7 @@ $(document).ready(function(){
 <div id="localinstall" class="install-option">
 <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz">CockroachDB archive</a> for OS X, and extract the binary:</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz">CockroachDB archive</a> for macOS, and extract the binary:</p>
 
       <div class="copy-clipboard">
         <div class="copy-clipboard__text">copy</div>
@@ -109,7 +109,7 @@ $(document).ready(function(){
 
       <p>You should see an output that looks somewhat like this:</p>
 
-      <pre class="highlight"><code>Build Tag:    v1.0.3
+      <pre class="highlight"><code>Build Tag:    {{ page.release_info.version }}
 Build Time:   2017/07/06 17:44:09
 Distribution: CCL
 Platform:     darwin amd64
@@ -135,7 +135,7 @@ Build Type:   release</code></pre>
       <div class="highlight"><pre class="highlight"><code><span class="gp">$ </span> ssh &lt;username&gt;@&lt;ip address&gt;</code></pre></div>
 
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz">CockroachDB archive</a> for OS X, and extract the binary:</p>
+      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz">CockroachDB archive</a> for Linux, and extract the binary:</p>
 
       <div class="copy-clipboard">
         <div class="copy-clipboard__text">copy</div>
@@ -158,7 +158,7 @@ Build Type:   release</code></pre>
 
       <p>You should see an output that looks somewhat like this:</p>
 
-      <pre class="highlight"><code>Build Tag:    v1.0.3
+      <pre class="highlight"><code>Build Tag:    {{ page.release_info.version }}
 Build Time:   2017/07/06 17:44:09
 Distribution: CCL
 Platform:     linux amd64
@@ -183,7 +183,7 @@ Build Type:   release</code></pre>
 
     ~~~
     CockroachDB node starting at 2017-08-17 16:42:18.303618399 +0700 ICT
-    build:      CCL v1.0.3 @ 2017/07/06 17:44:09 (go1.8.3)
+    build:      CCL {{ page.release_info.version }} @ 2017/07/06 17:44:09 (go1.8.3)
     admin:      http://localhost:8080
     sql:        postgresql://root@localhost:26257?sslmode=disable
     logs:       /Users/me/cockroach-data/logs
@@ -230,14 +230,14 @@ Now that you have CockroachDB up and running, you can take a detour and check ou
 
 a.btn.btn-primary {
     color: #ffffff;
-    background-color: #347DBE;
-    border-color: #347DBE;
+    background-color: #54B30E;
+    border-color: #54B30E;
 }
 
 a.btn.btn-primary:hover {
-    color: #ffffff;
-    background-color: #46a8ff;
-    border-bottom: 2px #347DBE solid;
+    color: #54B30E;
+    background-color: #fff;
+    border-bottom: 2px #54B30E solid;
 }
 
 </style>
