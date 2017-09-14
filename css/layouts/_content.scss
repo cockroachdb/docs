@@ -28,9 +28,12 @@
 			min-height: 625px;
 
 			.content-col {
-				border-left: 1px solid $cl_gray_medium;
 				min-height: 625px;
 				padding-left: 55px;
+
+				&-border {
+					border-left: 1px solid $cl_gray_medium;
+				}
 			}
 		}
 	}

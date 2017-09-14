@@ -101,6 +101,7 @@ Field | Description | Default
 `redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
 `optimizely` | Adds code required to include the page in A/B testing. See [A/B Testing](#ab-testing) for more details. | `false`
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
+`no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 
 #### Page TOC
 
