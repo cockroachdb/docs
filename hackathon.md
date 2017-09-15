@@ -244,6 +244,8 @@ a.btn.btn-primary:hover {
 
 <a href="https://github.com/sploiselle/bankofroach" type="button" class="btn btn-primary">Get the code sample</a>
 
+If you're not using Node.js, we have [code samples for many other languages, as well](https://www.cockroachlabs.com/docs/stable/build-an-app-with-cockroachdb.html).
+
 ## 3. Draft Your Schema
 
 When we're talking about schemas, we're talking about the structure of the data in your application. Planning this is important because––like so much engineering––things need to be exactly right for it to work.
