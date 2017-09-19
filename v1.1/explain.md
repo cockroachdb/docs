@@ -16,13 +16,13 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
-  You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
+You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
-	- Indexes the query uses; shown as the **Description** value of rows with the **Field** value of `table` 
+- Indexes the query uses; shown as the **Description** value of rows with the **Field** value of `table`
 
-	- Key values in the index are being scanned; shown as the **Description** value of rows with the **Field** value of `spans`
+- Key values in the index are being scanned; shown as the **Description** value of rows with the **Field** value of `spans`
 
-  For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
+For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
 
 ## Synopsis
 
