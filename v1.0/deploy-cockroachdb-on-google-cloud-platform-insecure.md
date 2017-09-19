@@ -194,7 +194,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 5. View the cluster's databases, which will include `insecurenodetest`:
 
 	~~~ sql
-	> SHOW DATABASE;
+	> SHOW DATABASES;
 	~~~
 	~~~
 	+--------------------+
