@@ -493,6 +493,12 @@
             ]
           },
           {
+            "title": "<code>SHOW TRACE</code>",
+            "urls": [
+              "/${VERSION}/show-trace.html"
+            ]
+          },
+          {
             "title": "<code>SHOW USERS</code>",
             "urls": [
               "/${VERSION}/show-users.html"
