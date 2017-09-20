@@ -1,9 +1,12 @@
 ---
-title: SQL Feature Support
+title: SQL Feature Support in CockroachDB v1.1
 summary: Find CockroachDB's conformance to the SQL standard and which common extensions it supports.
 ---
 
+<div id="toc"></div>
+
 ## Overview
+
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
 
 To understand which standard SQL features we support (as well as common extensions to the standard), use the table below.
@@ -37,8 +40,8 @@ table tr td:nth-child(2) {
 | `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html) |
 | `AUTO INCREMENT` | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) |
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
-| `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
-| `UUID` | ✓ | Standard | [`UUID` documentation](uuid.html) |
+| <span class="version-tag">New in v1.1:</span> `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
+| <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | Standard | [`UUID` documentation](uuid.html) |
 | JSON | Planned | Common Extension | [GitHub Issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
@@ -144,7 +147,7 @@ table tr td:nth-child(2) {
 | Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](sql-expressions.html#column-references) |
 | Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](sql-expressions.html#explicitly-typed-expressions) |
 
-## Permissions
+### Permissions
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|

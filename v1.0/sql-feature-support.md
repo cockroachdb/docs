@@ -1,9 +1,12 @@
 ---
-title: SQL Feature Support
+title: SQL Feature Support in CockroachDB v1.0
 summary: Find CockroachDB's conformance to the SQL standard and which common extensions it supports.
 ---
 
+<div id="toc"></div>
+
 ## Overview
+
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
 
 To understand which standard SQL features we support (as well as common extensions to the standard), use the table below.
@@ -143,7 +146,7 @@ table tr td:nth-child(2) {
 | Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](sql-expressions.html#column-references) |
 | Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](sql-expressions.html#explicitly-typed-expressions) |
 
-## Permissions
+### Permissions
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
