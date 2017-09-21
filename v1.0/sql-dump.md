@@ -1,6 +1,6 @@
 ---
 title: SQL Dump (Export)
-summary: Learn how to dump data from a CockroachDB cluster.
+summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: false
 ---
 
@@ -10,7 +10,7 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 
 When `cockroach dump` is executed:
 
-- Table schema and data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
+- Table schemas and data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
@@ -21,19 +21,19 @@ When `cockroach dump` is executed:
 ## Synopsis
 
 ~~~ shell
-# Dump the schema and data of specific tables to stdout:
+# Dump the schemas and data of specific tables to stdout:
 $ cockroach dump <database> <table> <table...> <flags>
 
 # Dump just the data of specific tables to stdout:
 $ cockroach dump <database> <table> <table...> --dump-mode=data <other flags>
 
-# Dump just the schema of specific tables to stdout:
+# Dump just the schemas of specific tables to stdout:
 $ cockroach dump <database> <table> <table...> --dump-mode=schema <other flags>
 
-# Dump the schema and data of all tables in a database to stdout:
+# Dump the schemas and data of all tables in a database to stdout:
 $ cockroach dump <database> <flags>
 
-# Dump just the schema of all tables in a database to stdout:
+# Dump just the schemas of all tables in a database to stdout:
 $ cockroach dump <database> --dump-mode=schema <other flags>
 
 # Dump just the data of all tables in a database to stdout:
@@ -54,9 +54,9 @@ The `dump` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--as-of` | Dump table schemas and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--dump-mode` | Whether to dump table schema, table data, or both.<br><br>To dump just table schema, set this to `schema`. To dump just table data, set this to `data`. To dump both table schema and data, leave this flag out or set it to `both`.<br><br>**Default:** `both`
+`--dump-mode` | Whether to dump table schemas, table data, or both.<br><br>To dump just table schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table schemas and data, leave this flag out or set it to `both`.<br><br>Table and view schemas are ordered alphabetically by name. This is not always an ordering in which the tables and views can be successfully recreated. Also, the schemas of views are dumped incorrectly as `CREATE TABLE` statements, and attempting to dump the data of a view results in an error. For more details and workarounds, see the corresponding [known limitations](known-limitations.html#order-of-dumped-schemas-and-incorrect-schemas-of-dumped-views). Note that these limitations have been resolved in v1.1.<br><br>**Default:** `both`
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
@@ -160,6 +160,8 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 ~~~
 
 ### Dump all tables in a database
+
+{{site.data.alerts.callout_info}}Table and view schemas are ordered alphabetically by name. This is not always an ordering in which the tables and views can be successfully recreated. Also, the schemas of views are dumped incorrectly as <code>CREATE TABLE</code> statements, and attempting to dump the data of a view results in an error. For more details and workarounds, see the corresponding <a href="known-limitations.html#order-of-dumped-schemas-and-incorrect-schemas-of-dumped-views">known limitations</a>. Note that these limitations have been resolved in v1.1.{{site.data.alerts.end}}
 
 ~~~ shell
 $ cockroach dump startrek --insecure --user=maxroach > backup.sql
