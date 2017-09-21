@@ -344,3 +344,130 @@ pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exi
 ~~~
 pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exist
 ~~~
+
+## Order of dumped schemas and incorrect schemas of dumped views
+
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
+
+When using the [`cockroach dump`](sql-dump.html) command to export the schemas of all tables and views in a database, the schemas are ordered alphabetically by name. This is not always an ordering in which the tables and views can be successfully recreated. Also, the schemas of views are dumped incorrectly as `CREATE TABLE` statements.
+
+For example, consider a database `test` with 2 tables and 1 view. Table `a` has a foreign key reference to table `c`, and view `b` references table `c`:
+
+~~~ sql
+> CREATE DATABASE test;
+
+> CREATE TABLE test.c (a INT PRIMARY KEY, b STRING);
+
+> CREATE TABLE test.a (a INT PRIMARY KEY, b INT NOT NULL REFERENCES test.c (a))
+
+> CREATE VIEW test.b AS SELECT b FROM test.c;
+~~~
+
+When you dump the schemas of the tables and views in database `test`, they are ordered alphabetically by name, and the schema for view `b` is incorrectly listed as a `CREATE TABLE` statement:
+
+~~~ shell
+$ cockroach dump --insecure --dump-mode=schema > dump.txt
+~~~
+
+~~~ shell
+$ cat dump.txt
+~~~
+
+~~~
+CREATE TABLE a (
+	a INT NOT NULL,
+	b INT NOT NULL,
+	CONSTRAINT "primary" PRIMARY KEY (a ASC),
+	CONSTRAINT fk_b_ref_c FOREIGN KEY (b) REFERENCES c (a),
+	FAMILY "primary" (a, b)
+);
+
+CREATE TABLE b (
+	b STRING NOT NULL
+);
+
+CREATE TABLE c (
+	a INT NOT NULL,
+	b STRING NULL,
+	CONSTRAINT "primary" PRIMARY KEY (a ASC),
+	FAMILY "primary" (a, b)
+);
+~~~
+
+If you tried to import these incorrectly ordered schemas to restore the `test` database or create a new database, the import would fail.
+
+As a workaround, before using exported schemas to recreate tables and views, you must reorder the schemas so that tables with foreign keys and views are listed after the tables they reference, and you must fix `CREATE` statements for views:
+
+~~~
+CREATE TABLE c (
+	a INT NOT NULL,
+	b STRING NULL,
+	CONSTRAINT "primary" PRIMARY KEY (a ASC),
+	FAMILY "primary" (a, b)
+);
+
+CREATE TABLE a (
+	a INT NOT NULL,
+	b INT NOT NULL,
+	CONSTRAINT "primary" PRIMARY KEY (a ASC),
+	CONSTRAINT fk_b_ref_c FOREIGN KEY (b) REFERENCES c (a),
+	FAMILY "primary" (a, b)
+);
+
+CREATE VIEW b AS SELECT b FROM c;
+~~~
+
+## Dumping data for a view
+
+{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
+
+When using the [`cockroach dump`](sql-dump.html) command to export the data of a [view](views.html), the dump fails. This is because, unlike standard tables, a view does not contain any physical data; instead, it is a stored `SELECT` query that, when requested, dynamically forms a virtual table.
+
+For example, consider a database `test` with a standard table `t1` and a view `v1` that references `t1`:
+
+~~~ sql
+> CREATE DATABASE test;
+
+> CREATE TABLE test.t1 (a INT PRIMARY KEY, b STRING);
+
+> INSERT INTO test.t1 VALUES (1, 'a'), (2, 'b');
+
+> CREATE VIEW test.v1 AS SELECT b FROM test.t1;
+~~~
+
+Trying to dump the data of the view results in an error:
+
+~~~ shell
+$ cockroach dump test v1 --insecure --dump-mode=data
+~~~
+
+~~~
+Error: pq: column name "rowid" not found
+Failed running "dump"
+~~~
+
+This error occurs when trying to dump all the data in database `test` as well:
+
+~~~ shell
+$ cockroach dump test --insecure --dump-mode=data
+~~~
+
+~~~
+INSERT INTO t1 (a, b) VALUES
+	(1, 'a'),
+	(2, 'b');
+Error: pq: column name "rowid" not found
+Failed running "dump"
+~~~
+
+As a workound, when dumping all the data in a database, explicitly list the tables that should be dumped, excluding any views:
+
+~~~ shell
+$ cockroach dump test t1 --insecure --dump-mode=data
+~~~
+
+~~~
+INSERT INTO t1 (a, b) VALUES
+	(1, 'a'),
+	(2, 'b');
+~~~
