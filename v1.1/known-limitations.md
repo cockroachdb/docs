@@ -1,10 +1,10 @@
 ---
-title: Known Limitations
+title: Known Limitations in CockroachDB v1.1
 summary:
 toc: false
 ---
 
-This page describes limitations we've identified in the CockroachDB 1.1 release and plan to investigate and possibly resolve in future releases.
+This page describes limitations we've identified in the CockroachDB v1.1 release and plan to investigate and possibly resolve in future releases.
 
 <div id="toc"></div>
 
