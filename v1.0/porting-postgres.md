@@ -96,3 +96,42 @@ In CockroachDB, no such modulo is performed.
 ~~~ sql
 SELECT 1::int << (x % 64)
 ~~~
+
+### Casting `BYTES`/`BYTEA` to `STRING`/`TEXT`
+
+In PostgreSQL, casting a byte array to a string results in the escaped byte
+string consisting of each hexadecimal digit:
+
+~~~ sql
+postgres=# SELECT '\x48656c6c6f20776f726c6421'::BYTEA::TEXT;
+            text
+----------------------------
+ \x48656c6c6f20776f726c6421
+~~~
+
+In CockroachDB, this conversion is performed by attempting to convert the
+byte data directly into a string:
+
+~~~ sql
+SELECT '\x48656c6c6f20776f726c6421'::BYTEA::TEXT;
+~~~
+
+~~~ sql
++---------------------------------------------+
+| e'\\x48656c6c6f20776f726c6421'::BYTEA::TEXT |
++---------------------------------------------+
+| Hello world!                                |
++---------------------------------------------+
+(1 row)
+~~~
+
+A consequence of this is that such conversions will fail if the byte sequence
+contains invalid UTF-8 data:
+
+~~~ sql
+SELECT '\xa7'::BYTEA::TEXT;
+~~~
+
+~~~ sql
+pq: invalid UTF-8: "\xa7"
+~~~
