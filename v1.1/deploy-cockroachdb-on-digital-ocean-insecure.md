@@ -18,28 +18,17 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Requirements
 
-You must have [SSH access](https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh) to each Droplet with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+{% include prod_deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-- If you plan to use CockroachDB in production, we recommend using a [secure cluster](deploy-cockroachdb-on-digital-ocean.html) instead. Using an insecure cluster comes with risks:
-  - Your cluster is open to any client that can access any node's IP addresses.
-  - Any user, even `root`, can log in without providing a password.
-  - Any user, connecting as `root`, can read or write any data in your cluster.
-  - There is no network encryption or authentication, and thus no confidentiality.
+{% include prod_deployment/insecure-recommendations.md %}
 
-- For guidance on cluster topology, clock synchronization, cache and SQL memory size, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
-
-- Set up your Droplets using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
-
-- Decide how you want to access your Admin UI:
-	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
-	- Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
-
+- If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
 
 ## Step 1. Create Droplets
 
-[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
+[Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
 
 - Running at least 3 nodes to ensure survivability.
 - Selecting the same continent for all of your Droplets for best performance.
@@ -76,208 +65,37 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 - CoreOS can use [`iptables`](https://www.digitalocean.com/community/tutorials/how-to-secure-your-coreos-cluster-with-tls-ssl-and-firewall-rules).
 - CentOS can use [`firewalld`](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7).
 
-## Step 4. Start the first node
+## Step 4. Start nodes
 
-1. SSH to your Droplet:
+{% include prod_deployment/insecure-start-nodes.md %}
 
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
+## Step 5. Initialize the cluster
 
-2. Install CockroachDB from our latest binary:
+{% include prod_deployment/insecure-initialize-cluster.md %}
 
-	~~~ shell
-	# Get the latest CockroachDB tarball:
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+## Step 6. Test the cluster
 
-	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
-
-	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
-	~~~
-
-3. Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
-
-	~~~
-	$ cockroach start --insecure \
-	--advertise-host=<node1 internal IP address> \
-	--cache=25% \
-	--max-sql-memory=25% \
-	--background
-	~~~
-
-	This commands starts an insecure node and identifies the address at which other nodes can reach it. It also increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
-
-	Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
-
-## Step 5. Add nodes to the cluster
-
-At this point, your cluster is live and operational but contains only a single node. Next, scale your cluster by setting up additional nodes that will join the cluster.
-
-1. SSH to your Droplet:
-
-	~~~
-	$ ssh <username>@<additional node external IP address>
-	~~~
-
-2. Install CockroachDB from our latest binary:
-
-	~~~ shell
-	# Get the latest CockroachDB tarball:
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
-
-	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
-	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
-
-	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
-	~~~
-
-3. Start a new node that joins the cluster using the first node's internal IP address:
-
-	~~~
-	$ cockroach start --insecure \
-	--advertise-host=<this node’s internal IP address> \
-	--join=<node1 internal IP address>:26257 \
-	--max-sql-memory=25% \
-	--background
-	~~~
-
-	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
-
-4. Repeat these steps for each Droplet you want to use as a node.
-
-## Step 6. Test your cluster
-
-CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
-
-To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
-
-1. SSH to your first node:
-
-	~~~ shell
-	$ ssh <username>@<node1 external IP address>
-	~~~
-
-2. Launch the built-in SQL client and create a database:
-
-	~~~ shell
-	$ cockroach sql --insecure
-	~~~
-	~~~ sql
-	> CREATE DATABASE insecurenodetest;
-	~~~
-
-3. In another terminal window, SSH to another node:
-
-	~~~ shell
-	$ ssh <username>@<node2 external IP address>
-	~~~
-
-4. Launch the built-in SQL client:
-
-	~~~ shell
-	$ cockroach sql --insecure
-	~~~
-
-5. View the cluster's databases, which will include `insecurenodetest`:
-
-	~~~ sql
-	> SHOW DATABASES;
-	~~~
-	~~~
-	+--------------------+
-	|      Database      |
-	+--------------------+
-	| crdb_internal      |
-	| information_schema |
-	| insecurenodetest   |
-	| pg_catalog         |
-	| system             |
-	+--------------------+
-	(5 rows)
-	~~~
-
-6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+{% include prod_deployment/insecure-test-cluster.md %}
 
 ## Step 7. Test load balancing
 
-The Digital Ocean Load Balancer created in [step 2](#step-2-set-up-load-balancing) can serve as the client gateway to the cluster. Instead of connecting directly to a CockroachDB node, clients can connect to the load balancer, which will then redirect the connection to a CockroachDB node.
+{% include prod_deployment/insecure-test-load-balancing.md %}
 
-To test this, install CockroachDB locally and use the [built-in SQL client](use-the-built-in-sql-client.html) as follows:
-
-1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if it's not there already.
-
-2. Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
-
-	~~~ shell
-	$ cockroach sql --insecure \
-	--host=<load balancer IP address> \
-	--port=26257
-	~~~
-
-3. View the cluster's databases:
-
-	~~~ sql
-	> SHOW DATABASES;
-	~~~
-	~~~
-	+--------------------+
-	|      Database      |
-	+--------------------+
-	| crdb_internal      |
-	| information_schema |
-	| insecurenodetest   |
-	| pg_catalog         |
-	| system             |
-	+--------------------+
-	(5 rows)
-	~~~
-
-	As you can see, the load balancer redirected the query to one of the CockroachDB nodes.
-
-4. Use the `node_id` [session variable](show-vars.html) to check which node you were redirected to:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SHOW node_id;
-    ~~~
-
-	~~~
-	+---------+
-	| node_id |
-	+---------+
-	|       3 |
-	+---------+
-	(1 row)
-	~~~
-
-5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
-
-## Step 8. Monitor the cluster
-
-View your cluster's Admin UI by going to `http://<any node's external IP address>:8080`.
-
-On this page, verify that the cluster is running as expected:
-
-1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
-
-  Also check the **Replicas** column. If you have nodes with 0 replicas, it's possible you didn't properly set the `--advertise-host` flag to the Droplet's internal IP address. This prevents the node from receiving replicas and working as part of the cluster.
-
-2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
-
-{% include prometheus-callout.html %}
-
-## Step 9. Use the database
+## Step 8. Use the cluster
 
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
+
+## Step 9. Monitor the cluster
+
+{% include prod_deployment/insecure-monitor-cluster.md %}
+
+## Step 10. Scale the cluster
+
+{% include prod_deployment/insecure-scale-cluster.md %}
 
 ## See Also
 
