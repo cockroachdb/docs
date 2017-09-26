@@ -86,6 +86,16 @@ Yes. For more details, see [`UUID`](uuid.html).
 
 When an [`ORDER BY`](select.html#sorting-retrieved-values) clause is not used in a `SELECT` query, retrieved rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.
 
+## How do I use `unique_rowid()` in JavaScript?
+
+The `unique_rowid()` [function](functions-and-operators.html) returns values that cannot be represented exactly by numbers in Javascript. For example, a `235191684988928001` value returned by `unique_rowid()` would get represented as `235191684988928000` in Javascript. Notice that the last digit is different. In such cases, if the Javascript application temporarily stores the value `235191684988928001` and queries using it, it won't match the value that actually got stored.
+
+As a workaround when using JavaScript or another language that doesn't support 64-bit integer types, cast the integer to a string server-side before inspecting or using it, for example:
+
+~~~ sql
+> SELECT CAST (id AS string) FROM my_table;
+~~~
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
