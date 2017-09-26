@@ -210,10 +210,7 @@ func main() {
 				{
 					name:   "add_constraint",
 					stmt:   "alter_onetable_stmt",
-					inline: []string{"alter_table_cmds", "alter_table_cmd", "table_constraint"},
-					match:  []*regexp.Regexp{regexp.MustCompile("'ADD' 'CONSTRAINT' name constraint_elem")},
-					replace: map[string]string{"opt_validate_behavior ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' opt_column name alter_column_default | 'ALTER' opt_column name 'DROP' 'NOT' 'NULL' | 'DROP' opt_column 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' opt_column name opt_drop_behavior | 'ADD' ( 'CONSTRAINT' name constraint_elem | constraint_elem ) opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
-						"relation_expr": "table_name"},
+					replace: map[string]string{"relation_expr": "table_name", "alter_table_cmds": "'ADD' 'CONSTRAINT' name constraint_elem"},
 					unlink: []string{"table_name"},
 				},
 				{
@@ -591,6 +588,12 @@ func main() {
 					nosplit: true,
 				},
 				{name: "upsert_stmt", stmt: "insert_stmt", inline: []string{"insert_target", "insert_rest", "returning_clause"}, match: []*regexp.Regexp{regexp.MustCompile("'UPSERT'")}},
+				{
+					name:   "validate_constraint",
+					stmt:   "alter_onetable_stmt",
+					replace: map[string]string{"alter_table_cmds": "'VALIDATE' 'CONSTRAINT' constraint_name", "relation_expr": "table_name"},
+					unlink: []string{"constraint_name","table_name"},
+				},
 			}
 
 			sem := make(chan struct{}, maxWorkers) // max number of concurrent workers
