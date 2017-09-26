@@ -86,6 +86,36 @@ Not at this time, but storing a 16-byte array in a [`BYTES`](bytes.html) column 
 
 When an [`ORDER BY`](select.html#sorting-retrieved-values) clause is not used in a `SELECT` query, retrieved rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.
 
+## Why are my `INT` columns returned as strings in JavaScript?
+
+In CockroachDB, all `INT`s are represented with 64 bits of precision, but JavaScript numbers only have 53 bits of precision. This means that large integers stored in CockroachDB are not exactly representable as JavaScript numbers. For example, JavaScript will round the integer `235191684988928001` to the nearest representable value, `235191684988928000`. Notice that the last digit is different. This is particularly problematic when using the `unique_rowid()` [function](functions-and-operators.html), since `unique_rowid()` nearly always returns integers that require more than 53 bits of precision to represent.
+
+To avoid this loss of precision, Node's [`pg` driver](https://github.com/brianc/node-postgres) will, by default, return all CockroachDB `INT`s as strings.
+
+~~~ javascript
+// Schema: CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
+pgClient.query("SELECT id FROM users WHERE name = 'Roach' LIMIT 1", function(err, res) {
+  var idString = res.rows[0].id;
+  // idString == '235191684988928001'
+  // typeof idString == 'string'
+});
+~~~
+
+To perform another query using the value of `idString`, you can simply use `idString` directly, even where an `INT` type is expected. Either the Postgres driver or CockroachDB will automatically convert the string to a CockroachDB `INT`.
+
+~~~ javascript
+pgClient.query("UPDATE users SET name = 'Ms. Roach' WHERE id = $1", [idString], function(err, res) {
+  // All should be well!
+});
+~~~
+
+If you instead need to perform arithmetic on `INT`s in JavaScript, you will need to use a big integer library like [Long.js](https://www.npmjs.com/package/long). Do _not_ use the built-in `parseInt` function.
+
+~~~ javascript
+parseInt(idString, 10) + 1; // WRONG: returns 235191684988928000
+require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191684988928002'
+~~~
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
