@@ -50,6 +50,8 @@ $.getJSON('https://www.googleapis.com/customsearch/v1', obj, function (data) {
 			r.append($('<div/>', {class: 'search-snippet'}).html(item.htmlSnippet));
 			div.append(r);
 		});
+	} else {
+		div.append($('<p>No results.</p>'));
 	}
 	$('.post-content').html(div);
 });
