@@ -51,7 +51,7 @@ $.getJSON('https://www.googleapis.com/customsearch/v1', obj, function (data) {
 			div.append(r);
 		});
 	} else {
-		div.append($('<p>No results found.</p>'));
+		div.append($('<p>No results.</p>'));
 	}
 	$('.post-content').html(div);
 });
