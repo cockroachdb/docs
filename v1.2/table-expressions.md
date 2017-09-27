@@ -1,30 +1,37 @@
 ---
 title: Table Expressions
-summary: Table expressions define a data source in SELECT and INSERT statements.
+summary: Table expressions define a data source in selection clauses.
 toc: false
 ---
 
-Table expressions define a data source in the `FROM` clause of
-[`SELECT`](select.html) and [`INSERT`](insert.html) statements.
+Table expressions define a data source in the `FROM` sub-clause of
+[selection clauses](selection-clauses.html), allowed also in the [`CREATE
+TABLE AS`](create-table-as.html), [`INSERT`](insert.html) and
+[`UPSERT`](upsert.html) statements.
 
 <div id="toc"></div>
 
 ## Introduction
 
-Table expressions are used prominently in the `SELECT` clause:
+Table expressions are used in [selection clauses](selection-clauses.html):
 
 ~~~sql
 > SELECT ... FROM <table expr>, <table expr>, ...
 > INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
+> CREATE TABLE ... AS SELECT ... FROM <table expr>, <table expr>, ...
+> UPSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
 ~~~
 
 CockroachDB recognizes the following table expressions:
 
 - a [table or view name](#table-or-view-names);
 - a [table generator function](#table-generator-functions);
-- a `SELECT` or `VALUES` clause, as [a sub-query](#subqueries-as-table-expressions);
+- a [selection clause](selection-clauses.html) between parentheses (including
+  `SELECT`, `VALUES` and `TABLE`), as [a
+  sub-query](#subqueries-as-table-expressions);
 - an [aliased table expression](#aliased-table-expressions), using an `AS` clause;
 - an explicit [`JOIN` expression](#join-expressions);
+- a CockroachDB statement that returns values, between square brackets '[...]';
 - another table expression [annoted with `WITH ORDINALITY`](#ordinality-annotation); or
 - another table expression between parentheses.
 
@@ -95,20 +102,21 @@ For example:
 
 ## Subqueries as Table Expressions
 
+Any [selection clause](selection-clauses.html) enclosed between parentheses
+can be used as a table expression. This is called a "subquery".
+
 Syntax:
 
 ~~~
 ( ... subquery ... )
 ~~~
 
-The subquery can be expressed either as a `SELECT` or `VALUES` clause.
-The parentheses around the subquery are mandatory.
-
 For example:
 
 ~~~sql
-> SELECT * FROM (VALUES(1), (2), (3));
-> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT firstname || ' ' || lastname FROM (TABLE employees);
 ~~~
 
 ## Aliased Table Expressions
@@ -160,6 +168,54 @@ two operand table expressions.
 
 Currently works only with small data sets; find more info in our [blog post](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
 
+## Using the Output of Other Statements
+
+Syntax:
+
+~~~
+[ <statement> ]
+~~~
+
+A statement between square brackets in a table expression context
+designates the output of executing said statement. The following
+statements produce values that can be used in this way:
+
+- All `SHOW` variants.
+- [`INSERT`](insert.html), [`DELETE`](delete.html),
+  [`UPDATE`](update.html) and [`DELETE`](delete.html) with
+  `RETURNING`.
+- [`EXPLAIN`](explain.html).
+- All [selection clauses](selection-clauses.html). However the fact they can
+  be used between square brackets is merely a convenience; it is more
+  common to use them enclosed in parentheses, as outlined in the next
+  section.
+
+For example:
+
+~~~sql
+> SELECT "Field" FROM [SHOW COLUMNS FROM customer];
+~~~
+~~~
++---------+
+| Field   |
++---------+
+| id      |
+| name    |
+| address |
++---------+
+~~~
+
+The following statement inserts Albert in the `employee` table and
+immediately creates a matching entry in the `management` table with the
+auto-generated employee ID, without requiring a roundtrip with the SQL
+client:
+
+~~~sql
+> INSERT INTO management(manager, reportee)
+    VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
+            (SELECT id FROM [INSERT INTO employee(name) VALUES ('Albert') RETURNING id]));
+~~~
+
 ## Ordinality Annotation
 
 Syntax:
@@ -208,5 +264,6 @@ always check the output of <a href="explain.html">EXPLAIN</a> in case of doubt.
 ## See Also
 
 - [Constants](sql-constants.html)
+- [Selection Clauses](selection-clauses.html)
 - [Value Expressions](sql-expressions.html)
 - [Data Types](data-types.html)

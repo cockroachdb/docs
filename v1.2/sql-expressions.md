@@ -31,14 +31,14 @@ An expression in a query can refer to columns in the current data source in two 
   items`.
 
   - If the name of a column is also a
-	[SQL keyword](keywords-and-identifiers.html#keywords), the name
-	must be appropriately quoted. For example: `SELECT "Default" FROM
-	configuration`.
+  [SQL keyword](keywords-and-identifiers.html#keywords), the name
+  must be appropriately quoted. For example: `SELECT "Default" FROM
+  configuration`.
 
   - If the name is ambiguous (e.g., when joining across multiple
-	tables), it is possible to disambiguate by prefixing the column
-	name by the table name. For example, `SELECT items.price FROM
-	items`.
+  tables), it is possible to disambiguate by prefixing the column
+  name by the table name. For example, `SELECT items.price FROM
+  items`.
 
 - Using the ordinal position of the column. For example, `SELECT @1
   FROM items` selects the first column in `items`.
@@ -121,7 +121,8 @@ Syntax:
 ~~~
 
 Returns `TRUE` if and only if the value of the left operand is part of
-the result of evaluating the right operand.
+the result of evaluating the right operand. In the subquery form, any
+[selection clause](selection-clauses.html) can be used.
 
 For example:
 
@@ -147,7 +148,7 @@ Syntax:
 <expr> NOT ILIKE <expr>
 ~~~
 
-Evaluates both expressions as strings, then tests whether the string	 on the left
+Evaluates both expressions as strings, then tests whether the string   on the left
 matches the pattern given on the right. Returns `TRUE` if a match is found
 or `FALSE` otherwise, or the inverted value for the `NOT` variants.
 
@@ -183,7 +184,7 @@ Syntax:
 <expr> !~* <expr>
 ~~~
 
-Evaluates both expressions as strings, then tests whether the string	 on the left
+Evaluates both expressions as strings, then tests whether the string   on the left
 matches the pattern given on the right. Returns `TRUE` if a match is found
 or `FALSE` otherwise, or the inverted value for the  `!` variants.
 
@@ -218,7 +219,7 @@ Syntax:
 <expr> NOT SIMILAR TO <expr>
 ~~~
 
-Evaluates both expressions as strings, then tests whether the string	 on the left
+Evaluates both expressions as strings, then tests whether the string   on the left
 matches the pattern given on the right. Returns `TRUE` if a match is found
 or `FALSE` otherwise, or the inverted value for the `NOT`  variant.
 
@@ -370,7 +371,7 @@ Syntax:
 
 ~~~
 CASE <cond>
-	WHEN <condval1> THEN <expr1>
+  WHEN <condval1> THEN <expr1>
   [ WHEN <condvalx> THEN <exprx> ] ...
   [ ELSE <expr2> ]
 END
@@ -564,7 +565,8 @@ NOT EXISTS ( ... subquery ... )
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`).
+any row (for `NOT EXISTS`). Any [selection clause](selection-clauses.html)
+can be used as subquery.
 
 #### Typing rule
 
@@ -579,7 +581,7 @@ Syntax:
 ~~~
 
 Evaluates the subquery, asserts that it returns a single row and single column,
-and then evaluates to the value of that single cell.
+and then evaluates to the value of that single cell. Any [selection clause](selection-clauses.html) can be used as subquery.
 
 For example:
 
@@ -705,5 +707,6 @@ The result has the given type.
 ## See Also
 
 - [Constants](sql-constants.html)
+- [Selection Clauses](selection-clauses.html)
 - [Table Expressions](table-expressions.html)
 - [Data Types](data-types.html)
