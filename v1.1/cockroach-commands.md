@@ -15,6 +15,7 @@ You can run `cockroach help` in your shell to get similar guidance.
 Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
+[`init`](initialize-a-cluster.html) | Initialize a cluster.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`quit`](stop-a-node.html) | <span class="version-tag">Changed in v1.1:</span> Temporarily stop a node or permanently remove a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
