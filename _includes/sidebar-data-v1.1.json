@@ -877,6 +877,12 @@
         ]
       },
       {
+        "title": "Initialize a Cluster",
+        "urls": [
+          "/${VERSION}/initialize-a-cluster.html"
+        ]
+      },
+      {
         "title": "Create Security Certificates",
         "urls": [
           "/${VERSION}/create-security-certificates.html"
