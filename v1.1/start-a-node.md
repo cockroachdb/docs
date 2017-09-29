@@ -4,7 +4,7 @@ summary: To start a new CockroachDB cluster, or add a node to an existing cluste
 toc: false
 ---
 
-To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags.
+This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}Node-level settings are defined by flags passed to the <code>cockroach start</code> command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see <a href="cluster-settings.html">Cluster Settings</a>.{{site.data.alerts.end}}
 
@@ -13,8 +13,12 @@ To start a new CockroachDB cluster, or add a node to an existing cluster, run th
 ## Synopsis
 
 ~~~ shell
-# Start the first node of a cluster:
+# Start a single-node cluster:
 $ cockroach start <flags, excluding --join>
+
+# Start a multi-node cluster:
+$ cockroach start <flags, including --join>
+$ cockroach init <flags>
 
 # Add a node to a cluster:
 $ cockroach start <flags, including --join>
@@ -42,7 +46,7 @@ Flag | Description
 `--http-host` | The hostname or IP address to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
 `--http-port` | The port to bind to for Admin UI HTTP requests. <br><br>**Default:** `8080`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
-`--join`<br>`-j` | The address for connecting the node to an existing cluster. When starting the first node, leave this flag out. When starting subsequent nodes, set this flag to the address of any existing node.<br><br>Optionally, you can specify the addresses of multiple existing nodes as a comma-separated list, using multiple `--join` flags, or using a combination of these approaches, for example: <br><br>`--join=localhost:1234,localhost:2345`<br>`--join=localhost:1234 --join=localhost:2345`<br>`--join=localhost:1234,localhost:2345 --join=localhost:3456`
+`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br><span class="version-tag">Changed in v1.1:</span> When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
 `--locality` | Arbitrary key-value pairs that describe the locality of the node. Locality might include country, region, datacenter, rack, etc.<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. The keys themselves and the order of key-value pairs must be the same on all nodes, for example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=west,datacenter=us-west-1`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--max-offset` | The maximum allowed clock offset for the cluster. If observed clock offsets exceed this limit, servers will crash to minimize the likelihood of reading inconsistent data. Increasing this value will increase the time to recovery of failures as well as the frequency of uncertainty-based read restarts.<br><br>Note that this value must be the same on all nodes in the cluster and cannot be changed with a [rolling upgrade](upgrade-cockroach-version.html). In order to change it, first stop every node in the cluster. Then once the entire cluster is offline, restart each node with the new value.<br><br>**Default:** `500ms`
@@ -114,112 +118,146 @@ Field | Description
 
 ## Examples
 
-### Start a local cluster
+### Start a single-node cluster
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-This example demonstrates starting up three nodes locally. See [Start a Local Cluster](secure-a-cluster.html) for a detailed walkthrough.
+To start a single-node cluster, run the `cockroach start` command without the `--join` flag:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-~~~ shell
+~~~
 $ cockroach start \
 --certs-dir=certs \
---host=localhost
-
-$ cockroach start \
---certs-dir=certs \
---store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
---join=localhost:26257
-
-$ cockroach start \
---certs-dir=certs \
---store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
---join=localhost:26257
+--host=<node1 address> \
+--cache=25% \
+--max-sql-memory=25%
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~ shell
-$ cockroach start --insecure \
---host=localhost \
-
-$ cockroach start --insecure \
---store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
---join=localhost:26257
-
-$ cockroach start --insecure \
---store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
---join=localhost:26257
+~~~
+$ cockroach start \
+--insecure \
+--host=<node1 address> \
+--cache=25% \
+--max-sql-memory=25%
 ~~~
 </div>
 
-### Start a distributed cluster
+### Start a multi-node cluster
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-This example demonstrates starting up three nodes on different machines. Because each is on a different machine, default ports can be used without causing conflict, but we've increased memory settings to improve read performance and capacity for in-memory SQL processing. See [Manual Deployment](manual-deployment.html) for a detailed walkthrough.
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addressess of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~
 $ cockroach start \
 --certs-dir=certs \
---host=<node1-hostname> \
---http-host=<private-address> \
+--host=<node1 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
+~~~
 
+~~~
 $ cockroach start \
 --certs-dir=certs \
---host=<node2-hostname> \
---http-host=<private-address> \
---join=<node1-hostname>:26257 \
+--host=<node2 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
+~~~
 
+~~~
 $ cockroach start \
 --certs-dir=certs \
---host=<node3-hostname> \
---http-host=<private-address> \
---join=<node1-hostname>:26257 \
+--host=<node3 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~ shell
-$ cockroach start --insecure \
---host=<node1-hostname> \
+~~~
+$ cockroach start \
+--insecure \
+--host=<node1 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
+~~~
 
-$ cockroach start --insecure \
---host=<node2-hostname> \
---join=<node1-hostname>:26257 \
+~~~
+$ cockroach start \
+--insecure \
+--host=<node2 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
+~~~
 
-$ cockroach start --insecure \
---host=<node3-hostname> \
---join=<node1-hostname>:26257 \
+~~~
+$ cockroach start \
+--insecure \
+--host=<node3 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--cache=25% \
+--max-sql-memory=25%
+~~~
+</div>
+
+Then run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
+
+<div class="filter-content" markdown="1" data-scope="secure">
+~~~
+$ cockroach init \
+--certs-dir=certs \
+--host=<address of any node>
+~~~
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+~~~
+$ cockroach init \
+--insecure \
+--host=<address of any node>
+~~~
+</div>
+
+### Add a node to a cluster
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
+  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
+</div>
+
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addressess of 3-5 of the nodes already in the cluster:
+
+<div class="filter-content" markdown="1" data-scope="secure">
+~~~
+$ cockroach start \
+--certs-dir=certs \
+--host=<node4 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--cache=25% \
+--max-sql-memory=25%
+~~~
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+~~~
+$ cockroach start \
+--insecure \
+--host=<node4 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25%
 ~~~
@@ -227,4 +265,8 @@ $ cockroach start --insecure \
 
 ## See Also
 
-[Other Cockroach Commands](cockroach-commands.html)
+- [Initialize a Cluster](initialize-a-cluster.html)
+- [Manual Deployment](manual-deployment.html)
+- [Cloud Deployment](cloud-deployment.html)
+- [Start a Local Cluster](start-a-local-cluster.html)
+- [Other Cockroach Commands](cockroach-commands.html)
