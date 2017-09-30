@@ -2,7 +2,7 @@ extern crate postgres;
 
 use postgres::{Connection, TlsMode, Result};
 use postgres::transaction::Transaction;
-use postgres::error::{Error, SqlState};
+use self::postgres::error::T_R_SERIALIZATION_FAILURE;
 
 /// Runs op inside a transaction and retries it as needed.
 /// On non-retryable failures, the transaction is aborted and
@@ -15,7 +15,9 @@ where
     loop {
         let sp = txn.savepoint("cockroach_restart")?;
         match op(&sp).and_then(|t| sp.commit().map(|_| t)) {
-            Err(Error::Db(ref e)) if e.code == SqlState::SerializationFailure => {}
+            Err(ref err) if err.as_db()
+                               .map(|e| e.code == T_R_SERIALIZATION_FAILURE)
+                               .unwrap_or(false) => {},
             r => break r,
         }
     }.and_then(|t| txn.commit().map(|_| t))
