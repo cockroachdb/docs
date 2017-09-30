@@ -62,7 +62,8 @@ In a new terminal, add the second node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=node2 \
 --host=localhost \
 --port=26258 \
@@ -74,7 +75,8 @@ In a new terminal, add the third node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=node3 \
 --host=localhost \
 --port=26259 \
@@ -232,7 +234,8 @@ Restart the first node from the parent directory of `cockroach-data/`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --host=localhost
 ~~~
 
@@ -243,7 +246,8 @@ In a new terminal, restart the second node from the parent directory of `node2/`
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=node2 \
 --host=localhost \
 --port=26258 \
@@ -255,7 +259,8 @@ In a new terminal, restart the third node from the parent directory of `node3/`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=node3 \
 --host=localhost \
 --port=26259 \
