@@ -18,28 +18,45 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ~~~ shell
 # In a new terminal, start node 1:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=fault-node1 \
 --host=localhost
+--port=26257 \
+--http-port=8080 \
+--join=localhost:26257,localhost:26258,localhost:26259
 
 # In a new terminal, start node 2:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=fault-node2 \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 
 # In a new terminal, start node 3:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=fault-node3 \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-## Step 2. Verify that the cluster is live
+## Step 2. Initial the cluster
+
+In a new terminal, perform a one-time initialization of the cluster:
+
+~~~ shell
+$ cockroach init \
+--insecure \
+--host=localhost \
+--port=26257
+~~~
+
+## Step 3. Verify that the cluster is live
 
 In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
 
@@ -72,7 +89,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 3. Remove a node temporarily
+## Step 4. Remove a node temporarily
 
 In the terminal running node 2, press **CTRL + C** to stop the node.
 
@@ -87,7 +104,7 @@ initiating graceful shutdown of server
 ok
 ~~~
 
-## Step 4. Verify that the cluster remains available
+## Step 5. Verify that the cluster remains available
 
 Switch to the terminal for the built-in SQL shell and reconnect the shell to node 1 (port `26257`) or node 3 (port `26259`):
 
@@ -122,7 +139,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 5. Write data while the node is offline
+## Step 6. Write data while the node is offline
 
 In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
@@ -209,7 +226,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 6. Rejoin the node to the cluster
+## Step 7. Rejoin the node to the cluster
 
 Switch to the terminal for node 2, and rejoin the node to the cluster, using the same command that you used in step 1:
 
@@ -234,7 +251,7 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     2
 ~~~
 
-## Step 7. Verify that the rejoined node has caught up
+## Step 8. Verify that the rejoined node has caught up
 
 Switch to the terminal for the built-in SQL shell, connect the shell to the rejoined node 2 (port `26258`), and check for the `startrek` data that was added while the node was offline:
 
@@ -275,17 +292,18 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 <img src="{{ 'images/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 8. Add another node
+## Step 9. Add another node
 
 Now, to prepare the cluster for a permanent node failure, open a new terminal and add a fourth node:
 
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=fault-node4 \
 --host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
 ~~~
@@ -300,7 +318,7 @@ clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
 nodeID:     4
 ~~~
 
-## Step 9. Remove a node permanently
+## Step 10. Remove a node permanently
 
 Again, switch to the terminal running node 2 and press **CTRL + C** to stop it.
 
@@ -316,7 +334,7 @@ ok
 server drained and shutdown completed
 ~~~
 
-## Step 10. Verify that the cluster re-replicates missing replicas
+## Step 11. Verify that the cluster re-replicates missing replicas
 
 Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
@@ -326,7 +344,7 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 <img src="{{ 'images/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 11.  Stop the cluster
+## Step 12.  Stop the cluster
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL + C**.
 

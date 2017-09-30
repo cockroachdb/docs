@@ -24,6 +24,9 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 $ cockroach start --insecure \
 --store=scale-node1 \
 --host=localhost
+--port=26257 \
+--http-port=8080 \
+--join=localhost:26257,localhost:26258,localhost:26259
 
 # In a new terminal, start node 2:
 $ cockroach start --insecure \
@@ -31,7 +34,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 
 # In a new terminal, start node 3:
 $ cockroach start --insecure \
@@ -39,8 +42,21 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 ~~~
+
+## Step 2. Initial the cluster
+
+In a new terminal, perform a one-time initialization of the cluster:
+
+~~~ shell
+$ cockroach init \
+--insecure \
+--host=localhost \
+--port=26257
+~~~
+
+## Step 3. Verify that the cluster is live
 
 In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node to verify that the cluster is live:
 
@@ -73,7 +89,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 2. Lower the max range size
+## Step 4. Lower the max range size
 
 In CockroachDB, you use [replication zones](configure-replication-zones.html) to control the number and location of replicas. Initially, there is a single default replication zone for the entire cluster that is set to copy each range of data 3 times. This default replication factor is fine for this demo.
 
@@ -92,7 +108,7 @@ num_replicas: 3
 constraints: []
 ~~~
 
-## Step 3. Download and run the `block_writer` program
+## Step 5. Download and run the `block_writer` program
 
 CockroachDB provides a number of [example programs in Go](https://github.com/cockroachdb/examples-go) for simulating client workloads. The program you'll use for this demonstration is called [`block_writer`](https://github.com/cockroachdb/examples-go/tree/master/block_writer). It will simulate multiple clients inserting data into the cluster.
 
@@ -123,13 +139,13 @@ Once it's running, `block_writer` will output the number of rows written per sec
 10s:  960.4/sec   706.1/sec
 ~~~
 
-## Step 4. Watch the replica count increase
+## Step 6. Watch the replica count increase
 
 Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
 
 <img src="{{ 'images/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 5. Add 2 more nodes
+## Step 7. Add 2 more nodes
 
 Adding capacity is as simple as starting more nodes and joining them to the running cluster:
 
@@ -140,7 +156,7 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26260 \
 --http-port=8083 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 
 # In a new terminal, start node 5:
 $ cockroach start --insecure \
@@ -148,16 +164,16 @@ $ cockroach start --insecure \
 --host=localhost \
 --port=26261 \
 --http-port=8084 \
---join=localhost:26257
+--join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-## Step 6. Watch data rebalance across all 5 nodes
+## Step 8. Watch data rebalance across all 5 nodes
 
 Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
 
 <img src="{{ 'images/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7.  Stop the cluster
+## Step 9.  Stop the cluster
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL + C**.
 
