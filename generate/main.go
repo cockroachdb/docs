@@ -392,7 +392,7 @@ func main() {
 				{
 					name:    "grant_stmt",
 					inline:  []string{"privileges", "privilege_list", "privilege", "targets", "grantee_list", "table_pattern_list", "name_list"},
-					replace: map[string]string{"table_pattern": "table_name", "'DATABASE' ( name ( ',' name )* )": "'DATABASE' ( database_name ( ',' database_name )* )", "'TO' ( name ( ',' name )* )": "'TO' ( user_name ( ',' user_name )* )"},
+					replace: map[string]string{"table_pattern": "table_name", "'DATABASE' ( ( name ) ( ( ',' name": "'DATABASE' ( ( database_name ) ( ( ',' database_name", "'TO' ( ( name ) ( ( ',' name": "'TO' ( ( user_name ) ( ( ',' user_name"},
 					unlink:  []string{"table_name", "database_name", "user_name"},
 					nosplit: true,
 				},
