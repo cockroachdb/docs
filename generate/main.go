@@ -333,10 +333,9 @@ func main() {
 					name:   "drop_column",
 					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "opt_drop_behavior"},
-					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'DROP' 'COLUMN'")},
+					match:  []*regexp.Regexp{regexp.MustCompile("'DROP' 'COLUMN'")},
 					replace: map[string]string{
-						"( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name alter_column_default | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' ( 'COLUMN' |  ) name ( 'CASCADE' | 'RESTRICT' |  ) | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' 'CONSTRAINT' name ( 'CASCADE' | 'RESTRICT' |  ) ) )*": "",
-						"'COLUMN'":      "( 'COLUMN' | )",
+						"( ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name alter_column_default | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' ( 'COLUMN' |  ) name ( 'CASCADE' | 'RESTRICT' |  ) | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name ( 'CASCADE' | 'RESTRICT' |  ) | 'DROP' 'CONSTRAINT' name ( 'CASCADE' | 'RESTRICT' |  ) ) ) )*": "",
 						"relation_expr": "table_name"},
 					unlink: []string{"table_name"},
 				},
