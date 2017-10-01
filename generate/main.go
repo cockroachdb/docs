@@ -495,14 +495,14 @@ func main() {
 				},
 				{
 					name:   "set_var",
-					stmt:   "set_stmt",
+					stmt:   "set_session_stmt",
 					inline: []string{"set_session_stmt", "set_rest_more", "generic_set", "var_list"},
 					exclude: []*regexp.Regexp{
-						regexp.MustCompile(`'SET' . 'TRANSACTION'`),
-						regexp.MustCompile(`'SET' 'TRANSACTION'`),
-						regexp.MustCompile(`'SET' 'SESSION' var_name`),
-						regexp.MustCompile(`'SET' 'SESSION' 'TRANSACTION'`),
-						regexp.MustCompile(`'SET' 'SESSION' 'CHARACTERISTICS'`),
+						regexp.MustCompile("'SET' . 'TRANSACTION'"),
+						regexp.MustCompile("'SET' 'TRANSACTION'"),
+						regexp.MustCompile("'SET' 'SESSION' var_name"),
+						regexp.MustCompile("'SET' 'SESSION' 'TRANSACTION'"),
+						regexp.MustCompile("'SET' 'SESSION' 'CHARACTERISTICS'"),
 						regexp.MustCompile("'SET' 'CLUSTER'"),
 					},
 					replace: map[string]string{
