@@ -361,7 +361,8 @@ func main() {
 					stmt:    "drop_index_stmt",
 					match:   []*regexp.Regexp{regexp.MustCompile("'DROP' 'INDEX'")},
 					inline:  []string{"opt_drop_behavior", "table_name_with_index_list", "table_name_with_index"},
-					replace: map[string]string{"qualified_name": "table_name", "'@' name": "'@' index_name"}, unlink: []string{"table_name", "index_name"},
+					replace: map[string]string{"qualified_name": "table_name", "'@' unrestricted_name": "'@' index_name"},
+					unlink: []string{"table_name", "index_name"},
 				},
 				{name: "drop_stmt", inline: []string{"table_name_list", "any_name", "qualified_name_list", "qualified_name"}},
 				{
