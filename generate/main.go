@@ -518,7 +518,14 @@ func main() {
 						regexp.MustCompile("'SET' 'CLUSTER'"),
 					},
 				},
-				{name: "set_transaction", stmt: "set_stmt", inline: []string{"set_transaction_stmt", "transaction_mode_list", "transaction_iso_level", "transaction_user_priority", "iso_level", "user_priority"}, match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")}, exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")}, replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"}},
+				{
+					name: "set_transaction",
+					stmt: "set_transaction_stmt",
+					inline: []string{"transaction_mode_list", "transaction_mode", "transaction_iso_level", "transaction_user_priority", "transaction_read_mode", "iso_level", "user_priority", "opt_comma"},
+					// match: []*regexp.Regexp{regexp.MustCompile("'SET' 'TRANSACTION'")},
+					// exclude: []*regexp.Regexp{regexp.MustCompile("'READ'")},
+					// replace: map[string]string{"'ISOLATION' 'LEVEL'": "'ISOLATION LEVEL'"},
+				},
 				{
 					name: "show_var",
 					stmt: "show_stmt",
