@@ -293,7 +293,12 @@ func main() {
 					match:  []*regexp.Regexp{regexp.MustCompile("'COMMIT'|'END'")},
 				},
 				{name: "cancel_query", stmt: "cancel_query_stmt", replace: map[string]string{"a_expr": "query_id"}, unlink: []string{"query_id"}},
-				{name: "create_database_stmt", inline: []string{"opt_encoding_clause"}, replace: map[string]string{"'SCONST'": "encoding"}, unlink: []string{"name", "encoding"}},
+				{
+					name: "create_database_stmt",
+					inline: []string{"opt_with", "opt_encoding_clause", "opt_equal"},
+					replace: map[string]string{"non_reserved_word_or_sconst": "encoding", "opt_template_clause": "", "opt_lc_collate_clause": "", "opt_lc_ctype_clause": ""},
+					unlink: []string{"name", "encoding"},
+				},
 				{
 					name:   "create_index_stmt",
 					inline: []string{"opt_storing", "storing", "opt_unique", "opt_name", "index_params", "index_elem", "opt_asc_desc", "name_list"},
