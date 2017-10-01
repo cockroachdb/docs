@@ -1,6 +1,6 @@
 ---
 title: ALTER TABLE
-summary: Use the ALTER TABLE statement to change the schema of a table. 
+summary: Use the ALTER TABLE statement to change the schema of a table.
 toc: false
 ---
 
@@ -12,9 +12,9 @@ For information on using `ALTER TABLE`, see the documents for its relevant subco
 
 Subcommand | Description
 -----------|------------
-[`ADD COLUMN`](add-column.html) | Add columns to tables. 
+[`ADD COLUMN`](add-column.html) | Add columns to tables.
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns.
-[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
+[`ALTER COLUMN`](alter-column.html) | Change or drop a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns.
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.

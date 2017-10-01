@@ -217,8 +217,9 @@ func main() {
 					name:   "alter_column",
 					stmt:   "alter_onetable_stmt",
 					inline: []string{"alter_table_cmds", "alter_table_cmd", "opt_column", "alter_column_default"},
-					match:  []*regexp.Regexp{regexp.MustCompile("relation_expr 'ALTER' ")},
-					replace: map[string]string{"( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name ( 'SET' 'DEFAULT' a_expr | 'DROP' 'DEFAULT' ) | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' ( 'COLUMN' |  ) name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) )*": "",
+					match:  []*regexp.Regexp{regexp.MustCompile("'ALTER' 'COLUMN'")},
+					replace: map[string]string{
+						"( ( ',' ( 'ADD' column_def | 'ADD' 'IF' 'NOT' 'EXISTS' column_def | 'ADD' 'COLUMN' column_def | 'ADD' 'COLUMN' 'IF' 'NOT' 'EXISTS' column_def | 'ALTER' ( 'COLUMN' |  ) name ( 'SET' 'DEFAULT' a_expr | 'DROP' 'DEFAULT' ) | 'ALTER' ( 'COLUMN' |  ) name 'DROP' 'NOT' 'NULL' | 'DROP' ( 'COLUMN' |  ) 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' ( 'COLUMN' |  ) name opt_drop_behavior | 'ADD' table_constraint opt_validate_behavior | 'VALIDATE' 'CONSTRAINT' name | 'DROP' 'CONSTRAINT' 'IF' 'EXISTS' name opt_drop_behavior | 'DROP' 'CONSTRAINT' name opt_drop_behavior ) ) )*": "",
 						"relation_expr": "table_name"},
 					unlink: []string{"table_name"},
 				},
