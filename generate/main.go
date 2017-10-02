@@ -554,7 +554,12 @@ func main() {
 					replace: map[string]string{"var_name": "table_name"},
 					unlink: []string{"table_name"},
 				},
-				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
+				{
+					name: "show_constraints",
+					stmt: "show_constraints_stmt",
+					replace: map[string]string{"var_name": "table_name"},
+					unlink: []string{"table_name"},
+				},
 				{name: "show_create_table", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'TABLE'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_create_view", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CREATE' 'VIEW'")}, replace: map[string]string{"var_name": "view_name"}, unlink: []string{"view_name"}},
 				{name: "show_databases", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'DATABASES'")}},
