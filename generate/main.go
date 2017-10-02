@@ -585,13 +585,13 @@ func main() {
 				},
 				{
 					name:   "show_grants",
-					stmt:   "show_stmt",
+					stmt:   "show_grants_stmt",
 					inline: []string{"on_privilege_target_clause", "targets", "for_grantee_clause", "grantee_list", "table_pattern_list", "name_list"},
 					match:  []*regexp.Regexp{regexp.MustCompile("'SHOW' 'GRANTS'")},
 					replace: map[string]string{
-						"table_pattern":                 "table_name",
-						"'DATABASE' name ( ',' name )*": "'DATABASE' database_name ( ',' database_name )*",
-						"'FOR' name ( ',' name )*":      "'FOR' user_name ( ',' user_name )*",
+						"table_pattern": "table_name",
+						"'DATABASE' name ( ( ',' name": "'DATABASE' database_name ( ( ',' database_name",
+						"'FOR' name ( ( ',' name": "'FOR' user_name ( ( ',' user_name",
 					},
 					unlink: []string{"table_name", "database_name", "user_name"},
 				},
