@@ -540,13 +540,13 @@ func main() {
 				},
 				{
 					name: "show_cluster_setting",
-					stmt: "show_stmt",
-					match: []*regexp.Regexp{
-						regexp.MustCompile("'SHOW'.* 'CLUSTER'"),
-					},
-					exclude: []*regexp.Regexp{
-						regexp.MustCompile("'SHOW' 'CLUSTER' 'SETTING' 'ALL'"),
-					},
+					stmt: "show_csettings_stmt",
+					// match: []*regexp.Regexp{
+					// 	regexp.MustCompile("'SHOW'.* 'CLUSTER'"),
+					// },
+					// exclude: []*regexp.Regexp{
+					// 	regexp.MustCompile("'SHOW' 'CLUSTER' 'SETTING' 'ALL'"),
+					// },
 				},
 				{name: "show_columns", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'COLUMNS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
 				{name: "show_constraints", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'CONSTRAINTS'")}, replace: map[string]string{"var_name": "table_name"}, unlink: []string{"table_name"}},
