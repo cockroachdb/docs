@@ -528,11 +528,13 @@ func main() {
 				},
 				{
 					name: "show_var",
-					stmt: "show_stmt",
+					stmt: "show_session_stmt",
+					inline: []string{"session_var"},
 					exclude: []*regexp.Regexp{
-						regexp.MustCompile("'SHOW' 'ALL' 'CLUSTER'"),
-						regexp.MustCompile("'SHOW' 'IN"),       // INDEX, INDEXES
-						regexp.MustCompile("'SHOW' '[B-HJ-Z]"), // Keep ALL and IDENT.
+						regexp.MustCompile("'DATABASE'"),
+						regexp.MustCompile("'NAMES'"),
+						regexp.MustCompile("'SESSION_USER"),
+						regexp.MustCompile("'TIME' 'ZONE'"),
 					},
 					replace: map[string]string{"identifier": "var_name"},
 				},
