@@ -608,7 +608,7 @@ func main() {
 				{name: "show_tables", stmt: "show_tables_stmt"},
 				{name: "show_trace", stmt: "show_trace_stmt"},
 				{name: "show_transaction", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TRANSACTION'")}},
-				{name: "show_users", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'USERS'")}},
+				{name: "show_users", stmt: "show_users_stmt"},
 				{name: "table_constraint", inline: []string{"constraint_elem", "opt_storing", "storing"}},
 				{
 					name:    "truncate_stmt",
