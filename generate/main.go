@@ -572,7 +572,10 @@ func main() {
 					replace: map[string]string{"var_name": "view_name"},
 					unlink: []string{"view_name"},
 				},
-				{name: "show_databases", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'DATABASES'")}},
+				{
+					name: "show_databases",
+					stmt: "show_databases_stmt",
+				},
 				{
 					name:    "show_backup",
 					stmt:    "show_backup_stmt",
