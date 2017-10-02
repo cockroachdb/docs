@@ -19,8 +19,6 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Requirements
 
-## Requirements
-
 {% include prod_deployment/secure-requirements.md %}
 
 ## Recommendations

@@ -1,8 +1,12 @@
-To complete the node startup process and have them join together as a cluster, SSH to any node and run the [`cockroach init`](initialize-a-cluster.html) command:
+On your local machine, complete the node startup process and have them join together as a cluster:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init --insecure --host=<address of any node>
-~~~
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
 
-Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
+2. Run the [`cockroach init`](initialize-a-cluster.html) command, with the `--host` flag set to the address of any node:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init --insecure --host=<address of any node>
+    ~~~
+
+    Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.

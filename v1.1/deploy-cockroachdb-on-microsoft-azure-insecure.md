@@ -3,6 +3,7 @@ title: Deploy CockroachDB on Microsoft Azure (Insecure)
 summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: false
 toc_not_nested: true
+ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
 ---
 
 <div class="filters filters-big clearfix">
@@ -22,7 +23,7 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Recommendations
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include prod_deployment/insecure-recommendations.md %}
 
 ## Step 1. Configure your network
 

@@ -3,6 +3,7 @@ title: Deploy CockroachDB on Digital Ocean (Insecure)
 summary: Learn how to deploy CockroachDB on Digital Ocean.
 toc: false
 toc_not_nested: true
+ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
 ---
 
 <div class="filters filters-big clearfix">

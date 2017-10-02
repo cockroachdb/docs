@@ -1,5 +1,9 @@
 - For guidance on cluster topology, clock synchronization, cache and SQL memory size, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
 - Decide how you want to access your Admin UI:
-  - Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
-  - Using an SSH tunnel, which requires you to use `--http-host=localhost` when starting your nodes.
+
+    Access Level | Description
+    -------------|------------
+    Partially open | Set a firewall rule to allow only specific IP addresses to communicate on port `8080`.
+    Completely open | Set a firewall rule to allow all IP addresses to communicate on port `8080`.
+    Completely closed | Set a firewall rule to disallow all communication on port `8080`. In this case, a machine with SSH access to a node could use an SSH tunnel to access the Admin UI.

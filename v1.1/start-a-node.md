@@ -17,7 +17,7 @@ This page explains the `cockroach start` [command](cockroach-commands.html), whi
 $ cockroach start <flags, excluding --join>
 
 # Start a multi-node cluster:
-$ cockroach start <flags, including --join>
+$ cockroach start <flags, including --join> &
 $ cockroach init <flags>
 
 # Add a node to a cluster:

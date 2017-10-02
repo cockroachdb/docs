@@ -3,6 +3,7 @@ title: Deploy CockroachDB on Google Cloud Platform GCE (Insecure)
 summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engine.
 toc: false
 toc_not_nested: true
+ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
 ---
 
 <div class="filters filters-big clearfix">

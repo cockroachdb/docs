@@ -63,4 +63,4 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	> SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
 	~~~
 
-4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+4. Use `\q` or `ctrl-d` to exit the SQL shell.
