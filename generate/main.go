@@ -605,7 +605,7 @@ func main() {
 				{name: "show_keys", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'KEYS'")}},
 				{name: "show_queries", stmt: "show_queries_stmt"},
 				{name: "show_sessions", stmt: "show_sessions_stmt"},
-				{name: "show_tables", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TABLES'")}},
+				{name: "show_tables", stmt: "show_tables_stmt"},
 				{name: "show_trace", stmt: "show_trace_stmt"},
 				{name: "show_transaction", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'TRANSACTION'")}},
 				{name: "show_users", stmt: "show_stmt", match: []*regexp.Regexp{regexp.MustCompile("'SHOW' 'USERS'")}},
