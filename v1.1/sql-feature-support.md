@@ -163,7 +163,7 @@ table tr td:nth-child(2) {
 | Parallel Statement Execution | ✓ | CockroachDB Extension | [Parallel Statement Execution documentation](parallel-statement-execution.html) |
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
-| Window functions | Partial | Standard | Perform calculations related on a selected row. |
+| Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html) |
 | Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
