@@ -10,7 +10,7 @@ twitter: true
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button current">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Ruby pg driver](https://rubygems.org/gems/pg) and the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), so those are featured here.
+This tutorial shows you how build a simple Ruby application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Ruby pg driver](https://rubygems.org/gems/pg) and the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), so those are featured here. ActiveRecord versions 4.2.x and 5.1.x are supported.
 
 {{site.data.alerts.callout_success}}For a more realistic use of ActiveRecord with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
@@ -28,6 +28,8 @@ To install ActiveRecord as well as the [pg driver](https://rubygems.org/gems/pg)
 ~~~ shell
 $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
+
+{{site.data.alerts.callout_success}}The exact command above will vary depending on the desired version of activerecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter.{{site.data.alerts.end}}
 
 {% include app/common-steps.md %}
 
