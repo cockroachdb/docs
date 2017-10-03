@@ -135,7 +135,7 @@
             ]
           },
           {
-            "title": "Cross-Cloud Deployment & Migration",
+            "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
             ]
@@ -874,6 +874,12 @@
         "title": "Start a Node",
         "urls": [
           "/${VERSION}/start-a-node.html"
+        ]
+      },
+      {
+        "title": "Initialize a Cluster",
+        "urls": [
+          "/${VERSION}/initialize-a-cluster.html"
         ]
       },
       {

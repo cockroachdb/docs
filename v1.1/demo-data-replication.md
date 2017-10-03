@@ -16,7 +16,8 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=repdemo-node1 \
 --host=localhost
 ~~~
@@ -133,7 +134,8 @@ In a new terminal, add node 2:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=repdemo-node2 \
 --host=localhost \
 --port=26258 \
@@ -145,7 +147,8 @@ In a new terminal, add node 3:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=repdemo-node3 \
 --host=localhost \
 --port=26259 \
@@ -195,7 +198,8 @@ In a new terminal, add node 5:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --host=localhost \
 --store=repdemo-node5 \
 --port=26261 \
