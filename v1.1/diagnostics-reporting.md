@@ -8,7 +8,7 @@ By default, the Admin UI and each node of a CockroachDB cluster shares anonymous
 
 This page explains the details that get shared and how to opt out of sharing.
 
-{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="explore-the-admin-ui.html">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="admin-ui-overview">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

@@ -1,14 +1,11 @@
 ---
 title: Storage Dashboard
 toc: false
-feedback: false
 ---
 
-The CockroachDB Admin UI enables you to monitor the storage utilization for your cluster.
+The CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view the Storage metrics for your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), then from the **Dashboard** drop-down box, select **Storage**. 
 
 <div id="toc"></div>
-
-To view the Storage metrics for your cluster, [access the Admin UI](explore-the-admin-ui.html#access-the-admin-ui), then from the Dashboard drop-down box, select **Storage**. 
 
 #### Cluster and Node View for the Time Series Graphs
 By default, the Time Series panel displays the cluster view, which shows the metrics for the entire cluster. 
@@ -17,7 +14,7 @@ To access the node view that shows the metrics for an individual node, select th
 
 <img src="{{ 'images/admin_ui_select_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:40%" />
 
-The Storage dashboard displays the following time series graphs:
+The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
 <img src="{{ 'images/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
@@ -53,4 +50,4 @@ If Open count is almost equal to the Limit count, increase [File Descriptors](re
 
 For Windows systems, you can ignore the File Descriptors parameter, because the concept of file descriptors is not applicable to Windows. 
 
-{{site.data.alerts.callout_info}}The Storage dashboard displays time-series graphs for other metrics such as Live Bytes, Log Commit Latency, Command Commit Latency, RocksDB Read Amplification, and RocksDB SSTables that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the Capacity and File Descriptors graphs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <b>Storage</b> dashboard displays time series graphs for other metrics such as <b>Live Bytes</b>, <b>Log Commit Latency</b>, <b>Command Commit Latency</b>, <b>RocksDB Read Amplification</b>, and <b>RocksDB SSTables</b> that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the <b>Capacity</b> and <b>File Descriptors</b> graphs.{{site.data.alerts.end}}

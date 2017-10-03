@@ -1,23 +1,7 @@
 ---
-title: Overview
+title: Access and Navigate CockroachDB Admin UI
 toc: false
-feedback: false
 ---
-
-CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance by monitoring: 
-
-
-- [Cluster Overview](admin_ui_cluster_overview.html)
-- [Runtime Dashboard](admin_ui_runtime_dashboard.html) 
-- [SQL Dashboard](admin_ui_sql_dashboard.html)
-- [Storage Dashboard](admin_ui_storage_dashboard.html)
-- [Replication Dashboard](admin_ui_replication_dashboard.html)
-- [Nodes Page](explore-the-admin-ui.html#summary-panel)
-- [Events List](explore-the-admin-ui.html#events-list)
-- [Database Configuration](admin_ui_databases_page.html)
-- [Jobs](admin_ui_jobs_page.html)
-
-The Admin UI has three additional dashboards: Distributed, Queues, and Slow Requests. These dashboards are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the Overview, Runtime, SQL, Storage, and Replication dashboards.
 
 <div id="toc"></div>
 
@@ -25,21 +9,19 @@ The Admin UI has three additional dashboards: Distributed, Queues, and Slow Requ
 
 You can access the Admin UI from any node in the cluster.
 
-By default, you can access it via HTTP on port `8080` of whatever value you used for the node's `--host` value. For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
+By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the --host flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
 
 You can also set the CockroachDB Admin UI to a custom port using `--http-port` or a custom hostname using `--http-host` when [starting each node](start-a-node.html) (i.e., each node's values are dependent on how it's started; there is no cluster-level configuration for non-default values). For example, if you set both a custom port and hostname, `http://<http-host value>:<http-port value>`. For a secure cluster, `https://<http-host value>:<http-port value>`.
 
-For additional guidance on accessing the Admin UI, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
-
-{{site.data.alerts.callout_info}}By default, the Admin UI shares anonymous usage details with Cockroach Labs. For information about the details shared and how to opt-out of reporting, see <a href="diagnostics-reporting.html">Diagnostics Reporting</a>.{{site.data.alerts.end}}
+For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
 ## Navigate the Admin UI
 
 The Admin UI is divided into three areas:
 
-- The left-hand navigation bar that allows you to navigate to the [Cluster details](explore-the-admin-ui.html#cluster-overview), [Database details](explore-the-admin-ui.html#databases-overview), and [Jobs details](admin_ui_jobs_page.html).
-- The main panel that shows the [time series graphs](explore-the-admin-ui.html#time-series-graphs).
-- The right-hand side panel that shows the [Summary panel](explore-the-admin-ui.html#summary-panel) and [Events list](explore-the-admin-ui.html#events-list).
+- The left-hand navigation bar that allows you to navigate to the **[Cluster Metrics dashboards](admin-ui-overview.html)**, **[Database page](admin-ui-databases-page.html)**, and **[Jobs page](admin-ui-jobs-page.html)**.
+- The main panel that shows the **[Time Series graphs](admin-ui-access-and-navigate.html#time-series-graphs)**.
+- The right-hand side panel that shows the **[Summary panel](admin-ui-access-and-navigate.html#summary-panel)** and **[Events list](admin-ui-access-and-navigate.html#events-list)**.
 
 <img src="{{ 'images/admin_ui_overview.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -68,15 +50,17 @@ The Summary panel provides information about:
 
 Metric | Description
 --------|----
-Total Nodes | The total number of nodes in the cluster.<br><br>You can further drill down into the nodes details by clicking on **View nodes list**.<br><br>Note: <a href='explore-the-admin-ui.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count displayed on the Summary panel.
-Dead Nodes | The number of [dead nodes](explore-the-admin-ui.html#dead-nodes) in the cluster.  
+Total Nodes | The total number of nodes in the cluster.<br><br>You can further drill down into the nodes details by clicking on **View nodes list**.<br><br>Note: <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count displayed on the Summary panel.
+Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.  
 Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.<br><br>Note: If you are running multiple nodes on a single machine (not recommended), then the value of the Capacity Used metric displayed on the Summary panel may be incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as separate stores for each node, while in reality, only one hard disk is used for all nodes. The Capacity Used is then displayed as the hard disk capacity used multiplied by the number of nodes on the machine. 
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster. 
 Queries per second | The number of SQL queries executed per second. 
 P50 Latency | The 50th percentile of service latency. The service latency is calculated as the time between receiving a query and returning a response. This time does not include network latency between the node and client. 
 P99 Latency | The 99th percentile of service latency. 
 
-To see details of nodes in your cluster, click **View nodes list** on the Summary panel. The following page is displayed:
+### Nodes list
+
+To see details of nodes in your cluster, click **View nodes list** on the **Summary** panel. The following page is displayed:
 <img src="{{ 'images/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
@@ -87,7 +71,7 @@ You can click on any of the nodes to view details about the node.
 You can click **Logs** to see the logs for that node.
 
 #### Dead Nodes
-The Dead Nodes table lists the dead nodes in the cluster. A node is considered to be dead if it does not respond for 5 minutes. At this point, the automated repair starts, wherein CockroachDB automatically rebalances replicas from the dead node, using the unaffected replicas as sources. See [Fault Tolerance and Recovery](demo-fault-tolerance-and-recovery.html) for more information.
+The Dead Nodes table lists the dead nodes in the cluster. A node is considered to be dead if it does not respond for 5 minutes. At this point, the automated repair starts, wherein CockroachDB automatically rebalances replicas from the dead node, using the unaffected replicas as sources. See [Stop a Node](stop-a-node.html#how-it-works) for more information.
 
 #### Decommissioned Nodes
 The Decommissioned Nodes table lists the decommissioned nodes in the cluster. 
@@ -99,7 +83,7 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 ### Events List
 <img src="{{ 'images/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
 
-The Events panel displays the 10 most recent events logged for the all nodes across the cluster.
+The Events list displays the 10 most recent events logged for the all nodes across the cluster.
 To see the list of all events, click **View all events** on the Events panel. The following types of events are listed:
 
 - Database created

@@ -1,14 +1,11 @@
 ---
-title: Cluster Overview 
+title: Overview Dashboard
 toc: false
-feedback: false
 ---
 
-CockroachDB’s Admin UI enables you to monitor metrics such as SQL Queries, Service Latency, Replicas per Node, and Capacity of your cluster.
+On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the first dashboard you see by default is the **Overview** dashboard. The CockroachDB Admin UI lets you monitor metrics such as SQL Queries, Service Latency, Replicas per Node, and Capacity of your cluster.  
 
 <div id="toc"></div>
-
-On [accessing the Admin UI](explore-the-admin-ui.html#access-the-admin-ui), the first dashboard you see by default is the Cluster Overview. 
 
 #### Cluster and Node View for the Time Series Graphs
 By default, the Time Series panel displays the cluster view, which shows the metrics for the entire cluster. 
@@ -17,19 +14,19 @@ To access the node view that shows the metrics for an individual node, select th
 
 <img src="{{ 'images/admin_ui_select_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:40%"/>
 
-The Cluster Overview displays the following time series graphs:
+The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 <img src="{{ 'images/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
 
-In the node view, the SQL Queries metric depicts the current moving average, over the last 10 seconds, of the number of SELECT/INSERT/UPDATE/DELETE queries per second issued by SQL clients on the node. 
+In the node view, the SQL Queries metric depicts the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node. 
 
 In the cluster view, the graph shows the sum of the per-node averages; that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 ## Service Latency: SQL, 99th percentile
 <img src="{{ 'images/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency graph" style="border:1px solid #eee;max-width:100%" />
 
-Service latency is calculated as the time between receiving a query and returning a response. This time does not include network latency between the node and the client. 
+Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client. 
 
 In the node view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. 
 

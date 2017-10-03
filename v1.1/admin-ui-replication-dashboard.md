@@ -1,14 +1,11 @@
 ---
 title: Replication Dashboard
 toc: false
-feedback: false
 ---
 
-CockroachDB Admin UI enables you to monitor the replication metrics for your cluster.
+The CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view the Replication metrics for your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), then from the **Dashboard** drop-down box, select **Replication**. 
 
 <div id="toc"></div>
-
-To view the Replication metrics for your cluster, [access the Admin UI](explore-the-admin-ui.html#access-the-admin-ui), then from the Dashboard drop-down box, select **Replication**. 
 
 #### Cluster and Node View for the Time Series Graphs
 By default, the Time Series panel displays the cluster view, which shows the metrics for the entire cluster. 
@@ -27,7 +24,7 @@ To access the node view that shows the metrics for an individual node, select th
 
 ## Replication Dashboard
 
-The Replication dashboard displays the following time series graphs:
+The **Replication** dashboard displays the following time series graphs:
 
 ### Ranges
 <img src="{{ 'images/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
@@ -70,4 +67,4 @@ Metric | Description
 Replicas | The number of replicas.
 Quiescent | The number of replicas that haven't been accessed for a while.
 
-{{site.data.alerts.callout_info}}The Replication dashboard displays time-series graphs for other metrics such as Ranges, Leaseholders per Store, Live Bytes per Store, Keys Written per Second per Store, Range Operations, and Snapshots that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the  Replicas per Store and Replicas graphs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <b>Replication</b> dashboard displays time series graphs for other metrics such as <b>Ranges</b>, <b>Leaseholders per Store</b>, <b>Live Bytes per Store</b>, <b>Keys Written per Second per Store</b>, <b>Range Operations</b>, and <b>Snapshots</b> that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the  <b>Replicas per Store</b> and <b>Replicas graphs</b>.{{site.data.alerts.end}}

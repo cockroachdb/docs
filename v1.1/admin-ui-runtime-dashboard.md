@@ -1,14 +1,11 @@
 ---
 title: Runtime Dashboard
 toc: false
-feedback: false
 ---
 
-CockroachDB’s Admin UI enables you to monitor runtime metrics such as the Node Count, CPU Time, and Memory Usage for your cluster.
+The CockroachDB Admin UI lets you monitor runtime metrics such as the Node Count, CPU Time, and Memory Usage for your cluster. To view the Runtime metrics for your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). From the **Dashboard** drop-down box, select **Runtime**.
 
 <div id="toc"></div>
-
-To view the Runtime metrics for your cluster, [access the Admin UI](explore-the-admin-ui.html#access-the-admin-ui). From the Dashboard drop-down box, select **Runtime**.
 
 #### Cluster and Node View for the Time Series Graphs
 By default, the Time Series panel displays the cluster view, which shows the metrics for the entire cluster. 
@@ -24,7 +21,7 @@ The Runtime dashboard displays the following time series graphs:
 
 In the node view as well as the cluster view, the graph displays the number of live nodes in the cluster.
 
-A dip in the graph indicates decommissioned nodes, dead nodes, or nodes that are not responding. To troubleshoot the dip in the graph, refer to the [Summary panel](explore-the-admin-ui.html#summary-panel).
+A dip in the graph indicates decommissioned nodes, dead nodes, or nodes that are not responding. To troubleshoot the dip in the graph, refer to the [Summary panel](admin-ui-access-and-navigate.html#summary-panel).
 
 ## Memory Usage
 <img src="{{ 'images/admin_ui_memory_usage.png' | relative_url }}" alt="CockroachDB Admin UI Memory Usage" style="border:1px solid #eee;max-width:100%" />
@@ -62,4 +59,4 @@ GC Pause Time | Time required by the Garbage Collection process of Go.
 
 {{site.data.alerts.callout_info}}The GC Pause Time parameter is important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the User CPU Time and Sys CPU Time.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}The Runtime dashboard displays time-series graphs for other metrics such as Goroutine Count, GC Runs, and GC Pause Time that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the Node Count, Memory Usage, and CPU Time graphs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <b>Runtime</b> dashboard displays time series graphs for other metrics such as <b>Goroutine Count</b>, <b>GC Runs</b>, and <b>GC Pause Time</b> that are important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the <b>Node Count</b>, <b>Memory Usage</b>, and <b>CPU Time</b> graphs.{{site.data.alerts.end}}
