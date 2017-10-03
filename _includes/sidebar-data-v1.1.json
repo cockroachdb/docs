@@ -525,6 +525,12 @@
         ]
       },
       {
+        "title": "Functions and Operators",
+        "urls": [
+          "/${VERSION}/functions-and-operators.html"
+        ]
+      },
+      {
         "title": "SQL Syntax",
         "items": [
           {
@@ -714,12 +720,6 @@
         ]
       },
       {
-        "title": "Functions and Operators",
-        "urls": [
-          "/${VERSION}/functions-and-operators.html"
-        ]
-      },
-      {
         "title": "Transactions",
         "urls": [
           "/${VERSION}/transactions.html"
@@ -729,6 +729,12 @@
         "title": "Views",
         "urls": [
         "/${VERSION}/views.html"
+        ]
+      },
+      {
+        "title": "Window Functions",
+        "urls": [
+          "/${VERSION}/window-functions.html"
         ]
       },
       {
