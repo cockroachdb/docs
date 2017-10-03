@@ -36,16 +36,19 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `application_name` | The current application name for statistics collection. | Empty string | Yes |
 | `database` | The default database for the current session. | Database in connection string, or empty if not specified. | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified | Yes |
+| `distsql` | | `auto` | |
 | `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
 | `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{pg_catalog}` (for ORM compatibility) | Yes |
 | `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
 | `session_user` | The user connected for the current session. | User in connection string | No |
 | `time zone` | The default time zone for the current session   | `UTC` | Yes |
+| `tracing` | | `off` | |
 | `transaction isolation level` | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `SERIALIZABLE` | Yes |
 | `transaction priority` | The priority of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `NORMAL` | Yes |
 | `transaction status` | The state of the current transaction. See [Transactions](transactions.html) for more details. | `NoTxn` | No |
-| `client_encoding` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `client_encoding` | (Reserved; exposed only for ORM compatibility.) | `UTF8` | No |
 | `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `datestyle` | (Reserved; exposed only for ORM compatibility.) | `ISO` | No |
 | `extra_float_digits` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
 | `max_index_keys` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
 | `standard_conforming_strings` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |

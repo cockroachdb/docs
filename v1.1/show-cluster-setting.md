@@ -27,7 +27,7 @@ No [privileges](privileges.html) are required to display the cluster settings.
 |-----------|-------------|
 | `any_name` | See the description of [cluster settings](cluster-settings.html). |
 
-The variable name is case insensitive.
+The variable name is case-insensitive.
 
 ## Examples
 

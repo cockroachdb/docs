@@ -1,10 +1,10 @@
 ---
 title: ALTER COLUMN
-summary: Use the ALTER COLUMN statement to change a column's Default constraint.
+summary: Use the ALTER COLUMN statement to set, change, or drop a column's Default constraint or to drop the Not Null constraint.
 toc: false
 ---
 
-The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and changes a column's [Default constraint](default-value.html) or drops the [Not Null constraint](not-null.html).
+The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and sets, changes, or drops a column's [Default constraint](default-value.html) or drops the [Not Null constraint](not-null.html).
 
 {{site.data.alerts.callout_info}}To manage other constraints, see <a href="add-constraint.html"><code>ADD CONSTRAINT</code></a> and <a href="drop-constraint.html"><code>DROP CONSTRAINT</code></a>{{site.data.alerts.end}}
 
@@ -16,13 +16,13 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table. 
+The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
 | Parameter | Description |
 |-----------|-------------|
-| `table_name` | The name of the table with the column whose Default Value you want to modify. |
+| `table_name` | The name of the table with the column you want to modify. |
 | `name` | The name of the column you want to modify. |
 | `a_expr` | The new Default Value you want to use. |
 
@@ -34,25 +34,25 @@ Setting the [Default Value constraint](default-value.html) inserts the value whe
 
 The below example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
-``` sql
+~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
-```
+~~~
 
 ### Remove Default Constraint
 
 If the column has a defined [Default Value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
-``` sql
+~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
-```
+~~~
 
 ### Remove Not Null Constraint
 
 If the column has the [Not Null constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
 
-``` sql
+~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
-```
+~~~
 
 ## See Also
 
