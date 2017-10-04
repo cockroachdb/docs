@@ -6,7 +6,7 @@ toc: false
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
-To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
+To exit the interactive shell, use `\q` or `ctrl-d`.
 
 <div id="toc"></div>
 
@@ -83,7 +83,7 @@ The following commands can be used within the interactive SQL shell:
 
 Command | Usage
 --------|------------
-`\q`<br>`ctrl-d`<br>`ctrl-c` | Exit the shell.
+`\q`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\set <option>` | Enable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options-changed-in-v1-1).<br><br>To see current settings, use `\set` without any options.
@@ -151,9 +151,9 @@ uuid_v4() -> bytes [ID Generation]
 See also:
   https://www.cockroachlabs.com/docs/v1.1/functions-and-operators.html
 ~~~
-## SQL Shell Shortcuts
+### SQL Shell Shortcuts
 
-The SQL shell supports many shortcuts, such as **CTRL + R** for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
+The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
 ## Examples
 

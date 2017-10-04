@@ -6,7 +6,7 @@ toc: false
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
-To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
+To exit the interactive shell, use `\q` or `ctrl-d`.
 
 <div id="toc"></div>
 
@@ -57,8 +57,8 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 The following commands can be used within the interactive SQL shell:
 
 Command | Usage
---------|------------
-`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
+--------|------
+`\q`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\set <option>` | Enable a client-side option. See the table below for available options.<br><br>To see current settings, use `\set` without any options.
