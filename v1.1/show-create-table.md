@@ -1,6 +1,6 @@
 ---
 title: SHOW CREATE TABLE
-summary: The SHOW CREATE TABLE statement shows the CREATE TABLE statement that would create a carbon copy of the specified table. 
+summary: The SHOW CREATE TABLE statement shows the CREATE TABLE statement that would create a carbon copy of the specified table.
 toc: false
 ---
 
@@ -27,41 +27,90 @@ Parameter | Description
 Field | Description
 ------|------------
 `Table` | The name of the table.
-`CreateTable` | The [`CREATE TABLE`](create-table.html) statement for creating a carbon copy of the specified table. 
+`CreateTable` | The [`CREATE TABLE`](create-table.html) statement for creating a carbon copy of the specified table.
 
 ## Example
 
 ~~~ sql
-> CREATE TABLE orders (
-    id INT PRIMARY KEY DEFAULT unique_rowid(),
-    date TIMESTAMP NOT NULL,
-    priority INT DEFAULT 1,
-    customer_id INT UNIQUE,
-    status STRING DEFAULT 'open',
-    CHECK (priority BETWEEN 1 AND 5),
-    CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
-    FAMILY (id, date, priority, customer_id, status)
-);
+> CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+~~~
 
+~~~ sql
+> CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
+~~~
+
+~~~ sql
+> CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    product STRING NOT NULL REFERENCES products,
+    quantity INT,
+    customer INT NOT NULL CONSTRAINT valid_customer REFERENCES customers (id),
+    CONSTRAINT id_customer_unique UNIQUE (id, customer),
+    INDEX (product),
+    INDEX (customer)
+);
+~~~
+
+~~~ sql
+> SHOW CREATE TABLE customer;
+~~~
+
+
+~~~
++-----------+----------------------------------------------------+
+|   Table   |                    CreateTable                     |
++-----------+----------------------------------------------------+
+| customers | CREATE TABLE customers (␤                          |
+|           |     id INT NOT NULL,␤                              |
+|           |     email STRING NULL,␤                            |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤    |
+|           |     UNIQUE INDEX customers_email_key (email ASC),␤ |
+|           |     FAMILY "primary" (id, email)␤                  |
+|           | )                                                  |
++-----------+----------------------------------------------------+
+(1 row)
+~~~
+
+~~~ sql
+> SHOW CREATE TABLE products;
+~~~
+
+~~~
++----------+--------------------------------------------------+
+|  Table   |                   CreateTable                    |
++----------+--------------------------------------------------+
+| products | CREATE TABLE products (␤                         |
+|          |     sku STRING NOT NULL,␤                        |
+|          |     price DECIMAL(9,2) NULL,␤                    |
+|          |     CONSTRAINT "primary" PRIMARY KEY (sku ASC),␤ |
+|          |     FAMILY "primary" (sku, price)␤               |
+|          | )                                                |
++----------+--------------------------------------------------+
+(1 row)
+~~~
+
+~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~
+
 ~~~
-+--------+--------------------------------------------------------------------------------------------------+
-| Table  |                                           CreateTable                                            |
-+--------+--------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                           |
-|        |     id INT NOT NULL DEFAULT unique_rowid(),␤                                                     |
-|        |     date TIMESTAMP NOT NULL,␤                                                                    |
-|        |     priority INT NULL DEFAULT 1,␤                                                                |
-|        |     customer_id INT NULL,␤                                                                       |
-|        |     status STRING NULL DEFAULT 'open',␤                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id),␤                                                      |
-|        |     UNIQUE INDEX orders_customer_id_key (customer_id),␤                                          |
-|        |     FAMILY fam_0_id_date_priority_customer_id_status (id, date, priority, customer_id, status),␤ |
-|        |     CHECK (priority BETWEEN 1 AND 5),␤                                                           |
-|        |     CHECK (status IN ('open', 'in progress', 'done', 'cancelled'))␤                              |
-|        | )                                                                                                |
-+--------+--------------------------------------------------------------------------------------------------+
++--------+------------------------------------------------------------------------------------------+
+| Table  |                                       CreateTable                                        |
++--------+------------------------------------------------------------------------------------------+
+| orders | CREATE TABLE orders (␤                                                                   |
+|        |     id INT NOT NULL,␤                                                                    |
+|        |     product STRING NOT NULL,␤                                                            |
+|        |     quantity INT NULL,␤                                                                  |
+|        |     customer INT NOT NULL,␤                                                              |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                          |
+|        |     UNIQUE INDEX id_customer_unique (id ASC, customer ASC),␤                             |
+|        |     CONSTRAINT fk_product_ref_products FOREIGN KEY (product) REFERENCES products (sku),␤ |
+|        |     INDEX orders_product_idx (product ASC),␤                                             |
+|        |     CONSTRAINT valid_customer FOREIGN KEY (customer) REFERENCES customers (id),␤         |
+|        |     INDEX orders_customer_idx (customer ASC),␤                                           |
+|        |     FAMILY "primary" (id, product, quantity, customer)␤                                  |
+|        | )                                                                                        |
++--------+------------------------------------------------------------------------------------------+
 (1 row)
 ~~~
 
