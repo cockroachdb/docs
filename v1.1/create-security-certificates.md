@@ -4,16 +4,16 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: false
 ---
 
-A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [OpenSSL commands](https://wiki.openssl.org/index.php/).
+A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [OpenSSL commands](https://wiki.openssl.org/index.php/).
 
 <div class="filters filters-big clearfix">
   <button class="filter-button current"><strong>Cockroach Cert Commands</strong></button>
   <a href="create-security-certificates-openssl.html"><button class="filter-button">OpenSSL Commands</button></a>
 </div>
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
-
 <div id="toc"></div>
+
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
 ## Subcommands
 
@@ -273,6 +273,6 @@ Certificate directory: certs
 
 ## See Also
 
-- [Manual Deployment](manual-deployment.html): Walkthrough starting a multi-node secure cluster and accessing it from a client.
+- [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
 - [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
 - [Other Cockroach Commands](cockroach-commands.html)
