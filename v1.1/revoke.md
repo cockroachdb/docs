@@ -16,13 +16,13 @@ For the list of privileges that can be granted to and revoked from users, see [`
 
 ## Required Privileges
 
-The user revoking privileges must have the `GRANT` privilege on the target databases or tables.  
+The user revoking privileges must have the `GRANT` privilege on the target databases or tables.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table for which you want to revoke privileges. To revoke privileges for multiple tables, use a comma-separated list of table names. To revoke privileges for all tables, use `*`. 	
+`table_name` | The name of the table for which you want to revoke privileges. To revoke privileges for multiple tables, use a comma-separated list of table names. To revoke privileges for all tables, use `*`.
 `database_name` | The name of the database for which you want to revoke privileges. To revoke privileges for multiple databases, use a comma-separated list of database names.<br><br>Privileges revoked for databases will be revoked for any new tables created in the databases.
 `user_name` | The name of the users from whom you want to revoke privileges. To revoke privileges from multiple users, use a comma-separated list of [users](create-and-manage-users.html).
 
@@ -67,7 +67,7 @@ Parameter | Description
 (2 rows)
 ~~~
 
-{{site.data.alerts.callout_info}} Note that any tables that previously inherited the database-level privileges retain the privileges.{{site.data.alerts.end}} 
+{{site.data.alerts.callout_info}} Note that any tables that previously inherited the database-level privileges retain the privileges.{{site.data.alerts.end}}
 
 ### Revoke Privileges on Specific Tables in a Database
 
@@ -150,4 +150,6 @@ Parameter | Description
 - [Privileges](privileges.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
+- [`CREATE USER`](create-user.html)
+- [`DROP USER`](drop-user.html)
 - [Other SQL Statements](sql-statements.html)
