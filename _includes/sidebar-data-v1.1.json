@@ -980,7 +980,7 @@
       {
         "title": "Rotate Security Certificates",
         "urls": [
-          "/${VERSION}/certificate-rotation.html"
+          "/${VERSION}/rotate-certificates.html"
         ]
       },
       {
