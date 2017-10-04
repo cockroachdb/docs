@@ -307,6 +307,12 @@
             ]
           },
           {
+            "title": "<code>DROP USER</code>",
+            "urls": [
+              "/${VERSION}/drop-user.html"
+            ]
+          },
+          {
             "title": "<code>DROP VIEW</code>",
             "urls": [
               "/${VERSION}/drop-view.html"
