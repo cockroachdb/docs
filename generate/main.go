@@ -321,7 +321,12 @@ func main() {
 					replace: map[string]string{"any_name": "view_name", "name_list": "column_list"},
 					relink:  map[string]string{"view_name": "any_name", "column_list": "name_list"},
 				},
-				{name: "create_user_stmt", inline: []string{"opt_with", "opt_password"}, replace: map[string]string{"'SCONST'": "password"}, unlink: []string{"password"}},
+				{
+					name: "create_user_stmt",
+					inline: []string{"opt_with", "opt_password"},
+					replace: map[string]string{"'SCONST'": "password", "name": "user_name"},
+					unlink: []string{"password", "user_name"},
+				},
 				{
 					name:    "default_value_column_level",
 					stmt:    "stmt_block",
@@ -372,6 +377,12 @@ func main() {
 					match:   []*regexp.Regexp{regexp.MustCompile("'DROP' 'TABLE'")},
 					replace: map[string]string{"any_name": "table_name"},
 					relink:  map[string]string{"table_name": "any_name"},
+				},
+				{
+					name: "drop_user_stmt",
+					inline: []string{"name_list"},
+					replace: map[string]string{"name": "user_name"},
+					unlink: []string{"user_name"},
 				},
 				{
 					name:    "drop_view",

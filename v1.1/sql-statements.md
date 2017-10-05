@@ -72,7 +72,8 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE USER`](create-user.html) | Creates a SQL user, which lets you control [privileges](privileges.html) on your databases and tables.
+[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
+[`DROP USER`](drop-user.html) | Remove SQL users.
 [`GRANT`](grant.html) | Grant privileges to users.
 [`REVOKE`](revoke.html) | Revoke privileges from users.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.

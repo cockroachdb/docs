@@ -6,13 +6,16 @@ toc: false
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
 
-When creating users, it's important to note:
+{{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user set</code></a> command to create and manage users.{{site.data.alerts.end}}
+
+<div id="toc"></div>
+
+## Considerations
 
 - Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
-- On secure clusters, users must [authenticate their access to the cluster](#user-authentication).
-
-{{site.data.alerts.callout_info}}You can also create and manage users through the <a href="create-and-manage-users.html"><code>cockroach user</code></a> command. Notably, this is the most efficient way to <a href="create-and-manage-users.html#remove-a-user">remove users</a>.{{site.data.alerts.end}}
+- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+- {% include custom/remove-user-callout.html %}
 
 <div id="toc"></div>
 
@@ -99,6 +102,7 @@ $ cockroach sql --user=jpointsman
 ## See Also
 
 - [`cockroach user` command](create-and-manage-users.html)
+- [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
