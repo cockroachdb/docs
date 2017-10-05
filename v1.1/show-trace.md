@@ -4,20 +4,17 @@ summary: The SHOW TRACE statement...
 toc: false
 ---
 
-The `SHOW TRACE` [statement](sql-statements.html) allows an operator to observe
-how CRDB ran a query or series of queries. It presents information on CRDB
-internals; messages from different modules that performed work on behalf of the
-query(s) and timing information are presented.
+<span class="version-tag">New in v1.1:</span> The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details trace actions across all layers of the system and include timing information.
+
+You can use `SHOW TRACE` to debug why a query is not performing as expected, to produce more robust bug reports, or to learn more about how CockroachDB works.
 
 <div id="toc"></div>
 
-Note: The `SHOW TRACE` statement has been introduced in CRDB 1.1.
-
 ## Required Privileges
 
-Tracing a statement itself does not require any [privileges](privileges.html),
-but the regular privileges are required by the statement apply. 
-Listing the session trace does not require any privileges.
+- `SHOW TRACE FOR [statement]` - The user must have the appropriate [privileges](privileges.html) for the statement being traced.
+
+- `SHOW TRACE FOR SESSION` - No privileges are required.
 
 ## Synopsis
 
@@ -187,7 +184,7 @@ Column | Type                | Description
    not be used to execute `<stmt>`; the local engine will always be used.
    This may mean that the trace produced does not reflect the way in which the
    query would have run if it wasn't trace. Session recordings do not suffer
-   from this limitation: recorded queries can use the DistSQL engine.  
+   from this limitation: recorded queries can use the DistSQL engine.
    Tracking issue: [#16562](https://github.com/cockroachdb/cockroach/issues/16562)
 
 2. `SHOW KV TRACE FOR SESSION` may return less results than one might expect,
@@ -242,7 +239,7 @@ messages about spans starting, one could do `SELECT * FROM [SHOW TRACE FOR
 The traces presented by `SHOW TRACE` are backed by an internal, per-session,
 virtual table: `crdb_internal.session_trace`. `SHOW TRACE` presents a friendlier
 view of the data in that table. Currently, `SHOW TRACE` uses the following
-query: 
+query:
 ```sql
 SELECT timestamp,
        timestamp-first_value(timestamp) OVER (ORDER BY timestamp) AS age,
