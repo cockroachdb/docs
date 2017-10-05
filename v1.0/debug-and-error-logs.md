@@ -54,7 +54,7 @@ Based on the command's flags and the message's [severity level](#severity-levels
 CockroachDB can write messages to log files, which use the following format:
 
 ~~~
-cockroach.[host].[user].[start date/time].[process ID].log
+cockroach.[host].[user].[start timestamp in system time].[process ID].log
 ~~~
 
 Property | `cockroach start` | All other commands
