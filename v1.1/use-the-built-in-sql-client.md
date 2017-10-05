@@ -6,7 +6,7 @@ toc: false
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
-To exit the interactive shell, use **CTRL + D**, **CTRL + C**, or `\q`.
+To exit the interactive shell, use `\q` or `ctrl-d`.
 
 <div id="toc"></div>
 
@@ -83,12 +83,13 @@ The following commands can be used within the interactive SQL shell:
 
 Command | Usage
 --------|------------
-`\q`<br>**CTRL + D**<br>**CTRL + C** | Exit the shell.
+`\q`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\set <option>` | Enable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options-changed-in-v1-1).<br><br>To see current settings, use `\set` without any options.
 `\unset <option>` | Disable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options-changed-in-v1-1).
 `\?`<br>`help` | View this help within the shell.
+`\h <statement>`<br>`\hf <function>` | <span class="version-tag">New in v1.1:</span> View help for specific SQL statements or functions. See [SQL Shell Help](#sql-shell-help-new-in-v1-1) for more details.
 
 ### SQL Shell Options <span class="version-tag">Changed in v1.1</span>
 
@@ -103,9 +104,56 @@ Client Options | Description
 `show_times` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset show_times`.
 `smart_prompt` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
-## SQL Shell Shortcuts
+### SQL Shell Help <span class="version-tag">New in v1.1</span>
 
-The SQL shell supports many shortcuts, such as **CTRL + R** for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
+Within the SQL shell, you can get interactive help about statements and functions:
+
+Command | Usage
+--------|------
+`\h`<br>`?` | List all available SQL statements, by category.
+`\hf` | List all available SQL functions, in alphabetical order.
+`\h <statement>`<br>or `<statement> ?` | View help for a specific SQL statement.
+`\hf <function>`<br>or `<function> ?` | View help for a specific SQL function.
+
+#### Examples
+
+~~~ sql
+> \h UPDATE
+~~~
+
+~~~
+Command:     UPDATE
+Description: update rows of a table
+Category:    data manipulation
+Syntax:
+UPDATE <tablename> [[AS] <name>] SET ... [WHERE <expr>] [RETURNING <exprs...>]
+
+See also:
+  SHOW TABLES
+  INSERT
+  UPSERT
+  DELETE
+  https://www.cockroachlabs.com/docs/v1.1/update.html
+~~~
+
+~~~ sql
+> \hf uuid_v4
+~~~
+
+~~~
+Function:    uuid_v4
+Category:    built-in functions
+Returns a UUID.
+
+Signature          Category
+uuid_v4() -> bytes [ID Generation]
+
+See also:
+  https://www.cockroachlabs.com/docs/v1.1/functions-and-operators.html
+~~~
+### SQL Shell Shortcuts
+
+The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
 ## Examples
 
