@@ -15,10 +15,10 @@ You can run `cockroach help` in your shell to get similar guidance.
 Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
-[`init`](initialize-a-cluster.html) | Initialize a cluster.
+[`init`](initialize-a-cluster.html) | <span class="version-tag">New in v1.1:</span> Initialize a cluster.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`quit`](stop-a-node.html) | <span class="version-tag">Changed in v1.1:</span> Temporarily stop a node or permanently remove a node.
-[`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
+[`sql`](use-the-built-in-sql-client.html) | <span class="version-tag">Changed in v1.1:</span> Use the built-in SQL client.
 [`user`](create-and-manage-users.html) | Get, set, list, and remove users.
 [`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`node`](view-node-details.html) | <span class="version-tag">Changed in v1.1:</span> List node IDs, show their status, decommission nodes for removal, or recommission nodes.
