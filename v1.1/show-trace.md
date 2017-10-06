@@ -186,6 +186,238 @@ syntax (TODO: link to secion in table-expressions doc). For example, to see only
 messages about spans starting, one could do `SELECT * FROM [SHOW TRACE FOR
 <stmt>] where message LIKE '=== SPAN START%'`.
 
+
+### Conflicting transactions
+
+TODO: the next two examples have annotations inside the trace listings, marked
+with "->". They're not very visible in the rendering though. How do you think
+we should display them?
+
+An example of a trace of a conflicting transaction. We'll use two terminals
+concurrently to generate the conflict. In terminal 1 we'll open a transaction
+and perform a write without closing the transaction. Then, in terminal 2, we'll
+perform a conflicting read (that we'll also trace). The read will block until
+transaction 1 finishes. We'll then switch to terminal 1 and commit its
+transaction. Then, back to terminal 2, we'll see that the read (and the trace)
+finished and we'll observe references to the conflict in the trace.
+
+Terminal 1:
+
+```
+root@:26257/> create table t(k int);
+root@:26257/> begin;
+root@:26257/> insert into t values (1);
+```
+
+Terminal 2:
+
+```
+root@:26257/t> select age,span, message from [show trace for select * from t];
+```
+The statement should now be blocked.
+
+Terminal 1:
+
+```
+root@:26257/> commit;
+```
+
+Terminal 2 now should show the completed trace:
+
+```
++-------------------+--------+-------------------------------------------------------------------------------------------------------------------------------------------
+|        age        |  span  |            message
++-------------------+--------+-------------------------------------------------------------------------------------------------------------------------------------------
+| 0s                | (0,0)  | === SPAN START: sql txn implicit ===                                                                                                      
+| 409µs750ns        | (0,1)  | === SPAN START: starting plan ===                                                                                                         
+| 417µs68ns         | (0,2)  | === SPAN START: consuming rows ===                                                
+| 446µs968ns        | (0,0)  | querying next range at /Table/61/1                                                
+| 474µs387ns        | (0,0)  | r42: sending batch 1 Scan to (n1,s1):1                                            
+| 491µs800ns        | (0,0)  | sending request to local server                                                   
+| 503µs260ns        | (0,3)  | === SPAN START: /cockroach.roachpb.Internal/Batch ===                             
+| 506µs135ns        | (0,3)  | 1 Scan                                                                            
+| 508µs385ns        | (0,3)  | read has no clock uncertainty                                                     
+| 512µs176ns        | (0,3)  | executing 1 requests                                                              
+| 518µs675ns        | (0,3)  | read-only path                                                                    
+| 525µs357ns        | (0,3)  | command queue                                                                     
+| 531µs990ns        | (0,3)  | waiting for read lock                                                             
+| 603µs363ns        | (0,3)  | conflicting intents on /Table/61/1/285895906846146561/0                            -> Conflict. A bunch of stuff below will describe the conflict resolution.
+| 611µs228ns        | (0,3)  | replica.Send got error: conflicting intents on /Table/61/1/285895906846146561/0   
+| 615µs680ns        | (0,3)  | pushing 1 transaction(s)                                                           -> Our read is now going to wait for the writer to finish by executing a dubiously-named PushTxn request.
+| 630µs734ns        | (0,3)  | querying next range at /Table/61/1/285895906846146561/0                           
+| 646µs292ns        | (0,3)  | r42: sending batch 1 PushTxn to (n1,s1):1                                         
+| 658µs613ns        | (0,3)  | sending request to local server                                                   
+| 665µs738ns        | (0,4)  | === SPAN START: /cockroach.roachpb.Internal/Batch ===                             
+| 668µs765ns        | (0,4)  | 1 PushTxn                                                                         
+| 671µs770ns        | (0,4)  | executing 1 requests                                                              
+| 677µs182ns        | (0,4)  | read-write path                                                                   
+| 681µs909ns        | (0,4)  | command queue                                                                     
+| 693µs718ns        | (0,4)  | applied timestamp cache                                                                                                                     
+| 794µs20ns         | (0,4)  | evaluated request                                                                                                                           
+| 807µs125ns        | (0,4)  | replica.Send got error: failed to push "sql txn" id=23fce0c4 key=/Table/61/1/285895906846146561/0 rw=true pri=0.00736937 iso=SERIALIZABLE...
+| 812µs917ns        | (0,4)  | 62cddd0b pushing 23fce0c4 (1 pending)
+  ...    -> a lot of noise not displayed in this listing
+| 4s348ms604µs506ns | (0,4)  | result of pending push: "sql txn" id=23fce0c4 key=/Table/61/1/285895906846146561/0 rw=true pri=0.00736937 iso=SERIALIZABLE stat=COMMITTED ..
+| 4s348ms609µs635ns | (0,4)  | push request is satisfied                                                           -> The writer is detected to have finished. We're back in business.
+| 4s348ms657µs576ns | (0,3)  | 23fce0c4-1d22-4321-9779-35f0f463b2d5 is now COMMITTED                                                                                           
+| 4s348ms659µs899ns | (0,3)  | resolving intents [wait=true]                                                       -> As seen just above, the writer has committed. We'll do some cleanup after it.
+| 4s348ms669µs431ns | (0,17) | === SPAN START: storage.intentResolve: resolving intents ===                                                                              
+| 4s348ms726µs582ns | (0,17) | querying next range at /Table/61/1/285895906846146561/0                                                                                   
+| 4s348ms746µs398ns | (0,17) | r42: sending batch 1 ResolveIntent to (n1,s1):1                                                                                           
+| 4s348ms758µs761ns | (0,17) | sending request to local server                                                                                                           
+| 4s348ms769µs344ns | (0,18) | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                                                     
+| 4s348ms772µs713ns | (0,18) | 1 ResolveIntent                                                                                                                           
+| 4s348ms776µs159ns | (0,18) | executing 1 requests                                                                                                                      
+| 4s348ms781µs364ns | (0,18) | read-write path                                                                                                                           
+| 4s348ms786µs536ns | (0,18) | command queue                                                                                                                             
+| 4s348ms797µs901ns | (0,18) | applied timestamp cache                                                                                                                   
+| 4s348ms868µs521ns | (0,18) | evaluated request                                                                                                                         
+| 4s348ms875µs924ns | (0,18) | acquired {raft,replica}mu                                                                                                                 
+| 4s349ms150µs556ns | (0,18) | applying command                                                                                                                          
+| 4s349ms232µs373ns | (0,3)  | read-only path                                                                                                                            
+| 4s349ms237µs724ns | (0,3)  | command queue                                                                                                                             
+| 4s349ms241µs857ns | (0,3)  | waiting for read lock                                                                                                                     
+| 4s349ms280µs702ns | (0,3)  | read completed                                                                      -> We're now around where we would have been if there hadn't been a conflict.
+| 4s349ms330µs707ns | (0,2)  | output row: [1]                                                                                                                           
+| 4s349ms333µs718ns | (0,2)  | output row: [1]                                                                                                                           
+| 4s349ms336µs53ns  | (0,2)  | output row: [1]                                                                                                                           
+| 4s349ms338µs212ns | (0,2)  | output row: [1]                                                                                                                           
+| 4s349ms339µs111ns | (0,2)  | plan completed execution                                                                                                                  
+| 4s349ms341µs476ns | (0,2)  | resources released, stopping trace                                                                                                        
++-------------------+--------+-------------------------------------------------------------------------------------------------------------------------------------------
+```
+
+### Transaction retries
+
+An example of session tracing showing an automatic transaction retry (TODO:
+link to automatic retries). Like in the previous example, we'll have to use two
+terminals because retries are induced by unfortunate interactions between
+transactions. In terminal 1 we'll start a transaction so that we get an early
+timestamp (i.e. we "lock" the snapshot of the data on which the transaction is
+going to operate on). Next, we switch to terminal 2 where we perform a read.
+Technically, this read will be performed at a timestamp that's higher than the
+timestamp of the transaction running in terminal 1. Because we're running at
+the Serializable transaction isolation level (which is the default), if the
+system allows terminal 1's transaction to commit, it will have to ensure that
+ordering terminal 1's transaction *before* terminal 2's transaction is valid;
+this will become relevant in a second.  Next, we go back to terminal 1 and
+perform a conflicting write, which we trace. At this point, the system will
+detect the conflict and realize that the transaction can no longer commit
+(allowing it to commit would mean that we have changed history with respect to
+terminal 2's read), and so it will automatically retry it (so it can be
+serialized *after* terminal 2's transaction). The trace will reflect this retry.
+
+A few further notes are in order:
+
+1. We cannot use `SHOW TRACE FOR <stmt>`; we have to use session tracing and
+   then `SHOW TRACE FOR SESSION`. The former does not perform automatic
+   retries, as stated before, and also in order to easily generate the desired
+   conflict we have to use an explicit transaction, which means that we need to
+   run at least two statement (the first one being `BEGIN`) and that's beyond
+   the abilities of `SHOW TRACE FOR <stmt>`.
+2. To demonstrate the automatic retry for an explicit transaction using the
+   CockroachDB CLI (as opposed to another interface), terminal 1 has to use an
+   obscure setting that disables some of its functionality. By default, our
+   terminal emits some hidden queries in order to print the transaction
+   state and the current database in the prompt. Unfortunately, for reasons
+   beyond the scope of the current document, those queries break the server's
+   ability to automatically retry the transaction (as opposed to returning a
+   retry code to the client, which would then be in charge of retrying). To
+   overcome this, we'll disable the prompt magic with `\unset smart_prompt`.
+
+Terminal 1:
+
+```
+root@:26257> \unset smart_prompt
+root@:26257> set tracing = cluster;
+root@:26257> begin;
+```
+
+Terminal 2:
+
+```
+root@:26257> select * from t;
+```
+
+Terminal 1:
+
+```
+root@:26257> set tracing = off;
+root@:26257> select age, message from [show trace for session];
++--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|        age         |                                                                                                        message                                                                                        
++--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| 0s                 | === SPAN START: sql txn implicit ===                                                                                                                                                                  
+| 123µs317ns         | AutoCommit. err: <nil>␤                                                                                                                                                                               
+|                    | txn: "sql txn implicit" id=64d34fbc key=/Min rw=false pri=0.02500536 iso=SERIALIZABLE stat=COMMITTED epo=0 ts=1507321543.454852438,0 orig=1507321543.454852438,0 max=1507321543.954852438,0 wto=false 
+| 1s767ms959µs448ns  | === SPAN START: sql txn ===                                                                                                                                                                           
+| 1s767ms989µs448ns  | executing 1/1: BEGIN TRANSACTION                                                                                                                                                                      
+| 13s536ms79µs67ns   | executing 1/1: INSERT INTO t VALUES (1)                             -> first execution of the INSERT
+| 13s536ms134µs682ns | client.Txn did AutoCommit. err: <nil>␤                                                                                                                                                                
+|                    | txn: "unnamed" id=329e7307 key=/Min rw=false pri=0.01354772 iso=SERIALIZABLE stat=COMMITTED epo=0 ts=1507321556.990946371,0 orig=1507321556.990946371,0 max=1507321557.490946371,0 wto=false rop=false
+| 13s536ms143µs145ns | added table 't' to table collection                                                                                                                                                                   
+| 13s536ms305µs103ns | query not supported for distSQL: mutations not supported                                                                                                                                              
+| 13s536ms365µs919ns | querying next range at /Table/61/1/285904591228600321/0                                                                                                                                               
+| 13s536ms400µs155ns | r42: sending batch 1 CPut, 1 BeginTxn to (n1,s1):1                                                                                                                                                    
+| 13s536ms422µs268ns | sending request to local server                                                                                                                                                                       
+| 13s536ms434µs962ns | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                                                                                                                 
+| 13s536ms439µs916ns | 1 CPut, 1 BeginTxn                                                                                                                                                                                    
+| 13s536ms442µs413ns | read has no clock uncertainty                                                                                                                                                                         
+| 13s536ms447µs42ns  | executing 2 requests                                                                                                                                                                                  
+| 13s536ms454µs413ns | read-write path                                                                                                                                                                                       
+| 13s536ms462µs456ns | command queue                                                                                                                                                                                         
+| 13s536ms497µs475ns | applied timestamp cache                                                                                                                                                                               
+| 13s536ms637µs637ns | evaluated request                                                                                                                                                                                     
+| 13s536ms646µs468ns | acquired {raft,replica}mu                                                                                                                                                                             
+| 13s536ms947µs970ns | applying command                                                                                                                                                                                      
+| 13s537ms34µs667ns  | coordinator spawns                                                                                                                                                                                    
+| 13s537ms41µs171ns  | === SPAN START: [async] kv.TxnCoordSender: heartbeat loop ===                                                                                                                                         
+                                                                                           -> the conflict is about to be detected, in the form of a retriable error
+| 13s537ms77µs356ns  | automatically retrying transaction: sql txn (id: b4bd1f60-30d9-4465-bdb6-6b553aa42a96) because of error: HandledRetryableTxnError: serializable transaction timestamp pushed (detected by SQL Executor)
+| 13s537ms83µs369ns  | executing 1/1: INSERT INTO t VALUES (1)                             -> second execution of the INSERT
+| 13s537ms109µs516ns | client.Txn did AutoCommit. err: <nil>␤                                                                                                                                                                 
+|                    | txn: "unnamed" id=1228171b key=/Min rw=false pri=0.02917782 iso=SERIALIZABLE stat=COMMITTED epo=0 ts=1507321556.991937203,0 orig=1507321556.991937203,0 max=1507321557.491937203,0 wto=false rop=false 
+| 13s537ms111µs738ns | releasing 1 tables                                                                                                                                                                                     
+| 13s537ms116µs944ns | added table 't' to table collection                                                                                                                                                                    
+| 13s537ms163µs155ns | query not supported for distSQL: writing txn                                                                                                                                                           
+| 13s537ms192µs584ns | querying next range at /Table/61/1/285904591231418369/0                                                                                                                                                
+| 13s537ms209µs601ns | r42: sending batch 1 CPut to (n1,s1):1                                                                                                                                                                 
+| 13s537ms224µs219ns | sending request to local server                                                                                                                                                                        
+| 13s537ms233µs350ns | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                                                                                                                  
+| 13s537ms236µs572ns | 1 CPut                                                                                                                                                                                                 
+| 13s537ms238µs39ns  | read has no clock uncertainty                                                                                                                                                                          
+| 13s537ms241µs255ns | executing 1 requests                                                                                                                                                                                   
+| 13s537ms245µs473ns | read-write path                                                                                                                                                                                        
+| 13s537ms248µs915ns | command queue                                                                                                                                                                                          
+| 13s537ms261µs543ns | applied timestamp cache                                                                                                                                                                                
+| 13s537ms309µs401ns | evaluated request                                                                                                                                                                                      
+| 13s537ms315µs302ns | acquired {raft,replica}mu                                                                                                                                                                              
+| 13s537ms580µs149ns | applying command                                                                                                                                                                                       
+| 18s378ms239µs968ns | executing 1/1: COMMIT TRANSACTION                                                                                                                                                                      
+| 18s378ms291µs929ns | querying next range at /Table/61/1/285904591228600321/0                                                                                                                                                
+| 18s378ms322µs473ns | r42: sending batch 1 EndTxn to (n1,s1):1                                                                                                                                                               
+| 18s378ms348µs650ns | sending request to local server                                                                                                                                                                        
+| 18s378ms364µs928ns | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                                                                                                                  
+| 18s378ms370µs772ns | 1 EndTxn                                                                                                                                                                                               
+| 18s378ms373µs902ns | read has no clock uncertainty                                                                                                                                                                          
+| 18s378ms378µs613ns | executing 1 requests                                                                                                                                                                                   
+| 18s378ms386µs573ns | read-write path                                                                                                                                                                                        
+| 18s378ms394µs316ns | command queue                                                                                                                                                                                          
+| 18s378ms417µs576ns | applied timestamp cache                                                                                                                                                                                
+| 18s378ms588µs396ns | evaluated request                                                                                                                                                                                      
+| 18s378ms597µs715ns | acquired {raft,replica}mu                                                                                                                                                                              
+| 18s383ms388µs599ns | applying command                                                                                                                                                                                       
+| 18s383ms494µs709ns | coordinator stops                                                                                                                                                                                      
+| 23s169ms850µs906ns | === SPAN START: sql txn implicit ===                                                                                                                                                                   
+| 23s169ms885µs921ns | executing 1/1: SET tracing = off                                                                                                                                                                       
+| 23s169ms919µs90ns  | query not supported for distSQL: SET / SET CLUSTER SETTING should never distribute                                                                                                                     
++--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
+
+
+
+
+
 ## See Also
 
 - [`EXPLAIN`](explain.html)
