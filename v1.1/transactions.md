@@ -80,35 +80,35 @@ CockroachDB automatically retries any of the following types of transactions:
 
 - Individual statements (which are treated as implicit transactions), such as:
 
-  ~~~ sql
-  > DELETE FROM customers WHERE id = 1;
-  ~~~
+    ~~~ sql
+    > DELETE FROM customers WHERE id = 1;
+    ~~~
 
 - Transactions sent from the client as a single batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests.
 
-  From the perspective of CockroachDB, a transaction sent as a batch looks like this:
+    From the perspective of CockroachDB, a transaction sent as a batch looks like this:
 
-  ~~~ sql
-  > BEGIN; DELETE FROM customers WHERE id = 1; DELETE orders WHERE customer = 1; COMMIT;
-  ~~~
+    ~~~ sql
+    > BEGIN; DELETE FROM customers WHERE id = 1; DELETE orders WHERE customer = 1; COMMIT;
+    ~~~
 
-  However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would be sent as a single batch (and automatically retried):
+    However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would be sent as a single batch (and automatically retried):
 
-  ~~~ go
-  db.Exec(
-    "BEGIN;
+    ~~~ go
+    db.Exec(
+      "BEGIN;
 
-    DELETE FROM customers WHERE id = 1;
+      DELETE FROM customers WHERE id = 1;
 
-    DELETE orders WHERE customer = 1;
+      DELETE orders WHERE customer = 1;
 
-    COMMIT;"
-  )
-  ~~~
+      COMMIT;"
+    )
+    ~~~
 
-In these cases, CockroachDB infers there is nothing conditional about these values, so it can continue to retry the transaction with the same values it originally received.
+    In these cases, CockroachDB infers there is nothing conditional about these values, so it can continue to retry the transaction with the same values it originally received.
 
-However, if the transaction relies on conditional logic, you should instead write your transactions to use [client-side intervention](#client-side-intervention). This provides an opportunity for the client to check the transaction's conditions before deciding whether or not to retry the transaction, as well as update any values.
+    However, if the transaction relies on conditional logic, you should instead write your transactions to use [client-side intervention](#client-side-intervention). This provides an opportunity for the client to check the transaction's conditions before deciding whether or not to retry the transaction, as well as update any values.
 
 ### Client-Side Intervention
 
@@ -130,7 +130,7 @@ To handle these types of errors you have two options:
 
 - *Recommended*: Use the `SAVEPOINT cockroach_restart` functions to create retryable transactions. Retryable transactions can improve performance because their priority's increased each time they are retried, making them more likely to succeed the longer they're in your system.
 
-  For more information, see [Client-Side Transaction Retries](#client-side-transaction-retries).
+    For more information, see [Client-Side Transaction Retries](#client-side-transaction-retries).
 
 - Abort the transaction using `ROLLBACK`, and then reissue all of the statements in the transaction. This does *not* automatically increase the transaction's priority, so it's possible in high-contention workloads for transactions to take an incredibly long time to succeed.
 
