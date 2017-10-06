@@ -4,89 +4,63 @@ summary: The SHOW TRACE statement...
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details trace actions across all layers of the system and include timing information.
+<span class="version-tag">New in v1.1:</span> The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
-You can use `SHOW TRACE` to debug why a query is not performing as expected, to produce more robust bug reports, or to learn more about how CockroachDB works.
+You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
 <div id="toc"></div>
 
+## Usage Overview
+
+There are two distinct ways to use `SHOW TRACE`:
+
+Statement | Usage
+----------|------
+[`SHOW TRACE FOR <stmt>`](#show-trace-for-statement) | Execute a single [explainable](explain.html) statement and return a trace of its actions.
+[`SHOW TRACE FOR SESSION`](#show-trace-for-session) | Return a trace of all executed statements recorded during a session.
+
+### `SHOW TRACE FOR <stmt>`
+
+This use of `SHOW TRACE` executes a single [explainable](explain.html) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
+
+- `SHOW TRACE FOR <stmt>` executes the target statement and, once execution has completed, then returns a real trace of the actions taken. For example, tracing an `INSERT` statement inserts data and then returns a trace, a `DELETE` statement deletes data and then returns a trace, etc. This is different than the [`EXPLAIN`](explain.html) statement, which does not execute its target statement but instead returns details about its predicted execution plan.
+    - The target statement must be an [`explainable`](explain.html) statement. All non-explainable statements are not supported.
+    - The target statement is always executed with the local SQL engine. Due to this [known limitation](https://github.com/cockroachdb/cockroach/issues/16562), the trace will not reflect the way in which some statements would have been executed when not the target of `SHOW TRACE FOR <stmt>`. This limitation does not apply to `SHOW TRACE FOR SESSION`.
+
+- If the target statement encounters errors, those errors are not returned to the client. Instead, they are included in the trace. This has the following important implications for [transaction retries](transactions.html#transaction-retries):
+    - Normally, individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch are [automatically retried](transactions.html#automatic-retries) by CockroachDB when [retryable errors](transactions.html#error-handling) are encountered due to contention. However, when such statements are the target of `SHOW TRACE FOR <stmt>`, CockroachDB does **not** automatically retry.
+    - When each statement in a multi-statement transaction is sent individually (as opposed to being batched), if one of the statements is the target or `SHOW TRACE <stmt>`, retryable errors encountered by that statement will not be returned to the client. This can cause problems if the client is expecting such errors in order to handle [client-side retries](transactions.html#client-side-intervention).
+
+    {{site.data.alerts.callout_success}}Given these implications, when you expect transaction retries or want to trace across retries, it's recommended to use <code>SHOW TRACE FOR SESSION</code>.{{site.data.alerts.end}}
+
+### `SHOW TRACE FOR SESSION`
+
+This use of `SHOW TRACE` returns messages and timing information for all statements executed during a recorded session. It's important to note the following:
+
+- `SHOW TRACE FOR SESSION` only returns traces for the most recent session recorded, or for the current session if it is actively being recorded.
+    - To start recording traces for a session, enable the `tracing` [session variable](set-vars.html) via `SET tracing = on;`.
+    - To stop recording traces for a session, disable the `tracing` session variable via `SET tracing = off;`.
+
+- In contrast to `SHOW TRACE FOR <stmt>`, errors encountered by statements traced during a recorded session are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retryable errors](transactions.html#error-handling) are encountered due to contention. Also, clients will receive retryable errors required to handle [client-side retries](transactions.html#client-side-intervention). As a result, traces of all transaction retries will be captured during a recorded session.
+
+- `SHOW TRACE FOR <stmt>` overwrites the last recorded trace. This means that if you enable session recording, disable session recording, execute `SHOW TRACE FOR <stmt>`, and then execute `SHOW TRACE FOR SESSION`, the respone will be the trace for `SHOW TRACE FOR <stmt>`, not for the previously recorded session.
+
 ## Required Privileges
 
-- `SHOW TRACE FOR [statement]` - The user must have the appropriate [privileges](privileges.html) for the statement being traced.
+For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](privileges.html) for the statement being traced. For `SHOW TRACE FOR SESSION`, no privileges are required.
 
-- `SHOW TRACE FOR SESSION` - No privileges are required.
-
-## Synopsis
+## Syntax
 
 {% include sql/{{ page.version.version }}/diagrams/show_trace.html %}
-
-Tracing provides a way to observe the actions took by a CRDB cluster when
-executing a statement or a series of statements in the hope on helping users
-understand why a query is not performing as expected and for producing better
-bug reports. It provides visibility into many layers of the system by presenting
-CRDB internal log message from across the stack, together with timing
-information. As part of a trace, messages are collected from all the different
-nodes that performed work on behalf of the statement under trace (e.g. if the
-statement is a query that reads distributed data, all nodes that served parts of
-the data will be represented in the trace).
-
-The `SHOW TRACE` statement allows one to either trace a particular statement and
-get the trace output or, if "session tracing" has been previously enabled, to
-show the trace output of all the recorded statements.
-
-TODO: should we also talk about trace.debug.enable and trace.lightstep.token
-cluster settings?
-
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`KV` | If specified, the set of trace log messages presented is restricted to messages describing the requests sent by the query execution to the lower-level CRDB Key-Value layer. For `SHOW KV TRACE FOR <stmt>`, some per-result-row messages may be collected, whereas that's generally not the case when `KV` is not specified (in the case of `SHOW KV TRACE FOR SESSION`, per-result-row messages will be displayed if they have been collected; whether they have been collected or not depends on whether `SET tracing = kv` has been used to start trace recording or not. See TODO: link to caveat).
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value storage layer.<br><br>For `SHOW KV TRACE FOR <stmt>`, some per-result-row messages may be returned, whereas that's generally not the case when `KV` is not specified.<br><br>For `SHOW KV FOR SESSION`, per-result-row messages are returned only if the session was/is recording with `SET tracing = kv;`.
+`explainable_stmt` | The statement to execute and trace. Only [explainable](explain.html) statements are supported.
 
-### SHOW TRACE FOR <stmt>
-
-`SHOW TRACE FOR <stmt>` executes `stmt` (the "statement under trace) and returns
-the messages produced by CRDB while executing it. The statement is executed
-normally, including any side-effects it is normally expected to have on a
-database or the cluster (i.e.  inserts/deletes/updates will modify data,
-`COMMIT` will commit the transaction, etc.).
-
-Errors encountered by the execution of the statement under trace are not
-returned to the client as errors of the `SHOW TRACE` statement; `SHOW TRACE` is
-generally not expected to return any errors. An error encountered by the
-statement under trace will, however, be reflected in the trace output.
-As a consequence, `SHOW TRACE FOR <stmt>` always describes "one attempt" of
-executing the statement under trace, even when the client and/or CRDB may
-perform retries. Particularly, if the statement under trace represents an
-implicit transaction and execution of the statement returns a retriable error
-(TODO: link), the statement will not be automatically retried (although it
-would have, if it wasn't running under `SHOW TRACE FOR <stmt>`.
-
-### SHOW TRACE FOR SESSION
-
-`SHOW TRACE FOR SESSION` returns the messages produced by all statements that
-whose traces were recorded as part of the last session recording. If the
-session is currently recording, traces for the statements executed during the
-current recording will be returned; in this case the session will continue
-recording.
-
-Traces of statements executed on a particular SQL session (i.e. a client
-connection) can be recorded by setting the `tracing` session variable (i.e. `SET
-tracing = on`). A recording can be stopped with `SET tracing = off`. `SHOW TRACE
-FOR SESSION` returns the traces of all the statements recorded. A subsequent
-call to `SET tracing = on` clears the previous recording (if any).
-
-TODO: link somewhere / list "tracing" in some list of session variables?
-
-One of the reasons why session recording is useful is for allowing tracing
-across retries.  As opposed to `SHOW TRACE FOR <stmt>`, no errors encountered by
-statements traced while a recording is on-going are swallowed. So, if CRDB
-performs automatic retries for a statement, all the retries will be recorded.
-Similarly, if the client is performing client-directed retries (TODO: link), all
-statements across all client retries will be recorded.
-
-
+##
 ## Trace description
 
 Before describing the specifics of the `SHOW TRACE` results, this section will
@@ -132,7 +106,7 @@ information, and it's clearly visible what executed in parallel with what else.
 
 ## Response
 
-Note: the format of the results may change in future versions.
+{{site.data.alerts.callout_info}}The format of the <code>SHOW TRACE</code> response may change in future versions.{{site.data.alerts.end}}
 
 CRDB does not currently have a graphical trace visualizer (it does, however,
 integrate with other products that do). Instead, traces are listed as regular,
@@ -177,28 +151,6 @@ Column | Type                | Description
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message has been logged.
 `span` | tuple(int, int) | A tuple containing {index of the transaction that generated the message (always `0` for `SHOW TRACE FOR <stmt>`); index of the span within the virtual list of all spans if they were ordered by the span's start time}
 
-
-## Caveats and known limitations
-
-1. `SHOW TRACE FOR <stmt>` implies that that the DistSQL execution engine will
-   not be used to execute `<stmt>`; the local engine will always be used.
-   This may mean that the trace produced does not reflect the way in which the
-   query would have run if it wasn't trace. Session recordings do not suffer
-   from this limitation: recorded queries can use the DistSQL engine.
-   Tracking issue: [#16562](https://github.com/cockroachdb/cockroach/issues/16562)
-
-2. `SHOW KV TRACE FOR SESSION` may return less results than one might expect,
-   depending on how recording was started. If `SET tracing = kv` has been used,
-   then there should be no surprises. If, however, another flavor of tracing has
-   been used (e.g. `SET tracing = on`), then not all "kv messages" have been
-   collected (namely, the "per-result-row" messages have not been collected).
-   Therefor, `SHOW KV TRACE FOR SESSION` will not display them.
-
-3. `SHOW TRACE FOR <stmt>` overwrites the last recorded trace. Executing `SHOW TRACE
-   FOR SESSION` after having executed `SHOW TRACE FOR <stmt>` will display the
-   trace for `<stmt>`.
-
-
 ## Examples
 
 
@@ -234,35 +186,7 @@ syntax (TODO: link to secion in table-expressions doc). For example, to see only
 messages about spans starting, one could do `SELECT * FROM [SHOW TRACE FOR
 <stmt>] where message LIKE '=== SPAN START%'`.
 
-## Notes
-
-The traces presented by `SHOW TRACE` are backed by an internal, per-session,
-virtual table: `crdb_internal.session_trace`. `SHOW TRACE` presents a friendlier
-view of the data in that table. Currently, `SHOW TRACE` uses the following
-query:
-```sql
-SELECT timestamp,
-       timestamp-first_value(timestamp) OVER (ORDER BY timestamp) AS age,
-       message,
-       context,
-       operation,
-       span
-  FROM (SELECT timestamp,
-               regexp_replace(message, e'^\\[(?:[^][]|\\[[^]]*\\])*\\] ', '') AS message,
-               regexp_extract(message, e'^\\[(?:[^][]|\\[[^]]*\\])*\\]') AS context,
-               first_value(operation) OVER (PARTITION BY txn_idx, span_idx ORDER BY message_idx) as operation,
-               (txn_idx, span_idx) AS span
-          FROM crdb_internal.session_trace)
-ORDER BY timestamp
-```
-
-Of course, in the case of `SHOW TRACE FOR <stmt>`, the `SHOW TRACE` statement
-also initiates trace collection (so, it's roughly equivalent to `SET tracing =
-cluster; <stmt>; SET tracing = off; SELECT ... FROM
-crdb_internal.session_trace;`).
-
-
 ## See Also
 
 - [`EXPLAIN`](explain.html)
-
+- [`SET (session settings)`](set-vars.html)
