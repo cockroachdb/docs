@@ -45,4 +45,4 @@ For each initial node of your cluster, complete the following steps:
 
 	For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data`, binds internal and client communication to `--port=26257`, and binds Admin UI HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](start-a-node.html).
 
-5. Repeate these steps for each addition node that you want in your cluster.
+5. Repeat these steps for each addition node that you want in your cluster.
