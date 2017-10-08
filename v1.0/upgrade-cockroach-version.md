@@ -38,47 +38,7 @@ For each node in your cluster, complete the following steps.
 
 1. Connect to the node.
 
-2. Download and install the CockroachDB binary you want to use:
-    - **Mac**:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Optional: Place cockroach in your $PATH
-        $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-    - **Linux**:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Optional: Place cockroach in your $PATH
-        $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-
-3. Stop the `cockroach` process.
+2. Stop the `cockroach` process.
 
     Without a process manager, use this command:
 
@@ -95,6 +55,34 @@ For each node in your cluster, complete the following steps.
     ~~~
 
     Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
+
+3. Download and install the CockroachDB binary you want to use:
+    - **Mac**:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Get the CockroachDB tarball:
+        $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Extract the binary:
+        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+        ~~~
+    - **Linux**:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Get the CockroachDB tarball:
+        $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
+        ~~~
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        # Extract the binary:
+        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+        ~~~
 
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
     - **Mac**:
@@ -120,8 +108,6 @@ For each node in your cluster, complete the following steps.
         $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
         ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
-
 5. If you're running with a process manager, have the node rejoin the cluster by starting it.
 
     Without a process manager, use this command:
@@ -140,6 +126,8 @@ For each node in your cluster, complete the following steps.
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~
+
+    If you leave versioned binaries on your servers, you don't need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
