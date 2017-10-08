@@ -57,56 +57,72 @@ For each node in your cluster, complete the following steps.
     Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
 
 3. Download and install the CockroachDB binary you want to use:
-    - **Mac**:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
-    - **Linux**:
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Get the CockroachDB tarball:
+    $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    ~~~
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Extract the binary:
+    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    ~~~
+    </div>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Get the CockroachDB tarball:
+    $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Extract the binary:
+    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    ~~~
+    </div>
 
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
-    - **Mac**:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ i="$(which cockroach)"; mv "$i" "$i"_old
-        ~~~
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-    - **Linux**:
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    ~~~
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ i="$(which cockroach)"; mv "$i" "$i"_old
-        ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
+    ~~~
+    </div>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+    ~~~
+    </div>
 
 5. If you're running with a process manager, have the node rejoin the cluster by starting it.
 
