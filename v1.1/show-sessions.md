@@ -22,7 +22,7 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_sessions.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/show_sessions.html %}</section>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.
 - To list the active sessions just on the local node, use `SHOW LOCAL SESSIONS`.
@@ -36,7 +36,7 @@ Field | Description
 `node_id` | The ID of the node connected to.
 `username` | The username of the connected user.
 `client_address` | The address and port of the connected client.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any.
+`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client](use-the-built-in-sql-client.html), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
 `session_start` | The timestamp at which the session started.
@@ -47,6 +47,7 @@ Field | Description
 
 ### List Active Sessions Across the Cluster
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SESSIONS;
 ~~~
@@ -63,7 +64,7 @@ Field | Description
 |       1 | lroach   | 192.168.0.71:56180 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.87337+00:00  | 2017-08-10 14:08:44.64788+00:00  | f691c5dd-b29e-48ed-a1dd-6d7f71faa82e |
 |       1 | lroach   | 192.168.0.71:56197 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.877932+00:00 | 2017-08-10 14:08:44.644786+00:00 | 86ae25ea-9abf-4f5e-ad96-0522178f4ce6 |
 |       1 | lroach   | 192.168.0.71:56200 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878534+00:00 | 2017-08-10 14:08:44.653524+00:00 | 8ad972b6-4347-4128-9e52-8553f3491963 |
-|       1 | root     | 127.0.0.1:56211    |                  | SHOW CLUSTER SESSIONS;                      |                                            | 2017-08-10 14:08:27.666826+00:00 | 2017-08-10 14:08:44.653355+00:00 | NULL                                 |
+|       1 | root     | 127.0.0.1:56211    | cockroach        | SHOW CLUSTER SESSIONS;                      |                                            | 2017-08-10 14:08:27.666826+00:00 | 2017-08-10 14:08:44.653355+00:00 | NULL                                 |
 +---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------+----------------------------------+----------------------------------|--------------------------------------+
 (9 rows)
 ~~~
@@ -72,6 +73,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### List Active Sessions on the Local Node
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL SESSIONS;
 ~~~
@@ -83,7 +85,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 |       1 | lroach   | 192.168.0.71:56180 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.87337+00:00  | 2017-08-10 14:08:44.64788+00:00  | f691c5dd-b29e-48ed-a1dd-6d7f71faa82e |
 |       1 | lroach   | 192.168.0.71:56197 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.877932+00:00 | 2017-08-10 14:08:44.644786+00:00 | 86ae25ea-9abf-4f5e-ad96-0522178f4ce6 |
 |       1 | lroach   | 192.168.0.71:56200 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878534+00:00 | 2017-08-10 14:08:44.653524+00:00 | 8ad972b6-4347-4128-9e52-8553f3491963 |
-|       1 | root     | 127.0.0.1:56211    |                  | SHOW CLUSTER SESSIONS;                      |                                            | 2017-08-10 14:08:27.666826+00:00 | 2017-08-10 14:08:44.653355+00:00 | NULL                                 |
+|       1 | root     | 127.0.0.1:56211    | cockroach        | SHOW CLUSTER SESSIONS;                      |                                            | 2017-08-10 14:08:27.666826+00:00 | 2017-08-10 14:08:44.653355+00:00 | NULL                                 |
 +---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------+----------------------------------+----------------------------------|--------------------------------------+
 (4 rows)
 ~~~
@@ -92,8 +94,9 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 You can use a [`SELECT`](select.html) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
 
-For example, the following query filters for sessions where the connected user is `mroach`:
+#### Show sessions associated with a specific user
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE username = 'mroach';
 ~~~
@@ -107,6 +110,32 @@ For example, the following query filters for sessions where the connected user i
 |       2 | mroach   | 192.168.0.72:56198 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878464+00:00 | 2017-08-10 14:08:44.643749+00:00 | d8fedb88-fc21-4720-aabe-cd43ec204d88 |
 +---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------+----------------------------------+----------------------------------|--------------------------------------+
 (3 rows)
+~~~
+
+#### Exclude sessions from the built-in SQL client
+
+To exclude sessions from the [built-in SQL client](use-the-built-in-sql-client.html), filter for sessions that do not show `cockroach` as the `application_name`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW CLUSTER SESSIONS]
+      WHERE application_name != 'cockroach';
+~~~
+
+~~~
++---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------|----------------------------------+----------------------------------+--------------------------------------+
+| node_id | username |   client_address   | application_name |               active_queries                |            last_active_query               |          session_start           |        oldest_query_start        |                kv_txn                |
++---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------+----------------------------------+----------------------------------+--------------------------------------|
+|       2 | mroach   | 192.168.0.72:56194 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878113+00:00 | 2017-08-10 14:08:44.648985+00:00 | 81fbdd4d-394c-4784-b540-97cd73910dba |
+|       2 | mroach   | 192.168.0.72:56201 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878306+00:00 | 2017-08-10 14:08:44.653135+00:00 | 5aa6f141-5cae-468f-b16a-dfe8d4fb4bea |
+|       2 | mroach   | 192.168.0.72:56198 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878464+00:00 | 2017-08-10 14:08:44.643749+00:00 | d8fedb88-fc21-4720-aabe-cd43ec204d88 |
+|       3 | broach   | 192.168.0.73:56199 | test_app         | SELECT k, v FROM test.kv WHERE k = $1;      | UPSERT INTO test.kv(k, v) VALUES ($1, $2); | 2017-08-10 14:08:22.878048+00:00 | 2017-08-10 14:08:44.655709+00:00 | NULL                                 |
+|       3 | broach   | 192.168.0.73:56196 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878166+00:00 | 2017-08-10 14:08:44.647464+00:00 | aded7717-94e1-4ac4-9d37-8765e3418e32 |
+|       1 | lroach   | 192.168.0.71:56180 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.87337+00:00  | 2017-08-10 14:08:44.64788+00:00  | f691c5dd-b29e-48ed-a1dd-6d7f71faa82e |
+|       1 | lroach   | 192.168.0.71:56197 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.877932+00:00 | 2017-08-10 14:08:44.644786+00:00 | 86ae25ea-9abf-4f5e-ad96-0522178f4ce6 |
+|       1 | lroach   | 192.168.0.71:56200 | test_app         | UPSERT INTO test.kv(k, v) VALUES ($1, $2);  | SELECT k, v FROM test.kv WHERE k = $1;     | 2017-08-10 14:08:22.878534+00:00 | 2017-08-10 14:08:44.653524+00:00 | 8ad972b6-4347-4128-9e52-8553f3491963 |
++---------+----------+--------------------+------------------+---------------------------------------------+--------------------------------------------+----------------------------------+----------------------------------|--------------------------------------+
+(8 rows)
 ~~~
 
 ### Identify and Cancel a Problematic Query
@@ -125,6 +154,7 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 
 Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW QUERIES`](show-queries.html) statement to get more information about the query, filtering based on details you already have:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE client_address = '192.168.0.72:56194'
@@ -142,12 +172,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 
 Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`](cancel-query.html) statement with a nested `SELECT` statement that returns the `query_id`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
       WHERE client_address = '192.168.0.72:56194'
