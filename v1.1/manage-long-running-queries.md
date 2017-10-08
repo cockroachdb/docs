@@ -14,6 +14,7 @@ toc: false
 
 Use the [`SHOW QUERIES`](show-queries.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW QUERIES;
 ~~~
@@ -25,7 +26,7 @@ Use the [`SHOW QUERIES`](show-queries.html) statement to list details about curr
 | 14db657443230c3e0000000000000001 |       1 | root     | 2017-08-16 18:00:50.675151+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
 | 14db657443b68c7d0000000000000001 |       1 | root     | 2017-08-16 18:00:50.684818+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
 | 14db65744382c2340000000000000001 |       1 | root     | 2017-08-16 18:00:50.681431+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
-| 14db657443c9dc660000000000000001 |       1 | root     | 2017-08-16 18:00:50.686083+00:00 | SHOW CLUSTER QUERIES                      | 192.168.12.56:54108 |                  | NULL        | preparing |
+| 14db657443c9dc660000000000000001 |       1 | root     | 2017-08-16 18:00:50.686083+00:00 | SHOW CLUSTER QUERIES                      | 192.168.12.56:54108 | cockroach        | NULL        | preparing |
 | 14db657443e30a850000000000000003 |       3 | root     | 2017-08-16 18:00:50.68774+00:00  | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54118 | test_app         | false       | executing |
 | 14db6574439f477d0000000000000003 |       3 | root     | 2017-08-16 18:00:50.6833+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54122 | test_app         | false       | executing |
 | 14db6574435817d20000000000000002 |       2 | root     | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
@@ -37,6 +38,7 @@ Use the [`SHOW QUERIES`](show-queries.html) statement to list details about curr
 
 You can also filter for queries that have been running for a certain amount of time. For example, to find queries that have been running for more than 3 hours, you would run the following:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE start < (now() - INTERVAL '3 hours');
@@ -46,6 +48,7 @@ You can also filter for queries that have been running for a certain amount of t
 
 Once you've identified a long-running query via [`SHOW QUERIES`](show-queries.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
