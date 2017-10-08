@@ -19,9 +19,10 @@ Before starting the upgrade, complete the following steps.
 
 2. Verify the cluster's overall health by running the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 
-    In the response, if any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
-
-    Also make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.Run the [`cockroach node status`](view-node-details.html) command with the `--decommission` flag against any node in the cluster.
+    In the response:
+    - If any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
+    - Make sure the `build` field shows the same version of CockroachDB for all nodes. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
+    - Make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.
 
 3. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
