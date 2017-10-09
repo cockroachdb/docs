@@ -38,14 +38,17 @@ table td:first-child {
 | Parameter | Description |
 |-----------|-------------|
 |`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
-|`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).|
+|`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>You cannot set a password for the `root` user. For secure clusters, the `root` user must authenticate with a client certificate and key.|
 
 ## User Authentication
 
 Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
 
 - [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-- [Password authentication](#secure-clusters-with-passwords), which is available only to users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. <br/><br/>You can use this password to authenticate users without supplying their client certificate and key; however, we recommend instead using client certificate and key authentication whenever possible. <br/><br/>To add a password to an existing user, use the [`cockroach user` command](create-and-manage-users.html#update-a-users-password).
+
+- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`cockroach user`](create-and-manage-users.html#update-a-users-password) command.
+
+    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
 {{site.data.alerts.callout_info}}Insecure clusters do not support user authentication, but you can still create passwords for users (besides <code>root</code>) through the <code>WITH PASSWORD</code> clause.{{site.data.alerts.end}}
 
