@@ -459,6 +459,8 @@ func main() {
 					unlink: []string{"table_name", "index_name"},
 				},
 				{name: "rename_table", stmt: "alter_rename_table_stmt", match: []*regexp.Regexp{regexp.MustCompile("'ALTER' 'TABLE' .* 'RENAME' 'TO'")}, replace: map[string]string{"relation_expr": "current_name", "qualified_name": "new_name"}, unlink: []string{"current_name"}, relink: map[string]string{"new_name": "name"}},
+				{name: "reset_session_stmt"},
+				{name: "reset_csetting_stmt"},
 				{
 					name:    "restore",
 					stmt:    "restore_stmt",
@@ -523,10 +525,12 @@ func main() {
 				},
 				{
 					name:   "set_cluster_setting",
-					stmt:   "set_stmt",
-					inline: []string{"set_csetting_stmt", "generic_set", "var_list"},
-					match: []*regexp.Regexp{
-						regexp.MustCompile("'SET' 'CLUSTER'"),
+					stmt:   "set_csetting_stmt",
+					inline: []string{"var_value", "ctext_expr"},
+					replace: map[string]string{
+						"a_expr": "var_value",
+						"| 'SET' 'CLUSTER' 'SETTING' var_name '=' 'ON'": "",
+						"| 'SET' 'CLUSTER' 'SETTING' var_name 'TO' 'ON'": "",
 					},
 				},
 				{
