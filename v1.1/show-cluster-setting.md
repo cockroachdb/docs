@@ -25,9 +25,7 @@ No [privileges](privileges.html) are required to display the cluster settings.
 
 | Parameter | Description |
 |-----------|-------------|
-| `any_name` | See the description of [cluster settings](cluster-settings.html). |
-
-The variable name is case-insensitive.
+| `any_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). |
 
 ## Examples
 
@@ -77,7 +75,8 @@ The variable name is case-insensitive.
 
 ## See Also
 
-- [`SET CLUSTER SETTING`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
 - [Cluster settings](cluster-settings.html)
 - [`SHOW` (session variable)](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
