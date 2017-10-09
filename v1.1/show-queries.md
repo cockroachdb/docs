@@ -24,7 +24,7 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}</section>
 
 - To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.
 - To list the active queries just on the local node, use `SHOW LOCAL QUERIES`.
@@ -41,7 +41,7 @@ Field | Description
 `start` | The timestamp at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any.
+`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](use-the-built-in-sql-client.html), this will be `cockroach`.
 `distributed` | If `true`, the query is being executed by the Distributed SQL (DistSQL) engine. If `false`, the query is being executed by the standard "local" SQL engine. If `NULL`, the query is being prepared and it's not yet known which execution engine will be used.
 `phase` | The phase of the query's execution. If `preparing`, the statement is being parsed and planned. If `executing`, the statement is being executed.
 
@@ -49,6 +49,7 @@ Field | Description
 
 ### List Queries Across the Cluster
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER QUERIES;
 ~~~
@@ -60,7 +61,7 @@ Field | Description
 | 14db657443230c3e0000000000000001 |       1 | root     | 2017-08-16 18:00:50.675151+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
 | 14db657443b68c7d0000000000000001 |       1 | root     | 2017-08-16 18:00:50.684818+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
 | 14db65744382c2340000000000000001 |       1 | root     | 2017-08-16 18:00:50.681431+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
-| 14db657443c9dc660000000000000001 |       1 | root     | 2017-08-16 18:00:50.686083+00:00 | SHOW CLUSTER QUERIES                      | 192.168.12.56:54108 |                  | NULL        | preparing |
+| 14db657443c9dc660000000000000001 |       1 | root     | 2017-08-16 18:00:50.686083+00:00 | SHOW CLUSTER QUERIES                      | 192.168.12.56:54108 | cockroach        | NULL        | preparing |
 | 14db657443e30a850000000000000003 |       3 | root     | 2017-08-16 18:00:50.68774+00:00  | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54118 | test_app         | false       | executing |
 | 14db6574439f477d0000000000000003 |       3 | root     | 2017-08-16 18:00:50.6833+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54122 | test_app         | false       | executing |
 | 14db6574435817d20000000000000002 |       2 | root     | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
@@ -74,6 +75,7 @@ Alternatively, you can use `SHOW QUERIES` to receive the same response.
 
 ### List Queries on the Local Node
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL QUERIES;
 ~~~
@@ -85,7 +87,7 @@ Alternatively, you can use `SHOW QUERIES` to receive the same response.
 | 14db657cd9005cb90000000000000001 |       1 | root     | 2017-08-16 18:01:27.5492+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
 | 14db657cd8d7d9a50000000000000001 |       1 | root     | 2017-08-16 18:01:27.546538+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
 | 14db657cd8e966c40000000000000001 |       1 | root     | 2017-08-16 18:01:27.547696+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
-| 14db657cd92ad8f80000000000000001 |       1 | root     | 2017-08-16 18:01:27.551986+00:00 | SHOW LOCAL QUERIES                        | 192.168.12.56:54122 |                  | NULL        | preparing |
+| 14db657cd92ad8f80000000000000001 |       1 | root     | 2017-08-16 18:01:27.551986+00:00 | SHOW LOCAL QUERIES                        | 192.168.12.56:54122 | cockroach        | NULL        | preparing |
 +----------------------------------+---------+----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
 (4 rows)
 ~~~
@@ -96,6 +98,7 @@ You can use a [`SELECT`](select.html) statement to filter the list of active que
 
 #### Show all queries on node 2
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE node_id = 2;
@@ -114,6 +117,7 @@ You can use a [`SELECT`](select.html) statement to filter the list of active que
 
 #### Show all queries that have been running for more than 3 hours
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE start < (now() - INTERVAL '3 hours');
@@ -129,6 +133,7 @@ You can use a [`SELECT`](select.html) statement to filter the list of active que
 
 #### Show all queries from a specific address and user
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE client_address = '192.168.0.72:56194'
@@ -143,12 +148,39 @@ You can use a [`SELECT`](select.html) statement to filter the list of active que
 +----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
 ~~~
 
+#### Exclude queries from the built-in SQL client
+
+To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.html), filter for queries that do not show `cockroach` as the `application_name`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW CLUSTER QUERIES]
+      WHERE application_name != 'cockroach';
+~~~
+
+~~~
++----------------------------------+---------+----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
+|             query_id             | node_id | username |              start               |                   query                   |   client_address    | application_name | distributed |   phase   |
++----------------------------------+---------+----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
+| 14db657443230c3e0000000000000001 |       1 | root     | 2017-08-16 18:00:50.675151+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
+| 14db657443b68c7d0000000000000001 |       1 | root     | 2017-08-16 18:00:50.684818+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
+| 14db65744382c2340000000000000001 |       1 | root     | 2017-08-16 18:00:50.681431+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
+| 14db657443e30a850000000000000003 |       3 | root     | 2017-08-16 18:00:50.68774+00:00  | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54118 | test_app         | false       | executing |
+| 14db6574439f477d0000000000000003 |       3 | root     | 2017-08-16 18:00:50.6833+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54122 | test_app         | false       | executing |
+| 14db6574435817d20000000000000002 |       2 | root     | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
+| 14db6574433c621f0000000000000002 |       2 | root     | 2017-08-16 18:00:50.676813+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54124 | test_app         | false       | executing |
+| 14db6574436f71d50000000000000002 |       2 | root     | 2017-08-16 18:00:50.680165+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54117 | test_app         | false       | executing |
++----------------------------------+---------+----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
+(8 rows)
+~~~
+
 ### Cancel a Query
 
 When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to kill it.
 
 For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have been running for more than 3 hours:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
       WHERE start < (now() - INTERVAL '3 hours');
@@ -164,6 +196,7 @@ For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have 
 
 To cancel this long-running query, and stop it from consuming resources, you note the `query_id` and use it with the `CANCEL QUERY` statement:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
