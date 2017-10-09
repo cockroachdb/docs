@@ -17,14 +17,14 @@ The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) i
 Term | Definition
 -----|-----------
 **Import file** | The tabular data file you want to import.
-**Processing node** | The single node processing the `IMPORT` statement/
+**Processing node** | The single node processing the [`IMPORT`](import.html) statement/
 **Temp directory** | A location where the processing node can store data from the import file it converts to CockroachDB-compatible key-value data.<br/><br/>This directory *must* be available to all nodes using the same address (i.e., cannot use the processing node's local file storage).
 
 ## Functional Overview
 
 Because importing data is a complex task, it can be useful to have a high-level understanding of the process.
 
-1. A single node receives the `IMPORT` request, which becomes the processing node.
+1. A single node receives the [`IMPORT`](import.html) request, which becomes the processing node.
 2. The processing node streams the contents of the import file, converting its contents into CockroachDB-compatible key-value data.
 3. As the key-value data is generated, the node stores it in the temp directory.
 4. Once the entire import file has been converted to key-value data, relevant nodes import key-value data from the temp directory.
@@ -33,7 +33,7 @@ After the import has completed, you should also delete the files from your temp 
 
 ## Preparation
 
-Before using `IMPORT`, you should have:
+Before using [`IMPORT`](import.html), you should have:
 
 - The schema of the table you want to import.
 - The tabular data you want to import (e.g., CSV), preferably hosted on cloud storage.
@@ -45,13 +45,13 @@ Before using `IMPORT`, you should have:
 
 ### Import Targets
 
-Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
+Imported tables must not exist and must be created in the [`IMPORT`](import.html) statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
 
 You can only import a single table at a time.
 
 ### Create Table
 
-Your `IMPORT` statement must include a `CREATE TABLE` statement (representing the schema of the data you want to import) using one of the following methods:
+Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (representing the schema of the data you want to import) using one of the following methods:
 
 - A reference to a file that contains a `CREATE TABLE` statement
 - An inline `CREATE TABLE` statement
@@ -60,18 +60,18 @@ We also recommend [all secondary indexes you want to use in the `CREATE TABLE` s
 
 ### Object Dependencies
 
-When importing tables, you must be mindful of the following rules because `IMPORT` only creates single tables which must not already exist:
+When importing tables, you must be mindful of the following rules because [`IMPORT`](import.html) only creates single tables which must not already exist:
 
 - Objects that the imported table depends on must already exist
 - Objects that depend on the imported table can only be created after the import completes
 
 ### Operational Requirements & Concerns
 
-Because `IMPORT` has a number of moving parts, there are a number of operational concerns in executing the statement, the most important of which is ensuring that the processing node can execute `IMPORT` successfully.
+Because [`IMPORT`](import.html) has a number of moving parts, there are a number of operational concerns in executing the statement, the most important of which is ensuring that the processing node can execute [`IMPORT`](import.html) successfully.
 
 #### Choose Node to Process Request
 
-Because of `IMPORT`'s current implementation, the entire task is executed on a single node. If your deployment is not entirely symmetric, sending the request to a random node might have undesirable effects. Instead, we recommend bypassing any load balancers, connecting to a machine directly, and running the `IMPORT` statement on it.
+Because of [`IMPORT`](import.html)'s current implementation, the entire task is executed on a single node. If your deployment is not entirely symmetric, sending the request to a random node might have undesirable effects. Instead, we recommend bypassing any load balancers, connecting to a machine directly, and running the [`IMPORT`](import.html) statement on it.
 
 It's important to note, though, that after the single machine creates the CockroachDB-compatible key-value data, the process of importing the data is distributed among nodes in the cluster.
 
@@ -83,7 +83,7 @@ The node's first-listed/default [`store`](start-a-node.html#store) directory mus
 
 On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the size of the file you're importing.
 
-For example, if you're importing approximately 10GiB of data, the node that ends up running the `IMPORT` command must have at least 10GiB of available storage in its `store` directory.
+For example, if you're importing approximately 10GiB of data, the node that ends up running the [`IMPORT`](import.html) command must have at least 10GiB of available storage in its `store` directory.
 
 ### Import File Location
 
@@ -103,13 +103,13 @@ Because CockroachDB is designed as a distributed system, the ergonomics of local
 
     For example, if you want to import 10GiB of data, your node needs 20GiB of available storage.
 2. Upload the tabular data file to a single node, and then connect to that node.
-3. Execute the `IMPORT` statement, importing to the locally stored file with the `nodelocal` prefix, e.g. `nodelocal://backup.csv`.
+3. Execute the [`IMPORT`](import.html) statement, importing to the locally stored file with the `nodelocal` prefix, e.g. `nodelocal://backup.csv`.
 
     However, the "temp" directory you choose must use a location available to all nodes in the cluster (i.e., you cannot use local file storage). You will need to use either cloud storage, a custom HTTP server, or NFS connected to all nodes in the cluster.
 
 ### Temp Directory
 
-To distribute the data you want to import to all nodes in your cluster, the `IMPORT` process requires the CockroachDB-compatible key-value data be stored in a location that is accessible to all nodes in the cluster using the same address. To achieve this you can use:
+To distribute the data you want to import to all nodes in your cluster, the [`IMPORT`](import.html) process requires the CockroachDB-compatible key-value data be stored in a location that is accessible to all nodes in the cluster using the same address. To achieve this you can use:
 
 - Cloud storage, such as Amazon S3 or Google Cloud Platform
 - Network file storage mounted to every node
@@ -121,7 +121,7 @@ The temp directory must have at least as much storage space as the size of the d
 
 #### Temp Directory Cleanup
 
-After completing the `IMPORT` process, you must manually remove the key-value data stored in the temp directory.
+After completing the [`IMPORT`](import.html) process, you must manually remove the key-value data stored in the temp directory.
 
 ### Table Users and Privileges
 
@@ -129,7 +129,7 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 
 ## Performance
 
-Currently, `IMPORT` uses a single node to convert your tabular data into key-value data, which means the node's CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
+Currently, [`IMPORT`](import.html) uses a single node to convert your tabular data into key-value data, which means the node's CPU and RAM will be partially consumed by the [`IMPORT`](import.html) task in addition to serving normal traffic.
 
 Later steps of the import process distribute work among many nodes and have less impact on the nodes' resources.
 
@@ -139,7 +139,7 @@ Later steps of the import process distribute work among many nodes and have less
 
 ## Required Privileges
 
-Only the `root` user can run `IMPORT`.
+Only the `root` user can run [`IMPORT`](import.html).
 
 ## Parameters
 
@@ -183,7 +183,7 @@ URLs for the file you want to import and your temp directory must use the follow
 
 ### Import Options
 
-You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `kv_option`.
+You can control the [`IMPORT`](import.html) process's behavior using any of the following key-value pairs as a `kv_option`.
 
 #### `temp`
 
