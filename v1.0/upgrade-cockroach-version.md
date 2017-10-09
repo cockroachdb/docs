@@ -7,7 +7,7 @@ toc_not_nested: true
 
 Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
 
-This page shows you how to upgrade a cluster from v1.0 to a patch release in the 1.0.x series. To upgrade from v1.0.x to v1.1, see [the 1.1 version of this page](../v1.1/upgrade-cockroach-version.html).
+{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0 to a patch release in the 1.0.x series. To upgrade from v1.0.x to v1.1, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the 1.1 version of this page</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -19,9 +19,10 @@ Before starting the upgrade, complete the following steps.
 
 2. Verify the cluster's overall health by running the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 
-    In the response, if any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
-
-    Also make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.Run the [`cockroach node status`](view-node-details.html) command with the `--decommission` flag against any node in the cluster.
+    In the response:
+    - If any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
+    - Make sure the `build` field shows the same version of CockroachDB for all nodes. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
+    - Make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.
 
 3. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
@@ -37,47 +38,7 @@ For each node in your cluster, complete the following steps.
 
 1. Connect to the node.
 
-2. Download and install the CockroachDB binary you want to use:
-    - **Mac**:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Optional: Place cockroach in your $PATH
-        $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-    - **Linux**:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Get the CockroachDB tarball:
-        $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Extract the binary:
-        $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
-        ~~~
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        # Optional: Place cockroach in your $PATH
-        $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-
-3. Stop the `cockroach` process.
+2. Stop the `cockroach` process.
 
     Without a process manager, use this command:
 
@@ -95,31 +56,73 @@ For each node in your cluster, complete the following steps.
 
     Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
 
+3. Download and install the CockroachDB binary you want to use:
+
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Get the CockroachDB tarball:
+    $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Extract the binary:
+    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Get the CockroachDB tarball:
+    $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Extract the binary:
+    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    ~~~
+    </div>
+
 4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
-    - **Mac**:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ i="$(which cockroach)"; mv "$i" "$i"_old
-        ~~~
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
-    - **Linux**:
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    ~~~
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ i="$(which cockroach)"; mv "$i" "$i"_old
-        ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
+    ~~~
+    </div>
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-        ~~~
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+    ~~~
+    </div>
 
 5. If you're running with a process manager, have the node rejoin the cluster by starting it.
 
@@ -139,6 +142,8 @@ For each node in your cluster, complete the following steps.
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~
+
+    If you leave versioned binaries on your servers, you don't need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
