@@ -18,7 +18,7 @@ You can execute batches of `INSERT` statements stored in `.sql` files (including
 $ cockroach sql --database=[database name] < statements.sql
 ~~~
 
-{{site.data.alerts.callout_success}}Grouping each <code>INSERT</code> statement to include approximately 500 rows will provide the best performance.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}Grouping each <code>INSERT</code> statement to include approximately 500-10,000 rows will provide the best performance. The number of rows depends on row size, column families, number of indexes; smaller rows and less complex schemas can benefit from larger groups of <code>INSERTS</code>, while larger rows and more complex schemas benefit from smaller groups.{{site.data.alerts.end}}
 
 ## Import from PostgreSQL Dump
 
@@ -67,46 +67,11 @@ For reference, CockroachDB uses these defaults:
 - `[port]`: **26257**
 - `[user]`: **root**
 
-## Import from CSV
+## Import from Tabular Data (CSV)
 
-You can import numeric data stored in `.csv` files by executing a bash script that reads values from the files and uses them in `INSERT` statements.
+If you have data exported in a tabular format (e.g., CSV or TSV), you can use the [`IMPORT`](import.html) statement.
 
-{{site.data.alerts.callout_danger}}To import non-numerical data, convert the <code>.csv</code> file to a <code>.sql</code> file (you can find free conversion software online), and then import the <code>.sql</code> file.{{site.data.alerts.end}}
-
-### Template
-
-This template reads 3 columns of numerical data, and converts them into `INSERT` statements, but you can easily adapt the variables (`a`, `b`, `c`) to any number of columns.
-
-~~~ sql
-> \| IFS=","; while read a b c; do echo "INSERT INTO csv VALUES ($a, $b, $c);"; done < test.csv;
-~~~
-
-### Example
-
-In this SQL shell example, use `\!` to look at the rows in a CSV file before creating a table and then using `\|` to insert those rows into the table.
-
-~~~ sql
-> \! cat test.csv
-~~~
-~~~
-12, 13, 14
-10, 20, 30
-~~~
-~~~ sql
-> CREATE TABLE csv (x INT, y INT, z INT);
-
-> \| IFS=","; while read a b c; do echo "INSERT INTO csv VALUES ($a, $b, $c);"; done < test.csv;
-
-> SELECT * FROM csv;
-~~~
-~~~
-+----+----+----+
-| x  | y  | z  |
-+----+----+----+
-| 12 | 13 | 14 |
-| 10 | 20 | 30 |
-+----+----+----+
-~~~
+To use this statement, though, you must also have some kind of remote file server (such as Amazon S3 or a custom file server) that all your nodes can access.
 
 ## See Also
 
