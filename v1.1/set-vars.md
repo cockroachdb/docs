@@ -1,6 +1,6 @@
 ---
-title: SET (session setting)
-summary: The SET statement modifies the current settings for the client session.
+title: SET (session variable)
+summary: The SET statement modifies the current configuration variables for the client session.
 toc: false
 redirect_from:
 - set-application-name.html
@@ -8,8 +8,7 @@ redirect_from:
 - set-time-zone.html
 ---
 
-The `SET` [statement](sql-statements.html) can modify one of the
-session setting variables. These can also be queried via [`SHOW`](show-vars.html).
+The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html).
 
 {{site.data.alerts.callout_danger}}In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="build-an-app-with-cockroachdb.html">Build an App with CockroachDB</a> tutorials.{{site.data.alerts.end}}
 
@@ -113,7 +112,7 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-### Reset a Setting to Its Default Value
+### Reset a Variable to Its Default Value
 
 {{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 

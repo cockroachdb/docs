@@ -1,6 +1,6 @@
 ---
-title: RESET (session setting)
-summary: The SET statement resets a session variable to its default value for the client session.
+title: RESET (session variable)
+summary: The SET statement resets a session variable to its default value.
 toc: false
 ---
 
@@ -24,7 +24,7 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 ## Example
 
-{{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-setting-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
 ~~~ sql
 > SET default_transaction_isolation = SNAPSHOT;
