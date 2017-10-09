@@ -85,7 +85,8 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`SET`](set-vars.html) | Set the current session parameters.
+[`RESET`](reset-vars.html) | Reset a session variable to its default value.
+[`SET`](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
 
@@ -94,8 +95,9 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
-[`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) | Set a cluster-wide setting.
-[`SHOW ALL CLUSTER SETTINGS`](cluster-settings.html#view-current-cluster-settings) | List the current cluster-wide settings.
+[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | Reset a cluster setting to its default value.
+[`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
+[`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 

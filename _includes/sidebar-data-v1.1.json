@@ -373,6 +373,18 @@
             ]
           },
           {
+            "title": "<code>RESET</code> &lt;session variable&gt;",
+            "urls": [
+              "/${VERSION}/reset-vars.html"
+            ]
+          },
+          {
+            "title": "<code>RESET CLUSTER SETTING</code>",
+            "urls": [
+              "/${VERSION}/reset-cluster-setting.html"
+            ]
+          },
+          {
             "title": "<code>RESTORE</code> (Enterprise)",
             "urls": [
               "/${VERSION}/restore.html"
@@ -421,7 +433,7 @@
             ]
           },
           {
-            "title": "<code>SHOW</code> &lt;session variable&gt;",
+            "title": "<code>SHOW</code> &lt;session variables&gt;",
             "urls": [
               "/${VERSION}/show-vars.html"
             ]
