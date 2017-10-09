@@ -1,6 +1,6 @@
 ---
-title: RESET (session setting)
-summary: The SET statement resets a session variable to its default value for the client session.
+title: RESET (session variable)
+summary: The SET statement resets a session variable to its default value.
 toc: false
 ---
 
