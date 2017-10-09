@@ -40,7 +40,7 @@ Flag | Description
 `--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
-`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions<br><br>The `display_format` [SQL shell option](#sql-shell-options-changed-in-v1-1) can also be used to change the format within an interactive session.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
@@ -97,6 +97,7 @@ To see current settings, use `\set` without any options. To enable or disable a 
 
 Client Options | Description
 ---------------|------------
+`display_format` | <span class="version-tag">New in v1.1:</span> How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>This option is set to whatever value was passed to the `--format` flag when the shell was started. If the `--format` flag was not used, this option defaults to `pretty`.<br><br>To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
 `echo` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `errexit` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set errexti`.
 `check_syntax` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
@@ -368,6 +369,61 @@ $ cat out.txt
 | 🐥    | 🐢     |
 +-------+--------+
 (1 row)
+~~~
+
+### Make the output of `SHOW` statements selectable
+
+To make it possible to select from the output of `SHOW` statements, set `--format` to `raw`:
+
+~~~ shell
+$ cockroach sql --insecure \
+--format=raw \
+--user=maxroach \
+--host=12.345.67.89 \
+--port=26257 \
+--database=critterdb
+~~~
+
+~~~ sql
+> SHOW CREATE TABLE customers;
+~~~
+
+~~~
+# 2 columns
+# row 1
+## 14
+test.customers
+## 185
+CREATE TABLE customers (
+	id INT NOT NULL,
+	email STRING NULL,
+	CONSTRAINT "primary" PRIMARY KEY (id ASC),
+	UNIQUE INDEX customers_email_key (email ASC),
+	FAMILY "primary" (id, email)
+)
+# 1 row
+~~~
+
+When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#sql-shell-options-changed-in-v1-1) to change the output format within the interactive session:
+
+~~~ sql
+> \set display_format raw
+~~~
+
+~~~
+# 2 columns
+# row 1
+## 14
+test.customers
+## 185
+CREATE TABLE customers (
+  id INT NOT NULL,
+  email STRING NULL,
+  CONSTRAINT "primary" PRIMARY KEY (id ASC),
+  UNIQUE INDEX customers_email_key (email ASC),
+  FAMILY "primary" (id, email)
+)
+# 1 row
 ~~~
 
 ### Execute SQL statements from a file
