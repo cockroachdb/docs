@@ -10,23 +10,23 @@ The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-w
 
 <div id="toc"></div>
 
+## Required Privileges
+
+Only the `root` user can modify cluster settings.
+
 ## Synopsis
 
 {% include sql/{{ page.version.version }}/diagrams/set_cluster_setting.html %}
 
 {{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="set-vars.html"><code>SET (session variable)</code></a> statements.{{site.data.alerts.end}}
 
-## Required Privileges
-
-Only the `root` user can modify cluster settings.
-
 ## Parameters
 
 | Parameter | Description |
 |-----------|-------------|
-| `var_name` | See the description of [cluster settings](cluster-settings.html). |
-
-The variable name is case-insensitive.
+| `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). |
+| `var_value` | The value for the [cluster setting](cluster-settings.html). |
+| `DEFAULT` | Reset the [cluster setting](cluster-settings.html) to its default value.<br><br>The [`RESET CLUSTER SETTING`](reset-cluster-setting.html) resets a cluster setting as well. |
 
 ## Examples
 
@@ -55,13 +55,50 @@ data to Cockroach Labs using the following:
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
 
-
 ~~~
 +-------------------------------+
 | diagnostics.reporting.enabled |
 +-------------------------------+
 | false                         |
 +-------------------------------+
+(1 row)
+~~~
+
+### Reset a Setting to Its Default Value
+
+{{site.data.alerts.callout_success}}You can use <a href="reset-cluster-setting.html"><code>RESET CLUSTER SETTING</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
+
+~~~ sql
+> SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
+~~~
+
+~~~ sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+~~~
+
+~~~
++---------------------------------------+
+| sql.metrics.statement_details.enabled |
++---------------------------------------+
+| false                                 |
++---------------------------------------+
+(1 row)
+~~~
+
+~~~ sql
+> SET CLUSTER SETTING sql.metrics.statement_details.enabled = DEFAULT;
+~~~
+
+~~~ sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+~~~
+
+~~~
++---------------------------------------+
+| sql.metrics.statement_details.enabled |
++---------------------------------------+
+| true                                  |
++---------------------------------------+
 (1 row)
 ~~~
 
