@@ -1,5 +1,5 @@
 ---
-title: SET (session settings)
+title: SET (session setting)
 summary: The SET statement modifies the current settings for the client session.
 toc: false
 redirect_from:
@@ -113,6 +113,44 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
+### Reset a Setting to Its Default Value
+
+{{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
+
+~~~ sql
+> SET default_transaction_isolation = SNAPSHOT;
+~~~
+
+~~~ sql
+> SHOW default_transaction_isolation;
+~~~
+
+~~~
++-------------------------------+
+| default_transaction_isolation |
++-------------------------------+
+| SNAPSHOT                      |
++-------------------------------+
+(1 row)
+~~~
+
+~~~ sql
+> SET default_transaction_isolation = DEFAULT;
+~~~
+
+~~~ sql
+> SHOW default_transaction_isolation;
+~~~
+
+~~~
++-------------------------------+
+| default_transaction_isolation |
++-------------------------------+
+| SERIALIZABLE                  |
++-------------------------------+
+(1 row)
+~~~
+
 ## `SET TIME ZONE`
 
 {{site.data.alerts.callout_danger}}As a best practice, we recommend not using this setting and avoid setting a session time for your database. We instead recommend converting UTC values to the appropriate time zone on the client side.{{site.data.alerts.end}}
@@ -161,6 +199,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 
 ## See Also
 
+- [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW` (session variable)](show-vars.html)
