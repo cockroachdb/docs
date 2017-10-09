@@ -20,6 +20,7 @@ Keywords make up SQL's vocabulary and can have specific meaning in statements. E
 Reserved keywords have fixed meanings and are not typically allowed as identifiers. All other types of keywords are considered non-reserved; they have special meanings in certain contexts and can be used as identifiers in other contexts.
 
 ### Keyword Uses
+
 Most users asking about keywords want to know more about them in terms of:
 
 - __Names of objects__, covered on this page in [Identifiers](#identifiers)
@@ -36,7 +37,7 @@ In our [SQL grammar](sql-grammar.html), all values that accept an `identifier` m
 - Begin with a Unicode letter or an underscore (_). Subsequent characters can be letters, underscores, digits (0-9), or dollar signs ($).
 - Not equal any [SQL keyword](#keywords) unless the keyword is accepted by the element's syntax. For example, [`name`](sql-grammar.html#name) accepts Unreserved or Column Name keywords.
 
-To bypass either of these rules, simply surround the identifier with double-quotes (&quot;). However, all references to it must also include double-quotes.
+To bypass either of these rules, simply surround the identifier with double-quotes (&quot;). You can also use double-quotes to preserve case-sensitivity in database, table, view, and column names. However, all references to such identifiers must also include double-quotes.
 
 {{site.data.alerts.callout_info}}Some statements have additional requirements for identifiers. For example, each table in a database must have a unique name. These requirements are documented on <a href="sql-statements.html">each statement's page</a>.{{site.data.alerts.end}}
 
