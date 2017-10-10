@@ -1153,6 +1153,47 @@
     ]
   },
   {
+    "title": "Architecture",
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/architecture/overview.html"
+        ]
+      },
+      {
+        "title": "SQL Layer",
+        "urls": [
+          "/${VERSION}/architecture/sql-layer.html"
+        ]
+      },
+      {
+        "title": "Transaction Layer",
+        "urls": [
+          "/${VERSION}/architecture/transaction-layer.html"
+        ]
+      },
+      {
+        "title": "Distribution Layer",
+        "urls": [
+          "/${VERSION}/architecture/distribution-layer.html"
+        ]
+      },
+      {
+        "title": "Replication Layer",
+        "urls": [
+          "/${VERSION}/architecture/transaction-layer.html"
+        ]
+      },
+      {
+        "title": "Storage Layer",
+        "urls": [
+          "/${VERSION}/architecture/storage-layer.html"
+        ]
+      }
+    ]
+  },
+  {
     "title": "Contribute",
     "items": [
       {
