@@ -1,6 +1,6 @@
 ---
 title: Create a File Server for Imports and Backups
-summary: Learn how to create a simple file server for using with CockroachDB IMPORT and BACKUP
+summary: Learn how to create a simple file server for use with CockroachDB IMPORT and BACKUP
 toc: false
 ---
 
@@ -15,7 +15,7 @@ This is especially useful for:
 
 ## HTTP Export Storage API
 
-CockroachDB tasks that require reading or write of external files (such as [`IMPORT`](import.html) and [`BACKUP`](backup.html)) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
+CockroachDB tasks that require reading or writing external files (such as [`IMPORT`](import.html) and [`BACKUP`](backup.html)) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
