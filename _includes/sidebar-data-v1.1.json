@@ -983,6 +983,11 @@
           "/${VERSION}/rotate-certificates.html"
         ]
       },
+       "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
+        "urls": [
+          "/${VERSION}/create-a-file-server.html"
+        ]
+      },
       {
         "title": "Generate CockroachDB Resources",
         "urls": [
