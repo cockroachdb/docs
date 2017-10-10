@@ -4,11 +4,11 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: false
 ---
 
-By default, the Admin UI and each node of a CockroachDB cluster shares anonymous usage details with Cockroach Labs. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, the Admin UI and each node of a CockroachDB cluster share anonymous usage details with Cockroach Labs. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page explains the details that get shared and how to opt out of sharing.
 
-{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="admin-ui-overview">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For insights into your cluster's performance and health, use the built-in <a href="admin-ui-overview.html">Admin UI</a> or a third-party monitoring tool like <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -202,11 +202,11 @@ This JSON example shows an excerpt of what query statistics look like when sent 
 
 ### Admin UI Details
 
-CockroachDB uses the Identify and Page methods of [Segment](https://segment.com/)'s analytics.js library to collect anonymized data about the Admin UI usage. The following Admin UI metrics are shared:
+CockroachDB uses the Identity and Page methods of [Segment](https://segment.com/)'s analytics.js library to collect anonymized data about Admin UI usage.
 
 #### Identity event
 
-Admin UI shares the following anonymized information once per Admin UI session:
+The Admin UI shares the following anonymized information once per Admin UI session:
 
 Detail | Description
 -------|------------
@@ -217,7 +217,7 @@ Version | The CockroachDB cluster version.
 
 #### Page events
 
-Admin UI shares the following anonymized information about page views in batches of 20 page views:
+The Admin UI shares the following anonymized information about page views in batches of 20 page views:
 
 Detail | Description
 -------|------------

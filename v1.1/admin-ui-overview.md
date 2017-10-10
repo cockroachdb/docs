@@ -1,20 +1,21 @@
 ---
 title: Overview
+summary: Use the Admin UI to monitor and optimize cluster performance.
 toc: false
 ---
 
-The CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance by monitoring: 
+The CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance by monitoring the following areas:
 
 Area | Description
 --------|----
-[Cluster Health](admin-ui-access-and-navigate.html#summary-panel) | View essential metrics about the cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster. 
-[Overview Metrics](admin-ui-overview-dashboard.html) | View important SQL performance, replication, and storage metrics.  
-[Runtime Metrics](admin-ui-runtime-dashboard.html) | View metrics such as the Node Count, CPU Time, and Memory Usage.
-[SQL Performance](admin-ui-sql-dashboard.html) | View metrics such as SQL Connections, SQL Byte Traffic, SQL Queries, Transactions, and Service Latency.
-[Storage Utilization](admin-ui-storage-dashboard.html) | View metrics such as Capacity and File Descriptors.
-[Replication Details](admin-ui-replication-dashboard.html) | View metrics about how data is replicated across the cluster, such as Range Quiescence, Replicas per Store, and Replicas.
+[Cluster Health](admin-ui-access-and-navigate.html#summary-panel) | View essential metrics about the cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
+[Overview Metrics](admin-ui-overview-dashboard.html) | View important SQL performance, replication, and storage metrics.
+[Runtime Metrics](admin-ui-runtime-dashboard.html) | View metrics about node count, CPU time, and memory usage.
+[SQL Performance](admin-ui-sql-dashboard.html) | View metrics about SQL connections, byte traffic, queries, transactions, and service latency.
+[Storage Utilization](admin-ui-storage-dashboard.html) | View metrics about storage capacity and file descriptors.
+[Replication Details](admin-ui-replication-dashboard.html) | View metrics about how data is replicated across the cluster, such as range status, replicas per store, and replica quiescence.
 [Nodes Details](admin-ui-access-and-navigate.html#summary-panel) | View details of live, dead, and decommissioned nodes.
-[Events](admin-ui-access-and-navigate.html#events-list) | View list of cluster events.
+[Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Jobs Details](admin-ui-jobs-page.html) | View details of the jobs running in the cluster.
 
