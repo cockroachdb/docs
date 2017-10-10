@@ -1239,12 +1239,6 @@
         ]
       },
       {
-        "title": "CockroachDB Architecture",
-        "urls": [
-          "/${VERSION}/cockroachdb-architecture.html"
-        ]
-      },
-      {
         "title": "CockroachDB Features",
         "items": [
           {
