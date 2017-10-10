@@ -954,11 +954,65 @@
     "title": "Manage",
     "items": [
       {
-        "title": "Explore the Admin UI",
-        "urls": [
-          "/${VERSION}/explore-the-admin-ui.html"
+        "title": "Monitor CockroachDB with the Admin UI",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/admin-ui-overview.html"
+            ]
+          },
+          {
+            "title": "Access and Navigate the Admin UI",
+            "urls": [
+              "/${VERSION}/admin-ui-access-and-navigate.html"
+            ]
+          },
+          {
+            "title": "Overview Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-overview-dashboard.html"
+            ]
+          },
+          {
+            "title": "Runtime Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-runtime-dashboard.html"
+            ]
+          },
+          {
+            "title": "SQL Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-sql-dashboard.html"
+            ]
+          },
+          {
+            "title": "Storage Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-storage-dashboard.html"
+            ]
+          },
+          {
+            "title": "Replication Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-replication-dashboard.html"
+            ]
+          },
+          {
+            "title": "Databases Page",
+            "urls": [
+              "/${VERSION}/admin-ui-databases-page.html"
+            ]
+          },
+          {
+            "title": "Jobs Page",
+            "urls": [
+              "/${VERSION}/admin-ui-jobs-page.html"
+            ]
+          },
         ]
       },
+      
       {
         "title": "Monitor CockroachDB with Prometheus",
         "urls": [
