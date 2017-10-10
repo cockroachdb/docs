@@ -9,8 +9,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cockroachdb/cockroach/pkg/sql/parser"
+	"github.com/golang-commonmark/markdown"
 	"github.com/spf13/cobra"
+
+	"github.com/cockroachdb/cockroach/pkg/sql/parser"
 )
 
 func init() {
@@ -74,7 +76,8 @@ func GenerateOperators() []byte {
 	ops := make(map[string]operations)
 	for optyp, overloads := range parser.UnaryOps {
 		op := optyp.String()
-		for _, v := range overloads {
+		for _, untyped := range overloads {
+			v := untyped.(parser.UnaryOp)
 			ops[op] = append(ops[op], operation{
 				left: v.Typ.String(),
 				ret:  v.ReturnType.String(),
@@ -84,7 +87,8 @@ func GenerateOperators() []byte {
 	}
 	for optyp, overloads := range parser.BinOps {
 		op := optyp.String()
-		for _, v := range overloads {
+		for _, untyped := range overloads {
+			v := untyped.(parser.BinOp)
 			left := v.LeftType.String()
 			right := v.RightType.String()
 			ops[op] = append(ops[op], operation{
@@ -97,7 +101,8 @@ func GenerateOperators() []byte {
 	}
 	for optyp, overloads := range parser.CmpOps {
 		op := optyp.String()
-		for _, v := range overloads {
+		for _, untyped := range overloads {
+			v := untyped.(parser.CmpOp)
 			left := v.LeftType.String()
 			right := v.RightType.String()
 			ops[op] = append(ops[op], operation{
@@ -134,6 +139,7 @@ const notUsableInfo = "Not usable; exposed only for compatibility with PostgreSQ
 func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte {
 	functions := make(map[string][]string)
 	seen := make(map[string]struct{})
+	md := markdown.New(markdown.XHTMLOutput(true), markdown.Nofollow(true))
 	for name, fns := range from {
 		// NB: funcs can appear more than once i.e. upper/lowercase varients for
 		// faster lookups, so normalize to lowercase and de-dupe using a set.
@@ -160,9 +166,14 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 			}
 			extra := ""
 			if fn.Info != "" {
-				extra = fmt.Sprintf("<span class=\"funcdesc\">%s</span>", fn.Info)
+				// Render the info field to HTML upfront, because Markdown
+				// won't do it automatically in a table context.
+				// Boo Markdown, bad Markdown.
+				// TODO(knz): Do not use Markdown.
+				info := md.RenderToString([]byte(fn.Info))
+				extra = fmt.Sprintf("<span class=\"funcdesc\">%s</span>", info)
 			}
-			s := fmt.Sprintf("<code>%s(%s) &rarr; %s</code> | %s", name, linkArguments(args), linkArguments(ret), extra)
+			s := fmt.Sprintf("<tr><td><code>%s(%s) &rarr; %s</code></td><td>%s</td></tr>", name, linkArguments(args), linkArguments(ret), extra)
 			functions[cat] = append(functions[cat], s)
 		}
 	}
@@ -186,10 +197,10 @@ func GenerateFunctions(from map[string][]parser.Builtin, categorize bool) []byte
 		if categorize {
 			fmt.Fprintf(b, "### %s Functions\n\n", cat)
 		}
-		b.WriteString("Function &rarr; Returns | Description\n")
-		b.WriteString("--- | ---\n")
+		b.WriteString("<table>\n<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>\n")
+		b.WriteString("<tbody>\n")
 		b.WriteString(strings.Join(functions[cat], "\n"))
-		b.WriteString("\n\n")
+		b.WriteString("</tbody>\n</table>\n\n")
 	}
 	return b.Bytes()
 }
@@ -209,13 +220,16 @@ func linkArguments(t string) string {
 }
 
 func linkTypeName(s string) string {
+	s = strings.TrimSuffix(s, "{}")
 	name := s
 	switch s {
 	case "timestamptz":
 		s = "timestamp"
 	}
+	s = strings.TrimSuffix(s, "[]")
 	switch s {
-	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes":
+	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes",
+		"inet", "uuid", "collatedstring":
 		s = fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
 	}
 	return s
