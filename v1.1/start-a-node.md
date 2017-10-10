@@ -27,7 +27,7 @@ $ cockroach start <flags, including --join>
 $ cockroach start --help
 ~~~
 
-## Flags
+## Flags <span class="version-tag">Changed in v1.1</span>
 
 The `start` command supports the following [general-use](#general) and [logging](#logging) flags.
 
