@@ -15,7 +15,7 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 When `cockroach dump` is executed:
 
 - Table and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- Table and view schemas are dumped in the order in which they can successfully be recreated.
+- **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
