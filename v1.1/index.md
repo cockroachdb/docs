@@ -71,10 +71,10 @@ CockroachDB is a cloud-native SQL database for building global, scalable cloud s
     </div>
     <div class="col-md-4">
         <div class="roach">
-            <a href="monitor-cockroachdb-with-prometheus.html">
-                <img src="{{ 'images/announcement_catrina.png' | relative_url }}" alt="Monitor with Third-Party Tools"/>
+            <a href="admin-ui-overview.html">
+                <img src="{{ 'images/announcement_catrina.png' | relative_url }}" alt="Monitor CockroachDB"/>
                 <h3>Monitor</h3>
-                <p>Feed our time series metrics into third-party tools.</p>
+                <p>Use our Admin UI or third-party tools.</p>
             </a>
         </div>
     </div>
