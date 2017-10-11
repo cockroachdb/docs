@@ -1,6 +1,6 @@
 ---
 title: Known Limitations in CockroachDB v1.0
-summary:
+summary: Known limitations is CockroachDV v1.0.
 toc: false
 ---
 
@@ -27,6 +27,36 @@ Within a single [transaction](transactions.html):
 - DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+
+## Schema changes between executions of prepared statements
+
+When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB should return an error. Instead, CockroachDB incorrectly allows the prepared statement to return results based on the changed table schema, for example:
+
+~~~ sql
+> CREATE TABLE users (id INT PRIMARY KEY);
+
+> PREPARE prep1 AS SELECT * FROM users;
+
+> ALTER TABLE users ADD COLUMN name STRING;
+
+> INSERT INTO users VALUES (1, 'Max Roach');
+
+> EXECUTE prep1;
+~~~
+
+~~~
++----+-----------+
+| id |   name    |
++----+-----------+
+|  1 | Max Roach |
++----+-----------+
+(1 row)
+~~~
+
+Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
+
+- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
+- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
 
 ## Join flags when restoring a backup onto new machines
 
@@ -252,36 +282,6 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ## Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
-
-## Schema changes between executions of prepared statements
-
-When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB should return an error. Instead, CockroachDB incorrectly allows the prepared statement to return results based on the changed table schema, for example:
-
-~~~ sql
-> CREATE TABLE users (id INT PRIMARY KEY);
-
-> PREPARE prep1 AS SELECT * FROM users;
-
-> ALTER TABLE users ADD COLUMN name STRING;
-
-> INSERT INTO users VALUES (1, 'Max Roach');
-
-> EXECUTE prep1;
-~~~
-
-~~~
-+----+-----------+
-| id |   name    |
-+----+-----------+
-|  1 | Max Roach |
-+----+-----------+
-(1 row)
-~~~
-
-Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
-
-- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
-- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
 
 ## Dropping an index interleaved into another index on the same table
 
