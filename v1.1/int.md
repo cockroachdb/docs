@@ -12,10 +12,10 @@ CockroachDB supports various 64-bit and 32-bit signed integer [data types](data-
 
 ## Names and Aliases
 
-Name | Width | Aliases
+Name | Allowed Width | Aliases
 -----|-------|--------
 `INT` | 64-bit | None
-`INTEGER` | 64-bit | None
+`INTEGER` | 64-bit | `INT4`
 `BIGINT` | 64-bit | `INT8`<br>`INT64`
 `SMALLINT` | 32-bit | `INT2`
 
@@ -26,7 +26,7 @@ For example: `42`, `-1234`, or `0xCAFE`.
 
 ## Size
 
-All integers are stored as 64-bit (8 bytes) in width, but the total storage size is likely to be larger due to CockroachDB metadata.
+While all integers are stored as 64-bit (8 bytes) in width, `SMALLINT` values larger than 32-bit are not allowed.
 
 Aside from the 64-bit and 32-bit types mentioned above, CockroachDB does not offer integer types for different widths; instead, our compression ensures that smaller integers use less disk space than larger integers. However, you can use the `BIT(n)` type, with `n` from 1 to 64, to constrain integers based on their corresponding binary values. For example, `BIT(5)` would allow `31` because it corresponds to the five-digit binary integer `11111`, but would not allow `32` because it corresponds to the six-digit binary integer `100000`, which is 1 bit too long. See the [example](#examples) below for a demonstration.
 
