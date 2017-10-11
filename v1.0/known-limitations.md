@@ -1,6 +1,6 @@
 ---
 title: Known Limitations in CockroachDB v1.0
-summary:
+summary: Known limitations is CockroachDB v1.0.
 toc: false
 ---
 
@@ -10,7 +10,7 @@ This page describes limitations we identified in the [CockroachDB v1.0](../relea
 
 ## Removing all rows from large tables
 
-{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17016">#17016</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17016">#17016</a>.{{site.data.alerts.end}}
 
 When removing all rows from a table via a [`TRUNCATE`](truncate.html) statement or a [`DELETE`](delete.html#delete-all-rows) statement without a `WHERE` clause, CockroachDB batches the entire operation as a single [transaction](transactions.html). For large tables, this can cause the nodes containing the table data to either crash or exhibit poor performance due to elevated memory and CPU usage.
 
@@ -27,6 +27,38 @@ Within a single [transaction](transactions.html):
 - DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+
+## Schema changes between executions of prepared statements
+
+When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
+
+~~~ sql
+> CREATE TABLE users (id INT PRIMARY KEY);
+
+> PREPARE prep1 AS SELECT * FROM users;
+
+> ALTER TABLE users ADD COLUMN name STRING;
+
+> INSERT INTO users VALUES (1, 'Max Roach');
+
+> EXECUTE prep1;
+~~~
+
+~~~
++----+-----------+
+| id |   name    |
++----+-----------+
+|  1 | Max Roach |
++----+-----------+
+(1 row)
+~~~
+
+It's therefore recommended to **not** use `SELECT *` for queries that will be repeated, via prepared statements or otherwise.
+
+Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
+
+- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
+- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
 
 ## Join flags when restoring a backup onto new machines
 
@@ -77,6 +109,8 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 ## Roundtrip to `STRING` does not respect precedences of `:::` and `-`
 
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/issues/15617">#15617</a>.{{site.data.alerts.end}}
+
 Queries with constant expressions that evaluate to 2**-63 might get incorrectly rejected, for example:
 
 ~~~ sql
@@ -120,7 +154,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ## Quoting collation locales containing uppercase letters
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
 
 Quoting a [collation](collate.html) locale containing uppercase letters results in an error, for example:
 
@@ -144,20 +178,20 @@ As a workaround, make the locale lowercase or remove the quotes, for example:
 
 ## Creating views with array types
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
 
 Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
 
 ## Dropping a database containing views
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
 
 When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
 database containing the tables fails silently.
 
 ## Qualifying a column that comes from a view
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
 
 It is not possible to fully qualify a column that comes from a view because the view gets replaced by an anonymous subquery, for example:
 
@@ -197,7 +231,7 @@ Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP 
 
 ## Counting distinct rows in a table
 
-{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17833">#17833</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17833">#17833</a>.{{site.data.alerts.end}}
 
 When using `count(DISTINCT a.*)` to count distinct rows in a table based on a subset of the columns, as opposed to `count(*)`, the results are almost always incorrect, for example:
 
@@ -235,7 +269,7 @@ As a workaround, list the columns explicitly, for example:
 
 ## Running on Windows as a non-admin user
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">version 1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
 
 By default, CockroachDB periodically rotates the file it writes logs to, as well as a symlink pointing to the file it's currently using. However, on Windows, non-admin users cannot create symlinks, which prevents CockroachDB from starting because it cannot create logs.
 
@@ -253,39 +287,9 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
 
-## Schema changes between executions of prepared statements
-
-When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB should return an error. Instead, CockroachDB incorrectly allows the prepared statement to return results based on the changed table schema, for example:
-
-~~~ sql
-> CREATE TABLE users (id INT PRIMARY KEY);
-
-> PREPARE prep1 AS SELECT * FROM users;
-
-> ALTER TABLE users ADD COLUMN name STRING;
-
-> INSERT INTO users VALUES (1, 'Max Roach');
-
-> EXECUTE prep1;
-~~~
-
-~~~
-+----+-----------+
-| id |   name    |
-+----+-----------+
-|  1 | Max Roach |
-+----+-----------+
-(1 row)
-~~~
-
-Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
-
-- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
-- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
-
 ## Dropping an index interleaved into another index on the same table
 
-{{site.data.alerts.callout_info}}Resolved as of [version 1.1-alpha.20170831](../releases/v1.1-alpha.20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of [v1.1-alpha.20170831](../releases/v1.1-alpha.20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
 
 In the unlikely case that you [interleave](interleave-in-parent.html) an index into another index on the same table and then [drop](drop-index.html) the interleaved index, future DDL operations on the table will fail.
 
@@ -347,7 +351,7 @@ pq: invalid interleave backreference table=t1 index=3: index-id "3" does not exi
 
 ## Order of dumped schemas and incorrect schemas of dumped views
 
-{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
 
 When using the [`cockroach dump`](sql-dump.html) command to export the schemas of all tables and views in a database, the schemas are ordered alphabetically by name. This is not always an ordering in which the tables and views can be successfully recreated. Also, the schemas of views are dumped incorrectly as `CREATE TABLE` statements.
 
@@ -419,7 +423,7 @@ CREATE VIEW b AS SELECT b FROM c;
 
 ## Dumping data for a view
 
-{{site.data.alerts.callout_info}}Resolved as of version 1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of v1.1. See <a href="https://github.com/cockroachdb/cockroach/pull/17581">#17581</a>.{{site.data.alerts.end}}
 
 When using the [`cockroach dump`](sql-dump.html) command to export the data of a [view](views.html), the dump fails. This is because, unlike standard tables, a view does not contain any physical data; instead, it is a stored `SELECT` query that, when requested, dynamically forms a virtual table.
 
