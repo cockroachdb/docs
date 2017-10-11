@@ -5,4 +5,4 @@ toc: false
 feedback: false
 ---
 
-Coming soon. For now, see the [CockroachDB Design](https://github.com/cockroachdb/cockroach/blob/master/docs/design.md) doc.
+You can find our architecture guide starting with the [CockroachDB 1.1 release](../v1.1/architecture/overview.html). While some details have changed between the two versions, most of the content remains applicable.

@@ -7,7 +7,7 @@ module JekyllVersions
     attr_reader :version
 
     def self.from_path(config, path)
-      if v = path.split('/').find { |p| REGEX =~ p }
+      if (v = Pathname.new(path).each_filename.first) =~ REGEX
         Version.new(config, v)
       end
     end

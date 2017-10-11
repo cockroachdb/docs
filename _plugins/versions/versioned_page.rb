@@ -5,21 +5,20 @@ module JekyllVersions
     def initialize(config, page)
       @config = config
       @page = page
-      @key = page.data['key'] || basename
       @version = Version.from_path(config, page.url)
+      @key = page.data['key'] || unversioned_path
     end
 
-    def basename
-      # `page.basename` isn't sufficient, as the JekyllRedirectFrom plugin uses
+    def unversioned_path
+      # `page.path` isn't sufficient, as the JekyllRedirectFrom plugin uses
       # permalinks to hide the fact that every RedirectPage has a basename of
       # "redirect.html". Using `page.url` properly takes the permalink into
-      # account, but we need to unfold bare directories into the index.html
-      # within.
-      if page.url.end_with?('/')
-        'index.html'
-      else
-        File.basename(page.url)
-      end
+      # account, but we need to convert the URL back to a path by a) dropping
+      # the leading slash and maybe the version from the front of the URL, and
+      # b) tacking on `index.html` to bare directories.
+      url = page.url.split('/').drop(@version ? 2 : 1).join('/')
+      url << 'index.html' if url.end_with?('/')
+      url
     end
 
     def stable?
