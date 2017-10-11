@@ -10,11 +10,13 @@
 # additional aliased versions. (At the time of writing, we named a `stable` and
 # `edge` version.) These are implemented as directory symlinks. For example, if
 # `stable: v1.0` is specified, a symlink `stable -> v1.0` will be written to the
-# build directory. If a page is renamed, set `key: original-file-name.md` in its
-# front matter so the version switcher can find its old versions. The `stable`
-# mapping is special and must exist, as `docs/FOO.html` will be automatically
-# redirected to `docs/stable/FOO.html` for every FOO.md in the stable directory.
-# Other name mappings are optional and can be added and removed at will.
+# build directory. The `stable` mapping is special and must exist, as
+# `docs/FOO.html` will be automatically redirected to `docs/stable/FOO.html` for
+# every FOO.md in the stable directory. Other name mappings are optional and can
+# be added and removed at will.
+#
+# If a page is renamed, set `key: original-file-name.html` in its front matter
+# so the version switcher can find its old versions.
 #
 # Each page has the following variables injected:
 #     `version` — the raw (non-logical) version of the page, like `v1.0`

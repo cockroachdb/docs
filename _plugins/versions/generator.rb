@@ -31,7 +31,7 @@ module JekyllVersions
         end
 
         @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-          @site, vp.basename, vp.url) if vp.stable?
+          @site, vp.unversioned_path, vp.url) if vp.stable?
       end
 
       @config.versions.each do |name, version|
