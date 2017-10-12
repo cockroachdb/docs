@@ -1,19 +1,15 @@
 section.footer {
-	background: #fff;
-	position: relative;
-	padding: 30px 20px 20px;
+	background: $cl_gray_footer;
+	padding: 0 0 40px;
 
 	@include at-query($min, $screen-sm) {
-		padding: 50px 60px 20px;
-	}
-
-	@include at-query($min, $screen-md) {
 		border-top: 1px solid $cl_gray_medium;
-		padding: 60px;
+		background: #fff;
 	}
 
 	.container {
-		padding: 0;
+		padding-left: 0px;
+		padding-right: 0px;
 
 		@include at-query($min, $screen-sm) {
 			display: -webkit-box;
@@ -21,12 +17,17 @@ section.footer {
 			display: flex;
 			-ms-flex-wrap: wrap;
 			    flex-wrap: wrap;
-			max-width: 100%;
+			max-width: calc(100% - 60px);
+			padding: 60px 60px 20px 40px;
 		}
 
 		@include at-query($min, $screen-md) {
 			max-width: 1050px;
 			margin: 0 auto;
+		}
+
+		@include at-query($min, $max-plus-gutters) {
+			max-width: $max-width;
 		}
 	}
 
@@ -46,16 +47,15 @@ section.footer {
 			}
 
 			@include at-query($min, $screen-md) {
-				width: 69%;
+				width: 78%;
 			}
 		}
 
 		&__social {
-			border-top: solid 1px $cl_gray_medium;
-			padding-top: 35px;
+			border-bottom: solid 1px $cl_gray_medium;
 
 			@include at-query($min, $screen-sm) {
-				border-top: none;
+				border-bottom: none;
 				border-left: solid 1px $cl_gray_medium;
 				width: 34%;
 				padding-top: 0;
@@ -63,33 +63,11 @@ section.footer {
 			}
 
 			@include at-query($min, $screen-md) {
-				width: 30%;
+				width: 21%;
 			}
 
 			.footer-nav {
 				width: 100%;
-
-				li, a {
-					text-align: center;
-
-					@include at-query($min, $screen-sm) {
-						text-align: left;
-						// line-height: 34px;
-					}
-
-					// @include at-query($min, $screen-md) {
-					// 	text-align: left;
-					// 	line-height: 24px;
-					// }
-				}
-
-				li.header {
-					margin-bottom: 22px;
-
-					@include at-query($min, $screen-sm) {
-						margin-bottom: 12px;
-					}
-				}
 			}
 		}
 	}
@@ -97,9 +75,18 @@ section.footer {
 	// Nav Items
 	.footer-nav {
 		list-style: none;
-		margin-bottom: 30px;
-		width: calc(100% / 2);
-		padding: 0;
+		width: 100%;
+
+		// mobile only
+		@include at-query($max, $screen-sm) {
+			border-top: 1px solid $cl_gray_medium;
+			padding: 20px;
+		}
+
+		@include at-query($min, $screen-sm) {
+			width: calc(100% / 2);
+			margin-bottom: 30px;
+		}
 
 		@include at-query($min, $screen-md) {
 			width: calc(100% / 4 - 1px);
@@ -120,16 +107,17 @@ section.footer {
 		li {
 			color: $cl_blue;
 			text-transform: uppercase;
-			list-style: none;
+			list-style:none;
 			text-align: left;
-			padding: 0;
-			margin: 0 20px 0 0;
-			text-indent: 0;
+			padding:0;
+			margin: 0 10px 0 0;
+			text-indent:0;
 			font-size: 14px;
 			line-height: 20px;
 
 			@include at-query($min, $screen-sm) {
 				width:100%;
+				margin-right: 20px;
 			}
 
 			@include at-query($min, $screen-md) {
@@ -139,30 +127,28 @@ section.footer {
 			a {
 				color: $cl_blue_dark;
 				@include avenir_r(14px);
-				line-height: 20px;
+				line-height: 40px;
 				text-transform: none;
 				display: block;
-				margin-bottom: 10px;
 				@include groovy(color);
+
+				@include at-query($min, $screen-sm) {
+					line-height: 20px;
+					margin-bottom: 10px;
+				}
 
 				&:hover {
 					color: $cl_green;
 				}
-
-				// @include at-query($min, $screen-sm) {
-				// 	line-height: 24px;
-				// }
 			}
 		}
 
-		li.header a {
-			width:100%;
-			margin-bottom:5px;
-			@include button-text;
-			display: block;
+		li.header {
+			@include button-text--heavy;
 			text-transform: uppercase;
 
 			@include at-query($min, $screen-sm) {
+				@include button-text;
 				margin-bottom: 15px;
 			}
 		}
@@ -175,20 +161,56 @@ section.footer {
 		}
 	}
 
+	.footer-sub-nav {
+		display: none;
+		margin-top: 10px;
+		padding-left: 0;
+
+		@include at-query($min, $screen-sm) {
+			display: block;
+		}
+	}
+
 	.copyright {
-		margin: 10px 0 0;
-		text-align: center;
+		margin: 20px 0 0 20px;
 		@include avenir_r(14px);
 		color: $cl_blue;
 
 		@include at-query($min, $screen-sm) {
+			text-align: center;
 			width: 100%;
 			margin-top: 65px;
+			margin-left: 0;
 		}
 
 		@include at-query($min, $screen-md) {
 			text-align: left;
 			margin-top: 15px;
 		}
+	}
+}
+
+.blue-arrow {
+	display: inline-block;
+	border: solid $cl_blue;
+	padding: 4px;
+	margin-left: 4px;
+	transition: transform 0.2s ease, margin-bottom 0.2s ease;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	float: right;
+
+	@include at-query($min, $screen-sm) {
+		display: none;
+	}
+
+	&--up {
+		border-width: 2px 0 0 2px;
+		margin-top: 3px;
+	}
+
+	&--down {
+		border-width: 0 2px 2px 0;
+		margin-bottom: 3px;
 	}
 }
