@@ -123,6 +123,11 @@
   }
 }
 
+@mixin paragraph-type--medium {
+  @include avenir_m(17px);
+  line-height: 30px;
+}
+
 @mixin paragraph-type--heavy {
   @include avenir_h(16px);
   line-height: 25px;

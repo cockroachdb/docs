@@ -104,7 +104,7 @@ nav.mobile_expanded {
 	}
 
 	.close-wrap {
-		height: 61px;
+		height: 62px;
 		border-bottom: 1px solid #dadada;
 	}
 
@@ -162,45 +162,62 @@ nav.mobile_expanded {
 header {
 	width:100%;
 	float:left;
-	background:#fff;
-	padding: 14px 15px;
-	border-bottom: 1px solid $cl_gray_medium;
-  @include groovy(all);
+  padding: 15px;
+	background: #FFFFFF;
+  border-bottom: 1px solid $cl_gray_medium;
+	height: 62px;
 
+	// there is just not enough room once we hit tablet
 	@include at-query($min, $screen-sm) {
+		padding: 15px 10px;
+	}
+
+	@include at-query($min, $screen-md) {
+		height: 71px;
+	}
+
+	// return to regular padding when there is space
+	@include at-query($min, $screen-sm + 10px) {
 		padding: 15px;
 	}
 
 	.logo {
 		width: 180px;
-		margin-top:5px;
-		float: left;
+		margin-top: 3px;
+		float:left;
 		line-height: 20px;
 		font-size: 0;
 
-		@include at-query($min, $screen-sm){
-			width: 160px;
-		}
-
-		@include at-query($screen-sm, $screen-md){
+		@include at-query($screen-sm, $screen-md) {
 			line-height: 23px;
 		}
 
-		@include at-query($min, $screen-lg){
+		@include at-query($min, $screen-sm) {
+			width: 150px;
+		}
+
+		@include at-query($min, $screen-lg) {
 			width:209px;
 		}
 	}
 
 	.container {
-		position:relative;
+		position: relative;
+		margin: 0;
 
-	  @include at-query($min, $screen-sm) {
-	    padding-right: 0;
-	  }
-
-		@include at-query($min, $screen-md) {
-			padding-right: 15px;
+		@include at-query($min, $screen-sm) {
+			width: 100%;
+			margin: 0 auto;
 		}
+
+		@include at-query($min, $max-plus-gutters) {
+			max-width: $max-width;
+		}
+	}
+
+	&.scrolled {
+		background: #FFFFFF;
+		border-bottom: 1px solid $cl_gray_medium;
 	}
 
 	nav.desktop {
@@ -223,9 +240,19 @@ header {
 			}
 		}
 
-		@include at-query($min, $screen-sm){
-			display:inline-block;
-			float:right;
+		.current-menu-item .menu-item-dropdown__parent-link a {
+			color: $cl_green;
+		}
+
+		.button--header {
+			@include at-query($min, $screen-sm) {
+				margin-right: 0;
+			}
+		}
+
+		@include at-query($min, $screen-md) {
+			display: inline-block;
+			float: right;
 		}
 
 		//
@@ -248,15 +275,16 @@ header {
 			a {
 				padding: 20px 30px;
 				margin: 0;
+				width: 100%;
 
 				&:not(:last-child) {
-					padding-right: 50px;
+					padding-right: 45px;
 					border-bottom: solid 2px #e6e6e6;
 				}
 
 				.menu-dropdown {
 					&__title {
-						@include subhead-adelle-sm;
+						@include paragraph-type--medium;
 						color: $cl_blue;
 						text-transform: none;
 						letter-spacing: normal;
@@ -361,7 +389,7 @@ header {
   		}
   	}
 
-  	@include at-query($min, $screen-sm){
+  	@include at-query($min, $screen-md) {
   		display: none;
   	}
 	}

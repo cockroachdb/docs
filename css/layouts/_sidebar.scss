@@ -24,14 +24,14 @@ body.sidenav-open {
   @include at-query($max, $screen-md) {
     position: fixed;
     left: 0;
-    top: 61px;
+    top: 62px;
     width: 100%;
     z-index: 1001;
     @include groovy(margin-left);
     @include groovy(box-shadow);
   }
 
-  @include at-query($min, $screen-sm) {
+  @include at-query($min, $screen-md) {
     top: 71px;
   }
 

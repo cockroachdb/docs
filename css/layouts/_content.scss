@@ -19,7 +19,7 @@
 		}
 	}
 
-	@include at-query($min, $screen-sm){
+	@include at-query($min, $screen-md){
 		padding-top: 71px;
 	}
 
