@@ -19,6 +19,7 @@ redcarpet:
 
 versions:
   stable: v1.1
+  dev: v1.1
   # dev: v1.2
 
 release_info:
