@@ -1072,6 +1072,12 @@
           "/${VERSION}/create-a-file-server.html"
         ]
       },
+      {  
+        "title": "Rotate Security Certificates",
+        "urls": [
+          "/${VERSION}/rotate-certificates.html"
+        ]
+      },
       {
         "title": "Generate CockroachDB Resources",
         "urls": [
