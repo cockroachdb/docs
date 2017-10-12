@@ -40,7 +40,8 @@ The variable name is case insensitive. The value can be a list of one or more it
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified  | Yes |
 | `sql_safe_updates` | Whether or not potentially unsafe SQL statements are allowed, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE .. DROP COLUMN`. See [Allow Potentially Unsafe SQL Statements](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) for more details. | `true` | Yes |
 | `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility) | Yes |
-| `time zone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`. | `UTC` | Yes |
+| `time zone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.</br><br>See [`SET TIME ZONE`](#set-time-zone) for more details. | `UTC` | Yes |
+| `tracing` | The trace recording state.<br><br>See [`SET TRACING`](#set-tracing) for more details. | `off` | Yes |
 | `client_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A | No |
 | `client_min_messages` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`on`". | N/A | No |
 | `extra_float_digits` | Ignored; recognized for compatibility with PostgreSQL clients. | N/A | No |
@@ -196,6 +197,18 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 (1 row)
 ~~~
 
+## `SET TRACING`
+
+`SET TRACING` changes the trace recording state of the current session. A trace recording can be inspected with the [`SHOW TRACE FOR SESSION`](show-trace.html) statement.
+
+ Value | Description
+-------|------------
+`off` | Trace recording is disabled.
+`cluster` | Trace recording is enabled; distributed traces are collected.
+`on`  | Same as `cluster`.
+`kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE`](show-trace.html).
+`local` | Trace recording is enabled; only trace messages issued by the local node are collected.
+
 ## See Also
 
 - [`RESET`](reset-vars.html)
@@ -203,3 +216,4 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW` (session variable)](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
+- [`SHOW TRACE`](show-trace.html)
