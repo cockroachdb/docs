@@ -1,21 +1,43 @@
 <!-- Mobile Side Navigation -->
-<nav class="mobile_expanded" role="navigation">
-    <a href="{{ "/frequently-asked-questions.html" | relative_url }}" class="menu-item" data-proofer-ignore>FAQ</a>
-    <div class="mobile-menu-dropdown">
-      Products
-      <a href="https://www.cockroachlabs.com/product/cockroachdb-core/" data-proofer-ignore>CockroachDB Core</a>
-  		<a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/" data-proofer-ignore>CockroachDB Enterprise</a>
-    </div>
-    <a href="{{ "/" | relative_url }}" class="menu-item" data-proofer-ignore>Docs</a>
-    <div class="mobile-menu-dropdown">
-      <a class="mobile-menu-dropdown__parent-link" href="https://www.cockroachlabs.com/community/" data-proofer-ignore>Community</a>
-      <a href="https://www.cockroachlabs.com/community/events/" data-proofer-ignore>Events</a>
-      <a href="https://www.cockroachlabs.com/community/tech-talks/" data-proofer-ignore>CockroachDB Enterprise</a>
-      <a href="https://forum.cockroachlabs.com/" data-proofer-ignore>Forum</a>
-    </div>
-    <a href="https://www.cockroachlabs.com/about/" class="menu-item" data-proofer-ignore>About</a>
-    <a href="https://www.cockroachlabs.com/blog/" class="menu-item" data-proofer-ignore>Blog</a>
-    <!-- <a href="{{ "/install-cockroachdb.html" | relative_url }}" class="menu-item" data-proofer-ignore>Install</a> -->
+<nav class="mobile_expanded">
+	<div class="close-wrap">
+		<div class="hamburger">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<div class="mobile-menu-dropdown">
+		<span class="blue-arrow blue-arrow--down"></span>
+		Products
+		<div class="mobile-sub-nav">
+			<a href="https://www.cockroachlabs.com/product/cockroachdb-core/">CockroachDB Core</a>
+			<a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/">CockroachDB Enterprise</a>
+			<a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html">FAQ</a>
+		</div>
+	</div>
+	<a href="https://www.cockroachlabs.com/customers/">Customers</a>
+	<a href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
+	<div class="mobile-menu-dropdown">
+		<span class="blue-arrow blue-arrow--down"></span>
+		<a class="mobile-menu-dropdown__parent-link" href="https://www.cockroachlabs.com/community/">Community</a>
+		<div class="mobile-sub-nav">
+			<a href="https://www.cockroachlabs.com/community/events/">Events</a>
+			<a href="https://www.cockroachlabs.com/community/tech-talks/">Tech Talks</a>
+			<a href="https://forum.cockroachlabs.com/">Forum</a>
+		</div>
+	</div>
+	<div class="mobile-menu-dropdown">
+		<span class="blue-arrow blue-arrow--down"></span>
+		<a class="mobile-menu-dropdown__parent-link" href="https://www.cockroachlabs.com/about/">Company</a>
+		<div class="mobile-sub-nav">
+			<a href="https://www.cockroachlabs.com/about/">About</a>
+			<a href="https://www.cockroachlabs.com/careers/">Careers</a>
+			<a href="https://www.cockroachlabs.com/press/">Press</a>
+		</div>
+	</div>
+	<a href="https://www.cockroachlabs.com/blog/" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-depth-0">Blog</a>
 </nav>
 
 <!-- Desktop / Tablet Navigation -->

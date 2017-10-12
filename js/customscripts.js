@@ -63,11 +63,11 @@ $(function() {
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
     e.preventDefault();
-    if($('body').hasClass('menu_open')) {
-      $('body').removeClass('menu_open');
-    } else {
-      $('body').addClass('menu_open');
-    }
+    $('body').toggleClass('menu_open');
+  });
+
+  $('.mobile_expanded .hamburger').on('click', function() {
+    $('body').removeClass('menu_open');
   });
 
   $(window).resize(function(e) {
@@ -292,5 +292,11 @@ $(function() {
       $(this).siblings('.footer-sub-nav').slideToggle(200);
       flipArrow($(this));
     }
+  });
+
+  // mobile menu
+  $('.mobile-menu-dropdown').on('click', function() {
+    $(this).find('.mobile-sub-nav').slideToggle(200);
+    flipArrow($(this));
   });
 });
