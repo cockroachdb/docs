@@ -23,7 +23,9 @@ Parameter | Description
 `IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
 `name`  | The name of the database you want to drop.
 `CASCADE` | Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
-`RESTRICT`    | _(Default)_ Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
+`RESTRICT` | _(Default)_ Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
+
+{{site.data.alerts.callout_danger}}In an upcoming v1.1 patch release, the default behavior will be changed from <code>RESTRICT</code> to <code>CASCADE</code> for consistency with v1.0 and compatibility with PostgreSQL.{{site.data.alerts.end}}
 
 ## Examples
 
