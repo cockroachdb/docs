@@ -1072,7 +1072,7 @@
           "/${VERSION}/create-a-file-server.html"
         ]
       },
-      {  
+      {
         "title": "Rotate Security Certificates",
         "urls": [
           "/${VERSION}/rotate-certificates.html"
@@ -1187,7 +1187,7 @@
       {
         "title": "Replication Layer",
         "urls": [
-          "/${VERSION}/architecture/transaction-layer.html"
+          "/${VERSION}/architecture/replication-layer.html"
         ]
       },
       {
