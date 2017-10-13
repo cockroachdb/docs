@@ -17,17 +17,16 @@ section.footer {
 			display: flex;
 			-ms-flex-wrap: wrap;
 			    flex-wrap: wrap;
-			max-width: calc(100% - 60px);
 			padding: 60px 60px 20px 40px;
 		}
 
 		@include at-query($min, $screen-md) {
-			max-width: 1050px;
+			width: 970px;
 			margin: 0 auto;
 		}
 
 		@include at-query($min, $max-plus-gutters) {
-			max-width: $max-width;
+			width: 1110px;
 		}
 	}
 
@@ -86,6 +85,7 @@ section.footer {
 		@include at-query($min, $screen-sm) {
 			width: calc(100% / 2);
 			margin-bottom: 30px;
+			padding-left: 0;
 		}
 
 		@include at-query($min, $screen-md) {

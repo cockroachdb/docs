@@ -967,15 +967,14 @@ section.footer {
         display: flex;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-        max-width: calc(100% - 60px);
         padding: 60px 60px 20px 40px; } }
     @media screen and (min-width: 992px) {
       section.footer .container {
-        max-width: 1050px;
+        width: 970px;
         margin: 0 auto; } }
     @media screen and (min-width: 1170px) {
       section.footer .container {
-        max-width: 1110px; } }
+        width: 1110px; } }
   section.footer .footer__flex-wrap {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1015,7 +1014,8 @@ section.footer {
     @media screen and (min-width: 768px) {
       section.footer .footer-nav {
         width: calc(100% / 2);
-        margin-bottom: 30px; } }
+        margin-bottom: 30px;
+        padding-left: 0; } }
     @media screen and (min-width: 992px) {
       section.footer .footer-nav {
         width: calc(100% / 4 - 1px); }
