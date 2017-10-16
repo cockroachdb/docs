@@ -4,19 +4,19 @@ summary: The FLOAT data type stores inexact, floating-point numbers with up to 1
 toc: false
 ---
 
-The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers with up to 17 digits of decimal precision.
+CockroachDB supports various inexact, floating-point number [data types](data-types.html) with up to 17 digits of decimal precision.
 
-They are handled internally using the [standard double-precision
-(64-bit binary-encoded) IEEE754 format](https://en.wikipedia.org/wiki/IEEE_floating_point).
+They are handled internally using the [standard double-precision (64-bit binary-encoded) IEEE754 format](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
 <div id="toc"></div>
 
-## Aliases
+## Names and Aliases
 
-In CockroachDB, the following are aliases for `FLOAT`:
-
-- `REAL` 
-- `DOUBLE PRECISION` 
+Name | Aliases
+-----|--------
+`FLOAT` | None
+`REAL` | `FLOAT4`
+`DOUBLE PRECISION` | `FLOAT8`
 
 ## Syntax
 
@@ -36,35 +36,48 @@ a string literal instead. For example:
 
 ## Size
 
-A `FLOAT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
+A `FLOAT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM floats;
 ~~~
+
 ~~~
-+-------+-------+-------+---------+
-| Field | Type  | Null  | Default |
-+-------+-------+-------+---------+
-| a     | FLOAT | false | NULL    |
-| b     | FLOAT | true  | NULL    |
-| C     | FLOAT | true  | NULL    |
-+-------+-------+-------+---------+
++-------+------------------+---------+---------+-------------+
+| Field | Type             | Null    | Default |   Indices   |
++-------+------------------+---------+---------+-------------+
+| a     | FLOAT            | false   | NULL    | {"primary"} |
+| b     | REAL             | true    | NULL    | {}          |
+| c     | DOUBLE PRECISION | true    | NULL    | {}          |
++-------+------------------+---------+---------+-------------+
+(3 rows)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM floats;
 ~~~
-~~~ 
+
+~~~
 +----------------+--------------------+------+
 |       a        |         b          |  c   |
 +----------------+--------------------+------+
 | 1.012345678901 | 2.0123456789012346 | +Inf |
 +----------------+--------------------+------+
+(1 row)
 # Note that the value in "b" has been limited to 17 digits.
 ~~~
 
