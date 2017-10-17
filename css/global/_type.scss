@@ -103,6 +103,12 @@
   letter-spacing: 1.5px;
 }
 
+@mixin button-text--heavy--large {
+  @include avenir_h(15px);
+  line-height: 25px;
+  letter-spacing: 1.5px;
+}
+
 @mixin caption {
   @include avenir_r(14px);
   line-height: 20px;

@@ -47,12 +47,10 @@ nav.mobile_expanded {
 	overflow:auto;
 	display: none;
 
-	a:not(.mobile-menu-dropdown__parent-link) {
+	a:not(.mobile-menu-dropdown__parent-link):not(.logo) {
 		border-bottom: 1px solid $cl_gray_medium;
-		@include avenir_h(14px);
-		line-height: 20px;
+		@include button-text--heavy--large;
 		text-transform: uppercase;
-		letter-spacing: 1.5px;
 		width:100%;
 		float:left;
 		color: $cl_blue;
@@ -70,8 +68,7 @@ nav.mobile_expanded {
 	.mobile-menu-dropdown {
 		width: 100%;
 		float: left;
-		@include avenir_h(14px);
-		letter-spacing: 1.5px;
+		@include button-text--heavy--large;
 		color: $cl_blue;
 		text-transform: uppercase;
 		padding: 30px 0 30px 20px;
@@ -84,12 +81,11 @@ nav.mobile_expanded {
 		a:not(.mobile-menu-dropdown__parent-link) {
 			position: relative;
 			display: block;
-			@include avenir_r(14px);
-			line-height: 15px;
+			@include type-caption-3;
 			letter-spacing: normal;
 			text-transform: none;
 			border-bottom: none;
-			margin-top: 25px;
+			margin-top: 15px;
 			padding: 0;
 		}
 
@@ -104,8 +100,9 @@ nav.mobile_expanded {
 	}
 
 	.close-wrap {
-		height: 62px;
+		height: 60px;
 		border-bottom: 1px solid #dadada;
+		padding: 15px 0 0 15px;
 	}
 
 	.hamburger {
@@ -159,13 +156,29 @@ nav.mobile_expanded {
 	}
 }
 
+.logo {
+	width: 180px;
+	margin-top: 3px;
+	float:left;
+	line-height: 20px;
+	font-size: 0;
+
+	@include at-query($screen-sm, $screen-md) {
+		line-height: 23px;
+	}
+
+	@include at-query($min, $screen-lg) {
+		width:209px;
+	}
+}
+
 header {
 	width:100%;
 	float:left;
   padding: 15px;
 	background: #FFFFFF;
   border-bottom: 1px solid $cl_gray_medium;
-	height: 62px;
+	height: 60px;
 
 	// there is just not enough room once we hit tablet
 	@include at-query($min, $screen-sm) {
@@ -173,32 +186,12 @@ header {
 	}
 
 	@include at-query($min, $screen-md) {
-		height: 71px;
+		height: 70px;
 	}
 
 	// return to regular padding when there is space
 	@include at-query($min, $screen-sm + 10px) {
 		padding: 15px;
-	}
-
-	.logo {
-		width: 180px;
-		margin-top: 3px;
-		float:left;
-		line-height: 20px;
-		font-size: 0;
-
-		@include at-query($screen-sm, $screen-md) {
-			line-height: 23px;
-		}
-
-		@include at-query($min, $screen-sm) {
-			width: 150px;
-		}
-
-		@include at-query($min, $screen-lg) {
-			width:209px;
-		}
 	}
 
 	.container {
@@ -292,8 +285,7 @@ header {
 					}
 
 					&__info {
-						@include avenir_r(14px);
-						line-height: 20px;
+						@include type-caption-3;
 						color: #4d4d4d;
 						text-transform: none;
 						letter-spacing: normal;

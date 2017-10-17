@@ -202,16 +202,16 @@ nav.mobile_expanded {
   width: 100vw;
   overflow: auto;
   display: none; }
-  nav.mobile_expanded a:not(.mobile-menu-dropdown__parent-link) {
+  nav.mobile_expanded a:not(.mobile-menu-dropdown__parent-link):not(.logo) {
     border-bottom: 1px solid #DADADA;
     font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 20px;
-    text-transform: uppercase;
+    line-height: 25px;
     letter-spacing: 1.5px;
+    text-transform: uppercase;
     width: 100%;
     float: left;
     color: #152849;
@@ -229,10 +229,11 @@ nav.mobile_expanded {
     width: 100%;
     float: left;
     font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 25px;
     letter-spacing: 1.5px;
     color: #152849;
     text-transform: uppercase;
@@ -244,15 +245,15 @@ nav.mobile_expanded {
       position: relative;
       display: block;
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 15px;
+      line-height: 25px;
       letter-spacing: normal;
       text-transform: none;
       border-bottom: none;
-      margin-top: 25px;
+      margin-top: 15px;
       padding: 0; }
     nav.mobile_expanded .mobile-menu-dropdown .mobile-sub-nav {
       display: none; }
@@ -260,8 +261,9 @@ nav.mobile_expanded {
       margin-right: 25px;
       display: block; }
   nav.mobile_expanded .close-wrap {
-    height: 62px;
-    border-bottom: 1px solid #dadada; }
+    height: 60px;
+    border-bottom: 1px solid #dadada;
+    padding: 15px 0 0 15px; }
   nav.mobile_expanded .hamburger {
     position: absolute;
     top: 0;
@@ -320,37 +322,35 @@ nav.mobile_expanded {
       nav.mobile_expanded .hamburger:hover .hamburger_inner {
         border-color: #152849; }
 
+.logo {
+  width: 180px;
+  margin-top: 3px;
+  float: left;
+  line-height: 20px;
+  font-size: 0; }
+  @media screen and (min-width: 768px) and (max-width: 992px) {
+    .logo {
+      line-height: 23px; } }
+  @media screen and (min-width: 1200px) {
+    .logo {
+      width: 209px; } }
+
 header {
   width: 100%;
   float: left;
   padding: 15px;
   background: #FFFFFF;
   border-bottom: 1px solid #DADADA;
-  height: 62px; }
+  height: 60px; }
   @media screen and (min-width: 768px) {
     header {
       padding: 15px 10px; } }
   @media screen and (min-width: 992px) {
     header {
-      height: 71px; } }
+      height: 70px; } }
   @media screen and (min-width: 778px) {
     header {
       padding: 15px; } }
-  header .logo {
-    width: 180px;
-    margin-top: 3px;
-    float: left;
-    line-height: 20px;
-    font-size: 0; }
-    @media screen and (min-width: 768px) and (max-width: 992px) {
-      header .logo {
-        line-height: 23px; } }
-    @media screen and (min-width: 768px) {
-      header .logo {
-        width: 150px; } }
-    @media screen and (min-width: 1200px) {
-      header .logo {
-        width: 209px; } }
   header .container {
     position: relative;
     margin: 0; }
@@ -433,11 +433,11 @@ header {
           transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
         header nav.desktop .menu-dropdown a .menu-dropdown__info {
           font-family: 'AvenirLTStd-Roman', serif;
-          font-size: 14px;
+          font-size: 15px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          line-height: 20px;
+          line-height: 25px;
           color: #4d4d4d;
           text-transform: none;
           letter-spacing: normal; }
@@ -540,7 +540,7 @@ body.sidenav-open .col-content {
     .col-sidebar {
       position: fixed;
       left: 0;
-      top: 62px;
+      top: 60px;
       width: 100%;
       z-index: 1001;
       -webkit-transition: margin-left 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -553,7 +553,7 @@ body.sidenav-open .col-content {
       transition: box-shadow 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
-      top: 71px; } }
+      top: 70px; } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
       background-color: transparent;
@@ -925,10 +925,6 @@ a:not([href]) {
   padding-top: 62px;
   width: 100%;
   z-index: 1000;
-  -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -webkit-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
