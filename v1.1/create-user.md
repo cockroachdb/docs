@@ -83,7 +83,7 @@ After creating users, you can manage them using the [`cockroach user`](create-an
 #### Insecure Clusters
 
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --insecure --user=jpointsman
 ~~~
 
 #### Secure Clusters with Client Certificates
