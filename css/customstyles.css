@@ -952,9 +952,10 @@ a:not([href]) {
 
 section.footer {
   background: #F7F7F7;
-  padding: 0 0 40px; }
+  padding: 0 0 30px; }
   @media screen and (min-width: 768px) {
     section.footer {
+      padding-bottom: 40px;
       border-top: 1px solid #DADADA;
       background: #fff; } }
   section.footer .container {
@@ -1006,7 +1007,8 @@ section.footer {
       width: 100%; }
   section.footer .footer-nav {
     list-style: none;
-    width: 100%; }
+    width: 100%;
+    margin-bottom: 0; }
     @media screen and (max-width: 767px) {
       section.footer .footer-nav {
         border-top: 1px solid #DADADA;
@@ -1034,9 +1036,7 @@ section.footer {
       text-align: left;
       padding: 0;
       margin: 0 10px 0 0;
-      text-indent: 0;
-      font-size: 14px;
-      line-height: 20px; }
+      text-indent: 0; }
       @media screen and (min-width: 768px) {
         section.footer .footer-nav li {
           width: 100%;
@@ -1047,10 +1047,11 @@ section.footer {
       section.footer .footer-nav li a {
         color: #111D39;
         font-family: 'AvenirLTStd-Roman', serif;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        line-height: 25px;
         line-height: 40px;
         text-transform: none;
         display: block;
@@ -1060,12 +1061,12 @@ section.footer {
         transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
         @media screen and (min-width: 768px) {
           section.footer .footer-nav li a {
-            line-height: 20px;
+            line-height: 25px;
             margin-bottom: 10px; } }
         section.footer .footer-nav li a:hover {
           color: #54B30E; }
     section.footer .footer-nav li.header {
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'AvenirLTStd-Black', serif;
       font-size: 12px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -1075,13 +1076,6 @@ section.footer {
       text-transform: uppercase; }
       @media screen and (min-width: 768px) {
         section.footer .footer-nav li.header {
-          font-family: 'AvenirLTStd-Black', serif;
-          font-size: 12px;
-          font-weight: normal;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          line-height: 15px;
-          letter-spacing: 1.5px;
           margin-bottom: 15px; } }
     section.footer .footer-nav li:before {
       content: "";
@@ -1098,10 +1092,11 @@ section.footer {
   section.footer .copyright {
     margin: 20px 0 0 20px;
     font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 25px;
     color: #152849; }
     @media screen and (min-width: 768px) {
       section.footer .copyright {

@@ -1,8 +1,9 @@
 section.footer {
 	background: $cl_gray_footer;
-	padding: 0 0 40px;
+	padding: 0 0 30px;
 
 	@include at-query($min, $screen-sm) {
+		padding-bottom: 40px;
 		border-top: 1px solid $cl_gray_medium;
 		background: #fff;
 	}
@@ -75,6 +76,7 @@ section.footer {
 	.footer-nav {
 		list-style: none;
 		width: 100%;
+		margin-bottom: 0;
 
 		// mobile only
 		@include at-query($max, $screen-sm) {
@@ -112,8 +114,6 @@ section.footer {
 			padding:0;
 			margin: 0 10px 0 0;
 			text-indent:0;
-			font-size: 14px;
-			line-height: 20px;
 
 			@include at-query($min, $screen-sm) {
 				width:100%;
@@ -126,14 +126,16 @@ section.footer {
 
 			a {
 				color: $cl_blue_dark;
-				@include avenir_r(14px);
+				@include type-caption-3;
+				// vertical spacing
 				line-height: 40px;
 				text-transform: none;
 				display: block;
 				@include groovy(color);
 
 				@include at-query($min, $screen-sm) {
-					line-height: 20px;
+					// back to normal
+					line-height: 25px;
 					margin-bottom: 10px;
 				}
 
@@ -144,11 +146,10 @@ section.footer {
 		}
 
 		li.header {
-			@include button-text--heavy;
+			@include button-text;
 			text-transform: uppercase;
 
 			@include at-query($min, $screen-sm) {
-				@include button-text;
 				margin-bottom: 15px;
 			}
 		}
@@ -173,7 +174,7 @@ section.footer {
 
 	.copyright {
 		margin: 20px 0 0 20px;
-		@include avenir_r(14px);
+		@include type-caption-3;
 		color: $cl_blue;
 
 		@include at-query($min, $screen-sm) {

@@ -113,6 +113,13 @@
   line-height: 15px;
 }
 
+// this matches the name on the hugo site
+// eventually we should consolidate type styles here too
+@mixin type-caption-3 {
+  @include avenir_r(15px);
+  line-height: 25px;
+}
+
 @mixin paragraph-type {
   @include avenir_r(16px);
   line-height: 25px;
