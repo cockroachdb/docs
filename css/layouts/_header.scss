@@ -7,7 +7,7 @@ body.menu_open {
 	}
 
 	header {
-		margin-left:-200px;
+		margin-left: -100vw;
 
 		nav.mobile {
 			.hamburger {
@@ -32,29 +32,29 @@ body.menu_open {
 	}
 
 	#content, .col-sidebar, #version-switcher {
-		margin-left:-200px;
+		margin-left: -100vw;
+		box-shadow: none;
 	}
 }
 
 nav.mobile_expanded {
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 900;
-	width: 200px;
-	overflow: auto;
-	visibility: hidden;
+	position:fixed;
+	right:0;
+	top:0;
+	bottom: 0;
+	z-index:900;
+	width: 100vw;
+	overflow:auto;
+	display: none;
 
-	a:not(.mobile-menu-dropdown__parent-link) {
+	a:not(.mobile-menu-dropdown__parent-link):not(.logo) {
 		border-bottom: 1px solid $cl_gray_medium;
-		@include avenir_h(14px);
-		line-height: 20px;
-		letter-spacing: 1.5px;
+		@include button-text--heavy--large;
 		text-transform: uppercase;
-		width: 100%;
-		float: left;
+		width:100%;
+		float:left;
 		color: $cl_blue;
-		padding:26px 0 30px 20px;
+		padding: 30px 0 30px 20px;
 		text-decoration: none;
 		@include groovy(color);
 	}
@@ -62,16 +62,16 @@ nav.mobile_expanded {
 		color: $cl_green;
 	}
 	a.current-menu-item {
-		background: #efefef;
+		background:#efefef;
 	}
 
 	.mobile-menu-dropdown {
+		width: 100%;
 		float: left;
-		@include avenir_h(14px);
-		letter-spacing: 1.5px;
+		@include button-text--heavy--large;
 		color: $cl_blue;
 		text-transform: uppercase;
-		padding: 25px 0 30px 20px;
+		padding: 30px 0 30px 20px;
 		border-bottom: 1px solid $cl_gray_medium;
 
 		&__parent-link {
@@ -81,71 +81,136 @@ nav.mobile_expanded {
 		a:not(.mobile-menu-dropdown__parent-link) {
 			position: relative;
 			display: block;
-			@include avenir_h(12px);
-			line-height: 15px;
+			@include type-caption-3;
 			letter-spacing: normal;
 			text-transform: none;
 			border-bottom: none;
-			padding: 25px 0 0 17px;
+			margin-top: 15px;
+			padding: 0;
+		}
 
-			&:before {
-				content: '';
-				display: block;
-				position: relative;
-				max-width: inherit;
-				max-height: inherit;
-				left: -17px;
-				top: 10px;
-				width: 10px;
-				height: 2px;
-				background-color: rgba(19,40,72,0.2);
+		.mobile-sub-nav {
+			display: none;
+		}
+
+		.blue-arrow {
+			margin-right: 25px;
+			display: block;
+		}
+	}
+
+	.close-wrap {
+		height: 60px;
+		border-bottom: 1px solid #dadada;
+		padding: 15px 0 0 15px;
+	}
+
+	.hamburger {
+		position: absolute;
+		top: 0;
+		right: 4px;
+		width: 45px;
+		height: 45px;
+		margin-right:5px;
+		margin-top:5px;
+		@include rotate(0deg);
+		@include groovy(all);
+
+		span {
+			display: block;
+			position: absolute;
+			background-color: $cl_blue;
+			@include rounded(4px);
+			height: 4px;
+			width: 20px;
+			opacity: 1;
+			left: 0; right: 0;
+			margin: 0 auto;
+			top: 50%;
+			transform: translateY(-50%);
+			@include rotate(0deg);
+			@include groovy(all);
+
+			&:nth-child(1), &:nth-child(4) {
+				top: 8px;
+				width: 0%;
+				left: 50%;
+			}
+
+			&:nth-child(2) {
+				@include rotate(45deg);
+			}
+
+			&:nth-child(3) {
+				@include rotate(-45deg);
 			}
 		}
+
+		&:hover {
+			border-color: $cl_blue;
+
+			.hamburger_inner {
+				border-color: $cl_blue;
+			}
+		}
+	}
+}
+
+.logo {
+	width: 180px;
+	margin-top: 3px;
+	float:left;
+	line-height: 20px;
+	font-size: 0;
+
+	@include at-query($screen-sm, $screen-md) {
+		line-height: 23px;
+	}
+
+	@include at-query($min, $screen-lg) {
+		width:209px;
 	}
 }
 
 header {
 	width:100%;
 	float:left;
-	background:#fff;
-	padding: 14px 15px;
-	border-bottom: 1px solid $cl_gray_medium;
-  @include groovy(all);
+  padding: 15px;
+	background: #FFFFFF;
+  border-bottom: 1px solid $cl_gray_medium;
+	height: 60px;
 
+	// there is just not enough room once we hit tablet
 	@include at-query($min, $screen-sm) {
+		padding: 15px 10px;
+	}
+
+	@include at-query($min, $screen-md) {
+		height: 70px;
+	}
+
+	// return to regular padding when there is space
+	@include at-query($min, $screen-sm + 10px) {
 		padding: 15px;
 	}
 
-	.logo {
-		width: 180px;
-		margin-top:5px;
-		float: left;
-		line-height: 20px;
-		font-size: 0;
+	.container {
+		position: relative;
+		margin: 0;
 
-		@include at-query($min, $screen-sm){
-			width: 160px;
+		@include at-query($min, $screen-sm) {
+			width: 100%;
+			margin: 0 auto;
 		}
 
-		@include at-query($screen-sm, $screen-md){
-			line-height: 23px;
-		}
-
-		@include at-query($min, $screen-lg){
-			width:209px;
+		@include at-query($min, $max-plus-gutters) {
+			max-width: $max-width;
 		}
 	}
 
-	.container {
-		position:relative;
-
-	  @include at-query($min, $screen-sm) {
-	    padding-right: 0;
-	  }
-
-		@include at-query($min, $screen-md) {
-			padding-right: 15px;
-		}
+	&.scrolled {
+		background: #FFFFFF;
+		border-bottom: 1px solid $cl_gray_medium;
 	}
 
 	nav.desktop {
@@ -168,9 +233,19 @@ header {
 			}
 		}
 
-		@include at-query($min, $screen-sm){
-			display:inline-block;
-			float:right;
+		.current-menu-item .menu-item-dropdown__parent-link a {
+			color: $cl_green;
+		}
+
+		.button--header {
+			@include at-query($min, $screen-sm) {
+				margin-right: 0;
+			}
+		}
+
+		@include at-query($min, $screen-md) {
+			display: inline-block;
+			float: right;
 		}
 
 		//
@@ -193,15 +268,16 @@ header {
 			a {
 				padding: 20px 30px;
 				margin: 0;
+				width: 100%;
 
 				&:not(:last-child) {
-					padding-right: 50px;
+					padding-right: 45px;
 					border-bottom: solid 2px #e6e6e6;
 				}
 
 				.menu-dropdown {
 					&__title {
-						@include subhead-adelle-sm;
+						@include paragraph-type--medium;
 						color: $cl_blue;
 						text-transform: none;
 						letter-spacing: normal;
@@ -209,8 +285,7 @@ header {
 					}
 
 					&__info {
-						@include avenir_r(14px);
-						line-height: 20px;
+						@include type-caption-3;
 						color: #4d4d4d;
 						text-transform: none;
 						letter-spacing: normal;
@@ -306,7 +381,7 @@ header {
   		}
   	}
 
-  	@include at-query($min, $screen-sm){
+  	@include at-query($min, $screen-md) {
   		display: none;
   	}
 	}
