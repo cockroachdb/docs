@@ -12,6 +12,8 @@ This page describes newly identified limitations in the CockroachDB v1.1 release
 
 ### Enterprise restores after creating, dropping, or truncating tables
 
+{{site.data.alerts.callout_info}}Resolved as of v1.1.1. It is no longer possible to create an incremental backup if a table has been been created, dropped, or truncated after the full backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
+
 It is not possible to perform an [enterprise `RESTORE`](restore.html) from a full [`BACKUP`](backup.html) with incremental backups if you [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) any tables after the full backup. Attempting to restore in this case will fail with an error.
 
 As a workaround, any time you create, drop, or truncate a table, perform another full `BACKUP` of your cluster.
