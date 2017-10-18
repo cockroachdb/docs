@@ -205,7 +205,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} ./cockroach init --host=cockroachdb-1 --insecure
+    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} init --host=cockroachdb-1 --insecure
     ~~~
 
 
@@ -215,7 +215,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} ./cockroach sql --host=cockroachdb-1 --insecure
+    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} sql --host=cockroachdb-1 --insecure
     ~~~
 
 2. Create an `insecurenodetest` database:
