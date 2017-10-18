@@ -171,10 +171,10 @@ Once you have monitored the upgraded cluster for at least one day:
 2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster and execute the following query:
 
     ~~~ sql
-    > SET CLUSTER SETTING version = '1.0-3';
+    > SET CLUSTER SETTING version = '1.1';
     ~~~
 
-    {{site.data.alerts.callout_info}}You may notice that the new <code>version</code> looks like it refers to version 1.0. This is a known issue that will be resolved in an upcoming v1.1 patch release.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}This step assumes you've upgraded to at least v1.1.1.{{site.data.alerts.end}}
 
     This step enables certain performance improvements and bug fixes that were introduced in v1.1. Note, however, that after completing this step, it will no longer be possible to perform a rolling downgrade to v1.0. In the event of a catastrophic failure or corruption due to usage of new features requiring v1.1, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.
 
