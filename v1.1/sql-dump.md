@@ -16,7 +16,7 @@ When `cockroach dump` is executed:
 
 - Table and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
 - **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated.
-- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default), the dump may fail.
+- If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
 {{site.data.alerts.callout_info}}The user must have the <code>SELECT</code> privilege on the target table(s).{{site.data.alerts.end}}
@@ -57,7 +57,7 @@ The `dump` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (24 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br><span class="version-tag">New in v1.1:</span> Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility.
