@@ -28,10 +28,10 @@ release_info:
     build_time: 2017/09/14 15:13:51 (go1.8.3)
     start_time: 2017-09-14 13:33:22.046027038 -0400 EDT
   v1.1:
-    name: v1.1
-    version: v1.1.0
-    build_time: 2017/10/12 14:48:26 (go1.8.3)
-    start_time: 2017-10-12 15:10:52.34274101 +0000 UTC
+    name: v1.1.1
+    version: v1.1.1
+    build_time: 2017/10/19 14:48:26 (go1.8.3)
+    start_time: 2017-10-19 15:10:52.34274101 +0000 UTC
   # v1.2:
   #   name: v1.2
   #   version: v1.2

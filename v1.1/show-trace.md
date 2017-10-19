@@ -57,7 +57,7 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 
 Parameter | Description
 ----------|------------
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html).<br><br>For `SHOW KV TRACE FOR <stmt>`, some per-result-row messages may be returned, whereas that's generally not the case when `KV` is not specified.<br><br>For `SHOW KV FOR SESSION`, per-result-row messages are returned only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 `explainable_stmt` | The statement to execute and trace. Only [explainable](sql-grammar.html#explainable_stmt) statements are supported.
 
 ## Trace Description
