@@ -1,5 +1,5 @@
 ---
-title: SQL Feature Support in CockroachDB v1.1
+title: SQL Feature Support in CockroachDB v1.2
 summary: Find CockroachDB's conformance to the SQL standard and which common extensions it supports.
 ---
 
