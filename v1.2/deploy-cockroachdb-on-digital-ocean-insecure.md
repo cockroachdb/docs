@@ -1,0 +1,108 @@
+---
+title: Deploy CockroachDB on Digital Ocean (Insecure)
+summary: Learn how to deploy CockroachDB on Digital Ocean.
+toc: false
+toc_not_nested: true
+ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
+---
+
+<div class="filters filters-big clearfix">
+  <a href="deploy-cockroachdb-on-digital-ocean.html"><button class="filter-button">Secure</button>
+  <button class="filter-button current"><strong>Insecure</strong></button></a>
+</div>
+
+This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
+
+{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+
+<div id="toc"></div>
+
+## Requirements
+
+{% include prod_deployment/insecure-requirements.md %}
+
+## Recommendations
+
+{% include prod_deployment/insecure-recommendations.md %}
+
+- If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
+
+## Step 1. Create Droplets
+
+[Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
+
+- Running at least 3 nodes to ensure survivability.
+- Selecting the same continent for all of your Droplets for best performance.
+
+## Step 2. Set up load balancing
+
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+
+- **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
+
+- **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
+
+Digital Ocean offers fully-managed load balancers to distribute traffic between Droplets.
+
+1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
+	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
+	- Configure health checks to use HTTP port **8080** and path `/health`.
+2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+
+{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
+
+## Step 3. Configure your network
+
+Set up a firewall for each of your Droplets, allowing TCP communication on the following two ports:
+
+- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
+- **8080** (`tcp:8080`) for exposing your Admin UI
+
+For guidance, you can use Digital Ocean's guide to configuring firewalls based on the Droplet's OS:
+
+- Ubuntu and Debian can use [`ufw`](https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server).
+- FreeBSD can use [`ipfw`](https://www.digitalocean.com/community/tutorials/recommended-steps-for-new-freebsd-10-1-servers).
+- Fedora can use [`iptables`](https://www.digitalocean.com/community/tutorials/initial-setup-of-a-fedora-22-server).
+- CoreOS can use [`iptables`](https://www.digitalocean.com/community/tutorials/how-to-secure-your-coreos-cluster-with-tls-ssl-and-firewall-rules).
+- CentOS can use [`firewalld`](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7).
+
+## Step 4. Start nodes
+
+{% include prod_deployment/insecure-start-nodes.md %}
+
+## Step 5. Initialize the cluster
+
+{% include prod_deployment/insecure-initialize-cluster.md %}
+
+## Step 6. Test the cluster
+
+{% include prod_deployment/insecure-test-cluster.md %}
+
+## Step 7. Test load balancing
+
+{% include prod_deployment/insecure-test-load-balancing.md %}
+
+## Step 8. Use the cluster
+
+Now that your deployment is working, you can:
+
+1. [Implement your data model](sql-statements.html).
+2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
+3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
+
+## Step 9. Monitor the cluster
+
+{% include prod_deployment/insecure-monitor-cluster.md %}
+
+## Step 10. Scale the cluster
+
+{% include prod_deployment/insecure-scale-cluster.md %}
+
+## See Also
+
+- [Google Cloud GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
+- [AWS Deployment](deploy-cockroachdb-on-aws.html)
+- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
+- [Manual Deployment](manual-deployment.html)
+- [Orchestration](orchestration.html)
+- [Start a Local Cluster](start-a-local-cluster.html)
