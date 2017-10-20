@@ -19,8 +19,7 @@ redcarpet:
 
 versions:
   stable: v1.1
-  dev: v1.1
-  # dev: v1.2
+  dev: v1.2
 
 release_info:
   v1.0:
@@ -32,11 +31,11 @@ release_info:
     version: v1.1.1
     build_time: 2017/10/19 14:48:26 (go1.8.3)
     start_time: 2017-10-19 15:10:52.34274101 +0000 UTC
-  # v1.2:
-  #   name: v1.2
-  #   version: v1.2
-  #   build_time: 2017/10/05 15:21:15 (go1.8.3)
-  #   start_time: 2017-10-05 18:53:43.318460386 -0400 EDT
+  v1.2:
+    name: v1.2
+    version: v1.1.1
+    build_time: 2017/10/19 14:48:26 (go1.8.3)
+    start_time: 2017-10-19 15:10:52.34274101 +0000 UTC
 
 exclude: ["ci", "vendor"]
 
