@@ -162,7 +162,7 @@ table tr td:nth-child(2) {
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
 | Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html) |
-| Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
+| Common Table Expressions | Planned | Common Extension | Also known as CTEs or `WITH` clauses. [GitHub issue tracking common table expressions support.](https://github.com/cockroachdb/cockroach/issues/7029) |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |
