@@ -314,7 +314,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
 1. On the instance running your manager node, create one swarm service for each CockroachDB node:
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Create the first service:
     $ sudo docker service create \
     --replicas 1 \
@@ -338,7 +338,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Create the second service:
     $ sudo docker service create \
     --replicas 1 \
@@ -361,7 +361,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Create the third service:
     $ sudo docker service create \
     --replicas 1 \
