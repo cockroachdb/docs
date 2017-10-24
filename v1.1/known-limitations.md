@@ -26,6 +26,10 @@ The locations of all ranges in a cluster are stored in a two-level index at the 
 
 If you are running multiple nodes on a single machine (not recommended) and didnt' specified the maximum allocated storage capacity for each node using the [`--store`](start-a-node.html#store) flag, the available capacity shown in the [**Capacity**](admin-ui-storage-dashboard.html#capacity) graph in the Admin UI is incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as an available store for each node, while in reality, only one hard disk is available for all nodes. The total available capacity is then calculated as the hard disk size multiplied by the number of nodes on the machine.
 
+### Downgrading to v1.1.0 from a later v1.1.x patch release
+
+If you have started or [upgraded](upgrade-cockroach-version.html#finalize-the-upgrade) a cluster using v1.1.1 or a later release, then you will not be able to downgrade the cluster to the v1.1.0 binary. This is due to an issue with the `version` setting in the v1.1.0 release that was fixed in v1.1.1. Changing between between different `x.y.z` versions of the same `x.y` release is typically safe.
+
 ## Unresolved Limitations
 
 ### Schema changes within transactions
