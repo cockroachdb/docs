@@ -26,7 +26,7 @@ func init() {
 }
 
 func generateFuncs() {
-	outDir := filepath.Join("..", "_includes", "sql")
+	outDir := filepath.Join("..", "_includes", "sql", "v1.2")
 	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(parser.Builtins, true), 0644); err != nil {
 		panic(err)
 	}
@@ -225,11 +225,13 @@ func linkTypeName(s string) string {
 	switch s {
 	case "timestamptz":
 		s = "timestamp"
+	case "collatedstring":
+		s = "collate"
 	}
 	s = strings.TrimSuffix(s, "[]")
 	switch s {
 	case "int", "decimal", "float", "bool", "date", "timestamp", "interval", "string", "bytes",
-		"inet", "uuid", "collatedstring":
+		"uuid", "collate":
 		s = fmt.Sprintf("<a href=\"%s.html\">%s</a>", s, name)
 	}
 	return s
