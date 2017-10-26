@@ -25,6 +25,8 @@
 </span></td></tr>
 <tr><td><code>array_append(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
+<tr><td><code>array_append(array: inet[], elem: inet) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
 <tr><td><code>array_append(array: oid[], elem: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
 <tr><td><code>array_cat(left: <a href="bool.html">bool</a>[], right: <a href="bool.html">bool</a>[]) &rarr; <a href="bool.html">bool</a>[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
@@ -48,6 +50,8 @@
 <tr><td><code>array_cat(left: <a href="timestamp.html">timestamptz</a>[], right: <a href="timestamp.html">timestamptz</a>[]) &rarr; <a href="timestamp.html">timestamptz</a>[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
 <tr><td><code>array_cat(left: <a href="uuid.html">uuid</a>[], right: <a href="uuid.html">uuid</a>[]) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
+</span></td></tr>
+<tr><td><code>array_cat(left: inet[], right: inet[]) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
 <tr><td><code>array_cat(left: oid[], right: oid[]) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
@@ -77,6 +81,8 @@
 </span></td></tr>
 <tr><td><code>array_position(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
+<tr><td><code>array_position(array: inet[], elem: inet) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
 <tr><td><code>array_position(array: oid[], elem: oid) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><code>array_positions(array: <a href="bool.html">bool</a>[], elem: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
@@ -100,6 +106,8 @@
 <tr><td><code>array_positions(array: <a href="timestamp.html">timestamptz</a>[], elem: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><code>array_positions(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
+<tr><td><code>array_positions(array: inet[], elem: inet) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><code>array_positions(array: oid[], elem: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
@@ -125,6 +133,8 @@
 </span></td></tr>
 <tr><td><code>array_prepend(elem: <a href="uuid.html">uuid</a>, array: <a href="uuid.html">uuid</a>[]) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
+<tr><td><code>array_prepend(elem: inet, array: inet[]) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
 <tr><td><code>array_prepend(elem: oid, array: oid[]) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
 <tr><td><code>array_remove(array: <a href="bool.html">bool</a>[], elem: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a>[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
@@ -148,6 +158,8 @@
 <tr><td><code>array_remove(array: <a href="timestamp.html">timestamptz</a>[], elem: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a>[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
 </span></td></tr>
 <tr><td><code>array_remove(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
+</span></td></tr>
+<tr><td><code>array_remove(array: inet[], elem: inet) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
 </span></td></tr>
 <tr><td><code>array_remove(array: oid[], elem: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
 </span></td></tr>
@@ -173,9 +185,20 @@
 </span></td></tr>
 <tr><td><code>array_replace(array: <a href="uuid.html">uuid</a>[], toreplace: <a href="uuid.html">uuid</a>, replacewith: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
+<tr><td><code>array_replace(array: inet[], toreplace: inet, replacewith: inet) &rarr; inet[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
+</span></td></tr>
 <tr><td><code>array_replace(array: oid[], toreplace: oid, replacewith: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
 <tr><td><code>array_upper(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the maximum value of <code>input</code> on the provided <code>array_dimension</code>. However, because CockroachDB doesn’t yet support multi-dimensional arrays, the only supported <code>array_dimension</code> is <strong>1</strong>.</p>
+</span></td></tr></tbody>
+</table>
+
+### BOOL Functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>inet_same_family(val: inet, val: inet) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Checks if two IP addresses are of the same IP family.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -209,6 +232,21 @@
 </span></td></tr>
 <tr><td><code>current_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
 </span></td></tr>
+<tr><td><code>date_trunc(element: <a href="string.html">string</a>, input: <a href="date.html">date</a>) &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Truncates <code>input</code> to precision <code>element</code>.  Sets all fields that are less
+significant than <code>element</code> to zero (or one, for day and month)</p>
+<p>Compatible elements: year, quarter, month, week, hour, minute, second,
+millisecond, microsecond.</p>
+</span></td></tr>
+<tr><td><code>date_trunc(element: <a href="string.html">string</a>, input: <a href="timestamp.html">timestamp</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Truncates <code>input</code> to precision <code>element</code>.  Sets all fields that are less
+significant than <code>element</code> to zero (or one, for day and month)</p>
+<p>Compatible elements: year, quarter, month, week, hour, minute, second,
+millisecond, microsecond.</p>
+</span></td></tr>
+<tr><td><code>date_trunc(element: <a href="string.html">string</a>, input: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Truncates <code>input</code> to precision <code>element</code>.  Sets all fields that are less
+significant than <code>element</code> to zero (or one, for day and month)</p>
+<p>Compatible elements: year, quarter, month, week, hour, minute, second,
+millisecond, microsecond.</p>
+</span></td></tr>
 <tr><td><code>experimental_strftime(input: <a href="date.html">date</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>From <code>input</code>, extracts and formats the time as identified in <code>extract_format</code> using standard <code>strftime</code> notation (though not all formatting is supported).</p>
 </span></td></tr>
 <tr><td><code>experimental_strftime(input: <a href="timestamp.html">timestamp</a>, extract_format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>From <code>input</code>, extracts and formats the time as identified in <code>extract_format</code> using standard <code>strftime</code> notation (though not all formatting is supported).</p>
@@ -222,6 +260,10 @@
 hour, minute, second, millisecond, microsecond, epoch</p>
 </span></td></tr>
 <tr><td><code>extract(element: <a href="string.html">string</a>, input: <a href="timestamp.html">timestamp</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.</p>
+<p>Compatible elements: year, quarter, month, week, dayofweek, dayofyear,
+hour, minute, second, millisecond, microsecond, epoch</p>
+</span></td></tr>
+<tr><td><code>extract(element: <a href="string.html">string</a>, input: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.</p>
 <p>Compatible elements: year, quarter, month, week, dayofweek, dayofyear,
 hour, minute, second, millisecond, microsecond, epoch</p>
 </span></td></tr>
@@ -249,9 +291,44 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <tbody>
 <tr><td><code>experimental_uuid_v4() &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a UUID.</p>
 </span></td></tr>
+<tr><td><code>gen_random_uuid() &rarr; <a href="uuid.html">uuid</a></code></td><td><span class="funcdesc"><p>Generates a random UUID and returns it as a value of UUID type.</p>
+</span></td></tr>
 <tr><td><code>unique_rowid() &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns a unique ID used by CockroachDB to generate unique row IDs if a Primary Key isn’t defined for the table. The value is a combination of the  insert timestamp and the ID of the node executing the statement, which  guarantees this combination is globally unique.</p>
 </span></td></tr>
 <tr><td><code>uuid_v4() &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a UUID.</p>
+</span></td></tr></tbody>
+</table>
+
+### INET Functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>abbrev(val: inet) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the combined IP address and prefix length to an abbreviated display format as text.For INET types, this will omit the prefix length if it’s not the default (32 or IPv4, 128 for IPv6)</p>
+<p>For example, <code>abbrev('192.168.1.2/24')</code> returns <code>'192.168.1.2/24'</code></p>
+</span></td></tr>
+<tr><td><code>broadcast(val: inet) &rarr; inet</code></td><td><span class="funcdesc"><p>Gets the broadcast address for the network address represented by the value.</p>
+<p>For example, <code>broadcast('192.168.1.2/24')</code> returns <code>'192.168.1.255/24'</code></p>
+</span></td></tr>
+<tr><td><code>family(val: inet) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts the IP family of the value; 4 for IPv4, 6 for IPv6.</p>
+<p>For example, <code>family('::1')</code> returns <code>6</code></p>
+</span></td></tr>
+<tr><td><code>host(val: inet) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Extracts the address part of the combined address/prefixlen value as text.</p>
+<p>For example, <code>host('192.168.1.2/16')</code> returns <code>'192.168.1.2'</code></p>
+</span></td></tr>
+<tr><td><code>hostmask(val: inet) &rarr; inet</code></td><td><span class="funcdesc"><p>Creates an IP host mask corresponding to the prefix length in the value.</p>
+<p>For example, <code>hostmask('192.168.1.2/16')</code> returns <code>'0.0.255.255'</code></p>
+</span></td></tr>
+<tr><td><code>masklen(val: inet) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Retrieves the prefix length stored in the value.</p>
+<p>For example, <code>masklen('192.168.1.2/16')</code> returns <code>16</code></p>
+</span></td></tr>
+<tr><td><code>netmask(val: inet) &rarr; inet</code></td><td><span class="funcdesc"><p>Creates an IP network mask corresponding to the prefix length in the value.</p>
+<p>For example, <code>netmask('192.168.1.2/16')</code> returns <code>'255.255.0.0'</code></p>
+</span></td></tr>
+<tr><td><code>set_masklen(val: inet, prefixlen: <a href="int.html">int</a>) &rarr; inet</code></td><td><span class="funcdesc"><p>Sets the prefix length of <code>val</code> to <code>prefixlen</code>.</p>
+<p>For example, <code>set_masklen('192.168.1.2', 16)</code> returns <code>'192.168.1.2/16'</code>.</p>
+</span></td></tr>
+<tr><td><code>text(val: inet) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the IP address and prefix length to text.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -412,6 +489,10 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>concat_ws(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Uses the first argument as a separator between the concatenation of the subsequent arguments.</p>
 <p>For example <code>concat_ws('!','wow','great')</code> returns <code>wow!great</code>.</p>
+</span></td></tr>
+<tr><td><code>decode(text: <a href="string.html">string</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Decodes <code>data</code> as the format specified by <code>format</code> (only “hex” is supported).</p>
+</span></td></tr>
+<tr><td><code>encode(data: <a href="bytes.html">bytes</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Encodes <code>data</code> in the text format specified by <code>format</code> (only “hex” is supported).</p>
 </span></td></tr>
 <tr><td><code>from_ip(val: <a href="bytes.html">bytes</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the byte string representation of an IP to its character string representation.</p>
 </span></td></tr>
@@ -624,6 +705,9 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
+<tr><td><code>crdb_internal.unary_table() &rarr; setof tuple{}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing a single row with no values.</p>
+<p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
 <tr><td><code>format_type(type_oid: oid, typemod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the SQL name of a data type that is identified by its type OID and possibly a type modifier. Currently, the type modifier is ignored.</p>
 </span></td></tr>
 <tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive.</p>
@@ -631,6 +715,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>, step: <a href="int.html">int</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
 </span></td></tr>
 <tr><td><code>oid(int: <a href="int.html">int</a>) &rarr; oid</code></td><td><span class="funcdesc"><p>Converts an integer to an OID.</p>
+</span></td></tr>
+<tr><td><code>pg_get_keywords() &rarr; setof tuple{<a href="string.html">string</a>, <a href="string.html">string</a>, string}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
 </span></td></tr>
 <tr><td><code>unnest(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows</p>
 </span></td></tr></tbody>
