@@ -1314,10 +1314,10 @@ button.cursorNorm {
 hr.faded {
   border: 0;
   height: 1px;
-  background-image: -webkit-linear-gradient(left, transparent, rgba(0, 0, 0, 0.75), transparent);
-  background-image: -moz-linear-gradient(left, transparent, rgba(0, 0, 0, 0.75), transparent);
-  background-image: -ms-linear-gradient(left, transparent, rgba(0, 0, 0, 0.75), transparent);
-  background-image: -o-linear-gradient(left, transparent, rgba(0, 0, 0, 0.75), transparent); }
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  background-image: -ms-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); }
 
 hr.shaded {
   height: 12px;
@@ -1666,44 +1666,22 @@ li.search-wrap {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     outline: 0;
-    width: 32%;
-    padding: 75px 0 5px;
+    width: 90px;
+    padding: 17px 0 11px;
     position: relative;
     bottom: -2px;
-    float: left; }
+    float: left;
+    line-height: 25px;
+    margin: 0 2% 2% 0; }
+    #os-tabs button:before {
+      display: inline-block;
+      margin-top: -8px;
+      vertical-align: middle; }
     #os-tabs button:hover {
       border: 1px solid #54B30E; }
     #os-tabs button.current {
       border: 1px solid #54B30E;
       background-color: #F0FFE8; }
-    #os-tabs button:after {
-      position: absolute;
-      font-family: 'FontAwesome';
-      content: "\f078";
-      top: 25px;
-      left: 50%;
-      -webkit-transform: translate(-50%, 0);
-      -ms-transform: translate(-50%, 0);
-      -o-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
-      z-index: 5;
-      font-size: 55px; }
-    #os-tabs button#mac {
-      margin: 0 2% 2% 0; }
-      #os-tabs button#mac:after {
-        content: "\f179"; }
-    #os-tabs button#linux {
-      margin: 0 2% 2% 0; }
-      #os-tabs button#linux:after {
-        content: "\f17c"; }
-    #os-tabs button#windows {
-      margin: 0 2% 0 0; }
-      #os-tabs button#windows:after {
-        content: "\f17a"; }
-    #os-tabs button#source {
-      margin: 0 2% 0 0; }
-      #os-tabs button#source:after {
-        content: "\f1c6"; }
 
 .install-button {
   display: inline-block;
@@ -1815,7 +1793,29 @@ li.search-wrap {
 
 @media (min-width: 700px) {
   #os-tabs button {
-    width: 150px; }
+    width: 140px; }
+    #os-tabs button:before {
+      font-family: 'FontAwesome';
+      content: "\f078";
+      margin-right: 10px;
+      z-index: 5;
+      font-size: 24px; }
+    #os-tabs button#mac {
+      margin: 0 2% 2% 0; }
+      #os-tabs button#mac:before {
+        content: "\f179"; }
+    #os-tabs button#linux {
+      margin: 0 2% 2% 0; }
+      #os-tabs button#linux:before {
+        content: "\f17c"; }
+    #os-tabs button#windows {
+      margin: 0 2% 0 0; }
+      #os-tabs button#windows:before {
+        content: "\f17a"; }
+    #os-tabs button#source {
+      margin: 0 2% 0 0; }
+      #os-tabs button#source:before {
+        content: "\f1c6"; }
 
   #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;
@@ -1832,7 +1832,7 @@ li.search-wrap {
     -moz-osx-font-smoothing: grayscale;
     line-height: 20px; } }
 .filters-big .filter-button {
-  height: 65px;
+  height: 55px;
   margin: 15px 15px 10px 0px;
   padding-left: 20px;
   padding-right: 20px;

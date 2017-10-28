@@ -7,12 +7,19 @@
 		color: $cl_blue;
 		@include avenir_h(16px);
 		outline: 0;
-		width: 32%;
-		padding: 75px 0 5px;
+		width: 90px;
+		padding: 17px 0 11px;
 		position: relative;
 		bottom: -2px;
 		float: left;
+		line-height: 25px;
+		margin: 0 2% 2% 0;
 
+		&:before {
+			display: inline-block;
+			margin-top: -8px;
+			vertical-align: middle;
+		}
 
 		&:hover {
 			border: 1px solid $cl_green;
@@ -21,46 +28,6 @@
 		&.current {
 			border: 1px solid $cl_green;
 			background-color: #F0FFE8;
-		}
-
-		&:after {
-			position: absolute;
-			font-family: 'FontAwesome';
-			content: "\f078";
-			top: 25px;
-			left: 50%;
-			@include translate(-50%, 0);
-			z-index: 5;
-			font-size: 55px;
-		}
-
-		&#mac {
-			margin: 0 2% 2% 0;
-			&:after {
-				content: "\f179";
-         	}
-		}
-
-		&#linux {
-			margin: 0 2% 2% 0;
-
-			&:after {
-				content: "\f17c";
-         	}
-		}
-
-		&#windows {
-			margin: 0 2% 0 0;
-			&:after {
-				content: "\f17a";
-         	}
-		}
-
-		&#source {
-			margin: 0 2% 0 0;
-			&:after {
-				content: "\f1c6";
-			}
 		}
 	}
 }
@@ -84,6 +51,7 @@
 		padding: 15px 25px;
 		float: none;
 		font-size: 16px;
+
 		// this breaks the styleguide a bit, but 25 was too much space
 		line-height: 20px;
 	}
@@ -206,11 +174,47 @@
 	}
 }
 
-
 @media (min-width: 700px) {
 	#os-tabs {
 		button {
-			width: 150px;
+			width: 140px;
+
+			&:before {
+				font-family: 'FontAwesome';
+				content: "\f078";
+				margin-right: 10px;
+				z-index: 5;
+				font-size: 24px;
+			}
+
+			&#mac {
+				margin: 0 2% 2% 0;
+				&:before {
+					content: "\f179";
+	         	}
+			}
+
+			&#linux {
+				margin: 0 2% 2% 0;
+
+				&:before {
+					content: "\f17c";
+	         	}
+			}
+
+			&#windows {
+				margin: 0 2% 0 0;
+				&:before {
+					content: "\f17a";
+	         	}
+			}
+
+			&#source {
+				margin: 0 2% 0 0;
+				&:before {
+					content: "\f1c6";
+				}
+			}
 		}
 	}
 
@@ -236,7 +240,7 @@
 
 .filters-big {
 	.filter-button {
-		height: 65px;
+		height: 55px;
 		margin: 15px 15px 10px 0px;
 		padding-left: 20px;
 		padding-right: 20px;
