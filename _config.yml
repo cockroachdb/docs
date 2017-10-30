@@ -37,7 +37,7 @@ release_info:
     build_time: 2017/10/26 14:48:26 (go1.9)
     start_time: 2017-10-26 15:10:52.34274101 +0000 UTC
 
-exclude: ["ci", "vendor"]
+exclude: ["ci", "vendor", "rfc"]
 
 defaults:
   -
