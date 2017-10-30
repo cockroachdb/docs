@@ -10,7 +10,7 @@ CockroachDB supports the following data types. Click a type for more details.
 
 Type | Description | Example
 -----|-------------|--------
-[`INT`](int.html) | A 32-bit or 64-bit signed integer. | `12345`
+[`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
 [`DECIMAL`](decimal.html) | An exact, fixed-point number. | `1.2345`
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number. | `1.2345`
