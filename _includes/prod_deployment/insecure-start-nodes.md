@@ -38,7 +38,7 @@ For each initial node of your cluster, complete the following steps:
     Flag | Description
     -----|------------
     `--insecure` | Indicates that the cluster is insecure, with no network encryption or authentication.
-    `--host` | Specifies the hostname or IP address to listen on for intra-cluster and client communication. If it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>If you want to listen on multiple interfaces, leave `--host` empty. If doing
+    `--host` | Specifies the hostname or IP address to listen on for intra-cluster and client communication. If it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>If you want the node to listen on multiple interfaces, leave `--host` empty.<br><br>If you want the node to communicate with other nodes on an internal address (e.g., within a private network) while listening on all interfaces, leave `--host` empty and set the `--advertise-host` flag to the internal address.
     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster.
     `--cache`<br>`--max-sql-memory` | Increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details).
     `background` | Starts the node in the background so you gain control of the terminal to issue more commands.
