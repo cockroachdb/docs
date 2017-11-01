@@ -37,6 +37,11 @@ release_info:
     build_time: 2017/10/26 14:48:26 (go1.9)
     start_time: 2017-10-26 15:10:52.34274101 +0000 UTC
 
+training:
+  ccl_license: crl-0-ELzpyNMFGAIiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
+  aws_access_key: AKIAJNRF52TMSNX
+  aws_secret_access_key: 6yTKDp5GHihUdVvBwUtj5PZYSSBUK3s6lQb7
+
 exclude: ["ci", "vendor", "rfc"]
 
 defaults:
