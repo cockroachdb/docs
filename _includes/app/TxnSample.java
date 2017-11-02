@@ -6,6 +6,12 @@ import java.sql.*;
   You can download the postgres JDBC driver jar from https://jdbc.postgresql.org.
 */
 
+// Ambiguous whether the transaction committed or not.
+class AmbiguousCommitException extends SQLException{
+    public AmbiguousCommitException(Throwable cause) {
+        super(cause);
+    }
+}
 class InsufficientBalanceException extends Exception {}
 class AccountNotFoundException extends Exception {
     public int account;
@@ -17,14 +23,14 @@ class AccountNotFoundException extends Exception {
 // A simple interface that provides a retryable lambda expression.
 interface RetryableTransaction {
     public void run(Connection conn)
-        throws SQLException, InsufficientBalanceException, AccountNotFoundException;
+        throws SQLException, InsufficientBalanceException, AccountNotFoundException, AmbiguousCommitException;
 }
 
 public class TxnSample {
     public static RetryableTransaction transferFunds(int from, int to, int amount) {
         return new RetryableTransaction() {
             public void run(Connection conn)
-                throws SQLException, InsufficientBalanceException, AccountNotFoundException {
+                throws SQLException, InsufficientBalanceException, AccountNotFoundException, AmbiguousCommitException {
                 // Check the current balance.
                 ResultSet res = conn.createStatement().executeQuery("SELECT balance FROM accounts WHERE id = " + from);
                 if(!res.next()) {
@@ -42,28 +48,31 @@ public class TxnSample {
     }
 
     public static void retryTransaction(Connection conn, RetryableTransaction tx)
-        throws SQLException, InsufficientBalanceException, AccountNotFoundException {
+        throws SQLException, InsufficientBalanceException, AccountNotFoundException, AmbiguousCommitException {
         Savepoint sp = conn.setSavepoint("cockroach_restart");
         while(true) {
             try {
                 // Attempt the transaction.
                 tx.run(conn);
 
-                // If we reach this point, commit the transaction,
-                // which implicitly releases the savepoint.
-                conn.commit();
+                conn.releaseSavepoint(sp);
                 break;
             } catch(SQLException e) {
+                String sqlState = e.getSQLState();
                 // Check if the error code indicates a SERIALIZATION_FAILURE.
-                if(e.getErrorCode() == 40001) {
+                if(sqlState.equals("40001")) {
                     // Signal the database that we will attempt a retry.
                     conn.rollback(sp);
+                } else if(sqlState.equals("40003")) {
+                    throw new AmbiguousCommitException(e);
                 } else {
-                    // This is a not a serialization failure, pass it up the chain.
                     throw e;
                 }
             }
         }
+        // Commit the transaction.
+        conn.commit();
+
     }
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
@@ -90,6 +99,8 @@ public class TxnSample {
                 System.out.println("Insufficient balance");
             } catch(AccountNotFoundException e) {
                 System.out.println("No users in the table with id " + e.account);
+            } catch(AmbiguousCommitException e) {
+                System.out.println("Ambiguous result encountered: " +e);
             } catch(SQLException e) {
                 System.out.println("SQLException encountered:" + e);
             } finally {
