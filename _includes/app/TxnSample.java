@@ -49,8 +49,8 @@ public class TxnSample {
                 // Attempt the transaction.
                 tx.run(conn);
 
-                // If we reach this point, commit the transaction,
-                // which implicitly releases the savepoint.
+                // If we reach this point, release the savepoint and commit the transaction.
+                conn.releaseSavepoint(sp);
                 conn.commit();
                 break;
             } catch(SQLException e) {
