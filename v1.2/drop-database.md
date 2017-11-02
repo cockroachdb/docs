@@ -22,50 +22,46 @@ Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
 `name`  | The name of the database you want to drop.
-`CASCADE` | Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
-`RESTRICT` | _(Default)_ Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
-
-{{site.data.alerts.callout_danger}}In an upcoming v1.1 patch release, the default behavior will be changed from <code>RESTRICT</code> to <code>CASCADE</code> for consistency with v1.0 and compatibility with PostgreSQL.{{site.data.alerts.end}}
+`CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT` | Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
 
 ## Examples
 
-### Drop an empty database
+### Drop a database and its objects (`CASCADE`)
 
-When a database is empty, the default `RESTRICT` option is sufficient to drop the database:
+For sessions from any client except the [built-in interactive SQL shell](use-the-built-in-sql-client.html), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.
 
 ~~~ sql
-> SHOW TABLES FROM db1;
+> SHOW TABLES FROM db2;
 ~~~
 
 ~~~
 +-------+
 | Table |
 +-------+
+| t1    |
+| v1    |
 +-------+
-(0 rows)
+(2 rows)
 ~~~
 
 ~~~ sql
-> DROP DATABASE db1 RESTRICT;
-~~~
-
-To avoid an error in case the database does not exist, you can include `IF EXISTS`:
-
-~~~ sql
-> DROP DATABASE db_missing;
-~~~
-
-~~~
-pq: database "db_missing" does not exist
+> DROP DATABASE db2;
 ~~~
 
 ~~~ sql
-> DROP DATABASE IF EXISTS db_missing;
+> SHOW TABLES FROM db2;
 ~~~
 
-### Drop a database and dependent objects
+~~~
+pq: database "db2" does not exist
+~~~
 
-When a database is not empty, the default `RESTRICT` option prevents the database from being dropped:
+For sessions from the [built-in interactive SQL shell](use-the-built-in-sql-client.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
+
+### Prevent dropping a non-empty database (`RESTRICT`)
+
+When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
 ~~~ sql
 > SHOW TABLES FROM db2;
@@ -88,22 +84,6 @@ When a database is not empty, the default `RESTRICT` option prevents the databas
 ~~~
 pq: database "db2" is not empty and CASCADE was not specified
 ~~~
-
-In this case, you must use the `CASCADE` option to drop the database and all the tables and views it contains:
-
-~~~ sql
-> DROP DATABASE db2 CASCADE;
-~~~
-
-~~~ sql
-> SHOW TABLES FROM db2;
-~~~
-
-~~~
-pq: database "db2" does not exist
-~~~
-
-{{site.data.alerts.callout_info}}It's important to note that any objects dependent on dropped tables and views are also dropped. In the example above, if the <code>db2.t1</code> table had a view dependent on it in another database, that view would have been dropped as well.{{site.data.alerts.end}}
 
 ## See Also
 

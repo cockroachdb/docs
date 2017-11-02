@@ -41,6 +41,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{pg_catalog}` (for ORM compatibility) | Yes |
 | `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
 | `session_user` | The user connected for the current session. | User in connection string | No |
+| `sql_safe_updates` | If `false`, potentially unsafe SQL statements are allowed, including `DROP` of a non-empty database and all dependent objects, `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE .. DROP COLUMN`. See [Allow Potentially Unsafe SQL Statements](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) for more details. | `true` for sessions from the [built-in SQL client](use-the-built-in-sql-client.html),<br>`false` for sessions from other clients | Yes |
 | `time zone` | The default time zone for the current session   | `UTC` | Yes |
 | `tracing` | | `off` | |
 | `transaction isolation level` | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | `SERIALIZABLE` | Yes |
