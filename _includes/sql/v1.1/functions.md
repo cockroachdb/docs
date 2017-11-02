@@ -244,16 +244,12 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 
 ### ID Generation Functions
 
-<table>
-<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
-<tbody>
-<tr><td><code>experimental_uuid_v4() &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a UUID.</p>
-</span></td></tr>
-<tr><td><code>unique_rowid() &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns a unique ID used by CockroachDB to generate unique row IDs if a Primary Key isn’t defined for the table. The value is a combination of the  insert timestamp and the ID of the node executing the statement, which  guarantees this combination is globally unique.</p>
-</span></td></tr>
-<tr><td><code>uuid_v4() &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a UUID.</p>
-</span></td></tr></tbody>
-</table>
+Function &rarr; Returns | Description
+--- | ---
+<code>experimental_uuid_v4() &rarr; <a href="bytes.html">bytes</a></code> | <span class="funcdesc">Returns a UUID.</span>
+<code>gen_random_uuid() &rarr; uuid</code> | <span class="funcdesc">Generates a random UUID and returns it as a value of UUID type.</span>
+<code>unique_rowid() &rarr; <a href="int.html">int</a></code> | <span class="funcdesc">Returns a unique ID used by CockroachDB to generate unique row IDs if a Primary Key isn't defined for the table. The value is a combination of the  insert timestamp and the ID of the node executing the statement, which  guarantees this combination is globally unique.</span>
+<code>uuid_v4() &rarr; <a href="bytes.html">bytes</a></code> | <span class="funcdesc">Returns a UUID.</span>
 
 ### Math and Numeric Functions
 
