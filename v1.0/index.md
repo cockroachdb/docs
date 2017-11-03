@@ -79,26 +79,3 @@ CockroachDB is a cloud-native SQL database for building global, scalable cloud s
         </div>
     </div>
 </div>
-
-## Recent Blog Posts
-
-{% for post in site.data.blog_posts limit:5 %}
-<div class="row">
-    <div class="col-xs-12">
-        <a href="{{ post.link }}">
-        <div class="blog-post {% if forloop.last %}last-entry{% endif %}">
-            <div class="blog-title">{{ post.title }}</div>
-            <div class="blog-meta">
-                Written by <span class="meta-emphasis">{{ post.creator }}</span>
-                on <span class="meta-emphasis">{{ post.pub_date | date:'%b %-d, %Y' }}</span>
-            </div>
-        </div>
-        </a>
-    </div>
-</div>
-{% endfor %}
-<div class="row">
-    <div class="col-xs-12">
-        <div class="view-blog"><a href="https://www.cockroachlabs.com/blog">View All Posts</a></div>
-    </div>
-</div>
