@@ -189,10 +189,6 @@ For example, all the following formats are equivalent to `b'cat'`:
 - `x'636174'` 
 - `X'636174'`
 - `e'\\x636174'::BYTES`
-- `e'\\X636174'::BYTES`
-- `e'\\x636174'::STRING::BYTES`
-
-This feature is inspired from MySQL.
 
 ## Interpreted literals
 
