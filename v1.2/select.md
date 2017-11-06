@@ -36,7 +36,7 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | `EXCEPT` | Only retrieve rows that are in the preceding `SELECT` statement but not in the following `SELECT` statement.  Returns distinct values.|
 | `ALL` | Include duplicate rows in the returned values of `UNION`, `INTERSECT`, or `EXCEPT`. |
 | `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column.<br><br>When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.|
-| `LIMIT limit_val` | Only retrieve `limit_val` number of rows. <br><br>CockroachDB also supports `FETCH FIRST limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases for `LIMIT`. If `limit_val` is omitted, then one row is fetched. `FETCH NEXT` is often used in conjunction with `OFFSET`.|
+| `LIMIT limit_val` | Only retrieve `limit_val` number of rows. <br><br>CockroachDB also supports `FETCH FIRST limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases for `LIMIT`. If `limit_val` is omitted, then one row is fetched.|
 | `OFFSET offset_val` | Do not include the first `offset_value` number of rows.<br/><br/>`OFFSET` is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.|
 ## Examples
 
