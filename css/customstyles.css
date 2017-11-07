@@ -2995,7 +2995,7 @@ img.mfp-img {
   line-height: 10px;
   background-color: #54B30E;
   border-color: #54B30E;
-  padding: 8px 16px;
+  padding: 8.25px 16px;
   color: #FFFFFF;
   margin-right: 15px; }
   .button--header:focus, .button--header:hover {
@@ -3009,7 +3009,7 @@ img.mfp-img {
       font-size: 12px;
       line-height: 12px;
       margin-left: 10px;
-      padding: 12px 30px; }
+      padding: 13px 30px; }
       .button--header:hover {
         background-color: #FFFFFF;
         color: #54B30E;
