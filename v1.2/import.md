@@ -4,7 +4,7 @@ summary: Import CSV data into your CockroachDB cluster.
 toc: false
 ---
 
-The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) into a single table. 
+The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) into a single table.
 
 {{site.data.alerts.callout_danger}}<strong>This is an experimental feature</strong>. To enable it, you must run <a href="set-cluster-setting.html"><code>SET CLUSTER SETTING experimental.importcsv.enabled = true</code></a>{{site.data.alerts.end}}
 
@@ -38,7 +38,7 @@ Before using [`IMPORT`](import.html), you should have:
 - The schema of the table you want to import.
 - The tabular data you want to import (e.g., CSV), preferably hosted on cloud storage.
 - A location to store data before it is fully imported into all your nodes (referred to in this document as a "temp" directory). This location *must* be accessible to all nodes using the same address (i.e. cannot use a node's local file storage).
-  
+
     For ease of use, we recommend using cloud storage. However, if that isn't readily available to you, we also have a [guide on easily creating your own file server](create-a-file-server.html).
 
 ## Details
@@ -79,7 +79,7 @@ It's important to note, though, that after the single machine creates the Cockro
 
 #### Available Storage Requirements
 
-The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage equal to or greater than the size of the file you're importing. 
+The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage equal to or greater than the size of the file you're importing.
 
 On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the size of the file you're importing.
 
@@ -295,7 +295,7 @@ Convert values to SQL *NULL* if they match the specified string.
 > IMPORT TABLE customers
 CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH 
+WITH
 	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 ;
 ~~~
@@ -304,7 +304,7 @@ WITH
 
 ~~~ sql
 > IMPORT TABLE customers (
-		id SERIAL PRIMARY KEY,
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		name TEXT,
 		INDEX name_idx (name)
 )
@@ -318,7 +318,7 @@ WITH
 
 ~~~ sql
 > IMPORT TABLE customers (
-		id SERIAL PRIMARY KEY,
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		name TEXT,
 		INDEX name_idx (name)
 )
@@ -333,7 +333,7 @@ WITH
 
 ~~~ sql
 > IMPORT TABLE customers (
-		id SERIAL PRIMARY KEY,
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		name TEXT,
 		INDEX name_idx (name)
 )
@@ -348,7 +348,7 @@ WITH
 
 ~~~ sql
 > IMPORT TABLE customers (
-		id SERIAL PRIMARY KEY,
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		name TEXT,
 		INDEX name_idx (name)
 )
