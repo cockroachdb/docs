@@ -19,7 +19,13 @@
             ]
           },
           {
-            "title": "In Docker",
+            "title": "With Kubernetes",
+            "urls": [
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+            ]
+          },
+          {
+            "title": "With Docker",
             "urls": [
               "/${VERSION}/start-a-local-cluster-in-docker.html"
             ]

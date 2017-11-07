@@ -1,5 +1,5 @@
 ---
-title: Start a Cluster in Docker (Insecure)
+title: Start a Local Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: false
 asciicast: true
