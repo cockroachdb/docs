@@ -1,88 +1,153 @@
 ---
 title: Orchestrate CockroachDB with Kubernetes
-summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
+summary: How to orchestrate the deployment and management of a secure 3-node CockroachDB cluster with Kubernetes.
 toc: false
 ---
 
-This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the beta [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+<div class="filters filters-big clearfix">
+  <button class="filter-button current"><strong>Secure</strong></button>
+  <a href="orchestrate-cockroachdb-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
+</div>
+
+This page shows you how to orchestrate the deployment and management of a secure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the beta [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+
+If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
 {{site.data.alerts.callout_info}}Running a stateful application such as CockroachDB on Kubernetes requires using some of Kubernetes' more complex features at a <a href="http://kubernetes.io/docs/api/#api-versioning">beta level</a> of support. There are easier ways to run CockroachDB on Kubernetes for testing purposes, but the method presented here is destined to become a production deployment once Kubernetes matures sufficiently.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}Deploying an <strong>insecure</strong> cluster is not recommended for data in production. We'll update this page after improving the process to deploy secure clusters.{{site.data.alerts.end}}
-
 <div id="toc"></div>
 
-## Step 1. Choose your deployment environment
+## Before You Begin
 
-Choose the environment where you will run CockroachDB with Kubernetes. The instructions below will adjust based on your choice.
+Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="cloud">Cloud</button>
-  <button class="filter-button" data-scope="local">Local</button>
-</div><p></p>
-
-It might also be helpful to review some Kubernetes-specific terminology:
-
-<div class="filter-content" markdown="1" data-scope="cloud">
+### Kubernetes Terminology
 
 Feature | Description
 --------|------------
-instance | A physical or virtual machine. In this tutorial, you'll run a Kubernetes script from your local workstation that will create 4 GCE or AWS instances and join them into a single Kubernetes cluster.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+instance | A physical or virtual machine. In this tutorial, you'll create GCE or AWS instances and join them into a single Kubernetes cluster from your local workstation.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
+[CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster.
 
-</div>
+{% include orchestration/kubernetes-limitations.md %}
 
-<div class="filter-content" markdown="1" data-scope="local">
-
-Feature | Description
---------|------------
-[minikube](http://kubernetes.io/docs/getting-started-guides/minikube/) | This is the tool you'll use to run a single-node Kubernetes cluster inside a VM on your computer.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
-[StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
-[persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of local storage mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>When using `minikube`, persistent volumes are external temporary directories that endure until they are manually deleted or until the entire Kubernetes cluster is deleted.
-[persistent volume claim](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) | When pods are created (one per CockroachDB node), each pod will request a persistent volume claim to “claim” durable storage for its node.
-
-</div>
-
-## Step 2. Install and start Kubernetes
-
-<div class="filter-content" markdown="1" data-scope="cloud">
-
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the Kubernetes documentation:
-
-- For GCE-specific instructions, see [Running Kubernetes on Google Compute Engine](http://kubernetes.io/docs/getting-started-guides/gce/).
-- For AWS-specific instructions, see [Running Kubernetes on AWS EC2](http://kubernetes.io/docs/getting-started-guides/aws/)
-
-The heart of this step is running a Kubernetes script that creates 4 GCE or AWS instances and joins them into a single Kubernetes cluster, all from your local workstation. You'll run subsequent steps from your local workstation as well.
-
-</div>
-
-<div class="filter-content" markdown="1" data-scope="local">
-
-Follow Kubernetes' [documentation](http://kubernetes.io/docs/getting-started-guides/minikube/) to install `minikube` and `kubectl` for your OS. Then start a local Kubernetes cluster:
-
-~~~ shell
-$ minikube start
-Starting local Kubernetes cluster...
-Kubectl is now configured to use the cluster.
-~~~
-
-</div>
+{% include orchestration/start-kubernetes.md %}
 
 ## Step 3. Start the CockroachDB cluster
 
-<div class="filter-content" markdown="1" data-scope="cloud">
+From your local workstation, use our [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file to create the StatefulSet:
 
-2. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
+~~~
 
+~~~
+service "cockroachdb-public" created
+service "cockroachdb" created
+poddisruptionbudget "cockroachdb-budget" created
+statefulset "cockroachdb" created
+~~~
+
+## Step 4. Approve node certificates
+
+As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
+
+1. Wait for pod 1 to reach status `Init:1/2`:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    $ kubectl get pods
     ~~~
 
-2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
+    ~~~
+    NAME            READY     STATUS     RESTARTS   AGE
+    cockroachdb-0   0/1       Init:1/2   0          32s
+    ~~~
 
+2. Get the name of the `Pending` CSR for pod 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
+
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.node.cockroachdb-0                             1m        system:serviceaccount:default:default   Pending
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   4m        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   4m        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   5m        kubelet                                 Approved,Issued
+    ~~~
+
+3. Examine the CSR for pod 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl describe csr default.node.cockroachdb-0
+    ~~~
+
+    ~~~
+    Name:               default.node.cockroachdb-0
+    Labels:             <none>
+    Annotations:        <none>
+    CreationTimestamp:  Thu, 09 Nov 2017 13:39:37 -0500
+    Requesting User:    system:serviceaccount:default:default
+    Status:             Pending
+    Subject:
+      Common Name:    node
+      Serial Number:
+      Organization:   Cockroach
+    Subject Alternative Names:
+             DNS Names:     localhost
+                            cockroachdb-0.cockroachdb.default.svc.cluster.local
+                            cockroachdb-public
+             IP Addresses:  127.0.0.1
+                            10.48.1.6
+    Events:  <none>
+    ~~~
+
+4. If everything looks correct, approve the CSR for pod 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.cockroachdb-0
+    ~~~
+
+    ~~~
+    certificatesigningrequest "default.node.cockroachdb-0" approved
+    ~~~
+
+    Otherwise, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate deny default.node.cockroachdb-0
+    ~~~
+
+5. Repeat steps 1-4 for the other 2 pods.
+
+## Step 5. Verify the cluster and its resources
+
+1. Verify that three pods are `Running` successfully:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          2m
+    cockroachdb-1   1/1       Running   0          2m
+    cockroachdb-2   1/1       Running   0          2m
+    ~~~
+
+2. Verify that the persistent volumes and corresponding claims were created successfully for all three pods:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~
@@ -94,241 +159,398 @@ Kubectl is now configured to use the cluster.
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
-
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
-    ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2m
-    cockroachdb-1   1/1       Running   0          2m
-    cockroachdb-2   1/1       Running   0          2m
-    ~~~
-
-</div>
-
-<div class="filter-content" markdown="1" data-scope="local">
-
-1. Use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
-
-    ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
-    ~~~
-
-
-2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
-
-    ~~~ shell
-    $ kubectl get persistentvolumes
-    ~~~
-
-    ~~~
-    NAME      CAPACITY   ACCESSMODES   STATUS    CLAIM                           REASON    AGE
-    pv0       1Gi        RWO           Bound     default/datadir-cockroachdb-0             27s
-    pv1       1Gi        RWO           Bound     default/datadir-cockroachdb-1             26s
-    pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
-    ~~~
-
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
-
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
-    ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2m
-    cockroachdb-1   1/1       Running   0          2m
-    cockroachdb-2   1/1       Running   0          2m
-    ~~~
-
-</div>
-
 {{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the pod itself.{{site.data.alerts.end}}
 
-## Step 4. Use the built-in SQL client
+## Step 6. Test the cluster
 
-1. Start the [built-in SQL client](use-the-built-in-sql-client.html) in a one-off interactive pod, using the `cockroachdb-public` hostname to access the CockroachDB cluster:
+To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, check and approve the CSR for the pod, get a shell into the pod, and then start the built-in SQL client.
 
+1. From your local workstation, use our [`cockroachdb-client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to launch a pod and keep it running indefinitely:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- sql --insecure --host=cockroachdb-public
+    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-client-secure.yaml
     ~~~
 
-2. Run some [CockroachDB SQL statements](sql-statements.html):
+2. Get the name of the `Pending` CSR for the new pod:
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
+
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    17s       system:serviceaccount:default:default   Pending
+    default.node.cockroachdb-0                             33m       system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-1                             21m       system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-2                             18m       system:serviceaccount:default:default   Approved,Issued
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   36m       kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   36m       kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   36m       kubelet                                 Approved,Issued
+    ~~~
+
+3. Examine the CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl describe csr default.client.root
+    ~~~
+
+    ~~~
+    Name:               default.client.root
+    Labels:             <none>
+    Annotations:        <none>
+    CreationTimestamp:  Fri, 10 Nov 2017 10:03:35 -0500
+    Requesting User:    system:serviceaccount:default:default
+    Status:             Pending
+    Subject:
+             Common Name:    root
+             Serial Number:
+             Organization:   Cockroach
+    Events:  <none>
+    ~~~
+
+4. If everything looks correct, approve the CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.client.root
+    ~~~
+
+    ~~~
+    certificatesigningrequest "default.client.root" approved
+    ~~~
+
+    Otherwise, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate deny default.client.root
+    ~~~
+
+5. Get the name of the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME                                         READY     STATUS    RESTARTS   AGE
+    cockroachdb-client-secure-3534299328-h1vp7   1/1       Running   0          1m
+    cockroachdb-0                                1/1       Running   0          34m
+    cockroachdb-1                                1/1       Running   0          23m
+    cockroachdb-2                                1/1       Running   0          20m
+    ~~~
+
+6. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec -it cockroachdb-client-secure-3534299328-h1vp7 -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    ~~~
+
+    ~~~
+    # Welcome to the cockroach SQL interface.
+    # All statements must be terminated by a semicolon.
+    # To exit: CTRL + D.
+    #
+    # Server version: CockroachDB CCL v1.1.2 (linux amd64, built 2017/11/02 19:32:03, go1.8.3) (same version as client)
+    # Cluster ID: 3292fe08-939f-4638-b8dd-848074611dba
+    #
+    # Enter \? for a brief introduction.
+    #
+    root@cockroachdb-public:26257/>
+    ~~~
+
+7. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+
+    {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+    ~~~
 
-    > INSERT INTO bank.accounts VALUES (1234, 10000.50);
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO bank.accounts VALUES (1, 1000.50);
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
 
-    ~~~ shell
-    +------+----------+
-    |  id  | balance  |
-    +------+----------+
-    | 1234 | 10000.50 |
-    +------+----------+
+    ~~~
+    +----+---------+
+    | id | balance |
+    +----+---------+
+    |  1 |  1000.5 |
+    +----+---------+
     (1 row)
     ~~~
 
-4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit and delete the temporary pod.
+3. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit the pod.
 
-## Step 5. Simulate node failure
+{{site.data.alerts.callout_success}}This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other <a href="cockroach-commands.html"><code>cockroach</code> client commands</a>, such as <code>cockorach node</code> or <code>cockroach zone</code>, repeat step 6 using the appropriate <code>cockroach</code> command.<br>{{site.data.alerts.end}}
 
-Based on the `replicas: 3` line in the StatefulSet configuration, Kubernetes ensures that three pods/nodes are running at all times. If a pod/node fails, Kubernetes will automatically create another pod/node with the same network identity and persistent storage.
+## Step 7. Monitor the cluster
 
-To see this in action:
+To access the cluster's [Admin UI](admin-ui-overview.html):
 
-1. Kill one of CockroachDB nodes:
+1. Port-forward from your local machine to one of the pods:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-2
+    $ kubectl port-forward cockroachdb-0 8080
     ~~~
 
     ~~~
-    pod "cockroachdb-2" deleted
+    Forwarding from 127.0.0.1:8080 -> 8080
     ~~~
 
-2. Verify that the pod was restarted:
+2. Go to <a href="https://localhost:8080/">https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
-    ~~~ shell
-    $ kubectl get pod cockroachdb-2
-    ~~~
-    ~~~
-    NAME            READY     STATUS              RESTARTS   AGE
-    cockroachdb-2   0/1       ContainerCreating   0          3s
-    ~~~
+3. In the UI, verify that the cluster is running as expected:
+    - Click **View nodes list** on the right to ensure that all nodes successfully joined the cluster.
+    - Click the **Databases** tab on the left to verify that `bank` is listed.
 
-3. Wait a bit and then verify that the pod is ready:
+## Step 8. Simulate node failure
 
-    ~~~ shell
-    $ kubectl get pod cockroachdb-2
-    ~~~
+{% include orchestration/kubernetes-simulate-failure.md %}
 
-    ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-2   1/1       Running   0          1m
-    ~~~
+## Step 9. Scale the cluster
 
-## Step 6. Scale the cluster
+{% include orchestration/kubernetes-scale-cluster.md %}
 
-<div class="filter-content" markdown="1" data-scope="cloud">
+3. Wait for the new pod to reach status `Init:1/2`:
 
-The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
-
-1. Add a worker node:
-  - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
-  - On AWS, resize your [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
-
-2. Use the `kubectl scale` command to add a pod to your StatefulSet:
-
-    ~~~ shell
-    $ kubectl scale statefulset cockroachdb --replicas=4
-    ~~~
-
-    ~~~
-    statefulset "cockroachdb" scaled
-    ~~~
-
-3. Verify that a fourth pod was added successfully:
-
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
 
     ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2h
-    cockroachdb-1   1/1       Running   0          2h
-    cockroachdb-2   1/1       Running   0          9m
-    cockroachdb-3   1/1       Running   0          46s
+    NAME                                         READY     STATUS     RESTARTS   AGE
+    cockroachdb-client-secure-3534299328-h1vp7   1/1       Running    0          1h
+    cockroachdb-0                                1/1       Running    0          1h
+    cockroachdb-1                                1/1       Running    0          1h
+    cockroachdb-2                                1/1       Running    0          5m
+    cockroachdb-3                                0/1       Init:1/2   0          21s
     ~~~
 
-</div>
+4. Get the name of the `Pending` CSR for the new pod:
 
-<div class="filter-content" markdown="1" data-scope="local">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
 
-To increase the number of pods in your cluster, use the `kubectl scale` command to alter the `replicas: 3` configuration for your StatefulSet:
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-3                             2m        system:serviceaccount:default:default   Pending
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ~~~
 
-~~~ shell
-$ kubectl scale statefulset cockroachdb --replicas=4
-~~~
+5. Examine the CSR for the new pod:
 
-~~~
-statefulset "cockroachdb" scaled
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl describe csr default.node.cockroachdb-3
+    ~~~
 
-Verify that a fourth pod was added successfully:
+    ~~~
+    Name:               default.node.cockroachdb-0
+    Labels:             <none>
+    Annotations:        <none>
+    CreationTimestamp:  Thu, 09 Nov 2017 13:39:37 -0500
+    Requesting User:    system:serviceaccount:default:default
+    Status:             Pending
+    Subject:
+      Common Name:    node
+      Serial Number:
+      Organization:   Cockroach
+    Subject Alternative Names:
+             DNS Names:     localhost
+                            cockroachdb-0.cockroachdb.default.svc.cluster.local
+                            cockroachdb-public
+             IP Addresses:  127.0.0.1
+                            10.48.1.6
+    Events:  <none>
+    ~~~
 
-~~~ shell
-$ kubectl get pods
-~~~
+6. If everything looks correct, approve the CSR for the new pod:
 
-~~~
-NAME            READY     STATUS    RESTARTS   AGE
-cockroachdb-0   1/1       Running   0          2h
-cockroachdb-1   1/1       Running   0          2h
-cockroachdb-2   1/1       Running   0          9m
-cockroachdb-3   1/1       Running   0          46s
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.cockroachdb-3
+    ~~~
 
-</div>
+    ~~~
+    certificatesigningrequest "default.node.cockroachdb-3" approved
+    ~~~
 
-## Step 7. Stop the cluster
+    Otherwise, run:
 
-<div class="filter-content" markdown="1" data-scope="cloud">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate deny default.node.cockroachdb-3
+    ~~~
+
+7. Verify that the new pod started successfully:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME                                         READY     STATUS    RESTARTS   AGE
+    cockroachdb-client-secure-3534299328-h1vp7   1/1       Running   0          1h
+    cockroachdb-0                                1/1       Running   0          1h
+    cockroachdb-1                                1/1       Running   0          1h
+    cockroachdb-2                                1/1       Running   0          9m
+    cockroachdb-3                                1/1       Running   0          4m
+    ~~~
+
+8. Back in the Admin UI, click **View nodes list** on the right to ensure that the fourth node successfully joined the cluster.
+
+## Step 10. Stop the cluster
 
 To shut down the CockroachDB cluster:
 
-1. Use the `kubectl delete` command to clean up all of the resources you created, including the logs and remote persistent volumes:
+1. Delete all of the resources associated with the `cockroachdb` label, including the logs and remote persistent volumes:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,deployments \
     -l app=cockroachdb
     ~~~
 
-2. Run the `cluster/kube-down.sh` script in the `kubernetes` directory to stop Kubernetes.
+    ~~~
+    pod "cockroachdb-0" deleted
+    pod "cockroachdb-1" deleted
+    pod "cockroachdb-2" deleted
+    pod "cockroachdb-3" deleted
+    statefulset "cockroachdb" deleted
+    service "cockroachdb" deleted
+    service "cockroachdb-public" deleted
+    persistentvolumeclaim "datadir-cockroachdb-0" deleted
+    persistentvolumeclaim "datadir-cockroachdb-1" deleted
+    persistentvolumeclaim "datadir-cockroachdb-2" deleted
+    persistentvolumeclaim "datadir-cockroachdb-3" deleted
+    poddisruptionbudget "cockroachdb-budget" deleted
+    deployment "cockroachdb-client-secure" deleted
+    ~~~
 
-{{site.data.alerts.callout_danger}}If you stop Kubernetes without first deleting resources, the remote persistent volumes will still exist in your cloud project.{{site.data.alerts.end}}
+3. Get the names of the CSRs for the cluster:
 
-</div>
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
 
-<div class="filter-content" markdown="1" data-scope="local">
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-3                             12m       system:serviceaccount:default:default   Approved,Issued
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ~~~
 
-- **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
+4. Delete the CSRs:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete csr default.client.root,default.node.cockroachdb-0,default.node.cockroachdb-1,default.node.cockroachdb-2,default.node.cockroachdb-3,node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4,node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY,node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o
+    ~~~
+
+    ~~~
+    certificatesigningrequest "default.client.root" deleted
+    certificatesigningrequest "default.node.cockroachdb-0" deleted
+    certificatesigningrequest "default.node.cockroachdb-1" deleted
+    certificatesigningrequest "default.node.cockroachdb-2" deleted
+    certificatesigningrequest "default.node.cockroachdb-3" deleted
+    certificatesigningrequest "node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4" deleted
+    certificatesigningrequest "node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY" deleted
+    certificatesigningrequest "node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o" deleted
+    ~~~
+
+5. Get the names of the secrets for the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
+
+    ~~~
+    NAME                         TYPE                                  DATA      AGE
+    default-token-f3b4d          kubernetes.io/service-account-token   3         1h
+    default.client.root          Opaque                                2         1h
+    default.node.cockroachdb-0   Opaque                                2         1h
+    default.node.cockroachdb-1   Opaque                                2         1h
+    default.node.cockroachdb-2   Opaque                                2         1h
+    default.node.cockroachdb-3   Opaque                                2         16m
+    ~~~
+
+6. Delete the secrets:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete secrets default.client.root,default.node.cockroachdb-0,default.node.cockroachdb-1,default.node.cockroachdb-2,default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    secret "default.client.root" deleted
+    secret "default.node.cockroachdb-0" deleted
+    secret "default.node.cockroachdb-1" deleted
+    secret "default.node.cockroachdb-2" deleted
+    secret "default.node.cockroachdb-3" deleted
+    ~~~
+
+7. Stop Kubernetes:
+
+    <div class="filter-content" markdown="1" data-scope="gce-hosted">
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud container clusters delete cockroachdb
+    ~~~
+
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="gce-manual">
 
     ~~~ shell
-    $ minikube stop
+    $ cluster/kube-down.sh
     ~~~
 
-    ~~~
-    Stopping local Kubernetes cluster...
-    Machine stopped.
-    ~~~
+    </div>
 
-    You can restore the cluster to its previous state with `minikube start`.
-
-- **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
+    <div class="filter-content" markdown="1" data-scope="aws">
 
     ~~~ shell
-    $ minikube delete
+    $ cluster/kube-down.sh
     ~~~
 
-    ~~~
-    Deleting local Kubernetes cluster...
-    Machine deleted.
-    ~~~
+    </div>
 
-    {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
-
-</div>
+    {{site.data.alerts.callout_danger}}If you stop Kubernetes without first deleting resources, the remote persistent volumes will still exist in your cloud project.{{site.data.alerts.end}}
 
 ## See Also
 
