@@ -682,6 +682,12 @@
             ]
           },
           {
+            "title": "<code>UUID</code>",
+            "urls": [
+              "/${VERSION}/uuid.html"
+            ]
+          },
+          {
             "title": "<code>SERIAL</code>",
             "urls": [
               "/${VERSION}/serial.html"
@@ -745,12 +751,6 @@
             "title": "<code>ARRAY</code>",
             "urls": [
               "/${VERSION}/array.html"
-            ]
-          },
-          {
-            "title": "<code>UUID</code>",
-            "urls": [
-              "/${VERSION}/uuid.html"
             ]
           }
         ]
