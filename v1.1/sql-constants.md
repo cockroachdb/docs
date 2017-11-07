@@ -181,12 +181,14 @@ with character escapes are as follows:
 ### Hexadecimal-encoded byte array literals
 
 This is a CockroachDB-specific extension to express byte array
-literals: the delimiter `x'` followed by an arbitrary sequence of
-hexadecimal digits, followed by a closing `'`.
+literals: the delimiter `x'` or `e'\\x` followed by an arbitrary sequence of
+hexadecimal digits, followed by a closing `'`. 
 
-For example, both `x'636174'` and `X'636174'` are equivalent to `b'cat'`.
+For example, all the following formats are equivalent to `b'cat'`:
 
-This feature is inspired from MySQL.
+- `x'636174'` 
+- `X'636174'`
+- `e'\\x636174'::BYTES`
 
 ## Interpreted literals
 
