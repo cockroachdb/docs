@@ -4,11 +4,17 @@ summary: Learn how to import data into a CockroachDB cluster.
 toc: false
 ---
 
-CockroachDB supports importing data from `.sql` dumps and some `.csv` files.
+CockroachDB supports importing data from CSV/TSV or SQL dump files.
 
 {{site.data.alerts.callout_info}}To import/restore data from CockroachDB-generated <a href="backup.html">enterprise license backups</a>, see <a href="restore.html"><code>RESTORE</code></a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
+
+## Import from Tabular Data (CSV)
+
+If you have data exported in a tabular format (e.g., CSV or TSV), you can use the [`IMPORT`](import.html) statement.
+
+To use this statement, though, you must also have some kind of remote file server (such as Amazon S3 or a custom file server) that all your nodes can access.
 
 ## Import from Generic SQL Dump
 
@@ -66,12 +72,6 @@ For reference, CockroachDB uses these defaults:
 
 - `[port]`: **26257**
 - `[user]`: **root**
-
-## Import from Tabular Data (CSV)
-
-If you have data exported in a tabular format (e.g., CSV or TSV), you can use the [`IMPORT`](import.html) statement.
-
-To use this statement, though, you must also have some kind of remote file server (such as Amazon S3 or a custom file server) that all your nodes can access.
 
 ## See Also
 
