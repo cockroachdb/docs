@@ -12,10 +12,10 @@ The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `STRING`: 
+In CockroachDB, the following are aliases for `STRING`:
 
 - `CHARACTER`
-- `CHAR` 
+- `CHAR`
 - `VARCHAR`
 - `TEXT`
 
@@ -25,17 +25,19 @@ And the following are aliases for `STRING(n)`:
 - `CHARACTER VARYING(n)`
 - `CHAR(n)`
 - `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+- `VARCHAR(n)`
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. 
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed.
 
-When inserting a string: 
+When inserting a string:
 
 - If the value exceeds the column's length limit, CockroachDB gives an error.
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
 - If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
+
+{{site.data.alerts.callout_info}}There is no performance or storage difference between <code>STRING</code> and <code>STRING(n)</code>. Variable lengths are supported purely for application-level convenience.{{site.data.alerts.end}}
 
 ## Syntax
 
@@ -54,7 +56,7 @@ or the escaped format otherwise.
 
 ## Size
 
-The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.   
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
