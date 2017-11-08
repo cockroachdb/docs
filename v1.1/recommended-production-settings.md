@@ -233,10 +233,10 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 <div id="linuxinstall" markdown="1">
 
-- [Standard](#standard)
-- [With Systemd](#with-systemd)
+- [Per-Process Limit](#per-process-limit)
+- [System-Wide Limit](#system-wide-limit)
 
-#### Standard
+#### Per-Process Limit
 
 To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
@@ -267,8 +267,6 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     $ ulimit -a
     ~~~
 
-#### With Systemd
-
 Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
 
 1.  Edit the service definition to configure the maximum number of open files:
@@ -285,6 +283,22 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     $ systemctl daemon-reload
     ~~~
 
+#### System-Wide Limit
+
+You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
+
+1. Check the system-wide limit:
+
+    ~~~ shell
+    $ cat /proc/sys/fs/file-max
+    ~~~
+
+2. If necessary, increase the system-wide limit in the `proc` file system:
+
+    ~~~ shell
+    $ echo 150000 > /proc/sys/fs/file-max
+    ~~~
+
 </div>
 <div id="windowsinstall" markdown="1">
 
@@ -294,4 +308,4 @@ CockroachDB does not yet provide a native Windows binary. Once that's available,
 
 #### Attributions
 
-This section, "File Descriptors Limit", is a derivative of the chapter *Open File Limits* From the Riak LV 2.1.4 documentation, used under Creative Commons Attribution 3.0 Unported License.
+This section, "File Descriptors Limit", is in part derivative of the chapter *Open File Limits* From the Riak LV 2.1.4 documentation, used under Creative Commons Attribution 3.0 Unported License.
