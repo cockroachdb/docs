@@ -12,7 +12,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction isol
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}</section>
 
 ## Required Privileges
 
@@ -31,19 +31,40 @@ No [privileges](privileges.html) are required to set the transaction isolation l
 
 You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SET TRANSACTION ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
+~~~
 
+{{site.data.alerts.callout_success}}You can also set both transaction options as a space-separated list, e.g., <code>SET TRANSACTION ISOLATION LEVEL SNAPSHOT PRIORITY HIGH</code>.{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
