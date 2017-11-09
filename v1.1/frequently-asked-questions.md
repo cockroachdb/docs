@@ -151,11 +151,13 @@ While all of these are distributed databases, only CockroachDB supports distribu
 
 For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
 
-## Can a MySQL or PostgreSQL application be migrated to CockroachDB?
+## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-The current version of CockroachDB is intended for use with new applications. The initial subset of SQL we support is small relative to the extensive standard, and every popular database implements its own set of extensions and exhibits a unique set of idiosyncrasies. This makes porting an existing application non-trivial unless it is only a very lightweight consumer of SQL functionality.
+Yes, although CockroachDB is unlikely to be a drop-in replacement at this time. Due to differences in available features and syntax, migrating data from these databases to CockroachDB involves some manual effort.
 
-If you are interested in trying to migrate your app, we recommend exporting your data from `pg_dump` (Postgres) or as a CSV (MySQL), and then [importing it into CockroachDB](import-data.html).
+As a first step, check our [SQL Feature Support](sql-feature-support.html) page against your application's high-level SQL requirements. If essential SQL features are missing, consider workarounds and/or reach out to us via [our forum](https://forum.cockroachlabs.com/) or [sales contact form](https://www.cockroachlabs.com/pricing/sales/).
+
+Once you're ready to migrate, we recommend [importing your data via CSV](import.html). The process may expose places where you need to make changes for compatability. When migrating from PostgreSQL, for example, be sure to check this list of [known differences for identical input](porting-postgres.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
