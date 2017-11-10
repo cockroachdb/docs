@@ -198,7 +198,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES
+> INSERT INTO accounts (id) VALUES
     (5);
 ~~~
 
