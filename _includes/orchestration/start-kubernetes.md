@@ -12,9 +12,9 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 <div class="filter-content" markdown="1" data-scope="gke-hosted">
 
-1. Complete the **Before You Begin** steps described in the [Google Container Engine Quickstart](https://cloud.google.com/container-engine/docs/quickstart) documentation.
+1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
 
-    This includes installing `gcloud`, which is used to create and delete Container Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
+    This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
 2. From your local workstation, start the Kubernetes cluster:
 
@@ -22,7 +22,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     $ gcloud container clusters create cockroachdb
     ~~~
 
-    This creates GCE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
 
     The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 

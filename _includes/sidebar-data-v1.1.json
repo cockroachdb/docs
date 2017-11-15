@@ -19,12 +19,6 @@
             ]
           },
           {
-            "title": "With Kubernetes",
-            "urls": [
-              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
-            ]
-          },
-          {
             "title": "With Docker",
             "urls": [
               "/${VERSION}/start-a-local-cluster-in-docker.html"
@@ -120,7 +114,7 @@
         ]
       },
       {
-        "title": "Explore Core Features",
+        "title": "Explore Core Benefits",
         "items": [
           {
             "title": "Data Replication",
@@ -144,6 +138,12 @@
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
+            ]
+          },
+          {
+            "title": "Automated Operations",
+            "urls": [
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
           }
         ]

@@ -13,8 +13,6 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}Running a stateful application such as CockroachDB on Kubernetes requires using some of Kubernetes' more complex features at a <a href="http://kubernetes.io/docs/api/#api-versioning">beta level</a> of support. There are easier ways to run CockroachDB on Kubernetes for testing purposes, but the method presented here is destined to become a production deployment once Kubernetes matures sufficiently.{{site.data.alerts.end}}
-
 <div id="toc"></div>
 
 ## Before You Begin
@@ -29,26 +27,13 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 [pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
-
 {% include orchestration/kubernetes-limitations.md %}
 
 {% include orchestration/start-kubernetes.md %}
 
 ## Step 3. Start CockroachDB nodes
 
-From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
-~~~
-
-~~~
-service "cockroachdb-public" created
-service "cockroachdb" created
-poddisruptionbudget "cockroachdb-budget" created
-statefulset "cockroachdb" created
-~~~
+{% include orchestration/start-cluster.md %}
 
 ## Step 4. Initialize the cluster
 
@@ -60,7 +45,7 @@ statefulset "cockroachdb" created
 
 ## Step 6. Monitor the cluster
 
-{% include orchestration/monitor-cluster-insecure.md %}
+{% include orchestration/monitor-cluster.md %}
 
 ## Step 7. Simulate node failure
 
@@ -93,7 +78,7 @@ To shut down the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
     -l app=cockroachdb
     ~~~
 

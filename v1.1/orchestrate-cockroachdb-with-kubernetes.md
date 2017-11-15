@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB with Kubernetes
 summary: How to orchestrate the deployment and management of a secure 3-node CockroachDB cluster with Kubernetes.
 toc: false
+secure: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +14,7 @@ This page shows you how to orchestrate the deployment and management of a secure
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{{site.data.alerts.callout_info}}Running a stateful application such as CockroachDB on Kubernetes requires using some of Kubernetes' more complex features at a <a href="http://kubernetes.io/docs/api/#api-versioning">beta level</a> of support. There are easier ways to run CockroachDB on Kubernetes for testing purposes, but the method presented here is destined to become a production deployment once Kubernetes matures sufficiently.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Currently, it's possible to orchestrate a secure CockroachDB cluster using the <a href="https://cloud.google.com/kubernetes-engine/docs/">hosted Google Kubernetes Engine service</a>. Additional methods will be supported soon.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -45,11 +46,9 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
  -->
 ## Step 1. Start Kubernetes
 
-{{site.data.alerts.callout_info}}Currently, it's possible to orchestrate a secure CockroachDB cluster using the <a href="https://cloud.google.com/kubernetes-engine/docs/">hosted Google Kubernetes Engine service</a>. Additional methods will be supported soon.{{site.data.alerts.end}}
+1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
 
-1. Complete the **Before You Begin** steps described in the [Google Container Engine Quickstart](https://cloud.google.com/container-engine/docs/quickstart) documentation.
-
-    This includes installing `gcloud`, which is used to create and delete Container Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
+    This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
 2. From your local workstation, start the Kubernetes cluster:
 
@@ -57,25 +56,13 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     $ gcloud container clusters create cockroachdb
     ~~~
 
-    This creates GCE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
 
     The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
 ## Step 2. Start CockroachDB nodes
 
-From your local workstation, use our [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file to create the StatefulSet:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
-~~~
-
-~~~
-service "cockroachdb-public" created
-service "cockroachdb" created
-poddisruptionbudget "cockroachdb-budget" created
-statefulset "cockroachdb" created
-~~~
+{% include orchestration/start-cluster.md %}
 
 ## Step 3. Approve node certificates
 
@@ -154,41 +141,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     cockroachdb-2   1/1       Running   0          2m
     ~~~
 
-2. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to complete the node startup process and have them join together as a cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml.yaml
-    ~~~
-
-    ~~~
-    job "cluster-init-secure" created
-    ~~~
-
-3. Approve the CSR for the one-off pod from which cluster initialization happens:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.client-root
-    ~~~
-
-    ~~~
-    certificatesigningrequest "default.node.cockroachdb-0" approved
-    ~~~
-
-4. Confirm that cluster initialization has completed successfully:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get job cluster-init-secure
-    ~~~
-
-    ~~~
-    NAME                  DESIRED   SUCCESSFUL   AGE
-    cluster-init-secure   1         1            19m
-    ~~~
-
-5. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -202,7 +155,41 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-{{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the pod itself.{{site.data.alerts.end}}
+3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to complete the node startup process and have them join together as a cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml.yaml
+    ~~~
+
+    ~~~
+    job "cluster-init-secure" created
+    ~~~
+
+4. Approve the CSR for the one-off pod from which cluster initialization happens:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.client-root
+    ~~~
+
+    ~~~
+    certificatesigningrequest "default.node.cockroachdb-0" approved
+    ~~~
+
+5. Confirm that cluster initialization has completed successfully:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get job cluster-init-secure
+    ~~~
+
+    ~~~
+    NAME                  DESIRED   SUCCESSFUL   AGE
+    cluster-init-secure   1         1            19m
+    ~~~
+
+{{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
 
 ## Step 5. Test the cluster
 
@@ -219,7 +206,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     pod "cockroachdb-client-secure" created
     ~~~
 
-    The pod uses the `root` client certificate created earlier during to initialize the cluster, so there's not CSR approval required.
+    The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
 2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
@@ -278,24 +265,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ## Step 6. Monitor the cluster
 
-To access the cluster's [Admin UI](admin-ui-overview.html):
-
-1. Port-forward from your local machine to one of the pods:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl port-forward cockroachdb-0 8080
-    ~~~
-
-    ~~~
-    Forwarding from 127.0.0.1:8080 -> 8080
-    ~~~
-
-2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
-
-3. In the UI, verify that the cluster is running as expected:
-    - Click **View nodes list** on the right to ensure that all nodes successfully joined the cluster.
-    - Click the **Databases** tab on the left to verify that `bank` is listed.
+{% include orchestration/monitor-cluster.md %}
 
 ## Step 7. Simulate node failure
 
@@ -390,7 +360,7 @@ To shut down the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
     -l app=cockroachdb
     ~~~
 

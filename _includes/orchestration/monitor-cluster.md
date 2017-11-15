@@ -11,7 +11,15 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
     Forwarding from 127.0.0.1:8080 -> 8080
     ~~~
 
+{% if page.secure == true %}
+
+2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a>.
+
+{% else %}
+
 2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a>.
+
+{% endif %}
 
 3. In the UI, verify that the cluster is running as expected:
     - Click **View nodes list** on the right to ensure that all nodes successfully joined the cluster.

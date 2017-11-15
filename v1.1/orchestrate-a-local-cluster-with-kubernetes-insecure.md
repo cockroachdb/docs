@@ -1,16 +1,27 @@
 ---
-title: Orchestrate a Local Cluster with Kubernetes (Insecure)
-summary: Use Kubernetes to orchestrate an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
+title: Automated Operations
+summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
 toc: false
 ---
 
-Orchestration systems such as Kubernetes automate the deployment, scaling, and management of containerized applications. Combined with CockroachDB's [automated sharding](frequently-asked-questions.html#how-does-cockroachdb-scale) and [fault tolerance](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), they have the potential to lower operator overhead to almost nothing.
+Other tutorials in this section feature the automated operations built into CockroachDB, from [data replication and sharding](demo-data-replication.html) to [high availability](demo-fault-tolerance-and-recovery.html) to [automatic rebalancing](demo-automatic-rebalancing.html). On top of this built-in automation, you can use a third-party orchestration system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 
-This page shows you how to orchestrate an **insecure** multi-node CockroachDB cluster locally using the Kubernetes' [`minikube`](http://kubernetes.io/docs/getting-started-guides/minikube/) tool and beta [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature. Guidance on **secure** local orchestration are coming soon.
+This page walks you through a simple demonstration of how to orchestrate the deployment and management of a CockroachDB cluster using the open-source Kubernetes [`minikube`](http://kubernetes.io/docs/getting-started-guides/minikube/) tool. Starting with a few configuration files, you'll quickly create a 3-node local cluster. You'll run a load generator against the cluster and then simulating node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
-{{site.data.alerts.callout_info}}To orchestrate a production deployment of CockroachDB, see <a href="orchestrate-cockroachdb-with-kubernetes.html">Orchestrate CockroachDB with Kubernetes</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestrate-cockroachdb-with-kubernetes.html">Orchestrate CockroachDB with Kubernetes</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
+
+## Before You Begin
+
+Before getting started, it's helpful to review some Kubernetes-specific terminology:
+
+Feature | Description
+--------|------------
+instance | A physical or virtual machine. In this tutorial, you'll run a Kubernetes script from your local workstation that will create 4 GCE or AWS instances and join them into a single Kubernetes cluster.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+[StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
+[persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 
 ## Step 1. Start Kubernetes
 
@@ -50,7 +61,7 @@ statefulset "cockroachdb" created
 
 ## Step 5. Monitor the cluster
 
-{% include orchestration/monitor-cluster-insecure.md %}
+{% include orchestration/monitor-cluster.md %}
 
 ## Step 6. Simulate node failure
 
@@ -116,8 +127,11 @@ cockroachdb-3   1/1       Running   0          46s
 
 ## See Also
 
-- Learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
-- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
-- [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
-- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
+Use a local cluster to explore these other core CockroachDB features:
+
+- [Data Replication](demo-data-replication.html)
+- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
+- [Automatic Rebalancing](demo-automatic-rebalancing.html)
+- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
+
+You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).
