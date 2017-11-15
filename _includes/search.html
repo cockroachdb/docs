@@ -1,0 +1,41 @@
+<div class="search">
+  <span class="fa fa-search"></span>
+  <form method="GET" action="{{ 'search.html' | relative_url }}">
+    <input type="text" id="search-input" name="q" placeholder="Search">
+    <span class="clear-search"></span>
+  </form>
+</div>
+
+{% if page.url == '/search.html' %}
+<script>
+  $(document).ready(function() {
+    // this will make search appear instead of header in collapsed docs menu
+    $('.collapsed-header').hide();
+    $('.search-wrap').show();
+
+    // this will remove the class with custom styling for search page,
+    // so when we close the menu it reverts to normal styling
+    // needs to happen if any of these elements are clicked
+    $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
+      if ($('#mysidebar').hasClass('nav--search')) {
+        $('#mysidebar').removeClass('nav--search').addClass('nav--home');
+      }
+    });
+
+    // set search input value to query string
+    $('#search-input').val(QueryString.q);
+
+    // on load, show close button if search input
+  	if ($('#search-input').val() != '') $('.clear-search').show();
+
+    $('.clear-search').on('click', function() {
+      $('#search-input').val('');
+      $(this).hide();
+    });
+
+    $('#search-input').on('input', function() {
+      if ($(this).val() != '') $('.clear-search').show();
+    });
+  });
+</script>
+{% endif %}

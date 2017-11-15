@@ -104,10 +104,10 @@ $(function() {
     _viewport_width = window.innerWidth;
 
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '70px'});
+      if ($(window).scrollTop() + $(window).height() < $('.footer').offset().top) {
+        // $versionSwitcher.css({'position': 'absolute', 'bottom': '69px'});
       } else {
-        $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
+        // $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
       }
     } else { // mobile
       $sidebar.css('padding-top', 10);

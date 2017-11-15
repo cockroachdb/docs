@@ -1,0 +1,22 @@
+.docnav {
+  z-index: 1;
+  position: fixed;
+  width: 100%;
+  background: $cl_gray_light;
+
+  .container {
+    display: flex;
+    align-items: center;
+    height: 70px;
+  }
+
+  #version-switcher {
+    margin-left: -5px;
+    margin-right: 12px;
+  }
+
+  .docnav__links,
+  .search { margin-left: auto; }
+
+  a { margin-right: 30px; }
+}

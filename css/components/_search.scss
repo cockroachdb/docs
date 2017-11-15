@@ -10,15 +10,14 @@
   }
 
   #search-input {
-    background-color: white;
-    border: solid 1px #bcbcbc;
+    background-color: transparent;
+    border: solid 1px transparent;
     border-radius: 32px;
     height: 40px;
     width: 86%;
     outline: 0px none;
     padding: 3px 10px 0px 45px;
-    transition: all 0.15s ease 0s;
-    margin-bottom: 20px;
+    transition: all 0.3s ease 0s;
     font-size: 16px;
     line-height: 40px; // vertical positioning
 
@@ -27,12 +26,13 @@
     }
 
     &:focus {
-      border-color: $cl_green_bright;
+      background-color: white;
+      border: solid 1px $cl_green_bright;
+      // border-color: $cl_green_bright;
     }
 
     @media (min-width: $screen-md) {
       width: 90%;
-      margin-bottom: 30px;
     }
   }
 }
