@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Reference
+title: CockroachDB REFERENCE
 summary: 'Reference'
 toc: false
 contribute: false

@@ -1,9 +1,6 @@
 ---
-title: CockroachDB Docs
-summary: CockroachDB documentation with details on installation, getting started, building an app, deployment, orchestration, and more.
-tags: install, build an app, deploy
-type: first_page
-homepage: true
+title: CockroachDB HOME
+summary: Home
 toc: false
 contribute: false
 sidebar_data: sidebar-data-home-v1.0.json

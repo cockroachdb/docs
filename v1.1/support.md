@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Support
+title: CockroachDB SUPPORT
 summary: 'Support'
 toc: false
 contribute: false

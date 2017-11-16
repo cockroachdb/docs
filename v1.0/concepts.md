@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Concepts
+title: CockroachDB CONCEPTS
 summary: 'Concepts'
 toc: false
 contribute: false

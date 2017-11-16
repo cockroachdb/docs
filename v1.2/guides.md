@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Guides
+title: CockroachDB GUIDES
 summary: 'Guides'
 toc: false
 contribute: false
