@@ -1,4 +1,4 @@
-1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html)inside it:
+1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
     {% include copy-clipboard.html %}
     ~~~ shell
