@@ -94,14 +94,20 @@
             .replace(baseUrl, '')
             .replace(/^\//, '')
             .split('/');
+
           // The version is the first directory component in the URL,
           // if it exists.
           if (pathComponents.length > 1 && isVersionDirectory(pathComponents[0])) {
             return pathComponents[0];
           }
+
           // Non-versioned pages link to stable docs.
           return "stable";
         })();
+
+        console.log('SIDEBAR DATA: ', {{page.sidebar_data | jsonify}})
+
+        document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
 
         function isVersionDirectory(d) {
           // Version directories either are one of the named version
@@ -135,7 +141,9 @@
             var urls = (item.urls || []).map(function (url) {
                 return baseUrl + url.replace("${VERSION}", pageVersion);
             });
+
             var active = (urls.indexOf(location.pathname) !== -1);
+
             if (active) {
               // This mutation inside an otherwise pure function is
               // unfortunate, but doing it here avoids a separate
@@ -146,13 +154,17 @@
               var title = $("<div>").html(item.title);
               $(".collapsed-header").empty().append(breadcrumbs, title);
             }
+
             var subitems = renderItems(item.items, paths.concat(item.title));
+
             var a = $("<a>")
               .attr("href", urls[0] || "#")
               .html(item.title);
+
             if (subitems.length > 0) {
               a.append(" ").append($("<div>").addClass("arrow-down"));
             }
+
             return $("<li>")
               .addClass("tier-" + (paths.length + 1))
               .toggleClass("active", active)
@@ -162,8 +174,6 @@
 
           return $("<ul>").append(lis);
         }
-
-        document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
       })();
     </script>
   </ul>
