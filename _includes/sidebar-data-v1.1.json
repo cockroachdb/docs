@@ -19,7 +19,7 @@
             ]
           },
           {
-            "title": "In Docker",
+            "title": "With Docker",
             "urls": [
               "/${VERSION}/start-a-local-cluster-in-docker.html"
             ]
@@ -114,7 +114,7 @@
         ]
       },
       {
-        "title": "Explore Core Features",
+        "title": "Explore Benefits",
         "items": [
           {
             "title": "Data Replication",
@@ -138,6 +138,12 @@
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
+            ]
+          },
+          {
+            "title": "Automated Operations",
+            "urls": [
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
           }
         ]
@@ -894,7 +900,8 @@
           {
             "title": "Kubernetes",
             "urls": [
-              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html"
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
             ]
           },
           {
