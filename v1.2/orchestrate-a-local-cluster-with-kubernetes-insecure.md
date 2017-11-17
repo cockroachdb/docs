@@ -49,7 +49,7 @@ When starting a cluster manually, you run the <code>cockroach start</code> comma
 
 ## Step 4. Test the cluster
 
-To test the cluster, launch a temporary pod for interacting with the cluster via the built-in SQL client, and then use a deployment configuration file to run a high-traffic load generator against the cluster from another pod.
+To test the cluster, launch a temporary pod for using the built-in SQL client, and then use a deployment configuration file to run a high-traffic load generator against the cluster from another pod.
 
 {% include orchestration/test-cluster-insecure.md %}
 
