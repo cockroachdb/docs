@@ -1,0 +1,18 @@
+<div class="docnav">
+  <div class="container">
+    {% include version-switcher.html %}
+    <div class="docnav__links">
+      {% if page.version.tag %}
+        {% assign tag = page.version.tag %}
+      {% else %}
+        {% assign tag = page.version.version %}
+      {% endif %}
+      <a href="/docs/{{tag}}/">Home</a>
+      <a href="/docs/{{tag}}/guides/">Guides</a>
+      <a href="/docs/{{tag}}/concepts/">Concepts</a>
+      <a href="/docs/{{tag}}/reference/">Reference</a>
+      <a href="/docs/{{tag}}/support/">Support</a>
+    </div>
+    {% include search-bar.html %}
+  </div>
+</div>

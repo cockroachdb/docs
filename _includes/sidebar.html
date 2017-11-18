@@ -32,7 +32,7 @@
             $maincontent.animate({ 'min-height' : 625 }, 200);
             $contentcol.css({ 'min-height' : 625 });
           }
-        }, 400);
+        }, 150);
       }
 
       function closeVersionSwitcher() {
@@ -57,7 +57,6 @@
       }));
 
       $sidebar.show();
-      $versionSwitcher.show();
       adjustMinHeight();
     });
   </script>
@@ -78,26 +77,10 @@
         <div>Page title</div>
       {% endcomment %}
     </div>
-    <li class="search-wrap">
-      <div class="search">
-        <span class="fa fa-search"></span>
-        <form method="GET" action="{{ 'search.html' | relative_url }}">
-          <input type="text" id="search-input" name="q" placeholder="Search">
-          <span class="clear-search"></span>
-        </form>
-      </div>
-    </li>
 
     <script>
       (function () {
         var baseUrl = "{{ site.baseurl }}";
-
-        var isVersionDirectory = function (d) {
-          // Version directories either are one of the named version
-          // aliases specifed in _config.yml or have the form "vX.X",
-          // like "v1.0" or "v1.10".
-          return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
-        };
 
         // We derive the version from the URL rather than hardcoding
         // `page.version` so that the source of pages for "named"
@@ -111,14 +94,27 @@
             .replace(baseUrl, '')
             .replace(/^\//, '')
             .split('/');
+
           // The version is the first directory component in the URL,
           // if it exists.
           if (pathComponents.length > 1 && isVersionDirectory(pathComponents[0])) {
             return pathComponents[0];
           }
+
           // Non-versioned pages link to stable docs.
           return "stable";
         })();
+
+        console.log('SIDEBAR DATA: ', {{page.sidebar_data | jsonify}})
+
+        document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
+
+        function isVersionDirectory(d) {
+          // Version directories either are one of the named version
+          // aliases specifed in _config.yml or have the form "vX.X",
+          // like "v1.0" or "v1.10".
+          return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
+        }
 
         // Given a sidebar hierarchy (see _data/sidebar-data-v1.0.json
         // for an example), returns a jQuery <ul> element with the
@@ -145,7 +141,9 @@
             var urls = (item.urls || []).map(function (url) {
                 return baseUrl + url.replace("${VERSION}", pageVersion);
             });
+
             var active = (urls.indexOf(location.pathname) !== -1);
+
             if (active) {
               // This mutation inside an otherwise pure function is
               // unfortunate, but doing it here avoids a separate
@@ -156,13 +154,17 @@
               var title = $("<div>").html(item.title);
               $(".collapsed-header").empty().append(breadcrumbs, title);
             }
+
             var subitems = renderItems(item.items, paths.concat(item.title));
+
             var a = $("<a>")
               .attr("href", urls[0] || "#")
               .html(item.title);
+
             if (subitems.length > 0) {
               a.append(" ").append($("<div>").addClass("arrow-down"));
             }
+
             return $("<li>")
               .addClass("tier-" + (paths.length + 1))
               .toggleClass("active", active)
@@ -172,77 +174,10 @@
 
           return $("<ul>").append(lis);
         }
-
-        document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
       })();
     </script>
   </ul>
-
-  {% if page.version %}
-    <div id="version-switcher">
-      <ul class="nav" style="display: none">
-        <li class="tier-1">
-          <a href="#">
-            Version: <span class="version-name">{{ page.version.name }}</span>
-            <div class="arrow-down"></div>
-          </a>
-          <ul>
-            {% for v in page.versions %}
-              <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
-                <a
-                {% if v.url %}href="{{ v.url | relative_url }}"
-                {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
-                  {{ v.version.name }}
-                  {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-    </div>
-  {% endif %}
-
-  <script>
-    $("#version-switcher").change(function () {
-      location.href = $(this).val();
-    });
-  </script>
 </div>
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
 <script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
-
-{% if page.url == '/search.html' %}
-<script>
-$(document).ready(function() {
-  // this will make search appear instead of header in collapsed docs menu
-  $('.collapsed-header').hide();
-  $('.search-wrap').show();
-
-  // this will remove the class with custom styling for search page,
-  // so when we close the menu it reverts to normal styling
-  // needs to happen if any of these elements are clicked
-  $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
-    if ($('#mysidebar').hasClass('nav--search')) {
-      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
-    }
-  });
-
-  // set search input value to query string
-  $('#search-input').val(QueryString.q);
-
-  // on load, show close button if search input
-	if ($('#search-input').val() != '') $('.clear-search').show();
-
-  $('.clear-search').on('click', function() {
-    $('#search-input').val('');
-    $(this).hide();
-  });
-
-  $('#search-input').on('input', function() {
-    if ($(this).val() != '') $('.clear-search').show();
-  });
-});
-</script>
-{% endif %}

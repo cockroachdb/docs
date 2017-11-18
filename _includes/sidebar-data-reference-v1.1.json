@@ -1,0 +1,31 @@
+[
+  {
+    "title": "TEST REFERENCE v1.1",
+    "items": [
+      {
+        "title": "Install CockroachDB",
+        "urls": [
+          "/${VERSION}/install-cockroachdb.html"
+        ]
+      },
+      {
+        "title": "Start a Local Cluster",
+        "items": [
+          {
+            "title": "From Binary",
+            "urls": [
+              "/${VERSION}/start-a-local-cluster.html",
+              "/${VERSION}/secure-a-cluster.html"
+            ]
+          },
+          {
+            "title": "In Docker",
+            "urls": [
+              "/${VERSION}/start-a-local-cluster-in-docker.html"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

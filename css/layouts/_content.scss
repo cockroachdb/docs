@@ -9,6 +9,8 @@
 	overflow: auto;
 
 	#main-content {
+		padding-top: 70px;
+		
 		.content-col {
 			padding-top: 50px;
 			padding-bottom: 100px;
@@ -20,7 +22,7 @@
 	}
 
 	@include at-query($min, $screen-md){
-		padding-top: 71px;
+		padding-top: 70px;
 	}
 
 	@include at-query($min, $screen-md){

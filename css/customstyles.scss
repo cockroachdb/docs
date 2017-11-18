@@ -3,6 +3,31 @@
 @import "global/fonts";
 @import "global/type";
 
+@import "layouts/header";
+@import "layouts/sidebar";
+@import "layouts/landing-page";
+@import "layouts/content";
+@import "layouts/footer";
+
+@import "components/version-switcher";
+@import "components/docnav";
+@import "components/search";
+@import "components/callout";
+@import "components/toc";
+@import "components/filtertabs";
+@import "components/newsletter";
+@import "components/codesamples";
+@import "syntax/sql";
+@import "syntax/syntax";
+@import "components/feedback-widget";
+@import "components/back-to-top";
+@import "components/buttons";
+@import "components/help-widget";
+@import "components/releases";
+@import "components/copy-clipboard";
+@import "components/version-tag";
+@import "components/comparison-chart";
+
 html {
   height: 100%;
 }
@@ -114,12 +139,6 @@ ul {
 a code:hover {
   text-decoration: underline;
 }
-
-@import "layouts/header";
-@import "layouts/sidebar";
-@import "layouts/landing-page";
-@import "layouts/content";
-@import "layouts/footer";
 
 .breadcrumb > .active {color: #777 !important;}
 
@@ -556,20 +575,3 @@ a.accordion-toggle {
   margin-top: 0;
   margin-bottom: 0;
 }
-
-@import "components/search";
-@import "components/callout";
-@import "components/toc";
-@import "components/filtertabs";
-@import "components/newsletter";
-@import "components/codesamples";
-@import "syntax/sql";
-@import "syntax/syntax";
-@import "components/feedback-widget";
-@import "components/back-to-top";
-@import "components/buttons";
-@import "components/help-widget";
-@import "components/releases";
-@import "components/copy-clipboard";
-@import "components/version-tag";
-@import "components/comparison-chart";

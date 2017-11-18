@@ -9,6 +9,10 @@
   {% endfor %}
   {% include topnav.html %}
   <div id="content">
+    {% if page.no_docnav == true %}
+    {% else %}
+      {% include docnav.html %}
+    {% endif %}
     <div id="main-content" class="container">
       <div class="row sidebar-row">
         {% if page.no_sidebar == true %}
