@@ -3,9 +3,9 @@
 #toc {
   > ul {
     background-color: $cl_green_light;
-    padding: 20px 30px;
+    padding: 10px 15px;
     margin: 0;
-    width: 100%;
+    width: 50%;
 
     li {
       margin: 0 0 5px 5px;
@@ -41,7 +41,7 @@
       }
 
       > ul {
-        margin: 10px 0 0;
+        margin: 5px 0 0;
         padding: 0;
       }
     }
@@ -51,7 +51,7 @@
       @include subhead-avenir-sm;
       color: $cl_blue;
       display: block;
-      padding-bottom:15px;
+      padding-bottom:10px;
     }
   }
 

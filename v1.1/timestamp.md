@@ -14,11 +14,11 @@ The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC.
 
 - `TIMESTAMP WITH TIME ZONE` converts `TIMESTAMP` values from UTC to the client's session time zone (unless another time zone is specified for the value). However, it is conceptually important to note that `TIMESTAMP WITH TIME ZONE` *does not* store any time zone data.
 
-   {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default `TIMESTAMP WITH TIME ZONE` values display in UTC.{{site.data.alerts.end}}
-
 - `TIMESTAMP WITHOUT TIME ZONE` presents all `TIMESTAMP` values in UTC.
 
 The difference between these two types is that `TIMESTAMP WITH TIME ZONE` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMP WITH TIME ZONE` values.
+
+{{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default `TIMESTAMP WITH TIME ZONE` values display in UTC.{{site.data.alerts.end}}
 
 ### Best Practices
 
@@ -68,10 +68,7 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 ~~~ sql
 > CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
-
 > SHOW COLUMNS FROM timestamps;
-~~~
-~~~
 +-------+--------------------------+-------+---------+
 | Field |           Type           | Null  | Default |
 +-------+--------------------------+-------+---------+
@@ -82,10 +79,7 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 ~~~
 ~~~ sql
 > INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
-
 > SELECT * FROM timestamps;
-~~~
-~~~
 +---+---------------------------+
 | a |             b             |
 +---+---------------------------+

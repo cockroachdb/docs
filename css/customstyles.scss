@@ -22,37 +22,37 @@ p {
   }
 
   @include at-query($min, $screen-md) {
-    margin: 20px 0;
+    margin: 10px 0;
   }
 }
 
 h1, h2 {
-  margin-top: 60px;
-  margin-bottom: 20px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 
   @include at-query($min, $screen-sm) {
-    margin-top: 70px;
+    margin-top: 25px;
   }
 }
 
 h3, h4, h5, h6 {
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 
   @include at-query($min, $screen-sm) {
-    margin-top: 50px;
+    margin-top: 20px;
   }
 }
 
 h1 {
-  @include adelle_b(36px);
-  line-height: 45px;
+  @include adelle_b(28px);
+  line-height: 36px;
   color: $cl_blue;
 }
 
 h2 {
-  @include adelle_b(30px);
-  line-height: 40px;
+  @include adelle_b(22px);
+  line-height: 26px;
   color: $cl_blue;
 
   &.clickable-header {
@@ -66,8 +66,8 @@ h2 {
 }
 
 h3 {
-  @include avenir_h(24px);
-  line-height: 35px;
+  @include avenir_h(18px);
+  line-height: 22px;
   color: $cl_blue;
 
   &.clickable-header {
@@ -79,7 +79,7 @@ h3 {
   }
 
   code {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -92,19 +92,21 @@ h4 {
 }
 
 pre {
+  background-color: $cl_gray_light;
   overflow: auto;
 }
 
 pre, code {
-  background-color: $cl_gray_light;
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-  font-size: 14px;
-  line-height: 25px;
+  font-size: 13px;
+  line-height: 19px;
   color: $cl_blue;
 }
 
 code {
-  border: 1px solid $cl_gray_medium;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 ul {
@@ -142,7 +144,7 @@ h6:target:before {
 
   ul, ol {
     @include at-query($min, $screen-md) {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
   }
 
@@ -189,7 +191,7 @@ table > tbody > tr > td,
 table > tfoot > tr > td {
   /*padding: 8px;*/
   /*line-height: 1.42857143;*/
-  vertical-align: top;
+  // vertical-align: top;
   border-top: 1px solid #ddd;
 }
 /*table > thead > tr > th {
@@ -544,7 +546,7 @@ a.accordion-toggle {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 40px -30px 10px;
+  margin: 25px -30px 0;
 
   > * {
     margin-left: 30px;

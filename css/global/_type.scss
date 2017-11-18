@@ -84,8 +84,8 @@
 }
 
 @mixin subhead-avenir-sm {
-  @include avenir_h(17px);
-  line-height: 30px;
+  @include avenir_h(15px);
+  line-height: 20px;
 }
 
 //
@@ -131,8 +131,8 @@
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 15px;
+    line-height: 21px;
   }
 }
 
@@ -146,7 +146,7 @@
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 15px;
+    line-height: 20px;
   }
 }
