@@ -28,15 +28,15 @@ This increases the speed of reads, but it doesn't guarantee that the range lease
 
 However, you can cause the cluster to actively move range leases for even better read performance by starting each node with the `--locality` flag. With this flag specified, the cluster knows about the location of each node, so when there's high latency between nodes, the cluster will move active range leases to a node closer to the origin of the majority of the workload. This is especially helpful for applications with workloads that move around throughout the day (e.g., most of the traffic is in the US East in the morning and in the US West in the evening).
 
-### Examples
+### Example
 
-Let's first look at an example of how this works when nodes are _not_ started with the `--locality` flag. Note how the read requests go to the replica with the range lease, but the range lease does not move to be closer to the workload.
+In this example, let's imagine that lots of read requests are going to node 1, and that the requests are for data in range 3. Because range 3's lease is on node 3, the requests are routed to node 3, which returns the results to node 1. Node 1 then responds to the clients.
 
-**Animated gif**
+<img src="{{ 'images/follow-workload-1.png' | relative_url }}" alt="Follow the workload example" style="max-width:100%" />
 
-Now let's look at the same example when nodes are started with the `--locality` flag. Note how the range lease moves to be closer to the workload, thus greatly increasing the speed of reads.
+However, if the nodes were started with the `--locality` flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network roundtrips and increasing the speed of reads.
 
-**Animated gif**
+<img src="{{ 'images/follow-workload-2.png' | relative_url }}" alt="Follow the workload example" style="max-width:100%" />
 
 ## Tutorial
 
