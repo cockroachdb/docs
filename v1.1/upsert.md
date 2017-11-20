@@ -14,6 +14,8 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 - When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
+- [Multi-row `UPSERT`](upsert.html#upsert-that-inserts-multiple-rows) is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements. 
+
 ## Required Privileges
 
 The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the table.
@@ -80,9 +82,9 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert that Updates a Row (Conflict on Primary Key)
+### Upsert that Inserts Multiple Rows 
 
-In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
+In this example, the `UPSERT` statement inserts multiple rows into the table.
 
 ~~~ sql
 > SELECT * FROM accounts;
@@ -97,6 +99,43 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 ~~~ sql
+> UPSERT INTO accounts (id, balance) VALUES (4, 1970.4),(5, 2532.9),(6, 4473.0);
+
+> SELECT * FROM accounts;
+~~~
+~~~
++----+----------+
+| id | balance  |
++----+----------+
+|  1 |  10000.5 |
+|  2 | 20000.75 |
+|  3 |   6325.2 |
+|  4 |   1970.4 |
+|  5 |   2532.9 |
+|  6 |   4473.0 |
++----+----------+
+~~~
+
+### Upsert that Updates a Row (Conflict on Primary Key)
+
+In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
+
+~~~ sql
+> SELECT * FROM accounts;
+~~~
+~~~
++----+----------+
+| id | balance  |
++----+----------+
+|  1 |  10000.5 |
+|  2 | 20000.75 |
+|  3 |   6325.2 |
+|  4 |   1970.4 |
+|  5 |   2532.9 |
+|  6 |   4473.0 |
++----+----------+
+~~~
+~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
 
 > SELECT * FROM accounts;
@@ -108,6 +147,9 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 |  1 |  10000.5 |
 |  2 | 20000.75 |
 |  3 |  7500.83 |
+|  4 |   1970.4 |
+|  5 |   2532.9 |
+|  6 |   4473.0 |
 +----+----------+
 ~~~
 
