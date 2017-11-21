@@ -228,7 +228,7 @@ $ rm -rf repdemo-node1 repdemo-node2 repdemo-node3 repdemo-node4 repdemo-node5
 
 ## What's Next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Use a local cluster to explore these other core CockroachDB benefits:
 
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)

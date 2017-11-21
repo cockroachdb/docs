@@ -141,6 +141,12 @@
             ]
           },
           {
+            "title": "Follow the Workload",
+            "urls": [
+              "/${VERSION}/demo-follow-the-workload.html"
+            ]
+          },
+          {
             "title": "Automated Operations",
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
