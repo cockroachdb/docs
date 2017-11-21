@@ -1,8 +1,8 @@
-- Feature Name: Performance Best Practices
+- Feature Name: SQL Performance Best Practices
 - Status: draft
 - Start Date: 11-12-2017
 - Authors: Amruta-Ranade
-- Cockroach Doc Issue: n/a
+- Cockroach Doc Issue: #2027
 
 # Summary
 
@@ -16,9 +16,9 @@ Because CockroachDB is a distributed database, common database operations need t
 
 - Multi-row DML
 - Using `IMPORT TABLE` instead of `COPY`
-- Unique ID best practice: Use `RETURNING NOTHING` instead of transactions
+- Unique ID best practice: Use `RETURNING` instead of transactions
 - Retrieving surrogate key to natural key
-- Transactions best practice: Use `RETURNING NOTHING`
+- Transactions best practice: Use `RETURNING NOTHING`, batching 
 - JOINs: Merge `JOIN`, Hash `JOIN`
 - Secondary indexes
 - Performance implications of constraints: Have only as many constraints as you need. Example: One index vs. two indexes for `INSERT`/other DML statements would make it slower, but for `SELECT`, it would make it faster
@@ -31,7 +31,7 @@ The following practices are recommended, but do not show significant performance
 - Interleaved indexes
 - Column families
 
-The following practices are not yet supported for CockroachDB (but are on the roadmap):
+The following practices are out of scope for now:
 
 - Select * from non lease holders
 - CDC
@@ -68,9 +68,8 @@ As of now, we share the performance best practices with our users only when they
 
 # Who is the audience?
 
-- External customers: Mainly developers, though architects and operators need to know.
-- Internal team: Engineers working on performance, sales, support
-- Docs team: Jesse (managerial review)
+External customers: Mainly developers, though architects and operators need to know.
+
 
 # When will the user look for this information?
 
@@ -94,13 +93,9 @@ No.
 # How will they read the document?
 
 - Skim: Go through it quickly to get a general idea of the content
-- Scan: Search for specific piece of information
+- Search: Search for specific piece of information
 
 # What is our purpose for the document?
 
 - Inform/Educate
 - Establish credibility
-
-# Unresolved questions
-
-
