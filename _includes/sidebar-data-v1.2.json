@@ -600,6 +600,12 @@
             ]
           },
           {
+            "title": "<code>SELECT</code> Clauses",
+            "urls": [
+              "/${VERSION}/select-clause.html"
+            ]
+          },
+          {
             "title": "Value Expressions",
             "urls": [
               "/${VERSION}/sql-expressions.html"

@@ -121,7 +121,8 @@ Syntax:
 ~~~
 
 Returns `TRUE` if and only if the value of the left operand is part of
-the result of evaluating the right operand.
+the result of evaluating the right operand. In the subquery form, any
+[`SELECT` clause](select-clause.html) can be used.
 
 For example:
 
@@ -564,7 +565,8 @@ NOT EXISTS ( ... subquery ... )
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`).
+any row (for `NOT EXISTS`). Any [`SELECT` clause](select-clause.html)
+can be used as subquery.
 
 #### Typing rule
 
@@ -579,7 +581,7 @@ Syntax:
 ~~~
 
 Evaluates the subquery, asserts that it returns a single row and single column,
-and then evaluates to the value of that single cell.
+and then evaluates to the value of that single cell. Any [SELECT clause](select-clause.html) can be used as subquery.
 
 For example:
 
