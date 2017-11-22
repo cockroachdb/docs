@@ -112,7 +112,7 @@ Other examples:
 
 ## `SELECT` Clause
 
-The `SELECT` clause is documented separately as the stand-alone [`SELECT` statement](select.html), which is its most common use in SQL. However, it's important to note the broader application of `SELECT` clauses, which can be used alongside the other two `SELECT` clause forms everywhere such a clause is admissible.
+The `SELECT` clause is documented separately as the stand-alone [`SELECT` statement](select.html), which is its most common use in SQL. However, it's important to note the broader application of `SELECT` clauses, which can be used alongside the other two selection clause forms everywhere such a clause is admissible.
 
 ## See Also
 

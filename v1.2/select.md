@@ -4,7 +4,7 @@ summary: The SELECT statement retrieves data from a table.
 toc: false
 ---
 
-The `SELECT` [statement](sql-statements.html) retrieves data from a table. The `SELECT` statement is also a [`SELECT` clause](select-clause.html).
+The `SELECT` [statement](sql-statements.html) retrieves data from a table. The `SELECT` statement is also a [selection clause](selection-clauses.html).
 
 <div id="toc"></div>
 
@@ -624,7 +624,7 @@ WHERE name = 'Edna Barath';
 
 ## See Also
 
-- [`SELECT` clauses](select-clause.html)
+- [Selection Clauses](selection-clauses.html)
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)
 - [`CREATE TABLE`](create-table.html)

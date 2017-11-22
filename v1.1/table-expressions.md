@@ -1,11 +1,11 @@
 ---
 title: Table Expressions
-summary: Table expressions define a data source in SELECT clauses.
+summary: Table expressions define a data source in selection clauses.
 toc: false
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
-[`SELECT` clauses](select-clause.html), allowed also in the [`CREATE
+[selection clauses](selection-clauses.html), allowed also in the [`CREATE
 TABLE AS`](create-table-as.html), [`INSERT`](insert.html) and
 [`UPSERT`](upsert.html) statements.
 
@@ -13,7 +13,7 @@ TABLE AS`](create-table-as.html), [`INSERT`](insert.html) and
 
 ## Introduction
 
-Table expressions are used in [`SELECT` clauses](select-clause.html):
+Table expressions are used in [selection clauses](selection-clauses.html):
 
 ~~~sql
 > SELECT ... FROM <table expr>, <table expr>, ...
@@ -26,7 +26,7 @@ CockroachDB recognizes the following table expressions:
 
 - a [table or view name](#table-or-view-names);
 - a [table generator function](#table-generator-functions);
-- a [`SELECT` clause](select-clause.html) between parentheses (including
+- a [selection clause](selection-clauses.html) between parentheses (including
   `SELECT`, `VALUES` and `TABLE`), as [a
   sub-query](#subqueries-as-table-expressions);
 - an [aliased table expression](#aliased-table-expressions), using an `AS` clause;
@@ -102,7 +102,7 @@ For example:
 
 ## Subqueries as Table Expressions
 
-Any [`SELECT` clause](select-clause.html) enclosed between parentheses
+Any [selection clause](selection-clauses.html) enclosed between parentheses
 can be used as a table expression. This is called a "subquery".
 
 Syntax:
@@ -185,7 +185,7 @@ statements produce values that can be used in this way:
   [`UPDATE`](update.html) and [`DELETE`](delete.html) with
   `RETURNING`.
 - [`EXPLAIN`](explain.html).
-- All [`SELECT` clauses](select-clause.html). However the fact they can
+- All [selection clauses](selection-clauses.html). However the fact they can
   be used between square brackets is merely a convenience; it is more
   common to use them enclosed in parentheses, as outlined in the next
   section.
@@ -264,5 +264,6 @@ always check the output of <a href="explain.html">EXPLAIN</a> in case of doubt.
 ## See Also
 
 - [Constants](sql-constants.html)
+- [Selection Clauses](selection-clauses.html)
 - [Value Expressions](sql-expressions.html)
 - [Data Types](data-types.html)

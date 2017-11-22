@@ -600,9 +600,9 @@
             ]
           },
           {
-            "title": "<code>SELECT</code> Clauses",
+            "title": "Selection Clauses",
             "urls": [
-              "/${VERSION}/select-clause.html"
+              "/${VERSION}/selection-clauses.html"
             ]
           },
           {
