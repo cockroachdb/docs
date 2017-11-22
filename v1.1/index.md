@@ -9,13 +9,26 @@ twitter: true
 contribute: false
 ---
 
-CockroachDB is a cloud-native SQL database for building global, scalable cloud services that survive disasters.
+CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
 
 <style>
     #party {
         font-size: 30px;
         padding-right: 10px;
         vertical-align: -20%;
+    }
+    .videoWrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        padding-top: 25px;
+        height: 0;
+    }
+    .videoWrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 </style>
 
@@ -49,32 +62,6 @@ CockroachDB is a cloud-native SQL database for building global, scalable cloud s
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="roach">
-            <a href="cloud-deployment.html">
-                <img src="{{ 'images/craig_crossfit.png' | relative_url }}" alt="Deploy CockroachDB in the Cloud"/>
-                <h3>Deploy</h3>
-                <p>Cloud-agnostic, with no vendor lock-in.</p>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="roach">
-            <a href="orchestration.html">
-                <img src="{{ 'images/sleeping_craig.png' | relative_url }}" alt="Orchestrate CockroachDB"/>
-                <h3>Orchestrate</h3>
-                <p>Reduce operator overhead to almost nothing.</p>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="roach">
-            <a href="admin-ui-overview.html">
-                <img src="{{ 'images/announcement_catrina.png' | relative_url }}" alt="Monitor CockroachDB"/>
-                <h3>Monitor</h3>
-                <p>Use our Admin UI or third-party tools.</p>
-            </a>
-        </div>
-    </div>
+<div class="videoWrapper">
+    <iframe width="560" height="349" src="https://www.youtube.com/embed/4R2LODwgXsM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 </div>
