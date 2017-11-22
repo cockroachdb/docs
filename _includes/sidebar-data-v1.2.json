@@ -600,6 +600,12 @@
             ]
           },
           {
+            "title": "Selection Clauses",
+            "urls": [
+              "/${VERSION}/selection-clauses.html"
+            ]
+          },
+          {
             "title": "Value Expressions",
             "urls": [
               "/${VERSION}/sql-expressions.html"
