@@ -122,7 +122,7 @@ Syntax:
 
 Returns `TRUE` if and only if the value of the left operand is part of
 the result of evaluating the right operand. In the subquery form, any
-[SELECT clause](select-clause.html) can be used.
+[`SELECT` clause](select-clause.html) can be used.
 
 For example:
 
@@ -565,7 +565,7 @@ NOT EXISTS ( ... subquery ... )
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`). Any [SELECT clause](select-clause.html)
+any row (for `NOT EXISTS`). Any [`SELECT` clause](select-clause.html)
 can be used as subquery.
 
 #### Typing rule

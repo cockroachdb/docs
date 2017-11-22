@@ -4,7 +4,7 @@ summary: The CREATE TABLE AS statement persists the result of a query into the d
 toc: false
 ---
 
-The `CREATE TABLE ... AS` statement creates a new table from a [SELECT clause](select-clause.html).
+The `CREATE TABLE ... AS` statement creates a new table from a [`SELECT` clause](select-clause.html).
 
 <div id="toc"></div>
 
@@ -49,7 +49,7 @@ table td:first-child {
 | `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table. |
 | `any_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
 | `name` | The name of the column you want to use instead of the name of the column from `select_stmt`. |
-| `select_stmt` | A [SELECT clause](select-clause.html) to provide the data. |
+| `select_stmt` | A [`SELECT` clause](select-clause.html) to provide the data. |
 
 ## Limitations
 
@@ -209,7 +209,7 @@ original table.
 
 ## See Also
 
-- [SELECT Clauses](select-clause.html)
+- [`SELECT` Clauses](select-clause.html)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE VIEW`](create-view.html)
 - [`SELECT`](select.html)
