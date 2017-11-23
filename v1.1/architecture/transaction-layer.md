@@ -114,7 +114,7 @@ The Transaction Record for a committed transaction remains until all its Write I
 
 Values in CockroachDB are not directly written to the storage layer; instead everything is written in a provisional state known as a "Write Intent." These are essentially multi-version concurrency control values (also known as MVCC, which is explained in greater depth in the Storage Layer) with an additional value added to them which identifies the Transaction Record to which the value belongs.
 
-Whenever an operation encounters a Write Intent (instead of an MVCC value), it looks up the status of the the Transaction Record to understand how it should treat the Write Intent value.
+Whenever an operation encounters a Write Intent (instead of an MVCC value), it looks up the status of the Transaction Record to understand how it should treat the Write Intent value.
 
 #### Resolving Write Intent
 
