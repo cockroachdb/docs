@@ -4,13 +4,12 @@
 	<div class="container">
 		<div class="footer__flex-wrap">
 			<ul class="footer-nav footer-nav--product">
-				<li class="header">Products<span class="blue-arrow blue-arrow--down"></span></li>
+				<li class="header">Product<span class="blue-arrow blue-arrow--down"></span></li>
 				<ul class="footer-sub-nav">
-					<li><a href="https://www.cockroachlabs.com/product/cockroachdb-core/">CockroachDB Core</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/cockroachdb-enterprise/">CockroachDB Enterprise</a></li>
+					<li><a href="https://www.cockroachlabs.com/product/cockroachdb/">CockroachDB</a></li>
+					<li><a href="https://www.cockroachlabs.com/pricing/">Pricing</a></li>
 					<li><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-in-comparison.html">Comparison</a></li>
 					<li><a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html">FAQ</a></li>
-					<li><a href="https://www.cockroachlabs.com/pricing/">Pricing</a></li>
 				</ul>
 			</ul>
 			<ul class="footer-nav">
@@ -36,11 +35,11 @@
 			<ul class="footer-nav footer-nav--documentation">
 				<li class="header">Docs<span class="blue-arrow blue-arrow--down"></span></li>
 				<ul class="footer-sub-nav">
-					<li><a href="https://www.cockroachlabs.com/docs/stable/build-an-app-with-cockroachdb.html">Build an App</a></li>
-					<li><a href="https://www.cockroachlabs.com/docs/stable/install-client-drivers.html">Develop</a></li>
-					<li><a href="https://www.cockroachlabs.com/docs/stable/cloud-deployment.html">Deploy</a></li>
 					<li><a href="https://www.cockroachlabs.com/docs/stable/start-a-local-cluster.html">Get Started</a></li>
-					<li><a href="https://www.cockroachlabs.com/docs/stable/monitor-cockroachdb-with-prometheus.html">Manage</a></li>
+					<li><a href="https://www.cockroachlabs.com/docs/stable/build-an-app-with-cockroachdb.html">Build an App</a></li>
+					<li><a href="https://www.cockroachlabs.com/docs/stable/cloud-deployment.html">Deploy</a></li>
+					<li><a href="https://www.cockroachlabs.com/docs/stable/admin-ui-overview.html">Manage</a></li>
+					<li><a href="https://www.cockroachlabs.com/docs/stable/architecture/overview.html">Architecture</a></li>
 				</ul>
 			</ul>
 		</div>
@@ -58,4 +57,6 @@
 	</div>
 </section>
 
-{% include newsletter-popout.html %}
+{% if page.sidebar_data != sidebar-data-training.json %}
+	{% include newsletter-popout.html %}
+{% endif %}

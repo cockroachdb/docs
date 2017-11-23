@@ -287,7 +287,7 @@ In the Admin UI, again hover over the **Replicas per Store** and **Leaseholders 
 
 <div style="text-align: center;"><img src="{{ 'images/decommission-multiple5.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the the decommissioned nodes have 0 replicas:
+Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the decommissioned nodes have 0 replicas:
 
 <div style="text-align: center;"><img src="{{ 'images/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 

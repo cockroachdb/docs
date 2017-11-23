@@ -113,14 +113,14 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Cancel a `BACKUP` or `RESTORE` job.
-[`PAUSE JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Pause a `BACKUP` or `RESTORE` job.
-[`RESUME JOB`](resume-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) Resume paused `BACKUP` or `RESTORE` jobs.
+[`CANCEL JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Cancel a `BACKUP` or `RESTORE` job.
+[`PAUSE JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Pause a `BACKUP` or `RESTORE` job.
+[`RESUME JOB`](resume-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Resume paused `BACKUP` or `RESTORE` jobs.
 [`SHOW JOBS`](show-jobs.html) | <span class="version-tag">New in v1.1:</span> View information on jobs.
 
 ## Backup & Restore Statements (Enterprise)
 
-The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb-enterprise/) users.
+The following statements are availably only to [enterprise](https://www.cockroachlabs.com/pricing/) users.
 
 {{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 

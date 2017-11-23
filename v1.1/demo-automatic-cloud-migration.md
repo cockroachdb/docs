@@ -239,11 +239,12 @@ $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6
 
 ## What's Next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Use a local cluster to explore these other core CockroachDB benefits:
 
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
+- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
 
 You may also want to learn other ways to control the location and number of replicas in a cluster:
 

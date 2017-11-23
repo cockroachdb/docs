@@ -114,7 +114,7 @@
         ]
       },
       {
-        "title": "Explore Core Features",
+        "title": "Explore Benefits",
         "items": [
           {
             "title": "Data Replication",
@@ -138,6 +138,18 @@
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
+            ]
+          },
+          {
+            "title": "Follow the Workload",
+            "urls": [
+              "/${VERSION}/demo-follow-the-workload.html"
+            ]
+          },
+          {
+            "title": "Automated Operations",
+            "urls": [
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
           }
         ]
@@ -588,6 +600,12 @@
             ]
           },
           {
+            "title": "Selection Clauses",
+            "urls": [
+              "/${VERSION}/selection-clauses.html"
+            ]
+          },
+          {
             "title": "Value Expressions",
             "urls": [
               "/${VERSION}/sql-expressions.html"
@@ -894,7 +912,8 @@
           {
             "title": "Kubernetes",
             "urls": [
-              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html"
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
             ]
           },
           {

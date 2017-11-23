@@ -99,7 +99,6 @@ Field | Description | Default
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
 `contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
 `redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
-`optimizely` | Adds code required to include the page in A/B testing. See [A/B Testing](#ab-testing) for more details. | `false`
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 
@@ -200,10 +199,6 @@ redirect_from:
 ```
 
 This ensures that if `v1.1` is also the `stable` or `dev` version, the corresponding `stable` or `dev` redirects will be generated as well.
-
-#### A/B Testing
-
-We use [Optimizely](https://www.optimizely.com/) to A/B test changes across our website. To include a page in A/B testing, you must add the necessary JavaScript by setting `optimizely: true` in the page's front-matter.
 
 ### Sidebar
 
