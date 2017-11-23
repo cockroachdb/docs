@@ -208,10 +208,10 @@ The load generator created a `kv` table that maps to an underlying key-value ran
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kv -duration 5m -concurrency 32 -read-percent 100 -max-rate 100 'postgresql://root@localhost:26257?sslmode=disable'
+    $ kv -duration 7m -concurrency 32 -read-percent 100 -max-rate 100 'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-    This time, the command runs for a little longer, 5 minutes instead of 1 minute. This is necessary since the system will still "remember" the earlier requests to the the other locality.
+    This time, the command runs for a little longer, 7 minutes instead of 1 minute. This is necessary since the system will still "remember" the earlier requests to the the other locality.
 
 2. Let the load generator run to completion.
 
