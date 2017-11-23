@@ -159,7 +159,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml.yaml
+    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
     ~~~
 
     ~~~
