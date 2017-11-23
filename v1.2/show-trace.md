@@ -148,7 +148,7 @@ Column | Type | Description
 
 ### Trace conflicting transactions
 
-In this example, we use use two terminals concurrently to generate conflicting transactions.
+In this example, we use two terminals concurrently to generate conflicting transactions.
 
 1. In terminal 1, create a table:
 

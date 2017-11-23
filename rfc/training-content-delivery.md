@@ -52,7 +52,7 @@ The training site is organized in this way
 That is:
 - 1 home page for all training material (if this training system developers further, it's possible to insert levels above this)
 - 1 page for each day, which contain links to its modules
-- 1 page page for each module, which contains contains a brief summary, as well as links to both the presentations and the labs.
+- 1 page for each module, which contains a brief summary, as well as links to both the presentations and the labs.
 
 Off of the `../<module>/` subdirectory, there would also be a page for any labs from that day. We would not have a page for presentations because these could just be links to Google sheets.
 

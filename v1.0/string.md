@@ -95,8 +95,8 @@ Type | Details
 `DECIMAL` | Requires supported [`DECIMAL`](decimal.html) string format, e.g., `'1.1'`.
 `FLOAT` | Requires supported [`FLOAT`](float.html) string format, e.g., `'1.1'`.
 `BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
-`DATE` | Requires supported supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
-`TIMESTAMP` | Requires supported supported [`TIMESTAMP`](timestamp.html) string format, e.g., `''2016-01-25 10:10:10.555555''`.
+`DATE` | Requires supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
+`TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `''2016-01-25 10:10:10.555555''`.
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `BYTES` | Requires supported [`BYTES`](bytes.html) string format, e.g., `b'\141\061\142\062\143\063'`.
 
