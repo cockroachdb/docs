@@ -12,7 +12,7 @@ This page describes newly identified limitations in the CockroachDB v1.1 release
 
 ### Enterprise restores after creating, dropping, or truncating tables
 
-{{site.data.alerts.callout_info}}As of <a href="../releases/v1.1.1.html">v1.1.1</a>, it is no longer possible to create an incremental backup if a table has been been created, dropped, or truncated after the full backup. This prevents attempts to restore from a broken backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}As of <a href="../releases/v1.1.1.html">v1.1.1</a>, it is no longer possible to create an incremental backup if a table has been created, dropped, or truncated after the full backup. This prevents attempts to restore from a broken backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
 
 It is not possible to perform an [enterprise `RESTORE`](restore.html) from a full [`BACKUP`](backup.html) with incremental backups if you [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) any tables after the full backup. Attempting to restore in this case will fail with an error.
 
@@ -28,7 +28,7 @@ If you are running multiple nodes on a single machine (not recommended) and didn
 
 ### Downgrading to v1.1.0 from a later v1.1.x patch release
 
-If you have started or [upgraded](upgrade-cockroach-version.html#finalize-the-upgrade) a cluster using v1.1.1 or a later release, then you will not be able to downgrade the cluster to the v1.1.0 binary. This is due to an issue with the `version` setting in the v1.1.0 release that was fixed in v1.1.1. Changing between between different `x.y.z` versions of the same `x.y` release is typically safe.
+If you have started or [upgraded](upgrade-cockroach-version.html#finalize-the-upgrade) a cluster using v1.1.1 or a later release, then you will not be able to downgrade the cluster to the v1.1.0 binary. This is due to an issue with the `version` setting in the v1.1.0 release that was fixed in v1.1.1. Changing between different `x.y.z` versions of the same `x.y` release is typically safe.
 
 ## Unresolved Limitations
 

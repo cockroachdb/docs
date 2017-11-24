@@ -1,6 +1,6 @@
 ---
 title: Storage Dashboard
-summary: The Storage dashboard lets you monitor monitor the storage utilization for your cluster.
+summary: The Storage dashboard lets you monitor the storage utilization for your cluster.
 toc: false
 ---
 

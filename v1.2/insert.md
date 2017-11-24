@@ -411,7 +411,7 @@ pg.connect(config, function (err, client, done) {
 });
 ~~~
 
-The printed values would like like:
+The printed values would look like:
 
 ~~~
 IDs:
