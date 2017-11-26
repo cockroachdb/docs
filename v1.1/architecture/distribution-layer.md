@@ -12,12 +12,9 @@ The Distribution Layer of CockroachDB's architecture provides a unified view of 
 
 ## Overview
 
-To make all data in your cluster accessible from any node, CockroachDB stores data in a monolithic sorted map of key-value pairs. This keyspace describes all of the data in your cluster, as well as its location, and is divided into what we call "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+CockroachDB distributes data across your entire cluster to maximize survivability but still needs to provide trivial access to all keys. To achieve reliable addressing across a distributed deployment, CockroachDB organizes your cluster's data in a monolithic sorted map of key-value pairs. This keyspace describes all of your data and is broken into small range sizes and then replicated among the nodes in your cluster, with accounting done to track the physical locations (i.e., nodes) of all of a range's replicas.
 
-CockroachDB implements a sorted map to enable:
-
-  - **Simple lookups**: Because we identify which nodes are responsible for certain portions of the data, queries are able to quickly locate where to find the data they want.
-  - **Efficient scans**: By defining the order of data, it's easy to find data within a particular range during a scan.
+By sorting this map (as opposed to hashing it), CockroachDB enables efficient scans; when data is ordered, it's both faster and simpler to scan over its subsets.
 
 ### Monolithic Sorted Map Structure
 
@@ -28,29 +25,45 @@ The monolithic sorted map is comprised of two fundamental elements:
 
 #### Meta Ranges
 
-The locations of all ranges in your cluster are stored in a two-level index at the beginning of your key-space, known as meta ranges, where the first level (`meta1`) addresses the second, and the second (`meta2`) addresses data in the cluster. Importantly, every node has information on where to locate the `meta1` range (known as its Range Descriptor, detailed below), and the range is never split.
+The locations of all ranges in your cluster are stored in a two-level index at the beginning of your keyspace, known as *meta ranges*, which are split into two levels:
 
-This meta range structure lets us address up to 4EB of user data by default: we can address 2^(18 + 18) = 2^36 ranges; each range addresses 2^26 B, and altogether we address 2^(36+26) B = 2^62 B = 4EB. However, with larger range sizes, it's possible to expand this capacity even further.
+- The first level (`meta1`) is a single range that has a keyspace representing all data in the cluster. Its individual keys represent larger ranges of your cluster's keys, and their values are the addresses of the replicas of the second-level meta ranges responsible for those keys.
+- The second level (`meta2`) represents the keyspace more granularly, and contains the addresses of the replicas responsible for smaller ranges of keys. However, because this set of data is likely much larger than a single range, it is distributed among many ranges (and therefore many nodes), which is why its addresses must be tracked by `meta1`.
 
-Meta ranges are treated mostly like normal ranges and are accessed and replicated just like other elements of your cluster's KV data. 
+Meta ranges are treated mostly like normal ranges and are accessed and replicated just like other elements of your cluster's KV data, with the exception of never splitting the `meta1` range.
 
-Each node caches values of the `meta2` range it has accessed before, which optimizes access of that data in the future. Whenever a node discovers that its `meta2` cache is invalid for a specific key, the cache is updated by performing a regular read on the `meta2` range.
+For this two-level indexing to work, though, every node keeps information on where to locate the `meta1` range.
+
+Nodes also cache values of the `meta1` and `meta2` ranges they have accessed before, which optimizes access of that data in the future. Whenever a node discovers that a cached value has become invalid, the cache is updated by performing a regular read.
+
+This structure lets CockroachDB address up to 4EB of user data by default: we can address 2^(18 + 18) = 2^36 ranges; each range addresses 2^26 B, and altogether we address 2^(36+26) B = 2^62 B = 4EB. However, with larger range sizes, it's possible to expand this capacity even further.
 
 #### Table Data
 
-After the node's meta ranges is the KV data your cluster stores.
+Following the cluster's meta ranges is your table data, stored as KV pairs.
 
-This data is broken up into 64MiB sections of contiguous key-space known as ranges. This size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
-
-These ranges are replicated (in the aptly named Replication Layer), and have the addresses of each replica stored in the `meta2` range.
+- **Keys** are the table's indexed columns. This includes your table's `PRIMARY KEY` or explicitly indexed columns, such as those identified through `CREATE INDEX`.
+- **Values** are the non-indexed/stored columns. For the table's data, this includes all of the non-`PRIMARY KEY` columns. In explicitly created indexes, this includes columns identified in the [`STORING`](../create-index.html#store-columns) clause.
 
 ### Using the Monolithic Sorted Map
 
-When a node receives a request, it looks at the Meta Ranges to find out which node it needs to route the request to by comparing the keys in the request to the keys in its `meta2` range.
+Any operation for a key must be routed to its range's "[Leaseholder](replication-layer.html#leases)." This is a node elected to handle reads and writes for the range, but there is nothing intrinsically special about it, and any node can serve as the leaseholder.
 
-These meta ranges are heavily cached, so this is normally handled without having to send an RPC to the node actually containing the `meta2` ranges.
+Whenever a node receives a request for a key for which it is not the Leaseholder, it routes the request to the Leaseholder using the monolithic sorted map.
 
-The node then sends those KV operations to the Leaseholder identified in the `meta2` range. However, it's possible that the data moved, in which case the node that no longer has the information replies to the requesting node where it's now located. In this case we go back to the `meta2` range to get more up-to-date information and try again.
+1. The node that received the request (known as the Gateway), looks in its Leaseholder cache, which stores the address of the replica last identified as the Leaseholder for the key.
+
+    If the node doesn't have a value in its Leaseholder cache, it looks in its `meta2` cache for the address of the replicas where it can find the key.
+
+    If the `meta2` cache lookup also misses, it looks up the address of the `meta2` range in its `meta1` cache. If *that* lookup misses, it reads from the actual `meta1` range and then populates its `meta1` and `meta2` caches.
+
+2. The node sends the request to the node identified in its Leaseholder cache, or a node from its `meta2` cache.
+
+    If the node that receives the request *is not* the Leaseholder, but does contain the range, it responds with the address of the Leaseholder. The requesting node then updates it Leaseholder cache with this value, and sends the request to that node.
+
+    If the node doesn't contain the range at all, it errors, and the requesting node performs a read from `meta2` and updates it cache, and then begins this step again.
+
+Once the Leaseholder processes the request, it responds to the Gateway node.
 
 ### Interactions with Other Layers
 
@@ -63,27 +76,31 @@ In relationship to other layers in CockroachDB, the Distribution Layer:
 
 ### gRPC
 
-gRPC is the software nodes use to communicate with one another. Because the Distribution Layer is the first layer to communicate with other nodes, CockroachDB implements gRPC here.
+Nodes communicate with one another using gRPC, which lets them both send and receive protocol buffers ([protobuf](https://en.wikipedia.org/wiki/Protocol_Buffers)). To leverage gRPC, CockroachDB implements a protocol-buffer-based API defined in `api.proto`.
 
-gRPC requires inputs and outputs to be formatted as protocol buffers (protobufs). To leverage gRPC, CockroachDB implements a protocol-buffer-based API defined in `api.proto`.
-
-For more information about gRPC, see the [official gRPC documentation](http://www.grpc.io/docs/guides/). 
+For more information about gRPC, see the [official gRPC documentation](http://www.grpc.io/docs/guides/).
 
 ### BatchRequest
 
-All KV operation requests are bundled into a [protobuf](https://en.wikipedia.org/wiki/Protocol_Buffers), known as a `BatchRequest`. The destination of this batch is identified in the `BatchRequest` header, as well as a pointer to the request's transaction record. (On the other side, when a node is replying to a `BatchRequest`, it uses a protobuf––`BatchResponse`.)
+To send KV operations between nodes, [`client.Txn`](transaction-layer.html#client-txn-and-txncoordsender) bundles them into a protobuf known as a `BatchRequest`. Each `BatchRequest` also includes its destination, as well as a pointer to the request's Transaction Record. (On the other side, when a node is replying to a `BatchRequest`, it uses a protobuf––`BatchResponse`.)
 
-This `BatchRequest` is also what's used to send requests between nodes using gRPC, which accepts and sends protocol buffers.
+Because this is inter-node communication, `BatchRequest`s and `BatchResponse`s leverage gRPC.
 
 ### DistSender
 
-The gateway/coordinating node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` is then responsible for breaking up `BatchRequests` and routing a new set of `BatchRequests` to the nodes it identifies contain the data using its `meta2` ranges.  It will use the cache to send the request to the Leaseholder, but it's also prepared to try the other replicas, in order of "proximity". The replica that the cache says is the Leaseholder is simply moved to the front of the list of replicas to be tried and then an RPC is sent to all of them, in order.
+The Gateway Node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` then finds the replicas responsible for keys in the `BatchRequest` it received, and breaks it up into new `BatchRequest`s with updated destinations.
 
-Requests received by a non-Leaseholder fail with an error pointing at the replica's last known Leaseholder. These requests are retried transparently with the updated lease by the gateway node and never reach the client.
+`DistSender` first tries to send the `BatchRequest` to the node it believes is currently responsible for the range (known as the [Leaseholder](replication-layer.html#leases)). However, if the Leaseholder doesn't respond, `DistSender` sends a `BatchRequest` to each replica containing the key it's aware of in [the order it's listed](#meta-range-kv-structure).
+
+If a non-Leaserholder node receives a request, the request fails with an error pointing at the replica's last known Leaseholder. This retry happens transparently within CockroachDB and never reaches the client.
 
 As nodes begin replying to these commands, `DistSender` also aggregates the results in preparation for returning them to the client.
 
-### Meta Range KV Structure
+### System Data
+
+To maintain system-wide information, CockroachDB leverages a number of system tables, which are all stored as key-value pairs.
+
+#### Meta Range KV Structure
 
 Like all other data in your cluster, meta ranges are structured as KV pairs. Both meta ranges have a similar structure:
 
@@ -103,9 +120,9 @@ Here's an example:
 meta2/M -> node1:26257, node2:26257, node3:26257
 ~~~
 
-In this case, the replica on `node1` is the Leaseholder, and nodes 2 and 3 also contain replicas.
+In this case, the replica on `node1` is the Leaseholder for the keys before `M`, and nodes 2 and 3 also contain replicas.
 
-#### Example
+**Example**
 
 Let's imagine we have an alphabetically sorted column, which we use for lookups. Here are what the meta ranges would approximately look like: 
 
@@ -119,7 +136,7 @@ Let's imagine we have an alphabetically sorted column, which we use for lookups.
     meta1/maxKey -> node4:26257, node5:26257, node6:26257
     ~~~
 
-2. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster, the first of which is the [Leaseholder](replication-layer.html#leases).
+2. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster.
 
     ~~~
     # Contains [A-G)
@@ -135,9 +152,16 @@ Let's imagine we have an alphabetically sorted column, which we use for lookups.
     meta2/maxKey->  node4:26257, node5:26257, node6:26257
     ~~~
 
-### Table Data KV Structure
 
-Key-Value data, which represents the data in your tables using the following structure:
+#### Node Liveness
+
+CockroachDB tracks each node's availability within a "node liveness" table, which nodes must regularly write to or are considered inactive.
+
+Note that nodes are always considered inactive when they cannot update their node liveness record. This means that even if a node is able to communicate with some other nodes, but not with the Leaseholder for the range containing its node liveness record, it will eventually be marked as inactive even if the `cockroach` process is still running.
+
+### User Data
+
+The data you store in CockroachDB is represented using the following structure:
 
 ~~~
 /<table Id>/<index id>/<indexed column values> -> <non-indexed/STORING column values>
@@ -151,9 +175,7 @@ Each range in CockroachDB contains metadata, known as a Range Descriptor. A Rang
 
 - A sequential RangeID
 - The keyspace (i.e., the set of keys) the range contains; for example, the first and last `<indexed column values>` in the Table Data KV Structure above. This determines the `meta2` range's keys.
-- The addresses of nodes containing replicas of the range, with its Leaseholder (which is responsible for its reads and writes) in the first position. This determines the `meta2` range's key's values.
-
-Because Range Descriptors comprise the key-value data of the `meta2` range, each node's `meta2` cache also stores Range Descriptors.
+- The addresses of nodes containing replicas of the range. This determines the `meta2` range's keys' values.
 
 Range Descriptors are updated whenever there are:
 
@@ -161,7 +183,7 @@ Range Descriptors are updated whenever there are:
 - Leaseholder changes
 - Range splits
 
-All of these updates to the Range Descriptor occur locally on the range, and then propagate to the `meta2` range.
+After occurring locally on the node containing the range, changes propagate to the `meta2` range.
 
 ### Range Splits
 

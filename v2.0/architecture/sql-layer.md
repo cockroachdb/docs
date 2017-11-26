@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
+The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, which lets applications interact with the data stored in CockroachDB. After receiving SQL RPCs, the SQL Layer converts these requests into key-value operations used by the rest of the database.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
@@ -12,7 +12,7 @@ The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, a
 
 ## Overview
 
-Once CockroachDB has been deployed, developers need nothing more than a connection string to the cluster and SQL statements to start working.
+After deploying CockroachDB, developers only need a connection string to the cluster and SQL statements to start working.
 
 Because CockroachDB's nodes all behave symmetrically, developers can send requests to any node (which means CockroachDB works well with load balancers). Whichever node receives the request acts as the "gateway node," as other layers process the request.
 
@@ -22,72 +22,66 @@ When developers send requests to the cluster, they arrive as SQL statements, but
 
 In relationship to other layers in CockroachDB, the SQL Layer:
 
-- Sends requests to the Transaction Layer.
+- Sends requests to and receives responses from the Transaction Layer.
 
 ## Components
 
 ### Relational Structure
 
-Developers experience data stored in CockroachDB in a relational structure, i.e., rows and columns. Sets of rows and columns are organized into tables. Collections of tables are organized into databases. Your cluster can contain many databases.
+Developers experience data stored in CockroachDB through a relational structure common to RDBMSs, i.e., using rows and columns, organized into tables, which are in turn organized into databases. And, like you would expect, your CockroachDB cluster can contain many databases.
 
-Because of this structure, CockroachDB provides typical relational features like constraints (e.g., foreign keys). This lets application developers trust that the database will ensure consistent structuring of the application's data; data validation doesn't need to be built into the application logic separately.
+Through this structure, CockroachDB provides typical relational features like constraints (e.g., foreign keys), `JOIN`s, and type enforcement. All together, these features makes a developer's life easier by ensuring consistency.
 
 ### SQL API
 
-CockroachDB implements a large portion of the ANSI SQL standard to manifest its relational structure. You can view [all of the SQL features CockroachDB supports here](../sql-feature-support.html).
+CockroachDB's relational structure is accessed by our implementation of large portions of the ANSI SQL standard. You can view [all of the SQL features CockroachDB supports here](../sql-feature-support.html).
 
 Importantly, through the SQL API, we also let developers use ACID-semantic transactions just like they would through any SQL database (`BEGIN`, `END`, `ISOLATION LEVELS`, etc.)
 
 ### PostgreSQL Wire Protocol
 
-SQL queries reach your cluster through the PostgreSQL wire protocol. This makes connecting your application to the cluster simple by supporting most PostgreSQL-compatible drivers, as well as many PostgreSQL ORMs, such as GORM (Go) and Hibernate (Java).
+Clients connect to your cluster through the PostgreSQL wire protocol, which means you can use most PostgreSQL-compatible drivers, as well as many PostgreSQL ORMs, such as [GORM (Go)](../build-a-go-app-with-cockroachdb-gorm.html) and [Hibernate (Java)](../build-a-java-app-with-cockroachdb-hibernate.html).
 
 ### SQL Parser, Planner, Executor
 
-After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, creates a query plan, and then executes the plan.
+After your node receives a SQL request from a client, CockroachDB parses the statement, creates a query plan, and then executes the plan.
 
 #### Parsing
 
-Received queries are parsed against our `yacc` file (which describes our supported syntax), and converts the string version of each query into [Abstract Syntax Trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
+Received queries are parsed against our `yacc` file (which describes our supported syntax), and converted into an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
 #### Planning
 
-With the AST, CockroachDB begins planning the query's execution by generating a tree of `planNodes`. Each of the `planNodes` contain a set of code that uses KV operations; this is ultimately how SQL statements are converted into KV operations.
+CockroachDB uses the AST version of the query to generate a tree of `planNode`s. Each `planNode` contains the  CRUD-type operations from the SQL statement in a way that lower levels of CockroachDB can understand, i.e., as KV operations. You can see the `planNodes` a query generates using [`EXPLAIN`](../explain.html).
 
-This step also includes steps analyzing the client's SQL statements against the expected AST expressions, which include things like type checking.
-
-You can see the `planNodes` a query generates using [`EXPLAIN`](../explain.html).
+Planning also includes steps to analyze the SQL statements against the expected AST expressions, including operations like type checking.
 
 #### Executing
 
-`planNodes` are then executed, which begins by communicating with the Transaction Layer.
+The KV operations in the `planNodes` are then executed, which begins by communicating with the Transaction Layer.
 
-This step also includes encoding values from your statements, as well as decoding values returned from lower layers.
+As operations execute, their values are also encoded. As the results of queries return, they are similarly decoded.
 
 ### Encoding
 
-Though SQL queries are written in parsable strings, lower layers of CockroachDB deal primarily in bytes. This means at the SQL layer, in query execution, CockroachDB must convert row data from their SQL representation as strings into bytes, and convert bytes returned from lower layers into SQL data that can be passed back to the client.
+Because lower layers of CockroachDB deal primarily in bytes, SQL queries must have values (originally represented as strings when sent by the client) encoded, i.e., converted into bytes. And, on the other side, bytes in response to queries must be decoded into strings which can be returned to the client.
 
-It's also important––for indexed columns––that this byte encoding preserve the same sort order as the data type it represents. This is because of the way CockroachDB ultimately stores data in a sorted key-value map; storing bytes in the same order as the data it represents lets us efficiently scan KV data.
+To achieve this, CockroachDB uses two types of encoding:
 
-However, for non-indexed columns (e.g., non-`PRIMARY KEY` columns), CockroachDB instead uses an encoding (known as "value encoding") which consumes less space but does not preserve ordering.
+- **Order-preserving** for indexed columns, which maintain the same sort order as the data it represents
+- **Value encoding** for *non*-indexed columns, which *does not* maintain its order but *does* consume less space
 
 You can find more exhaustive detail in the [Encoding Tech Note](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/encoding.md).
 
 ### DistSQL
 
-Because CockroachDB is a distributed database, we've developed a Distributed SQL (DistSQL) optimization tool for some queries, which can dramatically speed up queries that involve many ranges. Though DistSQL's architecture is worthy of its own documentation, this cursory explanation can provide some insight into how it works.
+To leverage the power of widely distributed nodes, CockroachDB implements a Distributed SQL (DistSQL) optimization tool for some queries, which can substantially improve their performance. Though DistSQL's architecture is worthy of its own documentation, this cursory explanation can provide some insight into how it works.
 
-In non-distributed queries, the coordinating node receives all of the rows that match its query, and then performs any computations on the entire data set.
+For non-distributed queries, the coordinating node receives all of the rows that match its query, and then performs any computations on the entire data set. 
 
-However, for DistSQL-compatible queries, each node does computations on the rows it contains, and then sends the results (instead of the entire rows) to the coordinating node. The coordinating node then aggregates the results from each node, and finally returns a single response to the client.
+However, for DistSQL-compatible queries, each node does computations on the rows it contains, and then sends the results (instead of the rows in their entirety) to the coordinating node. The coordinating node then aggregates the results from each node, and finally returns a single response to the client.
 
-This dramatically reduces the amount of data brought to the coordinating node, and leverages the well-proven concept of parallel computing, ultimately reducing the time it takes for complex queries to complete. In addition, this processes data on the node that already stores it, which lets CockroachDB handle row-sets that are larger than an individual node's storage.
-
-To run SQL statements in a distributed fashion, we introduce a couple of concepts:
-
-- **Logical plan**: Similar to the AST/`planNode` tree described above, it represents the abstract (non-distributed) data flow through computation stages.
-- **Physical plan**: A physical plan is conceptually a mapping of the logical plan nodes to physical machines running `cockroach`. Logical plan nodes are replicated and specialized depending on the cluster topology. Like `planNodes` above, these components of the physical plan are scheduled and run on the cluster.
+This dramatically reduces the amount of data brought to the coordinating node, and leverages the well-proven concept of parallel computing, ultimately reducing the time it takes for complex queries to complete. In addition, this processes data on the node that already stores it, which lets CockroachDB handle row sets that are larger than an individual node's storage.
 
 You can find much greater detail in the [DistSQL RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160421_distributed_sql.md).
 
@@ -96,6 +90,8 @@ You can find much greater detail in the [DistSQL RFC](https://github.com/cockroa
 ### SQL & Transaction Layer
 
 KV operations from executed `planNodes` are sent to the Transaction Layer.
+
+The Transaction Layer then sends the results and status of the KV operations to the SQL Layer, which in turn sends them to the client.
 
 ## What's Next?
 
