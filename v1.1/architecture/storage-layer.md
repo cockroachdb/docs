@@ -14,13 +14,10 @@ The Storage Layer of CockroachDB's architecture reads and writes data to disk.
 
 Each CockroachDB node contains at least one `store`, specified when the node starts, which is where the `cockroach` process reads and writes its data on disk.
 
-This data is stored as key-value pairs on disk using RocksDB, which is treated primarily as a black-box API. Internally, each store contains three instance of RocksDB:
+This data is stored as key-value pairs on disk using RocksDB, which is treated primarily as a black-box API. Internally, each store contains multiple instance of RocksDB:
 
-- One for the Raft log
-- One for storing temporary Distributed SQL data
-- One for all other data on the node
-
-In addition, there is also a block cache shared amongst all of the stores in a node. These stores in turn have a collection of range replicas. More than one replica for a range will never be placed on the same store or even the same node.
+- One for storing temporary [Distributed SQL data](sql-layer.html#distsql)
+- One for all other data on the node, including the node's replicas of ranges (described in the [Distribution Layer](distribution-layer.html)).
 
 ### Interactions with Other Layers
 
@@ -34,12 +31,12 @@ In relationship to other layers in CockroachDB, the Storage Layer:
 
 CockroachDB uses RocksDB––an embedded key-value store––to read and write data to disk. You can find more information about it on the [RocksDB Basics GitHub page](https://github.com/facebook/rocksdb/wiki/RocksDB-Basics).
 
-RocksDB integrates really well with CockroachDB for a number of reasons:
+RocksDB integrates really well with CockroachDB because it offers:
 
-- Key-value store, which makes mapping to our key-value layer very simple
-- Atomic write batches and snapshots, which give us a subset of transactions
+- Key-value stores, which simply maps to our own KV-oriented operations
+- Atomic write batches and snapshots, which provides a subset of transactions
 
-Efficient storage for the keys is guaranteed by the underlying RocksDB engine by means of prefix compression.
+Keys are also guaranteed to be efficiently stored through RocksDB's prefix compression.
 
 ### MVCC
 
