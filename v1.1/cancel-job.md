@@ -6,9 +6,12 @@ toc: false
 
 <span class="version-tag">New in v1.1:</span> The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) tasks.
 
-{{site.data.alerts.callout_info}}While this feature currently only works with enterprise features, in the future we plan to let you cancel any job, including schema changes.{{site.data.alerts.end}}
-
 <div id="toc"></div>
+
+## Limitations
+
+- This feature currently only works with enterprise features. However, in the future, we plan to let you cancel any job, including schema changes.
+- When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 
 ## Required Privileges
 

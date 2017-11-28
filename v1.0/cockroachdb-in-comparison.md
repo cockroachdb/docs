@@ -3,7 +3,6 @@ title: CockroachDB in Comparison
 summary: Learn how CockroachDB compares to other popular databases like PostgreSQL, Cassandra, MongoDB, Google Cloud Spanner, and more.
 tags: mongodb, mysql, dynamodb
 toc: false
-optimizely: true
 comparison: true
 ---
 
@@ -60,7 +59,7 @@ This page shows you how key features of CockroachDB stack up against other datab
   <tr>
     <td class="comparison-chart__feature">
       Automated Failover
-      <a href="#" data-toggle="tooltip" title="Uninterrupted availability of data through small- and large-scale failures, from server restarts to datacenter outages.">        
+      <a href="#" data-toggle="tooltip" title="Uninterrupted availability of data through small- and large-scale failures, from server restarts to datacenter outages.">
         <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
