@@ -38,19 +38,14 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 The timeseries data used to power the graphs in the admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
-There are 2 ways to reduce the size of timeseries data on disk:
+To truncate timeseries data sooner, you can change the `timeseries.resolution_10s.storage_duration` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to truncate timeseries data after 15 days, you would execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-- [Truncate timeseries data sooner](#truncate-timeseries-data-sooner)
-- [Store fewer timeseries data points](#store-fewer-timeseries-data-points)
-
-### Truncate timeseries data sooner <span class="version-tag">New in v1.2</span>
-
-As mentioned above, the cluster stores timeseries data for 30 days by default before it starts getting truncated. To truncate timeseries data sooner, change the `timeseries.resolution_10s.storage_duration` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to truncate timeseries data after 15 days, you would execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
-
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.resolution_10s.storage_duration = '360h0m0s';
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.resolution_10s.storage_duration;
 ~~~
@@ -63,10 +58,6 @@ As mentioned above, the cluster stores timeseries data for 30 days by default be
 +--------------------------------------------+
 (1 row)
 ~~~
-
-### Store fewer timeseries data points
-
-The cluster collects timeseries data points every 10 seconds by default. To store fewer data points, you can start each node with the `COCKROACH_METRICS_SAMPLE_INTERVAL` environment variable set higher than this default. For example, set it to `1m` to only collect data every 1 minute, which would result in storing 6x less timeseries data than the default setting.
 
 ## Why does CockroachDB collect anonymized cluster usage details by default?
 
