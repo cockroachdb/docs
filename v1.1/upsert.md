@@ -100,10 +100,14 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 ~~~
 ~~~ sql
 <<<<<<< HEAD
+<<<<<<< HEAD
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4), (5, 2532.9), (6, 4473.0);
 =======
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4),(5, 2532.9),(6, 4473.0);
 >>>>>>> 2432f24... Updated docs for multi-row DML content
+=======
+> UPSERT INTO accounts (id, balance) VALUES (4, 1970.4),(5, 2532.9),(6, 4473.0);
+>>>>>>> 963138a318d2b10faafb648b7f377f4126617d76
 
 > SELECT * FROM accounts;
 ~~~

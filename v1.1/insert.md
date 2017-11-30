@@ -12,10 +12,14 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 - [Multi-row `INSERT`](insert.html#insert-multiple-rows) is faster than multiple single-row `INSERT` statements. Whenever possible, use multi-row `INSERT` instead of multiple single-row `INSERT` statements. 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - Generating and retrieving unique IDs with traditional databases involves using `INSERT` with `SELECT`. But with CockroachDB, use a `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](insert.html#insert-and-return-values) for more details.
 =======
 - Generating and retrieving unique IDs with traditional databases involves using `INSERT` with `SELECT`. But with CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](insert.html#insert-and-return-values) for more details.
 >>>>>>> 2432f24... Updated docs for multi-row DML content
+=======
+- Generating and retrieving unique IDs with traditional databases involves using `INSERT` with `SELECT`. But with CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](insert.html#insert-and-return-values) for more details.
+>>>>>>> 963138a318d2b10faafb648b7f377f4126617d76
 
 ## Required Privileges
 
