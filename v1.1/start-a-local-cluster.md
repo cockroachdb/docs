@@ -31,11 +31,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
---host=localhost
-~~~
-
-~~~
+$ cockroach start --insecure --host=localhost
 CockroachDB node starting at {{page.release_info.start_time}}
 build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 admin:      http://localhost:8080
@@ -62,26 +58,16 @@ In a new terminal, add the second node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
---insecure \
---store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
---join=localhost:26257
+$ cockroach start --insecure --store=node2 --host=localhost \
+    --port=26258 --http-port=8081 --join=localhost:26257
 ~~~
 
 In a new terminal, add the third node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
---insecure \
---store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
---join=localhost:26257
+$ cockroach start --insecure --store=node3 --host=localhost \
+    --port=26259 --http-port=8082 --join=localhost:26257
 ~~~
 
 The main difference in these commands is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--port`, and `--http-port` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.
@@ -102,24 +88,9 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
 > SELECT * FROM bank.accounts;
-~~~
-
-~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -149,9 +120,6 @@ Now run the same `SELECT` query:
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
-~~~
-
-~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -194,12 +162,8 @@ At this point, with 2 nodes still online, the cluster remains operational becaus
 $ cockroach sql --insecure --port=26258
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
-~~~
-
-~~~
 +----+---------+
 | id | balance |
 +----+---------+
@@ -234,9 +198,7 @@ Restart the first node from the parent directory of `cockroach-data/`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
---insecure \
---host=localhost
+$ cockroach start --insecure --host=localhost
 ~~~
 
 {{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you won't see a response to the above command until after you restart the second node.
@@ -246,26 +208,16 @@ In a new terminal, restart the second node from the parent directory of `node2/`
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
---insecure \
---store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
---join=localhost:26257
+$ cockroach start --insecure --store=node2 --host=localhost\
+    --port=26258 --http-port=8081 --join=localhost:26257
 ~~~
 
 In a new terminal, restart the third node from the parent directory of `node3/`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
---insecure \
---store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
---join=localhost:26257
+$ cockroach start --insecure --store=node3 --host=localhost \
+    --port=26259 --http-port=8082 --join=localhost:26257
 ~~~
 
 ## What's Next?
