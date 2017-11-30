@@ -170,7 +170,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl certificate approve default.client-root
+    $ kubectl certificate approve default.client.root
     ~~~
 
     ~~~
