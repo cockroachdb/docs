@@ -369,7 +369,7 @@ header {
     header nav.desktop a:not(.button--header) {
       color: #152849;
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -448,12 +448,13 @@ header {
       margin: 0 10px;
       padding: 0;
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 40px;
+      line-height: 15px;
       letter-spacing: 1.5px;
+      line-height: 40px;
       text-transform: uppercase;
       -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
       -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2987,7 +2988,7 @@ img.mfp-img {
   border: 2px solid #54B30E;
   display: none;
   height: 30px;
-  font-family: 'AvenirLTStd-Black', serif;
+  font-family: 'AvenirLTStd-Heavy', serif;
   font-size: 10px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;

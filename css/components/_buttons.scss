@@ -46,7 +46,7 @@
 	@include button();
 	display: none;
 	height: 30px;
-	@include avenir_bl(10px);
+	@include avenir_h(10px);
 	line-height: 10px;
 	background-color: $cl_green;
 	border-color: $cl_green;

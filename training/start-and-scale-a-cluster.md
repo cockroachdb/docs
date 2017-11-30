@@ -117,7 +117,7 @@ Because we don't actually want to run the fourth node, we're actually going to r
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --decommission --insecure --port=2626
+$ cockroach quit --decommission --insecure --port=26260
 ~~~
 
 ## Up Next
