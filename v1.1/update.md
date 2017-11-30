@@ -103,6 +103,31 @@ Parameter | Description
 (4 rows)
 ~~~
 
+### Update Multiple Rows
+
+{{site.data.alerts.callout_success}}Multi-row <code>`UPDATE`</code> is faster than multiple single-row <code>`UPDATE`</code> statements. Whenever possible, use multi-row <code>`UPDATE`</code> instead of multiple single-row <code>`UPDATE`</code> statements.{{site.data.alerts.end}}
+
+~~~ sql
+> UPDATE accounts SET balance = CASE id 
+WHEN 2 THEN 7860 
+WHEN 3 THEN 2890 
+END 
+WHERE id IN (2, 3);
+
+> SELECT * FROM accounts;
+~~~
+~~~
++----+---------+----------+
+| id | balance | customer |
++----+---------+----------+
+|  1 | 10000.5 | Ilya     |
+|  2 |    7860 | Kelly    |
+|  3 |    2890 | Stanley  |
+|  4 |    3400 | Nitin    |
++----+---------+----------+
+(4 rows)
+~~~
+
 ### Update Using `SELECT` Statement
 ~~~ sql
 > UPDATE accounts SET (balance, customer) = 
@@ -113,14 +138,14 @@ Parameter | Description
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 |   6300.0 | Stanley  |
-|  4 |   9000.0 | Kelly    |
-+----+----------+----------+
++----+---------+----------+
+| id | balance | customer |
++----+---------+----------+
+|  1 | 10000.5 | Ilya     |
+|  2 |    7860 | Kelly    |
+|  3 |    2890 | Stanley  |
+|  4 |    7860 | Kelly    |
++----+---------+----------+
 (4 rows)
 ~~~
 
@@ -132,14 +157,14 @@ Parameter | Description
 > SELECT * FROM accounts;
 ~~~
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 | NULL     | Stanley  |
-|  4 |   9000.0 | Kelly    |
-+----+----------+----------+
++----+---------+----------+
+| id | balance | customer |
++----+---------+----------+
+|  1 | 10000.5 | Ilya     |
+|  2 |    7860 | Kelly    |
+|  3 | NULL    | Stanley  |
+|  4 |    7860 | Kelly    |
++----+---------+----------+
 (4 rows)
 ~~~
 
