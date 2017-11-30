@@ -14,7 +14,7 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 - When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
-- [Multi-row `UPSERT`](upsert.html#upsert-that-inserts-multiple-rows) is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements. 
+- A single [multi-row `UPSERT`](#upsert-that-inserts-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements. 
 
 ## Required Privileges
 
