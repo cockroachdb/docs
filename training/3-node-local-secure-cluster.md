@@ -38,7 +38,7 @@ If this were a production environment, you would also want to secure `my-safe-di
 
 Create your CA:
 
-{% include copy-clipboard.html %}o
+{% include copy-clipboard.html %}
 ~~~ shell
 cockroach cert create-ca \
 --certs-dir=certs \
@@ -80,7 +80,7 @@ itsme \
 With all of our certificates in place, we can now start our cluster securely.
 
 1. Start all 3 nodes:
-    
+
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -88,7 +88,7 @@ With all of our certificates in place, we can now start our cluster securely.
     --http-host=localhost \
     --join=localhost:26257, localhost:26258, localhost:26259
     ~~~
-    
+
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -99,7 +99,7 @@ With all of our certificates in place, we can now start our cluster securely.
     --http-host=localhost \
     --join=localhost:26257, localhost:26258, localhost:26259
     ~~~
-    
+
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -110,7 +110,7 @@ With all of our certificates in place, we can now start our cluster securely.
     --http-host=localhost \
     --join=localhost:26257, localhost:26258, localhost:26259
     ~~~
-    
+
 2. Initialize the cluster:
 
     ~~~
