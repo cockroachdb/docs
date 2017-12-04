@@ -50,7 +50,7 @@ Because our cluster has a replication factor of 3, we must add a fourth node to 
 
 3. Make sure the fourth node joined the cluster:
 
-	{% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach node status --certs-dir=certs
     ~~~

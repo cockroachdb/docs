@@ -30,7 +30,7 @@ $ cockroach gen example-data | cockroach sql --certs-dir=certs
 
 1. Open the SQL shell:
 
-	{% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
@@ -42,8 +42,8 @@ $ cockroach gen example-data | cockroach sql --certs-dir=certs
     > SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training';
     ~~~
 
-		{% include copy-clipboard.html %}
-		~~~ sql
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';
     ~~~
 
