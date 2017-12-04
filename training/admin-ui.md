@@ -25,16 +25,23 @@ To complete this lab, you need a [local cluster of 3 nodes](3-node-local-secure-
 
 3. Back in terminal, kill third node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=26259
+    $ cockroach quit --certs-dir=certs --port=26259
     ~~~
 
 4. Return to the Admin UI and watch as it detects the node is unavailable.
 
 5. Have the node rejoin the cluster:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --certs-dir=certs --background \
+    $ cockroach start \
+    --certs-dir=certs \
+    --store=node3 \
+    --background \
+    --port=26259 \
+    --http-port=8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
