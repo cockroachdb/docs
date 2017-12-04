@@ -5,7 +5,7 @@ tags: install, build an app, deploy
 type: first_page
 homepage: true
 toc: false
-twitter: true
+twitter: false
 contribute: false
 ---
 

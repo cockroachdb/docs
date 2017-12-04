@@ -3,7 +3,7 @@ title: Build an App with CockroachDB
 summary: The tutorials in this section show you how to build a simple application with CockroachDB, using PostgreSQL-compatible client drivers and ORMs.
 tags: golang, python, java
 toc: false
-twitter: true
+twitter: false
 ---
 
 The tutorials in this section show you how to build a simple application with CockroachDB using PostgreSQL-compatible client drivers and ORMs that we have tested and can recommend.
