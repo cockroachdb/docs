@@ -71,7 +71,7 @@ root \
 ~~~
 
 {% include copy-clipboard.html %}
-~~~
+~~~ shell
 $ cockroach cert create-client \
 itsme \
 --certs-dir=certs \
