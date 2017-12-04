@@ -18,10 +18,6 @@ It is not possible to perform an [enterprise `RESTORE`](restore.html) from a ful
 
 As a workaround, any time you create, drop, or truncate a table, perform another full `BACKUP` of your cluster.
 
-### Maximum cluster size
-
-The locations of all ranges in a cluster are stored in a two-level index at the beginning of the key-space, known as [meta ranges](architecture/distribution-layer.html#meta-ranges), where the first level (`meta1`) addresses the second, and the second level (`meta2`) addresses data in the cluster. A limitation in v1.1 prevents `meta2` from being split; thus, the max size of a single range, 64MiB by default, limits the overall size of a cluster to 64TB. Clusters beyond this size will experience problems.
-
 ### Available capacity metric in the Admin UI
 
 If you are running multiple nodes on a single machine (not recommended) and didnt' specified the maximum allocated storage capacity for each node using the [`--store`](start-a-node.html#store) flag, the available capacity shown in the [**Capacity**](admin-ui-storage-dashboard.html#capacity) graph in the Admin UI is incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as an available store for each node, while in reality, only one hard disk is available for all nodes. The total available capacity is then calculated as the hard disk size multiplied by the number of nodes on the machine.
@@ -33,7 +29,7 @@ If you are running multiple nodes on a single machine (not recommended) and didn
 Within a single [transaction](transactions.html):
 
 - DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
-- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
+- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table. This also applies to running [`TRUNCATE`](truncate.html) on such a table because `TRUNCATE` implicitly drops and recreates the table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
 ### Schema changes between executions of prepared statements

@@ -20,6 +20,8 @@ As a workaround, any time you create, drop, or truncate a table, perform another
 
 ### Maximum cluster size
 
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.2-alpha.20171026.html">v1.2-alpha.20171026</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/18970">#17016</a>.{{site.data.alerts.end}}
+
 The locations of all ranges in a cluster are stored in a two-level index at the beginning of the key-space, known as [meta ranges](architecture/distribution-layer.html#meta-ranges), where the first level (`meta1`) addresses the second, and the second level (`meta2`) addresses data in the cluster. A limitation in v1.1 prevents `meta2` from being split; thus, the max size of a single range, 64MiB by default, limits the overall size of a cluster to 64TB. Clusters beyond this size will experience problems.
 
 ### Available capacity metric in the Admin UI
@@ -37,7 +39,7 @@ If you have started or [upgraded](upgrade-cockroach-version.html#finalize-the-up
 Within a single [transaction](transactions.html):
 
 - DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
-- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
+- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table. This also applies to running [`TRUNCATE`](truncate.html) on such a table because `TRUNCATE` implicitly drops and recreates the table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
 ### Schema changes between executions of prepared statements
