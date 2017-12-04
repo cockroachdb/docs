@@ -390,7 +390,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
 
     There are only a few differences when creating the second two services:
     - The `--name` and `--secret` flags are unique for each service.
-    - The CockroachDB command to [`start`](start-a-node.html) each node uses the the `--join` flag to connect it to the cluster via the name of the first service and its default port, `cockroachdb-1:26257`.
+    - The CockroachDB command to [`start`](start-a-node.html) each node uses the `--join` flag to connect it to the cluster via the name of the first service and its default port, `cockroachdb-1:26257`.
 
 3. Verify that all three services were created successfully:
 
@@ -408,7 +408,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
 
     {{site.data.alerts.callout_success}}The service definitions tell the CockroachDB nodes to log to <code>stderr</code>, so if you ever need access to a node's logs for troubleshooting, use <a href="https://docs.docker.com/engine/reference/commandline/logs/"><code>sudo docker logs &lt;container id&gt;</code></a> from the instance on which the container is running.{{site.data.alerts.end}}
 
-4. Remove the first service and recreate it again with the `--join` flag to ensure that, if the first node restarts, it will rejoin the original cluster via the the second service, `cockroachdb-2`, instead of initiating a new cluster:
+4. Remove the first service and recreate it again with the `--join` flag to ensure that, if the first node restarts, it will rejoin the original cluster via the second service, `cockroachdb-2`, instead of initiating a new cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell

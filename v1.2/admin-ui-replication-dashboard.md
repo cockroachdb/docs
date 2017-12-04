@@ -1,6 +1,6 @@
 ---
 title: Replication Dashboard
-summary: The Replication dashboard lets you monitor monitor the replication metrics for your cluster.
+summary: The Replication dashboard lets you monitor the replication metrics for your cluster.
 toc: false
 ---
 

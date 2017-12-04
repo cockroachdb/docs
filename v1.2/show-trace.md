@@ -67,7 +67,7 @@ it can be easily integrated with OpenTracing-compatible trace collectors; for ex
 
 Concept | Description
 --------|------------
-**trace** | Information about the the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a query execution in the case of `SHOW TRACE FOR <stmt>` or a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
+**trace** | Information about the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a query execution in the case of `SHOW TRACE FOR <stmt>` or a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
 **span** | A named, timed operation that describes a contiguous segment of work in a trace. Each span links to "child spans", representing sub-operations; their children would be sub-sub-operations of the grandparent span, etc.<br><br>Different spans can represent (sub-)operations that executed either sequentially or in parallel with respect to each other. (This possibly-parallel nature of execution is one of the important things that a trace is supposed to describe.) The operations described by a trace may be _distributed_, that is, different spans may describe operations executed by different nodes.
 **message** | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files](debug-and-error-logs.html) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
 
@@ -148,7 +148,7 @@ Column | Type | Description
 
 ### Trace conflicting transactions
 
-In this example, we use use two terminals concurrently to generate conflicting transactions.
+In this example, we use two terminals concurrently to generate conflicting transactions.
 
 1. In terminal 1, create a table:
 

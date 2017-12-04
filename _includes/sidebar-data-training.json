@@ -1,0 +1,179 @@
+[{
+    "title": "Training Home",
+    "urls": [
+      "/training/"
+    ]
+  },
+  {
+    "title": "Day 1",
+    "items": [
+      {
+        "title": "Overview",
+        "items": [
+          {
+            "title": "Training Overview",
+            "urls": [
+              "/training/overview.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Introduction",
+        "items": [
+          {
+            "title": "Why CockroachDB?",
+            "urls": [
+              "/training/why-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Architecture Overview",
+            "urls": [
+              "/training/architecture-overview.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Ops Basics",
+        "items": [
+          {
+            "title": "Start and Scale a Cluster",
+            "urls": [
+              "/training/start-and-scale-a-cluster.html"
+            ]
+          },
+          {
+            "title": "Replication, Rebalancing & Fault Tolerance",
+            "urls": [
+              "/training/replication-rebalancing-fault-tolerance.html"
+            ]
+          },
+          {
+            "title": "Import Data",
+            "urls": [
+              "/training/import-data.html"
+            ]
+          },
+          {
+            "title": "Identity and Access Management",
+            "urls": [
+              "/training/identity-and-access-management.html"
+            ]
+          },
+          {
+            "title": "Security",
+            "urls": [
+              "/training/security.html"
+            ]
+          },
+          {
+            "title": "Production Deployments",
+            "urls": [
+              "/training/production-deployments.html"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Day 2",
+    "items": [
+      {
+        "title": "Dev Basics",
+        "items": [
+          {
+            "title": "CockroachDB SQL",
+            "urls": [
+              "/training/cockroachdb-sql.html"
+            ]
+          },
+          {
+            "title": "Connect an App",
+            "urls": [
+              "/training/connect-an-app.html"
+            ]
+          },
+          {
+            "title": "Transactions",
+            "urls": [
+              "/training/transactions.html"
+            ]
+          },
+          {
+            "title": "DistSQL",
+            "urls": [
+              "/training/distsql.html"
+            ]
+          },
+          {
+            "title": "Performance Optimization",
+            "urls": [
+              "/training/performance-optimization.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Troubleshooting",
+        "items": [
+          {
+            "title": "Admin UI",
+            "urls": [
+              "/training/admin-ui.html"
+            ]
+          },
+          {
+            "title": "Long-Running Queries",
+            "urls": [
+              "/training/long-running-queries.html"
+            ]
+          },
+          {
+            "title": "Third-Party Monitoring and Alerting",
+            "urls": [
+              "/training/monitoring.html"
+            ]
+          },
+          {
+            "title": "Logs and Troubleshooting",
+            "urls": [
+              "/training/logs.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Maintenance",
+        "items": [
+          {
+            "title": "Upgrade a Cluster",
+            "urls": [
+              "/training/upgrade-a-cluster.html"
+            ]
+          },
+          {
+            "title": "Decommission Nodes",
+            "urls": [
+              "/training/decommission-nodes.html"
+            ]
+          },
+          {
+            "title": "Back up a Cluster",
+            "urls": [
+              "/training/back-up-a-cluster.html"
+            ]
+          },
+          {
+            "title": "Restore a Cluster",
+            "urls": [
+              "/training/restore-a-cluster.html"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

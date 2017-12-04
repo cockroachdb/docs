@@ -218,7 +218,7 @@ header {
 
 		a:not(.button--header) {
 			color: $cl_blue;
-			@include button-text--heavy;
+			@include button-text--heavy--medium;
 			text-transform:uppercase;
 			line-height: 40px;
 			float:left;
@@ -304,9 +304,8 @@ header {
 			float: left;
 			margin: 0 10px;
 			padding: 0;
-			@include avenir_h(12px);
+			@include button-text--heavy--medium;
 			line-height: 40px;
-			letter-spacing: 1.5px;
 			text-transform: uppercase;
 			@include groovy(color);
 

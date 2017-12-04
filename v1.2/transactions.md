@@ -53,7 +53,7 @@ To handle errors in transactions, you should check for the following types of se
 
 - **Retryable Errors**: Errors with the code `40001` or string `retry transaction`, which indicate the transaction failed because another concurrent or recent transaction accessed the same values. To handle these errors, you should [retry the transaction](#client-side-transaction-retries).
 
-- **Ambiguous Errors**: Errors with the code `XX000` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.
+- **Ambiguous Errors**: Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.
 
   For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.
 

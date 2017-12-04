@@ -4,7 +4,7 @@ summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: false
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](use-the-built-in-sql-client.html), using the table data in the first section, [NULLs and Logic](#nulls-and-logic). 
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](use-the-built-in-sql-client.html), using the table data in the first section, [NULLs and Logic](#nulls-and-logic).
 
 {{site.data.alerts.callout_info}}When using the built-in client, <code>NULL</code> values are displayed using the word <code>NULL</code>. This distinguishes them from a character field that contains an empty string ("").{{site.data.alerts.end}}
 
@@ -16,8 +16,8 @@ Any comparison between a value and `NULL` results in `NULL`. This behavior is co
 
 ~~~ sql
 > CREATE TABLE t1(
-  a INT, 
-  b INT, 
+  a INT,
+  b INT,
   c INT
 );
 
@@ -134,7 +134,7 @@ Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 +---+------+---+
 ~~~
 
-## NULLs and Arithmetic 
+## NULLs and Arithmetic
 
 Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
@@ -227,7 +227,7 @@ However, counting the number of distinct values excludes `NULL`s, which is consi
 
 ## NULLs as Other Values
 
-In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calcuations. 
+In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calcuations.
 
 For example, let's say you want to calculate the average value of column `b` as being the `SUM()` of all numbers in `b` divided by the total number of rows, regardless of whether `b`'s value is `NULL`. In this case, you would use `AVG(IFNULL(b, 0))`, where `IFNULL(b, 0)` substitutes a value of zero (0) for `NULL`s during the calculation.
 
@@ -262,12 +262,12 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 ## NULLs and Sorting
 
-When sorting a column containing `NULL` values, CockroachDB orders `NULL`s lower than the first non-`NULL` value. This differs from PostgreSQL, which orders `NULL`s higher than the last non-`NULL` value.
+When [sorting a column](select.html#sorting-retrieved-values) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
 Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB, so you cannot change where `NULL` values appear in the sort order.
 
 ~~~ sql
-> SELECT * FROM t1 ORDER BY b;
+> SELECT * FROM t1 ORDER BY b ASC;
 ~~~
 ~~~
 +---+------+------+
@@ -299,7 +299,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 +---+------+------+
 ~~~
 
-## NULLs and Unique Constraints 
+## NULLs and Unique Constraints
 
 `NULL` values are not considered unique. Therefore, if a table has a Unique constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 

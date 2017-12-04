@@ -67,6 +67,8 @@ Restore Type | Parameters
 
 The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
 
+{{site.data.alerts.callout_info}}When a <code>RESTORE</code> fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.{{site.data.alerts.end}}
+
 ## Viewing and Controlling Restore Jobs <span class="version-tag">New in v1.1</span>
 
 Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
