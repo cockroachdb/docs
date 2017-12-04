@@ -801,6 +801,12 @@
         "title": "Performance Optimization",
         "items": [
           {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/performance-best-practices-overview.html"
+            ]
+          },
+          {
             "title": "Indexes",
             "urls": [
               "/${VERSION}/indexes.html"
