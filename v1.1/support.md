@@ -1,8 +1,7 @@
 ---
-title: CockroachDB SUPPORT
+title: CockroachDB SUPPORT v1.1
 summary: 'Support'
-toc: false
-contribute: false
-no_sidebar: true
+layout: full-width-content
+no_site_search: true
 ---
-## v1.1
+{% include support.html %}

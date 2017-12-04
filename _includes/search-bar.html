@@ -1,9 +1,11 @@
 <div class="search">
-  <span class="fa fa-search"></span>
-  <form method="GET" action="{{ 'search.html' | relative_url }}">
-    <input type="text" id="search-input" name="q" placeholder="Search">
-    <span class="clear-search"></span>
-  </form>
+  {% unless page.no_site_search %}
+    <span class="fa fa-search"></span>
+    <form method="GET" action="{{ 'search.html' | relative_url }}">
+      <input type="text" id="search-input" name="q" placeholder="Search">
+      <span class="clear-search"></span>
+    </form>
+  {% endunless %}
 </div>
 
 {% if page.url == '/search.html' %}

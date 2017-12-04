@@ -1,0 +1,19 @@
+<div class="get-started">
+  <h5>Welcome to CockroachDB Documentation! Get started:</h5>
+  <div class="get-started__tiles">
+    {% if page.version.tag %}
+      {% assign tag = page.version.tag %}
+    {% else %}
+      {% assign tag = page.version.version %}
+    {% endif %}
+
+    <div class="get-started__tiles--row">
+      <a class="get-started__tile" href="/docs/{{tag}}/guides/">Guides</a>
+      <a class="get-started__tile" href="/docs/{{tag}}/concepts/">Concepts</a>
+    </div>
+    <div class="get-started__tiles--row">
+      <a class="get-started__tile" href="/docs/{{tag}}/reference/">Reference</a>
+      <a class="get-started__tile" href="/docs/{{tag}}/support/">Support</a>
+    </div>
+  </div>
+</div>

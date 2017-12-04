@@ -3,7 +3,15 @@ layout: default
 ---
 
 <div class="post-header">
-  <h1 class="post-title-main">{% if page.homepage == true %} {{site.homepage_title}} {% else %}{{ page.title }}{% endif %}</h1>
+  <h1 class="post-title-main">
+    {% if page.homepage == true %}
+      {{site.homepage_title}}
+    {% else %}
+      {% unless page.no_title %}
+        {{ page.title }}
+      {% endunless %}
+    {% endif %}
+  </h1>
   {% unless page.contribute == false %}
       {% include contribute-options.html %}
   {% endunless %}
@@ -30,10 +38,10 @@ layout: default
 
    {{content}}
 
-   {% if page.feedback != false %}
+   {% unless page.feedback == false %}
       <br><br>
       {% include feedback-widget.html %}
-   {% endif %}
+   {% endunless %}
 
 </div>
 

@@ -55,6 +55,10 @@
   }
 }
 
+@mixin blue-gradient {
+	background: linear-gradient(135deg, #4596e6, #2e64d9);
+};
+
 /*============================================================================
   Dependency-free breakpoint mixin
     - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>{% include head.html %}</head>
+  <body>
+    {% for hash in page.allowed_hashes %}
+      <a id="{{ hash }}" style="display: none"></a>
+    {% endfor %}
+
+    {% include topnav.html %}
+    
+    <div id="content">
+      {% if page.no_docnav == true %}
+      {% else %}
+        {% include docnav.html %}
+      {% endif %}
+
+      <div id="main-content">{{content}}</div>
+
+      {% include footer.html %}
+    </div>
+    {% include google_tag_manager.html %}
+    {% include google_remarketing.html %}
+    {% include hubspot_analytics.html %}
+    {% if page.twitter == true %}
+      {% include twitter_analytics.html %}
+    {% endif %}
+  </body>
+</html>

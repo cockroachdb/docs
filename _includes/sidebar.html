@@ -105,8 +105,6 @@
           return "stable";
         })();
 
-        console.log('SIDEBAR DATA: ', {{page.sidebar_data | jsonify}})
-
         document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
 
         function isVersionDirectory(d) {

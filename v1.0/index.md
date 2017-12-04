@@ -1,8 +1,9 @@
 ---
-title: CockroachDB HOME
+title: Documentation
 summary: Home
 toc: false
 contribute: false
+feedback: false
 sidebar_data: sidebar-data-home-v1.0.json
 ---
-## v1.0
+{% include get-started.html %}

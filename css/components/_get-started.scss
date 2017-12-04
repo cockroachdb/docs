@@ -1,0 +1,26 @@
+.get-started {
+  .get-started__tiles { width: 100%; }
+
+  .get-started__tiles--row {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .get-started__tile {
+    display: inline-flex;
+    align-items: center;
+    height: 75px;
+    width: calc(50% - 20px);
+    padding: 30px;
+    box-shadow: $cl_gray_medium 1px 1px 10px;
+    color: $cl_gray_body;
+
+    &:first-child { margin-right: 15px;}
+
+    &:nth-child(2) { margin-left: 15px; }
+
+    &:hover {
+      border: none;
+    }
+  }
+}
