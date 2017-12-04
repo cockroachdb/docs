@@ -25,6 +25,7 @@ Because our cluster has a replication factor of 3, we must add a fourth node to 
 
 1. Make sure your cluster is up and running:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach node status --certs-dir=certs
     ~~~
@@ -34,7 +35,7 @@ Because our cluster has a replication factor of 3, we must add a fourth node to 
     If you already have >3 nodes running, you can move ahead to [Step 2. Decommission and remove the node](#step-2-decommission-and-remove-the-node).
 
 2. Start a fourth secure node:
-    
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
@@ -48,8 +49,8 @@ Because our cluster has a replication factor of 3, we must add a fourth node to 
     ~~~
 
 3. Make sure the fourth node joined the cluster:
-	
-	{% include copy-clipboard.html %}
+
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach node status --certs-dir=certs
     ~~~
@@ -78,6 +79,7 @@ Every second or so, you'll then see the decommissioning status. Once the node ha
 
 Check to ensure that the node was successfully decommissioned:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --certs-dir=certs
 ~~~
