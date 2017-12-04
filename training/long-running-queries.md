@@ -1,6 +1,6 @@
 ---
 title: Long Running Queries
-summary: 
+summary:
 toc: false
 sidebar_data: sidebar-data-training.json
 ---
@@ -68,33 +68,43 @@ $ ./ycsb -duration 5m -tolerate-errors -concurrency 2 -rate-limit 100 'postgres:
 ### Step 2. Find running queries in the CLI
 
 1. Launch the built-in SQL client:
-    
+
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
 
-2. Find the long-running queries:
+2. Find currently active queries:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT query_id, query, start FROM [SHOW CLUSTER QUERIES];
+    > SHOW QUERIES;
     ~~~
 
-    You can find long-running queries by filtering on the `start` column, e.g.:
+    You can also filter for queries that have been running for a certain amount of time. For example, to find queries that have been running for more than 1 hour, you would run the following:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT query_id, query, start FROM [SHOW CLUSTER QUERIES]
-          WHERE start < (now() - INTERVAL '1 hour');
+    > SELECT * FROM [SHOW CLUSTER QUERIES]
+      WHERE start < (now() - INTERVAL '1 hour');
     ~~~
 
 3. We're done with both the load generator, so you can stop it by going to its terminals and quitting the process.
 
-### Step 3. Find Long-Running Queries in the Admin UI
+### Step 3. Cancel Long-Running Queries
+
+Once you've identified a long-running query via `SHOW QUERIES`, note the `query_id` and use it with the `CANCEL QUERY` statement. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
+~~~
+
+### Step 4. Find Long-Running Queries in the Admin UI
 
 1. Access the Admin UI at `http://localhost:8080`
 
-2. Find your long-running queries from **Dashboards** > **Slow Running Queries**.
+2. Find your long-running queries from **Dashboards** > **Slow Requests**.
 
 If your cluster had any long-running queries still running, this is where they would display.
 
