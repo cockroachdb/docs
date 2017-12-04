@@ -103,6 +103,8 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 ~~~
 
+{{site.data.alerts.callout_success}}To insert more than 100,000 rows at a time, use the (experimental) [`IMPORT`](import.html) statement instead of multi-row `INSERT` statement. That is because the current implementation of CockroachDB limits the size of a transaction to 100,000 write intents. What this means is, if your schema has all the tables in one column family, then you can insert a maximum of 100000 rows in one transaction; if you have 2 column families, that’s a maximum of 50000 rows, and so on. In such cases, `IMPORT` performs better than `INSERT`.{{site.data.alerts.end}}
+
 ### Insert from a `SELECT` Statement
 
 ~~~ sql
