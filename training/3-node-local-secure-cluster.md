@@ -40,7 +40,7 @@ Create your CA:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach cert create-ca \
+$ cockroach cert create-ca \
 --certs-dir=certs \
 --ca-key=my-safe-directory/ca.key
 ~~~
@@ -71,7 +71,7 @@ root \
 ~~~
 
 {% include copy-clipboard.html %}
-~~~
+~~~ shell
 $ cockroach cert create-client \
 itsme \
 --certs-dir=certs \
