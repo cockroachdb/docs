@@ -18,6 +18,7 @@ Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [ActiveRecord](build-a-rub
 Java | [jdbc](build-a-java-app-with-cockroachdb.html) | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)
 Node.js | [pg](build-a-nodejs-app-with-cockroachdb.html) | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html)
 C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | No ORMs tested
+C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | No ORMs tested
 Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | No ORMs tested
 PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | No ORMs tested
 Rust | [postgres](build-a-rust-app-with-cockroachdb.html) | No ORMs tested
