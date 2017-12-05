@@ -104,7 +104,7 @@ Once you've identified a long-running query via `SHOW QUERIES`, note the `query_
 
 1. Access the Admin UI at `http://localhost:8080`
 
-2. Find your long-running queries from **Dashboards** > **Slow Requests**.
+2. Find your long-running queries from **Dashboard** > **SQL**.
 
 If your cluster had any long-running queries still running, this is where they would display.
 
