@@ -83,7 +83,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	<node2 internal IP address> \
 	<node2 external IP address> \
 	<node2 hostname>  \
-	<other common names for node1> \
+	<other common names for node2> \
 	localhost \
 	127.0.0.1 \
 	<load balancer IP address> \
