@@ -100,14 +100,6 @@ Once you've identified a long-running query via `SHOW QUERIES`, note the `query_
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-### Step 4. Find Long-Running Queries in the Admin UI
-
-1. Access the Admin UI at `http://localhost:8080`
-
-2. Find your long-running queries from **Dashboard** > **SQL**.
-
-If your cluster had any long-running queries still running, this is where they would display.
-
 ## Up Next
 
 - [Third-Party Monitoring & Alerts](monitoring.html)
