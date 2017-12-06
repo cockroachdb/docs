@@ -8,7 +8,7 @@ This page lists the SQL performance best practices for CockroachDB.
 
 <div id="toc"></div>
 
-## Multi-row DML Best Practices
+## Multi-Row DML Best Practices
 
 ### Use Multi-Row DML instead of Multiple Single-Row DMLs
 
@@ -21,15 +21,15 @@ For more information, see:
 - [Delete Multiple Rows](delete.html#delete-specific-rows)
 - <Link to Robert's blog post>
 
-### Use `IMPORT` instead of `INSERT` for Transaction Size greater than 100,000
+### Bulk Insert Best Practices
 
-The current implementation of CockroachDB limits the size of a transaction to 100,000 write intents. What this means is, if your schema has all the tables in one column family, then you can insert a maximum of 100,000 rows in one transaction; if you have 2 column families, that’s a maximum of 50000 rows, and so on.
+#### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
 
-### Use `IMPORT` instead of `INSERT` for Transaction Size greater than 100,000
+To bulk-insert data into an existing table, batch 100 rows in one multi-row `INSERT` statement at a time, and do not include the `INSERT` statements within a transaction. 
 
-The current implementation of CockroachDB limits the size of a transaction to 100,000 write intents. What this means is, if your schema has all the tables in one column family, then you can insert a maximum of 100000 rows in one transaction; if you have 2 column families, that’s a maximum of 50000 rows, and so on.
+#### Use `IMPORT` instead of `INSERT` for Bulk Imports into New Tables
 
-To insert more than 100,000 rows at a time, use the (experimental) [`IMPORT`](import.html) statement instead of multi-row `INSERT` statement. 
+To bulk-insert data into a brand new table, the experimental [`IMPORT`](import.html) statement is better performant than `INSERT`.
 
 ### Use `TRUNCATE` instead of `DELETE` to Delete All Rows in a Large Table
 
@@ -37,7 +37,9 @@ The [`TRUNCATE` statement](truncate.html) removes all rows from a table by dropp
 
 ## Assign Column Families
 
-A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store. [Assigning column families](column-families.html) reduces the number of keys results in a smaller storage overhead and improves performance during `INSERT`, `UPDATE`, and `DELETE` operations.
+A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store. 
+
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. [Assigning column families](column-families.html) reduces the number of keys results in a smaller storage overhead and improves performance during `INSERT`, `UPDATE`, and `DELETE` operations. 
 
 ## Execute Statements in Parallel
 
@@ -45,7 +47,7 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 ## Interleave Tables
 
-[Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
+[Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
 
 ## Unique ID Generation Best Practices
 
