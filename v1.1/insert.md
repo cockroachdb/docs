@@ -103,7 +103,7 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 ~~~
 
-{{site.data.alerts.callout_success}}The experimental [`IMPORT`](import.html) statement is better performant than `INSERT` for when you want to insert more than 100 rows in a brand new table.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table.{{site.data.alerts.end}}
 
 ### Insert from a `SELECT` Statement
 
