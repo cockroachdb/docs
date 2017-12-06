@@ -27,9 +27,9 @@ For more information, see:
 
 To bulk-insert data into an existing table, batch 100 rows in one multi-row `INSERT` statement at a time, and do not include the `INSERT` statements within a transaction. 
 
-#### Use `IMPORT` instead of `INSERT` for Bulk Imports into New Tables
+#### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
-To bulk-insert data into a brand new table, the experimental [`IMPORT`](import.html) statement is better performant than `INSERT`.
+To bulk-insert data into a brand new table, the (experimental) [`IMPORT`](import.html) statement performs better than `INSERT`.
 
 ### Use `TRUNCATE` instead of `DELETE` to Delete All Rows in a Large Table
 
@@ -174,7 +174,7 @@ balance INT
 nominee STRING);
 ~~~
 
-Now if we want to find the account balances of all customers, an inefficient table scan would be as follows:
+Now if we want to find the account balances of all customers, an inefficient table scan would be:
 
 ~~~ sql
 > SELECT * FROM ACCOUNTS;
@@ -223,7 +223,7 @@ The common practice to create a unique query is to use `SELECT DISTINCT`.
 +----------+
 ~~~
 
-This output is incorrect. Because there are two customers named Kelly, both should be included in the output. In this case, `SELECT DISTINCT` gives a unique, yet incorrect output. To get the correct result, we need to specify more fields to create a unique query:
+This output is incorrect. Because there are two customers named Kelly, both should be included in the output. In this case, `SELECT DISTINCT` gives a unique, yet incorrect output. To get the correct result, specify more fields to create a unique query:
 
 ~~~ sql
 > SELECT customer, address FROM accounts;
