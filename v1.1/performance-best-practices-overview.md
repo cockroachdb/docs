@@ -145,11 +145,7 @@ Merge joins are performed on the indexed columns of two tables: CockroachDB take
 
 Merge joins requires both tables to be indexed on the merge columns. In case this condition is not met, CockroachDB resorts to the slower hash joins. So while using `JOIN` on two tables, first create indexes on the tables and then use the `JOIN` operator.
 
-Also note that merge `JOIN`s can be used only when the distsql engine is turned on. Set the `sql.defaults.distsql` parameter to turn on the distsql engine:
-
-~~~ sql
-> SET CLUSTER SETTING sql.defaults.distsql = 1;
-~~~
+Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/). 
 
 ### Drop Unused Indexes
 
@@ -189,52 +185,4 @@ This query retrieves all data stored in the table. A more efficient query would 
 This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for Large Tables
-`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive and may result in inaccurate results. A better way to obtain unique entries is to select more fields in the query.
-
-#### Example
-
-~~~ sql
-> SELECT * FROM accounts;
-~~~
-
-~~~
-+----+---------+----------+----------+
-| id | balance | customer | address  |
-+----+---------+----------+----------+
-|  1 | 10000.5 | Ilya     | New York |
-|  2 |    7860 | Kelly    | Ohio     |
-|  3 |    2890 | Stanley  | Arizona  |
-|  4 |    7860 | Kelly    | Nevada   |
-+----+---------+----------+----------+
-~~~
-
-The common practice to create a unique query is to use `SELECT DISTINCT`.
-
-~~~ sql
-> SELECT DISTINCT customer FROM accounts;
-~~~
-~~~
-+----------+
-| customer |
-+----------+
-| Ilya     |
-| Kelly    |
-| Stanley  |
-+----------+
-~~~
-
-This output is incorrect. Because there are two customers named Kelly, both should be included in the output. In this case, `SELECT DISTINCT` gives a unique, yet incorrect output. To get the correct result, specify more fields to create a unique query:
-
-~~~ sql
-> SELECT customer, address FROM accounts;
-~~~
-~~~
-+----------+----------+
-| customer | address  |
-+----------+----------+
-| Ilya     | New York |
-| Kelly    | Ohio     |
-| Stanley  | Arizona  |
-| Kelly    | Nevada   |
-+----------+----------+
-~~~
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead of `SELECT DISTINCT`.
