@@ -823,102 +823,85 @@ a:not([href]) {
     #version-switcher .tier-2.active a {
       color: #54B30E; }
 
-.roach {
+.landing-page .landing-page__tutorial {
+  width: 100%; }
+.landing-page .landing-page__tutorial--tile {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  width: calc(33% - 15.5px);
   border: 1px solid #DADADA;
+  box-shadow: 1px 1px 10px #DADADA;
+  margin-right: 10px;
   margin-bottom: 20px;
-  padding: 10px;
-  text-align: center;
-  top: 0px;
-  position: relative; }
-  .roach h3 {
-    color: #54B30E;
-    margin-top: 20px;
-    margin-bottom: 0;
-    text-transform: initial;
-    font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 17px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 30px; }
-  .roach a img {
-    height: 80px; }
-  .roach a:hover {
-    border-bottom: none; }
-  .roach p {
-    padding: 5px 0 10px;
-    margin: 0;
-    font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 14px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 20px; }
-  .roach:hover {
-    border-color: #54B30E;
-    background-color: #F3F3F3; }
-  .roach.full-roach .catrina {
-    height: 120px; }
-  @media screen and (min-width: 992px) {
-    .roach.full-roach {
-      text-align: left;
-      min-height: 0; }
-      .roach.full-roach .catrina {
-        width: 100%;
-        max-width: 270px;
-        height: auto; } }
-
-.blog-post {
-  border: 1px solid #DADADA;
-  padding: 10px 20px;
-  border-bottom: none;
-  overflow: auto; }
-  .blog-post .blog-title {
-    font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 14px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 20px;
-    color: #152849;
-    margin-bottom: 5px; }
-  .blog-post .blog-meta {
-    font-family: 'AvenirLTStd-Oblique', serif;
-    font-size: 12px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 28px;
-    color: #A2A2A2; }
-    .blog-post .blog-meta .meta-emphasis {
-      color: #54B30E; }
-  .blog-post.last-entry {
-    border-bottom: 1px solid #DADADA; }
-  .blog-post:hover {
-    background-color: #F3F3F3; }
+  margin-left: 10px; }
+  @media screen and (min-width: 544px) {
+    .landing-page .landing-page__tutorial--tile {
+      height: 75px; } }
   @media screen and (min-width: 768px) {
-    .blog-post .blog-title {
-      float: left;
-      line-height: 28px;
-      margin-bottom: 0; }
-    .blog-post .blog-meta {
-      float: right; } }
-
-.view-blog {
-  margin-top: 15px;
-  text-align: right; }
-  .view-blog a {
-    font-family: 'AvenirLTStd-Black', serif;
-    font-size: 12px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 15px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #A2A2A2; }
-    .view-blog a:hover {
-      border-bottom: none; }
+    .landing-page .landing-page__tutorial--tile {
+      width: calc(33% - 14.5px); } }
+  .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-icon {
+    content: url(../images/cl-download.svg); }
+  .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
+    content: 'Install'; }
+    @media screen and (min-width: 768px) {
+      .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
+        content: 'Install CockroachDB'; } }
+  .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-icon {
+    content: url(../images/cl-flag-finish.svg); }
+  .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
+    content: 'Start cluster'; }
+    @media screen and (min-width: 768px) {
+      .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
+        content: 'Start a cluster'; } }
+  .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-icon {
+    content: url(../images/cl-settings.svg); }
+  .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-label:after {
+    content: 'Build an app'; }
+  .landing-page .landing-page__tutorial--tile:first-child {
+    margin-left: 0; }
+  .landing-page .landing-page__tutorial--tile:last-child {
+    margin-right: 0; }
+  .landing-page .landing-page__tutorial--tile:hover {
+    border-color: #54B30E; }
+.landing-page .landing-page__tutorial--tile-icon {
+  display: none; }
+  @media screen and (min-width: 544px) {
+    .landing-page .landing-page__tutorial--tile-icon {
+      display: initial;
+      margin-right: 10px;
+      margin-bottom: 2px; } }
+.landing-page .landing-page__tutorial--tile-label {
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  color: #142848;
+  margin-top: 5px; }
+  @media screen and (min-width: 544px) {
+    .landing-page .landing-page__tutorial--tile-label {
+      font-family: 'AvenirLTStd-Roman', serif;
+      font-size: 14px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 20px; } }
+.landing-page .landing-page__video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 */
+  padding-top: 25px;
+  height: 0; }
+.landing-page iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
 
 #content {
   background: #fff;
@@ -2387,7 +2370,7 @@ polygon.regexp {
   line-height: 0; }
 
 .feedback-question {
-  display: inline-block;
+  display: block;
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
@@ -2397,6 +2380,9 @@ polygon.regexp {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 30px; }
+  @media screen and (min-width: 544px) {
+    .feedback-question {
+      display: inline-block; } }
 
 @media screen and (max-width: 767px) {
   .feedback-question {
