@@ -29,10 +29,11 @@ To complete this lab, you need:
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the CockroachDB tarball:
-    $ curl -O {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz
+    $ curl -O https://github.com/cockroachdb/docs/blob/master/training/resources/crdb-ycsb-mac.tar.gz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -43,10 +44,11 @@ To complete this lab, you need:
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the CockroachDB tarball:
-    $ wget {{page.url}}/training/resources/crdb-ycsb-linux.tar.gz
+    $ wget https://github.com/cockroachdb/docs/blob/master/training/resources/crdb-ycsb-linux.tar.gz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -89,7 +91,7 @@ $ ./ycsb -duration 5m -tolerate-errors -concurrency 2 -rate-limit 100 'postgres:
       WHERE start < (now() - INTERVAL '1 hour');
     ~~~
 
-3. We're done with both the load generator, so you can stop it by going to its terminals and quitting the process.
+3. We're done with the load generator, so you can stop it by going to its terminal and quitting the process.
 
 ### Step 3. Cancel Long-Running Queries
 
@@ -99,6 +101,7 @@ Once you've identified a long-running query via `SHOW QUERIES`, note the `query_
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
+
 
 ## Up Next
 
