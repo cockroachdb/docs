@@ -7,14 +7,19 @@
     justify-content: center;
     align-items: center;
     height: 55px;
-    width: calc(33% - 15.5px);
+    width: calc(33% - 9px);
     border: none;
     box-shadow: 1px 1px 10px $cl_gray_medium;
-    margin-right: 10px;
+    margin-right: 5px;
     margin-bottom: 20px;
-    margin-left: 10px;
+    margin-left: 5px;
 
-    @include at-query($min, $screen-xsm) { height: 75px; }
+    @include at-query($min, $screen-xsm) {
+      height: 75px;
+      width: calc(33% - 15.5px);
+      margin-right: 10px;
+      margin-left: 10px;
+    }
 
     @include at-query($min, $screen-sm) { width: calc(33% - 14.5px); }
 
@@ -41,7 +46,7 @@
     }
 
     &.build-app {
-      .landing-page__tutorial--tile-icon:before { content: url(../images/cl-settings.svg); }
+      .landing-page__tutorial--tile-icon { content: url(../images/cl-settings.svg); }
       .landing-page__tutorial--tile-label {
         &:after { content: 'Build an app'; }
       }
@@ -67,11 +72,11 @@
   }
 
   .landing-page__tutorial--tile-label {
-    @include caption--small;
+    @include type-caption-3;
     color: $cl_gray_body;
     margin-top: 5px;
 
-    @include at-query($min, $screen-xsm) { @include caption; }
+    @include at-query($min, $screen-xsm) { @include paragraph-type; }
   }
 
   .landing-page__video-wrapper {
