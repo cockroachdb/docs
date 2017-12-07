@@ -831,7 +831,7 @@ a:not([href]) {
   align-items: center;
   height: 55px;
   width: calc(33% - 15.5px);
-  border: 1px solid #DADADA;
+  border: none;
   box-shadow: 1px 1px 10px #DADADA;
   margin-right: 10px;
   margin-bottom: 20px;
@@ -856,7 +856,7 @@ a:not([href]) {
     @media screen and (min-width: 768px) {
       .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
         content: 'Start a cluster'; } }
-  .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-icon {
+  .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-icon:before {
     content: url(../images/cl-settings.svg); }
   .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-label:after {
     content: 'Build an app'; }
@@ -865,7 +865,9 @@ a:not([href]) {
   .landing-page .landing-page__tutorial--tile:last-child {
     margin-right: 0; }
   .landing-page .landing-page__tutorial--tile:hover {
-    border-color: #54B30E; }
+    border-bottom: none; }
+    .landing-page .landing-page__tutorial--tile:hover .landing-page__tutorial--tile-label {
+      color: #54B30E; }
 .landing-page .landing-page__tutorial--tile-icon {
   display: none; }
   @media screen and (min-width: 544px) {

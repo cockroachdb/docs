@@ -8,7 +8,7 @@
     align-items: center;
     height: 55px;
     width: calc(33% - 15.5px);
-    border: 1px solid $cl_gray_medium;
+    border: none;
     box-shadow: 1px 1px 10px $cl_gray_medium;
     margin-right: 10px;
     margin-bottom: 20px;
@@ -41,7 +41,7 @@
     }
 
     &.build-app {
-      .landing-page__tutorial--tile-icon { content: url(../images/cl-settings.svg); }
+      .landing-page__tutorial--tile-icon:before { content: url(../images/cl-settings.svg); }
       .landing-page__tutorial--tile-label {
         &:after { content: 'Build an app'; }
       }
@@ -49,7 +49,11 @@
 
     &:first-child { margin-left: 0; }
     &:last-child { margin-right: 0; }
-    &:hover { border-color: $cl_green; }
+    &:hover {
+      border-bottom: none;
+
+      .landing-page__tutorial--tile-label { color: $cl_green; }
+    }
   }
 
   .landing-page__tutorial--tile-icon {
