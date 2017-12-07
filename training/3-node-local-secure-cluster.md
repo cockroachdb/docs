@@ -40,7 +40,7 @@ Create your CA:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach cert create-ca \
+$ cockroach cert create-ca \
 --certs-dir=certs \
 --ca-key=my-safe-directory/ca.key
 ~~~
@@ -49,6 +49,7 @@ cockroach cert create-ca \
 
 Because we're using a local deployment and all nodes use the same hostname (`localhost`), we only need to generate a single node certificate. Note that this is different than how you would normally deploy certificates in a production environment.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-node \
 localhost \
@@ -61,6 +62,7 @@ $(hostname) \
 
 Create client certificates for both the `root` and `itsme` users.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 root \
@@ -68,7 +70,8 @@ root \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach cert create-client \
 itsme \
 --certs-dir=certs \
@@ -81,14 +84,17 @@ With all of our certificates in place, we can now start our cluster securely.
 
 1. Start all 3 nodes:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
+    --store=node1 \
     --host=localhost \
     --http-host=localhost \
-    --join=localhost:26257, localhost:26258, localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -97,9 +103,10 @@ With all of our certificates in place, we can now start our cluster securely.
     --port=26258 \
     --http-port=8081 \
     --http-host=localhost \
-    --join=localhost:26257, localhost:26258, localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -108,12 +115,13 @@ With all of our certificates in place, we can now start our cluster securely.
     --port=26259 \
     --http-port=8082 \
     --http-host=localhost \
-    --join=localhost:26257, localhost:26258, localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 2. Initialize the cluster:
 
-    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ cockroach init --certs-dir=certs
     ~~~
 
@@ -121,12 +129,14 @@ With all of our certificates in place, we can now start our cluster securely.
 
 ## 4. Access the Cluster Securely
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --user=itsme
 --certs-dir=certs
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~

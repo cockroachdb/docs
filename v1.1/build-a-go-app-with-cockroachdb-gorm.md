@@ -2,7 +2,7 @@
 title: Build a Go App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Go application with the GORM ORM.
 toc: false
-twitter: true
+twitter: false
 ---
 
 <div class="filters filters-big clearfix">
@@ -10,7 +10,9 @@ twitter: true
     <a href="build-a-go-app-with-cockroachdb-gorm.html"><button class="filter-button current">Use <strong>GORM</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Go application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/), so those are featured here.
+This tutorial shows you how build a simple Go application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+
+We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}For a more realistic use of GORM with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
@@ -93,9 +95,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [GORM ORM](http://jinzhu.me/gorm/), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-You might also be interested in using a local cluster to explore the following core CockroachDB features:
-
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
+{% include app/see-also-links.md %}

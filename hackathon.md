@@ -3,7 +3,7 @@ title: CockroachDB Hackathon Guide
 summary: Get Up & Running with CockroachDB at a Hackathon
 toc: false
 toc_not_nested: true
-twitter: true
+twitter: false
 no_sidebar: true
 ---
 
@@ -178,7 +178,7 @@ Build Type:   release</code></pre>
     ~~~ shell
     $ cockroach start --insecure --background
     ~~~
- 
+
     You'll receive a response like:
 
     ~~~

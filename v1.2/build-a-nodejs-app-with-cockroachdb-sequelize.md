@@ -2,7 +2,7 @@
 title: Build a Node.js App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Node.js application with the Sequelize ORM.
 toc: false
-twitter: true
+twitter: false
 ---
 
 <div class="filters filters-big clearfix">
@@ -10,7 +10,9 @@ twitter: true
     <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button current">Use <strong>Sequelize</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Node.js application with CockroachDB using a PostgreSQL-compatible driver or ORM. We've tested and can recommend the [Node.js pg driver](https://www.npmjs.com/package/pg) and the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), so those are featured here.
+This tutorial shows you how build a simple Node.js application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+
+We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) and the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}For a more realistic use of Sequelize with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
@@ -92,9 +94,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-You might also be interested in using a local cluster to explore the following core CockroachDB features:
-
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
+{% include app/see-also-links.md %}
