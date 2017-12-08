@@ -33,9 +33,9 @@ release_info:
     start_time: 2017-11-27 15:10:52.34274101 +0000 UTC
   v1.2:
     name: v1.2-alpha
-    version: v1.2-alpha.20171204
-    build_time: 2017/12/04 14:48:26 (go1.9)
-    start_time: 2017-12-04 15:10:52.34274101 +0000 UTC
+    version: v1.2-alpha.20171211
+    build_time: 2017/12/11 14:48:26 (go1.9)
+    start_time: 2017-12-11 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-ELzpyNMFGAIiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
