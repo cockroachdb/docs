@@ -158,7 +158,7 @@ nav.mobile_expanded {
 
 .logo {
 	width: 180px;
-	margin-top: 3px;
+	margin-top: 5px;
 	float:left;
 	line-height: 20px;
 	font-size: 0;
@@ -168,7 +168,8 @@ nav.mobile_expanded {
 	}
 
 	@include at-query($min, $screen-lg) {
-		width:209px;
+		width: 209px;
+		margin-top: 3px;
 	}
 }
 
@@ -179,11 +180,6 @@ header {
 	background: #FFFFFF;
   border-bottom: 1px solid $cl_gray_medium;
 	height: 60px;
-
-	// there is just not enough room once we hit tablet
-	@include at-query($min, $screen-sm) {
-		padding: 15px 10px;
-	}
 
 	@include at-query($min, $screen-md) {
 		height: 70px;
@@ -203,7 +199,7 @@ header {
 			margin: 0 auto;
 		}
 
-		@include at-query($min, $max-plus-gutters) {
+		@include at-query($min, $screen-lg) {
 			max-width: $max-width;
 		}
 	}
@@ -220,7 +216,7 @@ header {
 			color: $cl_blue;
 			@include button-text--heavy--medium;
 			text-transform:uppercase;
-			line-height: 40px;
+			line-height: 45px;
 			float:left;
 			margin:0 10px;
 			padding:0;
@@ -305,7 +301,7 @@ header {
 			margin: 0 10px;
 			padding: 0;
 			@include button-text--heavy--medium;
-			line-height: 40px;
+			line-height: 45px;
 			text-transform: uppercase;
 			@include groovy(color);
 
