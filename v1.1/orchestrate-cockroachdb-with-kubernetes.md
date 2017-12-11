@@ -14,8 +14,6 @@ This page shows you how to orchestrate the deployment and management of a secure
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{{site.data.alerts.callout_info}}Currently, it's possible to orchestrate a secure CockroachDB cluster using the <a href="https://cloud.google.com/kubernetes-engine/docs/">hosted Google Kubernetes Engine service</a>. Additional methods will be supported soon.{{site.data.alerts.end}}
-
 <div id="toc"></div>
 
 ## Before You Begin
@@ -31,10 +29,11 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are a beta feature as of Kubernetes version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster.
+[RBAC](https://kubernetes.io/docs/admin/authorization/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g. `get` or `create`) on an API resource (e.g. a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
 {% include orchestration/kubernetes-limitations.md %}
 
-<!-- ## Step 1. Choose your deployment environment
+## Step 1. Choose your deployment environment
 
 Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Container Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
@@ -43,28 +42,40 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
   <button class="filter-button" data-scope="gce-manual">Manual GCE</button>
   <button class="filter-button" data-scope="aws-manual">Manual AWS</button>
 </div>
- -->
-## Step 1. Start Kubernetes
 
-1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
+## Step 2. Start Kubernetes
 
-    This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
+{% include orchestration/start-kubernetes.md %}
 
-2. From your local workstation, start the Kubernetes cluster:
+## Step 3. Start CockroachDB nodes
 
+<div class="filter-content" markdown="1" data-scope="gke-hosted">
+
+Running on GKE requires one extra step before we're able to create the CockroachDB cluster. A limitation in GKE's RBAC integration necessatitates running a special command in order to let you create the RBAC roles CockroachDB needs. First, get the email address associated with your Google Cloud account by running:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters create cockroachdb
+    $ gcloud info | grep Account
     ~~~
 
-    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
+Then run [the following command from the GKE documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) with that email address:
 
-    The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
+    ~~~
 
-## Step 2. Start CockroachDB nodes
+    ~~~
+    clusterrolebinding "cluster-admin-binding" created
+    ~~~
+
+With that done, we can move on to the cloud-agnostic portion of the tutorial.
+
+</div>
 
 {% include orchestration/start-cluster.md %}
 
-## Step 3. Approve node certificates
+## Step 4. Approve node certificates
 
 As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
@@ -125,7 +136,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 4. Repeat steps 1-3 for the other 2 pods.
 
-## Step 4. Initialize the cluster
+## Step 5. Initialize the cluster
 
 1. Confirm that three pods are `Running` successfully:
 
@@ -191,7 +202,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 {{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
 
-## Step 5. Test the cluster
+## Step 6. Test the cluster
 
 To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, check and approve the CSR for the pod, get a shell into the pod, and then start the built-in SQL client.
 
@@ -268,15 +279,15 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 {{site.data.alerts.callout_success}}This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other <a href="cockroach-commands.html"><code>cockroach</code> client commands</a>, such as <code>cockroach node</code> or <code>cockroach zone</code>, repeat step 2 using the appropriate <code>cockroach</code> command.<br></br>If you'd prefer to delete the pod and recreate it when needed, run <code>kubectl delete pod cockroachdb-client-secure</code>{{site.data.alerts.end}}
 
-## Step 6. Monitor the cluster
+## Step 7. Monitor the cluster
 
 {% include orchestration/monitor-cluster.md %}
 
-## Step 7. Simulate node failure
+## Step 8. Simulate node failure
 
 {% include orchestration/kubernetes-simulate-failure.md %}
 
-## Step 8. Scale the cluster
+## Step 9. Scale the cluster
 
 {% include orchestration/kubernetes-scale-cluster.md %}
 
@@ -357,7 +368,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 8. Back in the Admin UI, click **View nodes list** on the right to ensure that the fourth node successfully joined the cluster.
 
-## Step 9. Stop the cluster
+## Step 10. Stop the cluster
 
 To shut down the CockroachDB cluster:
 
@@ -365,8 +376,7 @@ To shut down the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
-    -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb
     ~~~
 
     ~~~
@@ -382,6 +392,12 @@ To shut down the CockroachDB cluster:
     persistentvolumeclaim "datadir-cockroachdb-2" deleted
     persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget "cockroachdb-budget" deleted
+    job "cluster-init-secure" deleted
+    rolebinding "cockroachdb" deleted
+    clusterrolebinding "cockroachdb" deleted
+    role "cockroachdb" deleted
+    clusterrole "cockroachdb" deleted
+    serviceaccount "cockroachdb" deleted
     ~~~
 
 2. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
