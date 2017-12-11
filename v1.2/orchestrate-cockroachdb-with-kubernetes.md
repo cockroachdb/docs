@@ -36,7 +36,7 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 <!-- ## Step 1. Choose your deployment environment
 
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Container Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 <div class="filters filters-big clearfix">
   <button class="filter-button" data-scope="gke-hosted">Hosted GKE</button>
