@@ -8,6 +8,11 @@ $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/mast
 ~~~
 
 ~~~
+serviceaccount "cockroachdb" created
+role "cockroachdb" created
+clusterrole "cockroachdb" created
+rolebinding "cockroachdb" created
+clusterrolebinding "cockroachdb" created
 service "cockroachdb-public" created
 service "cockroachdb" created
 poddisruptionbudget "cockroachdb-budget" created
