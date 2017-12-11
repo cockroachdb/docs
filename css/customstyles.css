@@ -754,9 +754,11 @@ a:not([href]) {
     #version-switcher {
       width: 250px;
       margin-left: 5px; } }
-  @media screen and (max-width: 991px) {
-    #version-switcher.open {
-      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); } }
+  #version-switcher.open {
+    border-bottom: 1px solid #DADADA; }
+    @media screen and (max-width: 991px) {
+      #version-switcher.open {
+        box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); } }
   #version-switcher .tier-1 {
     margin: 0; }
     #version-switcher .tier-1 a {
