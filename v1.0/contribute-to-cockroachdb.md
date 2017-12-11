@@ -50,7 +50,7 @@ Before you start a project:
 
 1. See [CONTRIBUTING.md](https://github.com/cockroachdb/cockroach/blob/master/CONTRIBUTING.md) to set up your local dev environment and learn about our code review workflow.
 2. Follow a few [code reviews](https://github.com/cockroachdb/cockroach/pulls).
-3. See [STYLE.md](https://github.com/cockroachdb/cockroach/blob/master/STYLE.md) to learn about our code style and conventions.
+3. See [style.md](https://github.com/cockroachdb/cockroach/blob/master/docs/style.md) to learn about our code style and conventions.
 
 ### Low Complexity Projects
 
