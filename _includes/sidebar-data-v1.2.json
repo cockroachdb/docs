@@ -217,6 +217,12 @@
             ]
           },
           {
+            "title": "<code>ALTER SEQUENCE</code>",
+            "urls": [
+              "/${VERSION}/alter-sequence.html"
+            ]
+          },
+          {
             "title": "<code>ALTER TABLE</code>",
             "urls": [
               "/${VERSION}/alter-table.html"
@@ -271,6 +277,12 @@
             ]
           },
           {
+            "title": "<code>CREATE SEQUENCE</code>",
+            "urls": [
+              "/${VERSION}/create-sequence.html"
+            ]
+          },
+          {
             "title": "<code>CREATE TABLE</code>",
             "urls": [
               "/${VERSION}/create-table.html"
@@ -322,6 +334,12 @@
             "title": "<code>DROP INDEX</code>",
             "urls": [
               "/${VERSION}/drop-index.html"
+            ]
+          },
+          {
+            "title": "<code>DROP SEQUENCE</code>",
+            "urls": [
+              "/${VERSION}/drop-sequence.html"
             ]
           },
           {
