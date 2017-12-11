@@ -34,10 +34,12 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
+[`ALTER SEQUENCE`](alter-sequence.html) | <span class="version-tag">New in v1.2:</span> Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
+[`CREATE SEQUENCE`](create-sequence.html) | <span class="version-tag">New in v1.2:</span> Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
@@ -45,6 +47,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP SEQUENCE`](drop-sequence.html) | <span class="version-tag">New in v1.2:</span> Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
