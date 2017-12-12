@@ -31,13 +31,13 @@ As mentioned above, by default, if a node stays offline for more than 5 minutes,
 For example, let's say you're upgrading system software on a group of servers, and the nodes running on the servers may be offline for up to 15 minutes as a result. Before shutting down the nodes, you would change the `server.time_until_store_dead` cluster setting as follows:
 
 ~~~ sql
-> SET CLUSTER SETTING server.time_until_store_dead = 15m0s;
+> SET CLUSTER SETTING server.time_until_store_dead = '15m0s';
 ~~~
 
 After completing the system upgrades and restarting the nodes, you would then change the setting back to its default:
 
 ~~~ sql
-> SET CLUSTER SETTING server.time_until_store_dead = 5m0s;
+> SET CLUSTER SETTING server.time_until_store_dead = '5m0s';
 ~~~
 
 ## Synopsis
