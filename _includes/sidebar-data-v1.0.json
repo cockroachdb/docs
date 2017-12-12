@@ -795,6 +795,12 @@
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
             ]
+          },
+          {
+            "title": "Mesosphere DC/OS",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
+            ]
           }
         ]
       },
