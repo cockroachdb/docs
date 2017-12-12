@@ -39,7 +39,7 @@ $(function() {
   function sidenavOnResize(winWidth) {
     $('body').removeClass('sidenav-open');
 
-    if (winWidth > 992) {
+    if (winWidth >= 992) {
       $('#mysidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
@@ -53,7 +53,7 @@ $(function() {
   }
 
   // Collapse side nav on load depending on window width
-  if (_viewport_width <= 992) {
+  if (_viewport_width < 992) {
     collapseSideNav();
   }
 
@@ -105,9 +105,9 @@ $(function() {
 
     if (_viewport_width > 992) {
       if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '70px'});
+        $versionSwitcher.css({'position': 'absolute', 'bottom': '69px'});
       } else {
-        $versionSwitcher.css({'position': 'fixed', 'bottom': '0'});
+        $versionSwitcher.css({'position': 'fixed', 'bottom': '-1px'});
       }
     } else { // mobile
       $sidebar.css('padding-top', 10);

@@ -4,7 +4,8 @@
       // Initialize navgoco with default options
       var $sidebar = $('#mysidebar'),
           $versionSwitcher = $('#version-switcher').find('ul.nav')
-          $maincontent = $('#main-content'), $contentcol = $('.content-col');
+          $maincontent = $('#main-content'),
+          $contentcol = $('.content-col');
 
       var navgocoOptions = {
         caretHtml: '',
@@ -63,7 +64,6 @@
   </script>
 
   <ul id="mysidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
-    <!-- <div class="sidenav-arrow"><img src="{{ 'images/sidenav-arrow.svg' | relative_url }}" alt="Sidenav arrow"></div> -->
     <div class="sidenav-arrow"><div class="arrow-down"></div></div>
     <div class="collapsed-header">
       Docs Menu

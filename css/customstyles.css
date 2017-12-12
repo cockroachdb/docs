@@ -324,7 +324,7 @@ nav.mobile_expanded {
 
 .logo {
   width: 180px;
-  margin-top: 3px;
+  margin-top: 5px;
   float: left;
   line-height: 20px;
   font-size: 0; }
@@ -333,7 +333,8 @@ nav.mobile_expanded {
       line-height: 23px; } }
   @media screen and (min-width: 1200px) {
     .logo {
-      width: 209px; } }
+      width: 209px;
+      margin-top: 3px; } }
 
 header {
   width: 100%;
@@ -342,9 +343,6 @@ header {
   background: #FFFFFF;
   border-bottom: 1px solid #DADADA;
   height: 60px; }
-  @media screen and (min-width: 768px) {
-    header {
-      padding: 15px 10px; } }
   @media screen and (min-width: 992px) {
     header {
       height: 70px; } }
@@ -358,7 +356,7 @@ header {
       header .container {
         width: 100%;
         margin: 0 auto; } }
-    @media screen and (min-width: 1170px) {
+    @media screen and (min-width: 1200px) {
       header .container {
         max-width: 1110px; } }
   header.scrolled {
@@ -376,7 +374,7 @@ header {
       line-height: 15px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      line-height: 40px;
+      line-height: 45px;
       float: left;
       margin: 0 10px;
       padding: 0;
@@ -454,7 +452,7 @@ header {
       -moz-osx-font-smoothing: grayscale;
       line-height: 15px;
       letter-spacing: 1.5px;
-      line-height: 40px;
+      line-height: 45px;
       text-transform: uppercase;
       -webkit-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
       -moz-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -756,9 +754,11 @@ a:not([href]) {
     #version-switcher {
       width: 250px;
       margin-left: 5px; } }
-  @media screen and (max-width: 991px) {
-    #version-switcher.open {
-      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); } }
+  #version-switcher.open {
+    border-bottom: 1px solid #DADADA; }
+    @media screen and (max-width: 991px) {
+      #version-switcher.open {
+        box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1); } }
   #version-switcher .tier-1 {
     margin: 0; }
     #version-switcher .tier-1 a {
@@ -2989,7 +2989,7 @@ img.mfp-img {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 10px;
+  line-height: 13px;
   background-color: #54B30E;
   border-color: #54B30E;
   padding: 8.25px 16px;
