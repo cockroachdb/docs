@@ -51,7 +51,7 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 ## Unique ID Generation Best Practices
 
-The common practice to generate unique IDs is to use roundtrip `SELECT` in a transaction. However, for improved performance, use the `RETURNING` clause with the `INSERT` statement to generate a unique ID.
+The common practice to generate unique IDs is to use roundtrip `SELECT` in a transaction. However, for improved performance, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) to generate a unique ID.
 
 ### Generate Monotonically-Increasing Unique IDs
 
@@ -149,7 +149,7 @@ Also note that merge `JOIN`s can be used only with [distributed query processing
 
 ### Drop Unused Indexes
 
-Useful indexes improve performance, whereas unused indexes slow the execution of DML operations. Whenever possible, [drop indexes](drop-index.html) that are not used.
+Though indexes improve the read performance, they incur an overhead for every write. In some cases, like the use-cases discussed abpve, the tradeoff is worth it. But if an index is unused, it slows down DML operations. Whenever possible, [drop indexes](drop-index.html) that are not used.
 
 ## Table Scans Best Practices
 
