@@ -259,19 +259,19 @@ $(document).ready(function(){
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code>$ docker version</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>docker version</code></pre>
     </div>
     <p>If you don't see the server listed, start the <strong>Docker</strong> application.</p>
   </li>
   <li>
-    <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the latest unstable release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="mac-docker-button">copy</div>
       <svg data-eventcategory="mac-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
       <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
     </div>
-    <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
+    <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="gp" data-eventcategory="mac-docker-step3">$ </span>docker pull cockroachdb/cockroach-unstable</code></pre>
     </div>
   </li>
   <li>
@@ -447,21 +447,21 @@ $(document).ready(function(){
   <li>
     <p>Confirm that the Docker daemon is running in the background:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code>$ sudo docker version</code></pre>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp">$ </span>sudo docker version</code></pre>
     </div>
     <p>If you don't see the server listed, start the Docker daemon. </p>
 
     {{site.data.alerts.callout_info}}On Linux, Docker needs sudo privileges.{{site.data.alerts.end}}
   </li>
   <li>
-    <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the latest unstable release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="linux-docker-button">copy</div>
       <svg data-eventcategory="linux-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
       <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
     </div>
-    <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre>
+    <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull cockroachdb/cockroach-unstable</code></pre>
     </div>
   </li>
   <li>
@@ -558,14 +558,14 @@ $(document).ready(function(){
     <p><a href="https://docs.docker.com/docker-for-windows/#/shared-drives">Share your local drives</a>. This makes it possible to mount local directories as data volumes to persist node data after containers are stopped or deleted.</p>
   </li>
   <li>
-    <p>Pull the official CockroachDB image from <a href="https://hub.docker.com/r/cockroachdb/cockroach/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the latest unstable release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="windows-docker-button">copy</div>
       <svg data-eventcategory="windows-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
       <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
     </div>
-    <div class="highlight"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach:{{page.release_info.version}}</code></pre></div>
+    <div class="highlight"><pre class="highlight"><code data-eventcategory="win-docker-step3"><span class="nb" data-eventcategory="win-docker-step3">PS </span>C:\Users\username&gt; docker pull cockroachdb/cockroach-unstable</code></pre></div>
   </li>
   <li>
     <p>Keep up-to-date with CockroachDB releases and best practices:</p>
