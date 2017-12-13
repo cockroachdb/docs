@@ -19,7 +19,7 @@ For more information, see:
 - [Insert Multiple Rows](insert.html#insert-multiple-rows)
 - [Upsert that Inserts Multiple Rows](upsert.html#upsert-that-inserts-multiple-rows)
 - [Delete Multiple Rows](delete.html#delete-specific-rows)
-- <Link to Robert's blog post>
+- [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
 ### Bulk Insert Best Practices
 
