@@ -23,11 +23,11 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/v2.0/mac-linux-steps.md %}
+{% include start_in_docker/mac-linux-steps.md %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/v2.0/mac-linux-steps.md %}
+{% include start_in_docker/mac-linux-steps.md %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-windows">
@@ -53,7 +53,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -p 26257:26257 -p 8080:8080 <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach1:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach-unstable <span class="nb">start</span> --insecure</code></pre></div>
+{{page.release_info.docker_image}}:{{page.release_info.version}} <span class="nb">start</span> --insecure</code></pre></div>
 
 This command creates a container and starts the first CockroachDB node inside it. Let's look at each part:
 
@@ -64,7 +64,7 @@ This command creates a container and starts the first CockroachDB node inside it
 - `--net`: The bridge network for the container to join. See step 1 for more details.
 - `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port for HTTP requests to the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
 - `-v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `Users/<username>/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume">Mount a host directory as a data volume</a> topic.
-- `cockroachdb/cockroach-unstable start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode.
+- `{{page.release_info.docker_image}}:{{page.release_info.version}} start --insecure`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode.
 
 ## Step 3. Add nodes to the cluster
 
@@ -80,7 +80,7 @@ To simulate a real deployment, scale your cluster by adding two more nodes:
 --hostname<span class="o">=</span>roach2 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach2:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach-unstable <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
+{{page.release_info.docker_image}}:{{page.release_info.version}} <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1
 
 <span class="c1"># Start the third container/node:</span>
 <span class="nb">PS </span>C:\Users\username&gt; docker run -d <span class="sb">`</span>
@@ -88,7 +88,7 @@ cockroachdb/cockroach-unstable <span class="nb">start</span> --insecure --join<s
 --hostname<span class="o">=</span>roach3 <span class="sb">`</span>
 --net<span class="o">=</span>roachnet <span class="sb">`</span>
 -v <span class="s2">"//c/Users/&lt;username&gt;/cockroach-data/roach3:/cockroach/cockroach-data"</span> <span class="sb">`</span>
-cockroachdb/cockroach-unstable <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
+{{page.release_info.docker_image}}:{{page.release_info.version}} <span class="nb">start</span> --insecure --join<span class="o">=</span>roach1</code></pre></div>
 
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
