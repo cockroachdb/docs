@@ -298,7 +298,7 @@ Note the following:
 5. Upload certificates to the first client using your preferred method. 
 
 6. Repeat steps 1 - 5 for each additional client.
-
+ 
 
 ## See Also
 
