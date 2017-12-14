@@ -12,7 +12,16 @@ This page lists the SQL performance best practices for CockroachDB.
 
 ### Use Multi-Row DML instead of Multiple Single-Row DMLs
 
-For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs.
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs. To understand why that is so, let's understand single-row DMLs and multi-row DMLs are executed in CockroachDB:
+
+#### Single-row DML execution in CockroachDB
+
+<img src="{{ 'images/insert_singleton_detail.png' | relative_url }}" alt="CockroachDB single-row DML execution" style="border:1px solid #eee;max-width:100%" />
+
+#### How Multi-row DML works with CockroachDB
+
+
+
 
 For more information, see:
 
@@ -49,11 +58,19 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
 
-## Unique ID Generation Best Practices
+## Unique ID Best Practices
 
-The common practice to generate unique IDs is to use roundtrip `SELECT` in a transaction. However, for improved performance, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) to generate a unique ID.
+The common practice to generate unique IDs includes using transactions with roundtrip `SELECT` to generate monotonically-increasing unique IDs by incrementing an `INT` variable, or generate random unique IDs by using `SERIAL` variables. These common approaches of generating unique IDs hamper performance when used with a distributed database like CockroachDB, because the process of generating unique IDs using these approaches is serial, and CockroachDB improves performance by parallelizing processes whenever possible. The best practice to generate unique IDs with CockroachDB is to use `UUID`. Because the unique IDs generated using `UUID` are random, the process can be parallelized, thus improving performance.
 
-### Generate Monotonically-Increasing Unique IDs
+### Use `UUID` to Generate Unique IDs
+
+{% include faq/auto-generate-unique-ids_v1.1.html %}
+
+### Use `INSERT` with the `RETURNING` Clause to Generate Unique IDs
+
+If, for some reason, you cannot use `UUID` to generate the unique IDs, then you might resort to the common practice to generate unique IDs is to use roundtrip `SELECT` in a transaction. Instead, for improved performance, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) instead.
+
+#### Generate Monotonically-Increasing Unique IDs
 
 Suppose the table schema is as follows:
 
@@ -90,7 +107,7 @@ DO UPDATE SET ID3=X.ID3 + 1
 RETURNING ID1,ID2,ID3;
 ~~~
 
-### Generate Random Unique IDs
+#### Generate Random Unique IDs
 
 Suppose the table schema is as follows:
 
