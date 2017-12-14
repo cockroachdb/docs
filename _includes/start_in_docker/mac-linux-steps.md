@@ -12,6 +12,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ docker network create -d bridge roachnet
 ~~~
@@ -20,6 +21,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 ## Step 2. Start the first node
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ docker run -d \
 --name=roach1 \
@@ -47,16 +49,18 @@ At this point, your cluster is live and operational. With just one node, you can
 
 To simulate a real deployment, scale your cluster by adding two more nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
-# Start the second container/node:
 $ docker run -d \
 --name=roach2 \
 --hostname=roach2 \
 --net=roachnet \
 -v "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" \
 {{page.release_info.docker_image}}:{{page.release_info.version}} start --insecure --join=roach1
+~~~
 
-# Start the third container/node:
+{% include copy-clipboard.html %}
+~~~ shell
 $ docker run -d \
 --name=roach3 \
 --hostname=roach3 \
@@ -74,8 +78,12 @@ These commands add two more containers and start CockroachDB nodes inside them, 
 
 Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ docker exec -it roach1 ./cockroach sql --insecure
+~~~
+
+~~~
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -83,13 +91,23 @@ $ docker exec -it roach1 ./cockroach sql --insecure
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
@@ -104,14 +122,19 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 Exit the SQL shell on node 1:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 Then start the SQL shell in the second container:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ docker exec -it roach2 ./cockroach sql --insecure
+~~~
+
+~~~
 # Welcome to the cockroach SQL interface.
 # All statements must be terminated by a semicolon.
 # To exit: CTRL + D.
@@ -119,6 +142,7 @@ $ docker exec -it roach2 ./cockroach sql --insecure
 
 Now run the same `SELECT` query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -136,6 +160,7 @@ As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
 When you're done, exit the SQL shell on node 2:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -158,10 +183,19 @@ The replica count on each node is identical, indicating that all data in the clu
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
+{% include copy-clipboard.html %}
 ~~~ shell
-# Stop the containers:
 $ docker stop roach1 roach2 roach3
+~~~
 
-# Remove the containers:
+{% include copy-clipboard.html %}
+~~~ shell
 $ docker rm roach1 roach2 roach3
+~~~
+
+If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ rm -rf cockroach-data
 ~~~
