@@ -4,11 +4,11 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: false
 ---
 
-A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [OpenSSL commands](https://wiki.openssl.org/index.php/).
+A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
 <div class="filters filters-big clearfix">
-  <a href="create-security-certificates.html"><button class="filter-button">Cockroach Cert Commands</button>
-  <button class="filter-button current"><strong>OpenSSL Commands</strong></button></a>
+  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use Cockroach Cert Commands</button>
+  <button style="width:28%" class="filter-button current"><strong>Use OpenSSL Commands</strong></button></a>
 </div>
 
 <div id="toc"></div>
@@ -69,9 +69,9 @@ Note the following:
     - `certs`: Create your CA certificate and all node and client certificates and keys in this directory and then upload the relevant files to the nodes and clients.
     - `my-safe-directory`: Create your CA key in this directory and then reference the key when generating node and client certificates. After that, keep the key safe and secret; do not upload it to your nodes or clients.
 
-2. Create the ca.cnf file:
+2. Create the `ca.cnf` file:
 
-    Create the ca.cnf file and copy the following configuration into it. You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
+    Create the `ca.cnf` file and copy the following configuration into it. You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -122,7 +122,10 @@ Note the following:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out my-safe-directory/ca.key 2048 
+    $ openssl genrsa -out my-safe-directory/ca.key 2048
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell 
     $ chmod 400 my-safe-directory/ca.key
     ~~~
 
@@ -130,7 +133,6 @@ Note the following:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create CA certificate.
     $ openssl req \
       -new \
       -x509 \
@@ -139,16 +141,28 @@ Note the following:
       -out certs/ca.crt \
       -days 3660 \
       -batch
+    ~~~
 
-    # Reset database and index files.
+5. Reset database and index files.
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ rm -f index.txt serial.txt
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ touch index.txt
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ echo '01' > serial.txt
     ~~~
 
 ### Create the certificate and key pairs for nodes
 
-1. Create the node.cnf file for the first node and copy the following configuration into it:
+In the following steps, replace the placeholder text in the code with the actual username and node address.
+
+1. Create the `node.cnf` file for the first node and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -168,12 +182,14 @@ Note the following:
 
     {{site.data.alerts.callout_info}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. It is also important that <code>commonName</code> be set to <code>node</code>. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
   
-
 2. Create the key for the first node using the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/node.key 2048 
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ chmod 400 certs/node.key
     ~~~
 
@@ -240,6 +256,8 @@ Note the following:
 
 ### Create the certificate and key pair for a client
 
+In the following steps, replace the placeholder text in the code with the actual username.
+
 1. Create the client.cnf file for the first client and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
@@ -256,12 +274,14 @@ Note the following:
 
     {{site.data.alerts.callout_info}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
   
-
 2. Create the key for the first client using the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out certs/client.<username>.key 2048 
+    $ openssl genrsa -out certs/client.<username>.key 2048
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell 
     $ chmod 400 certs/client.<username>.key
     ~~~
 

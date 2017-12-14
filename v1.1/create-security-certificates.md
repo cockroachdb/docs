@@ -4,11 +4,11 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: false
 ---
 
-A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [OpenSSL commands](https://wiki.openssl.org/index.php/).
+A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
 <div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Cockroach Cert Commands</strong></button>
-  <a href="create-security-certificates-openssl.html"><button class="filter-button">OpenSSL Commands</button></a>
+  <button style="width:28%" class="filter-button current"><strong>Use Cockroach Cert Commands</strong></button>
+  <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use OpenSSL Commands</button></a>
 </div>
 
 <div id="toc"></div>
