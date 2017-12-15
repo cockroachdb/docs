@@ -24,19 +24,23 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {% include prod_deployment/insecure-recommendations.md %}
 
-## Step 1. Start nodes
+## Step 1. Synchronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 2. Start nodes
 
 {% include prod_deployment/insecure-start-nodes.md %}
 
-## Step 2. Initialize the cluster
+## Step 3. Initialize the cluster
 
 {% include prod_deployment/insecure-initialize-cluster.md %}
 
-## Step 3. Test the cluster
+## Step 4. Test the cluster
 
 {% include prod_deployment/insecure-test-cluster.md %}
 
-## Step 4. Set up HAProxy load balancers
+## Step 5. Set up HAProxy load balancers
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -123,19 +127,19 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 7. Repeat these steps for each additional instance of HAProxy you want to run.
 
-## Step 5. Test load balancing
+## Step 6. Test load balancing
 
 {% include prod_deployment/insecure-test-load-balancing.md %}
 
-## Step 6. Use the cluster
+## Step 7. Use the cluster
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 7. Monitor the cluster
+## Step 8. Monitor the cluster
 
 {% include prod_deployment/insecure-monitor-cluster.md %}
 
-## Step 8. Scale the cluster
+## Step 9. Scale the cluster
 
 {% include prod_deployment/insecure-scale-cluster.md %}
 
