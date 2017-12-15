@@ -137,9 +137,17 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## clock synchronization error: this node is more than 500ms away from at least half of the known nodes
 
-This message indicates that a node has spontaneously shut down because it detected that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
+This error indicates that a node has spontaneously shut down because it detected that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
 
-To prevent this from happening, you should run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
+To prevent this from happening, you should run clock synchronization software on each node. For guidance on synchronizing clocks, see the tutorial for your deployment environment:
+
+Environment | Approach
+------------|---------
+[Manual](manual-deployment.html#step-1-synchronize-clocks) | Use NTP with Google's external NTP service.
+[AWS](deploy-cockroachdb-on-aws.html#step-3-synchronize-clocks) | Use the Amazon Time Sync Service.
+[Azure](deploy-cockroachdb-on-microsoft-azure.html#step-3-synchronize-clocks) | Disable Hyper-V time synchronization and use NTP with Google's external NTP service.
+[Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-2-sychronize-clocks) | Use NTP with Google's external NTP service.
+[GCE](deploy-cockroachdb-on-google-cloud-platform.html#step-3-synchronize-clocks) | Use NTP with Google's internal NTP service.
 
 ## context deadline exceeded
 
