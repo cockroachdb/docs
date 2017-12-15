@@ -1,5 +1,5 @@
 ---
-title: Cluster & Node Setup Troubleshooting
+title: Troubleshoot Cluster Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
 toc: false
 ---
