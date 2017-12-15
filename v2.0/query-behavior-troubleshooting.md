@@ -1,5 +1,5 @@
 ---
-title: Query Behavior Troubleshooting
+title: Troubleshoot Query Behavior
 summary: Learn how to troubleshoot issues with specific queries with CockroachDB
 toc: false
 ---
