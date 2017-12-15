@@ -71,6 +71,12 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 
+The `node ls` subcommand also supports the following general flags:
+
+Flag | Description
+-----|------------
+`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours.
+
 The `node status` subcommand also supports the following general flags:
 
 Flag | Description
@@ -79,6 +85,7 @@ Flag | Description
 `--decommission` | Show node decommissioning details.
 `--ranges` | Show node details for ranges and replicas.
 `--stats` | Show node disk usage details.
+`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours.
 
 The `node decommission` subcommand also supports the following general flag:
 
