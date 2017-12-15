@@ -63,7 +63,11 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
 
-## Step 3. Set up TCP Proxy Load Balancing
+## Step 3. Synchronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 4. Set up TCP Proxy Load Balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -86,35 +90,35 @@ To use GCE's TCP Proxy Load Balancing service:
 4. [Create a firewall rule](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
     - Be sure to set **Source IP ranges** to `130.211.0.0/22` and `35.191.0.0/16` and set **Target tags** to `cockroachdb` (not to the value specified in the linked instructions).
 
-## Step 4. Generate certificates
+## Step 5. Generate certificates
 
 {% include prod_deployment/secure-generate-certificates.md %}
 
-## Step 5. Start nodes
+## Step 6. Start nodes
 
 {% include prod_deployment/secure-start-nodes.md %}
 
-## Step 6. Initialize the cluster
+## Step 7. Initialize the cluster
 
 {% include prod_deployment/secure-initialize-cluster.md %}
 
-## Step 7. Test the cluster
+## Step 8. Test the cluster
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 9. Test load balancing
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 9. Use the database
+## Step 10. Use the database
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 10. Monitor the cluster
+## Step 11. Monitor the cluster
 
 {% include prod_deployment/secure-monitor-cluster.md %}
 
-## Step 11. Scale the cluster
+## Step 12. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
 
