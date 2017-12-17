@@ -2,11 +2,12 @@
 title: Collect Debug Information from Your Cluster
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: false
+section: reference
 ---
 
 The `debug zip` [command](cockroach-commands.html) connects to your cluster and gathers the following information from each active node into a single file (inactive nodes are not included):
 
-- [Log files](debug-and-error-logs.html) 
+- [Log files](debug-and-error-logs.html)
 - Schema change events
 - Node liveness
 - Gossip data

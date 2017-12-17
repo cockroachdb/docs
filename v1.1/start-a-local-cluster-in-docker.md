@@ -4,6 +4,7 @@ summary: Run an insecure multi-node CockroachDB cluster across multiple Docker c
 toc: false
 asciicast: true
 allowed_hashes: [os-mac, os-linux, os-windows]
+section: guides
 ---
 
 <!--

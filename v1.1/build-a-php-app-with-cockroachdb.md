@@ -3,6 +3,7 @@ title: Build a PHP App with CockroachDB
 summary: Learn how to use CockroachDB from a simple PHP application with a low-level client driver.
 toc: false
 twitter: true
+section: guides
 ---
 
 This tutorial shows you how build a simple PHP application with CockroachDB using a PostgreSQL-compatible driver. We've tested and can recommend the [php-pgsql driver](http://php.net/manual/en/book.pgsql.php), so that driver is featured here.

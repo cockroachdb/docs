@@ -2,6 +2,7 @@
 title: Known Limitations in CockroachDB v1.1
 summary: Known limitations in CockroachDB v1.1.
 toc: false
+section: faqs
 ---
 
 This page describes newly identified limitations in the CockroachDB v1.1 release as well as unresolved limitations identified in earlier releases.

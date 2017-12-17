@@ -2,6 +2,7 @@
 title: Back Up Data
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
+section: guides
 ---
 
 CockroachDB offers the following methods to back up your cluster's data:

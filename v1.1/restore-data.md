@@ -2,6 +2,7 @@
 title: Restore Data
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
+section: guides
 ---
 
 How you restore your cluster's data depends on the type of [backup](back-up-data.html) originally:

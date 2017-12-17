@@ -2,6 +2,7 @@
 title: SQL Statements
 summary: SQL statements supported by CockroachDB.
 toc: false
+section: reference
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.

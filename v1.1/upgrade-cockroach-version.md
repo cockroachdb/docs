@@ -3,6 +3,7 @@ title: Upgrade a Cluster's Version
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: false
 toc_not_nested: true
+section: guides
 ---
 
 Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.

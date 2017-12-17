@@ -2,6 +2,7 @@
 title: Replication Dashboard
 summary: The Replication dashboard lets you monitor the replication metrics for your cluster.
 toc: false
+section: guides
 ---
 
 The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Dashboard** > **Replication**.

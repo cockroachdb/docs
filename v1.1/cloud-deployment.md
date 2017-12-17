@@ -2,6 +2,7 @@
 title: Cloud Deployment
 summary: Learn how to deploy CockroachDB on Google Cloud Platform GCE or AWS.
 toc: false
+section: guides
 ---
 
 Use the following guides to deploy CockroachDB to popular cloud platforms:

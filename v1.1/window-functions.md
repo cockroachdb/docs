@@ -2,6 +2,7 @@
 title: WINDOW FUNCTIONS
 summary: A window function performs a calculation across a set of table rows that are somehow related to the current row.
 toc: false
+section: guides
 ---
 
 CockroachDB supports the application of an aggregate or window function over the subset ("window") of the rows selected by a query.

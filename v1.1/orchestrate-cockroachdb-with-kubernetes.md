@@ -3,6 +3,7 @@ title: Orchestrate CockroachDB with Kubernetes
 summary: How to orchestrate the deployment and management of a secure 3-node CockroachDB cluster with Kubernetes.
 toc: false
 secure: true
+section: guides
 ---
 
 <div class="filters filters-big clearfix">

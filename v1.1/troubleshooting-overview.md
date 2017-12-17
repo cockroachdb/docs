@@ -2,6 +2,7 @@
 title: Troubleshooting Overview
 summary: If you're having a hard time using CockroachDB, check out this overview of our existing troubleshooting resources
 toc: false
+section: guides
 ---
 
 If you run into issues with CockroachDB, we have the following pages to help you resolve the issue:

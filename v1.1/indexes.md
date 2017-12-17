@@ -3,6 +3,7 @@ title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: false
 toc_not_nested: true
+section: guides
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
@@ -51,7 +52,7 @@ To maximize your indexes' performance, we recommend following a few [best practi
 
 ## Best Practices
 
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that: 
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
 - [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
@@ -90,7 +91,7 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 ## See Also
 
 - [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html) 
-- [`RENAME INDEX`](rename-index.html) 
+- [`DROP INDEX`](drop-index.html)
+- [`RENAME INDEX`](rename-index.html)
 - [`SHOW INDEX`](show-index.html)
 - [SQL Statements](sql-statements.html)

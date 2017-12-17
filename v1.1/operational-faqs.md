@@ -2,6 +2,7 @@
 title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
 toc: false
+section: faqs
 ---
 
 <div id="toc"></div>

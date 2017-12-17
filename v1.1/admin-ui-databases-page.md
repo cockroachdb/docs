@@ -1,6 +1,7 @@
 ---
 title: Database Page
 toc: false
+section: guides
 ---
 
 The **Databases** page of the Admin UI provides details of the databases configured, the tables in each database, and the grants assigned to each user.

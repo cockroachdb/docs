@@ -2,6 +2,7 @@
 title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
 toc: false
+section: faqs
 ---
 
 <div id="toc"></div>

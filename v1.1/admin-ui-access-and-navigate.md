@@ -2,6 +2,7 @@
 title: Access and Navigate the CockroachDB Admin UI
 summary: Learn how to access and navigate the Admin UI.
 toc: false
+section: guides
 ---
 
 <div id="toc"></div>

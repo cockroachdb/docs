@@ -2,6 +2,7 @@
 title: SQL Dump (Export)
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: false
+section: reference
 ---
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables and views. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.

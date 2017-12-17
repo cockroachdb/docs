@@ -2,6 +2,7 @@
 title: Views
 summary:
 toc: false
+section: guides
 ---
 
 A view is a stored `SELECT` query represented as a virtual table. Unlike a standard table, a view is not part of the physical schema; instead, it is a virtual table that forms dynamically when requested.

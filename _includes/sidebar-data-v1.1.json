@@ -1,4 +1,11 @@
 [
+
+  {% if page.section == "home" %}
+
+  {% include sidebar-releases.json %},
+
+  {% elsif page.section == "guides" %}
+
   {
     "title": "Get Started",
     "items": [
@@ -172,7 +179,518 @@
         ]
       },
       {
-        "title": "SQL Statements",
+        "title": "Privileges",
+        "urls": [
+          "/${VERSION}/privileges.html"
+        ]
+      },
+      {
+        "title": "Transactions",
+        "urls": [
+          "/${VERSION}/transactions.html"
+        ]
+      },
+      {
+        "title": "Views",
+        "urls": [
+        "/${VERSION}/views.html"
+        ]
+      },
+      {
+        "title": "Window Functions",
+        "urls": [
+          "/${VERSION}/window-functions.html"
+        ]
+      },
+      {
+        "title": "Performance Optimization",
+        "items": [
+          {
+            "title": "Indexes",
+            "urls": [
+              "/${VERSION}/indexes.html"
+            ]
+          },
+          {
+            "title": "Column Families",
+            "urls": [
+              "/${VERSION}/column-families.html"
+            ]
+          },
+          {
+            "title": "Interleaved Tables",
+            "urls": [
+              "/${VERSION}/interleave-in-parent.html"
+            ]
+          },
+          {
+            "title": "Parallel Statement Execution",
+            "urls": [
+              "/${VERSION}/parallel-statement-execution.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Porting Applications",
+        "items": [
+          {
+            "title": "From PostgreSQL",
+            "urls": [
+              "/${VERSION}/porting-postgres.html"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deploy",
+    "items": [
+      {
+        "title": "Recommended Production Settings",
+        "urls": [
+          "/${VERSION}/recommended-production-settings.html"
+        ]
+      },
+      {
+        "title": "Manual Deployment",
+        "urls": [
+          "/${VERSION}/manual-deployment.html",
+          "/${VERSION}/manual-deployment-insecure.html"
+        ]
+      },
+      {
+        "title": "Cloud Deployment",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/cloud-deployment.html"
+            ]
+          },
+          {
+            "title": "AWS",
+            "urls": [
+              "/${VERSION}/deploy-cockroachdb-on-aws.html",
+              "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+            ]
+          },
+          {
+            "title": "Azure",
+            "urls": [
+              "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
+              "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+            ]
+          },
+          {
+            "title": "Digital Ocean",
+            "urls": [
+              "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
+              "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+            ]
+          },
+          {
+            "title": "Google Cloud Platform GCE",
+            "urls": [
+              "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
+              "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Orchestration",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/orchestration.html"
+            ]
+          },
+          {
+            "title": "Kubernetes",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+            ]
+          },
+          {
+            "title": "Docker Swarm",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
+              "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Start a Node",
+        "urls": [
+          "/${VERSION}/start-a-node.html"
+        ]
+      },
+      {
+        "title": "Initialize a Cluster",
+        "urls": [
+          "/${VERSION}/initialize-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Create Security Certificates",
+        "urls": [
+          "/${VERSION}/create-security-certificates.html"
+        ]
+      },
+      {
+        "title": "Create & Manage Users",
+        "urls": [
+          "/${VERSION}/create-and-manage-users.html"
+        ]
+      },
+      {
+        "title": "Configure Replication Zones",
+        "urls": [
+          "/${VERSION}/configure-replication-zones.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Manage",
+    "items": [
+      {
+        "title": "Monitor CockroachDB with the Admin UI",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/admin-ui-overview.html"
+            ]
+          },
+          {
+            "title": "Access and Navigate the Admin UI",
+            "urls": [
+              "/${VERSION}/admin-ui-access-and-navigate.html"
+            ]
+          },
+          {
+            "title": "Overview Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-overview-dashboard.html"
+            ]
+          },
+          {
+            "title": "Runtime Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-runtime-dashboard.html"
+            ]
+          },
+          {
+            "title": "SQL Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-sql-dashboard.html"
+            ]
+          },
+          {
+            "title": "Storage Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-storage-dashboard.html"
+            ]
+          },
+          {
+            "title": "Replication Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-replication-dashboard.html"
+            ]
+          },
+          {
+            "title": "Databases Page",
+            "urls": [
+              "/${VERSION}/admin-ui-databases-page.html"
+            ]
+          },
+          {
+            "title": "Jobs Page",
+            "urls": [
+              "/${VERSION}/admin-ui-jobs-page.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Monitor CockroachDB with Prometheus",
+        "urls": [
+          "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+        ]
+      },
+      {
+        "title": "Manage Long-Running Queries",
+        "urls": [
+          "/${VERSION}/manage-long-running-queries.html"
+        ]
+      },
+      {
+        "title": "Upgrade a Cluster's Version",
+        "urls": [
+          "/${VERSION}/upgrade-cockroach-version.html"
+        ]
+      },
+      {
+        "title": "Stop a Node",
+        "urls": [
+          "/${VERSION}/stop-a-node.html"
+        ]
+      },
+      {
+        "title": "Remove Nodes",
+        "urls": [
+          "/${VERSION}/remove-nodes.html"
+        ]
+      },
+      {
+        "title": "Back up Data",
+        "urls": [
+          "/${VERSION}/back-up-data.html"
+        ]
+      },
+      {
+        "title": "Restore Data",
+        "urls": [
+          "/${VERSION}/restore-data.html"
+        ]
+      },
+      {
+        "title": "Dump/Export Schema or Data",
+        "urls": [
+          "/${VERSION}/sql-dump.html"
+        ]
+      },
+      {
+        "title": "Import Data",
+        "urls": [
+          "/${VERSION}/import-data.html"
+        ]
+      },
+      {
+        "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
+        "urls": [
+          "/${VERSION}/create-a-file-server.html"
+        ]
+      },
+      {
+        "title": "Rotate Security Certificates",
+        "urls": [
+          "/${VERSION}/rotate-certificates.html"
+        ]
+      },
+      {
+        "title": "Generate CockroachDB Resources",
+        "urls": [
+          "/${VERSION}/generate-cockroachdb-resources.html"
+        ]
+      },
+      {
+        "title": "View Node Details",
+        "urls": [
+          "/${VERSION}/view-node-details.html"
+        ]
+      },
+      {
+        "title": "View Version Details",
+        "urls": [
+          "/${VERSION}/view-version-details.html"
+        ]
+      },
+      {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Troubleshoot",
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/troubleshooting-overview.html"
+        ]
+      },
+      {
+        "title": "General Troubleshooting",
+        "urls": [
+          "/${VERSION}/general-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Cluster & Node Setup",
+        "urls": [
+          "/${VERSION}/cluster-setup-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Query Behavior",
+        "urls": [
+          "/${VERSION}/query-behavior-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Debug & Error Logs",
+        "urls": [
+          "/${VERSION}/debug-and-error-logs.html"
+        ]
+      },
+      {
+        "title": "Collect Cluster Debug Info",
+        "urls": [
+          "/${VERSION}/debug-zip.html"
+        ]
+      },
+      {
+        "title": "Support Resources",
+        "urls": [
+          "/${VERSION}/support-resources.html"
+        ]
+      },
+      {
+        "title": "File an Issue",
+        "urls": [
+          "/${VERSION}/file-an-issue.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Contribute",
+    "items": [
+      {
+        "title": "Contribute to CockroachDB",
+        "urls": [
+          "/${VERSION}/contribute-to-cockroachdb.html"
+        ]
+      },
+      {
+        "title": "Improve the Docs",
+        "urls": [
+          "/${VERSION}/improve-the-docs.html"
+        ]
+      }
+    ]
+  },
+
+  {% elsif page.section == "concepts" %}
+
+  {
+    "title": "Architecture",
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/architecture/overview.html"
+        ]
+      },
+      {
+        "title": "SQL Layer",
+        "urls": [
+          "/${VERSION}/architecture/sql-layer.html"
+        ]
+      },
+      {
+        "title": "Transaction Layer",
+        "urls": [
+          "/${VERSION}/architecture/transaction-layer.html"
+        ]
+      },
+      {
+        "title": "Distribution Layer",
+        "urls": [
+          "/${VERSION}/architecture/distribution-layer.html"
+        ]
+      },
+      {
+        "title": "Replication Layer",
+        "urls": [
+          "/${VERSION}/architecture/replication-layer.html"
+        ]
+      },
+      {
+        "title": "Storage Layer",
+        "urls": [
+          "/${VERSION}/architecture/storage-layer.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Features",
+    "items": [
+      {
+        "title": "Simplified Deployment",
+        "urls": [
+          "/${VERSION}/simplified-deployment.html"
+        ]
+      },
+      {
+        "title": "Strong Consistency",
+        "urls": [
+          "/${VERSION}/strong-consistency.html"
+        ]
+      },
+      {
+        "title": "SQL",
+        "urls": [
+          "/${VERSION}/sql.html"
+        ]
+      },
+      {
+        "title": "Distributed Transactions",
+        "urls": [
+          "/${VERSION}/distributed-transactions.html"
+        ]
+      },
+      {
+        "title": "Automated Scaling & Repair",
+        "urls": [
+          "/${VERSION}/automated-scaling-and-repair.html"
+        ]
+      },
+      {
+        "title": "High Availability",
+        "urls": [
+          "/${VERSION}/high-availability.html"
+        ]
+      },
+      {
+        "title": "Open Source",
+        "urls": [
+          "/${VERSION}/open-source.html"
+        ]
+      },
+      {
+        "title": "Go Implementation",
+        "urls": [
+          "/${VERSION}/go-implementation.html"
+        ]
+      }
+    ]
+  },
+
+  {% elsif page.section == "reference" %}
+
+  {
+    "title": "SQL Reference",
+    "items": [
+      {
+        "title": "Statements",
         "items": [
           {
             "title": "Overview",
@@ -585,7 +1103,7 @@
         ]
       },
       {
-        "title": "SQL Syntax",
+        "title": "Syntax",
         "items": [
           {
             "title": "Keywords & Identifiers",
@@ -774,553 +1292,130 @@
         ]
       },
       {
-        "title": "Privileges",
-        "urls": [
-          "/${VERSION}/privileges.html"
-        ]
-      },
-      {
-        "title": "Transactions",
-        "urls": [
-          "/${VERSION}/transactions.html"
-        ]
-      },
-      {
-        "title": "Views",
-        "urls": [
-        "/${VERSION}/views.html"
-        ]
-      },
-      {
-        "title": "Window Functions",
-        "urls": [
-          "/${VERSION}/window-functions.html"
-        ]
-      },
-      {
-        "title": "Performance Optimization",
-        "items": [
-          {
-            "title": "Indexes",
-            "urls": [
-              "/${VERSION}/indexes.html"
-            ]
-          },
-          {
-            "title": "Column Families",
-            "urls": [
-              "/${VERSION}/column-families.html"
-            ]
-          },
-          {
-            "title": "Interleaved Tables",
-            "urls": [
-              "/${VERSION}/interleave-in-parent.html"
-            ]
-          },
-          {
-            "title": "Parallel Statement Execution",
-            "urls": [
-              "/${VERSION}/parallel-statement-execution.html"
-            ]
-          }
-        ]
-      },
-      {
         "title": "Information Schema",
         "urls": [
           "/${VERSION}/information-schema.html"
         ]
       },
-      {
-        "title": "Porting Applications",
-        "items": [
-          {
-            "title": "From PostgreSQL",
-            "urls": [
-              "/${VERSION}/porting-postgres.html"
-            ]
-          }
-        ]
-      }
     ]
   },
   {
-    "title": "Deploy",
+    "title": "CLI Reference",
     "items": [
       {
-        "title": "Recommended Production Settings",
-        "urls": [
-          "/${VERSION}/recommended-production-settings.html"
-        ]
-      },
-      {
-        "title": "Manual Deployment",
-        "urls": [
-          "/${VERSION}/manual-deployment.html",
-          "/${VERSION}/manual-deployment-insecure.html"
-        ]
-      },
-      {
-        "title": "Cloud Deployment",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/cloud-deployment.html"
-            ]
-          },
-          {
-            "title": "AWS",
-            "urls": [
-              "/${VERSION}/deploy-cockroachdb-on-aws.html",
-              "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
-            ]
-          },
-          {
-            "title": "Azure",
-            "urls": [
-              "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
-              "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
-            ]
-          },
-          {
-            "title": "Digital Ocean",
-            "urls": [
-              "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
-              "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
-            ]
-          },
-          {
-            "title": "Google Cloud Platform GCE",
-            "urls": [
-              "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
-              "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Orchestration",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/orchestration.html"
-            ]
-          },
-          {
-            "title": "Kubernetes",
-            "urls": [
-              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
-              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
-            ]
-          },
-          {
-            "title": "Docker Swarm",
-            "urls": [
-              "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-              "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Cluster Settings",
-        "urls": [
-          "/${VERSION}/cluster-settings.html"
-        ]
-      },
-      {
-        "title": "Cockroach Commands",
+        "title": "Overview",
         "urls": [
           "/${VERSION}/cockroach-commands.html"
         ]
       },
       {
-        "title": "Start a Node",
+        "title": "<code>cockroach start</code>",
         "urls": [
           "/${VERSION}/start-a-node.html"
         ]
       },
       {
-        "title": "Initialize a Cluster",
+        "title": "<code>cockroach init</code>",
         "urls": [
           "/${VERSION}/initialize-a-cluster.html"
         ]
       },
       {
-        "title": "Create Security Certificates",
+        "title": "<code>cockroach cert</code>",
         "urls": [
           "/${VERSION}/create-security-certificates.html"
         ]
       },
       {
-        "title": "Create & Manage Users",
-        "urls": [
-          "/${VERSION}/create-and-manage-users.html"
-        ]
-      },
-      {
-        "title": "Configure Replication Zones",
-        "urls": [
-          "/${VERSION}/configure-replication-zones.html"
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Manage",
-    "items": [
-      {
-        "title": "Monitor CockroachDB with the Admin UI",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/admin-ui-overview.html"
-            ]
-          },
-          {
-            "title": "Access and Navigate the Admin UI",
-            "urls": [
-              "/${VERSION}/admin-ui-access-and-navigate.html"
-            ]
-          },
-          {
-            "title": "Overview Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-overview-dashboard.html"
-            ]
-          },
-          {
-            "title": "Runtime Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-runtime-dashboard.html"
-            ]
-          },
-          {
-            "title": "SQL Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-sql-dashboard.html"
-            ]
-          },
-          {
-            "title": "Storage Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-storage-dashboard.html"
-            ]
-          },
-          {
-            "title": "Replication Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-replication-dashboard.html"
-            ]
-          },
-          {
-            "title": "Databases Page",
-            "urls": [
-              "/${VERSION}/admin-ui-databases-page.html"
-            ]
-          },
-          {
-            "title": "Jobs Page",
-            "urls": [
-              "/${VERSION}/admin-ui-jobs-page.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Monitor CockroachDB with Prometheus",
-        "urls": [
-          "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
-        ]
-      },
-      {
-        "title": "Manage Long-Running Queries",
-        "urls": [
-          "/${VERSION}/manage-long-running-queries.html"
-        ]
-      },
-      {
-        "title": "Upgrade a Cluster's Version",
-        "urls": [
-          "/${VERSION}/upgrade-cockroach-version.html"
-        ]
-      },
-      {
-        "title": "Stop a Node",
+        "title": "<code>cockroach quit</code>",
         "urls": [
           "/${VERSION}/stop-a-node.html"
         ]
       },
       {
-        "title": "Remove Nodes",
+        "title": "<code>cockroach sql</code>",
         "urls": [
-          "/${VERSION}/remove-nodes.html"
+          "/${VERSION}/use-the-built-in-sql-client.html"
         ]
       },
       {
-        "title": "Back up Data",
+        "title": "<code>cockroach user</code>",
         "urls": [
-          "/${VERSION}/back-up-data.html"
+          "/${VERSION}/create-and-manage-users.html"
         ]
       },
       {
-        "title": "Restore Data",
+        "title": "<code>cockroach zone</code>",
         "urls": [
-          "/${VERSION}/restore-data.html"
+          "/${VERSION}/configure-replication-zones.html"
         ]
       },
       {
-        "title": "Dump/Export Schema or Data",
-        "urls": [
-          "/${VERSION}/sql-dump.html"
-        ]
-      },
-      {
-        "title": "Import Data",
-        "urls": [
-          "/${VERSION}/import-data.html"
-        ]
-      },
-      {
-        "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
-        "urls": [
-          "/${VERSION}/create-a-file-server.html"
-        ]
-      },
-      {
-        "title": "Rotate Security Certificates",
-        "urls": [
-          "/${VERSION}/rotate-certificates.html"
-        ]
-      },
-      {
-        "title": "Generate CockroachDB Resources",
-        "urls": [
-          "/${VERSION}/generate-cockroachdb-resources.html"
-        ]
-      },
-      {
-        "title": "View Node Details",
+        "title": "<code>cockroach node</code>",
         "urls": [
           "/${VERSION}/view-node-details.html"
         ]
       },
       {
-        "title": "View Version Details",
+        "title": "<code>cockroach dump</code>",
         "urls": [
-          "/${VERSION}/view-version-details.html"
+          "/${VERSION}/sql-dump.html"
         ]
       },
       {
-        "title": "Diagnostics Reporting",
-        "urls": [
-          "/${VERSION}/diagnostics-reporting.html"
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Troubleshoot",
-    "items": [
-      {
-        "title": "Overview",
-        "urls": [
-          "/${VERSION}/troubleshooting-overview.html"
-        ]
-      },
-      {
-        "title": "General Troubleshooting",
-        "urls": [
-          "/${VERSION}/general-troubleshooting.html"
-        ]
-      },
-      {
-        "title": "Cluster & Node Setup",
-        "urls": [
-          "/${VERSION}/cluster-setup-troubleshooting.html"
-        ]
-      },
-      {
-        "title": "Query Behavior",
-        "urls": [
-          "/${VERSION}/query-behavior-troubleshooting.html"
-        ]
-      },
-      {
-        "title": "Debug & Error Logs",
-        "urls": [
-          "/${VERSION}/debug-and-error-logs.html"
-        ]
-      },
-      {
-        "title": "Collect Cluster Debug Info",
+        "title": "<code>cockroach debug zip</code>",
         "urls": [
           "/${VERSION}/debug-zip.html"
         ]
       },
       {
-        "title": "Support Resources",
+        "title": "<code>cockroach gen</code>",
         "urls": [
-          "/${VERSION}/support-resources.html"
+          "/${VERSION}/generate-cockroachdb-resources.html"
         ]
       },
       {
-        "title": "File an Issue",
+        "title": "<code>cockroach version</code>",
         "urls": [
-          "/${VERSION}/file-an-issue.html"
+          "/${VERSION}/view-version-details.html"
         ]
       }
     ]
   },
+
+  {% elsif page.section == "faqs" %}
+
   {
-    "title": "Architecture",
-    "items": [
-      {
-        "title": "Overview",
-        "urls": [
-          "/${VERSION}/architecture/overview.html"
-        ]
-      },
-      {
-        "title": "SQL Layer",
-        "urls": [
-          "/${VERSION}/architecture/sql-layer.html"
-        ]
-      },
-      {
-        "title": "Transaction Layer",
-        "urls": [
-          "/${VERSION}/architecture/transaction-layer.html"
-        ]
-      },
-      {
-        "title": "Distribution Layer",
-        "urls": [
-          "/${VERSION}/architecture/distribution-layer.html"
-        ]
-      },
-      {
-        "title": "Replication Layer",
-        "urls": [
-          "/${VERSION}/architecture/replication-layer.html"
-        ]
-      },
-      {
-        "title": "Storage Layer",
-        "urls": [
-          "/${VERSION}/architecture/storage-layer.html"
-        ]
-      }
+    "title": "Product FAQs",
+    "urls": [
+      "/${VERSION}/frequently-asked-questions.html"
     ]
   },
   {
-    "title": "Contribute",
-    "items": [
-      {
-        "title": "Contribute to CockroachDB",
-        "urls": [
-          "/${VERSION}/contribute-to-cockroachdb.html"
-        ]
-      },
-      {
-        "title": "Improve the Docs",
-        "urls": [
-          "/${VERSION}/improve-the-docs.html"
-        ]
-      }
+    "title": "SQL FAQs",
+    "urls": [
+      "/${VERSION}/sql-faqs.html"
     ]
   },
-  {% include sidebar-releases.json %},
   {
-    "title": "FAQs",
-    "items": [
-      {
-        "title": "Product FAQs",
-        "urls": [
-          "/${VERSION}/frequently-asked-questions.html"
-        ]
-      },
-      {
-        "title": "SQL FAQs",
-        "urls": [
-          "/${VERSION}/sql-faqs.html"
-        ]
-      },
-      {
-        "title": "Operational FAQs",
-        "urls": [
-          "/${VERSION}/operational-faqs.html"
-        ]
-      },
-      {
-        "title": "CockroachDB in Comparison",
-        "urls": [
-          "/${VERSION}/cockroachdb-in-comparison.html"
-        ]
-      },
-      {
-        "title": "CockroachDB Features",
-        "items": [
-          {
-            "title": "Simplified Deployment",
-            "urls": [
-              "/${VERSION}/simplified-deployment.html"
-            ]
-          },
-          {
-            "title": "Strong Consistency",
-            "urls": [
-              "/${VERSION}/strong-consistency.html"
-            ]
-          },
-          {
-            "title": "SQL",
-            "urls": [
-              "/${VERSION}/sql.html"
-            ]
-          },
-          {
-            "title": "Distributed Transactions",
-            "urls": [
-              "/${VERSION}/distributed-transactions.html"
-            ]
-          },
-          {
-            "title": "Automated Scaling & Repair",
-            "urls": [
-              "/${VERSION}/automated-scaling-and-repair.html"
-            ]
-          },
-          {
-            "title": "High Availability",
-            "urls": [
-              "/${VERSION}/high-availability.html"
-            ]
-          },
-          {
-            "title": "Open Source",
-            "urls": [
-              "/${VERSION}/open-source.html"
-            ]
-          },
-          {
-            "title": "Go Implementation",
-            "urls": [
-              "/${VERSION}/go-implementation.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Known Limitations",
-        "urls": [
-          "/${VERSION}/known-limitations.html"
-        ]
-      }
+    "title": "Operational FAQs",
+    "urls": [
+      "/${VERSION}/operational-faqs.html"
+    ]
+  },
+  {
+    "title": "CockroachDB in Comparison",
+    "urls": [
+      "/${VERSION}/cockroachdb-in-comparison.html"
+    ]
+  },
+  {
+    "title": "Known Limitations",
+    "urls": [
+      "/${VERSION}/known-limitations.html"
     ]
   }
+
+  {% endif %}
+
 ]

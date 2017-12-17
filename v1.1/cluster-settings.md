@@ -2,6 +2,7 @@
 title: Cluster Settings
 summary: Learn about cluster settings that apply to all nodes of a CockroachDB cluster.
 toc: false
+section: guides
 ---
 
 This page shows you how to view and change CockroachDB's **cluster-wide settings**.

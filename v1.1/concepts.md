@@ -1,8 +1,8 @@
 ---
-title: CockroachDB CONCEPTS
+title: CockroachDB Concepts
 summary: 'Concepts'
 toc: false
 contribute: false
-sidebar_data: sidebar-data-concepts-v1.1.json
+section: concepts
 ---
 ## v1.1

@@ -4,6 +4,7 @@ summary: Learn how to use CockroachDB from a simple Python application with the 
 toc: false
 asciicast: true
 twitter: true
+section: guides
 ---
 
 <div class="filters filters-big clearfix">

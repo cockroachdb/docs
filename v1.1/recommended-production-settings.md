@@ -3,6 +3,7 @@ title: Recommended Production Settings
 summary: Recommended settings for production deployments.
 toc: false
 toc_not_nested: true
+section: guides
 ---
 
 This page provides recommended settings for production deployments.

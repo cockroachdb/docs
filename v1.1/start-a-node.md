@@ -2,6 +2,7 @@
 title: Start a Node
 summary: To start a new CockroachDB cluster, or add a node to an existing cluster, run the cockroach start command.
 toc: false
+section: reference
 ---
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.

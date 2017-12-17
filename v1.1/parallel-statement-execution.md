@@ -2,19 +2,20 @@
 title: Parallel Statement Execution
 summary: The parallel statement execution feature allows parallel execution of multiple independent SQL statements within a transaction.
 toc: false
+section: guides
 ---
 
-CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. 
+CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance.
 
 <div id="toc"></div>
 
 ## Why Use Parallel Statement Execution
 
-SQL engines traditionally execute the SQL statements in a transaction sequentially. The server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed. 
+SQL engines traditionally execute the SQL statements in a transaction sequentially. The server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed.
 
 In the case of a traditional single-node SQL database, statements are executed on the single machine, and so the execution does not result in any communication latency. However, in the case of a distributed and replicated database like CockroachDB, execution of statements can span multiple nodes. The coordination between nodes results in communication latency. Executing SQL statements sequentially results in higher cumulative latency.
 
-With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency. 
+With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency.
 
 ## How Parallel Statement Execution Works
 
@@ -56,9 +57,9 @@ The following conceptual diagram shows how the transaction is executed sequentia
 
 <img src="{{ 'images/Parallel_Statement_Normal_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Execution" style="border:1px solid #eee;max-width:100%" />
 
-### Perceived delay in execution of barrier statements 
+### Perceived delay in execution of barrier statements
 
-As stated earlier, the server executes a barrier statement only after all the preceding parallel statements have finished executing. So it may seem as if the barrier statement is taking longer to execute, but it is waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the barrier statement should be less than the time required for the sequential execution of all statements. 
+As stated earlier, the server executes a barrier statement only after all the preceding parallel statements have finished executing. So it may seem as if the barrier statement is taking longer to execute, but it is waiting on the parallel statements. Even then, the total time required for parallel execution of statements followed by the sequential execution of the barrier statement should be less than the time required for the sequential execution of all statements.
 
 Referring to the previous diagram, the server executes all `UPDATE` statements to completion before executing `COMMIT`. Hence it might seem as if `COMMIT` is taking longer to execute, but it is, in fact, waiting on the `UPDATE` statements to finish executing.
 
@@ -88,7 +89,7 @@ In this case, the second and third `INSERT` statements are dependent on the firs
 
 ## When to Use Parallel Statement Execution
 
-SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
+SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results.
 
 For example, the following statements are considered independent since reordering the statements does not affect the results:
 

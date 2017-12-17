@@ -2,6 +2,7 @@
 title: Create & Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
 toc: false
+section: reference
 ---
 
 To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](privileges.html)), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.

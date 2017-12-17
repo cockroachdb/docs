@@ -2,6 +2,7 @@
 title: Privileges
 summary: Privileges are granted to users at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 toc: false
+section: guides
 ---
 
 In CockroachDB, privileges are granted to [users](create-and-manage-users.html) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
@@ -18,7 +19,7 @@ For a full list of supported privileges, see the [`GRANT`](grant.html) documenta
 
 ## Granting Privileges
 
-To grant privileges to a user, use the [`GRANT`](grant.html) statement, for example: 
+To grant privileges to a user, use the [`GRANT`](grant.html) statement, for example:
 
 ~~~ sql
 > GRANT SELECT, INSERT ON bank.accounts TO maxroach;

@@ -4,6 +4,7 @@ summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engi
 toc: false
 toc_not_nested: true
 ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
+section: guides
 ---
 
 <div class="filters filters-big clearfix">

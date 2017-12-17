@@ -2,6 +2,7 @@
 title: Install Client Drivers
 summary: CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers.
 toc: false
+section: guides
 ---
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We’ve tested and can recommend the following drivers.

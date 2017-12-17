@@ -2,6 +2,7 @@
 title: Column Families
 summary: A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store.
 toc: false
+section: guides
 ---
 
 A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store. The reduced number of keys results in a smaller storage overhead and, even more significantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
@@ -12,7 +13,7 @@ This page explains how CockroachDB organizes columns into families as well as ca
 
 ## Default Behavior
 
-When a table is created, all columns are stored as a single column family.  
+When a table is created, all columns are stored as a single column family.
 
 This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family.
 
@@ -20,13 +21,13 @@ This default approach ensures efficient key-value storage and performance in mos
 
 ### Assign Column Families on Table Creation
 
-To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
+To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.
 
 For example, let's say we want to create a table to store an immutable blob of data (`data BYTES`) with a last accessed timestamp (`last_accessed TIMESTAMP`). Because we know that the blob of data will never get updated, we use the `FAMILY` keyword to break it into a separate column family:
 
 ~~~ sql
 > CREATE TABLE test (
-    id INT PRIMARY KEY, 
+    id INT PRIMARY KEY,
     last_accessed TIMESTAMP,
     data BYTES,
     FAMILY f1 (id, last_accessed),
@@ -52,13 +53,13 @@ For example, let's say we want to create a table to store an immutable blob of d
 (1 row)
 ~~~
 
-{{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}} 
+{{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}}
 
 ### Assign Column Families When Adding Columns
 
-When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family. 
+When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family.
 
-- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family: 
+- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family:
 
   ~~~ sql
   > ALTER TABLE test ADD COLUMN data2 BYTES CREATE FAMILY f3;
@@ -78,7 +79,7 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 
 ## Compatibility with Past Releases
 
-Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release. 
+Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release.
 
 ## See Also
 
