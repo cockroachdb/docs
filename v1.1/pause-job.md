@@ -2,6 +2,7 @@
 title: PAUSE JOB
 summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs, such as schema changes and enterprise backups.
 toc: false
+section: reference
 ---
 
 <span class="version-tag">New in v1.1:</span> The `PAUSE JOB` [statement](sql-statements.html) lets you pause enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.

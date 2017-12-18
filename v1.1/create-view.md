@@ -2,6 +2,7 @@
 title: CREATE VIEW
 summary: The CREATE VIEW statement creates a .
 toc: false
+section: reference
 ---
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored `SELECT` query represented as a virtual table.

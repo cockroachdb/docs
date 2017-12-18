@@ -2,6 +2,7 @@
 title: TIMESTAMP
 summary: The TIMESTAMP data type stores a date and time pair in UTC, whereas TIMESTAMPTZ stores a date and time pair with a time zone offset from UTC.
 toc: false
+section: reference
 ---
 
 The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC.
@@ -62,7 +63,7 @@ PostgreSQL wire protocol.
 
 ## Size
 
-A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 

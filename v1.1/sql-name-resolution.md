@@ -2,6 +2,7 @@
 title: Name Resolution
 summary: Table and function names can exist in multiple places. Resolution decides which one to use.
 toc: false
+section: reference
 ---
 
 A SQL client can have access to multiple databases side-by-side. The

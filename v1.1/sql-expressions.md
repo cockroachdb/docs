@@ -2,6 +2,7 @@
 title: Value Expressions
 summary: Value expressions allow the computation of new values from basic parts.
 toc: false
+section: reference
 ---
 
 Most SQL statements can contain *value expressions* that compute new

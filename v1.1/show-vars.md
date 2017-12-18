@@ -2,6 +2,7 @@
 title: SHOW (session settings)
 summary: The SHOW statement displays the current settings for the client session.
 toc: false
+section: reference
 redirect_from:
 - show-all.html
 - show-transaction.html

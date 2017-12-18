@@ -2,6 +2,7 @@
 title: DROP VIEW
 summary: The DROP VIEW statement removes a view from a database.
 toc: false
+section: reference
 ---
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
@@ -35,7 +36,7 @@ In this example, other views do not depend on the view being dropped.
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
 
-~~~ 
+~~~
 +---------------+-------------------+--------------------+------------+---------+
 | TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
 +---------------+-------------------+--------------------+------------+---------+
@@ -49,7 +50,7 @@ In this example, other views do not depend on the view being dropped.
 > DROP VIEW bank.user_emails;
 ~~~
 
-~~~ 
+~~~
 DROP VIEW
 ~~~
 
@@ -57,7 +58,7 @@ DROP VIEW
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
 
-~~~ 
+~~~
 +---------------+-------------------+--------------------+------------+---------+
 | TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
 +---------------+-------------------+--------------------+------------+---------+
@@ -76,7 +77,7 @@ In this example, another view depends on the view being dropped. Therefore, it's
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
 
-~~~ 
+~~~
 +---------------+-------------------+--------------------+------------+---------+
 | TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
 +---------------+-------------------+--------------------+------------+---------+
@@ -90,7 +91,7 @@ In this example, another view depends on the view being dropped. Therefore, it's
 > DROP VIEW bank.user_accounts;
 ~~~
 
-~~~ 
+~~~
 pq: cannot drop view "user_accounts" because view "user_emails" depends on it
 ~~~
 

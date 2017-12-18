@@ -2,6 +2,7 @@
 title: RENAME DATABASE
 summary: The RENAME DATABASE statement changes the name of a database.
 toc: false
+section: reference
 ---
 
 The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a database.

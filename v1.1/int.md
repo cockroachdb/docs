@@ -2,6 +2,7 @@
 title: INT
 summary: CockroachDB supports various signed integer data types.
 toc: false
+section: reference
 ---
 
 CockroachDB supports various signed integer [data types](data-types.html).

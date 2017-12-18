@@ -2,6 +2,7 @@
 title: Constant Values
 summary: SQL Constants represent a simple value that doesn't change.
 toc: false
+section: reference
 ---
 
 SQL Constants represent a simple value that doesn't change.
@@ -182,11 +183,11 @@ with character escapes are as follows:
 
 This is a CockroachDB-specific extension to express byte array
 literals: the delimiter `x'` or `e'\\x` followed by an arbitrary sequence of
-hexadecimal digits, followed by a closing `'`. 
+hexadecimal digits, followed by a closing `'`.
 
 For example, all the following formats are equivalent to `b'cat'`:
 
-- `x'636174'` 
+- `x'636174'`
 - `X'636174'`
 - `e'\\x636174'::BYTES`
 

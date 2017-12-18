@@ -3,6 +3,7 @@ title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
 keywords: reflection
 toc: false
+section: reference
 ---
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
@@ -21,9 +22,9 @@ No [privileges](privileges.html) are required to view privileges granted to user
 
 Parameter | Description
 ----------|------------
-`table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`. 
+`table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
 `database_name` | A comma-separated list of database names.
-`user_name` | An optional, comma-separated list of grantees. 
+`user_name` | An optional, comma-separated list of grantees.
 
 ## Examples
 

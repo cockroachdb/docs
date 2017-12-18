@@ -2,6 +2,7 @@
 title: Not Null Constraint
 summary: The NOT NULL constraint specifies the column may not contain NULL values.
 toc: false
+section: reference
 ---
 
 The Not Null [constraint](constraints.html) specifies a column may not contain *NULL* values.
@@ -10,7 +11,7 @@ The Not Null [constraint](constraints.html) specifies a column may not contain *
 
 ## Details
 
-- `INSERT` or `UPDATE` statements containing *NULL* values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [Default Value constraint](default-value.html). 
+- `INSERT` or `UPDATE` statements containing *NULL* values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [Default Value constraint](default-value.html).
 
   For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a Default Value), when you run the following command:
 

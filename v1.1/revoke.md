@@ -2,6 +2,7 @@
 title: REVOKE
 summary: The REVOKE statement revokes privileges from users.
 toc: false
+section: reference
 ---
 
 The `REVOKE` [statement](sql-statements.html) revokes [privileges](privileges.html) from users.

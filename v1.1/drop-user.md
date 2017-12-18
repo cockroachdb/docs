@@ -2,6 +2,7 @@
 title: DROP USER
 summary: The DROP USER statement removes one or more SQL users.
 toc: false
+section: reference
 ---
 
 <span class="version-tag">New in v1.1:</span> The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.

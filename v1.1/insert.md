@@ -2,6 +2,7 @@
 title: INSERT
 summary: The INSERT statement inserts one or more rows into a table.
 toc: false
+section: reference
 ---
 
 The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.
@@ -10,7 +11,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Performance Best Practices
 
-- A single [multi-row `INSERT`](#insert-multiple-rows) statement is faster than multiple single-row `INSERT` statements. Whenever possible, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements. 
+- A single [multi-row `INSERT`](#insert-multiple-rows) statement is faster than multiple single-row `INSERT` statements. Whenever possible, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required Privileges

@@ -3,6 +3,7 @@ title: SHOW TABLES
 summary: The SHOW TABLES statement lists the tables in a database.
 keywords: reflection
 toc: false
+section: reference
 ---
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the tables in a database. Tables can be standard tables as well as virtual tables representing [views](views.html).
@@ -45,7 +46,7 @@ This example assumes that the `bank` database has been set as the default databa
 (2 rows)
 ~~~
 
-### Show tables in a non-default database 
+### Show tables in a non-default database
 
 ~~~ sql
 > SHOW TABLES FROM startrek;

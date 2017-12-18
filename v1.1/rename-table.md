@@ -2,6 +2,7 @@
 title: RENAME TABLE
 summary: The RENAME TABLE statement changes the name of a table.
 toc: false
+section: reference
 ---
 
 The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table. It can also be used to move a table from one database to another.
@@ -69,7 +70,7 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
-~~~ sql 
+~~~ sql
 > SHOW DATABASES;
 ~~~
 ~~~
@@ -127,8 +128,8 @@ To move a table from one database to another, use the above syntax but specify t
 
 ## See Also
 
-- [`CREATE TABLE`](create-table.html)  
-- [`ALTER TABLE`](alter-table.html)  
-- [`SHOW TABLES`](show-tables.html)  
-- [`DROP TABLE`](drop-table.html)  
+- [`CREATE TABLE`](create-table.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`SHOW TABLES`](show-tables.html)
+- [`DROP TABLE`](drop-table.html)
 - [Other SQL Statements](sql-statements.html)

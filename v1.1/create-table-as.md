@@ -2,6 +2,7 @@
 title: CREATE TABLE AS
 summary: The CREATE TABLE AS statement persists the result of a query into the database for later reuse.
 toc: false
+section: reference
 ---
 
 The `CREATE TABLE ... AS` statement creates a new table from a [selection clause](selection-clauses.html).

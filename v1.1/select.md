@@ -2,6 +2,7 @@
 title: SELECT
 summary: The SELECT statement retrieves data from a table.
 toc: false
+section: reference
 ---
 
 The `SELECT` [statement](sql-statements.html) retrieves data from a table. The `SELECT` statement is also a [selection clause](selection-clauses.html).

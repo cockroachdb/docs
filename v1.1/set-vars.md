@@ -2,6 +2,7 @@
 title: SET (session variable)
 summary: The SET statement modifies the current configuration variables for the client session.
 toc: false
+section: reference
 redirect_from:
 - set-application-name.html
 - set-database.html

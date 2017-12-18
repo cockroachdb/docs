@@ -2,6 +2,7 @@
 title: SET CLUSTER SETTING
 summary: The SET CLUSTER SETTING statement configures one cluster setting.
 toc: false
+section: reference
 ---
 
 The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-wide setting](cluster-settings.html).

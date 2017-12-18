@@ -2,6 +2,7 @@
 title: Primary Key Constraint
 summary: The Primary Key constraint specifies that the columns can be used to uniquely identify rows in a table.
 toc: false
+section: reference
 ---
 
 The Primary Key [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row.
@@ -25,7 +26,7 @@ Unlike other constraints which have very specific uses, the Primary Key constrai
 
   This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
-- For optimal performance, we recommend defining a primary key for *every* table. 
+- For optimal performance, we recommend defining a primary key for *every* table.
 
   If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
@@ -48,7 +49,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
-~~~ sql 
+~~~ sql
 > CREATE TABLE orders (
     order_id        INT PRIMARY KEY,
     order_date      TIMESTAMP NOT NULL,

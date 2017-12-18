@@ -2,6 +2,7 @@
 title: EXPLAIN
 summary: The EXPLAIN statement provides information you can use to optimize SQL queries.
 toc: false
+section: reference
 ---
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statements. You can then use this information to optimize those queries.

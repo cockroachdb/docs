@@ -2,6 +2,7 @@
 title: Unique Constraint
 summary: The Unique constraint specifies that each non-NULL value in the constrained column must be unique.
 toc: false
+section: reference
 ---
 
 The Unique [constraint](constraints.html) specifies that each non-*NULL* value in the constrained column must be unique.
@@ -11,7 +12,7 @@ The Unique [constraint](constraints.html) specifies that each non-*NULL* value i
 ## Details
 
 - You can insert *NULL* values into columns with the Unique constraint because *NULL* is the absence of a value, so it is never equal to other *NULL* values and not considered a duplicate value. This means that it's possible to insert rows that appear to be duplicates if one of the values is *NULL*.
-  
+
   If you need to strictly enforce uniqueness, use the [Not Null constraint](not-null.html) in addition to the Unique constraint. You can also achieve the same behavior through the table's [Primary Key](primary-key.html).
 
 - Columns with the Unique constraint automatically have an [index](indexes.html) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the Unique constraint's columns and order. <br/><br/>The Unique constraint depends on the automatically created index, so dropping the index also drops the Unique constraint.
@@ -61,7 +62,7 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ~~~ sql
 > CREATE TABLE logon (
-    login_id  INT PRIMARY KEY, 
+    login_id  INT PRIMARY KEY,
     customer_id   INT,
     logon_date    TIMESTAMP,
     UNIQUE (customer_id, logon_date)
@@ -72,7 +73,7 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS logon (
-    login_id INT PRIMARY KEY, 
+    login_id INT PRIMARY KEY,
     customer_id   INT NOT NULL,
     sales_id INT,
     UNIQUE (customer_id, sales_id)

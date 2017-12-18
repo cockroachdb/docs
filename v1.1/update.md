@@ -2,13 +2,14 @@
 title: UPDATE
 summary: The UPDATE statement updates rows in a table.
 toc: false
+section: reference
 ---
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
 <div id="toc"></div>
 
-## Required Privileges 
+## Required Privileges
 
 The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on the table.
 
@@ -22,9 +23,9 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table that contains the rows you want to update.
 `AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`column_name` | The name of the column whose values you want to update. 
+`column_name` | The name of the column whose values you want to update.
 `a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use.
-`DEFAULT` | To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position. 
+`DEFAULT` | To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
 `column_name_list` | A comma-separated list of column names, in parentheses.
 `select_with_parens` | A comma-separated list of values or [value expressions](sql-expressions.html), in parentheses. To update values of multiple rows, use a comma-separated list of parentheses. <br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Update rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.__|
@@ -105,8 +106,8 @@ Parameter | Description
 
 ### Update Using `SELECT` Statement
 ~~~ sql
-> UPDATE accounts SET (balance, customer) = 
-    (SELECT balance, customer FROM accounts WHERE id = 2) 
+> UPDATE accounts SET (balance, customer) =
+    (SELECT balance, customer FROM accounts WHERE id = 2)
      WHERE id = 4;
 
 > SELECT * FROM accounts;
@@ -151,7 +152,7 @@ Parameter | Description
 > UPDATE accounts SET balance = 5000.0;
 
 > SELECT * FROM accounts;
-~~~ 
+~~~
 ~~~
 +----+---------+----------+
 | id | balance | customer |

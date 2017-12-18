@@ -1,7 +1,8 @@
 ---
 title: Constraints
-summary: Constraints offer additional data integrity by enforcing conditions on the data within a column. 
+summary: Constraints offer additional data integrity by enforcing conditions on the data within a column.
 toc: false
+section: reference
 ---
 
 Constraints offer additional data integrity by enforcing conditions on the data within a column. Whenever values are manipulated (inserted, deleted, or updated), constraints are checked and modifications that violate constraints are rejected.
@@ -81,9 +82,9 @@ The procedure for removing a constraint depends on its type:
 |-----------------|-----------|
 | [Check](check.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) |
 | [Default Value](default-value.html) | Use [`ALTER COLUMN`](alter-column.html#remove-default-constraint) |
-| [Foreign Keys](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) | 
-| [Not Null](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint) | 
-| [Primary Key](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
+| [Foreign Keys](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) |
+| [Not Null](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint) |
+| [Primary Key](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
 | [Unique](unique.html) | The Unique constraint cannot be dropped directly. However, you can use [`DROP INDEX`](drop-index.html) to remove the index automatically created by the Unique constraint (whose name ends in `_key`) to remove the constraint. |
 
 ### Change Constraints
@@ -94,9 +95,9 @@ The procedure for changing a constraint depends on its type:
 |-----------------|-----------|
 | [Check](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new Check constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 | [Default Value](default-value.html) | The Default Value can be changed through [`ALTER COLUMN`](alter-column.html). |
-| [Foreign Keys](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new Foreign Key constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). | 
-| [Not Null](not-null.html) | The Not Null constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
-| [Primary Key](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
+| [Foreign Keys](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new Foreign Key constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
+| [Not Null](not-null.html) | The Not Null constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
+| [Primary Key](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
 | [Unique](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new Unique constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 
 #### Table Migrations to Add or Change Immutable Constraints

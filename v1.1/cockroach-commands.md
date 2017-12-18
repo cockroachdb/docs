@@ -2,6 +2,7 @@
 title: Cockroach Commands
 summary: Learn the commands for configuring, starting, and managing a CockroachDB cluster.
 toc: false
+section: reference
 ---
 
 This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command and environment variables that can be used in place of certain flags.

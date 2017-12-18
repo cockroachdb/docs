@@ -2,6 +2,7 @@
 title: SET TRANSACTION
 summary: The SET TRANSACTION statement sets the transaction isolation level and/or priority for the current session or for an individual transaction.
 toc: false
+section: reference
 ---
 
 The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction isolation level or priority after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.

@@ -2,6 +2,7 @@
 title: NULL Handling
 summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: false
+section: reference
 ---
 
 This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](use-the-built-in-sql-client.html), using the table data in the first section, [NULLs and Logic](#nulls-and-logic).

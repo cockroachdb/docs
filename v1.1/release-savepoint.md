@@ -2,6 +2,7 @@
 title: RELEASE SAVEPOINT cockroach_restart
 summary: Commit a transaction's changes once there are no retryable errors with the RELEASE SAVEPOINT cockroach_restart statement in CockroachDB.
 toc: false
+section: reference
 ---
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), the `RELEASE SAVEPOINT cockroach_restart` statement commits the transaction.

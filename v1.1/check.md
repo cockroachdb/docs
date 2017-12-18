@@ -2,6 +2,7 @@
 title: Check Constraint
 summary: The Check constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
 toc: false
+section: reference
 ---
 
 The Check [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
@@ -18,9 +19,9 @@ The Check [constraint](constraints.html) specifies that values for the column in
   ~~~ sql
   warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
   ~~~
-  
+
   should be specified as:
-  
+
   ~~~ sql
   warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
   ~~~

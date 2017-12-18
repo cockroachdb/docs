@@ -2,6 +2,7 @@
 title: TRUNCATE
 summary: The TRUNCATE statement deletes all rows from specified tables.
 toc: false
+section: reference
 ---
 
 The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.

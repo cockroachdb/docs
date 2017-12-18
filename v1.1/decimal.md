@@ -2,9 +2,10 @@
 title: DECIMAL
 summary: The DECIMAL data type stores exact, fixed-point numbers.
 toc: false
+section: reference
 ---
 
-The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
 <div id="toc"></div>
 
@@ -12,8 +13,8 @@ The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. Th
 
 In CockroachDB, the following are aliases for `DECIMAL`:
 
-- `DEC` 
-- `NUMERIC` 
+- `DEC`
+- `NUMERIC`
 
 ## Precision and Scale
 
@@ -21,9 +22,9 @@ To limit a decimal column, use `DECIMAL(precision, scale)`, where `precision` is
 
 When inserting a decimal value:
 
-- If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale. 
+- If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale.
 - If digits to the right of the decimal point are fewer than the column's `scale`, CockroachDB pads to the scale with `0`s.
-- If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.  
+- If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.
 - If the column's `precision` and `scale` are identical, the inserted value must round to less than 1.
 
 ## Syntax
@@ -33,7 +34,7 @@ For example: `1.414` or `-1234`.
 
 ## Size
 
-The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 

@@ -2,6 +2,7 @@
 title: SAVEPOINT
 summary: Identify your intent to retry aborted transactions with the SAVEPOINT cockroach_restart statement in CockroachDB.
 toc: false
+section: reference
 ---
 
 The `SAVEPOINT cockroach_restart` statement defines the intent to retry [transactions](transactions.html) using the CockroachDB-provided function for client-side transaction retries. For more information, see [Transaction Retries](transactions.html#transaction-retries).

@@ -2,6 +2,7 @@
 title: RESUME JOB
 summary: The RESUME JOB statement lets you resume jobs that were previously paused with PAUSE JOB.
 toc: false
+section: reference
 ---
 
  The `PAUSE JOB` [statement](sql-statements.html) lets you resume [paused jobs](pause-job.html), which can be either enterprise `BACKUP` or `RESTORE` jobs.

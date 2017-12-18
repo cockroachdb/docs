@@ -2,15 +2,16 @@
 title: DROP TABLE
 summary: The DROP TABLE statement removes a table and all its indexes from a database.
 toc: false
+section: reference
 ---
 
-The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database. 
+The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.
 
 <div id="toc"></div>
 
 ## Required Privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well. 
+The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
 
 ## Synopsis
 
@@ -50,7 +51,7 @@ In this example, other objects do not depend on the table being dropped.
 > DROP TABLE bank.branches;
 ~~~
 
-~~~ 
+~~~
 DROP TABLE
 ~~~
 

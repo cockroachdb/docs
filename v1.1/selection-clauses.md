@@ -3,6 +3,7 @@ title: SELECT Clauses
 summary: SELECT clauses define tabular data.
 toc: false
 toc_not_nested: true
+section: reference
 ---
 
 `SELECT` clauses define tabular data. They can be used either as standalone statements, of which [`SELECT`](select.html) is the most common, or as [subqueries in table expressions](table-expressions.html#subqueries-as-table-expressions).

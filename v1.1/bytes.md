@@ -2,6 +2,7 @@
 title: BYTES
 summary: The BYTES data type stores binary strings of variable length.
 toc: false
+section: reference
 ---
 
 The `BYTES` [data type](data-types.html) stores binary strings of variable length.
@@ -10,10 +11,10 @@ The `BYTES` [data type](data-types.html) stores binary strings of variable lengt
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `BYTES`: 
+In CockroachDB, the following are aliases for `BYTES`:
 
-- `BYTEA` 
-- `BLOB` 
+- `BYTEA`
+- `BLOB`
 
 ## Syntax
 
@@ -29,7 +30,7 @@ is otherwise expected.
 
 ## Size
 
-The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Example
 

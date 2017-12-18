@@ -2,9 +2,10 @@
 title: INTERVAL
 summary: The INTERVAL data type stores a value that represents a span of time.
 toc: false
+section: reference
 ---
 
-The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time. 
+The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time.
 
 <div id="toc"></div>
 
@@ -35,7 +36,7 @@ Intervals are stored internally as months, days, and nanoseconds.
 
 ## Size
 
-An `INTERVAL` column supports values up to 24 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+An `INTERVAL` column supports values up to 24 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Example
 

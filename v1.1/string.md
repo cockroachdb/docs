@@ -2,6 +2,7 @@
 title: STRING
 summary: The STRING data type stores a string of Unicode characters.
 toc: false
+section: reference
 ---
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
@@ -12,10 +13,10 @@ The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `STRING`: 
+In CockroachDB, the following are aliases for `STRING`:
 
 - `CHARACTER`
-- `CHAR` 
+- `CHAR`
 - `VARCHAR`
 - `TEXT`
 
@@ -25,13 +26,13 @@ And the following are aliases for `STRING(n)`:
 - `CHARACTER VARYING(n)`
 - `CHAR(n)`
 - `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+- `VARCHAR(n)`
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. 
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed.
 
-When inserting a string: 
+When inserting a string:
 
 - If the value exceeds the column's length limit, CockroachDB gives an error.
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
@@ -54,7 +55,7 @@ or the escaped format otherwise.
 
 ## Size
 
-The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.   
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
