@@ -53,9 +53,9 @@ Under-replicated | The number of under-replicated ranges.
 
 You can [Configure replication zones](configure-replication-zones.html) to set the number and location of replicas. You can monitor the configuration changes using the Admin UI, as described in [Fault tolerance and recovery](demo-fault-tolerance-and-recovery.html).
 
-### Replicas
+### Replica Quiescence
 
-<img src="{{ 'images/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI Replicas" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replicas" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of replicas on the node.
 
@@ -78,4 +78,4 @@ The **Replication** dashboard shows other time series graphs that are important 
 - Range Operations
 - Snapshots
 
-For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replicas**](#replicas) graphs.
+For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
