@@ -7,4 +7,3 @@ _site
 .jekyll-metadata
 bootstrap
 vendor/
-*.map
