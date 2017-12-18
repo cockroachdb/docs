@@ -6,7 +6,9 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-{{site.data.alerts.callout_info}}Using sequences may slow down your application. Use the serial data type unless a sequence is preferred or required.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Using sequences may slow down your application because it does a write to persistent storage. Use the serial data type unless a sequence is preferred or required.{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}Sequences can have gaps. To avoid blocking concurrent transactions that use same sequence, transactions cannot be rolled back and values cannot be returned again.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -40,7 +42,7 @@ table td:first-child {
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
-`CYCLE` | The sequence will wrap around when the sequence value hits the maximum or minimum value. If `NO CYCLE` is set, the sequence will not wrap.
+`CYCLE` | The sequence will wrap around when the sequence value hits the maximum or minimum value. If `NO CYCLE` is set, the sequence will not wrap. <br><br>**Default:** `NO CYCLE`
 
 ## Sequence Functions
 
@@ -78,9 +80,9 @@ In this example, we create a table using the sequence we created in the first ex
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customer_list (
-  id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
-  customer string,
-  address string
+    id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
+    customer string,
+    address string
   );
 ~~~
 
