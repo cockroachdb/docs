@@ -1,10 +1,6 @@
 [
 
-  {% if page.section == "home" %}
-
-  {% include sidebar-releases.json %},
-
-  {% elsif page.section == "guides" %}
+  {% if page.section == "guides" %}
 
   {
     "title": "Get Started",
@@ -586,6 +582,7 @@
       }
     ]
   },
+  {% include sidebar-releases.json %},
 
   {% elsif page.section == "concepts" %}
 
@@ -1386,33 +1383,38 @@
   {% elsif page.section == "faqs" %}
 
   {
-    "title": "Product FAQs",
-    "urls": [
-      "/${VERSION}/frequently-asked-questions.html"
-    ]
-  },
-  {
-    "title": "SQL FAQs",
-    "urls": [
-      "/${VERSION}/sql-faqs.html"
-    ]
-  },
-  {
-    "title": "Operational FAQs",
-    "urls": [
-      "/${VERSION}/operational-faqs.html"
-    ]
-  },
-  {
-    "title": "CockroachDB in Comparison",
-    "urls": [
-      "/${VERSION}/cockroachdb-in-comparison.html"
-    ]
-  },
-  {
-    "title": "Known Limitations",
-    "urls": [
-      "/${VERSION}/known-limitations.html"
+    "title": "FAQs",
+    "items": [
+      {
+        "title": "Product FAQs",
+        "urls": [
+          "/${VERSION}/frequently-asked-questions.html"
+        ]
+      },
+      {
+        "title": "SQL FAQs",
+        "urls": [
+          "/${VERSION}/sql-faqs.html"
+        ]
+      },
+      {
+        "title": "Operational FAQs",
+        "urls": [
+          "/${VERSION}/operational-faqs.html"
+        ]
+      },
+      {
+        "title": "CockroachDB in Comparison",
+        "urls": [
+          "/${VERSION}/cockroachdb-in-comparison.html"
+        ]
+      },
+      {
+        "title": "Known Limitations",
+        "urls": [
+          "/${VERSION}/known-limitations.html"
+        ]
+      }
     ]
   }
 
