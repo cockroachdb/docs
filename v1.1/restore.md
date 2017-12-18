@@ -121,18 +121,14 @@ You can include the following options as key-value pairs in the `kv_option_list`
 - **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but don't want to drop it.
 - **Key**: `into_db`
 - **Value**: The name of the database you want to use
-- **Example**: You can use either the `WITH OPTIONS` or the `WITH` syntax:
-<br>`WITH OPTIONS ('into_db' = 'newdb')` 
-<br>`WITH 'into_db' = 'newdb'`
+- **Example**: `WITH into_db = 'newdb'`
 
 #### `skip_missing_foreign_keys`
 
 - **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skip_missing_foreign_keys) and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
-- **Example**: You can use either the `WITH OPTIONS` or the `WITH` syntax:
-<br>`WITH OPTIONS ('skip_missing_foreign_keys')`
-<br>`WITH 'skip_missing_foreign_keys'`
+- **Example**: `WITH skip_missing_foreign_keys`
 
 ## Examples
 
@@ -168,7 +164,7 @@ By default, tables and views are restored to the database they originally belong
 
 ~~~ sql
 > RESTORE bank.customers FROM 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-WITH OPTIONS ('into_db' = 'newdb');
+WITH into_db = 'newdb';
 ~~~
 
 ### Remove the Foreign Key Before Restore
@@ -177,7 +173,7 @@ By default, tables with [Foreign Key](foreign-key.html) constraints must be rest
 
 ~~~ sql
 > RESTORE bank.accounts FROM 'azure://acme-co-backup/table-customer-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-WITH OPTIONS ('skip_missing_foreign_keys');
+WITH skip_missing_foreign_keys;
 ~~~
 
 ### Restoring Users from `system.users` Backup
@@ -188,7 +184,7 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 ~~~ sql
 > RESTORE system.users FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-WITH OPTIONS ('into_db' = 'newdb');
+WITH into_db = 'newdb';
 
 > INSERT INTO system.users SELECT * FROM newdb.users;
 
