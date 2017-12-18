@@ -55,7 +55,7 @@ You can [Configure replication zones](configure-replication-zones.html) to set t
 
 ### Replica Quiescence
 
-<img src="{{ 'images/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replicas" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of replicas on the node.
 
