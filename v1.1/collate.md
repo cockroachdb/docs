@@ -14,9 +14,11 @@ Collated strings are important because different languages have [different rules
 
 - Operations on collated strings cannot involve strings with a different collation or strings with no collation. However, it is possible to <a href="#ad-hoc-collation-casting">add or overwrite a collation on the fly</a>.
 
-- Only use the collation feature when you need to sort strings by a specific collation. We recommend this because every time a collated string is constructed or loaded into memory, CockroachDB computes its collation key, whose size is linear in relationship to the length of the collated string, which requires additional resources.
+- Only use the collation feature when you need to sort strings by a specific collation. We recommend this because every time a collated string is constructed or loaded into memory, CockroachDB computes its collation key, whose size is linear in relationship to the length of the collated string, which requires additional resources. 
 
-  However, the `COLLATE` feature does not require additional disk space because collated strings are stored on disk in the same way as [`STRING`](string.html) values, i.e.,
+- Collated strings can be considerably larger than the corresponding uncollated strings, depending on the language and the string content. For example, strings containing the character `é` produce larger collation keys in the French locale than in Chinese.
+
+- Collated strings that are indexed require additional disk space as compared to uncollated strings. In case of indexed collated strings, collation keys must be stored in addition to the strings from which they are derived, creating a constant factor overhead. 
 
 ## Supported Collations
 
