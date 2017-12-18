@@ -22,16 +22,16 @@ Subcommand | Usage
 ## Synopsis
 
 ~~~ shell
-# List the IDs of active nodes:
+# List the IDs of active and inactive nodes:
 $ cockroach node ls <flags>
 
-# Show status details for active nodes:
+# Show status details for active and inactive nodes:
 $ cockroach node status <flags>
 
-# Show status and range/replica details for active nodes:
+# Show status and range/replica details for active and inactive nodes:
 $ cockroach node status --ranges <flags>
 
-# Show status and disk usage details for active nodes:
+# Show status and disk usage details for active and inactive nodes:
 $ cockroach node status --stats <flags>
 
 # Show status and decommissioning details for active and inactive nodes:
@@ -75,7 +75,7 @@ The `node ls` subcommand also supports the following general flags:
 
 Flag | Description
 -----|------------
-`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours.
+`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
 The `node status` subcommand also supports the following general flags:
 
@@ -85,7 +85,7 @@ Flag | Description
 `--decommission` | Show node decommissioning details.
 `--ranges` | Show node details for ranges and replicas.
 `--stats` | Show node disk usage details.
-`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours.
+`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
 The `node decommission` subcommand also supports the following general flag:
 
