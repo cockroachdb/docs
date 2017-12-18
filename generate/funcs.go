@@ -26,7 +26,7 @@ func init() {
 }
 
 func generateFuncs() {
-	outDir := filepath.Join("..", "_includes", "sql", "v1.2")
+	outDir := filepath.Join("..", "_includes", "sql", "v2.0")
 	if err := ioutil.WriteFile(filepath.Join(outDir, "functions.md"), GenerateFunctions(parser.Builtins, true), 0644); err != nil {
 		panic(err)
 	}
