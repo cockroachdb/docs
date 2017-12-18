@@ -3,7 +3,7 @@ require 'yaml'
 
 task :htmlproofer do
   baseurl = ENV['JEKYLL_BASEURL'] || YAML.load_file('_config.yml')['baseurl']
-  HTMLProofer.check_directory("./_site", {
+  HTMLProofer.check_directory(['./_site/v1.1', './_site/v2.0'], {
     :allow_hash_href => true,
     :url_swap => { /^#{Regexp.quote(baseurl)}/ => '' },
     :typhoeus => {
