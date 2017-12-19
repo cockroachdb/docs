@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-{{site.data.alerts.callout_info}}Using a sequence is slower than using the `SERIAL` data type– incrementing a sequence requires a write to persistent storage, whereas generating a new SERIAL value does not. Use the `SERIAL` data type unless a sequence is preferred or required.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Using a sequence is slower than using the <code>SERIAL</code> data type– incrementing a sequence requires a write to persistent storage, whereas generating a new <code>SERIAL</code> value does not. Use the SERIAL data type unless a sequence is preferred or required.{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}A column that uses a sequence can have a gap if a transaction increments the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.{{site.data.alerts.end}}
 
