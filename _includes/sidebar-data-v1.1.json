@@ -974,9 +974,9 @@
         ]
       },
       {
-        "title": "Licensing",
+        "title": "Enterprise Licensing",
         "urls": [
-          "/${VERSION}/licensing.html"
+          "/${VERSION}/enterprise-licensing.html"
         ]
       }
     ]
