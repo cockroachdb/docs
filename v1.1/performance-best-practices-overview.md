@@ -12,16 +12,7 @@ This page lists the SQL performance best practices for CockroachDB.
 
 ### Use Multi-Row DML instead of Multiple Single-Row DMLs
 
-For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs. To understand why that is so, let's understand single-row DMLs and multi-row DMLs are executed in CockroachDB:
-
-#### Single-row DML execution in CockroachDB
-
-<img src="{{ 'images/insert_singleton_detail.png' | relative_url }}" alt="CockroachDB single-row DML execution" style="border:1px solid #eee;max-width:100%" />
-
-#### How Multi-row DML works with CockroachDB
-
-
-
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs. 
 
 For more information, see:
 
