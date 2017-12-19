@@ -22,16 +22,16 @@ Subcommand | Usage
 ## Synopsis
 
 ~~~ shell
-# List the IDs of active nodes:
+# List the IDs of active and inactive nodes:
 $ cockroach node ls <flags>
 
-# Show status details for active nodes:
+# Show status details for active and inactive nodes:
 $ cockroach node status <flags>
 
-# Show status and range/replica details for active nodes:
+# Show status and range/replica details for active and inactive nodes:
 $ cockroach node status --ranges <flags>
 
-# Show status and disk usage details for active nodes:
+# Show status and disk usage details for active and inactive nodes:
 $ cockroach node status --stats <flags>
 
 # Show status and decommissioning details for active and inactive nodes:
@@ -71,6 +71,12 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 
+The `node ls` subcommand also supports the following general flags:
+
+Flag | Description
+-----|------------
+`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
+
 The `node status` subcommand also supports the following general flags:
 
 Flag | Description
@@ -79,6 +85,7 @@ Flag | Description
 `--decommission` | Show node decommissioning details.
 `--ranges` | Show node details for ranges and replicas.
 `--stats` | Show node disk usage details.
+`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
 The `node decommission` subcommand also supports the following general flag:
 
@@ -121,7 +128,7 @@ Field | Description
 `value_bytes` | The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
-`is_live` | If `true`, the node is live.<br><br>**Required flag:** `--decommission` or `--all`
+`is_live` | If `true`, the node is live.<br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
@@ -173,11 +180,11 @@ $ cockroach node status 1 --insecure
 ~~~
 
 ~~~
-+----+-----------------------+---------+---------------------+---------------------+
-| id |        address        |  build  |     updated_at      |     started_at      |
-+----+-----------------------+---------+---------------------+---------------------+
-|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 |
-+----+-----------------------+---------+---------------------+---------------------+
++----+-----------------------+---------+---------------------+---------------------+---------+
+| id |        address        |  build  |     updated_at      |     started_at      | is_live |
++----+-----------------------+---------+---------------------+---------------------+---------+
+|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 | true    |
++----+-----------------------+---------+---------------------+---------------------+---------+
 (1 row)
 ~~~
 
@@ -188,15 +195,15 @@ $ cockroach node status --insecure
 ~~~
 
 ~~~
-+----+-----------------------+---------+---------------------+---------------------+
-| id |        address        |  build  |     updated_at      |     started_at      |
-+----+-----------------------+---------+---------------------+---------------------+
-|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 |
-|  2 | 192.241.239.201:26257 | 91a299d | 2017-09-07 18:16:05 | 2017-09-07 16:30:45 |
-|  3 | 67.207.91.36:26257    | 91a299d | 2017-09-07 18:16:06 | 2017-09-07 16:31:06 |
-|  4 | 138.197.12.74:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:44:23 |
-|  5 | 174.138.50.192:26257  | 91a299d | 2017-09-07 18:16:07 | 2017-09-07 17:12:57 |
-+----+-----------------------+---------+---------------------+---------------------+
++----+-----------------------+---------+---------------------+---------------------+---------+
+| id |        address        |  build  |     updated_at      |     started_at      | is_live |
++----+-----------------------+---------+---------------------+---------------------+---------+
+|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 | true    |
+|  2 | 192.241.239.201:26257 | 91a299d | 2017-09-07 18:16:05 | 2017-09-07 16:30:45 | true    |
+|  3 | 67.207.91.36:26257    | 91a299d | 2017-09-07 18:16:06 | 2017-09-07 16:31:06 | true    |
+|  4 | 138.197.12.74:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:44:23 | true    |
+|  5 | 174.138.50.192:26257  | 91a299d | 2017-09-07 18:10:07 | 2017-09-07 17:12:57 | false   |
++----+-----------------------+---------+---------------------+---------------------+---------+
 (5 rows)
 ~~~
 
