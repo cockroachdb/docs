@@ -51,17 +51,13 @@ Clients using transactions must also include logic to handle [retries](#transact
 
 To handle errors in transactions, you should check for the following types of server-side errors:
 
-- **Retryable Errors**: Errors with the code `40001` or string `retry transaction`, which indicate the transaction failed because another concurrent or recent transaction accessed the same values. To handle these errors, you should [retry the transaction](#client-side-transaction-retries).
 
-- **Ambiguous Errors**: Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.
-
-  For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.
-
-  Ambiguous errors are the result of inter-node communication failures which prevent a caller from knowing with certainty whether a transaction commit succeeded. Most applications will choose to simply retry the transaction.
+**Retryable Errors** | Errors with the code `40001` or string `retry transaction`, which indicate the transaction failed because another concurrent or recent transaction accessed the same values. To handle these errors, you should [retry the transaction](#client-side-transaction-retries).
+**Ambiguous Errors** | Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.<br><br>For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.<br><br>Ambiguous errors are the result of inter-node communication failures which prevent a caller from knowing with certainty whether a transaction commit succeeded. Most applications will choose to simply retry the transaction.
 
 - **SQL Errors**: All other errors, which indicate that a statement in the transaction failed. For example, violating the Unique constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.
 
-  If you want to attempt the same set of statements again, you must begin a completely new transaction.
+    If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction Retries
 
