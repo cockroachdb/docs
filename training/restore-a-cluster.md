@@ -23,21 +23,25 @@ To complete this lab, you need to have completed the lab for [backing up your Co
 
 1. Launch the built-in SQL client:
 
-    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
 
 2. Drop the database:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > DROP DATABASE startrek CASCADE;
     ~~~
 
 3. Make sure the database was dropped:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM startrek;
     ~~~
+
     ~~~
     pq: database "startrek" does not exist
     ~~~
@@ -46,12 +50,14 @@ To complete this lab, you need to have completed the lab for [backing up your Co
 
 1. Restore the database:
 
-    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
     RESTORE DATABASE startrek FROM 's3://acme-co-backup/[initials]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';
     ~~~
 
 2. Make sure the database was restored:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM startrek;
     ~~~

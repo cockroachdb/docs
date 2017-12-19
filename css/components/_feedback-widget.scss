@@ -14,16 +14,19 @@
 }
 
 #feedback-prompt p {
+  margin-bottom: 18px;
   line-height: 0;
 }
 
 .feedback-question {
-  display: inline-block;
+  display: block;
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
   @include avenir_r(17px);
   line-height: 30px;
+
+  @include at-query($min, $screen-xsm) { display: inline-block; }
 }
 
 @media screen and (max-width: 767px){

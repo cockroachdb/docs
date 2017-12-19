@@ -1,6 +1,6 @@
 ## Step 1. Choose your deployment environment
 
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Container Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 <div class="filters filters-big clearfix">
   <button class="filter-button" data-scope="gke-hosted">Hosted GKE</button>
@@ -25,6 +25,31 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
 
     The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
+
+{% if page.secure == true %}
+
+3. Get the email address associated with your Google Cloud account:
+
+    ~~~ shell
+    $ gcloud info | grep Account
+    ~~~
+
+    ~~~
+    Account: [your.google.cloud.email@example.org]
+    ~~~
+
+4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
+
+    ~~~ shell
+    $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
+    ~~~
+
+    ~~~
+    clusterrolebinding "cluster-admin-binding" created
+    ~~~
+
+
+{% endif %}
 
 </div>
 

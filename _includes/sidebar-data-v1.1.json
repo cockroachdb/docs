@@ -94,6 +94,12 @@
             ]
           },
           {
+            "title": "C# (.NET)",
+            "urls": [
+              "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+            ]
+          },
+          {
             "title": "Clojure",
             "urls": [
               "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
@@ -141,7 +147,7 @@
             ]
           },
           {
-            "title": "Follow the Workload",
+            "title": "Follow-the-Workload",
             "urls": [
               "/${VERSION}/demo-follow-the-workload.html"
             ]
