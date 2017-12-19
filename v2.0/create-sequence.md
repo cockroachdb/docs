@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-<span class="version-tag">New in v1.2:</span> The `CREATE SEQUENCE` [statement](sql-statements.html)...
+<span class="version-tag">New in v2.0:</span> The `CREATE SEQUENCE` [statement](sql-statements.html)...
 
 <div id="toc"></div>
 

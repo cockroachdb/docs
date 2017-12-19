@@ -744,7 +744,7 @@ func main() {
 
 	rootCmd.Flags().IntVar(&maxWorkers, "max-workers", 1, "maximum number of concurrent workers")
 	rootCmd.Flags().StringVar(&addr, "addr", "https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/sql/parser/sql.y", "Location of sql.y file. Can also specify a local file.")
-	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "v1.2", "diagrams"), "Base directory for html output.")
+	rootCmd.Flags().StringVar(&baseDir, "base", filepath.Join("..", "_includes", "sql", "v2.0", "diagrams"), "Base directory for html output.")
 	rootCmd.Flags().StringVar(&filter, "filter", ".*", "Filter statement names (regular expression)")
 	rootCmd.Flags().BoolVar(&invertMatch, "invert-match", false, "Generate everything that doesn't match the filter")
 	rootCmd.Flags().BoolVar(&printBNF, "bnf", false, "Print BNF only; don't generate railroad diagrams")
