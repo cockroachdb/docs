@@ -1597,11 +1597,11 @@ li.search-wrap {
     list-style: none; }
     #toc > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 20px;
+      line-height: 25px;
       color: #152849; }
       #toc > ul li a:hover {
         color: #54B30E;

@@ -13,7 +13,8 @@
       list-style: none;
 
       a {
-        @include caption;
+        @include avenir_r(16px);
+        line-height: 25px;;
         color: $cl_blue;
 
         &:hover {
