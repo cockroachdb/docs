@@ -22,7 +22,7 @@ p {
   }
 
   @include at-query($min, $screen-md) {
-    margin: 20px 0;
+    margin: 10px 0;
   }
 }
 
@@ -31,7 +31,7 @@ h1, h2 {
   margin-bottom: 20px;
 
   @include at-query($min, $screen-sm) {
-    margin-top: 70px;
+    margin-top: 35px;
   }
 }
 
@@ -40,7 +40,7 @@ h3, h4, h5, h6 {
   margin-bottom: 20px;
 
   @include at-query($min, $screen-sm) {
-    margin-top: 50px;
+    margin-top: 40px;
   }
 }
 
@@ -145,10 +145,6 @@ h6:target:before {
       margin-bottom: 20px;
     }
   }
-
-  ul li, ol li {
-    margin: 10px 0px;
-  }
 }
 
 .post-summary {
@@ -187,18 +183,10 @@ table > tfoot > tr > th,
 table > thead > tr > td,
 table > tbody > tr > td,
 table > tfoot > tr > td {
-  /*padding: 8px;*/
-  /*line-height: 1.42857143;*/
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
-/*table > thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #ddd;
-  text-transform: uppercase;
-  background-color: #444;
-  color: white;
-  text-align: center; }*/
+
 
 table > caption + thead > tr:first-child > th,
 table > colgroup + thead > tr:first-child > th,
@@ -207,10 +195,6 @@ table > caption + thead > tr:first-child > td,
 table > colgroup + thead > tr:first-child > td,
 table > thead:first-child > tr:first-child > td {
   border-top: 0;
-}
-
-table > tbody > tr:nth-of-type(odd) {
-  /*background-color: #f9f9f9;*/
 }
 
 table col[class*="col-"] {
@@ -544,7 +528,7 @@ a.accordion-toggle {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 40px -30px 10px;
+  margin: 20px -30px 10px;
 
   > * {
     margin-left: 30px;

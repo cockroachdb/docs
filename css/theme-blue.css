@@ -1,5 +1,4 @@
 table {
-    margin-top: 20px;
     margin-bottom: 20px;
     max-width: 100%;
     background-color: transparent;
@@ -20,7 +19,7 @@ table td {
     /*border-left: 0px solid #FFFFFF;*/
     /*background: white;*/
     color: #142848;
-    padding: 15px 8px 15px 8px;
+    padding: 10px 8px;
 }
 
 tbody tr:hover {
@@ -43,12 +42,12 @@ tbody tr:hover {
 }
 
 .nav > li.active > ul > li.active > a {
-    color: #46a417;    
+    color: #46a417;
 }
 
 .nav > li > a {
     background-color: transparent;
-    color: #142848;    
+    color: #142848;
 }
 
 a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
