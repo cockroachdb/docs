@@ -8,7 +8,7 @@ This page shows you how to request and set the trial and enterprise license keys
 
 <div id="toc"></div>
 
-CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). However, to use the enterprise features, you need either a trial or an enterprise license key.
+CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). You can use core features without any license key. However, to use the enterprise features, you need either a trial or an enterprise license key.
 
 ## Types of Licenses
 
@@ -23,7 +23,7 @@ You can request a trial license or an enterprise license:
 
 ## Set the Trial or Enterprise License Key
 
-As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) and use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
+As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in the insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in the insecure mode. Then use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -82,7 +82,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 ## Renew Expired License
 
-After your license expires, the enterprise features stop working, but your production setup is unaffected. 
+After your license expires, the enterprise features stop working, but your production setup is unaffected. For instance, after the license expires, the backup and restore features won't work until the license is renewed. But you can continue using all other features of CockroachDB without interruption.
 
 As of now, CockroachDB does not inform you when your license is about to expire. Hence it's important for you to note and remember the license expiration date when you set your license. 
 
