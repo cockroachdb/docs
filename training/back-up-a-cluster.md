@@ -29,19 +29,22 @@ $ cockroach gen example-data | cockroach sql --certs-dir=certs
 ### Step 2. Enable license
 
 1. Open the SQL shell:
-	
-	{% include copy-clipboard.html %}
+
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
 
 2. Enable the training license:
-	
-	{% include copy-clipboard.html %}
+
+    {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training'
-    
-    > SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}'
+    > SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';
     ~~~
 
 ### Step 3. Perform backup

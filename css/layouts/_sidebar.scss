@@ -96,15 +96,6 @@ body.sidenav-open {
     margin: 13px 0 2px 7px;
     border-width: 2px 0 0 2px;
   }
-
-  // img {
-  //   width: 13px;
-  //   vertical-align: top;
-  //   transition: transform 0.2s ease;
-  //   transform: rotate(180deg);
-  //   margin-top: 11px;
-  //   margin-right: 9px;
-  // }
 }
 
 .collapsed-header {
@@ -150,9 +141,6 @@ body.sidenav-open {
       .arrow-down {
         border-width: 0 2px 2px 0;
       }
-      // img {
-      //   transform: rotate(0deg);
-      // }
     }
 
     &.nav--home {
@@ -160,10 +148,6 @@ body.sidenav-open {
 
       .sidenav-arrow {
         transform: translateY(14px);
-
-        // img {
-        //   transform: rotate(0deg);
-        // }
       }
     }
 
@@ -330,6 +314,8 @@ a:not([href]) {
   }
 
   &.open {
+    border-bottom: 1px solid $cl_gray_medium;
+    
     @include at-query($max, $screen-md) {
       box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);
     }
