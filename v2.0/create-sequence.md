@@ -6,9 +6,9 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-{{site.data.alerts.callout_info}}Using sequences may slow down your application because it does a write to persistent storage. Use the serial data type unless a sequence is preferred or required.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Using a sequence is slower than using the `SERIAL` data type– incrementing a sequence requires a write to persistent storage, whereas generating a new SERIAL value does not. Use the `SERIAL` data type unless a sequence is preferred or required.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}Sequences can have gaps. To avoid blocking concurrent transactions that use same sequence, transactions cannot be rolled back and values cannot be returned again.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}A column that uses a sequence can have a gap if a transaction increments the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -48,10 +48,10 @@ table td:first-child {
 
 We support the following [SQL sequence functions](/functions-and-operators.html#sequence-functions):
 
-- `nextval('seqname')`
-- `currval('seqname')`
+- `nextval('sequence_name')`
+- `currval('sequence_name')`
 - `lastval()`
-- `setval('seqname', value, is_called)`
+- `setval('sequence_name', value, is_called)`
 
 ## Examples
 
@@ -90,7 +90,11 @@ Insert a few records to see the sequence.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customer_list (customer, address) VALUES ('Lauren', '123 Main Street'), ('Jesse', '456 Broad Ave'), ('Amruta', '9876 Green Parkway');
+> INSERT INTO customer_list (customer, address)
+  VALUES
+    ('Lauren', '123 Main Street'),
+    ('Jesse', '456 Broad Ave'),
+    ('Amruta', '9876 Green Parkway');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -109,16 +113,13 @@ Insert a few records to see the sequence.
 
 ### View the Current Value of a Sequence
 
+<!-- Not yet implemented. -->
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT currval('customer_seq');
+> SELECT * FROM customer_seq;
 ~~~
 ~~~
-+-------------------------+
-| currval('customer_seq') |
-+-------------------------+
-|                       3 |
-+-------------------------+
 ~~~
 
 
