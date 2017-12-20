@@ -958,7 +958,8 @@
       {
         "title": "Create Security Certificates",
         "urls": [
-          "/${VERSION}/create-security-certificates.html"
+          "/${VERSION}/create-security-certificates.html",
+          "/${VERSION}/create-security-certificates-openssl.html"
         ]
       },
       {
