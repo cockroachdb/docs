@@ -5,8 +5,8 @@ toc: false
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use Cockroach Cert</button>
-  <button style="width:28%" class="filter-button current">Use <strong>OpenSSL</strong></button></a>
+  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
+  <button style="width:28%" class="filter-button current">Use <strong>openssl</strong></button></a>
 </div>
 
 A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
@@ -69,9 +69,9 @@ Note the following:
     - `certs`: Create your CA certificate and all node and client certificates and keys in this directory and then upload the relevant files to the nodes and clients.
     - `my-safe-directory`: Create your CA key in this directory and then reference the key when generating node and client certificates. After that, keep the key safe and secret; do not upload it to your nodes or clients.
 
-2. Create the `ca.cnf` file:
+2. Create the `ca.cnf` file and copy the following configuration into it.
 
-    Create the `ca.cnf` file and copy the following configuration into it. You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
+    You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -254,7 +254,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 7. Repeat steps 1 - 6 for each additional node.
 
-8. Remove the .pem files in the `certs` directory. These files are unnecessary duplicates of the .crt files that CockroachDB requires.
+8. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ### Create the certificate and key pair for a client
 
@@ -321,7 +321,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 6. Repeat steps 1 - 5 for each additional client.
 
-7. Remove the .pem files in the `certs` directory. These files are unnecessary duplicates of the .crt files that CockroachDB requires.
+7. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
  
 ## See Also
 
