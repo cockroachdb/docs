@@ -11,8 +11,3 @@ task :htmlproofer do
       :ssl_verifyhost => 0}
   }).run
 end
-
-task :blog_posts do
-  require 'open-uri'
-  IO.copy_stream(open('https://www.cockroachlabs.com/blog/index.xml'), '_data/blog_posts.xml')
-end

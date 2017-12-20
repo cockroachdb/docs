@@ -2,7 +2,7 @@
 title: Build a Rust App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Rust application with a low-level client driver.
 toc: false
-twitter: true
+twitter: false
 ---
 
 This tutorial shows you how build a simple Rust application with CockroachDB using a PostgreSQL-compatible driver. We've tested and can recommend the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust postgres driver</a>, so that driver is featured here.

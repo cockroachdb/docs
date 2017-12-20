@@ -1,0 +1,117 @@
+---
+title: Initialize a Cluster
+summary: Perform a one-time-only initialization of a CockroachDB cluster.
+toc: false
+---
+
+<span class="version-tag">New in v1.1:</span> This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.
+
+{{site.data.alerts.callout_info}}When <a href="start-a-node.html#start-a-single-node-cluster">starting a single-node cluster</a>, you don't need to use the <code>cockroach init</code> command. You can simply run the <code>cockroach start</code> command without the <code>--join</code> flag to start and initialize the single-node cluster.{{site.data.alerts.end}}
+
+<div id="toc"></div>
+
+## Synopsis
+
+~~~ shell
+# Perform a one-time initialization of a cluster:
+$ cockroach init <flags>
+
+# View help:
+$ cockroach init --help
+~~~
+
+## Flags
+
+The `cockroach init` command supports the following [general-use](#general) and [logging](#logging) flags.
+
+### General
+
+Flag | Description
+-----|-----------
+`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). If the cluster is secure, this directory must contain a valid CA certificate and a client certificate and key for the `root` user. Client certificates for other users are not supported.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--host` | The server host to connect to. This can be the address of any node. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:**`localhost`
+`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
+`--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Logging
+
+By default, the `init` command logs errors to `stderr`.
+
+If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+
+## Examples
+
+These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.
+
+### Initialize a Cluster on a Node's Machine
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
+  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="secure">
+1. SSH to the machine where the node has been started.
+
+2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
+
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
+
+    ~~~ shell
+    $ cockroach init --certs-dir=certs --host=<address of this node>
+    ~~~
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+1. SSH to the machine where the node has been started.
+
+2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
+
+    ~~~ shell
+    $ cockroach init --insecure --host=<address of this node>
+    ~~~
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
+</div>
+
+### Initialize a Cluster from Another Machine
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
+  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="secure">
+1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
+
+2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
+
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of any node:
+
+    ~~~ shell
+    $ cockroach init --certs-dir=certs --host=<address of any node>
+    ~~~
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
+
+2. Run the `cockroach init` command with the `--host` flag set to the address of any node:
+
+    ~~~ shell
+    $ cockroach init --insecure --host=<address of any node>
+    ~~~
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
+</div>
+
+## See Also
+
+- [Manual Deployment](manual-deployment.html)
+- [Cloud Deployment](cloud-deployment.html)
+- [`cockroach start`](start-a-node.html)
+- [Other Cockroach Commands](cockroach-commands.html)

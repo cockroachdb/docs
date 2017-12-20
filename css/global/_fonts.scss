@@ -35,6 +35,18 @@
 }
 
 @font-face {
+  font-family: 'AvenirLTStd-Medium';
+  src: url('../fonts/AvenirLTStd-Medium.eot');
+  src: url('../fonts/AvenirLTStd-Medium.woff2') format('woff2'),
+       url('../fonts/AvenirLTStd-Medium.woff') format('woff'),
+       url('../fonts/AvenirLTStd-Medium.ttf') format('truetype'),
+       url('../fonts/AvenirLTStd-Medium.svg#AvenirLTStd-Medium') format('svg'),
+       url('../fonts/AvenirLTStd-Medium.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'AvenirLTStd-Heavy';
   src: url('../fonts/AvenirLTStd-Heavy.eot');
   src: url('../fonts/AvenirLTStd-Heavy.woff2') format('woff2'),
@@ -67,5 +79,6 @@
 @mixin adelle_b($size) {font-family: 'Adelle-Bold', serif; font-size:$size; @include font-props;}
 @mixin avenir_r($size) {font-family: 'AvenirLTStd-Roman', serif; font-size:$size; @include font-props;}
 @mixin avenir_o($size) {font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; @include font-props;}
+@mixin avenir_m($size) {font-family: 'AvenirLTStd-Medium', serif; font-size:$size; @include font-props;}
 @mixin avenir_h($size) {font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; @include font-props;}
 @mixin avenir_bl($size) {font-family: 'AvenirLTStd-Black', serif; font-size:$size; @include font-props;}

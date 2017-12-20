@@ -3,6 +3,9 @@ $screen-sm:  768px;
 $screen-md:  992px;
 $screen-lg:  1200px;
 
+$max-width: 1110px;
+$max-plus-gutters: 1170px;
+
 $cl_green: #54B30E;
 $cl_green_dark: #338C03;
 $cl_green_bright: #69CC00;
@@ -14,5 +17,7 @@ $cl_blue_note: #3A7DE0;
 $cl_gray: #A2A2A2;
 $cl_gray_medium: #DADADA;
 $cl_gray_light: #F3F3F3;
+$cl_gray_body: #142848;
+$cl_gray_footer: #F7F7F7;
 $cl_warning: #D9534F;
 $cl_warning_light: #FCF4F3;

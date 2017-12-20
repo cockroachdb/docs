@@ -200,7 +200,7 @@ Exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-To access the [Admin UI](explore-the-admin-ui.html) for your cluster, point a browser to `https://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup.
+To access the [Admin UI](admin-ui-access-and-navigate.html) for your cluster, point a browser to `https://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup.
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 

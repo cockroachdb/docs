@@ -15,6 +15,14 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 
 <div id="toc"></div>
 
+## How Security Certificates Work
+
+1. Using the `cockroach cert` command, you create a CA certificate and key and then node and client certificates that are signed by the CA certificate. Since you need access to a copy of the CA certificate and key to create node and client certs, it's best to create everything in one place.
+
+2. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
+
+3. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
+
 ## Subcommands
 
 Subcommand | Usage
@@ -275,6 +283,8 @@ Certificate directory: certs
 
 ## See Also
 
-- [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
+- [Manual Deployment](manual-deployment.html)
+- [Cloud Deployment](cloud-deployment.html)
+- [Local Test Deployment](secure-a-cluster.html)
+- [Rotate Security Certificates](rotate-certificates.html)
 - [Other Cockroach Commands](cockroach-commands.html)

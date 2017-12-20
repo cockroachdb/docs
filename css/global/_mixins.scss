@@ -72,7 +72,7 @@ $max: max-width;
       @content;
     }
   } @else if $constraint == $max {
-    @media screen and ($max: $viewport1) {
+    @media screen and ($max: $viewport1 - 1) {
       @content;
     }
   } @else {

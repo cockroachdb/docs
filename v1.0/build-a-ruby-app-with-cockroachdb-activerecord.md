@@ -2,7 +2,7 @@
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
 toc: false
-twitter: true
+twitter: false
 ---
 
 <div class="filters filters-big clearfix">

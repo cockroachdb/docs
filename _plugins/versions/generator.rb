@@ -24,14 +24,14 @@ module JekyllVersions
         page = vp.page
         page.data['version'] = vp.version
         page.data['release_info'] = vp.release_info
-        page.data['sidebar_data'] = vp.sidebar_data
+        page.data['sidebar_data'] ||= vp.sidebar_data
         page.data['canonical'] = stable_vp(vp.key)&.url || page.url
         page.data['versions'] = versions.map do |v|
           { 'version' => v, 'url' => vps_with_key(vp.key)[v]&.url }
         end
 
         @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-          @site, vp.basename, vp.url) if vp.stable?
+          @site, vp.unversioned_path, vp.url) if vp.stable?
       end
 
       @config.versions.each do |name, version|

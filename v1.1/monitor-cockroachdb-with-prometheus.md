@@ -4,7 +4,7 @@ summary: Use Prometheus to monitor CockroachDB.
 toc: false
 ---
 
-CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](http://grafana.org/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
+CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
 {{site.data.alerts.callout_success}}All files used in this tutorial can be found in the <a href="https://github.com/cockroachdb/cockroach/tree/master/monitoring"><code>monitoring</code></a> directory of the CockroachDB repository.{{site.data.alerts.end}}
 
@@ -83,9 +83,9 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
 
 ## Step 4. Visualize metrics in Grafana
 
-Although Prometheus lets you graph metrics, [Grafana](http://grafana.org/) is a much more powerful visualization tool that integrates with Prometheus easily.
+Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a much more powerful visualization tool that integrates with Prometheus easily.
 
-1. [Install and start Grafana for your OS](http://grafana.org/download/).
+1. [Install and start Grafana for your OS](https://grafana.com/grafana/download).
 
 2. Point your browser to `http://<hostname of machine running grafana>:3000` and log into the Grafana UI with the default username/password, `admin/admin`, or create your own account.
 

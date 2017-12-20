@@ -19,7 +19,7 @@
             ]
           },
           {
-            "title": "In Docker",
+            "title": "With Docker",
             "urls": [
               "/${VERSION}/start-a-local-cluster-in-docker.html"
             ]
@@ -94,6 +94,12 @@
             ]
           },
           {
+            "title": "C# (.NET)",
+            "urls": [
+              "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+            ]
+          },
+          {
             "title": "Clojure",
             "urls": [
               "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
@@ -114,7 +120,7 @@
         ]
       },
       {
-        "title": "Explore Core Features",
+        "title": "Explore Benefits",
         "items": [
           {
             "title": "Data Replication",
@@ -138,6 +144,18 @@
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
+            ]
+          },
+          {
+            "title": "Follow-the-Workload",
+            "urls": [
+              "/${VERSION}/demo-follow-the-workload.html"
+            ]
+          },
+          {
+            "title": "Automated Operations",
+            "urls": [
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
           }
         ]
@@ -588,6 +606,12 @@
             ]
           },
           {
+            "title": "Selection Clauses",
+            "urls": [
+              "/${VERSION}/selection-clauses.html"
+            ]
+          },
+          {
             "title": "Value Expressions",
             "urls": [
               "/${VERSION}/sql-expressions.html"
@@ -682,6 +706,12 @@
             ]
           },
           {
+            "title": "<code>UUID</code>",
+            "urls": [
+              "/${VERSION}/uuid.html"
+            ]
+          },
+          {
             "title": "<code>SERIAL</code>",
             "urls": [
               "/${VERSION}/serial.html"
@@ -745,12 +775,6 @@
             "title": "<code>ARRAY</code>",
             "urls": [
               "/${VERSION}/array.html"
-            ]
-          },
-          {
-            "title": "<code>UUID</code>",
-            "urls": [
-              "/${VERSION}/uuid.html"
             ]
           }
         ]
@@ -894,7 +918,8 @@
           {
             "title": "Kubernetes",
             "urls": [
-              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html"
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+              "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
             ]
           },
           {
@@ -955,9 +980,62 @@
     "title": "Manage",
     "items": [
       {
-        "title": "Explore the Admin UI",
-        "urls": [
-          "/${VERSION}/explore-the-admin-ui.html"
+        "title": "Monitor CockroachDB with the Admin UI",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/admin-ui-overview.html"
+            ]
+          },
+          {
+            "title": "Access and Navigate the Admin UI",
+            "urls": [
+              "/${VERSION}/admin-ui-access-and-navigate.html"
+            ]
+          },
+          {
+            "title": "Overview Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-overview-dashboard.html"
+            ]
+          },
+          {
+            "title": "Runtime Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-runtime-dashboard.html"
+            ]
+          },
+          {
+            "title": "SQL Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-sql-dashboard.html"
+            ]
+          },
+          {
+            "title": "Storage Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-storage-dashboard.html"
+            ]
+          },
+          {
+            "title": "Replication Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-replication-dashboard.html"
+            ]
+          },
+          {
+            "title": "Databases Page",
+            "urls": [
+              "/${VERSION}/admin-ui-databases-page.html"
+            ]
+          },
+          {
+            "title": "Jobs Page",
+            "urls": [
+              "/${VERSION}/admin-ui-jobs-page.html"
+            ]
+          }
         ]
       },
       {
@@ -1018,6 +1096,12 @@
         "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
         "urls": [
           "/${VERSION}/create-a-file-server.html"
+        ]
+      },
+      {
+        "title": "Rotate Security Certificates",
+        "urls": [
+          "/${VERSION}/rotate-certificates.html"
         ]
       },
       {
@@ -1100,6 +1184,47 @@
     ]
   },
   {
+    "title": "Architecture",
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/architecture/overview.html"
+        ]
+      },
+      {
+        "title": "SQL Layer",
+        "urls": [
+          "/${VERSION}/architecture/sql-layer.html"
+        ]
+      },
+      {
+        "title": "Transaction Layer",
+        "urls": [
+          "/${VERSION}/architecture/transaction-layer.html"
+        ]
+      },
+      {
+        "title": "Distribution Layer",
+        "urls": [
+          "/${VERSION}/architecture/distribution-layer.html"
+        ]
+      },
+      {
+        "title": "Replication Layer",
+        "urls": [
+          "/${VERSION}/architecture/replication-layer.html"
+        ]
+      },
+      {
+        "title": "Storage Layer",
+        "urls": [
+          "/${VERSION}/architecture/storage-layer.html"
+        ]
+      }
+    ]
+  },
+  {
     "title": "Contribute",
     "items": [
       {
@@ -1142,12 +1267,6 @@
         "title": "CockroachDB in Comparison",
         "urls": [
           "/${VERSION}/cockroachdb-in-comparison.html"
-        ]
-      },
-      {
-        "title": "CockroachDB Architecture",
-        "urls": [
-          "/${VERSION}/cockroachdb-architecture.html"
         ]
       },
       {

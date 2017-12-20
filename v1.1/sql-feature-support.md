@@ -42,7 +42,7 @@ table tr td:nth-child(2) {
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
 | <span class="version-tag">New in v1.1:</span> `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
 | <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | Standard | [`UUID` documentation](uuid.html) |
-| JSON | Planned | Common Extension | [GitHub Issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
+| JSON | Planned | Common Extension | [GitHub issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
 | `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
@@ -76,7 +76,7 @@ table tr td:nth-child(2) {
 | Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include |
 | Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns) |
 | Multiple indexes per query | Planned | Common Extension | Use multiple indexes to filter the table's values for a single query |
-| Full-text indexes | Planned | Common Extension | [GitHub Issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821) |
+| Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821) |
 | Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them |
 | Geospatial indexes | Potential | Common Extension | Improves performance of queries calculating geospatial data |
 | Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values |
@@ -164,8 +164,8 @@ table tr td:nth-child(2) {
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
 | Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html) |
-| Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
+| Common Table Expressions | Planned | Common Extension | Also known as CTEs or `WITH` clauses. [GitHub issue tracking common table expressions support.](https://github.com/cockroachdb/cockroach/issues/7029) |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |
-| Sequences | ✗ | Common Extension | Create a numeric sequence. Given CockroachDB's distributed architecture, sequences would be expensive. For fast, globally unique key generation, see [`SERIAL`](serial.html). |
+| Sequences | Planned | Common Extension | [GitHub issue tracking sequence support.](https://github.com/cockroachdb/cockroach/issues/5811) |

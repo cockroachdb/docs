@@ -1,5 +1,5 @@
 ---
-title: Orchestrate CockroachDB with Docker Swarm
+title: Orchestrate CockroachDB with Docker Swarm (Insecure)
 summary: How to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a Docker swarm.
 toc: false
 ---
@@ -119,7 +119,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 1. On the instance running your manager node, create one swarm service for each CockroachDB node:
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Start the first service:
     $ sudo docker service create \
     --replicas 1 \
@@ -138,7 +138,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Start the second service:
     $ sudo docker service create \
     --replicas 1 \
@@ -156,7 +156,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     # Start the third service:
     $ sudo docker service create \
     --replicas 1 \
@@ -205,7 +205,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} ./cockroach init --host=cockroachdb-1 --insecure
+    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} init --host=cockroachdb-1 --insecure
     ~~~
 
 
@@ -215,7 +215,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} ./cockroach sql --host=cockroachdb-1 --insecure
+    $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} sql --host=cockroachdb-1 --insecure
     ~~~
 
 2. Create an `insecurenodetest` database:

@@ -44,35 +44,36 @@
 
 .button--header {
 	@include button();
+	display: none;
 	height: 30px;
-	@include avenir_bl(10px);
-	line-height: 10px;
+	@include avenir_h(10px);
+	line-height: 13px;
 	background-color: $cl_green;
-	padding: 8px 16px;
+	border-color: $cl_green;
+	padding: 8.25px 16px;
 	color: #FFFFFF;
 	margin-right: 15px;
 
-	&:focus {
+	&:focus, &:hover {
 		color: #FFFFFF;
 	}
 
-	&:hover {
-		background-color: #FFFFFF;
-		color: $cl_green;
-		border: 2px solid $cl_green;
+	@include at-query($min, $screen-sm) {
+		display: inline-block;
 	}
 
-	@include at-query($min, $screen-sm) {
+	@include at-query($min, $screen-md) {
 		height: 40px;
 		font-size: 12px;
 		line-height: 12px;
 		margin-left: 10px;
-		padding: 12px 30px;
-		margin-right: 5px;
-	}
+		padding: 13px 30px;
 
-	@include at-query($min, $screen-md) {
-		margin-right: 15px;
+		&:hover {
+			background-color: #FFFFFF;
+			color: $cl_green;
+			border: 2px solid $cl_green;
+		}
 	}
 }
 
