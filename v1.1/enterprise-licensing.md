@@ -16,7 +16,7 @@ You can request a trial license or an enterprise license:
 
 Type | Description
 -------------|------------
-**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days. After 30 days, you can upgrade to the enterprise license by [requesting](licensing.html#request-a-trial-or-an-enterprise-license-key) and [setting](licensing.html#set-the-trial-or-enterprise-license-key) an enterprise license key.
+**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days. After 30 days, you can upgrade to the enterprise license by [requesting](enterprise-licensing.html#request-a-trial-or-an-enterprise-license-key) and [setting](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) an enterprise license key.
 **Enterprise License** | An enterprise license enables you to use CockroachDB enterprise features for longer periods (one year or more).
 
 ## Request a Trial or an Enterprise License Key
@@ -88,7 +88,7 @@ After your license expires, the enterprise features stop working, but your produ
 
 As of now, CockroachDB does not inform you when your license is about to expire. Hence it's important for you to note and remember the license expiration date when you set your license. 
 
-To renew an expired license, [contact us](https://www.cockroachlabs.com/pricing/) again to request a new license and then [set](licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
+To renew an expired license, [contact us](https://www.cockroachlabs.com/pricing/) again to request a new license and then [set](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
 
 ## See Also
 
