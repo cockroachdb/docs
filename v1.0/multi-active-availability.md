@@ -10,9 +10,9 @@ CockroachDB's availability model is described as "Multi-Active Availability." In
 
 ## What is High Availability?
 
-High availability lets an application continue running even if a system hosting one of its services fails. This is achieved by replicating the application's services horizontally, i.e., replicating the service across many systems or systems. If any one of them fails, the others can simply step in and perform the same service.
+High availability lets an application continue running even if a system hosting one of its services fails. This is achieved by scaling the application's services horizontally, i.e., replicating the service across many machines or system. If any one of them fails, the others can simply step in and perform the same service.
 
-Before diving into the details of CockroachDB's multi-active availability, we'll review the two most common high availability designs: [Active-Passive](#active-passive) and [Active-Active](#active-active) systems.
+Before diving into the details of CockroachDB's Multi-Active Availability, we'll review the two most common high availability designs: [Active-Passive](#active-passive) and [Active-Active](#active-active) systems.
 
 ### Active-Passive
 
@@ -28,14 +28,14 @@ For databases, though, this runs into a more fundamental problem: if multiple ma
 
 #### Example: Conflicts with Active-Active Replication
 
-For this example, we have 2 nodes (A, B) in an Active-Active High Availability cluster.
+For this example, we have 2 nodes (**A**, **B**) in an Active-Active High Availability cluster.
 
-For example, if we have two Active-Active nodes A and B.
+For example, if we have two Active-Active nodes **A** and **B**.
 
-1. A receives a write for key `abc` of `'123'`, and then immediately fails.
-2. B receives a read of key `abc`, and returns a `NULL` because it cannot find the key.
-3. B then receives a write for key `abc` of `'456'`.
-4. Node A is restarted and attempts to rejoin Node B––but what do you about key `abc`? There's an inconsistency in the system without a clear way to resolve it.
+1. **A** receives a write for key `xyz` of `'123'`, and then immediately fails.
+2. **B** receives a read of key `xyz`, and returns a `NULL` because it cannot find the key.
+3. **B** then receives a write for key `xyz` of `'456'`.
+4. **A** is restarted and attempts to rejoin **B**––but what do you about key `xyz`? There's an inconsistency in the system without a clear way to resolve it.
 
 {{site.data.alerts.callout_info}}In this example, the cluster remained active the entire time. But in terms of the CAP theorem, this is an AP system; it favored being available instead of consistent.{{site.data.alerts.end}}
 
@@ -43,22 +43,24 @@ For example, if we have two Active-Active nodes A and B.
 
 Multi-Active Availability provides all of the benefits of high availability (keeping your application online in the face of partial failures), while avoiding the downsides of both Active-Passive and traditional Active-Active systems.
 
-Like Active-Active designs, all nodes handle traffic. However, CockroachDB improves upon that design by also ensuring that data remains consistent across them––which we achieve by using "consensus replication." In this design, replication requests are sent to at least 3 nodes, and is only considered comitted when a majority of them acknowledge that they've received it.
+Like Active-Active designs, all nodes handle traffic, including both reads and writes. However, CockroachDB improves upon that design by also ensuring that data remains consistent across them, which we achieve by using "consensus replication." In this design, replication requests are sent to at least 3 nodes, and is only considered comitted when a majority of them acknowledge that they've received it.
 
-If your cluster loses a majority of the nodes responsible for a set of data, it can no longer reach consensus and stops responding. This way, CockroachDB preserves consistency when a majority of nodes are brought back online.
+To prevent conflicts and preserve your data's consistency, if your cluster loses a majority of the nodes responsible for a set of data, it can no longer reach consensus and stops responding. When a quorum of nodes come back online, your database resumes operation.
 
 ### Consistency Example
 
-For this example, we have 3 CockroachDB nodes (A, B, C) in a Multi-Active Availability cluster.
+For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a Multi-Active Availability cluster.
 
-1. A receives a write on `abc` of `'123'`. It communicates this write to nodes B and C, who confirm that they've received the write, as well. Once node A receives the first confirmation, the change is committed.
-2. Node A fails.
-3. B receives a read of key `abc`, and returns the result `'123'`.
-4. C then receives an update for key `abc` to the values `'456'`. It communicates this write to node B, who confirms that its received the write, as well. After receiving the confirmation, the change is committed.
-5. Node A is restarted and rejoins the cluster. It receives an update that the key `abc` had its value changed to `'456'`.
+1. **A** receives a write on `xyz` of `'123'`. It communicates this write to nodes **B** and **C**, who confirm that they've received the write, as well. Once **A** receives the first confirmation, the change is committed.
+2. **A** fails.
+3. **B** receives a read of key `xyz`, and returns the result `'123'`.
+4. **C** then receives an update for key `xyz` to the values `'456'`. It communicates this write to node **B**, who confirms that its received the write, as well. After receiving the confirmation, the change is committed.
+5. **A** is restarted and rejoins the cluster. It receives an update that the key `xyz` had its value changed to `'456'`.
 
-{{site.data.alerts.callout_info}}In this example, if nodes B or C failed at any time, the cluster would have stopped responding. In terms of the CAP theorem, this is an CP system; it favored being consistent instead of available.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In this example, if nodes <strong>B</strong> or <strong>C</strong> failed at any time, the cluster would have stopped responding. In terms of the CAP theorem, this is an CP system; it favored being consistent instead of available.{{site.data.alerts.end}}
 
 ## What's next?
 
-With an understanding of CockroachDB's Multi-Active Availability model, go ahead and [install the `cockroach` binary](install-cockroachdb.html) or begin [exploring our core features](demo-data-replication.html).
+To get a greater understanding of how CockroachDB is a survivable system that enforces strong consistency, check out our [architecture documentation](/architecture).
+
+To see Multi-Active Availability in action, see this [availability demo](demo-fault-tolerance-and-recovery.html).
