@@ -28,6 +28,8 @@ Also, feel free to watch this process in action before going through the steps y
 
 ## Step 1.  Create security certificates
 
+You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate the security certificates. This section discusses the procedure to generate certificates using the `cockroach cert` commands.
+
 ~~~ shell
 # Create a certs directory and safe directory for the CA key.
 # If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
