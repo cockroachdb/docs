@@ -1,40 +1,50 @@
 ---
 title: Licensing
-summary: Request and set trial and enterprise license for CockroachDB
+summary: Request and set trial and enterprise license keys for CockroachDB
 toc: false
 ---
 
-This page shows you how to obtain and set trial and enterprise licenses for CockroachDB.
+This page shows you how to request and set the trial and enterprise license keys for CockroachDB.
 
 <div id="toc"></div>
 
-CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). However, to use the enterprise features, you need either a trial or an enterprise license key.
+CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). You can use core features without any license key. However, to use the enterprise features, you need either a trial or an enterprise license key.
 
 ## Types of Licenses
 
 You can request a trial license or an enterprise license:
 
-- Trial license: A trial license enables you to try out CockroachDB enterprise features for 30 days. After 30 days, you can upgrade to the enterprise license by [requesting](licensing.html#request-a-trial-or-an-enterprise-license-key) and [setting](licensing.html#set-the-trial-or-enterprise-license-key) an enterprise license.
+- Trial license: A trial license enables you to try out CockroachDB enterprise features for 30 days. After 30 days, you can upgrade to the enterprise license by [requesting](licensing.html#request-a-trial-or-an-enterprise-license-key) and [setting](licensing.html#set-the-trial-or-enterprise-license-key) an enterprise license key.
 - Enterprise license: An enterprise license enables you to use CockroachDB enterprise features for longer periods (one year or more).
 
 ## Request a Trial or an Enterprise License Key
 
-[Contact us](https://www.cockroachlabs.com/pricing/sales/) to request a trial or enterprise license.
+[Contact us](https://www.cockroachlabs.com/pricing/sales/) to request a trial or an enterprise license key.
 
 ## Set the Trial or Enterprise License Key
 
-Log in as the CockroachDB root user, open a SQL shell, and run the following cluster setting command to set the license key:
+As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in the insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in the insecure mode. Then use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
 
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure
+~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 >  SET CLUSTER SETTING cluster.organization = 'Acme Company'; 
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 >  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx’;
 ~~~
 
 ## Verify the License Key is Set
 
-To verify the license key is set, open a SQL shell and run the `SHOW CLUSTER SETTING` command:
+To verify the license key is set, open the [built-in SQL shell](use-the-built-in-sql-client.html) and use the `SHOW CLUSTER SETTING` command to verify the organization name and license key:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
@@ -47,6 +57,7 @@ To verify the license key is set, open a SQL shell and run the `SHOW CLUSTER SET
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -59,8 +70,9 @@ To verify the license key is set, open a SQL shell and run the `SHOW CLUSTER SET
 (1 row)
 ~~~
 
-The license setting is also logged in the cockroach.log of the node where the command is run:
+The license setting is also logged in the cockroach.log on the node where the command is run:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 $ cat cockroach.log | grep license
 ~~~
@@ -69,7 +81,12 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 ~~~
 
 ## Renew Expired License
-As of now, CockroachDB has no method of informing you that your license is about to expire. When you request and set your license, you need to note down and remember when it expires and request for the new license in advance before the license expires. After your license expires, the enterprise features stop working, but your production setup is unaffected. To renew your license, [contact us](https://www.cockroachlabs.com/pricing/) again to request a new license and [set](licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
+
+After your license expires, the enterprise features stop working, but your production setup is unaffected. For instance, after the license expires, the backup and restore features won't work until the license is renewed. But you can continue using all other features of CockroachDB without interruption.
+
+As of now, CockroachDB does not inform you when your license is about to expire. Hence it's important for you to note and remember the license expiration date when you set your license. 
+
+To renew your license, [contact us](https://www.cockroachlabs.com/pricing/) again to request a new license and then [set](licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
 
 ## See Also
 
