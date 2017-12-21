@@ -61,13 +61,13 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ dcos package install cockroachdb --package-version=1.0.0-1.0.2
+        $ dcos package install cockroachdb
         ~~~
     - If you created a custom `cockroach.json` configuration, run:
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ dcos package install cockroachdb --package-version=1.0.0-1.0.2 --options=cockroach.json
+        $ dcos package install cockroachdb --options=cockroach.json
         ~~~
 
 3. Monitor the cluster's deployment from the **Services** tab of the DC/OS UI.
@@ -212,11 +212,11 @@ $ docker run -it cockroachdb/cockroach:{{ page.release_info.version }} node stat
 +----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
 | id |                                 address                                  | build  |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | replicas_leaders | replicas_leaseholders | ranges | ranges_unavailable | ranges_underreplicated |
 +----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
-|  1 | cockroachdb-0-node-init.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.0.2 | 2017-12-11 20:59:12 | 2017-12-11 19:14:42 |   41183973 |      1769 |    41187432 |            0 |         6018 |                2 |                     2 |      2 |                  0 |                      0 |
-|  2 | cockroachdb-1-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.0.2 | 2017-12-11 20:59:12 | 2017-12-11 19:14:52 |     115448 |     71037 |      209282 |            0 |         6218 |                4 |                     4 |      4 |                  0 |                      0 |
-|  3 | cockroachdb-2-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.0.2 | 2017-12-11 20:59:03 | 2017-12-11 19:14:53 |     120325 |     72652 |      217422 |            0 |         6732 |                4 |                     3 |      4 |                  0 |                      0 |
-|  4 | cockroachdb-3-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.0.2 | 2017-12-11 20:59:03 | 2017-12-11 20:21:43 |   41248030 |     79147 |    41338632 |            0 |         6569 |                1 |                     1 |      1 |                  0 |                      0 |
-|  5 | cockroachdb-4-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.0.2 | 2017-12-11 20:59:04 | 2017-12-11 20:56:54 |   41211967 |     30550 |    41181417 |            0 |         6854 |                1 |                     1 |      1 |                  0 |                      0 |
+|  1 | cockroachdb-0-node-init.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:12 | 2017-12-11 19:14:42 |   41183973 |      1769 |    41187432 |            0 |         6018 |                2 |                     2 |      2 |                  0 |                      0 |
+|  2 | cockroachdb-1-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:12 | 2017-12-11 19:14:52 |     115448 |     71037 |      209282 |            0 |         6218 |                4 |                     4 |      4 |                  0 |                      0 |
+|  3 | cockroachdb-2-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:03 | 2017-12-11 19:14:53 |     120325 |     72652 |      217422 |            0 |         6732 |                4 |                     3 |      4 |                  0 |                      0 |
+|  4 | cockroachdb-3-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:03 | 2017-12-11 20:21:43 |   41248030 |     79147 |    41338632 |            0 |         6569 |                1 |                     1 |      1 |                  0 |                      0 |
+|  5 | cockroachdb-4-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:04 | 2017-12-11 20:56:54 |   41211967 |     30550 |    41181417 |            0 |         6854 |                1 |                     1 |      1 |                  0 |                      0 |
 +----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
 (5 rows)
 ~~~
