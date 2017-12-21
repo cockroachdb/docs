@@ -10,8 +10,8 @@ toc: false
 
 ## Considerations
 
-- Using a sequence is slower than using the `SERIAL` data type– incrementing a sequence requires a write to persistent storage, whereas generating a new `SERIAL`value does not. Use the `SERIAL` data type unless a sequence is preferred or required.
-- A column that uses a sequence can have a gap if a transaction increments the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
+- Using a sequence is slower than using the `SERIAL` data type – incrementing a sequence requires a write to persistent storage, whereas generating a new `SERIAL`value does not. Use the `SERIAL` data type unless a sequence is preferred or required.
+- A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 
 ## Required Privileges
 
@@ -20,7 +20,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 ## Synopsis
 
 ~~~
-CREATE SEQUENCE <seqname>
+CREATE SEQUENCE <sequence_name>
   [INCREMENT <increment>]
   [MINVALUE <minvalue> | NO MINVALUE]
   [MAXVALUE <maxvalue> | NO MAXVALUE]
@@ -38,7 +38,7 @@ table td:first-child {
 
  Parameter | Description
 -----------|------------
-`seqname` | The name of the sequence to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
+`sequence_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
