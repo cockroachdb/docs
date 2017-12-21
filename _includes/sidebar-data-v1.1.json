@@ -972,6 +972,12 @@
         "urls": [
           "/${VERSION}/configure-replication-zones.html"
         ]
+      },
+      {
+        "title": "Enterprise Licensing",
+        "urls": [
+          "/${VERSION}/enterprise-licensing.html"
+        ]
       }
     ]
   },
