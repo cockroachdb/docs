@@ -16,7 +16,6 @@ Before getting started, it's important to review some current requirements and l
 
 ### Requirements
 
-- At this time, only CockroachDB v1.0.x is supported. Support for subsequent versions of CockroachDB is coming soon.
 - Your cluster must have at least 3 private nodes.
 - If you are using Enterprise DC/OS, you may need to [provision a service account](https://docs.mesosphere.com/1.9/security/service-auth/custom-service-auth/) before installing CockroachDB. Only someone with `superuser` permission can create the service account.
 
@@ -28,7 +27,12 @@ Before getting started, it's important to review some current requirements and l
 
 ### Limitations
 
+CockroachDB in DC/OS works the same as in other environments with the exception of the following limitations:
+
+- At this time, only CockroachDB v1.0.x is supported. Support for subsequent versions of CockroachDB is coming soon.
 - The `cockroachdb` DC/OS service has been tested only on DC/OS versions 1.9 and 1.10.
+- Running in secure mode is not supported at this time.
+- Running a multi-datacenter cluster is not supported at this time.
 - Removing a node is not supported at this time.
 - Neither volume type nor volume size requirements may be changed after initial deployment.
 - Rack placement and awareness are not supported at this time.
