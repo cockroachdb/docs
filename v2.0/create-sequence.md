@@ -6,11 +6,12 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-{{site.data.alerts.callout_info}}Using a sequence is slower than using the <code>SERIAL</code> data type– incrementing a sequence requires a write to persistent storage, whereas generating a new <code>SERIAL</code> value does not. Use the SERIAL data type unless a sequence is preferred or required.{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}A column that uses a sequence can have a gap if a transaction increments the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.{{site.data.alerts.end}}
-
 <div id="toc"></div>
+
+## Considerations
+
+- Using a sequence is slower than using the `SERIAL` data type– incrementing a sequence requires a write to persistent storage, whereas generating a new `SERIAL`value does not. Use the `SERIAL` data type unless a sequence is preferred or required.
+- A column that uses a sequence can have a gap if a transaction increments the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 
 ## Required Privileges
 
@@ -42,7 +43,7 @@ table td:first-child {
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
-`CYCLE` | The sequence will wrap around when the sequence value hits the maximum or minimum value. If `NO CYCLE` is set, the sequence will not wrap. <br><br>**Default:** `NO CYCLE`
+`CYCLE` / `NO CYCLE` | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value. Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 
 ## Sequence Functions
 
@@ -111,19 +112,16 @@ Insert a few records to see the sequence.
 +----+----------+--------------------+
 ~~~
 
-### View the Current Value of a Sequence
-
-<!-- Not yet implemented. -->
+<!-- ### View the Current Value of a Sequence
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_seq;
 ~~~
 ~~~
-~~~
-
+~~~ -->
 
 ## See Also
-- [ALTER SEQUENCE](alter-sequence.html)
-- [DROP SEQUENCE](drop-sequence.html)
+- [`ALTER SEQUENCE`](alter-sequence.html)
+- [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)

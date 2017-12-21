@@ -17,13 +17,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 ## Synopsis
 
 ~~~
-ALTER SEQUENCE [IF EXISTS] <name>
+ALTER SEQUENCE [IF EXISTS] <sequence_name>
   [INCREMENT <increment>]
   [MINVALUE <minvalue> | NO MINVALUE]
   [MAXVALUE <maxvalue> | NO MAXVALUE]
   [START <start>]
   [[NO] CYCLE]
-ALTER SEQUENCE [IF EXISTS] <name> RENAME TO <newname>
 ~~~
 
 ## Parameters
@@ -37,7 +36,7 @@ table td:first-child {
  Parameter | Description
 -----------|------------
 `IF EXISTS` | Modify the sequence only if it exists; if it does not exist, do not return an error.
-`name` | The name of the sequence you want to modify.
+`sequence_name` | The name of the sequence you want to modify.
 `INCREMENT` | The new value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
 `MINVALUE` | The new minimum value of the sequence.
 `MAXVALUE` | The new maximum value of the sequence.
@@ -80,6 +79,6 @@ Next, we'll add another record to the table and check that the new record adhere
 
 ## See Also
 
-- [CREATE SEQUENCE](create-sequence.html)
-- [DROP SEQUENCE](drop-sequence.html)
+- [`CREATE SEQUENCE`](create-sequence.html)
+- [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)

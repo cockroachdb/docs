@@ -15,7 +15,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 ## Synopsis
 
 ~~~
-DROP SEQUENCE [IF EXISTS] <sequenceName> [, ...] [CASCADE | RESTRICT]
+DROP SEQUENCE [IF EXISTS] <sequence_name> [, ...] [CASCADE | RESTRICT]
 ~~~
 
 ## Parameters
@@ -29,11 +29,13 @@ table td:first-child {
  Parameter | Description
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.
-`sequenceName` | The name of the sequence you want to drop. Find the sequence name with `SHOW CREATE TABLE` on the table that uses the sequence.
-`CASCADE` | Drop all objects (such as [constraints](constraints.html) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. <!-- CASCADE does not work yet. -->
-`RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints](constraints.html) and tables) depend on it.
+`sequence_name` | The name of the sequence you want to drop. Find the sequence name with `SHOW CREATE TABLE` on the table that uses the sequence.
+`CASCADE` / `RESTRICT` | Not yet implemented. Currently, you can drop a sequence even if it has a dependency.
 
-## Examples
+<!-- `CASCADE` > Drop all objects (such as [constraints](constraints.html) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT` > _(Default)_ Do not drop the sequence if any objects (such as [constraints](constraints.html) and tables) depend on it. -->
+
+<!-- ## Examples
 
 ### Remove a Sequence (No Dependencies)
 
@@ -90,9 +92,9 @@ In this example, a table depends on the sequence that's being dropped. Therefore
 ~~~
 ~~~
 DROP SEQUENCE
-~~~
+~~~ -->
 
 ## See Also
-- [CREATE SEQUENCE](create-sequence.html)
-- [ALTER SEQUENCE](alter-sequence.html)
+- [`CREATE SEQUENCE`](create-sequence.html)
+- [`ALTER SEQUENCE`](alter-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
