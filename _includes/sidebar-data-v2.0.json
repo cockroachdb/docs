@@ -976,7 +976,8 @@
       {
         "title": "Create Security Certificates",
         "urls": [
-          "/${VERSION}/create-security-certificates.html"
+          "/${VERSION}/create-security-certificates.html",
+          "/${VERSION}/create-security-certificates-openssl.html"
         ]
       },
       {
@@ -1157,25 +1158,25 @@
         ]
       },
       {
-        "title": "General Troubleshooting",
+        "title": "Common Errors",
         "urls": [
-          "/${VERSION}/general-troubleshooting.html"
+          "/${VERSION}/common-errors.html"
         ]
       },
       {
-        "title": "Cluster & Node Setup",
+        "title": "Troubleshoot Cluster Setup",
         "urls": [
           "/${VERSION}/cluster-setup-troubleshooting.html"
         ]
       },
       {
-        "title": "Query Behavior",
+        "title": "Troubleshoot Query Behavior",
         "urls": [
           "/${VERSION}/query-behavior-troubleshooting.html"
         ]
       },
       {
-        "title": "Debug & Error Logs",
+        "title": "Understand Debug Logs",
         "urls": [
           "/${VERSION}/debug-and-error-logs.html"
         ]

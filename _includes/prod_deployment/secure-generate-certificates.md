@@ -1,3 +1,5 @@
+You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
+
 Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
 
 - A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
