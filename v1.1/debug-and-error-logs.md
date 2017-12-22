@@ -1,5 +1,5 @@
 ---
-title: Debug & Error Logs
+title: Understand Debug & Error Logs
 summary: Learn how to find and read CockroachDB error logs
 toc: false
 ---
