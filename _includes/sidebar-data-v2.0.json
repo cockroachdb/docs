@@ -415,6 +415,12 @@
             ]
           },
           {
+            "title": "<code>RENAME SEQUENCE</code>",
+            "urls": [
+              "/${VERSION}/rename-sequence.html"
+            ]
+          },
+          {
             "title": "<code>RELEASE SAVEPOINT</code>",
             "urls": [
               "/${VERSION}/release-savepoint.html"
