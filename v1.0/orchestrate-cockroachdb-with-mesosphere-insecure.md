@@ -69,7 +69,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
 3. Monitor the cluster's deployment from the **Services** tab of the DC/OS UI.
 
-{{site.data.alerts.callout_info}}You can <a href="https://dcos.io/docs/1.10/deploying-services/install/#installing-a-service-using-the-gui">install CockroachDB from the DC/OS UI</a> as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You can <a href="https://docs.mesosphere.com/1.10/deploying-services/install/#installing-a-service-using-the-gui">install CockroachDB from the DC/OS UI</a> as well.{{site.data.alerts.end}}
 
 ## Step 3. Test the cluster
 
@@ -101,9 +101,9 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
     - A direct IP address for each instance, if `.mesos` hostnames are not resolvable.
     - A `vip` address, which is an HA-enabled hostname for accessing any of the instances. You'll use the `vip` address in some of the next steps.
 
-    In general, the `.mesos` endpoints will only work from within the same DC/OS cluster. From outside the cluster, you can either use the direct IPs or set up a proxy service that acts as a frontend to your CockroachDB instance. For development and testing purposes, you can use a [DC/OS tunnel](https://dcos.io/docs/1.10/developing-services/tunnel/) to access services from outside the cluster, but this option is not suitable for production use. See [monitor the cluster](#step-4-monitor-the-cluster) below for more details.
+    In general, the `.mesos` endpoints will only work from within the same DC/OS cluster. From outside the cluster, you can either use the direct IPs or set up a proxy service that acts as a frontend to your CockroachDB instance. For development and testing purposes, you can use a [DC/OS tunnel](https://docs.mesosphere.com/1.10/developing-services/tunnel/) to access services from outside the cluster, but this option is not suitable for production use. See [monitor the cluster](#step-4-monitor-the-cluster) below for more details.
 
-2. [SSH to the DC/OS master node](https://dcos.io/docs/1.10/administering-clusters/sshcluster/):
+2. [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -164,7 +164,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
 ## Step 4. Monitor the cluster
 
-To access the cluster's [Admin UI](explore-the-admin-ui.html), you can [use a DC/OS tunnel to run an HTTP proxy](https://dcos.io/docs/1.10/developing-services/tunnel/#using-dc-os-tunnel-to-run-a-http-proxy):
+To access the cluster's [Admin UI](explore-the-admin-ui.html), you can [use a DC/OS tunnel to run an HTTP proxy](https://docs.mesosphere.com/1.10/developing-services/tunnel/#using-dcos-tunnel):
 
 1. Install the DC/OS tunnel package:
 
@@ -193,7 +193,7 @@ The default `cockroachdb` service creates a 3-node CockroachDB cluster. You can 
 
 The Scheduler process will restart with the new configuration and will validate any detected changes. To check that nodes were successfully added to the cluster, go back to the Admin UI, click **View nodes list** on the right, and check for the new nodes.
 
-Alternately, you can [SSH to the DC/OS master node](https://dcos.io/docs/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](view-node-details.html) command in a temporary container, again using the the `vip` endpoint as the `--host`:
+Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](view-node-details.html) command in a temporary container, again using the the `vip` endpoint as the `--host`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -385,7 +385,7 @@ To shut down the CockroachDB cluster:
     -z dcos-service-$MY_SERVICE_NAME"
     ~~~
 
-3. Uninstall DC/OS. If you used AWS CloudFormation, see [Uninstalling DC/OS on AWS EC2](https://dcos.io/docs/1.10/installing/cloud/aws/removeaws/).
+3. Uninstall DC/OS. If you used AWS CloudFormation, see [Uninstalling DC/OS on AWS EC2](https://docs.mesosphere.com/1.10/installing/oss/cloud/aws/removeaws/).
 
 ## See Also
 
