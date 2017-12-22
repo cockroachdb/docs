@@ -18,7 +18,7 @@ Before getting started, it's important to review some current requirements and l
 
 - At this time, only CockroachDB v1.0.x is supported. Support for subsequent versions of CockroachDB is coming soon.
 - Your cluster must have at least 3 private nodes.
-- If you are using Enterprise DC/OS, you may need to [provision a service account](https://docs.mesosphere.com/1.9/security/service-auth/custom-service-auth/) before installing CockroachDB. Only someone with `superuser` permission can create the service account.
+- If you are using Enterprise DC/OS, you may need to [provision a service account](https://docs.mesosphere.com/1.9/security/ent/service-auth/custom-service-auth/) before installing CockroachDB. Only someone with `superuser` permission can create the service account.
 
     Security Mode | Service Account
     --------------|----------------
@@ -35,12 +35,12 @@ Before getting started, it's important to review some current requirements and l
 
 ## Step 1. Install and Launch DC/OS
 
-The fastest way to get up and running is to use the [open source DC/OS template on AWS CloudFormation](https://dcos.io/docs/1.10/installing/cloud/aws/basic/). However, you can find details about other open source or enterprise DC/OS installation methods in the official documentation:
+The fastest way to get up and running is to use the [open source DC/OS template on AWS CloudFormation](https://docs.mesosphere.com/1.10/installing/oss/cloud/aws/basic/). However, you can find details about other open source or enterprise DC/OS installation methods in the official documentation:
 
-- [Open Source DC/OS](https://dcos.io/docs/1.10/installing/)
-- [Enterprise DC/OS](https://docs.mesosphere.com/1.10/installing/)
+- [Open Source DC/OS](https://docs.mesosphere.com/1.10/installing/oss/)
+- [Enterprise DC/OS](https://docs.mesosphere.com/1.10/installing/ent/)
 
-When using AWS CloudFormation, the launch process generally takes 10 to 15 minutes. Once you see the `CREATE_COMPLETE` status in the CloudFormation UI, be sure to [launch DC/OS](https://dcos.io/docs/1.10/installing/cloud/aws/basic/#-a-name-launchdcos-a-launch-dc-os) and [install the DC/OS CLI](https://dcos.io/docs/1.10/cli/install/).
+When using AWS CloudFormation, the launch process generally takes 10 to 15 minutes. Once you see the `CREATE_COMPLETE` status in the CloudFormation UI, be sure to [launch DC/OS](https://docs.mesosphere.com/1.10/installing/oss/cloud/aws/basic/#launch-dcos) and [install the DC/OS CLI](https://docs.mesosphere.com/1.10/cli/install/).
 
 ## Step 2. Start CockroachDB
 
