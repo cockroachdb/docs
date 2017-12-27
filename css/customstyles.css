@@ -40,6 +40,11 @@
   src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
   font-weight: normal;
   font-style: normal; }
+@font-face {
+  font-family: 'SourceCodePro-Regular';
+  src: url("../fonts/SourceCodePro-Regular.ttf");
+  font-weight: normal;
+  font-style: normal; }
 html {
   height: 100%; }
 
@@ -153,13 +158,24 @@ pre {
   overflow: auto; }
 
 pre, code {
-  background-color: #F3F3F3;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
+  background-color: #F7F7F7;
   font-size: 14px;
   line-height: 25px;
   color: #152849; }
 
 code {
+  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
   border: 1px solid #DADADA; }
 
 ul {
@@ -2161,7 +2177,7 @@ polygon.regexp {
   stroke: #262626; }
 
 .highlight {
-  background: #F3F3F3;
+  background: #F7F7F7;
   /* Comment */
   /* Error */
   /* Keyword */
@@ -2222,12 +2238,12 @@ polygon.regexp {
   .highlight pre {
     padding: 20px 30px; }
   .highlight .c {
-    color: #60a0b0; }
+    color: #A2A2A2; }
   .highlight .err {
     color: #a61717;
     background-color: #e3d2d2; }
   .highlight .k {
-    color: #a71d5d; }
+    color: #A0247A; }
   .highlight .cm {
     color: #60a0b0; }
   .highlight .cp {
@@ -2286,7 +2302,7 @@ polygon.regexp {
   .highlight .na {
     color: #008080; }
   .highlight .nb {
-    color: #0086B3; }
+    color: #3C80E1; }
   .highlight .nc {
     color: #445588;
     font-weight: bold; }
@@ -2304,17 +2320,17 @@ polygon.regexp {
   .highlight .nt {
     color: #000080; }
   .highlight .nv {
-    color: #008080; }
+    color: #3C80E1; }
   .highlight .w {
     color: #bbbbbb; }
   .highlight .mf {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mh {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mi {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mo {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .sb {
     color: #d14; }
   .highlight .sc {
@@ -2334,7 +2350,7 @@ polygon.regexp {
   .highlight .sr {
     color: #009926; }
   .highlight .s1 {
-    color: #183691; }
+    color: #3C80E1; }
   .highlight .ss {
     color: #990073; }
   .highlight .bp {
