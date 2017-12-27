@@ -51,17 +51,11 @@ Clients using transactions must also include logic to handle [retries](#transact
 
 To handle errors in transactions, you should check for the following types of server-side errors:
 
-- **Retryable Errors**: Errors with the code `40001` or string `retry transaction`, which indicate the transaction failed because another concurrent or recent transaction accessed the same values. To handle these errors, you should [retry the transaction](#client-side-transaction-retries).
-
-- **Ambiguous Errors**: Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.
-
-  For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.
-
-  Ambiguous errors are the result of inter-node communication failures which prevent a caller from knowing with certainty whether a transaction commit succeeded. Most applications will choose to simply retry the transaction.
-
-- **SQL Errors**: All other errors, which indicate that a statement in the transaction failed. For example, violating the Unique constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.
-
-  If you want to attempt the same set of statements again, you must begin a completely new transaction.
+Type | Description
+-----|------------
+**Retryable Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
+**Ambiguous Errors** | Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.<br><br>For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.<br><br>Ambiguous errors are the result of inter-node communication failures which prevent a caller from knowing with certainty whether a transaction commit succeeded. Most applications will choose to simply retry the transaction.
+**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the Unique constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction Retries
 
@@ -146,11 +140,11 @@ Implementing client-side retries requires three statements:
 
 - [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction) is used when your application detects `40001` / `retry transaction` errors. It provides you a chance to "retry" the transaction by rolling the database's state back to the beginning of the transaction and increasing the transaction's priority.
 
-  After issuing `ROLLBACK TO SAVEPOINT cockroach_restart`, you must issue any statements you want the transaction to contain. Typically, this means recalculating values and reissuing a similar set of statements to the previous attempt.
+    After issuing `ROLLBACK TO SAVEPOINT cockroach_restart`, you must issue any statements you want the transaction to contain. Typically, this means recalculating values and reissuing a similar set of statements to the previous attempt.
 
 - [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) commits the transaction. At this point, CockroachDB checks to see if the transaction contends with others for access to the same values; the highest priority transaction succeeds, and the others return `40001` / `retry transaction` errors.
 
-  You must also execute `COMMIT` afterward to clear the connection for the next transaction.
+    You must also execute `COMMIT` afterward to clear the connection for the next transaction.
 
 You can find examples of this in the [Syntax](#syntax) section of this page or in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.
 

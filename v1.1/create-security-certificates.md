@@ -1,10 +1,15 @@
 ---
 title: Create Security Certificates
-summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication and requires CA, node, and client certificates and keys.
+summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: false
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communications, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [command](cockroach-commands.html) with the appropriate subcommands and flags.
+<div class="filters filters-big clearfix">
+  <button style="width:28%" class="filter-button current">Use <strong>cockroach cert</strong></button>
+  <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use openssl</button></a>
+</div>
+
+A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -28,6 +33,8 @@ Subcommand | Usage
 `list` | List certificates and keys found in the certificate directory.
 
 ## Certificate Directory
+
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
 The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag, with the files named as follows:
 
@@ -53,7 +60,7 @@ $ cockroach cert create-ca \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
 
-# Create a node certificate and key, specifying all addresses at which the node can be reached:
+# Create a node certificate and key:
 $ cockroach cert create-node \
  [node-hostname] \
  [node-other-hostname] \
