@@ -21,7 +21,7 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
-The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can improve the performance of queries using columns besides the primary key with secondary indexes. You can create them:
+The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).

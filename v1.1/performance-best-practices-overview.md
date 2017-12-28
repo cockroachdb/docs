@@ -17,7 +17,7 @@ For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faste
 For more information, see:
 
 - [Insert Multiple Rows](insert.html#insert-multiple-rows)
-- [Upsert that Inserts Multiple Rows](upsert.html#upsert-that-inserts-multiple-rows)
+- [Upsert Multiple Rows](upsert.html#upsert-that-inserts-multiple-rows)
 - [Delete Multiple Rows](delete.html#delete-specific-rows)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
@@ -25,7 +25,7 @@ For more information, see:
 
 #### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
 
-To bulk-insert data into an existing table, batch 100 rows in one multi-row `INSERT` statement at a time, and do not include the `INSERT` statements within a transaction. 
+To bulk-insert data into an existing table, batch each 100 rows in one multi-row `INSERT` statement, and do not include the `INSERT` statements within a transaction. For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows).
 
 #### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
@@ -51,7 +51,12 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 ## Unique ID Best Practices
 
-The common practice to generate unique IDs includes using transactions with roundtrip `SELECT` to generate monotonically-increasing unique IDs by incrementing an `INT` variable, or generate random unique IDs by using `SERIAL` variables. These common approaches of generating unique IDs hamper performance when used with a distributed database like CockroachDB, because the process of generating unique IDs using these approaches is serial, and CockroachDB improves performance by parallelizing processes whenever possible. The best practice to generate unique IDs with CockroachDB is to use `UUID`. Because the unique IDs generated using `UUID` are random, the process can be parallelized, thus improving performance.
+In other databases, the common approach to generating unique IDs is often one of the following:
+
+- Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
+- Use `SERIAL` variables to generate random unique IDs
+
+These approaches are serial in nature and don't take advantage of the parallelization possible in a distributed database like CockroachDB. The best practice in CockroachDB, in contrast, is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
 ### Use `UUID` to Generate Unique IDs
 
@@ -59,7 +64,7 @@ The common practice to generate unique IDs includes using transactions with roun
 
 ### Use `INSERT` with the `RETURNING` Clause to Generate Unique IDs
 
-If, for some reason, you cannot use `UUID` to generate the unique IDs, then you might resort to the common practice to generate unique IDs is to use roundtrip `SELECT` in a transaction. Instead, for improved performance, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) instead.
+If there is something preventing you from using `UUID` to generate unique IDs, you might resort to the common approach of monotonically increasing `INT` IDs using transactions. However, instead of using `INSERT`s with `SELECT`s to return IDs, for improved improvement, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values).
 
 #### Generate Monotonically-Increasing Unique IDs
 
@@ -73,7 +78,7 @@ ID3 INT DEFAULT 1,
 PRIMARY KEY (ID1,ID2));
 ~~~
 
-The common approach to generate monotonically-increasing Unique IDs is a transaction using the `SELECT` statement:
+The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
 ~~~ sql
 > BEGIN;
@@ -133,7 +138,7 @@ RETURNING ID1,ID2,ID3;
 
 ### Use Secondary Indexes
 
-You can improve the performance of queries using columns besides the primary key with secondary indexes. You can create them:
+You can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
@@ -143,11 +148,20 @@ To create the most useful secondary indexes, check out our [best practices](inde
 
 ### Create Indexes before Performing `JOIN` Operation
 
-CockroachDB supports both [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) and [hash joins](https://en.wikipedia.org/wiki/Hash_join). While performing the [`JOIN`](table-expressions.html#join-expressions) operation, CockroachDB uses the merge join instead of the hash join whenever possible, because merge joins are computationally and memory-wise better performant than hash joins. 
+CockroachDB supports both [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) and [hash joins](https://en.wikipedia.org/wiki/Hash_join). CockroachDB uses merge joins whenever possible because they are more performant than hash joins computationally and in terms of memory. However, merge joins are possible only when the tables being joined are indexed on the relevant columns; when this condition is not met, CockroachDB resorts to the slower hash joins.
 
 #### Why are merge joins faster than hash joins?
 
-Merge joins are performed on the indexed columns of two tables: CockroachDB takes one row from each table, compares them, and returns the rows if they are equal. If the rows are not equal, CockroachDB discards the lower-value row and the repeats the process with the next row, till all rows are processed. Merge join is a fast operation that doesn’t require additional memory. On the other hand, while performing hash joins on two tables, CockroachDB first creates an in-memory hash table on the smaller table. It then uses the hash table and scans the larger table to find matching rows from the smaller table. This process is computationally expensive and requires additional memory. Hence, whenever possible, CockroachDB uses the faster merge joins instead of hash joins.
+Merge joins are computationally less expensive and do not require additional memory. They are performed on the indexed columns of two tables as follows:
+
+- CockroachDB takes one row from each table and compares them.
+- If the rows are equal, CockroachDB returns the rows.
+- If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
+
+In contrast, hash joins are computationally expensive and require additional memory. They are performed on two tables as follows:
+
+- CockroachDB creates an in-memory hash table on the smaller table.
+- CockroachDB then uses the hash table and scans the larger table to find matching rows from the smaller table.
 
 #### Why create indexes to perform merge joins?
 
@@ -157,7 +171,7 @@ Also note that merge `JOIN`s can be used only with [distributed query processing
 
 ### Drop Unused Indexes
 
-Though indexes improve the read performance, they incur an overhead for every write. In some cases, like the use-cases discussed abpve, the tradeoff is worth it. But if an index is unused, it slows down DML operations. Whenever possible, [drop indexes](drop-index.html) that are not used.
+Though indexes improve the read performance, they incur an overhead for every write. In some cases, like the use-cases discussed above, the tradeoff is worth it. But if an index is unused, it slows down DML operations. Whenever possible, [drop indexes](drop-index.html) that are not used.
 
 ## Table Scans Best Practices
 
