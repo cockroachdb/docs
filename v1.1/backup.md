@@ -153,10 +153,10 @@ AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 Incremental backups must be based off of full backups you've already created.
 
 ~~~ sql
-> BACKUP DATABASE bank TO 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+> BACKUP DATABASE bank to 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' 
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00' 
 INCREMENTAL FROM 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-, 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00'
+, 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'; 
 ~~~
 
 ## See Also
