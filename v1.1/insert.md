@@ -85,7 +85,7 @@ If you don't list column names, the statement will use the columns of the table 
 
 ### Insert Multiple Rows
 
-{{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching 100 rows in one multi-row <code>INSERT</code> statement, instead of multiple single-row <code>INSERT</code> statements. {{site.data.alerts.end}}
+{{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching 100 rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. {{site.data.alerts.end}}
 
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
