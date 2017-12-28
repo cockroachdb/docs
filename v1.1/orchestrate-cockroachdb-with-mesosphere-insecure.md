@@ -117,7 +117,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker run -it cockroachdb/cockroach:{{ page.release_info.version }}  sql --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
+    $ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }}  sql --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
     ~~~
 
     ~~~
@@ -205,7 +205,7 @@ $ dcos node ssh --master-proxy --leader
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ docker run -it cockroachdb/cockroach:{{ page.release_info.version }} node status --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
+$ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }} node status --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
 ~~~
 
 ~~~
