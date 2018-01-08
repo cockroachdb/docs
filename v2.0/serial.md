@@ -18,9 +18,7 @@ In CockroachDB, the following are aliases for `SERIAL`:
 
 Name | Allowed Width | Aliases
 -----|-------|--------
-`SERIAL` | 64-bit | `SERIAL`
-`SERIAL2` | 64-bit | `SMALLSERIAL`
-`SERIAL8` | 64-bit | `BIGSERIAL`
+`SERIAL` | 64-bit | `SERIAL2` <br>`SERIAL8` <br>`SMALLSERIAL` <br> `BIGSERIAL`
 
 ## Syntax
 
