@@ -62,7 +62,7 @@ PostgreSQL wire protocol.
 
 ## Size
 
-A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata. 
+A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 
@@ -105,6 +105,7 @@ Type | Details
 `SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
 `DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
 `FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`TIME` | <span class="version-tag">New in v2.0:</span> Displays the time portion (HH:MM:SS) of the timestamp
 `DATE` | ––
 `STRING` | ––
 

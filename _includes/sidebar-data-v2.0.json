@@ -766,6 +766,12 @@
             ]
           },
           {
+            "title": "<code>TIME</code>",
+            "urls": [
+              "/${VERSION}/time.html"
+            ]
+          },
+          {
             "title": "<code>TIMESTAMP</code>",
             "urls": [
               "/${VERSION}/timestamp.html"
