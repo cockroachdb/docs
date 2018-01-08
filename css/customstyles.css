@@ -2364,6 +2364,9 @@ polygon.regexp {
   .highlight .il {
     color: #009999; }
 
+a code {
+  color: #26A5A5; }
+
 /* Feedback question and buttons */
 #feedback-prompt {
   display: inline-block;
