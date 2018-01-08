@@ -184,9 +184,13 @@ Syntax:
 <expr> !~* <expr>
 ~~~
 
-Evaluates both expressions as strings, then tests whether the string   on the left
-matches the pattern given on the right. Returns `TRUE` if a match is found
-or `FALSE` otherwise, or the inverted value for the  `!` variants.
+Evaluates both expressions as strings, then tests whether the string
+on the left matches the pattern given on the right. Returns `TRUE` if
+a match is found or `FALSE` otherwise, or the inverted value for the
+`!` variants.
+
+The variants with an asterisk `*` use case-insensitive matching;
+otherwise the matching is case-sensitive.
 
 The pattern is expressed using
 [POSIX regular expression syntax](https://en.wikipedia.org/wiki/Regular_expression). Unlike
