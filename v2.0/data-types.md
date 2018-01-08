@@ -17,6 +17,7 @@ Type | Description | Example
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number. | `1.2345`
 [`BOOL`](bool.html) | A Boolean value. | `true`
 [`DATE`](date.html) | A date. | `DATE '2016-01-25'`
+[`TIME`](time.html) | A time. | `TIME '01:23:45.123456'`
 [`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
