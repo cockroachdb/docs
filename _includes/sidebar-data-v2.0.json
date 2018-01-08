@@ -952,6 +952,12 @@
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
             ]
+          },
+          {
+            "title": "Mesosphere DC/OS",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
+            ]
           }
         ]
       },
@@ -996,6 +1002,12 @@
         "title": "Configure Replication Zones",
         "urls": [
           "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Enterprise Licensing",
+        "urls": [
+          "/${VERSION}/enterprise-licensing.html"
         ]
       }
     ]
