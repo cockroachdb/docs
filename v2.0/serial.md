@@ -16,8 +16,11 @@ The `SERIAL` type is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
 
 In CockroachDB, the following are aliases for `SERIAL`:
 
-- `SMALLSERIAL`
-- `BIGSERIAL`
+Name | Allowed Width | Aliases
+-----|-------|--------
+`SERIAL` | 64-bit | `SERIAL`
+`SERIAL2` | 64-bit | `SMALLSERIAL`
+`SERIAL8` | 64-bit | `BIGSERIAL`
 
 ## Syntax
 
