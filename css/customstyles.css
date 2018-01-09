@@ -40,6 +40,11 @@
   src: url("../fonts/AvenirLTStd-Black.woff2") format("woff2"), url("../fonts/AvenirLTStd-Black.woff") format("woff"), url("../fonts/AvenirLTStd-Black.ttf") format("truetype"), url("../fonts/AvenirLTStd-Black.svg#AvenirLTStd-Black") format("svg"), url("../fonts/AvenirLTStd-Black.eot?#iefix") format("embedded-opentype");
   font-weight: normal;
   font-style: normal; }
+@font-face {
+  font-family: 'SourceCodePro-Regular';
+  src: url("../fonts/SourceCodePro-Regular.ttf");
+  font-weight: normal;
+  font-style: normal; }
 html {
   height: 100%; }
 
@@ -153,13 +158,24 @@ pre {
   overflow: auto; }
 
 pre, code {
-  background-color: #F3F3F3;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
+  background-color: #F7F7F7;
   font-size: 14px;
   line-height: 25px;
   color: #152849; }
 
 code {
+  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
   border: 1px solid #DADADA; }
 
 ul {
@@ -2131,7 +2147,7 @@ text.terminal {
 text.nonterminal {
   font-family: Verdana, Sans-serif;
   font-size: 12px;
-  fill: #46a417; }
+  fill: #54B30E; }
 
 text.regexp {
   font-family: Verdana, Sans-serif;
@@ -2161,10 +2177,10 @@ polygon.regexp {
   stroke: #262626; }
 
 .highlight {
-  background: #F3F3F3;
-  /* Comment */
+  background: #F7F7F7;
   /* Error */
   /* Keyword */
+  /* Comment */
   /* Comment.Multiline */
   /* Comment.Preproc */
   /* Comment.Single */
@@ -2221,19 +2237,19 @@ polygon.regexp {
   /* Literal.Number.Integer.Long */ }
   .highlight pre {
     padding: 20px 30px; }
-  .highlight .c {
-    color: #60a0b0; }
   .highlight .err {
     color: #a61717;
     background-color: #e3d2d2; }
   .highlight .k {
-    color: #a71d5d; }
+    color: #A0247A; }
+  .highlight .c {
+    color: #A2A2A2; }
   .highlight .cm {
-    color: #60a0b0; }
+    color: #A2A2A2; }
   .highlight .cp {
-    color: #60a0b0; }
+    color: #A2A2A2; }
   .highlight .c1 {
-    color: #60a0b0; }
+    color: #A2A2A2; }
   .highlight .cs {
     color: #999999;
     font-weight: bold;
@@ -2282,16 +2298,16 @@ polygon.regexp {
   .highlight .m {
     color: #009999; }
   .highlight .s {
-    color: #183691; }
+    color: #3C80E1; }
   .highlight .na {
     color: #008080; }
   .highlight .nb {
-    color: #0086B3; }
+    color: #3C80E1; }
   .highlight .nc {
     color: #445588;
     font-weight: bold; }
   .highlight .no {
-    color: #008080; }
+    color: #26A5A5; }
   .highlight .ni {
     color: #800080; }
   .highlight .ne {
@@ -2304,17 +2320,17 @@ polygon.regexp {
   .highlight .nt {
     color: #000080; }
   .highlight .nv {
-    color: #008080; }
+    color: #3C80E1; }
   .highlight .w {
     color: #bbbbbb; }
   .highlight .mf {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mh {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mi {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .mo {
-    color: #009999; }
+    color: #3C80E1; }
   .highlight .sb {
     color: #d14; }
   .highlight .sc {
@@ -2334,7 +2350,7 @@ polygon.regexp {
   .highlight .sr {
     color: #009926; }
   .highlight .s1 {
-    color: #183691; }
+    color: #3C80E1; }
   .highlight .ss {
     color: #990073; }
   .highlight .bp {
@@ -2347,6 +2363,9 @@ polygon.regexp {
     color: #008080; }
   .highlight .il {
     color: #009999; }
+
+a code {
+  color: #54B30E; }
 
 /* Feedback question and buttons */
 #feedback-prompt {
