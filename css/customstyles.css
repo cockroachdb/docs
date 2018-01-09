@@ -2147,7 +2147,7 @@ text.terminal {
 text.nonterminal {
   font-family: Verdana, Sans-serif;
   font-size: 12px;
-  fill: #46a417; }
+  fill: #54B30E; }
 
 text.regexp {
   font-family: Verdana, Sans-serif;
@@ -2307,7 +2307,7 @@ polygon.regexp {
     color: #445588;
     font-weight: bold; }
   .highlight .no {
-    color: #008080; }
+    color: #26A5A5; }
   .highlight .ni {
     color: #800080; }
   .highlight .ne {
@@ -2365,7 +2365,7 @@ polygon.regexp {
     color: #009999; }
 
 a code {
-  color: #26A5A5; }
+  color: #54B30E; }
 
 /* Feedback question and buttons */
 #feedback-prompt {
