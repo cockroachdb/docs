@@ -113,15 +113,26 @@ The URL for your backup's destination/locations must use the following format:
 
 `[path to backup]` must be unique for each backup, but the other values depend on where you want to store the backup.
 
+<style>
+	table td:nth-child(2) {
+	    min-width: 130px;
+	}
+</style>
+
 | Backup Location | scheme | host | parameters |
 |-----------------|--------|------|------------|
 | Amazon S3 | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` |
 | Azure | `azure` | Container name | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` |
 | Google Cloud Storage | `gs` | Bucket name | None––currently only supports instance auth, but we can build non-instance auth at a customer's request |
 | HTTP | `http` | Remote host | N/A |
-| NFS | `nodelocal` | File system location | N/A |
+| NFS [<sup>1</sup>](#considerations) | `nodelocal` | File system location [<sup>2</sup>](#considerations) | N/A |
+| S3-compatible services | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
 
-{{site.data.alerts.callout_info}}Because CockroachDB is a distributed system, you cannot meaningfully store backups "locally" on nodes. The entire backup file must be stored in a single location, so attempts to store backups locally must point to an NFS drive to be useful.{{site.data.alerts.end}}
+#### Considerations
+
+- The backup location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+- [<sup>1</sup>](#import-file-temp-directory-urls) Because CockroachDB is a distributed system, you cannot meaningfully store backups "locally" on nodes. The entire backup file must be stored in a single location, so attempts to store backups locally must point to an NFS drive to be useful.
+- [<sup>2</sup>](#import-file-temp-directory-urls) <span class="version-tag">New in v2.0</span> The file system backup location on a local node or NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then backups to local directories and NFS drives are disabled. 
 
 ## Examples
 
