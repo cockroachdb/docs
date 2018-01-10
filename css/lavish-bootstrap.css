@@ -622,10 +622,7 @@ address {
   font-style: normal;
   line-height: 1.428571429;
 }
-code,
-pre {
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-}
+
 code {
   padding: 2px 4px;
   font-size: 90%;
@@ -636,7 +633,7 @@ code {
 }
 
 a code {
-  color: #46a417;
+  color: $cl_syntax_green;
 }
 
 pre {
