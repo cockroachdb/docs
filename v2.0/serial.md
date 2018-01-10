@@ -17,9 +17,12 @@ The `SERIAL` type is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
 In CockroachDB, the following are aliases for `SERIAL`:
 
 - `SERIAL2`
+- `SERIAL4`
 - `SERIAL8`
 - `SMALLSERIAL`
 - `BIGSERIAL`
+
+{{site.data.alerts.callout_danger}}<code>SERIAL2</code> and <code>SERIAL4</code> are the same as <code>SERIAL</code> and store 8-byte values, not 2- or 4-byte values as their names might suggest.{{site.data.alerts.end}}
 
 ## Syntax
 
