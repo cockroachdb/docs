@@ -1,10 +1,10 @@
 ---
 title: SERIAL
-summary: The SERIAL data type defaults to a unique 64-bit signed integer that is the combination of the insert timestamp and the ID of the node.
+summary: The SERIAL data type defaults to a unique 64-bit integer that is the combination of the insert timestamp and the ID of the node.
 toc: false
 ---
 
-The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a default integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
+The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a 64-bit integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
 
 {{site.data.alerts.callout_info}}In most cases, we recommend using the <a href="uuid.html"><code>UUID</code></a> data type with the <code>gen_random_uuid()</code> function as the default value, which generates 128-bit values (much larger than <code>SERIAL</code>'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See <a href="uuid.html#create-a-table-with-auto-generated-unique-row-ids">Create a table with auto-generated unique row IDs</a> for more details.{{site.data.alerts.end}}
 
@@ -16,8 +16,13 @@ The `SERIAL` type is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
 
 In CockroachDB, the following are aliases for `SERIAL`:
 
+- `SERIAL2`
+- `SERIAL4`
+- `SERIAL8`
 - `SMALLSERIAL`
 - `BIGSERIAL`
+
+{{site.data.alerts.callout_danger}}<code>SERIAL2</code> and <code>SERIAL4</code> are the same as <code>SERIAL</code> and store 8-byte values, not 2- or 4-byte values as their names might suggest.{{site.data.alerts.end}}
 
 ## Syntax
 
