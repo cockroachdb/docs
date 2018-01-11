@@ -19,14 +19,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-~~~
-CREATE SEQUENCE <sequence_name>
-  [INCREMENT <increment>]
-  [MINVALUE <minvalue> | NO MINVALUE]
-  [MAXVALUE <maxvalue> | NO MAXVALUE]
-  [START <start>]
-  [[NO] CYCLE]
-~~~
+<section>{% include sql/{{ page.version.version }}/diagrams/create_sequence.html %}</section>
 
 ## Parameters
 

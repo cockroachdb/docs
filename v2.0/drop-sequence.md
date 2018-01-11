@@ -14,9 +14,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-~~~
-DROP SEQUENCE [IF EXISTS] <sequence_name> [, ...] [CASCADE | RESTRICT]
-~~~
+<section>{% include sql/{{ page.version.version }}/diagrams/drop_sequence.html %}</section>
 
 ## Parameters
 
