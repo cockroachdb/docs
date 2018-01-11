@@ -36,7 +36,7 @@ Before getting started, it's important to review some limitations and requiremen
 
 ## Step 1. Start CockroachDB
 
-1. [Launch the CockroachDB CloudFormation template](http://amzn.to/2C5IFhv).
+1. [Launch the CockroachDB CloudFormation template](http://amzn.to/2CZjJLZ).
 
 2. In the CloudFormation UI, review and customize the settings for the cluster. Most of the defaults are sufficient for testing scenarios. However, it's important to select your **SSH Key** so you'll be able to connect to the Kubernetes master node later, and to confirm that the **CockroachDB Version** is **v1.1.4**.
 
