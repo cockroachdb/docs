@@ -35,14 +35,6 @@ endif
 .PHONY: all
 all: bootstrap
 
-# The generate target regenerates the SQL diagrams and function lists.
-# It assumes that the docs repo is checked out in a $GOPATH/src directory,
-# next to an up-to-date copy of the main cockroach repo.
-.PHONY: generate
-generate:
-	cd generate && go run main.go
-	cd generate && go run *.go funcs
-
 .PHONY: serve
 serve: bootstrap
 	bundle exec jekyll serve --incremental
