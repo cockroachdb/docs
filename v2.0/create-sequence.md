@@ -47,7 +47,7 @@ table td:first-child {
 
 ## Sequence Functions
 
-We support the following [SQL sequence functions](/functions-and-operators.html):
+We support the following [SQL sequence functions](functions-and-operators.html):
 
 - `nextval('sequence_name')`
 - `currval('sequence_name')`
