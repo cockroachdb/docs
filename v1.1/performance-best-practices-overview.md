@@ -29,7 +29,7 @@ The [`TRUNCATE` statement](truncate.html) removes all rows from a table by dropp
 
 ### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement, and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows).
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows).
 
 ### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
@@ -56,7 +56,9 @@ The common approach to generate unique IDs is one of the following:
  - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
  - Use `SERIAL` variables to generate random unique IDs
  
- The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table. The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table. 
+
+The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
 ### Use `UUID` to Generate Unique IDs
 
