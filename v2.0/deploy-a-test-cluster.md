@@ -49,7 +49,7 @@ Before getting started, it's important to review some limitations and requiremen
 
     The launch process generally takes 10 to 15 minutes. Once you see the `CREATE_COMPLETE` status in the CloudFormation UI, the cluster is ready for testing.
 
-    {{site.data.alerts.callout_info}}If the launch process times out or fails, you could be running into an <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">AWS service limit</a>. You can view any errors in the <a href=" https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-monitor-stack.html">event history</a>{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}If the launch process times out or fails, you could be running into an <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">AWS service limit</a>. You can view any errors in the <a href=" https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-monitor-stack.html">event history</a>.{{site.data.alerts.end}}
 
 ## Step 2. Test the cluster
 
@@ -189,7 +189,7 @@ To see this in action:
 
 1. In the **Outputs** section of the CloudFormation UI, note the **SSHProxyCommand**.
 
-1. In a new terminal, run the **SSHProxyCommand** to SSH into the Kubernetes master node. Be sure to update the `SSH_KEY` environment variable definition to point to the location of your `.pem` file.
+2. In a new terminal, run the **SSHProxyCommand** to SSH into the Kubernetes master node. Be sure to update the `SSH_KEY` environment variable definition to point to the location of your `.pem` file.
 
 3. List the Kubernetes pods that map to CockroachDB nodes:
 
@@ -232,9 +232,7 @@ To scale the cluster, you need to first adjust the AWS Auto Scaling group size a
 
 3. In the final screen, click **Edit**, update the **Desired** field to the new number of nodes you want in the cluster, and click **Save**.
 
-4. In the terminal where you SSHed into the Kubernetes master node, press **CTRL + C** to stop the `rand` load generator.
-
-5. Use `kubectl` to scale your cluster to match your Auto Scaling group size:
+4. In the terminal where you SSHed into the Kubernetes master node, use `kubectl` to scale your cluster to match your Auto Scaling group size:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -245,7 +243,7 @@ To scale the cluster, you need to first adjust the AWS Auto Scaling group size a
     statefulset "cockroachdb" scaled
     ~~~
 
-6. In the Admin UI, check the **Replicas per Node** graph again to see how CockroachDB automatically rebalances your data evenly across all nodes.
+5. In the Admin UI, check the **Replicas per Node** graph again to see how CockroachDB automatically rebalances your data evenly across all nodes.
 
     <img src="{{ 'images/cloudformation_admin_ui_rebalancing.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
