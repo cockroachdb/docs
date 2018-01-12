@@ -49,7 +49,7 @@ Before getting started, it's important to review some limitations and requiremen
 
     The launch process generally takes 10 to 15 minutes. Once you see the `CREATE_COMPLETE` status in the CloudFormation UI, the cluster is ready for testing.
 
-    {{site.data.alerts.callout_info}}If the launch process times out or fails, you could be running into an <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">AWS service limit</a>. You can view any errors in the <a href=" https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-monitor-stack.html">event history</a>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}If the launch process times out or fails, you could be running into an <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">AWS service limit</a>. You can view any errors in the <a href=" https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-monitor-stack.html" data-proofer-ignore>event history</a>.{{site.data.alerts.end}}
 
 ## Step 2. Test the cluster
 
