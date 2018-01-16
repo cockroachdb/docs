@@ -1,10 +1,10 @@
 ---
 title: SQL Performance Best Practices
-summary: Learn performance best practices for CockroachDB
+summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: false
 ---
 
-This page describes the SQL performance best practices for CockroachDB.
+This page provides best practices for optimizing SQL performance in CockroachDB.
 
 <div id="toc"></div>
 
@@ -23,7 +23,7 @@ For more information, see:
 
 ### Use `TRUNCATE` instead of `DELETE` to Delete All Rows in a Table
 
-The [`TRUNCATE` statement](truncate.html) removes all rows from a table by dropping the table and recreating a new table with the same name. This is better performant than using `DELETE`, which performs multiple transactions to delete all rows.
+The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
 ## Bulk Insert Best Practices
 
@@ -37,13 +37,13 @@ To bulk-insert data into a brand new table, the (experimental) [`IMPORT`](import
 
 ## Execute Statements in Parallel
 
-CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. To execute statements in parallel, append the `RETURNING NOTHING` clause to the statements in a transaction. For more information, see [Parallel Statement Execution](parallel-statement-execution.html)
+CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. To execute statements in parallel, append the `RETURNING NOTHING` clause to the statements in a transaction. For more information, see [Parallel Statement Execution](parallel-statement-execution.html).
 
 ## Assign Column Families
 
 A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store. 
 
-When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. [Assigning column families](column-families.html) reduces the number of keys results in a smaller storage overhead and improves performance during `INSERT`, `UPDATE`, and `DELETE` operations. 
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
 ## Interleave Tables
 
@@ -51,7 +51,7 @@ When a table is created, all columns are stored as a single column family. This 
 
 ## Unique ID Best Practices
 
-The common approach to generate unique IDs is one of the following:
+The common approach for generating unique IDs is one of the following:
  
  - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
  - Use `SERIAL` variables to generate random unique IDs
@@ -74,10 +74,11 @@ Suppose the table schema is as follows:
 
 ~~~ sql
 > CREATE TABLE X (
-ID1 INT,
-ID2 INT,
-ID3 INT DEFAULT 1,
-PRIMARY KEY (ID1,ID2));
+	ID1 INT,
+	ID2 INT,
+	ID3 INT DEFAULT 1,
+	PRIMARY KEY (ID1,ID2)
+	);
 ~~~
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
@@ -100,9 +101,9 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 ~~~ sql
 > INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
-ON CONFLICT (ID1,ID2)
-DO UPDATE SET ID3=X.ID3 + 1
-RETURNING ID1,ID2,ID3;
+	ON CONFLICT (ID1,ID2)
+	DO UPDATE SET ID3=X.ID3 + 1
+	RETURNING ID1,ID2,ID3;
 ~~~
 
 #### Generate Random Unique IDs
@@ -111,10 +112,11 @@ Suppose the table schema is as follows:
 
 ~~~ sql
 > CREATE TABLE X (
-ID1 INT,
-ID2 INT,
-ID3 SERIAL,
-PRIMARY KEY (ID1,ID2));
+	ID1 INT,
+	ID2 INT,
+	ID3 SERIAL,
+	PRIMARY KEY (ID1,ID2)
+	);
 ~~~
 
 The common approach to generate random Unique IDs is a transaction using the `SELECT` statement:
@@ -133,7 +135,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 ~~~ sql
 > INSERT INTO X VALUES (1,1),(2,2),(3,3)
-RETURNING ID1,ID2,ID3;
+	RETURNING ID1,ID2,ID3;
 ~~~
 
 ## Indexes Best Practices
@@ -173,7 +175,7 @@ Also note that merge `JOIN`s can be used only with [distributed query processing
 
 ### Drop Unused Indexes
 
-Though indexes improve the read performance, they incur an overhead for every write. In some cases, like the use-cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Whenever possible, [drop indexes](drop-index.html) that are not used.
+Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
 
 ## Table Scans Best Practices
 
@@ -187,12 +189,12 @@ Suppose the table schema is as follows:
 
 ~~~ sql
 > CREATE TABLE accounts (
-id INT, 
-customer STRING, 
-address STRING,
-balance INT
-nominee STRING
-);
+	id INT, 
+	customer STRING, 
+	address STRING,
+	balance INT
+	nominee STRING
+	);
 ~~~
 
 Now if we want to find the account balances of all customers, an inefficient table scan would be:
@@ -210,4 +212,4 @@ This query retrieves all data stored in the table. A more efficient query would 
 This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for Large Tables
-`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead of `SELECT DISTINCT`.
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead.
