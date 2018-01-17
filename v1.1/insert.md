@@ -84,7 +84,7 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 ~~~
 
-### Insert Multiple Rows
+### Insert Multiple Rows in an Existing Table
 
 {{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching 100 rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. {{site.data.alerts.end}}
 
@@ -104,7 +104,9 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 ~~~
 
-{{site.data.alerts.callout_success}}The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table.{{site.data.alerts.end}}
+### Insert Multiple Rows in a New Table
+
+The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table.
 
 ### Insert from a `SELECT` Statement
 

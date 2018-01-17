@@ -66,7 +66,7 @@ The best practice in CockroachDB is to generate unique IDs using the `UUID` type
 
 ### Use `INSERT` with the `RETURNING` Clause to Generate Unique IDs
 
-If something prevents you from using `UUID` to generate unique IDs, you might resort to monotonically increasing `INT` IDs using transactions. However, instead of using `INSERT`s with `SELECT`s to return IDs, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) for improved performance.
+If something prevents you from using `UUID` to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) for improved performance.
 
 #### Generate Monotonically-Increasing Unique IDs
 
@@ -87,13 +87,11 @@ The common approach would be to use a transaction with an `INSERT` followed by a
 > BEGIN;
 
 > INSERT INTO X VALUES (1,1,1)
-
-> ON CONFLICT (ID1,ID2)
-
-> DO UPDATE SET ID3=X.ID3+1;
+  	ON CONFLICT (ID1,ID2)
+  	DO UPDATE SET ID3=X.ID3+1;
 
 > SELECT * FROM X WHERE ID1=1 AND ID2=1;
-
+  
 > COMMIT;
 ~~~
 
