@@ -75,7 +75,11 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
-## Step 3. Set up load balancing
+## Step 3. Synchronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 4. Set up load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -93,23 +97,23 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Azure's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
 
-## Step 4. Start nodes
+## Step 5. Start nodes
 
 {% include prod_deployment/insecure-start-nodes.md %}
 
-## Step 5. Initialize the cluster
+## Step 6. Initialize the cluster
 
 {% include prod_deployment/insecure-initialize-cluster.md %}
 
-## Step 6. Test the cluster
+## Step 7. Test the cluster
 
 {% include prod_deployment/insecure-test-cluster.md %}
 
-## Step 7. Test load balancing
+## Step 8. Test load balancing
 
 {% include prod_deployment/insecure-test-load-balancing.md %}
 
-## Step 8. Use the cluster
+## Step 9. Use the cluster
 
 Now that your deployment is working, you can:
 
@@ -117,11 +121,11 @@ Now that your deployment is working, you can:
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Azure load balancer, not to a CockroachDB node.
 
-## Step 9. Monitor the cluster
+## Step 10. Monitor the cluster
 
 {% include prod_deployment/insecure-monitor-cluster.md %}
 
-## Step 10. Scale the cluster
+## Step 11. Scale the cluster
 
 {% include prod_deployment/insecure-scale-cluster.md %}
 
