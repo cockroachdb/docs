@@ -1486,7 +1486,7 @@ a.accordion-toggle {
     border: solid 1px #bcbcbc;
     border-radius: 32px;
     height: 40px;
-    width: 86%;
+    width: calc(100% - 30px);
     outline: 0px none;
     padding: 3px 10px 0px 45px;
     transition: all 0.15s ease 0s;
@@ -1529,15 +1529,12 @@ li.search-wrap {
 .clear-search {
   display: none;
   position: absolute;
-  top: 1px;
-  right: 48px;
+  top: 2px;
+  right: calc(0% + 30px);
   height: 38px;
   width: 35px;
   border-radius: 50%;
   outline: none; }
-  @media screen and (min-width: 768px) {
-    .clear-search {
-      right: 104px; } }
   @media screen and (min-width: 992px) {
     .clear-search {
       right: 20px; } }
