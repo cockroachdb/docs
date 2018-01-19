@@ -6,15 +6,19 @@
 
 <script>
   $(document).ready(function(){
-      $("#yes-button, #no-button").bind("click", function () {
-        if ($(this).attr("id") == "yes-button")
-        {
-          $('#feedback-prompt').html('<p class="feedback-response">Thanks for the feedback!</p>')
-        }
-        if ($(this).attr("id") == "no-button")
-        {
-          $('#feedback-prompt').html('<p class="feedback-response">Have specific feedback? Please <a href="https://github.com/cockroachdb/docs/issues/new?title={{page.title}}%20Doc%20Update%20&amp;body=Re%3A%20%5B{{page.title}}%5D(https%3A%2F%2Fcockroachlabs.com/docs/{{page.url}})%0A%0A%23%23%20Issue%20Description%0A%0A%23%23%20Suggested%20Resolution%20%0A&amp;labels=community" target="_blank">open an issue</a>.</p>')
-        }
-      });
+    $("#yes-button, #no-button").bind("click", function () {
+      if ($(this).attr("id") == "yes-button")
+      {
+        $('#feedback-prompt').html('<p class="feedback-response">Thanks for the feedback!</p>')
+      }
+      if ($(this).attr("id") == "no-button")
+      {
+        hbspt.forms.create({
+          portalId: '1753393',
+          formId: '90745362-7730-4dfd-83ff-dd64dc02a7ae',
+          target: '#feedback-prompt',
+        });
+      }
+    });
   });
 </script>
