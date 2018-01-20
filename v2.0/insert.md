@@ -10,7 +10,8 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Performance Best Practices
 
-- A single [multi-row `INSERT`](#insert-multiple-rows) statement is faster than multiple single-row `INSERT` statements. Whenever possible, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements. 
+- A single [multi-row `INSERT`](#insert-multiple-rows-in-an-existing-table) statement is faster than multiple single-row `INSERT` statements. To bulk-insert data into an existing table, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
+- The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table. 
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required Privileges
@@ -83,9 +84,9 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 ~~~
 
-### Insert Multiple Rows
+### Insert Multiple Rows into an Existing Table
 
-{{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend using multi-row <code>INSERT</code> instead of multiple single-row <code>INSERT</code> statements whenever possible. {{site.data.alerts.end}}
+{{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching multiple rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). {{site.data.alerts.end}}
 
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
@@ -102,6 +103,10 @@ If you don't list column names, the statement will use the columns of the table 
 |  4 |   9400.1 |
 +----+----------+
 ~~~
+
+### Insert Multiple Rows into a New Table
+
+The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table.
 
 ### Insert from a `SELECT` Statement
 

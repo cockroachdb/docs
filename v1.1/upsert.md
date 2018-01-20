@@ -52,7 +52,7 @@ Parameter | Description
 
 ## Examples
 
-### Upsert that Inserts a Row (No Conflict)
+### Upsert a Row (No Conflict)
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
