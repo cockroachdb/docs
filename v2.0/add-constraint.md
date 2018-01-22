@@ -53,7 +53,7 @@ Adding the [Check constraint](check.html) requires that all of a column's values
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
 ~~~
 
-### Add the Foreign Key Constraint
+### Add the Foreign Key Constraint with `CASCADE`
 
 Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
@@ -104,10 +104,16 @@ To ensure that each value in the `orders.customer_id` column matches a unique va
 > CREATE INDEX ON orders (customer_id);
 ~~~
 
-Then you add the Foreign Key constraint:
+Then you add the Foreign Key constraint.
+
+<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
+
+In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
+
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id);
+> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~
 
 If you had tried to add the constraint before indexing the column, you would have received an error:
@@ -119,6 +125,7 @@ pq: foreign key requires an existing index on columns ("customer_id")
 ## See Also
 
 - [Constraints](constraints.html)
+- [Foreign Key Constraint](foreign-key.html)
 - [`ALTER COLUMN`](alter-column.html)
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
