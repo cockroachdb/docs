@@ -2440,10 +2440,13 @@ a code {
 form[class*="hs-form"] {
   margin-bottom: 0; }
   form[class*="hs-form"] label {
-    font-family: inherit; }
+    font-family: inherit;
+    font-size: 15px; }
   form[class*="hs-form"] div[class="actions"] {
     padding: 0;
     margin: 0; }
+  form[class*="hs-form"] input[type="radio"][class="hs-input"] {
+    margin-right: 10px; }
   form[class*="hs-form"] input[type="submit"] {
     background: none;
     text-shadow: none;

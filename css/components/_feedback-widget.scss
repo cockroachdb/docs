@@ -70,12 +70,17 @@
 form[class*="hs-form"] {
   margin-bottom: 0;
 
-  label { font-family: inherit; }
+  label {
+    font-family: inherit;
+    font-size: 15px;
+  }
 
   div[class="actions"] {
     padding: 0;
     margin: 0;
   }
+
+  input[type="radio"][class="hs-input"] { margin-right: 10px; }
 
   input[type="submit"] {
     background: none;
