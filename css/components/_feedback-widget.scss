@@ -4,8 +4,8 @@
   display: inline-block;
   padding: 25px;
   background-color: $cl_green_light;
-  font-size: 0;
-  line-height: 0;
+  font-size: 17px;
+  line-height: 1;
 
   form {
     display: inline-block;
@@ -39,7 +39,9 @@
   }
 }
 
-.yes-button, .no-button {
+#yes-button,
+#no-button,
+#feedback-prompt input[type="submit"] {
   width: 70px;
   height: 40px;
   margin: 0 5px;
@@ -61,12 +63,36 @@
   &:hover {
     background-color: $cl_blue;
     color: #fff !important;
-    border-bottom: 2px solid $cl_blue !important;
+    border-bottom: none;
   }
 }
 
-.no-button:hover, .yes-button:hover, .no-button:focus, .yes-button:focus {
+form[class*="hs-form"] {
+  margin-bottom: 0;
 
+  label { font-family: inherit; }
+
+  div[class="actions"] {
+    padding: 0;
+    margin: 0;
+  }
+
+  input[type="submit"] {
+    background: none;
+    text-shadow: none;
+    box-sizing: border-box;
+
+    &:hover:not(.inactive) {
+      border: 1px solid $cl_blue;
+      box-shadow: none;
+    }
+  }
+
+  textarea:focus,
+  input[type="email"]:focus {
+    border: 1px solid $cl_green;
+    box-shadow: none;
+  }
 }
 
 /* Feedback popup and hubspot form
@@ -444,7 +470,8 @@ img.mfp-img {
 .mfp-gallery .mfp-image-holder .mfp-figure {
   cursor: pointer; }
 
-@media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
+@media screen and (max-width: 800px) and (orientation: landscape),
+screen and (max-height: 300px) {
   /**
        * Remove all paddings around the image on small screen
        */

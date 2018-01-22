@@ -2369,8 +2369,8 @@ a code {
   display: inline-block;
   padding: 25px;
   background-color: #F0FFE8;
-  font-size: 0;
-  line-height: 0; }
+  font-size: 17px;
+  line-height: 1; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
@@ -2401,7 +2401,9 @@ a code {
   #feedback-prompt p.feedback-response {
     line-height: 20px;
     font-size: 14px; } }
-.yes-button, .no-button {
+#yes-button,
+#no-button,
+#feedback-prompt input[type="submit"] {
   width: 70px;
   height: 40px;
   margin: 0 5px;
@@ -2428,10 +2430,31 @@ a code {
   -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
-  .yes-button:hover, .no-button:hover {
+  #yes-button:hover,
+  #no-button:hover,
+  #feedback-prompt input[type="submit"]:hover {
     background-color: #152849;
     color: #fff !important;
-    border-bottom: 2px solid #152849 !important; }
+    border-bottom: none; }
+
+form[class*="hs-form"] {
+  margin-bottom: 0; }
+  form[class*="hs-form"] label {
+    font-family: inherit; }
+  form[class*="hs-form"] div[class="actions"] {
+    padding: 0;
+    margin: 0; }
+  form[class*="hs-form"] input[type="submit"] {
+    background: none;
+    text-shadow: none;
+    box-sizing: border-box; }
+    form[class*="hs-form"] input[type="submit"]:hover:not(.inactive) {
+      border: 1px solid #152849;
+      box-shadow: none; }
+  form[class*="hs-form"] textarea:focus,
+  form[class*="hs-form"] input[type="email"]:focus {
+    border: 1px solid #54B30E;
+    box-shadow: none; }
 
 /* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20
