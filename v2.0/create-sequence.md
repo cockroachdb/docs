@@ -19,14 +19,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-~~~
-CREATE SEQUENCE <sequence_name>
-  [INCREMENT <increment>]
-  [MINVALUE <minvalue> | NO MINVALUE]
-  [MAXVALUE <maxvalue> | NO MAXVALUE]
-  [START <start>]
-  [[NO] CYCLE]
-~~~
+<section>{% include sql/{{ page.version.version }}/diagrams/create_sequence.html %}</section>
 
 ## Parameters
 
@@ -47,7 +40,7 @@ table td:first-child {
 
 ## Sequence Functions
 
-We support the following [SQL sequence functions](/functions-and-operators.html):
+We support the following [SQL sequence functions](functions-and-operators.html):
 
 - `nextval('sequence_name')`
 - `currval('sequence_name')`
