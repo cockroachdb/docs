@@ -169,9 +169,9 @@ URLs for the file you want to import and your temp directory must use the follow
 |----------|--------|------|------------|
 | Amazon S3 | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` |
 | Azure | `azure` | Container name | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` |
-| Google Cloud [<sup>1</sup>](#notes) | `gs` | Bucket name | None |
-| HTTP [<sup>2</sup>](#notes) | `http` | Remote host | N/A |
-| NFS/Local [<sup>3</sup>](#notes) | `nodelocal` | File system location | N/A |
+| Google Cloud [<sup>1</sup>](#considerations) | `gs` | Bucket name | None |
+| HTTP [<sup>2</sup>](#considerations) | `http` | Remote host | N/A |
+| NFS/Local [<sup>3</sup>](#considerations) | `nodelocal` | File system location | N/A |
 | S3-compatible services | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
 
 #### Considerations
