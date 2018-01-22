@@ -16,7 +16,7 @@ For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faste
 
 For more information, see:
 
-- [Insert Multiple Rows](insert.html#insert-multiple-rows)
+- [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 - [Upsert Multiple Rows](upsert.html#upsert-multiple-rows)
 - [Delete Multiple Rows](delete.html#delete-specific-rows)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
@@ -29,7 +29,7 @@ The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropp
 
 ### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows).
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-tables).
 
 ### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
