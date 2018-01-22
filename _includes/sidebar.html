@@ -230,7 +230,7 @@ $(document).ready(function() {
   });
 
   // set search input value to query string
-  $('#search-input').val(QueryString.q);
+  $('#search-input').val(QueryString.q.replace('+', ' '));
 
   // on load, show close button if search input
 	if ($('#search-input').val() != '') $('.clear-search').show();

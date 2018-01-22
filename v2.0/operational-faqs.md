@@ -2,7 +2,7 @@
 title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
 toc: false
-toc_not_nester: true
+toc_not_nested: true
 ---
 
 <div id="toc"></div>
@@ -38,7 +38,15 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 The timeseries data used to power the graphs in the admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
-To truncate timeseries data sooner, you can change the `timeseries.resolution_10s.storage_duration` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to truncate timeseries data after 15 days, you would execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+## Can I reduce or disable the storage of timeseries data? <span class="version-tag">New in v2.0</span>
+
+Yes. By default, CockroachDB stores timeseries data for the last 30 days for display in the Admin UI, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
+
+{{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in Admin UI metrics.{{site.data.alerts.end}}
+
+### Reduce the interval for timeseries storage
+
+To reduce the interval for storage of timeseries data, change the `timeseries.resolution_10s.storage_duration` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to store timeseries data for the last 15 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -57,6 +65,38 @@ To truncate timeseries data sooner, you can change the `timeseries.resolution_10
 | 360h                                       |
 +--------------------------------------------+
 (1 row)
+~~~
+
+### Disable timeseries storage entirely
+
+{{site.data.alerts.callout_info}}Disabling timeseries storage is recommended only if you exclusively use a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring. Prometheus and other such tools do not rely on CockroachDB-stored timeseries data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.{{site.data.alerts.end}}
+
+To disable the storage of timeseries data entirely, run the following command:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING timeseries.storage.enabled = false;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING timeseries.storage.enabled;
+~~~
+
+~~~
++----------------------------+
+| timeseries.storage.enabled |
++----------------------------+
+| false                      |
++----------------------------+
+(1 row)
+~~~
+
+If you want all existing timeseries data to be deleted, change the `timeseries.resolution_10s.storage_duration` cluster setting as well:     
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING timeseries.resolution_10s.storage_duration = '0s';
 ~~~
 
 ## Why does CockroachDB collect anonymized cluster usage details by default?

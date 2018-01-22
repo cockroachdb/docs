@@ -156,3 +156,8 @@
     line-height: 30px;
   }
 }
+
+@mixin code-type {
+  @include source_code_r(14px);
+  line-height: 25px;
+}

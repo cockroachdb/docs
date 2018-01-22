@@ -96,14 +96,15 @@ pre {
 }
 
 pre, code {
-  background-color: $cl_gray_light;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  @include code-type;
+  background-color: $cl_syntax_gray_light;
   font-size: 14px;
   line-height: 25px;
   color: $cl_blue;
 }
 
 code {
+  @include code-type;
   border: 1px solid $cl_gray_medium;
 }
 
