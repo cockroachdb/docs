@@ -766,6 +766,12 @@
             ]
           },
           {
+            "title": "<code>TIME</code>",
+            "urls": [
+              "/${VERSION}/time.html"
+            ]
+          },
+          {
             "title": "<code>TIMESTAMP</code>",
             "urls": [
               "/${VERSION}/timestamp.html"
@@ -884,6 +890,12 @@
   {
     "title": "Deploy",
     "items": [
+      {
+        "title": "Deploy a Test Cluster",
+        "urls": [
+          "/${VERSION}/deploy-a-test-cluster.html"
+        ]
+      },
       {
         "title": "Recommended Production Settings",
         "urls": [
@@ -1008,6 +1020,12 @@
         "title": "Configure Replication Zones",
         "urls": [
           "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Enterprise Licensing",
+        "urls": [
+          "/${VERSION}/enterprise-licensing.html"
         ]
       }
     ]

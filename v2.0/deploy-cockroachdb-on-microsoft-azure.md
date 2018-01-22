@@ -73,7 +73,11 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
-## Step 3. Set up load balancing
+## Step 3. Synchronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 4. Set up load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -91,35 +95,35 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Azure's managed load balancing, see <a href="manual-deployment.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
 
-## Step 4. Generate certificates
+## Step 5. Generate certificates
 
 {% include prod_deployment/secure-generate-certificates.md %}
 
-## Step 5. Start nodes
+## Step 6. Start nodes
 
 {% include prod_deployment/secure-start-nodes.md %}
 
-## Step 6. Initialize the cluster
+## Step 7. Initialize the cluster
 
 {% include prod_deployment/secure-initialize-cluster.md %}
 
-## Step 7. Test the cluster
+## Step 8. Test the cluster
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 9. Test load balancing
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 9. Use the database
+## Step 10. Use the database
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 10. Monitor the cluster
+## Step 11. Monitor the cluster
 
 {% include prod_deployment/secure-monitor-cluster.md %}
 
-## Step 11. Scale the cluster
+## Step 12. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
 
