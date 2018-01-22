@@ -205,9 +205,9 @@ We also have other resources on indexes:
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
-### Create a Table with Foreign Keys
+### Create a Table with a Foreign Key Constraint
 
-[Foreign keys](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+[Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
 There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
 
@@ -215,35 +215,70 @@ There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) 
 
 - Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [Primary Key](primary-key.html) or [Unique](unique.html) constraint.
 
-In this example, we'll show a series of tables using different formats of foreign keys.
+<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions-new-in-v2-0) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 
-~~~ sql
-> CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-> CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
+{% include copy-clipboard.html %}
+``` sql
+> CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    name STRING
+  );
+```
 
+{% include copy-clipboard.html %}
+``` sql
 > CREATE TABLE orders (
-  id INT PRIMARY KEY,
-  product STRING NOT NULL REFERENCES products,
-  quantity INT,
-  customer INT NOT NULL CONSTRAINT valid_customer REFERENCES customers (id),
-  CONSTRAINT id_customer_unique UNIQUE (id, customer),
-  INDEX (product),
-  INDEX (customer)
-);
+    id INT PRIMARY KEY,
+    customer_id INT REFERENCES customers(id) ON DELETE CASCADE
+  );
+```
 
-> CREATE TABLE reviews (
-  id INT PRIMARY KEY,
-  product STRING NOT NULL REFERENCES products,
-  customer INT NOT NULL,
-  "order" INT NOT NULL,
-  body STRING,
-  CONSTRAINT order_customer_fk FOREIGN KEY ("order", customer) REFERENCES orders (id, customer),
-  INDEX (product),
-  INDEX (customer),
-  INDEX ("order", customer)
-);
-~~~
+{% include copy-clipboard.html %}
+``` sql
+> SHOW CREATE TABLE orders;
+```
+```
++--------+---------------------------------------------------------------------------------------------------------------------+
+| Table  |                                                     CreateTable                                                     |
++--------+---------------------------------------------------------------------------------------------------------------------+
+| orders | CREATE TABLE orders (␤                                                                                              |
+|        |     id INT NOT NULL,␤                                                                                               |
+|        |     customer_id INT NULL,␤                                                                                          |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                                     |
+|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,␤ |
+|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),␤                                        |
+|        |     FAMILY "primary" (id, customer_id)␤                                                                             |
+|        | )                                                                                                                   |
++--------+---------------------------------------------------------------------------------------------------------------------+
+```
+
+{% include copy-clipboard.html %}
+``` sql
+> INSERT INTO customers VALUES (1, 'Lauren');
+```
+
+{% include copy-clipboard.html %}
+``` sql
+> INSERT INTO orders VALUES (1,1);
+```
+
+{% include copy-clipboard.html %}
+``` sql
+> DELETE FROM customers WHERE id = 1;
+```
+
+{% include copy-clipboard.html %}
+``` sql
+> SELECT * FROM orders;
+```
+```
++----+-------------+
+| id | customer_id |
++----+-------------+
++----+-------------+
+```
 
 ### Create a Table that Mirrors Key-Value Storage
 
@@ -253,6 +288,7 @@ In this example, we'll show a series of tables using different formats of foreig
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
 ~~~
@@ -264,6 +300,8 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 | 15 | Thales  | NY    |
 +----+---------+-------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
 
@@ -282,6 +320,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE logoff;
 ~~~

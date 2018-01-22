@@ -49,6 +49,17 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
+### Foreign Key Actions <span class="version-tag">New in v2.0</span>
+You can specify an action to take when a referenced column is updated or deleted.
+
+Parameter | Description
+----------|------------
+`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ If there are any existing references to the key being updated or deleted, the transaction will fail at the end of the statement. <br><br>Aliases: `ON DELETE RESTRICT` / `ON UPDATE RESTRICT`
+`ON DELETE RESTRICT` / `ON UPDATE RESTRICT` | `RESTRICT` and `NO ACTION` are currently equivalent until options for deferring constraint checking are added. To set an existing foreign key action to `RESTRICT`, the foreign key constraint must be dropped and recreated.
+`ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete will take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+`ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
+`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. If the default value for the column is null, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
+
 ### Performance
 
 Because the Foreign Key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
@@ -61,11 +72,11 @@ We're currently working to improve the performance of these statements, though.
 
 Foreign Key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint-with-cascade"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
 ### Column Level
 
-{% include sql/{{ page.version.version }}/diagrams/foreign_key_column_level.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_column_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -83,15 +94,16 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id),
+    customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
     orderTotal DECIMAL(9,2),
     INDEX (customer)
   );
 ~~~
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
 ### Table Level
 
-{% include sql/{{ page.version.version }}/diagrams/foreign_key_table_level.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_table_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -119,18 +131,35 @@ CREATE TABLE packages (
   ;
 ~~~
 
-## Usage Example
+## Usage Examples
 
+### Use a Foreign Key Constraint with Default Actions
+
+In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions-new-in-v2-0) (`ON UPDATE NO ACTION` / `ON DELETE NO ACTION`).
+
+First, create the referenced table.
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+~~~
 
+Next, create the child table.
+
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
     customer INT NOT NULL REFERENCES customers (id),
     orderTotal DECIMAL(9,2),
     INDEX (customer)
   );
+~~~
 
+Let's insert a record into each table.
+
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO customers VALUES (1001, 'a@co.tld');
 
 > INSERT INTO orders VALUES (1, 1002, 29.99);
@@ -138,6 +167,12 @@ CREATE TABLE packages (
 ~~~
 pq: foreign key violation: value [1002] not found in customers@primary [id]
 ~~~
+
+The second record insertion returns an error because the customer `1002` doesn't exist in the referenced table.
+
+Let's insert a record in the child table and try to update the referenced table.
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1001, 29.99);
 
@@ -146,11 +181,129 @@ pq: foreign key violation: value [1002] not found in customers@primary [id]
 ~~~
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
+
+The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON UPDATE NO ACTION`).
+
+Let's try to delete a referenced row.
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1001;
 ~~~
 ~~~
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+~~~
+
+Similarly, the deletion returns an error because `id = 100` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON DELETE NO ACTION`).
+
+### Use a Foreign Key Constraint with `CASCADE`
+
+In this example, we'll create a table with a foreign key constraint with the [foreign key action](#foreign-key-actions-new-in-v2-0) `ON DELETE CASCADE`.
+
+First, create the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE customers_2 (
+    id INT PRIMARY KEY
+  );
+~~~
+
+Then, create the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE orders_2 (
+    id INT PRIMARY KEY,
+    customer_id INT REFERENCES customer(id) ON UPDATE CASCADE ON DELETE CASCADE
+  );
+~~~
+
+Insert a few records in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers_2 VALUES (1), (2), (3);
+~~~
+
+Insert some records in the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
+~~~
+
+Now, let's update an `id` in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE customers_2 SET id = 23 WHERE id = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_2;
+~~~
+~~~
++----+
+| id |
++----+
+|  2 |
+|  3 |
+| 23 |
++----+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_2;
+~~~
+~~~
++-----+--------------+
+| id  | customers_id |
++-----+--------------+
+| 100 |           23 |
+| 101 |            2 |
+| 102 |            3 |
+| 103 |           23 |
++-----+--------------+
+~~~
+
+When the `id = 1` was updated to `id =23` in `customers_2`, the update propagated to the child table `orders_2`.
+
+Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM customers_2 WHERE id = 23;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_2;
+~~~
+~~~
++----+
+| id |
++----+
+|  2 |
+|  3 |
++----+
+~~~
+
+Let's check to make sure the rows in `orders_2` where `student_id = 23` were also deleted:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_2;
+~~~
+~~~
++-----+------------+
+| id  | student_id |
++-----+------------+
+| 101 |          2 |
+| 102 |          3 |
++-----+------------+
 ~~~
 
 ## See Also
@@ -164,4 +317,3 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 - [Primary Key constraint](primary-key.html)
 - [Unique constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-
