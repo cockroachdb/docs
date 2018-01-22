@@ -38,7 +38,7 @@ module JekyllVersions
     end
 
     def to_liquid
-      { 'name' => name, 'version' => version, 'tag' => tag }
+      { 'name' => name, 'version' => version, 'tag' => tag, 'stable' => stable? }
     end
 
     def <=>(other)
