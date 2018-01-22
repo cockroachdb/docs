@@ -29,7 +29,7 @@ The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropp
 
 ### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-tables).
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
 
 ### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
