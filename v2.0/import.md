@@ -174,15 +174,15 @@ URLs for the file you want to import and your temp directory must use the follow
 | NFS/Local [<sup>3</sup>](#notes) | `nodelocal` | File system location | N/A |
 | S3-compatible services | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
 
-#### Notes
+#### Considerations
 
-[<sup>1</sup>](#import-file-temp-directory-urls) Only supports instance auth.
+- [<sup>1</sup>](#import-file-temp-directory-urls) Only supports instance auth.
 
-[<sup>2</sup>](#import-file-temp-directory-urls) You can easily create your own HTTP server with [Caddy or nginx](create-a-file-server.html).
+- [<sup>2</sup>](#import-file-temp-directory-urls) You can easily create your own HTTP server with [Caddy or nginx](create-a-file-server.html).
 
-[<sup>3</sup>](#import-file-temp-directory-urls) The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. 
+- [<sup>3</sup>](#import-file-temp-directory-urls) The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. 
 
-The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+- The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 
 ### Import Options
 
