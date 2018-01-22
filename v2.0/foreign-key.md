@@ -49,6 +49,21 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
+### Foreign Key Actions
+<span class="version-tag">New in v2.0:</span> You can specify a foreign key reference action.
+
+Parameter | Description
+----------|------------
+`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ Fail if there are any existing references to the key being updated or deleted, but allow this check to be deferred until the end of the transaction.
+`ON UPDATE RESTRICT` / `ON DELETE RESTRICT` | Immediately fail if there are any existing references to the key being updated or deleted.
+`ON DELETE CASCADE` | When a referenced foreign key is deleted, all rows referencing that key are deleted. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete with take precedence. <br>Note that `CASCADE` does not list objects it drops, so it should be used cautiously.
+`ON UPDATE CASCADE` | When a referenced foreign key is updated, update the columns of all rows referencing that key to the new value.
+<!--
+`ON DELETE SET NULL` | When a referenced foreign key is deleted, set the columns of all rows referencing that key to null. The column must allow nulls or this update will still fail.
+`ON UPDATE SET NULL` | When a referenced foreign key is updated, set the columns of all rows referencing that key to null. The column must allow nulls or this update will still fail.
+`ON DELETE SET DEFAULT` | When a referenced foreign key is deleted, set the columns of all rows referencing that key to the default value for that column. If the default value for the column is null, this will have the same effect as `ON DELETE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
+`ON UPDATE SET DEFAULT` | When a referenced foreign key is updated, set the columns of all rows referencing that key to the default value for that column. If the default value for the column is null, this will have the same effect as `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`. -->
+
 ### Performance
 
 Because the Foreign Key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
@@ -83,11 +98,12 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id),
+    customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
     orderTotal DECIMAL(9,2),
     INDEX (customer)
   );
 ~~~
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so it should be used cautiously.{{site.data.alerts.end}}
 
 ### Table Level
 
@@ -164,4 +180,3 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 - [Primary Key constraint](primary-key.html)
 - [Unique constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-

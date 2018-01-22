@@ -6,6 +6,8 @@ toc: false
 
 The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so it should be used cautiously. If you delete a row that is referenced by a <a href="foreign-key.html">foreign key</a> and <code>ON DELETE CASCADE</code> is set, all of the dependent rows will also be deleted.{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}To delete columns, see <a href="drop-column.html"><code>DROP COLUMN</code></a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
