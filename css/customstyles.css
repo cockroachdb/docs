@@ -163,9 +163,7 @@ code {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
-  border: 1px solid #DADADA;
-  hyphens: none; }
+  line-height: 25px; }
 
 pre, code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
@@ -175,9 +173,12 @@ pre, code {
   -moz-osx-font-smoothing: grayscale;
   line-height: 25px;
   background-color: #F7F7F7;
+  border: 1px solid #DADADA;
+  border-radius: 4px;
   font-size: 14px;
   line-height: 25px;
-  color: #152849; }
+  color: #152849;
+  hyphens: none; }
 
 ul {
   padding-left: 25px; }
