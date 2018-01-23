@@ -523,6 +523,12 @@
             ]
           },
           {
+            "title": "<code>SHOW CREATE SEQUENCE</code>",
+            "urls": [
+              "/${VERSION}/show-create-sequence.html"
+            ]
+          },
+          {
             "title": "<code>SHOW CREATE TABLE</code>",
             "urls": [
               "/${VERSION}/show-create-table.html"

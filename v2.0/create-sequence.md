@@ -58,13 +58,38 @@ In this example, we create a sequence with default settings.
 > CREATE SEQUENCE customer_seq;
 ~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE SEQUENCE customer_seq;
+~~~
+~~~
++--------------+------------------------------------------------------------------------------------------+
+|   Sequence   |                                      CreateSequence                                      |
++--------------+------------------------------------------------------------------------------------------+
+| customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 |
++--------------+------------------------------------------------------------------------------------------+
+~~~
+
 ### Create a Sequence with User-Defined Settings
 
-In this example, we create a sequence that starts at 1000 and descends in increments of 2.
+In this example, we create a sequence that starts at -1 and descends in increments of 2.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE SEQUENCE desc_customer_list START 1000 INCREMENT -2;
+> CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE SEQUENCE desc_customer_list;
+~~~
+
+~~~
++--------------------+----------------------------------------------------------------------------------------------------+
+|      Sequence      |                                           CreateSequence                                           |
++--------------------+----------------------------------------------------------------------------------------------------+
+| desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1 |
++--------------------+----------------------------------------------------------------------------------------------------+
 ~~~
 
 ### Create a Table with a Sequence
@@ -105,14 +130,19 @@ Insert a few records to see the sequence.
 +----+----------+--------------------+
 ~~~
 
-<!-- ### View the Current Value of a Sequence
+### View the Current Value of a Sequence
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_seq;
 ~~~
 ~~~
-~~~ -->
++------------+---------+-----------+
+| last_value | log_cnt | is_called |
++------------+---------+-----------+
+|          3 |       0 |   true    |
++------------+---------+-----------+
+~~~
 
 ## See Also
 - [`ALTER SEQUENCE`](alter-sequence.html)
