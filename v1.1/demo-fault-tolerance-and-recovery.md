@@ -52,7 +52,7 @@ $ cockroach start \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-## Step 2. Initial the cluster
+## Step 2. Initialize the cluster
 
 In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
