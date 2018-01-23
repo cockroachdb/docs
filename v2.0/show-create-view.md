@@ -1,10 +1,10 @@
 ---
 title: SHOW CREATE VIEW
-summary: The SHOW CREATE VIEW statement shows the CREATE VIEW statement that would create a carbon copy of the specified view. 
+summary: The SHOW CREATE VIEW statement shows the CREATE VIEW statement that would create a copy of the specified view.
 toc: false
 ---
 
-The `SHOW CREATE VIEW` [statement](sql-statements.html) shows the `CREATE VIEW` statement that would create a carbon copy of the specified [view](views.html).
+The `SHOW CREATE VIEW` [statement](sql-statements.html) shows the `CREATE VIEW` statement that would create a copy of the specified [view](views.html).
 
 <div id="toc"></div>
 
@@ -27,7 +27,7 @@ Parameter | Description
 Field | Description
 ------|------------
 `View` | The name of the view.
-`CreateView` | The [`CREATE VIEW`](create-view.html) statement for creating a carbon copy of the specified view. 
+`CreateView` | The [`CREATE VIEW`](create-view.html) statement for creating a copy of the specified view. 
 
 ## Examples
 
@@ -48,11 +48,11 @@ Field | Description
 
 ### Show just a view's `SELECT` statement
 
-To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name: 
+To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name:
 
 ~~~ sql
-> SELECT view_definition 
-  FROM information_schema.views 
+> SELECT view_definition
+  FROM information_schema.views
   WHERE table_name = 'user_accounts';
 ~~~
 

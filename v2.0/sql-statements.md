@@ -53,11 +53,13 @@ Statement | Usage
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
+[`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a carbon copy of the specified table.
-[`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a carbon copy of the specified view.
+[`SHOW CREATE SEQUENCE`](show-create-sequence.html) | <span class="version-tag">New in v2.0:</span> View the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
+[`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a copy of the specified table.
+[`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW TABLES`](show-tables.html) | List tables in a database.
