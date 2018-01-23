@@ -34,7 +34,11 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 - Running at least 3 nodes to ensure survivability.
 - Selecting the same continent for all of your Droplets for best performance.
 
-## Step 2. Set up load balancing
+## Step 2. Sychronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 3. Set up load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -51,7 +55,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
 
-## Step 3. Configure your network
+## Step 4. Configure your network
 
 Set up a firewall for each of your Droplets, allowing TCP communication on the following two ports:
 
@@ -66,35 +70,35 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 - CoreOS can use [`iptables`](https://www.digitalocean.com/community/tutorials/how-to-secure-your-coreos-cluster-with-tls-ssl-and-firewall-rules).
 - CentOS can use [`firewalld`](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7).
 
-## Step 4. Generate certificates
+## Step 5. Generate certificates
 
 {% include prod_deployment/secure-generate-certificates.md %}
 
-## Step 5. Start nodes
+## Step 6. Start nodes
 
 {% include prod_deployment/secure-start-nodes.md %}
 
-## Step 6. Initialize the cluster
+## Step 7. Initialize the cluster
 
 {% include prod_deployment/secure-initialize-cluster.md %}
 
-## Step 7. Test the cluster
+## Step 8. Test the cluster
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 9. Test load balancing
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 9. Use the database
+## Step 10. Use the database
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 10. Monitor the cluster
+## Step 11. Monitor the cluster
 
 {% include prod_deployment/secure-monitor-cluster.md %}
 
-## Step 11. Scale the cluster
+## Step 12. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
 

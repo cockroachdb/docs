@@ -1,11 +1,14 @@
+// responsive breakpoints
 $screen-xsm: 544px;
 $screen-sm:  768px;
 $screen-md:  992px;
 $screen-lg:  1200px;
 
+// layout
 $max-width: 1110px;
 $max-plus-gutters: 1170px;
 
+// base colors
 $cl_green: #54B30E;
 $cl_green_dark: #338C03;
 $cl_green_bright: #69CC00;
@@ -21,3 +24,10 @@ $cl_gray_body: #142848;
 $cl_gray_footer: #F7F7F7;
 $cl_warning: #D9534F;
 $cl_warning_light: #FCF4F3;
+
+// syntax highlighting colors
+$cl_syntax_gray: #A2A2A2;
+$cl_syntax_gray_light: #F7F7F7;
+$cl_syntax_purple: #A0247A;
+$cl_syntax_blue: #3C80E1;
+$cl_syntax_green: #26A5A5;

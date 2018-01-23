@@ -16,7 +16,6 @@ Before getting started, it's important to review some current requirements and l
 
 ### Requirements
 
-- At this time, only CockroachDB v1.0.x is supported. Support for subsequent versions of CockroachDB is coming soon.
 - Your cluster must have at least 3 private nodes.
 - If you are using Enterprise DC/OS, you may need to [provision a service account](https://docs.mesosphere.com/1.9/security/ent/service-auth/custom-service-auth/) before installing CockroachDB. Only someone with `superuser` permission can create the service account.
 
@@ -28,7 +27,11 @@ Before getting started, it's important to review some current requirements and l
 
 ### Limitations
 
+CockroachDB in DC/OS works the same as in other environments with the exception of the following limitations:
+
 - The `cockroachdb` DC/OS service has been tested only on DC/OS versions 1.9 and 1.10.
+- Running in secure mode is not supported at this time.
+- Running a multi-datacenter cluster is not supported at this time.
 - Removing a node is not supported at this time.
 - Neither volume type nor volume size requirements may be changed after initial deployment.
 - Rack placement and awareness are not supported at this time.
@@ -58,13 +61,13 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ dcos package install cockroachdb
+        $ dcos package install cockroachdb --package-version=1.0.0-1.0.2
         ~~~
     - If you created a custom `cockroach.json` configuration, run:
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ dcos package install cockroachdb --options=cockroach.json
+        $ dcos package install cockroachdb --package-version=1.0.0-1.0.2 --options=cockroach.json
         ~~~
 
 3. Monitor the cluster's deployment from the **Services** tab of the DC/OS UI.
@@ -114,7 +117,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker run -it cockroachdb/cockroach:v1.0.6  sql --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
+    $ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }}  sql --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
     ~~~
 
     ~~~
@@ -202,7 +205,7 @@ $ dcos node ssh --master-proxy --leader
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ docker run -it cockroachdb/cockroach:v1.0.6 node status --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
+$ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }} node status --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
 ~~~
 
 ~~~

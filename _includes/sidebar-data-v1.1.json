@@ -807,6 +807,12 @@
         "title": "Performance Optimization",
         "items": [
           {
+            "title": "SQL Best Practices",
+            "urls": [
+              "/${VERSION}/performance-best-practices-overview.html"
+            ]
+          },
+          {
             "title": "Indexes",
             "urls": [
               "/${VERSION}/indexes.html"
@@ -854,6 +860,12 @@
   {
     "title": "Deploy",
     "items": [
+      {
+        "title": "Deploy a Test Cluster",
+        "urls": [
+          "/${VERSION}/deploy-a-test-cluster.html"
+        ]
+      },
       {
         "title": "Recommended Production Settings",
         "urls": [
@@ -927,6 +939,12 @@
             "urls": [
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
+            ]
+          },
+          {
+            "title": "Mesosphere DC/OS",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
             ]
           }
         ]
@@ -1057,7 +1075,7 @@
         ]
       },
       {
-        "title": "Upgrade a Cluster's Version",
+        "title": "Upgrade to CockroachDB v1.1",
         "urls": [
           "/${VERSION}/upgrade-cockroach-version.html"
         ]

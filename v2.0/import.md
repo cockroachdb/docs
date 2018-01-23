@@ -169,17 +169,20 @@ URLs for the file you want to import and your temp directory must use the follow
 |----------|--------|------|------------|
 | Amazon S3 | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` |
 | Azure | `azure` | Container name | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` |
-| Google Cloud [<sup>1</sup>](#notes) | `gs` | Bucket name | None |
-| HTTP [<sup>2</sup>](#notes) | `http` | Remote host | N/A |
-| NFS/Local [<sup>3</sup>](#notes) | `nodelocal` | File system location | N/A |
+| Google Cloud [<sup>1</sup>](#considerations) | `gs` | Bucket name | None |
+| HTTP [<sup>2</sup>](#considerations) | `http` | Remote host | N/A |
+| NFS/Local [<sup>3</sup>](#considerations) | `nodelocal` | File system location | N/A |
+| S3-compatible services | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
 
-#### Notes
+#### Considerations
 
-[<sup>1</sup>](#import-file-temp-directory-urls) Only supports instance auth.
+- [<sup>1</sup>](#import-file-temp-directory-urls) Only supports instance auth.
 
-[<sup>2</sup>](#import-file-temp-directory-urls) You can easily create your own HTTP server with [Caddy or nginx](create-a-file-server.html).
+- [<sup>2</sup>](#import-file-temp-directory-urls) You can easily create your own HTTP server with [Caddy or nginx](create-a-file-server.html).
 
-[<sup>3</sup>](#import-file-temp-directory-urls) If using NFS for your temp directory, each node in the cluster must have access to the NFS using the same URL.
+- [<sup>3</sup>](#import-file-temp-directory-urls) The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. 
+
+- The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 
 ### Import Options
 

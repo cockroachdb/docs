@@ -1,5 +1,5 @@
 ---
-title: Upgrade a Cluster's Version
+title: Upgrade to CockroachDB v2.0
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: false
 toc_not_nested: true
@@ -7,7 +7,7 @@ toc_not_nested: true
 
 Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
 
-{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0.x to v1.1, or from v1.1 to a patch release in the 1.1.x series. To upgrade within the 1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the 1.0 version of this page</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.1.x to v2.0, or from v2.0 to a patch release in the 2.0.x series. To upgrade within the 1.1.x series, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the 1.1 version of this page</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -23,7 +23,7 @@ Before starting the upgrade, complete the following steps.
     - If any nodes that should be live are not listed, identify why the nodes are offline and restart them before begining your upgrade.
     - Make sure the `build` field shows the same version of CockroachDB for all nodes. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
     - Make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.
-        {{site.data.alerts.callout_info}}When upgrading within the v1.1.x series, pass the <code>--ranges</code> or <code>--all</code> flag to include these range details in the response.{{site.data.alerts.end}}
+        {{site.data.alerts.callout_success}}Pass the <code>--ranges</code> or <code>--all</code> flag to include these range details in the response.{{site.data.alerts.end}}
 
 3. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
@@ -152,7 +152,7 @@ For each node in your cluster, complete the following steps.
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new 1.1 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.0, if necessary.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}During this phase, avoid using any new 2.0 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.1, if necessary.{{site.data.alerts.end}}
 
 ## Step 4. Finalize or revert the upgrade
 
@@ -164,19 +164,27 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the 1.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you don't need to take any further action.{{site.data.alerts.end}}
 
 1. [Back up the cluster](back-up-data.html).
 
-2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster and execute the following query:
+2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+
+3. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
     ~~~ sql
-    > SET CLUSTER SETTING version = '1.1';
+    > SELECT crdb_internal.node_executable_version();
     ~~~
 
-    {{site.data.alerts.callout_info}}This step assumes you've upgraded to at least v1.1.1.{{site.data.alerts.end}}
+    Make sure the version matches your expectations. Since you upgraded each node, this version should be running on all other nodes as well.
 
-    This step enables certain performance improvements and bug fixes that were introduced in v1.1. Note, however, that after completing this step, it will no longer be possible to perform a rolling downgrade to v1.0. In the event of a catastrophic failure or corruption due to usage of new features requiring v1.1, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.
+4. Use the same function to finalize the upgrade:
+
+    ~~~ sql
+    > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
+    ~~~
+
+    This step enables certain performance improvements and bug fixes that were introduced in v2.0. Note, however, that after completing this step, it will no longer be possible to perform a rolling downgrade to v1.1. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.0, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.
 
 ### Revert the upgrade
 

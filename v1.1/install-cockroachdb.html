@@ -8,36 +8,12 @@ allowed_hashes: [os-mac, os-linux, os-windows]
 
 <script>
 $(document).ready(function(){
-
-    //detect os and display corresponding tab by default
-    if (navigator.appVersion.indexOf("Mac")!=-1) {
-        $('#os-tabs').find('button').removeClass('current');
-        $('#mac').addClass('current');
-        toggleMac();
-    }
-    if (navigator.appVersion.indexOf("Linux")!=-1) {
-        $('#os-tabs').find('button').removeClass('current');
-        $('#linux').addClass('current');
-        toggleLinux();
-    }
-    if (navigator.appVersion.indexOf("Win")!=-1) {
-        $('#os-tabs').find('button').removeClass('current');
-        $('#windows').addClass('current');
-        toggleWindows();
-    }
-
-    var install_option = $('.install-option'),
-        install_button = $('.install-button');
-
-    install_button.on('click', function(e){
-      e.preventDefault();
-      var hash = $(this).prop("hash");
-
-      install_button.removeClass('current');
-      $(this).addClass('current');
-      install_option.hide();
-      $(hash).show();
-
+    $('.install-button').on('click', function(e) {
+        e.preventDefault();
+        $('.install-button').removeClass('current');
+        $(this).addClass('current');
+        $('.install-option').hide();
+        $($(this).prop("hash")).show();
     });
 
     //handle click event for os-tab buttons
@@ -45,30 +21,19 @@ $(document).ready(function(){
         $('#os-tabs').find('button').removeClass('current');
         $(this).addClass('current');
 
-        if($(this).is('#mac')){ toggleMac(); }
-        if($(this).is('#linux')){ toggleLinux(); }
-        if($(this).is('#windows')){ toggleWindows(); }
+        $("#macinstall,#linuxinstall,#windowsinstall").hide();
+        var os = $(this).attr("id");
+        $("#" + os + "install").show();
+        $("." + os + "-button:first").click();
     });
 
-    function toggleMac(){
-        $(".mac-button:first").trigger('click');
-        $("#macinstall").show();
-        $("#linuxinstall").hide();
-        $("#windowsinstall").hide();
-    }
-
-    function toggleLinux(){
-        $(".linux-button:first").trigger('click');
-        $("#linuxinstall").show();
-        $("#macinstall").hide();
-        $("#windowsinstall").hide();
-    }
-
-    function toggleWindows(){
-        $(".windows-button:first").trigger('click');
-        $("#windowsinstall").show();
-        $("#macinstall").hide();
-        $("#linuxinstall").hide();
+    // Detect OS and display corresponding tab by default.
+    if (navigator.userAgent.indexOf("Linux") !== -1) {
+        $("#linux").click();
+    } else if (navigator.userAgent.indexOf("Win") !== -1) {
+        $("#windows").click();
+    } else {
+        $("#mac").click();
     }
 });
 </script>
@@ -83,12 +48,15 @@ $(document).ready(function(){
 <p>See <a href="../releases/{{page.release_info.version}}.html" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. </p>
 
 <div id="mac-installs" class="clearfix install-wrap">
-<a href="#use-homebrew" class="install-button mac-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
+{% if page.version.stable %}
+<a href="#use-homebrew" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-homebrew">Use <div class="c2a">Homebrew</div></a>
+{% endif %}
 <a href="#download-the-binary" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-binary">Download the <div class="c2a">Binary</div></a>
 <a href="#build-from-source" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-source">Build from <div class="c2a">Source</div></a>
 <a href="#use-docker" class="install-button mac-button" data-eventcategory="buttonClick-doc-install" data-eventaction="mac-docker">Use <div class="c2a">Docker</div></a>
 </div>
 
+{% if page.version.stable %}
 <div id="use-homebrew" class="install-option">
   <ol>
     <li>
@@ -126,8 +94,9 @@ $(document).ready(function(){
 {% include diagnostics-callout.html %}
 
 </div>
+{% endif %}
 
-<div id="download-the-binary" class="install-option" style="display: none;">
+<div id="download-the-binary" class="install-option">
   <ol>
     <li>
       <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X, and extract the binary:</p>
@@ -302,7 +271,7 @@ $(document).ready(function(){
 <p>See <a href="../releases/{{page.release_info.version}}.html" data-eventcategory="linux-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}.</p>
 
 <div id="linux-installs" class="clearfix install-wrap">
-<a href="#download-the-binary-linux" class="install-button linux-button current" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
+<a href="#download-the-binary-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-binary" data-eventlabel="">Download the <div class="c2a">Binary</div></a>
 <a href="#build-from-source-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-source">Build from <div class="c2a">Source</div></a>
 <a href="#use-docker-linux" class="install-button linux-button" data-eventcategory="buttonClick-doc-install" data-eventaction="linux-docker">Use <div class="c2a">Docker</div></a>
 </div>

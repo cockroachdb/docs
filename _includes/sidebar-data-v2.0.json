@@ -766,6 +766,12 @@
             ]
           },
           {
+            "title": "<code>TIME</code>",
+            "urls": [
+              "/${VERSION}/time.html"
+            ]
+          },
+          {
             "title": "<code>TIMESTAMP</code>",
             "urls": [
               "/${VERSION}/timestamp.html"
@@ -831,6 +837,12 @@
         "title": "Performance Optimization",
         "items": [
           {
+            "title": "SQL Best Practices",
+            "urls": [
+              "/${VERSION}/performance-best-practices-overview.html"
+            ]
+          },
+          {
             "title": "Indexes",
             "urls": [
               "/${VERSION}/indexes.html"
@@ -878,6 +890,12 @@
   {
     "title": "Deploy",
     "items": [
+      {
+        "title": "Deploy a Test Cluster",
+        "urls": [
+          "/${VERSION}/deploy-a-test-cluster.html"
+        ]
+      },
       {
         "title": "Recommended Production Settings",
         "urls": [
@@ -952,6 +970,12 @@
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
             ]
+          },
+          {
+            "title": "Mesosphere DC/OS",
+            "urls": [
+              "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
+            ]
           }
         ]
       },
@@ -996,6 +1020,12 @@
         "title": "Configure Replication Zones",
         "urls": [
           "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Enterprise Licensing",
+        "urls": [
+          "/${VERSION}/enterprise-licensing.html"
         ]
       }
     ]
@@ -1075,7 +1105,7 @@
         ]
       },
       {
-        "title": "Upgrade a Cluster's Version",
+        "title": "Upgrade to CockroachDB v2.0",
         "urls": [
           "/${VERSION}/upgrade-cockroach-version.html"
         ]

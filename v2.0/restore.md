@@ -109,8 +109,13 @@ The URL for your backup's locations must use the following format:
 | Google Cloud Storage | `gs` | Bucket name | None––currently only supports instance auth, but we can build non-instance auth at a customer's request |
 | HTTP | `http` | Remote host | N/A |
 | NFS | `nodelocal` | File system location | N/A |
+| S3-compatible services | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
 
-{{site.data.alerts.callout_info}}Backups stored on NFSes work only if each node in the cluster accesses the drive in the same way.{{site.data.alerts.end}}
+#### Considerations
+
+- The backup location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+- Backups stored on NFSes work only if each node in the cluster accesses the drive in the same way.
+- The file system backup location on a local node or NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then backups and restores from local directories and NFS drives are disabled. 
 
 ### Restore Option List
 
