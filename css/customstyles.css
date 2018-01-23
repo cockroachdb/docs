@@ -157,6 +157,16 @@ h4 {
 pre {
   overflow: auto; }
 
+code {
+  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 25px;
+  border: 1px solid #DADADA;
+  hyphens: none; }
+
 pre, code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
   font-size: 14px;
@@ -168,15 +178,6 @@ pre, code {
   font-size: 14px;
   line-height: 25px;
   color: #152849; }
-
-code {
-  font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
-  border: 1px solid #DADADA; }
 
 ul {
   padding-left: 25px; }
@@ -2234,6 +2235,8 @@ polygon.regexp {
   /* Literal.Number.Integer.Long */ }
   .highlight pre {
     padding: 20px 30px; }
+  .highlight a code {
+    color: #54B30E; }
   .highlight .err {
     color: #a61717;
     background-color: #e3d2d2; }
@@ -2360,9 +2363,6 @@ polygon.regexp {
     color: #008080; }
   .highlight .il {
     color: #009999; }
-
-a code {
-  color: #54B30E; }
 
 /* Feedback question and buttons */
 #feedback-prompt {
