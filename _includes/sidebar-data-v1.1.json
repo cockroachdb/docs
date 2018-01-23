@@ -1075,7 +1075,7 @@
         ]
       },
       {
-        "title": "Upgrade a Cluster's Version",
+        "title": "Upgrade to CockroachDB v1.1",
         "urls": [
           "/${VERSION}/upgrade-cockroach-version.html"
         ]
