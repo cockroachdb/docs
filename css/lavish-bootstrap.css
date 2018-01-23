@@ -627,6 +627,7 @@ code {
   color: #444;
   background-color: #f0f0f0;
   white-space: nowrap;
+  border-radius: 4px;
 }
 
 a code {
