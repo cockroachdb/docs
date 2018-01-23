@@ -69,6 +69,8 @@ TRUNCATE
 
 As you can see, one difference is that `TRUNCATE` does not return the number of rows it deleted.
 
+{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> statement removes all rows from a table by dropping the table and recreating a new table with the same name. This is much more performant than deleting each of the rows. {{site.data.alerts.end}}
+
 ### Delete Specific Rows
 
 When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using columns with the [Primary Key](primary-key.html)/[Unique](unique.html) constraints (both of which enforce uniqueness) versus those that are not unique.

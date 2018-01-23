@@ -1486,7 +1486,7 @@ a.accordion-toggle {
     border: solid 1px #bcbcbc;
     border-radius: 32px;
     height: 40px;
-    width: 86%;
+    width: calc(100% - 30px);
     outline: 0px none;
     padding: 3px 10px 0px 45px;
     transition: all 0.15s ease 0s;
@@ -1529,15 +1529,12 @@ li.search-wrap {
 .clear-search {
   display: none;
   position: absolute;
-  top: 1px;
-  right: 48px;
+  top: 2px;
+  right: calc(0% + 30px);
   height: 38px;
   width: 35px;
   border-radius: 50%;
   outline: none; }
-  @media screen and (min-width: 768px) {
-    .clear-search {
-      right: 104px; } }
   @media screen and (min-width: 992px) {
     .clear-search {
       right: 20px; } }
@@ -1613,11 +1610,11 @@ li.search-wrap {
     list-style: none; }
     #toc > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 25px;
+      line-height: 20px;
       color: #152849; }
       #toc > ul li a:hover {
         color: #54B30E;
@@ -2372,8 +2369,8 @@ a code {
   display: inline-block;
   padding: 25px;
   background-color: #F0FFE8;
-  font-size: 0;
-  line-height: 0; }
+  font-size: 17px;
+  line-height: 1; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
@@ -2404,7 +2401,9 @@ a code {
   #feedback-prompt p.feedback-response {
     line-height: 20px;
     font-size: 14px; } }
-.yes-button, .no-button {
+#yes-button,
+#no-button,
+#feedback-prompt input[type="submit"] {
   width: 70px;
   height: 40px;
   margin: 0 5px;
@@ -2431,10 +2430,34 @@ a code {
   -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
-  .yes-button:hover, .no-button:hover {
+  #yes-button:hover,
+  #no-button:hover,
+  #feedback-prompt input[type="submit"]:hover {
     background-color: #152849;
     color: #fff !important;
-    border-bottom: 2px solid #152849 !important; }
+    border-bottom: none; }
+
+form[class*="hs-form"] {
+  margin-bottom: 0; }
+  form[class*="hs-form"] label {
+    font-family: inherit;
+    font-size: 15px; }
+  form[class*="hs-form"] div[class="actions"] {
+    padding: 0;
+    margin: 0; }
+  form[class*="hs-form"] input[type="radio"][class="hs-input"] {
+    margin-right: 10px; }
+  form[class*="hs-form"] input[type="submit"] {
+    background: none;
+    text-shadow: none;
+    box-sizing: border-box; }
+    form[class*="hs-form"] input[type="submit"]:hover:not(.inactive) {
+      border: 1px solid #152849;
+      box-shadow: none; }
+  form[class*="hs-form"] textarea:focus,
+  form[class*="hs-form"] input[type="email"]:focus {
+    border: 1px solid #54B30E;
+    box-shadow: none; }
 
 /* Feedback popup and hubspot form
 * Most of this is from Magnific Popup - v1.1.0 - 2016-02-20

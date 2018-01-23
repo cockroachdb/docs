@@ -24,23 +24,27 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {% include prod_deployment/secure-recommendations.md %}
 
-## Step 1. Generate certificates
+## Step 1. Synchronize clocks
+
+{% include prod_deployment/synchronize-clocks.md %}
+
+## Step 2. Generate certificates
 
 {% include prod_deployment/secure-generate-certificates.md %}
 
-## Step 2. Start nodes
+## Step 3. Start nodes
 
 {% include prod_deployment/secure-start-nodes.md %}
 
-## Step 3. Initialize the cluster
+## Step 4. Initialize the cluster
 
 {% include prod_deployment/secure-initialize-cluster.md %}
 
-## Step 4. Test the cluster
+## Step 5. Test the cluster
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 5. Set up HAProxy load balancers
+## Step 6. Set up HAProxy load balancers
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -118,19 +122,19 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 6. Repeat these steps for each additional instance of HAProxy you want to run.
 
-## Step 6. Test load balancing
+## Step 7. Test load balancing
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 7. Use the cluster
+## Step 8. Use the cluster
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 8. Monitor the cluster
+## Step 9. Monitor the cluster
 
 {% include prod_deployment/secure-monitor-cluster.md %}
 
-## Step 9. Scale the cluster
+## Step 10. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
 

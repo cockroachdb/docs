@@ -1,5 +1,5 @@
 ---
-title: Upgrade a Cluster's Version
+title: Upgrade to CockroachDB v1.1
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: false
 toc_not_nested: true
