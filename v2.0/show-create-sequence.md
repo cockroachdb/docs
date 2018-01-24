@@ -14,9 +14,7 @@ The user must have any [privilege](privileges.html) on the target sequence.
 
 ## Synopsis
 
-SHOW CREATE TABLE sequence_name
-
-<!-- {% include sql/{{ page.version.version }}/diagrams/show_create_table.html %} -->
+{% include sql/{{ page.version.version }}/diagrams/show_create_sequence.html %}
 
 ## Parameters
 
