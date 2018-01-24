@@ -91,9 +91,12 @@ h4 {
   }
 }
 
-pre {
-  overflow: auto;
-}
+pre { overflow: auto; }
+
+code {
+  @include code-type;
+  border: 1px solid $cl_gray_medium;
+ }
 
 pre, code {
   @include code-type;
@@ -101,11 +104,7 @@ pre, code {
   font-size: 14px;
   line-height: 25px;
   color: $cl_blue;
-}
-
-code {
-  @include code-type;
-  border: 1px solid $cl_gray_medium;
+  hyphens: none;
 }
 
 ul {
