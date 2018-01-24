@@ -207,7 +207,7 @@ For example:
 
 The following statement inserts Albert in the `employee` table and
 immediately creates a matching entry in the `management` table with the
-auto-generated employee ID, without requiring a roundtrip with the SQL
+auto-generated employee ID, without requiring a round-trip with the SQL
 client:
 
 ~~~sql

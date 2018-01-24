@@ -38,7 +38,7 @@ When running a cluster with more than one node, each replica will be on a differ
 
 - When replicating across datacenters, it's recommended to specify which datacenter each node is in using the `--locality` flag to ensure even replication (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). If some of your datacenters are much farther apart than others, [specifying multiple levels of locality (such as country and region) is recommended](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
 
-- When replicating across datacenters, be aware that the round trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
+- When replicating across datacenters, be aware that the round-trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
 
 For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 

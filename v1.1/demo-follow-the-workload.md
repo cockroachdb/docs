@@ -22,7 +22,7 @@ Term | Description
 
 ### How It Works
 
-"Follow-the-workload" is based on the way **range leases** handle read requests. Read requests bypass the Raft consensus protocol, accessing the range replica that holds the range lease (the leaseholder) and sending the results to the client without needing to coordinate with any of the other range replicas. Bypassing Raft, and the network roundtrips involved, is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder.
+"Follow-the-workload" is based on the way **range leases** handle read requests. Read requests bypass the Raft consensus protocol, accessing the range replica that holds the range lease (the leaseholder) and sending the results to the client without needing to coordinate with any of the other range replicas. Bypassing Raft, and the network round trips involved, is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder.
 
 This increases the speed of reads, but it doesn't guarantee that the range lease will be anywhere close to the origin of requests. If requests are coming from the US West, for example, and the relevant range lease is on a node in the US East, the requests would likely enter a gateway node in the US West and then get routed to the node with the range lease in the US East.
 
@@ -36,7 +36,7 @@ In this example, let's imagine that lots of read requests are going to node 1, a
 
 <img src="{{ 'images/follow-workload-1.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
-However, if the nodes were started with the [`--locality`](start-a-node.html#locality) flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network roundtrips and increasing the speed of reads.
+However, if the nodes were started with the [`--locality`](start-a-node.html#locality) flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network round trips and increasing the speed of reads.
 
 <img src="{{ 'images/follow-workload-2.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
