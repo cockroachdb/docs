@@ -1,6 +1,7 @@
 [
   {
     "title": "Get Started",
+    "is_top_level": true,
     "items": [
       {
         "title": "Install CockroachDB",
@@ -164,6 +165,7 @@
   },
   {
     "title": "Develop",
+    "is_top_level": true,
     "items": [
       {
         "title": "Install Client Drivers",
@@ -859,6 +861,7 @@
   },
   {
     "title": "Deploy",
+    "is_top_level": true,
     "items": [
       {
         "title": "Deploy a Test Cluster",
@@ -1002,6 +1005,7 @@
   },
   {
     "title": "Manage",
+    "is_top_level": true,
     "items": [
       {
         "title": "Monitor CockroachDB with the Admin UI",
@@ -1156,6 +1160,7 @@
   },
   {
     "title": "Troubleshoot",
+    "is_top_level": true,
     "items": [
       {
         "title": "Overview",
@@ -1209,6 +1214,7 @@
   },
   {
     "title": "Architecture",
+    "is_top_level": true,
     "items": [
       {
         "title": "Overview",
@@ -1250,6 +1256,7 @@
   },
   {
     "title": "Contribute",
+    "is_top_level": true,
     "items": [
       {
         "title": "Contribute to CockroachDB",
@@ -1268,6 +1275,7 @@
   {% include sidebar-releases.json %},
   {
     "title": "FAQs",
+    "is_top_level": true,
     "items": [
       {
         "title": "Product FAQs",

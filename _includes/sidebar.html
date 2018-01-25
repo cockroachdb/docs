@@ -82,7 +82,7 @@
       <div class="search">
         <span class="fa fa-search"></span>
         <form method="GET" action="{{ 'search.html' | relative_url }}">
-          <input type="text" id="search-input" name="q" placeholder="Search">
+          <input type="text" id="search-input" name="q" placeholder="Search docs">
           <span class="clear-search"></span>
         </form>
       </div>
@@ -145,6 +145,7 @@
             var urls = (item.urls || []).map(function (url) {
                 return baseUrl + url.replace("${VERSION}", pageVersion);
             });
+
             var active = (urls.indexOf(location.pathname) !== -1);
             if (active) {
               // This mutation inside an otherwise pure function is
@@ -153,16 +154,20 @@
               var breadcrumbs = $("<div>")
                 .addClass("collapsed-header__pre")
                 .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
+
               var title = $("<div>").html(item.title);
               $(".collapsed-header").empty().append(breadcrumbs, title);
             }
+
             var subitems = renderItems(item.items, paths.concat(item.title));
             var a = $("<a>")
               .attr("href", urls[0] || "#")
               .html(item.title);
+
             if (subitems.length > 0) {
               a.append(" ").append($("<div>").addClass("arrow-down"));
             }
+
             return $("<li>")
               .addClass("tier-" + (paths.length + 1))
               .toggleClass("active", active)

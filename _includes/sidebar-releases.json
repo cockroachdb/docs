@@ -1,5 +1,6 @@
 {
   "title": "Releases",
+  "is_top_level": true,
   "items": [
     {
       "title": "v1.1.4",
