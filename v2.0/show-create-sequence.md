@@ -1,10 +1,10 @@
 ---
 title: SHOW CREATE SEQUENCE
-summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement that would create a carbon copy of the specified sequence.
+summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement that would create a copy of the specified sequence.
 toc: false
 ---
 
-The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a carbon copy of the specified table.
+The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified table.
 
 <div id="toc"></div>
 
@@ -27,7 +27,7 @@ Parameter | Description
 Field | Description
 ------|------------
 `Sequence` | The name of the table.
-`CreateSequence` | The [`CREATE SEQUENCE`](create-sequence.html) statement for creating a carbon copy of the specified sequence.
+`CreateSequence` | The [`CREATE SEQUENCE`](create-sequence.html) statement for creating a copy of the specified sequence.
 
 ## Example
 
