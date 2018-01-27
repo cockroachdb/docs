@@ -727,7 +727,9 @@ a:not([href]) {
 
 @media screen and (min-width: 992px) {
   #mysidebar li .arrow-down,
-  #version-switcher li .arrow-down {
+  #mysidebar li .nav-expand,
+  #version-switcher li .arrow-down,
+  #version-switcher li .nav-expand {
     float: right; } }
 
 #mysidebar {
@@ -749,8 +751,12 @@ a:not([href]) {
     text-transform: none; }
   #mysidebar li a {
     width: 100%; }
-  #mysidebar li .arrow-down {
+  #mysidebar li .arrow-down,
+  #mysidebar li .nav-expand {
     margin-right: 10px; }
+  #mysidebar li .nav-expand {
+    display: inline-block;
+    margin-top: 8px; }
   #mysidebar > li {
     padding: 10px 0; }
     #mysidebar > li > a {

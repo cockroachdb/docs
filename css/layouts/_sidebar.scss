@@ -262,7 +262,8 @@ a:not([href]) {
 
 #mysidebar,
 #version-switcher {
-  li .arrow-down {
+  li .arrow-down,
+  li .nav-expand {
     @include at-query($min, $screen-md) { float: right; }
   }
 }
@@ -288,7 +289,13 @@ a:not([href]) {
 
   li a { width: 100%; }
 
-  li .arrow-down { margin-right: 10px; }
+  li .arrow-down,
+  li .nav-expand { margin-right: 10px; }
+
+  li .nav-expand {
+    display: inline-block;
+    margin-top: 8px;
+  }
 
   // tier 1
   > li {

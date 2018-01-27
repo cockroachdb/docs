@@ -165,7 +165,11 @@
               .html(item.title);
 
             if (subitems.length > 0) {
-              a.append(" ").append($("<div>").addClass("arrow-down"));
+              if (item.is_top_level) {
+                a.append(" ").append($("<div>").addClass("nav-expand"));
+              } else {
+                a.append(" ").append($("<div>").addClass("arrow-down"));
+              }
             }
 
             return $("<li>")
