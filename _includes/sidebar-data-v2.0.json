@@ -735,6 +735,12 @@
             ]
           },
           {
+            "title": "<code>INET</code>",
+            "urls": [
+              "/${VERSION}/inet.html"
+            ]
+          },
+          {
             "title": "<code>INT</code>",
             "urls": [
               "/${VERSION}/int.html"

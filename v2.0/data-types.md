@@ -10,6 +10,7 @@ CockroachDB supports the following data types. Click a type for more details.
 
 Type | Description | Example
 -----|-------------|--------
+[`INET`](inet.html) | A IPv4 or IPv6 address. | `192.168.0.1`
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`UUID`](uuid.html) | <span class="version-tag">New in v1.1:</span> A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
@@ -44,5 +45,5 @@ CockroachDB supports explicit type conversions using the following methods:
 - Other [built-in conversion functions](functions-and-operators.html) when the type is not a SQL type, for example `from_ip()`, `to_ip()` to convert IP addresses between `STRING` and `BYTES` values.
 
 
-You can find each data type's supported converstion and casting on its
+You can find each data type's supported conversion and casting on its
 respective page in its section **Supported Casting & Conversion**.
