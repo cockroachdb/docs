@@ -75,3 +75,4 @@ Next, we'll add another record to the table and check that the new record adhere
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
+- [Other SQL Statements](sql-statements.html)

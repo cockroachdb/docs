@@ -31,7 +31,7 @@ table td:first-child {
 
  Parameter | Description
 -----------|------------
-`seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
+`seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.seq_name`.
 `INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
@@ -42,12 +42,30 @@ table td:first-child {
 
 We support the following [SQL sequence functions](functions-and-operators.html):
 
-- `nextval('sequence_name')`
-- `currval('sequence_name')`
+- `nextval('seq_name')`
+- `currval('seq_name')`
 - `lastval()`
-- `setval('sequence_name', value, is_called)`
+- `setval('seq_name', value, is_called)`
 
 ## Examples
+
+### List All Sequences
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM information_schema.sequences;
+~~~
+~~~
++------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
+| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
++------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
+| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
+| def              | test_db         | customer_seq       | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
+| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
+| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
++------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
+(4 rows)
+~~~
 
 ### Create a Sequence with Default Settings
 
@@ -132,6 +150,8 @@ Insert a few records to see the sequence.
 
 ### View the Current Value of a Sequence
 
+To view the current value of a sequence without incrementing the sequence, use:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_seq;
@@ -143,8 +163,23 @@ Insert a few records to see the sequence.
 |          3 |       0 |   true    |
 +------------+---------+-----------+
 ~~~
+`last_value` is the value that was last used by the sequence.
+
+If a value has been obtained from the sequence in the current session, you can also use the currval() function to get that most recently obtained value:
+
+~~~ sql
+> SELECT currval('customer_seq');
+~~~
+~~~
++---------+
+| currval |
++---------+
+|       3 |
++---------+
+~~~
 
 ## See Also
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
+- [Other SQL Statements](sql-statements.html)

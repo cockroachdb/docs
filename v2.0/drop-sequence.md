@@ -10,7 +10,7 @@ toc: false
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `DROP` [privilege](privileges.html) on the specified sequence(s).
 
 ## Synopsis
 
@@ -35,13 +35,13 @@ table td:first-child {
 
 ## Examples
 
-### Remove a Sequence (No Dependencies)
+### Remove a Sequence (No Dependents)
 
 In this example, other objects do not depend on the sequence being dropped.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences
+> SELECT * FROM information_schema.sequences;
 ~~~
 ~~~
 +------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
@@ -96,3 +96,4 @@ DROP SEQUENCE
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
+- [Other SQL Statements](sql-statements.html)

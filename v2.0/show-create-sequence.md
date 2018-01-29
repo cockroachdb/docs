@@ -4,7 +4,7 @@ summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement 
 toc: false
 ---
 
-The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified table.
+The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
 
 <div id="toc"></div>
 
@@ -26,30 +26,13 @@ Parameter | Description
 
 Field | Description
 ------|------------
-`Sequence` | The name of the table.
+`Sequence` | The name of the sequence.
 `CreateSequence` | The [`CREATE SEQUENCE`](create-sequence.html) statement for creating a copy of the specified sequence.
 
 ## Example
 
 ~~~ sql
-> CREATE SEQUENCE customer_seq;
-~~~
-
-
-~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
-~~~
-
-~~~ sql
-> SHOW CREATE SEQUENCE customer_seq;
-~~~
-
-~~~
-+--------------+------------------------------------------------------------------------------------------+
-|   Sequence   |                                      CreateSequence                                      |
-+--------------+------------------------------------------------------------------------------------------+
-| customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 |
-+--------------+------------------------------------------------------------------------------------------+
 ~~~
 
 ~~~ sql
@@ -67,5 +50,7 @@ Field | Description
 ## See Also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
+- [`ALTER SEQUENCE`](alter-sequence.html)
+- [`DROP SEQUENCE`](drop-sequence.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
