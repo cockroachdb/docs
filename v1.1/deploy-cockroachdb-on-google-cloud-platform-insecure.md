@@ -56,12 +56,17 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 ## Step 2. Create instances
 
-[Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
+[Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster.
 
-- Running at least 3 nodes to ensure survivability.
-- Selecting the same continent for all of your instances for best performance.
+- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
-If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
+- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing), with [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
+
+- **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+
+- If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
+
+For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#cluster-topology).
 
 ## Step 3. Synchronize clocks
 

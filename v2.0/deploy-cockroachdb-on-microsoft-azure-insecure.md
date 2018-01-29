@@ -68,12 +68,19 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 ## Step 2. Create VMs
 
-[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
+[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster.
 
-- Running at least 3 nodes to ensure survivability.
-- Selecting the same continent for all of your VMs for best performance.
+- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
-When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
+- Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs with [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
+
+    - If you choose local SSD storage, on reboot, the VM can come back with the `ntfs` filesystem. Be sure your automation monitors for this and reformats the disk to the Linux filesystem you chose initially.
+
+- **Do not** use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on a single core. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
+
+- When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
+
+For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#cluster-topology).
 
 ## Step 3. Synchronize clocks
 
