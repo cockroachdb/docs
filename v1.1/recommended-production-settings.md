@@ -2,35 +2,18 @@
 title: Recommended Production Settings
 summary: Recommended settings for production deployments.
 toc: false
-toc_not_nested: true
+<!-- toc_not_nested: true -->
 ---
 
-This page provides recommended settings for production deployments.
+This page provides important recommendations for production deployments of CockroachDB.
 
 <div id="toc"></div>
 
-## Hardware
-
-Minimum recommendations:
-
-- For a replicated cluster, use at least 3 nodes to ensure availability if a single node fails (see [Cluster Topology](#cluster-topology) for more details).
-- Each node should have sufficient CPU, RAM, network, and storage capacity to handle your workload, but the bare minimum is 1 CPU and 2 GB of RAM per node. More data, complex workloads, higher concurrency, and faster performance require additional resources.
-
-For best performance:
-
-- Use SSDs over HDDs.
-- Use larger/more powerful nodes. Adding more CPU is usually more beneficial than adding more RAM.
-
-For best resiliency:
-
-- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
-- Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
-
 ## Cluster Topology
 
-When running a cluster with more than one node, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
+For a replicated cluster, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
 
-- Use at least three nodes to ensure that a majority of replicas (2/3) remains available if a node fails.
+- Use at least 3 nodes to ensure that a majority of replicas (2/3) remains available if a node fails.
 
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
@@ -38,9 +21,56 @@ When running a cluster with more than one node, each replica will be on a differ
 
 - When replicating across datacenters, it's recommended to specify which datacenter each node is in using the `--locality` flag to ensure even replication (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). If some of your datacenters are much farther apart than others, [specifying multiple levels of locality (such as country and region) is recommended](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
 
-- When replicating across datacenters, be aware that the round-trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
+- When replicating across datacenters, be aware that the round trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
 
 For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
+
+## Hardware
+
+### Basic Recommendations
+
+- Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
+
+- At a bare minimum, each node should have **2 GB of RAM and one entire core**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
+    {{site.data.alerts.callout_danger}}Avoid "burstable" or "shared-core" virtual machines that limit the load on a single core.{{site.data.alerts.end}}
+
+- For best performance:
+    - Use SSDs over HDDs.
+    - Use larger/more powerful nodes. Adding more CPU is usually more beneficial than adding more RAM.
+
+- For best resilience:
+    - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
+    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
+
+### Cloud-Specific Recommendations
+
+Cockroach Labs recommends the following cloud-specific configurations based on our own internal testing. Before using configurations not recommended here, be sure to test them exhaustively.
+
+#### AWS
+
+- Use `m` (general purpose), `c` (compute-optimized), or `i` (storage-optimized) [instances](https://aws.amazon.com/ec2/instance-types/), with SSD-backed [EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html) or [Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html).
+
+    For example, Cockroach Labs has used `m3.large` instances (2 vCPUs and 7.5 GiB of RAM per instance) for internal testing.
+- **Do not** use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
+
+#### Azure
+
+- Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs with [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem).
+
+    For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
+- If you choose local SSD storage, on reboot, the VM can come back with the `ntfs` filesystem. Be sure your automation monitors for this and reformats the disk to the Linux filesystem you chose initially.
+- **Do not** use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on a single core. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
+
+#### Digital Ocean
+
+- Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
+
+#### GCE
+
+- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing), with [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs).
+
+    For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
+- **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
 
 ## Clock Synchronization
 
