@@ -10,7 +10,7 @@ toc: false
 
 ## Considerations
 
-- Using a sequence is slower than using the `SERIAL` data type – incrementing a sequence requires a write to persistent storage, whereas generating a new `SERIAL`value does not. Use the `SERIAL` data type unless a sequence is preferred or required.
+- Using a sequence is slower than using the `SERIAL` data type – incrementing a sequence requires a write to persistent storage, whereas generating a new `SERIAL` value does not. Use the `SERIAL` data type unless a sequence is preferred or required.
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 
 ## Required Privileges
@@ -150,7 +150,7 @@ Insert a few records to see the sequence.
 
 ### View the Current Value of a Sequence
 
-To view the current value of a sequence without incrementing the sequence, use:
+To view the current value without incrementing the sequence, use:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -163,9 +163,10 @@ To view the current value of a sequence without incrementing the sequence, use:
 |          3 |       0 |   true    |
 +------------+---------+-----------+
 ~~~
-`last_value` is the value that was last used by the sequence.
 
-If a value has been obtained from the sequence in the current session, you can also use the currval() function to get that most recently obtained value:
+{{site.data.alerts.callout_info}}The <code>log_cnt</code> and <code>is_called</code> columns are returned only for PostgreSQL compatibility – they are not stored in the database.{{site.data.alerts.end}}
+
+If a value has been obtained from the sequence in the current session, you can also use the `currval('seq_name')` function to get that most recently obtained value:
 
 ~~~ sql
 > SELECT currval('customer_seq');
