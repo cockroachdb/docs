@@ -1,9 +1,21 @@
 ---
-title: SQL Feature Support in CockroachDB v2.0
-summary: Find CockroachDB's conformance to the SQL standard and which common extensions it supports.
+title: Detailed SQL Feature Support in CockroachDB v2.0
+summary: Details of CockroachDB's conformance to the SQL standard and which common extensions it supports.
 ---
 
 <div id="toc"></div>
+
+## Overview
+
+This page lists the SQL standard features are supported, partially-supported, and unsupported by CockroachDB.
+
+To understand the extent to which we support the standard SQL features, use the table below.
+
+- **Feature ID** is the SQL Standard feature identification number.
+- **Description** provides details about the feature.
+- **CockroachDB Supported?** indicates whether the feature is supported, unsupported, or partially-supported by CockroachDB.
+
+## Features
 
 |  **Identifier** | **Description** | **CockroachDB Supported?** |
 |  ------ | ------ | ------ |
