@@ -103,13 +103,13 @@ To ensure that each value in the `orders.customer_id` column matches a unique va
 > CREATE INDEX ON orders (customer_id);
 ~~~
 
+Then you add the Foreign Key constraint.
+
 <span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
-Add the Foreign Key constraint.
+In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
 
-<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted. In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
-
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
@@ -124,6 +124,7 @@ pq: foreign key requires an existing index on columns ("customer_id")
 ## See Also
 
 - [Constraints](constraints.html)
+- [Foreign Key Constraint](foreign-key.html)
 - [`ALTER COLUMN`](alter-column.html)
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)

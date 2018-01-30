@@ -326,8 +326,6 @@ In this example, we use `ON DELETE CASCADE` (i.e., when referenced row is delete
 
 ### Create a Table that Prevents Deletion of Rows with Dependent Objects (`RESTRICT`) <span class="version-tag">New in v2.0</span>
 
-If a row has dependent objects, such as a foreign key reference, CockroachDB will not delete or update the row by default; however, if you want to be sure of the behavior, you can include the [foreign key action](foreign-key.html#foreign-key-actions) `ON [DELETE | UPDATE] RESTRICT` when creating a table or [adding a constraint](add-constraint.html).
-
 {% include copy-clipboard.html %}
 ``` sql
 > CREATE TABLE customers (

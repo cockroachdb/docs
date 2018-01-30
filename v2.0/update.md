@@ -6,7 +6,7 @@ toc: false
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it updates, so it should be used cautiously. If you update a row that is referenced by a <a href="foreign-key.html">foreign key</a> and <code>ON UPDATE CASCADE</code> is set, all of the dependent rows will also be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it deletes or updates, so it should be used cautiously. If you update a row that is referenced by a <a href="foreign-key.html">foreign key</a> and has an <code>ON UPDATE</code> foreign key action, all of the dependent rows will also be updated.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

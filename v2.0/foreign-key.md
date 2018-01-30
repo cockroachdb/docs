@@ -54,8 +54,8 @@ However, allowing _NULL_ values in either your foreign key or referenced columns
 
 Parameter | Description
 ----------|------------
-`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ Fail if there are any existing references to the key being updated or deleted, but allow this check to be deferred until the end of the transaction.
-`ON UPDATE RESTRICT` / `ON DELETE RESTRICT` | Immediately fail if there are any existing references to the key being updated or deleted.
+`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ Fail if there are any existing references to the key being updated or deleted, but allow this check to be deferred until the end of the statement.
+`ON UPDATE RESTRICT` / `ON DELETE RESTRICT` | Aliases for `ON DELETE NO ACTION` / `ON UPDATE NO ACTION`.
 `ON DELETE CASCADE` | When a referenced foreign key is deleted, all rows referencing that key are deleted. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete with take precedence. <br>Note that `CASCADE` does not list objects it drops, so it should be used cautiously.
 `ON UPDATE CASCADE` | When a referenced foreign key is updated, update the columns of all rows referencing that key to the new value.
 <!--
@@ -103,7 +103,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
     INDEX (customer)
   );
 ~~~
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
 ### Table Level
 
