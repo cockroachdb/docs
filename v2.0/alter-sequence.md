@@ -70,6 +70,40 @@ Next, we'll add another record to the table and check that the new record adhere
 +----+----------+--------------------+
 ~~~
 
+### Set the Next Value of a Sequence
+
+In this example, we're going to change the next value of the example sequence (`customer_seq`). Currently, the next value will be 7 (i.e., 5 + increment of 2). We will change the next value to 20.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT setval('customer_seq', 20, false);
+~~~
+~~~
++--------+
+| setval |
++--------+
+|     20 |
++--------+
+~~~
+
+Let's add another record to the table to check that the new record adheres to the new next value.
+
+~~~ sql
+> INSERT INTO customer_list (customer, address) VALUES ('Lola', '333 Schermerhorn');
+~~~
+~~~
++----+----------+--------------------+
+| id | customer |      address       |
++----+----------+--------------------+
+|  1 | Lauren   | 123 Main Street    |
+|  2 | Jesse    | 456 Broad Ave      |
+|  3 | Amruta   | 9876 Green Parkway |
+|  5 | Marie    | 333 Ocean Ave      |
+| 20 | Lola     | 333 Schermerhorn   |
++----+----------+--------------------+
+~~~
+
+
 ## See Also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
