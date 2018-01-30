@@ -69,10 +69,10 @@ Statements:
 
 ~~~ sql
 # Add member(s) to a role.
-> GRANT <role> [, <role>] TO <grantee> [, <grantee>] [WITH ADMIN OPTION]
+> GRANT <role, ...> TO <grantee, ...> [WITH ADMIN OPTION]
 
 # Remove member(s) of a role.
-> REVOKE [ADMIN OPTION FOR] <role> [, <role>] FROM <grantee> [, <grantee>]
+> REVOKE [ADMIN OPTION FOR] <role, ...> FROM <grantee, ...>
 ~~~
 
 The `ADMIN OPTION` can be added to an existing role: eg:
@@ -95,10 +95,22 @@ Or removed from an existing role (without removing the membership):
 > REVOKE myrole FROM myuser
 ~~~
 
-Existing role memberships can be seen in the `pg_catalog.pg_auth_members` table:
+Existing role memberships can be seen using `SHOW GRANTS ON ROLE`:
 
 ~~~ sql
-> select * from pg_catalog.pg_auth_members;
+> SHOW GRANTS ON ROLE [role, ...] [ FOR <grantee, ...> ]
+# Show all role memberships:
+> SHOW GRANTS ON ROLE
+# Show role memberships in two roles:
+> SHOW GRANTS ON ROLE admin, foo
+# Show role memberships for two members:
+> SHOW GRANTS ON ROLE FOR root, bar
+~~~
+
+Or in in the `pg_catalog.pg_auth_members` table:
+
+~~~ sql
+> SELECT * FROM pg_catalog.pg_auth_members;
 +------------+------------+---------+--------------+
 |   roleid   |   member   | grantor | admin_option |
 +------------+------------+---------+--------------+
@@ -106,8 +118,6 @@ Existing role memberships can be seen in the `pg_catalog.pg_auth_members` table:
 | 3723173618 | 2350666299 | NULL    |     true     |
 +------------+------------+---------+--------------+
 ~~~
-
-TODO(mberhault): implement and document `SHOW GRANTS ON ROLE` to list memberships.
 
 
 ## Using privileges with roles
