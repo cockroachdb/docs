@@ -164,11 +164,7 @@ To view the current value without incrementing the sequence, use:
 +------------+---------+-----------+
 ~~~
 
-<<<<<<< HEAD
 {{site.data.alerts.callout_info}}The <code>log_cnt</code> and <code>is_called</code> columns are returned only for PostgreSQL compatibility – they are not stored in the database.{{site.data.alerts.end}}
-=======
-{{site.data.alerts.callout_info}}The `log_cnt` and `is_called` columns are returned only for PostgreSQL compatibility – they are not stored in the database.{{site.data.alerts.end}}
->>>>>>> 9a3ec7cec797e1379011caaa72e2ccf48058230c
 
 If a value has been obtained from the sequence in the current session, you can also use the `currval('seq_name')` function to get that most recently obtained value:
 
