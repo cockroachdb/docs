@@ -173,19 +173,8 @@
       },
       {
         "title": "SQL Feature Support",
-        "items": [
-          {
-            "title": "SQL Support Summary",
-            "urls": [
-              "/${VERSION}/sql-feature-support.html",
-            ]
-          },
-          {
-            "title": "Detailed SQL Standard Comparison",
-            "urls": [
-              "/${VERSION}/detailed-sql-support.html"
-            ]
-          }
+        "urls": [
+          "/${VERSION}/sql-feature-support.html"
         ]
       },
       {

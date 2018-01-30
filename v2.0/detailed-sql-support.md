@@ -5,8 +5,6 @@ summary: Details of CockroachDB's conformance to the SQL standard and which comm
 
 <div id="toc"></div>
 
-## Overview
-
 This page lists which SQL standard features are supported, partially-supported, and unsupported by CockroachDB.
 
 To understand the extent to which we support the standard SQL features, use the table below.
