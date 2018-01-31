@@ -76,7 +76,7 @@ We're currently working to improve the performance of these statements, though.
 
 Foreign Key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-the-foreign-key-constraint-with-cascade"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint-with-cascade"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
 ### Column Level
 
