@@ -65,6 +65,6 @@ If you already have a secure cluster running, you can easily convert it to an in
 
 3. Use the **Basic Statements** code sample to build a simple app.
 
-## Up Next
+## What's Next?
 
 - [Transactions](transactions.html)

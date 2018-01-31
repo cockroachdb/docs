@@ -1,177 +1,193 @@
-[{
+[
+  {
     "title": "Training Home",
     "urls": [
       "/training/"
     ]
   },
   {
-    "title": "Day 1",
+    "title": "Introduction",
     "items": [
       {
-        "title": "Overview",
-        "items": [
-          {
-            "title": "Training Overview",
-            "urls": [
-              "/training/overview.html"
-            ]
-          }
+        "title": "Why CockroachDB?",
+        "urls": [
+          "/training/why-cockroachdb.html"
         ]
       },
       {
-        "title": "Introduction",
-        "items": [
-          {
-            "title": "Why CockroachDB?",
-            "urls": [
-              "/training/why-cockroachdb.html"
-            ]
-          },
-          {
-            "title": "Architecture Overview",
-            "urls": [
-              "/training/architecture-overview.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Ops Basics",
-        "items": [
-          {
-            "title": "Start and Scale a Cluster",
-            "urls": [
-              "/training/start-and-scale-a-cluster.html"
-            ]
-          },
-          {
-            "title": "Replication, Rebalancing & Fault Tolerance",
-            "urls": [
-              "/training/replication-rebalancing-fault-tolerance.html"
-            ]
-          },
-          {
-            "title": "Import Data",
-            "urls": [
-              "/training/import-data.html"
-            ]
-          },
-          {
-            "title": "Identity and Access Management",
-            "urls": [
-              "/training/identity-and-access-management.html"
-            ]
-          },
-          {
-            "title": "Security",
-            "urls": [
-              "/training/security.html"
-            ]
-          },
-          {
-            "title": "Production Deployments",
-            "urls": [
-              "/training/production-deployments.html"
-            ]
-          }
+        "title": "Architecture Overview",
+        "urls": [
+          "/training/architecture-overview.html"
         ]
       }
     ]
   },
   {
-    "title": "Day 2",
+    "title": "Ops Basics",
     "items": [
       {
-        "title": "Dev Basics",
-        "items": [
-          {
-            "title": "CockroachDB SQL",
-            "urls": [
-              "/training/cockroachdb-sql.html"
-            ]
-          },
-          {
-            "title": "Connect an App",
-            "urls": [
-              "/training/connect-an-app.html"
-            ]
-          },
-          {
-            "title": "Transactions",
-            "urls": [
-              "/training/transactions.html"
-            ]
-          },
-          {
-            "title": "DistSQL",
-            "urls": [
-              "/training/distsql.html"
-            ]
-          },
-          {
-            "title": "Performance Optimization",
-            "urls": [
-              "/training/performance-optimization.html"
-            ]
-          }
+        "title": "Cluster Startup and Scaling",
+        "urls": [
+          "/training/cluster-startup-and-scaling.html"
         ]
       },
       {
-        "title": "Troubleshooting",
-        "items": [
-          {
-            "title": "Admin UI",
-            "urls": [
-              "/training/admin-ui.html"
-            ]
-          },
-          {
-            "title": "Long-Running Queries",
-            "urls": [
-              "/training/long-running-queries.html"
-            ]
-          },
-          {
-            "title": "Third-Party Monitoring and Alerting",
-            "urls": [
-              "/training/monitoring.html"
-            ]
-          },
-          {
-            "title": "Logs and Troubleshooting",
-            "urls": [
-              "/training/logs.html"
-            ]
-          }
+        "title": "Fault Tolerance and Automated Repair",
+        "urls": [
+          "/training/fault-tolerance-and-automated-repair.html"
         ]
       },
       {
-        "title": "Maintenance",
-        "items": [
-          {
-            "title": "Upgrade a Cluster",
-            "urls": [
-              "/training/upgrade-a-cluster.html"
-            ]
-          },
-          {
-            "title": "Decommission Nodes",
-            "urls": [
-              "/training/decommission-nodes.html"
-            ]
-          },
-          {
-            "title": "Back up a Cluster",
-            "urls": [
-              "/training/back-up-a-cluster.html"
-            ]
-          },
-          {
-            "title": "Restore a Cluster",
-            "urls": [
-              "/training/restore-a-cluster.html"
-            ]
-          }
+        "title": "Locality and Replication Zones",
+        "urls": [
+          "/training/locality-and-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Data Import",
+        "urls": [
+          "/training/data-import.html"
+        ]
+      },
+      {
+        "title": "Users and Privileges",
+        "urls": [
+          "/training/users-and-privileges.html"
+        ]
+      },
+      {
+        "title": "Security",
+        "urls": [
+          "/training/security.html"
+        ]
+      },
+      /* {
+        "title": "CockroachDB SQL and the Built-in Client",
+        "urls": [
+          "/training/cockroachdb-sql.html"
+        ]
+      }, */
+      {
+        "title": "Production Deployment",
+        "urls": [
+          "/training/production-deployment.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Monitoring",
+    "items": [
+      {
+        "title": "CockroachDB Admin Tools",
+        "urls": [
+          "/training/cockroachdb-admin-tools.html"
+        ]
+      },
+      {
+        "title": "Important Metrics and Alerting",
+        "urls": [
+          "/training/monitoring.html"
+        ]
+      },
+      {
+        "title": "Debug Logs",
+        "urls": [
+          "/training/logs.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Troubleshooting",
+    "items": [
+      {
+        "title": "Node Startup",
+        "urls": [
+          "/training/node-startup-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Client Connection",
+        "urls": [
+          "/training/client-connection-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Under-Replication",
+        "urls": [
+          "/training/under-replication-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Cluster Unavailability",
+        "urls": [
+          "/training/cluster-unavailability-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Data Unavailability",
+        "urls": [
+          "/training/data-unavailability-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Data Corruption",
+        "urls": [
+          "/training/data-corruption-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Software Panic",
+        "urls": [
+          "/training/softare-panic-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Performance",
+        "urls": [
+          ""
+        ]
+      },
+      {
+        "title": "Real Examples",
+        "urls": [
+          ""
+        ]
+      },
+      {
+        "title": "When/How to Get Support",
+        "urls": [
+          ""
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Maintenance",
+    "items": [
+      {
+        "title": "Planned Maintenance",
+        "urls": [
+          "/training/planned-maintenance.html"
+        ]
+      },
+      {
+        "title": "Node Decommissioning",
+        "urls": [
+          "/training/node-decommissioning.html"
+        ]
+      },
+      {
+        "title": "Cluster Upgrade",
+        "urls": [
+          "/training/cluster-upgrade.html"
+        ]
+      },
+      {
+        "title": "Backup and Restore",
+        "urls": [
+          "/training/back-up-a-cluster.html"
         ]
       }
     ]

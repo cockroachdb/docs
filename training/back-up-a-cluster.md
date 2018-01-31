@@ -56,6 +56,6 @@ Generate a backup and store it on S3. To ensure your backup doesn't conflict wit
 > BACKUP DATABASE startrek TO 's3://cockroach-training/[initials]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';
 ~~~
 
-## Up Next
+## What's Next?
 
 - [Restore a Cluster](restore-a-cluster.html)

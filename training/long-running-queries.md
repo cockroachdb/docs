@@ -103,6 +103,6 @@ Once you've identified a long-running query via `SHOW QUERIES`, note the `query_
 ~~~
 
 
-## Up Next
+## What's Next?
 
 - [Third-Party Monitoring & Alerts](monitoring.html)
