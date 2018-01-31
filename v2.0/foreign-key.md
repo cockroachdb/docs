@@ -54,15 +54,11 @@ However, allowing _NULL_ values in either your foreign key or referenced columns
 
 Parameter | Description
 ----------|------------
-`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ Fail if there are any existing references to the key being updated or deleted, but allow this check to be deferred until the end of the statement.
-`ON UPDATE RESTRICT` / `ON DELETE RESTRICT` | Aliases for `ON DELETE NO ACTION` / `ON UPDATE NO ACTION`.
-`ON DELETE CASCADE` | When a referenced foreign key is deleted, all rows referencing that key are deleted. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete with take precedence. <br>Note that `CASCADE` does not list objects it drops, so it should be used cautiously.
-`ON UPDATE CASCADE` | When a referenced foreign key is updated, update the columns of all rows referencing that key to the new value.
-`ON DELETE SET NULL` | When a referenced foreign key is deleted, set the columns of all rows referencing that key to null. The column must allow nulls or this update will still fail.
-`ON UPDATE SET NULL` | When a referenced foreign key is updated, set the columns of all rows referencing that key to null. The column must allow nulls or this update will still fail.
-<!-- 
-`ON DELETE SET DEFAULT` | When a referenced foreign key is deleted, set the columns of all rows referencing that key to the default value for that column. If the default value for the column is null, this will have the same effect as `ON DELETE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
-`ON UPDATE SET DEFAULT` | When a referenced foreign key is updated, set the columns of all rows referencing that key to the default value for that column. If the default value for the column is null, this will have the same effect as `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`. -->
+`ON DELETE NO ACTION` / `ON UPDATE NO ACTION` | _Default actions._ Fail if there are any existing references to the key being updated or deleted, but allow this check to be deferred until the end of the statement. <br><br>Aliases: `ON DELETE RESTRICT` / `ON UPDATE RESTRICT`
+`ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete with take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+`ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, set the columns of all rows referencing that key to null. The column must allow nulls or this update will fail.
+<!--
+`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, set the columns of all rows referencing that key to the default value for that column. If the default value for the column is null, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.-->
 
 ### Performance
 
