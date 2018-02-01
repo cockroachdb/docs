@@ -756,7 +756,7 @@ a:not([href]) {
     margin-right: 10px; }
   #mysidebar li .nav-expand {
     display: inline-block;
-    margin-top: 12px; }
+    margin-top: 8px; }
   #mysidebar > li {
     padding: 10px 0; }
     #mysidebar > li > a {
