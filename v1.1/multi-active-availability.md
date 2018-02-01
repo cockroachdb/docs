@@ -4,7 +4,7 @@ summary: Learn about CockroachDB's high availability model, known as Multi-Activ
 toc: false
 ---
 
-CockroachDB's availability model is described as "Multi-Active Availability." In essence, Multi-Active Availability is like traditional notions of high availability, but lets you read and write from every node in your cluster without generating any conflicts.
+CockroachDB's availability model is described as "Multi-Active Availability." In essence, multi-active availability provides benefits similar to traditional notions of high availability, but also lets you read and write from every node in your cluster without generating any conflicts.
 
 <div id="toc"></div>
 
@@ -12,25 +12,25 @@ CockroachDB's availability model is described as "Multi-Active Availability." In
 
 High availability lets an application continue running even if a system hosting one of its services fails. This is achieved by scaling the application's services horizontally, i.e., replicating the service across many machines or system. If any one of them fails, the others can simply step in and perform the same service.
 
-Before diving into the details of CockroachDB's Multi-Active Availability, we'll review the two most common high availability designs: [Active-Passive](#active-passive) and [Active-Active](#active-active) systems.
+Before diving into the details of CockroachDB's multi-active availability, we'll review the two most common high availability designs: [Active-Passive](#active-passive) and [Active-Active](#active-active) systems.
 
 ### Active-Passive
 
-In Active-Passive systems, all traffic is routed to a single, "active" system. Changes to the system's state are then replicated to a backup "passive" system, in an attempt to always mirror the active system as closely as possible.
+In active-passive systems, all traffic is routed to a single, "active" replica. Changes to the replica's state are then copied to a backup "passive" replica, in an attempt to always mirror the active replica as closely as possible.
 
-However, if this replication is done asynchronously, failovers will lose data that haven't made their way to the passive system. Depending on your industry, this could have pretty dire consequences.
+However, this design has downsides:
+- If you use asynchronous replication, you cannot guarantee that any data is ever successfully replicated to passive followers––meaning you can easily lose data. Depending on your industry, this could have pretty dire consequences.
+- If you use synchronous replication and any passive replicas fail, you have to either sacrifice availability for the entire application or risk inconsistencies.
 
 ### Active-Active
 
-In Active-Active systems, multiple systems run identical services, and traffic is routed to all of them. If any system fails, the others simply handle the traffic that would've been routed to the downed system.
+In active-active systems, multiple replicas run identical services, and traffic is routed to all of them. If any replica fails, the others simply handle the traffic that would've been routed to it.
 
-For databases, though, this runs into a more fundamental problem: if multiple machines accept writes, how do you keep data consistent?
+For databases, though, active-active replication is incredibly difficult to instrument for most workloads. For example, if you let multiple replicas handle writes for the same keys, how do you keep them consistent?
 
 #### Example: Conflicts with Active-Active Replication
 
-For this example, we have 2 nodes (**A**, **B**) in an Active-Active High Availability cluster.
-
-For example, if we have two Active-Active nodes **A** and **B**.
+For this example, we have 2 replicas (**A**, **B**) in an active-active high availability cluster.
 
 1. **A** receives a write for key `xyz` of `'123'`, and then immediately fails.
 2. **B** receives a read of key `xyz`, and returns a `NULL` because it cannot find the key.
@@ -41,15 +41,15 @@ For example, if we have two Active-Active nodes **A** and **B**.
 
 ## What is Multi-Active Availability?
 
-Multi-Active Availability provides all of the benefits of high availability (keeping your application online in the face of partial failures), while avoiding the downsides of both Active-Passive and traditional Active-Active systems.
+Multi-active availability is CockroachDB's version of high availability (keeping your application online in the face of partial failures), which we've designed to avoid the downsides of both active-passive and traditional active-active systems.
 
-Like Active-Active designs, all nodes handle traffic, including both reads and writes. However, CockroachDB improves upon that design by also ensuring that data remains consistent across them, which we achieve by using "consensus replication." In this design, replication requests are sent to at least 3 nodes, and is only considered comitted when a majority of them acknowledge that they've received it.
+Like active-active designs, all replicas can handle traffic, including both reads and writes. However, CockroachDB improves upon that design by also ensuring that data remains consistent across them, which we achieve by using "consensus replication." In this design, replication requests are sent to at least 3 replicas, and are only considered committed when a majority of replicas acknowledge that they've received it. This means that you can still failures without compromising availability.
 
-To prevent conflicts and preserve your data's consistency, if your cluster loses a majority of the nodes responsible for a set of data, it can no longer reach consensus and stops responding. When a quorum of nodes come back online, your database resumes operation.
+To prevent conflicts and guarantee your data's consistency, clusters that lose a majority of replicas stop responding because they've lost the ability to reach a consensus on the state of your data. When a majority of replicas are restarted, your database resumes operation.
 
 ### Consistency Example
 
-For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a Multi-Active Availability cluster.
+For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a multi-active availability cluster.
 
 1. **A** receives a write on `xyz` of `'123'`. It communicates this write to nodes **B** and **C**, who confirm that they've received the write, as well. Once **A** receives the first confirmation, the change is committed.
 2. **A** fails.
