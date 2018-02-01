@@ -756,17 +756,18 @@ a:not([href]) {
     margin-right: 10px; }
   #mysidebar li .nav-expand {
     display: inline-block;
-    margin-top: 8px; }
+    margin-top: 12px; }
   #mysidebar > li {
     padding: 10px 0; }
     #mysidebar > li > a {
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 25px;
+      line-height: 15px;
       letter-spacing: 1.5px;
+      line-height: 25px;
       text-transform: uppercase; }
     #mysidebar > li .arrow-down {
       margin-top: 7px; }
@@ -800,8 +801,8 @@ a:not([href]) {
     #version-switcher .tier-1 a {
       margin: 0;
       padding: 0 25px;
-      font-family: 'AvenirLTStd-Black', serif;
-      font-size: 12px;
+      font-family: 'AvenirLTStd-Heavy', serif;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;

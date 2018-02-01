@@ -294,7 +294,7 @@ a:not([href]) {
 
   li .nav-expand {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 12px;
   }
 
   // tier 1
@@ -302,7 +302,8 @@ a:not([href]) {
     padding: 10px 0;
 
     > a {
-      @include button-text--heavy--large;
+      @include button-text--heavy--medium;
+      line-height: 25px;
       text-transform: uppercase;
     }
 
@@ -345,7 +346,7 @@ a:not([href]) {
     a {
       margin: 0;
       padding: 0 25px;
-      @include button-text;
+      @include button-text--heavy--medium;
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
