@@ -1,6 +1,6 @@
 ---
 title: ALTER SEQUENCE
-summary:
+summary: Use the ALTER SEQUENCE statement to change the name, increment values, and other settings of a sequence.
 toc: false
 ---
 
