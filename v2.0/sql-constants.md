@@ -219,7 +219,7 @@ interpreted literal. These are special cases of
 
 For more information about the allowable format of interpreted
 literals, refer to the "Syntax" section of the respective data types:
-[`DATE`](date.html#syntax), [`INTERVAL`](interval.html#syntax), [`TIME`](time.html#syntax),
+[`DATE`](date.html#syntax), [`INET`](inet.html#syntax), [`INTERVAL`](interval.html#syntax), [`TIME`](time.html#syntax),
 [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html#syntax).
 
 ## Named constants
