@@ -10,7 +10,7 @@ CockroachDB supports the following data types. Click a type for more details.
 
 Type | Description | Example
 -----|-------------|--------
-[`INET`](inet.html) | A IPv4 or IPv6 host address. | `192.168.0.1`
+[`INET`](inet.html) | A IPv4 or IPv6 address. | `192.168.0.1`
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`UUID`](uuid.html) | <span class="version-tag">New in v1.1:</span> A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `

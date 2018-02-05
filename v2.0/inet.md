@@ -9,13 +9,18 @@ toc: false
 
 ## Syntax
 
-<!-- From Postgres:
+An `INET` value can be expressed using the following formats:
 
-The inet type holds an IPv4 or IPv6 host address, and optionally its subnet, all in one field. The subnet is represented by the number of network address bits present in the host address (the "netmask"). If the netmask is 32 and the address is IPv4, then the value does not indicate a subnet, only a single host. In IPv6, the address length is 128 bits, so 128 bits specify a unique host address. Note that if you want to accept only networks, you should use the cidr type rather than inet.
+Format | Description
+-------|-------------
+IPv4 | Standard [RFC791](https://tools.ietf.org/html/rfc791)-specified format of 4 octets expressed individually in decimal numbers and separated by periods. Optionally, the address can be followed by a subnet mask.<br><br> Examples: `'190.0.0.0'`, `'190.0.0.0/24'`
+IPv4-mapped IPv6 | IPv6 address mapped to a IPv4 address. <br><br>Example: `'::ffff:192.168.0.1/24'`
+IPv6 | Standard [RFC8200](https://tools.ietf.org/html/rfc8200)-specified format of 8 colon-separated groups of 4 hexadecimal digits. Optionally, the address can be followed by a subnet mask.<br><br> Example: `'2001:4f8:3:ba:2e0:81ff:fe22:d1f1'`, `'2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120'`
 
-The input format for this type is address/y where address is an IPv4 or IPv6 address and y is the number of bits in the netmask. If the /y portion is missing, the netmask is 32 for IPv4 and 128 for IPv6, so the value represents just a single host. On display, the /y portion is suppressed if the netmask specifies a single host. -->
+{{site.data.alerts.callout_info}}IPv4 addresses will sort before IPv6 addresses, including IPv4 addresses mapped to IPv6 addresses.{{site.data.alerts.end}}
 
 ## Size
+
 An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## Example
@@ -26,7 +31,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
     ip INET PRIMARY KEY,
     user_email STRING,
     registration_date DATE
-);
+  );
 ~~~
 
 {% include copy-clipboard.html %}
@@ -49,6 +54,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
   VALUES
     ('192.168.0.1', 'info@cockroachlabs.com', '2018-01-31'),
     ('192.168.0.2/10', 'lauren@cockroachlabs.com', '2018-01-31');
+    ('2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120', 'test@cockroachlabs.com', '2018-01-31');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -56,12 +62,13 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 > SELECT * FROM computers;
 ~~~
 ~~~
-+----------------+--------------------------+---------------------------+
-|       id       |        user_email        |     registration_date     |
-+----------------+--------------------------+---------------------------+
-| 192.168.0.1    | info@cockroachlabs.com   | 2018-01-31 00:00:00+00:00 |
-| 192.168.0.2/10 | lauren@cockroachlabs.com | 2018-01-31 00:00:00+00:00 |
-+----------------+--------------------------+---------------------------+
++--------------------------------------+--------------------------+---------------------------+
+|                  ip                  |        user_email        |     registration_date     |
++--------------------------------------+--------------------------+---------------------------+
+| 192.168.0.1                          | info@cockroachlabs.com   | 2018-01-31 00:00:00+00:00 |
+| 192.168.0.2/10                       | lauren@cockroachlabs.com | 2018-01-31 00:00:00+00:00 |
+| 2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120 | test@cockroachlabs.com   | 2018-01-31 00:00:00+00:00 |
++--------------------------------------+--------------------------+---------------------------+
 ~~~
 
 ## Supported Casting & Conversion
