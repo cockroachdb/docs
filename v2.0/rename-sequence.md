@@ -18,9 +18,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-~~~
-ALTER SEQUENCE [IF EXISTS] <sequence_name> RENAME TO <newname>
-~~~
+<section>{% include sql/{{ page.version.version }}/diagrams/rename_sequence.html %}</section>
 
 ## Parameters
 
@@ -33,14 +31,14 @@ table td:first-child {
  Parameter | Description
 -----------|------------
 `IF EXISTS` | Rename the sequence only if it exists; if it does not exist, do not return an error.
-`sequence_name` | The name of the sequence you want to modify.
-`newname` | The new name of the sequence, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). <br><br>Name changes do not propagate to the  table(s) using the sequence.
+`current_name` | The current name of the sequence you want to modify.
+`new_name` | The new name of the sequence, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). <br><br>Name changes do not propagate to the  table(s) using the sequence.
 
 ## Examples
 
 ### Rename a Sequence
 
-In this example, we will change the name of sequence `custerom_seq` to `customer_number`.
+In this example, we will change the name of sequence `customer_seq` to `customer_number`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
