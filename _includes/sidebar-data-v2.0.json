@@ -735,21 +735,33 @@
             ]
           },
           {
-            "title": "<code>INT</code>",
+            "title": "<code>ARRAY</code>",
             "urls": [
-              "/${VERSION}/int.html"
+              "/${VERSION}/array.html"
             ]
           },
           {
-            "title": "<code>UUID</code>",
+            "title": "<code>BOOL</code>",
             "urls": [
-              "/${VERSION}/uuid.html"
+              "/${VERSION}/bool.html"
             ]
           },
           {
-            "title": "<code>SERIAL</code>",
+            "title": "<code>BYTES</code>",
             "urls": [
-              "/${VERSION}/serial.html"
+              "/${VERSION}/bytes.html"
+            ]
+          },
+          {
+            "title": "<code>COLLATE</code>",
+            "urls": [
+              "/${VERSION}/collate.html"
+            ]
+          },
+          {
+            "title": "<code>DATE</code>",
+            "urls": [
+              "/${VERSION}/date.html"
             ]
           },
           {
@@ -765,15 +777,33 @@
             ]
           },
           {
-            "title": "<code>BOOL</code>",
+            "title": "<code>INET</code>",
             "urls": [
-              "/${VERSION}/bool.html"
+              "/${VERSION}/inet.html"
             ]
           },
           {
-            "title": "<code>DATE</code>",
+            "title": "<code>INT</code>",
             "urls": [
-              "/${VERSION}/date.html"
+              "/${VERSION}/int.html"
+            ]
+          },
+          {
+            "title": "<code>INTERVAL</code>",
+            "urls": [
+              "/${VERSION}/interval.html"
+            ]
+          },
+          {
+            "title": "<code>SERIAL</code>",
+            "urls": [
+              "/${VERSION}/serial.html"
+            ]
+          },
+          {
+            "title": "<code>STRING</code>",
+            "urls": [
+              "/${VERSION}/string.html"
             ]
           },
           {
@@ -789,33 +819,9 @@
             ]
           },
           {
-            "title": "<code>INTERVAL</code>",
+            "title": "<code>UUID</code>",
             "urls": [
-              "/${VERSION}/interval.html"
-            ]
-          },
-          {
-            "title": "<code>STRING</code>",
-            "urls": [
-              "/${VERSION}/string.html"
-            ]
-          },
-          {
-            "title": "<code>COLLATE</code>",
-            "urls": [
-              "/${VERSION}/collate.html"
-            ]
-          },
-          {
-            "title": "<code>BYTES</code>",
-            "urls": [
-              "/${VERSION}/bytes.html"
-            ]
-          },
-          {
-            "title": "<code>ARRAY</code>",
-            "urls": [
-              "/${VERSION}/array.html"
+              "/${VERSION}/uuid.html"
             ]
           }
         ]

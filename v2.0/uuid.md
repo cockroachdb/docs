@@ -15,10 +15,10 @@ A `UUID` value can be expressed using the following formats:
 
 Format | Description
 -------|-------------
-Standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-seperated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
-With braces | The standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.<br><br>Example: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`
+Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-seperated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
+With braces | The standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.<br><br>Example: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`
 As `BYTES` | `UUID` value specified as bytes.<br><br>Example: `b'kafef00ddeadbeed'`
-`UUID` used as a URN | `UUID` can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
+`UUID` used as a URN | `UUID` can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
 
 ## Size
 A `UUID` value is 128 bits in width, but the total storage size is likely to be larger due to CockroachDB metadata.
@@ -27,7 +27,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 ### Create a table with manually-entered `UUID` values
 
-#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
+#### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 
 ~~~ sql
 > CREATE TABLE v (token uuid);
@@ -46,7 +46,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 (1 row)
 ~~~
 
-#### Create a table with `UUID` in standard [RCF4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces
+#### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces
 
 ~~~ sql
 > INSERT INTO v VALUES ('{63616665-6630-3064-6465-616462656563}');
