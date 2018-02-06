@@ -2,6 +2,12 @@
   "title": "Releases",
   "items": [
     {
+      "title": "v1.1.5",
+      "urls": [
+        "/releases/v1.1.5.html"
+      ]
+    },
+    {
       "title": "v1.1.4",
       "urls": [
         "/releases/v1.1.4.html"

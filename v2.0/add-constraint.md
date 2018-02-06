@@ -32,6 +32,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `constraint_elem` | The [Check](check.html), [Foreign Keys](foreign-key.html), [Unique](unique.html) constraint you want to add. <br/><br/>Adding/changing a Default constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's Primary Key is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). |
 
 ## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+
 {% include custom/schema-change-view-job.md %}
 
 ## Examples
@@ -40,17 +41,17 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 Adding the [Unique constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
-``` sql
+~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
-```
+~~~
 
 ### Add the Check Constraint
 
 Adding the [Check constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
-``` sql
+~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
-```
+~~~
 
 ### Add the Foreign Key Constraint
 
@@ -97,7 +98,7 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 (1 row)
 ~~~
 
-To ensure that each value in the `orders.customer_id` column matches a unique value in the `orders.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
+To ensure that each value in the `orders.customer_id` column matches a unique value in the `customers.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
 
 ~~~ sql
 > CREATE INDEX ON orders (customer_id);
