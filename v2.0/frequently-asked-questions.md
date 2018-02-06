@@ -154,7 +154,7 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 Yes, although CockroachDB is unlikely to be a drop-in replacement at this time. Due to differences in available features and syntax, migrating data from these databases to CockroachDB involves some manual effort.
 
-As a first step, check our [SQL Feature Support](sql-feature-support.html) page against your application's high-level SQL requirements. If essential SQL features are missing, consider workarounds and/or reach out to us via [our forum](https://forum.cockroachlabs.com/) or [sales contact form](https://www.cockroachlabs.com/pricing/sales/).
+As a first step, check our [SQL Feature Support](sql-feature-support.html) page against your application's high-level SQL requirements. If essential SQL features are missing, consider workarounds and/or reach out to us via [our forum](https://forum.cockroachlabs.com/) or <sales@cockroachlabs.com>.
 
 Once you're ready to migrate, we recommend [importing your data via CSV](import.html). The process may expose places where you need to make changes for compatability. When migrating from PostgreSQL, for example, be sure to check this list of [known differences for identical input](porting-postgres.html).
 

@@ -91,15 +91,16 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 Type | Details
 -----|--------
-`INT` | Requires supported [`INT`](int.html) string format, e.g., `'10'`.
+`BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
+`BYTES` | Requires supported [`BYTES`](bytes.html) string format, e.g., `b'\141\061\142\062\143\063'`.
+`DATE` | Requires supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
 `DECIMAL` | Requires supported [`DECIMAL`](decimal.html) string format, e.g., `'1.1'`.
 `FLOAT` | Requires supported [`FLOAT`](float.html) string format, e.g., `'1.1'`.
-`BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
-`DATE` | Requires supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
+`INET` | Requires supported [`INET`](inet.html) string format, e.g, `'192.168.0.1'`.
+`INT` | Requires supported [`INT`](int.html) string format, e.g., `'10'`.
+`INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | <span class="version-tag">New in v2.0:</span> Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
-`INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
-`BYTES` | Requires supported [`BYTES`](bytes.html) string format, e.g., `b'\141\061\142\062\143\063'`.
 
 ## See Also
 

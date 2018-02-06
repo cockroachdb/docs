@@ -182,11 +182,11 @@ with character escapes are as follows:
 
 This is a CockroachDB-specific extension to express byte array
 literals: the delimiter `x'` or `e'\\x` followed by an arbitrary sequence of
-hexadecimal digits, followed by a closing `'`. 
+hexadecimal digits, followed by a closing `'`.
 
 For example, all the following formats are equivalent to `b'cat'`:
 
-- `x'636174'` 
+- `x'636174'`
 - `X'636174'`
 - `e'\\x636174'::BYTES`
 
@@ -219,7 +219,7 @@ interpreted literal. These are special cases of
 
 For more information about the allowable format of interpreted
 literals, refer to the "Syntax" section of the respective data types:
-[`DATE`](date.html#syntax), [`INTERVAL`](interval.html#syntax),
+[`DATE`](date.html#syntax), [`INET`](inet.html#syntax), [`INTERVAL`](interval.html#syntax), [`TIME`](time.html#syntax),
 [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html#syntax).
 
 ## Named constants
