@@ -21,7 +21,7 @@ Type | Description
 
 ## Request a Trial or an Enterprise License Key
 
-[Contact us](https://www.cockroachlabs.com/pricing/sales/) to request a trial or an enterprise license key.
+[Contact us](https://www.cockroachlabs.com/pricing/request-a-license/) to request a trial or an enterprise license key.
 
 ## Set the Trial or Enterprise License Key
 

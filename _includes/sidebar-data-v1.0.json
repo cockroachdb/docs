@@ -117,6 +117,12 @@
         "title": "Explore Core Features",
         "items": [
           {
+            "title": "Multi-Active Availability",
+            "urls": [
+              "/${VERSION}/multi-active-availability.html"
+            ]
+          },
+          {
             "title": "Data Replication",
             "urls": [
               "/${VERSION}/demo-data-replication.html"
