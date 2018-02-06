@@ -181,6 +181,7 @@ If a value has been obtained from the sequence in the current session, you can a
 
 ## See Also
 - [`ALTER SEQUENCE`](alter-sequence.html)
+- [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)

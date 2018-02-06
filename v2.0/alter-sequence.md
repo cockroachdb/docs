@@ -35,7 +35,6 @@ table td:first-child {
 `MAXVALUE` | The new maximum value of the sequence. <br><br>Default: `9223372036854775807`
 `START` | The value the sequence starts at if you `RESTART` or if the sequence hits the `MAXVALUE` and `CYCLE` is set. <br><br>`RESTART` and `CYCLE` are not implemented yet.
 `CYCLE` | The sequence will wrap around when the sequence value hits the maximum or minimum value. If `NO CYCLE` is set, the sequence will not wrap.
-`newname` | The new name of the sequence, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). <br><br>Name changes do not propagate to the  table(s) using the sequence.
 
 ## Examples
 
@@ -110,6 +109,7 @@ Let's add another record to the table to check that the new record adheres to th
 
 ## See Also
 
+- [`RENAME SEQUENCE`](rename-sequence.html)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
