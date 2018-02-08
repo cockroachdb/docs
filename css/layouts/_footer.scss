@@ -47,11 +47,11 @@ section.footer {
 			}
 
 			@include at-query($min, $screen-md) {
-				width: 78%;
+				width: 75%;
 			}
 		}
 
-		&__social {
+		&__support {
 			border-bottom: solid 1px $cl_gray_medium;
 
 			@include at-query($min, $screen-sm) {
@@ -63,7 +63,7 @@ section.footer {
 			}
 
 			@include at-query($min, $screen-md) {
-				width: 21%;
+				width: 25%;
 			}
 
 			.footer-nav {
