@@ -66,7 +66,7 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
 
 ## Step 2. Initialize the cluster
 
-In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+In a new terminal, use the [`cockroach init`](../v1.1/initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
