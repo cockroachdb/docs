@@ -1,31 +1,35 @@
 ---
-title: Upgrade a Cluster
-summary: Learn how to upgrade a CockroachDB cluster to a new version.
+title: Cluster Upgrade
 toc: false
+toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-<div id="toc"></div>
-
-## Presentation
-
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQFwUiv1205icOGxTN4OlMuMYSGjbx9Co3Ggx2mRsI9F9-pEUsvwkaJjOXb92ws1oOG-OY0j-C43G-j/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
-## Lab
+<style>
+  #toc ul:before {
+    content: "Hands-on Lab"
+  }
+</style>
+<div id="toc"></div>
 
-In this lab, we'll upgrade your cluster to use the latest dev release.
+## Before You Begin
 
-### Before You Begin
+Make sure you have completed [Planned Maintenance](planned-maintenance.html) and have 3 nodes running CockroachDB v1.1. In this lab, you'll upgrade to the latest testing release of CockroachDB v2.0.
 
-To complete this lab, you need a [local cluster of 3 nodes](3-node-local-secure-cluster.html).
+## Step 1. Install CockroachDB v2.0
 
-### Step 1. Install the dev binary
+1. Download a CockroachDB v2.0 archive for OS X, and extract the binary:
 
-[Download and install the latest dev binary](../dev/install-cockroachdb.html).
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ curl -O https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180129.darwin-10.9-amd64.tgz | tar -xJ
+    ~~~
 
 You can overwrite the existing `cockroach` binary with this new version.
 
-### Step 2. Perform the rolling upgrade on node1
+## Step 2. Perform the rolling upgrade on node1
 
 1. Stop node 1 the `cockroach` process:
 
@@ -62,7 +66,7 @@ You can overwrite the existing `cockroach` binary with this new version.
     $ cockroach node status --certs-dir=certs
     ~~~
 
-### Step 3. Upgrade the rest of the nodes
+## Step 3. Upgrade the rest of the nodes
 
 1. Bring down node2:
 
@@ -117,6 +121,6 @@ $ cockroach node status --certs-dir=certs
 
 You should now see that all 3 nodes in your cluster have the same, upgraded version.
 
-## Up Next
+## What's Next?
 
-- [Decommission Nodes](decommission-nodes.html)
+- [Node Decommissioning](node-decommissioning.html)

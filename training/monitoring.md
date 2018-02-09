@@ -29,6 +29,6 @@ Check out both of these files and see if you can align their structure with the 
 
 If you're interested, we have a walkthrough to [configure Prometheus, Grafana, and AlertManager with your CockroachDB cluster](https://www.cockroachlabs.com/docs/stable/monitor-cockroachdb-with-prometheus.html).
 
-## Up Next
+## What's Next?
 
 - [Logs & Common Troubleshooting](logs.html)

@@ -997,20 +997,20 @@ section.footer {
         width: 65%; } }
     @media screen and (min-width: 992px) {
       section.footer .footer__flex-wrap {
-        width: 78%; } }
-  section.footer .footer__social {
+        width: 75%; } }
+  section.footer .footer__support {
     border-bottom: solid 1px #DADADA; }
     @media screen and (min-width: 768px) {
-      section.footer .footer__social {
+      section.footer .footer__support {
         border-bottom: none;
         border-left: solid 1px #DADADA;
         width: 34%;
         padding-top: 0;
         padding-left: 60px; } }
     @media screen and (min-width: 992px) {
-      section.footer .footer__social {
-        width: 21%; } }
-    section.footer .footer__social .footer-nav {
+      section.footer .footer__support {
+        width: 25%; } }
+    section.footer .footer__support .footer-nav {
       width: 100%; }
   section.footer .footer-nav {
     list-style: none;

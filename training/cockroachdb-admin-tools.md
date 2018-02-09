@@ -47,6 +47,6 @@ To complete this lab, you need a [local cluster of 3 nodes](3-node-local-secure-
 
 6. Watch the Admin UI detect that the node has rejoined the cluster.
 
-## Up Next
+## What's Next?
 
 - [Long-Running Queries](long-running-queries.html)
