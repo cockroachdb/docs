@@ -37,7 +37,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --port=26257 \
     --execute="SHOW DATABASES;" \
     --logtostderr=WARNING
@@ -52,7 +52,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
@@ -66,7 +66,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \

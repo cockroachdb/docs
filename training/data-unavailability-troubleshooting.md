@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this scenario, you'll cause a table's range to lose a majority of its replicas (2 of 3). This will make the data in the table unavailable. You'll then troubleshoot and resolve the problem.
+In this lab, you'll cause a table's range to lose a majority of its replicas (2 of 3). This will make the data in the table unavailable. You'll then troubleshoot and resolve the problem.
 
 <style>
   #toc ul:before {
@@ -27,7 +27,7 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-2 \
     --store=node4 \
     --host=localhost \
@@ -41,7 +41,7 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
     --host=localhost \
@@ -55,7 +55,7 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
     --host=localhost \
@@ -68,14 +68,14 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen example-data intro | cockroach sql --certs-dir=certs
+    $ cockroach gen example-data intro | cockroach sql --insecure
     ~~~
 
 5. Create a [replication zone](../v1.1/configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-2` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+datacenter=us-east-2]' | cockroach zone set intro.mytable --certs-dir=certs -f -
+    $ echo 'constraints: [+datacenter=us-east-2]' | cockroach zone set intro.mytable --insecure -f -
     ~~~
 
     ~~~
@@ -92,7 +92,7 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;"
     ~~~
 
@@ -120,7 +120,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --port=26257 \
     --execute="SELECT * FROM intro.mytable LIMIT 10;" \
     --logtostderr=WARNING
@@ -153,7 +153,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
     --host=localhost \
@@ -167,7 +167,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
     --host=localhost \
