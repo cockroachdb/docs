@@ -140,25 +140,13 @@
       {
         "title": "Software Panic",
         "urls": [
-          "/training/softare-panic-troubleshooting.html"
+          "/training/software-panic-troubleshooting.html"
         ]
       },
       {
-        "title": "Performance",
+        "title": "How to Get Support",
         "urls": [
-          ""
-        ]
-      },
-      {
-        "title": "Real Examples",
-        "urls": [
-          ""
-        ]
-      },
-      {
-        "title": "When/How to Get Support",
-        "urls": [
-          ""
+          "/training/how-to-get-support.html"
         ]
       }
     ]

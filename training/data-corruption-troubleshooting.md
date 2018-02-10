@@ -25,7 +25,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
     --host=localhost \
@@ -40,7 +40,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
@@ -55,7 +55,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
@@ -69,7 +69,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs
+    $ cockroach init --insecure
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -81,7 +81,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
     ~~~
 
@@ -90,7 +90,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --execute="CREATE DATABASE import_test;"
     ~~~
 
@@ -99,7 +99,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
     ~~~
@@ -139,7 +139,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
@@ -182,7 +182,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
@@ -194,7 +194,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
 In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](../v1.1/restore.html) is best.
 
-{{site.data.alerts.callout_danger}}In all cases of data corruption, it's best to <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}In all cases of data corruption, you should <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
 
 ## What's Next?
 

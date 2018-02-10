@@ -25,7 +25,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
     --host=localhost \
@@ -39,7 +39,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
@@ -53,7 +53,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
@@ -66,7 +66,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs
+    $ cockroach init --insecure
     ~~~
 
 ## Step 2. Simulate the problem
@@ -76,7 +76,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --certs-dir=certs \
+    --insecure \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
@@ -103,7 +103,7 @@ To bring the cluster back to a safe state, you need to either restart the down n
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
-    --certs-dir=certs \
+    --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
