@@ -90,16 +90,16 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz \
-    | tar xfz crdb-ycsb-mac.tar.gz  
+    $ curl {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz \
+    | tar xJ crdb-ycsb-mac.tar.gz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/training/resources/crdb-ycsb-linux.tar.gz \
-    | tar xfz crdb-ycsb-linux.tar.gz
+    $ wget -qO- {{site.url}}/docs/training/resources/crdb-ycsb-linux.tar.gz \
+    | tar xvz crdb-ycsb-linux.tar.gz
     ~~~
     </div>
 
@@ -175,7 +175,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --insecure
+    --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
@@ -193,7 +193,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --insecure
+    --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
@@ -284,7 +284,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --insecure
+    --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
@@ -302,7 +302,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --insecure
+    --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
