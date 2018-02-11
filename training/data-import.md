@@ -72,7 +72,7 @@ Start and initialize a cluster like you did in previous modules.
 
 Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in CockroachDB v1.1, it's one of the most efficient ways to get data into a cluster, so let's start with it.
 
-1. In a new terminal, enable the "experimental" `IMPORT` feature:
+1. In the same terminal, enable the "experimental" `IMPORT` feature:
 
     {% include copy-clipboard.html %}
     ~~~ shell
