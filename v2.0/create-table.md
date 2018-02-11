@@ -215,11 +215,9 @@ There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) 
 
 - Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [Primary Key](primary-key.html) or [Unique](unique.html) constraint.
 
-<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a column referenced by a foreign key is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
+<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions-new-in-v2-0) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
-
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so it should be used cautiously.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ``` sql

@@ -49,8 +49,8 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
-### Foreign Key Actions
-<span class="version-tag">New in v2.0:</span> You can specify an action to take when a referenced column is updated or deleted.
+### Foreign Key Actions <span class="version-tag">New in v2.0</span>
+You can specify an action to take when a referenced column is updated or deleted.
 
 Parameter | Description
 ----------|------------
@@ -135,7 +135,7 @@ CREATE TABLE packages (
 
 ### Use a Foreign Key Constraint with Default Actions
 
-In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION` / `ON DELETE NO ACTION`).
+In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions-new-in-v2-0) (`ON UPDATE NO ACTION` / `ON DELETE NO ACTION`).
 
 First, create the referenced table.
 
@@ -182,7 +182,7 @@ Let's insert a record in the child table and try to update the referenced table.
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
-The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON UPDATE NO ACTION`).
+The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON UPDATE NO ACTION`).
 
 Let's try to delete a referenced row.
 
@@ -194,13 +194,13 @@ Let's try to delete a referenced row.
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
-Similarly, the deletion returns an error because `id = 100` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON DELETE NO ACTION`).
+Similarly, the deletion returns an error because `id = 100` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON DELETE NO ACTION`).
 
 ### Use a Foreign Key Constraint with `CASCADE`
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key action](#foreign-key-actions) `ON DELETE CASCADE`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key action](#foreign-key-actions-new-in-v2-0) `ON DELETE CASCADE`.
 
-First, create the referenced table.
+First, create the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -209,7 +209,7 @@ First, create the referenced table.
   );
 ~~~
 
-Then, create the child table.
+Then, create the child table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -219,21 +219,21 @@ Then, create the child table.
   );
 ~~~
 
-Insert a few records in the referenced table.
+Insert a few records in the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_2 VALUES (1), (2), (3);
 ~~~
 
-Insert some records in the child table.
+Insert some records in the child table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
-Now, let's update an `id` in the referenced table.
+Now, let's update an `id` in the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -271,7 +271,7 @@ Now, let's update an `id` in the referenced table.
 
 When the `id = 1` was updated to `id =23` in `customers_2`, the update propagated to the child table `orders_2`.
 
-Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`.
+Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -291,7 +291,7 @@ Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`.
 +----+
 ~~~
 
-Let's check to make sure the rows in `orders_2` where `student_id = 23` were also deleted.
+Let's check to make sure the rows in `orders_2` where `student_id = 23` were also deleted:
 
 {% include copy-clipboard.html %}
 ~~~ sql
