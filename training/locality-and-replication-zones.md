@@ -18,7 +18,7 @@ sidebar_data: sidebar-data-training.json
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
-## Step 1. Start a cluster in a singe US region
+## Step 1. Start a cluster in a single US region
 
 Start a cluster like you did previously, but this time use the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
@@ -75,7 +75,7 @@ $ cockroach init --insecure
 
 ## Step 3. Check data distribution
 
-By default, CockroachDB tries to balanced data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
+By default, CockroachDB tries to balance data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
 
 To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **View nodes list** at the right, and check the the replica count is the same on all nodes.
 
@@ -339,6 +339,7 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
 4. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'constraints: [+region=us]' | cockroach zone set intro --insecure -f -
     ~~~
