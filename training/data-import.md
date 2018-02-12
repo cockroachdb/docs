@@ -278,7 +278,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     $ brew install postgres
     ~~~
 
-2. Download our prepared [PostgreSQL dump file](resources/pg_dump.sql):
+2. Download our sample [`pg_dump.sql`](resources/pg_dump.sql) file:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -300,13 +300,35 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     ~~~
     </div>
 
-    The `pg_dump.sql` file contains 2 tables, `customers` and `accounts`, as well as some constraints on both tables.
+3. Take a look at the `pg_dump.sql` file, which contains 2 tables, `customers` and `accounts`, as well as some constraints on both tables.
 
-3. Clean up the `pg_dump.sql` file:
-    - Rewrite the two [`CREATE TABLE`](../v1.1/create-table.html) statements to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](../v1.1/primary-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
-    - Remove all statements from the file besides the `CREATE TABLE` and `COPY` statements.
+    Before this file can be used to import into CockroachDB, the SQL must be edited for compatibility with CockroachDB:
+    - The two [`CREATE TABLE`](../v1.1/create-table.html) statements must be rewritten to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](../v1.1/primary-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
+    - Everything but the `CREATE TABLE` and `COPY` statements must be removed.
 
-4. Create a database you can use for the import:
+4. Instead of manually cleaning the file, download our pre-cleaned version:
+
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ curl -O {{site.url}}/docs/training/resources/pg_dump_cleaned.sql
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ wget {{site.url}}/training/resources/pg_dump_cleaned.sql
+    ~~~
+    </div>
+
+5. Create a database you can use for the import:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -319,7 +341,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ psql -p 26257 -h localhost -d pg_import -U root < pg_dump.sql
+    $ psql -p 26257 -h localhost -d pg_import -U root < pg_dump_cleaned.sql
     ~~~
 
 6. Read from the imported data:
