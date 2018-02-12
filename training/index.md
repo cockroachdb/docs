@@ -10,29 +10,3 @@ sidebar_data: sidebar-data-training.json
 ## What's Next?
 
 - [Why CockroachDB?](why-cockroachdb.html)
-
-<!-- ## Day 1
-
-### Overview
-
-- [Training Overview](overview.html)
-
-{% include training/introduction.md %}
-
-{% include training/ops-basics.md %}
-
-### Wrap Up
-
-- [Day 1 Recap](day-1-recap.html)
-
-## Day 2
-
-{% include training/dev-basics.md %}
-
-{% include training/monitoring-and-troubleshooting.md %}
-
-{% include training/maintenance.md %}
-
-### Wrap Up
-
-- [Day 2 Recap](day-2-recap.html) -->

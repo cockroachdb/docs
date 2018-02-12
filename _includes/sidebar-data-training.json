@@ -61,33 +61,16 @@
           "/training/security.html"
         ]
       },
-      /* {
-        "title": "CockroachDB SQL and the Built-in Client",
-        "urls": [
-          "/training/cockroachdb-sql.html"
-        ]
-      }, */
       {
         "title": "Production Deployment",
         "urls": [
           "/training/production-deployment.html"
         ]
-      }
-    ]
-  },
-  {
-    "title": "Monitoring",
-    "items": [
-      {
-        "title": "CockroachDB Admin Tools",
-        "urls": [
-          "/training/cockroachdb-admin-tools.html"
-        ]
       },
       {
-        "title": "Important Metrics and Alerting",
+        "title": "Monitoring and Alerting",
         "urls": [
-          "/training/monitoring.html"
+          "/training/monitoring-and-alerting.html"
         ]
       },
       {
@@ -140,25 +123,13 @@
       {
         "title": "Software Panic",
         "urls": [
-          "/training/softare-panic-troubleshooting.html"
+          "/training/software-panic-troubleshooting.html"
         ]
       },
       {
-        "title": "Performance",
+        "title": "How to Get Support",
         "urls": [
-          ""
-        ]
-      },
-      {
-        "title": "Real Examples",
-        "urls": [
-          ""
-        ]
-      },
-      {
-        "title": "When/How to Get Support",
-        "urls": [
-          ""
+          "/training/how-to-get-support.html"
         ]
       }
     ]

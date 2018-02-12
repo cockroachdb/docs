@@ -63,7 +63,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    Because you're running a local cluster and all nodes use the same hostname (`localhost`), you only need a single node certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names you might use to refer to the node as well as to any load balancer instances.
+    Because you're running a local cluster and all nodes use the same hostname (`localhost`), you only need a single node certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
 4. Create client certificates and keys for the `root` and `spock` users:
 
@@ -154,13 +154,13 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 Although we recommend always using TLS certificates to authenticate users, it's possible to authenticate a user with just a password.
 
-1. As the `root` user, create a new `kirk` user with the password `enterprise`:
+1. As the `root` user, create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach user set kirk \
     --certs-dir=certs \
-    --password=enterprise \
+    --password
     ~~~
 
 2. As the `root` user, grant `kirk` the `SELECT` privilege on the tables in the `startrek` database:
