@@ -128,7 +128,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     Because the range for `mytable` no longer has a majority of its replicas, the query will hang indefinitely.
 
-2. Go back to the Admin UI at <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>.
+2. Go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
 3. Select the **Replication** dashboard.
 
@@ -142,7 +142,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     <img src="{{ 'images/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
 
-5. For more insight into the ranges that are unavailable, go to the **Problem Ranges Report** at <a href="https://localhost:8080/#/reports/problemranges" data-proofer-ignore>https://localhost:8080/#/reports/problemranges</a>.
+5. For more insight into the ranges that are unavailable, go to the **Problem Ranges Report** at <a href="http://localhost:8080/#/reports/problemranges" data-proofer-ignore>http://localhost:8080/#/reports/problemranges</a>.
 
     <img src="{{ 'images/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
