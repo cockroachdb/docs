@@ -1088,6 +1088,12 @@
         ]
       },
       {
+        "title": "Partition Tables",
+        "urls": [
+          "/${VERSION}/partitioning.html"
+        ]
+      },
+      {
         "title": "Enterprise Licensing",
         "urls": [
           "/${VERSION}/enterprise-licensing.html"
