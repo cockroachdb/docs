@@ -631,7 +631,7 @@ code {
 }
 
 a code {
-  color: $cl_syntax_green;
+  color: #54B30E;
 }
 
 pre {
