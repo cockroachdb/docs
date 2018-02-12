@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQExkRfyBBEOBe5-0uGDsIK7MhwE6eEN7Ok9xpTw83gq7XEkQAT3kZ0rdxwUVRHJEwo6E3H7bgontsX/embed?start=false--backgroundloop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQExkRfyBBEOBe5-0uGDsIK7MhwE6eEN7Ok9xpTw83gq7XEkQAT3kZ0rdxwUVRHJEwo6E3H7bgontsX/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {
