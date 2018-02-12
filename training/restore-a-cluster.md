@@ -71,6 +71,4 @@ To complete this lab, you need to have completed the lab for [backing up your Co
     +----------+
     ~~~
 
-## Up Next
-
-- [Day 2 Recap](day-2-recap.html)
+## What's Next?
