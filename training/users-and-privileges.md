@@ -16,7 +16,7 @@ sidebar_data: sidebar-data-training.json
 
 ## Before You Begin
 
-Make sure you have already completed [Data Import](data-import).
+Make sure you have already completed [Data Import](data-import.html).
 
 ## Step 1. Check initial privileges
 

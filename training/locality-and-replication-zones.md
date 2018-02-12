@@ -18,7 +18,7 @@ sidebar_data: sidebar-data-training.json
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
-## Step 1. Start a cluster in a singe US region
+## Step 1. Start a cluster in a single US region
 
 Start a cluster like you did previously, but this time use the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
@@ -64,28 +64,28 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-## Step 2. Initialize the cluster
+4. In a new terminal, use the [`cockroach init`](../v1.1/initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init --insecure
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init --insecure
-~~~
+## Step 2. Check data distribution
 
-## Step 3. Check data distribution
-
-By default, CockroachDB tries to balanced data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
+By default, CockroachDB tries to balance data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
 
 To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **View nodes list** at the right, and check the the replica count is the same on all nodes.
 
 <img src="{{ 'images/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 4. Expand into 2 more US regions
+## Step 3. Expand into 2 more US regions
 
 Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
 
-1. In a new terminal, start node 4:
+{{site.data.alerts.callout_info}}To simplify the process of adding more nodes, you'll start them in the background instead of in separate terminals.{{site.data.alerts.end}}
+
+1. In the same terminal, start node 4:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -96,10 +96,11 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26260 \
     --http-port=8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In a new terminal, start node 5:
+2. Start node 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -110,10 +111,11 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26261 \
     --http-port=8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In a new terminal, start node 6:
+3. Start node 6:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -124,10 +126,11 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26262 \
     --http-port=8085 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-4. In a new terminal, start node 7:
+4. Start node 7:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -138,10 +141,11 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26263 \
     --http-port=8086 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-5. In a new terminal, start node 8:
+5. Start node 8:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -152,10 +156,11 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26264 \
     --http-port=8087 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-6. In a new terminal, start node 9:
+6. Start node 9:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -166,16 +171,17 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
     --host=localhost \
     --port=26265 \
     --http-port=8088 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-## Step 5. Write data and verify data distribution
+## Step 4. Write data and verify data distribution
 
 Now that there are 3 distinct localities in the cluster, the cluster will automatically ensure that, for every range, one replica is on a node in `us-east`, one is on a node in `us-central`, and one is on a node in `us-west`.
 
 To check this, let's create a table, which initially maps to a single underlying range, and check where the replicas of the range end up.
 
-1. In a new terminal, use the `cockroach gen` command to generate an example `intro` database:
+1. Use the `cockroach gen` command to generate an example `intro` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -240,11 +246,11 @@ To check this, let's create a table, which initially maps to a single underlying
 
     In this case, one replica is on node 3 in `us-east`, one is on node 4 in `us-central`, and one is on node 7 in `us-west`.
 
-## Step 6. Expand into Europe
+## Step 5. Expand into Europe
 
 Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
 
-1. In a new terminal, start node 10:
+1. Start node 10:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -255,10 +261,11 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --host=localhost \
     --port=26266 \
     --http-port=8089 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In a new terminal, start node 11:
+2. Start node 11:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -269,10 +276,11 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --host=localhost \
     --port=26267 \
     --http-port=8090 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-3. In a new terminal, start node 12:
+3. Start node 12:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -283,14 +291,15 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --host=localhost \
     --port=26268 \
     --http-port=8091 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-## Step 7. Add EU-specific data
+## Step 6. Add EU-specific data
 
 Now imagine that that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
 
-1. In a new terminal, use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
+1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -326,24 +335,25 @@ Now imagine that that `intro` database you created earlier is storing data for a
     (1 row)
     ~~~
 
-## Step 8. Constrain data to specific regions
+## Step 7. Constrain data to specific regions
 
 Because you used the `--locality` flag to indicate the region for each of your nodes, constraining data to specific regions is simple.
 
-3. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
+1. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'constraints: [+region=eu]' | cockroach zone set startrek --insecure -f -
     ~~~
 
-4. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
+2. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'constraints: [+region=us]' | cockroach zone set intro --insecure -f -
     ~~~
 
-## Step 9. Verify data distribution
+## Step 8. Verify data distribution
 
 Now verify that the data for the table in the `intro` database is located on US-based nodes, and the data for the tables in the `startrek` database is located on EU-based nodes.
 
@@ -386,7 +396,7 @@ Now verify that the data for the table in the `intro` database is located on US-
     1 - 9 | US
     10 - 12 | EU
 
-## Step 10. Clean up
+## Step 9. Clean up
 
 In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
 

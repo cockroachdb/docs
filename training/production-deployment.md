@@ -8,4 +8,4 @@ sidebar_data: sidebar-data-training.json
 
 ## What's Next?
 
-- [CockroachDB Admin Tools](cockroachdb-admin-tools.html)
+- [Monitoring and Alerting](monitoring-and-alerting.html)
