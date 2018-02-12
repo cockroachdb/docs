@@ -84,7 +84,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 3. Troubleshoot the problem
 
-1. Open the Admin UI at <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>.
+1. Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
 2. Select the **Replication** dashboard.
 
@@ -92,7 +92,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     <img src="{{ 'images/training-11.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    You'll see that there are 16 ranges total, and 16 ranges are under-replication, which means that every range in the cluster is missing 1 of 3 replicas. This is a vulnerable state because, if another node were to go offline, all ranges would lose consensus, and the entire cluster would become unavailable.
+    You'll see that there are 16 ranges total, and 16 ranges are under-replicated, which means that every range in the cluster is missing 1 of 3 replicas. This is a vulnerable state because, if another node were to go offline, all ranges would lose consensus, and the entire cluster would become unavailable.
 
 ## Step 4. Resolve the problem
 
