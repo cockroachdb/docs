@@ -29,6 +29,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: Feb 12, 2018
+      version: v2.0-alpha.20180212
     - date: Jan 29, 2018
       version: v2.0-alpha.20180129
       no_windows: true
