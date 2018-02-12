@@ -17,7 +17,6 @@ In this lab, you'll use the enterprise `BACKUP` feature to create a backup store
 
 ### Before You Begin
 
-To complete this lab, you need a [local cluster of 3 nodes](3-node-local-secure-cluster.html).
 
 ### Step 1. Generate sample data
 
