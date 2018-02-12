@@ -14,7 +14,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table. 
+The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
