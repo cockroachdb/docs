@@ -116,7 +116,20 @@ Start and initialize a cluster like you did in previous modules.
 
 1. In node 1's terminal, press **CTRL + C** to stop the `cockroach` process.
 
-2. Open the Admin UI at <a href="http://localhost:8081" data-proofer-ignore>http://localhost:8081</a>, click **View nodes list** and verify that the node has been stopped.
+2. Verify that node 1 has stopped:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ps | grep cockroach
+    ~~~
+
+    You should **not** see a `cockroach` process with `--store=node1` and `--port=26257`.
+
+    ~~~
+    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    42543 ttys004    0:00.00 grep cockroach
+    ~~~~
 
 3. In node 1's terminal, restart the node using the v2.0 binary:
 
@@ -131,15 +144,49 @@ Start and initialize a cluster like you did in previous modules.
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
-4. Back in the Admin UI, verify that the node has rejoined the cluster and that it is using the new version of the binary:
+4. Go to the Admin UI at <a href="http://localhost:8081" data-proofer-ignore>http://localhost:8081</a>, click **View nodes list** on the right, and then verify that the node has rejoined the cluster using the new version of the binary:
 
     <img src="{{ 'images/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+    You can also use the `cockroach node status` command to check each node's version:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach node status \
+    --insecure
+    ~~~
+
+    ~~~
+    +----+-----------------+---------------------+---------------------+---------------------+
+    | id |     address     |        build        |     updated_at      |     started_at      |
+    +----+-----------------+---------------------+---------------------+---------------------+
+    |  1 | localhost:26257 | v2.0-alpha.20180212 | 2018-02-13 15:32:38 | 2018-02-13 15:30:48 |
+    |  2 | localhost:26258 | v1.1.5              | 2018-02-13 15:32:47 | 2018-02-13 15:26:07 |
+    |  3 | localhost:26259 | v1.1.5              | 2018-02-13 15:32:38 | 2018-02-13 15:26:08 |
+    +----+-----------------+---------------------+---------------------+---------------------+
+    (3 rows)
+    ~~~
 
 ## Step 4. Upgrade the rest of the nodes
 
 1. In node 2's terminal, press **CTRL + C** to stop the `cockroach` process.
 
-2. Restart the node using the v2.0 binary:
+2. Verify that node 2 has stopped:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ps | grep cockroach
+    ~~~
+
+    You should not see a `cockroach` process with `--store=node2` and `--port=26258`.
+
+    ~~~
+    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
+    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    42543 ttys004    0:00.00 grep cockroach
+    ~~~~
+
+3. Restart the node using the v2.0 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -152,11 +199,26 @@ Start and initialize a cluster like you did in previous modules.
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
-3. Wait 1 minute.
+4. Wait 1 minute.
 
-4. In node 3's terminal, press **CTRL + C** to stop the `cockroach` process.
+5. In node 3's terminal, press **CTRL + C** to stop the `cockroach` process.
 
-5. Restart the node using the v2.0 binary:
+6. Verify that node 3 has stopped:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ps | grep cockroach
+    ~~~
+
+    You should not see a `cockroach` process with `--store=node3` and `--port=26259`.
+
+    ~~~
+    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
+    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    42543 ttys004    0:00.00 grep cockroach
+    ~~~~
+
+7. Restart the node using the v2.0 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -194,7 +256,36 @@ $ ./cockroach node status \
 (3 rows)
 ~~~
 
-## Step 6. Finalize the upgrade 
+## Step 6. Finalize the upgrade
+
+Once all nodes are on the same upgraded version, update the `version` cluster setting to enable certain performance improvements and bug fixes that were introduced in v2.0:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ ./cockroach sql \
+--insecure \
+--execute="SET CLUSTER SETTING version = crdb_internal.node_executable_version();"
+~~~
+
+{{site.data.alerts.callout_info}}This final step is required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you don't need to take any further action.{{site.data.alerts.end}}
+
+## Step 7. Clean up
+
+This is the last module of the training, so feel free to stop you cluster and clean things up.
+
+1. Stop all CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3
+    ~~~
 
 ## What's Next?
 
