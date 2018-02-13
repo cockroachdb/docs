@@ -24,10 +24,25 @@ In this module, you'll run a load generator to simulate multiple client connecti
 
 1. In a new terminal, install HAProxy. If you're on a Mac and use Homebrew, run:
 
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
     ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ sudo apt-get install haproxy
+    ~~~
+    </div>
 
 2. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the port of any node:
 
