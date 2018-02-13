@@ -6,6 +6,7 @@ sidebar_data: sidebar-data-training.json
 ---
 
 In this lab, you'll cause a table's range to lose a majority of its replicas (2 of 3). This will make the data in the table unavailable. You'll then troubleshoot and resolve the problem.
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQwCCLjWfQRS32P_lbRgOlRRoQUt77KGMrsRrg08_cT_R19YD-CUPe3fQZMNTPxNW2hz9PGcotH7M6J/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {

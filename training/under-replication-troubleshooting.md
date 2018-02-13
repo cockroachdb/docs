@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this lab, you'll cause all ranges in a 3-node cluster to lose 1 of 3 replicas. This will make the cluster under-replicated and in a vulnerable state. You'll then troubleshoot and resolve the problem.
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTSFeWLn6dr-ikvcXIXsdG7l4yWTfHiW4QA28LH9bS7MqSgm5MDNwBF2QZT_z6t4aSETvcEMpvMvqbv/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {
