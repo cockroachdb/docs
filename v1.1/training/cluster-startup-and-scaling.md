@@ -62,7 +62,7 @@ $ cd cockroachdb-training
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach . \
-    | rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
+    ; rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
     ~~~
     </div>
 
@@ -70,7 +70,7 @@ $ cd cockroachdb-training
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach . \
-    | rm -rf cockroach-{{ page.release_info.version }}
+    ; rm -rf cockroach-{{ page.release_info.version }}
     ~~~
     </div>
 

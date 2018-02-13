@@ -100,7 +100,7 @@ Start and initialize a cluster like you did in previous modules.
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-v2.0-alpha.20180212.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
-    | rm -rf cockroach-v2.0-alpha.20180212.darwin-10.9-amd64
+    ; rm -rf cockroach-v2.0-alpha.20180212.darwin-10.9-amd64
     ~~~
     </div>
 
@@ -108,7 +108,7 @@ Start and initialize a cluster like you did in previous modules.
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-v2.0-alpha.20180212.linux-amd64/cockroach ./cockroach-v2.0 \
-    | rm -rf cockroach-v2.0-alpha.20180212.linux-amd64
+    ; rm -rf cockroach-v2.0-alpha.20180212.linux-amd64
     ~~~
     </div>
 
