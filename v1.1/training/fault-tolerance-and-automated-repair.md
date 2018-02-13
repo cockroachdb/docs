@@ -33,7 +33,7 @@ In this module, you'll run a load generator to simulate multiple client connecti
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen haproxy \
+    $ ./cockroach gen haproxy \
     --insecure \
     --host=localhost \
     --port=26257
@@ -90,7 +90,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz \
+    $ curl {{site.url}}/docs/{{ page.release_info.version }}/training/resources/crdb-ycsb-mac.tar.gz \
     | tar -xJ
     ~~~
     </div>
@@ -98,7 +98,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- {{site.url}}/docs/training/resources/crdb-ycsb-linux.tar.gz \
+    $ wget -qO- {{site.url}}/docs/{{ page.release_info.version }}/training/resources/crdb-ycsb-linux.tar.gz \
     | tar xvz
     ~~~
     </div>
@@ -148,7 +148,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
@@ -157,7 +157,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
+    $ ./cockroach quit \
     --insecure \
     --port=26261
     ~~~
@@ -174,7 +174,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
@@ -192,7 +192,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
@@ -226,7 +226,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node5 \
     --host=localhost \
@@ -239,7 +239,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+    $ echo 'num_replicas: 5' | ./cockroach zone set .default --insecure -f -
     ~~~
 
     ~~~
@@ -263,12 +263,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --port=26260
+    $ ./cockroach quit --insecure --port=26260
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --port=26261
+    $ ./cockroach quit --insecure --port=26261
     ~~~
 
 ## Step 9. Check load continuity and cluster health
@@ -283,7 +283,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
@@ -301,7 +301,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~

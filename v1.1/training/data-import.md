@@ -26,7 +26,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -39,7 +39,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -52,7 +52,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -65,7 +65,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Import tabular data from remote file storage
@@ -76,7 +76,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
     ~~~
@@ -85,7 +85,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE import_test;"
     ~~~
@@ -94,7 +94,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
@@ -115,7 +115,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="SHOW CREATE TABLE orders;"
@@ -148,7 +148,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="SELECT o_orderkey, o_custkey, o_comment FROM orders WHERE o_orderstatus = 'O' LIMIT 10;"
@@ -207,14 +207,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure < startrek.sql
+    $ ./cockroach sql --insecure < startrek.sql
     ~~~
 
 3. Check the schema of the imported `episodes` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="startrek" \
     --execute="SHOW CREATE TABLE episodes;"
@@ -241,7 +241,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="startrek" \
     --execute="SELECT * FROM episodes LIMIT 10;"
@@ -333,7 +333,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE pg_import;"
     ~~~
@@ -349,7 +349,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT customers.name, accounts.balance FROM pg_import.accounts JOIN pg_import.customers ON accounts.customer_id = customers.id;"
     ~~~
