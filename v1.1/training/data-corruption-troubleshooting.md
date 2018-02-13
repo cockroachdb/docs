@@ -156,9 +156,9 @@ Before you can manually corrupt data, you need to import enough data so that the
       A significantly larger value is usually needed for good performance.
       If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
     W180209 10:45:03.805541 37 gossip/gossip.go:1241  [n?] no incoming or outgoing connections
-    E180209 10:45:03.808537 1 cli/error.go:68  cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
+    E180209 10:45:03.808537 1 cli/error.go:68  cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
     *
-    * ERROR: cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
+    * ERROR: cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
     *
     *
     Failed running "start"

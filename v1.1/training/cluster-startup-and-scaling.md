@@ -170,7 +170,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     ~~~
     CockroachDB node starting at 2018-02-02 05:08:22.841392 +0000 UTC
-    build:      CCL v1.1.4 @ 2018/01/08 17:30:06 (go1.8.3)
+    build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
     admin:      http://localhost:8080
     sql:        postgresql://root@localhost:26257?application_name=cockroach&sslmode=disable
     logs:       /Users/jesseseldess/cockroachdb-training/node1/logs
@@ -204,9 +204,9 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     +----+-----------------+--------+---------------------+---------------------+
     | id |     address     | build  |     updated_at      |     started_at      |
     +----+-----------------+--------+---------------------+---------------------+
-    |  1 | localhost:26257 | v1.1.4 | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
-    |  2 | localhost:26259 | v1.1.4 | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
-    |  3 | localhost:26258 | v1.1.4 | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
+    |  1 | localhost:26257 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
+    |  2 | localhost:26259 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
+    |  3 | localhost:26258 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
     +----+-----------------+--------+---------------------+---------------------+
     (3 rows)
     ~~~
@@ -222,7 +222,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: e446d2c6-d4df-4dbc-91c4-59fbc08d71a8
     +--------------------+
     |      Database      |

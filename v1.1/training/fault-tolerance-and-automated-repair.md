@@ -180,7 +180,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -198,7 +198,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -289,7 +289,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -307,7 +307,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
