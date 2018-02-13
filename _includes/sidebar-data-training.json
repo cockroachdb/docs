@@ -127,6 +127,12 @@
         ]
       },
       {
+        "title": "How Cockroach Labs Debugs",
+        "urls": [
+          "/training/how-cockroach-labs-debugs.html"
+        ]
+      },
+      {
         "title": "How to Get Support",
         "urls": [
           "/training/how-to-get-support.html"
