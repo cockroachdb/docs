@@ -20,21 +20,20 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 
 ## Step 1. Simulate the problem
 
-In a new terminal, issue a "query of death" against node 3:
+1. In a new terminal, issue a "query of death" against node 3. The query will crash the node, the connection will then fail, and you'll see an error message printed to `stderr`:
 
-~~~ shell
-$ cockroach sql \
---insecure \
---port=26259 \
---execute="SELECT crdb_internal.force_panic('foo');"
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --insecure \
+    --port=26259 \
+    --execute="SELECT crdb_internal.force_panic('foo');"
+    ~~~
 
-The query will crash the node, the connection will then fail, and you'll see the following printed to `stderr`:
-
-~~~
-Error: driver: bad connection
-Failed running "sql"
-~~~
+    ~~~
+    Error: driver: bad connection
+    Failed running "sql"
+    ~~~
 
 ## Step 2. Troubleshoot the problem
 
