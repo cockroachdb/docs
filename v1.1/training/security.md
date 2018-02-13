@@ -46,11 +46,11 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 2. Create the CA certificate and key:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-ca \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ ./cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 3. Create the certificate and key for the your nodes:
 
@@ -68,20 +68,20 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 4. Create client certificates and keys for the `root` and `spock` users:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-client \
-  	root \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ ./cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-client \
-  	spock \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ ./cockroach cert create-client \
+    spock \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 ## Step 3. Restart the cluster as secure
 
