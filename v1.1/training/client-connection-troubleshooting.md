@@ -26,6 +26,7 @@ In this scenario, you try to connect a user without without providing a client c
 
 1. In a new terminal, as the `root` user, create a new user called `kirk`:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach user set kirk --certs-dir=certs
     ~~~

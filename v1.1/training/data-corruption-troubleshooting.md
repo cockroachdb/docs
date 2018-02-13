@@ -26,7 +26,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node1 \
     --host=localhost \
     --port=26257 \
@@ -41,7 +40,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
     --port=26258 \
@@ -56,7 +54,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -140,7 +137,6 @@ Before you can manually corrupt data, you need to import enough data so that the
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -183,7 +179,6 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \

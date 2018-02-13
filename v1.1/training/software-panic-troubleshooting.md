@@ -22,6 +22,7 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 
 In a new terminal, issue a "query of death" against node 3:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ ./cockroach sql \
 --insecure \
