@@ -166,7 +166,7 @@ In preparation, add a table and use a replication zone to force the table's data
     $ ./cockroach gen example-data intro | ./cockroach sql --insecure
     ~~~
 
-2. Create a [replication zone](../v1.1/configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
+2. Create a [replication zone](configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell

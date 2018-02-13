@@ -59,7 +59,7 @@ If you already have a secure cluster running, you can easily convert it to an in
 
 ### Find the Code Samples
 
-1. Go to [Build an App with CockroachDB](../stable/build-an-app-with-cockroachdb.html).
+1. Go to [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
 
 2. Choose your preferred language and driver or ORM.
 

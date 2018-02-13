@@ -13,7 +13,7 @@ sidebar_data: sidebar-data-training.json
 
 ## Lab
 
-In this lab, use the code sample from the **Transaction (with retry logic)** section of your preferred [driver/ORM](../stable/build-an-app-with-cockroachdb.html).
+In this lab, use the code sample from the **Transaction (with retry logic)** section of your preferred [driver/ORM](build-an-app-with-cockroachdb.html).
 
 ## What's Next?
 
