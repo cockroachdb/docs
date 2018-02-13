@@ -1073,8 +1073,8 @@ section.footer {
         section.footer .footer-nav li a:hover {
           color: #54B30E; }
     section.footer .footer-nav li.header {
-      font-family: 'AvenirLTStd-Black', serif;
-      font-size: 12px;
+      font-family: 'AvenirLTStd-Heavy', serif;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;

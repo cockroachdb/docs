@@ -146,7 +146,7 @@ section.footer {
 		}
 
 		li.header {
-			@include button-text;
+			@include button-text--heavy--medium;
 			text-transform: uppercase;
 
 			@include at-query($min, $screen-sm) {

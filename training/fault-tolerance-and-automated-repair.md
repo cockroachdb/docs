@@ -91,7 +91,7 @@ Now that you have a load balancer running in front of your cluster, download and
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz \
-    | tar xJ crdb-ycsb-mac.tar.gz
+    | tar -xJ
     ~~~
     </div>
 
@@ -99,7 +99,7 @@ Now that you have a load balancer running in front of your cluster, download and
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- {{site.url}}/docs/training/resources/crdb-ycsb-linux.tar.gz \
-    | tar xvz crdb-ycsb-linux.tar.gz
+    | tar xvz
     ~~~
     </div>
 
