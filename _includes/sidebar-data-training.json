@@ -156,15 +156,15 @@
         ]
       },
       {
-        "title": "Cluster Upgrade",
+        "title": "Backup and Restore",
         "urls": [
-          "/${VERSION}/training/cluster-upgrade.html"
+          "/${VERSION}/training/backup-and-restore.html"
         ]
       },
       {
-        "title": "Backup and Restore",
+        "title": "Cluster Upgrade",
         "urls": [
-          "/${VERSION}/training/back-up-a-cluster.html"
+          "/${VERSION}/training/cluster-upgrade.html"
         ]
       }
     ]

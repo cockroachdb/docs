@@ -99,6 +99,26 @@ $ ./cockroach start \
 
     <img src="{{ 'images/training-18.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
+## Step 4. Clean up
+
+In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
+
+1. Stop all CockroachDB nodes, HAProxy, and the YCSB load generator:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3 node4
+    ~~~
+
 ## What's Next?
 
-- [Back up a Cluster](back-up-a-cluster.html)
+- [Backup and Restore](backup-and-restore.html)
