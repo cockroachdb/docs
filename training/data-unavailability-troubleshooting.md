@@ -5,7 +5,6 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this lab, you'll cause a table's range to lose a majority of its replicas (2 of 3). This will make the data in the table unavailable. You'll then troubleshoot and resolve the problem.
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQwCCLjWfQRS32P_lbRgOlRRoQUt77KGMrsRrg08_cT_R19YD-CUPe3fQZMNTPxNW2hz9PGcotH7M6J/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
@@ -15,9 +14,13 @@ In this lab, you'll cause a table's range to lose a majority of its replicas (2 
 </style>
 <div id="toc"></div>
 
+## Before You Begin
+
+In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
+
 ## Step 1. Start a cluster spread across 3 separate localities
 
-Create a 9 node cluster, with 3 nodes in each of 3 different localities.
+Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 1. In a new terminal, start node 1 in locality us-east-1:
 
@@ -197,7 +200,7 @@ In preparation, add a table and use a replication zone to force the table's data
     (1 row)
     ~~~
 
-4. Note that the node IDs above may not match the order in which we started the nodes, because node IDs only get allocated after `cockroach init` is run. We can verify that the nodes listed by `SHOW TESTING_RANGES`are all in the `datacenter=us-east-3` locality by opening the Node Diagnostics debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
+4. The node IDs above may not match the order in which we started the nodes because node IDs only get allocated after `cockroach init` is run. You can verify that the nodes listed by `SHOW TESTING_RANGES` are all in the `datacenter=us-east-3` locality by opening the **Node Diagnostics** debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
 
     <img src="{{ 'images/training-19.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
