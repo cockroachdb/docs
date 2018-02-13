@@ -63,7 +63,6 @@ In this lab, we'll restore our entire database using the enterprise license `RES
 
 ### Before You Begin
 
-To complete this lab, you need to have completed the lab for [backing up your CockroachDB cluster](back-up-a-cluster.html).
 
 ### Step 1. Prepare Your Cluster for the Restore
 

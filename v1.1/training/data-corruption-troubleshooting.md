@@ -73,7 +73,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Before you can manually corrupt data, you need to import enough data so that the cluster creates persistent `.sst` files.
 
-1. In the same terminal, enable the "experimental" [`IMPORT`](import.html) feature:
+1. In the same terminal, enable the "experimental" [`IMPORT`](../import.html) feature:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -91,7 +91,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     --execute="CREATE DATABASE import_test;"
     ~~~
 
-3. Run the [`IMPORT`](import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
+3. Run the [`IMPORT`](../import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -187,7 +187,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     --logtostderr=WARNING
     ~~~
 
-In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](restore.html) is best.
+In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](../restore.html) is best.
 
 {{site.data.alerts.callout_danger}}In all cases of data corruption, you should <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
 

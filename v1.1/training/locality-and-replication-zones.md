@@ -64,7 +64,7 @@ Start a cluster like you did previously, but this time use the [`--locality`](co
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-4. In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. In a new terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -339,14 +339,14 @@ Now imagine that that `intro` database you created earlier is storing data for a
 
 Because you used the `--locality` flag to indicate the region for each of your nodes, constraining data to specific regions is simple.
 
-1. Use the [`cockroach zone`](configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
+1. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek --insecure -f -
     ~~~
 
-2. Use the [`cockroach zone`](configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
+2. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
