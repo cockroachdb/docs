@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this lab, you'll cause all ranges in a cluster, including system ranges, to lose a majority of their replicas (2 of 3). This will make the cluster unavailable. You'll then troubleshoot and resolve the problem.
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSBf1F3mGsVQs7pqcTuRe-mW_3X7TxDZ2TjGbQfdExMJ4c6G-IfEhB4olJXpfbgOKjQhjX7kftKSa5X/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {
