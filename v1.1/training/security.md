@@ -47,7 +47,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-ca \
+  	$ ./cockroach cert create-ca \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
   	~~~
@@ -56,7 +56,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach cert create-node \
+    $ ./cockroach cert create-node \
     localhost \
     $(hostname) \
     --certs-dir=certs \
@@ -69,7 +69,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-client \
+  	$ ./cockroach cert create-client \
   	root \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
@@ -77,7 +77,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-client \
+  	$ ./cockroach cert create-client \
   	spock \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
@@ -91,7 +91,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
     --host=localhost \
@@ -104,7 +104,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
     --host=localhost \
@@ -117,7 +117,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
     --host=localhost \
@@ -134,7 +134,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --certs-dir=certs \
     --user=spock \
     --database=startrek \
@@ -158,7 +158,7 @@ Although we recommend always using TLS certificates to authenticate users, it's 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set kirk \
+    $ ./cockroach user set kirk \
     --certs-dir=certs \
     --password
     ~~~
@@ -167,7 +167,7 @@ Although we recommend always using TLS certificates to authenticate users, it's 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --certs-dir=certs \
     --user=root \
     --execute="GRANT SELECT ON startrek.* TO kirk;"
@@ -179,7 +179,7 @@ Although we recommend always using TLS certificates to authenticate users, it's 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --certs-dir=certs \
     --user=kirk \
     --database=startrek \

@@ -14,34 +14,9 @@ sidebar_data: sidebar-data-training.json
 </style>
 <div id="toc"></div>
 
-## Step 1. Install CockroachDB
+## Step 1. Create a training directory
 
-<div id="download-the-binary" class="install-option">
-  <ol>
-    <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X, and extract the binary:</p>
-
-      <div class="copy-clipboard">
-        <div class="copy-clipboard__text" data-eventcategory="mac-binary-step1-button">copy</div>
-        <svg data-eventcategory="mac-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="gp" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz | tar -xJ</code></pre></div>
-    </li>
-    <li>
-      <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="../v1.1/cockroach-commands.html">cockroach commands</a> from any shell:</p>
-
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin</code></pre></div>
-      <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
-    </li>
-  </ol>
-</div>
-
-## Step 2. Create a parent directory
-
-When you start a node, CockroachDB will create a directory for storing the node's data and logs. It's important to keep track of where these files are.
-
-To make it easier, create a parent directory and `cd` into it:
+To make it easier to keep track of all the files for this training, create a new directory and `cd` into it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -53,13 +28,59 @@ $ mkdir cockroachdb-training
 $ cd cockroachdb-training
 ~~~
 
+{{site.data.alerts.callout_info}}From this point on, you'll start nodes and run all other commands from inside the <code>cockroachdb-training</code> directory.{{site.data.alerts.end}}
+
+## Step 2. Install CockroachDB
+
+1. Download the CockroachDB archive for your OS, and extract the binary:
+
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
+    | tar -xJ
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar  xvz
+    ~~~
+    </div>
+
+2. Move the binary into the parent `cockroachdb-training` directory:
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach . \
+    | rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach . \
+    | rm -rf cockroach-{{ page.release_info.version }}
+    ~~~
+    </div>
+
 ## Step 3. Start a node
 
 Use the [`cockroach start`](../stable/start-a-node.html) command to start a node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ ./cockroach start \
 --insecure \
 --store=node1 \
 --host=localhost \
@@ -98,7 +119,7 @@ Flag | Description
 `--http-port` | The HTTP port for accessing the Admin UI.<br><br>Again, since you'll be running all nodes on your computer, you need to specify a unique HTTP port for each node.<br><br>In a real deployment, with one node per machine, it's fine to let `cockroach` use its default HTTP port (`8080`).
 `--join` | The addresses and TCP ports of all of your initial nodes.<br><br>You'll use this exact `--join` flag when starting all other nodes.
 
-{{site.data.alerts.callout_success}}You can run <code>cockroach start --help</code> to get help on this command directly in your terminal and <code>cockroach --help</code> to get help on other commands.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}You can run <code>./cockroach start --help</code> to get help on this command directly in your terminal and <code>./cockroach --help</code> to get help on other commands.{{site.data.alerts.end}}
 
 ## Step 5. Start two more nodes
 
@@ -108,7 +129,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -121,7 +142,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -136,7 +157,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
     You'll see the following message:
@@ -176,7 +197,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach node status --insecure
+    $ ./cockroach node status --insecure
     ~~~
 
     ~~~
@@ -194,7 +215,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --port=26257 \
     --execute="SHOW DATABASES;"
@@ -242,7 +263,7 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node4 \
     --host=localhost \
@@ -255,7 +276,7 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node5 \
     --host=localhost \

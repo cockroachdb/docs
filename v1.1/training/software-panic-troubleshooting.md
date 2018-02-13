@@ -23,7 +23,7 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 In a new terminal, issue a "query of death" against node 3:
 
 ~~~ shell
-$ cockroach sql \
+$ ./cockroach sql \
 --insecure \
 --port=26259 \
 --execute="SELECT crdb_internal.force_panic('foo');"
@@ -96,4 +96,4 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
 
 ## What's Next?
 
-[Network Partition Troubleshooting](network-partition-troubleshooting.html)
+[How Cockroach Labs Debugs](how-cockroach-labs-debugs.html)

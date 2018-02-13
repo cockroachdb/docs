@@ -2,7 +2,7 @@
   {
     "title": "Training Home",
     "urls": [
-      "/training/"
+      "/${VERSION}/training/"
     ]
   },
   {
@@ -11,13 +11,13 @@
       {
         "title": "Why CockroachDB?",
         "urls": [
-          "/training/why-cockroachdb.html"
+          "/${VERSION}/training/why-cockroachdb.html"
         ]
       },
       {
         "title": "Architecture Overview",
         "urls": [
-          "/training/architecture-overview.html"
+          "/${VERSION}/training/architecture-overview.html"
         ]
       }
     ]
@@ -28,55 +28,55 @@
       {
         "title": "Cluster Startup and Scaling",
         "urls": [
-          "/training/cluster-startup-and-scaling.html"
+          "/${VERSION}/training/cluster-startup-and-scaling.html"
         ]
       },
       {
         "title": "Fault Tolerance and Automated Repair",
         "urls": [
-          "/training/fault-tolerance-and-automated-repair.html"
+          "/${VERSION}/training/fault-tolerance-and-automated-repair.html"
         ]
       },
       {
         "title": "Locality and Replication Zones",
         "urls": [
-          "/training/locality-and-replication-zones.html"
+          "/${VERSION}/training/locality-and-replication-zones.html"
         ]
       },
       {
         "title": "Data Import",
         "urls": [
-          "/training/data-import.html"
+          "/${VERSION}/training/data-import.html"
         ]
       },
       {
         "title": "Users and Privileges",
         "urls": [
-          "/training/users-and-privileges.html"
+          "/${VERSION}/training/users-and-privileges.html"
         ]
       },
       {
         "title": "Security",
         "urls": [
-          "/training/security.html"
+          "/${VERSION}/training/security.html"
         ]
       },
       {
         "title": "Production Deployment",
         "urls": [
-          "/training/production-deployment.html"
+          "/${VERSION}/training/production-deployment.html"
         ]
       },
       {
         "title": "Monitoring and Alerting",
         "urls": [
-          "/training/monitoring-and-alerting.html"
+          "/${VERSION}/training/monitoring-and-alerting.html"
         ]
       },
       {
         "title": "Debug Logs",
         "urls": [
-          "/training/logs.html"
+          "/${VERSION}/training/logs.html"
         ]
       }
     ]
@@ -87,55 +87,55 @@
       {
         "title": "Node Startup",
         "urls": [
-          "/training/node-startup-troubleshooting.html"
+          "/${VERSION}/training/node-startup-troubleshooting.html"
         ]
       },
       {
         "title": "Client Connection",
         "urls": [
-          "/training/client-connection-troubleshooting.html"
+          "/${VERSION}/training/client-connection-troubleshooting.html"
         ]
       },
       {
         "title": "Under-Replication",
         "urls": [
-          "/training/under-replication-troubleshooting.html"
+          "/${VERSION}/training/under-replication-troubleshooting.html"
         ]
       },
       {
         "title": "Cluster Unavailability",
         "urls": [
-          "/training/cluster-unavailability-troubleshooting.html"
+          "/${VERSION}/training/cluster-unavailability-troubleshooting.html"
         ]
       },
       {
         "title": "Data Unavailability",
         "urls": [
-          "/training/data-unavailability-troubleshooting.html"
+          "/${VERSION}/training/data-unavailability-troubleshooting.html"
         ]
       },
       {
         "title": "Data Corruption",
         "urls": [
-          "/training/data-corruption-troubleshooting.html"
+          "/${VERSION}/training/data-corruption-troubleshooting.html"
         ]
       },
       {
         "title": "Software Panic",
         "urls": [
-          "/training/software-panic-troubleshooting.html"
+          "/${VERSION}/training/software-panic-troubleshooting.html"
         ]
       },
       {
         "title": "How Cockroach Labs Debugs",
         "urls": [
-          "/training/how-cockroach-labs-debugs.html"
+          "/${VERSION}/training/how-cockroach-labs-debugs.html"
         ]
       },
       {
         "title": "How to Get Support",
         "urls": [
-          "/training/how-to-get-support.html"
+          "/${VERSION}/training/how-to-get-support.html"
         ]
       }
     ]
@@ -146,25 +146,25 @@
       {
         "title": "Planned Maintenance",
         "urls": [
-          "/training/planned-maintenance.html"
+          "/${VERSION}/training/planned-maintenance.html"
         ]
       },
       {
         "title": "Node Decommissioning",
         "urls": [
-          "/training/node-decommissioning.html"
+          "/${VERSION}/training/node-decommissioning.html"
         ]
       },
       {
         "title": "Cluster Upgrade",
         "urls": [
-          "/training/cluster-upgrade.html"
+          "/${VERSION}/training/cluster-upgrade.html"
         ]
       },
       {
         "title": "Backup and Restore",
         "urls": [
-          "/training/back-up-a-cluster.html"
+          "/${VERSION}/training/back-up-a-cluster.html"
         ]
       }
     ]

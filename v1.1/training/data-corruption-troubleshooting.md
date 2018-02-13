@@ -24,7 +24,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
@@ -39,7 +39,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
@@ -54,7 +54,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
@@ -69,7 +69,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -80,7 +80,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
     ~~~
@@ -89,7 +89,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE import_test;"
     ~~~
@@ -98,7 +98,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
@@ -138,7 +138,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
@@ -181,7 +181,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
