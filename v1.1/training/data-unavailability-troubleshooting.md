@@ -26,7 +26,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
@@ -40,7 +40,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
@@ -54,7 +54,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
@@ -68,7 +68,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node4 \
@@ -82,7 +82,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
@@ -96,7 +96,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
@@ -110,7 +110,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node7 \
@@ -124,7 +124,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
@@ -138,7 +138,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
@@ -152,7 +152,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Simulate the problem
@@ -163,14 +163,14 @@ In preparation, add a table and use a replication zone to force the table's data
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen example-data intro | cockroach sql --insecure
+    $ ./cockroach gen example-data intro | ./cockroach sql --insecure
     ~~~
 
-2. Create a [replication zone](../v1.1/configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
+2. Create a [replication zone](../configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+datacenter=us-east-3]' | cockroach zone set intro.mytable --insecure -f -
+    $ echo 'constraints: [+datacenter=us-east-3]' | ./cockroach zone set intro.mytable --insecure -f -
     ~~~
 
     ~~~
@@ -186,7 +186,7 @@ In preparation, add a table and use a replication zone to force the table's data
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;"
     ~~~
@@ -212,14 +212,14 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
+    $ ./cockroach quit \
     --insecure \
     --port=26264
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
+    $ ./cockroach quit \
     --insecure \
     --port=26265
     ~~~
@@ -230,7 +230,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --port=26257 \
     --execute="INSERT INTO intro.mytable VALUES (42, '')" \
@@ -263,7 +263,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
@@ -275,7 +275,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \

@@ -13,7 +13,7 @@ If you missed a training session and need to set up a CockroachDB cluster, this 
 
 ## 1. Install CockroachDB
 
-Use our docs to [install CockroachDB](../stable/install-cockroachdb.html).
+Use our docs to [install CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Start a local 3-node cluster
 
@@ -56,7 +56,7 @@ $ cockroach start \
 
 ## Step 3. Initialize the cluster
 
-In a new terminal, use the [`cockroach init`](../stable/initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

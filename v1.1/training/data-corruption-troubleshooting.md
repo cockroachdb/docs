@@ -24,9 +24,8 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node1 \
     --host=localhost \
     --port=26257 \
@@ -39,9 +38,8 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
     --port=26258 \
@@ -54,9 +52,8 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -69,18 +66,18 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Prepare to simulate the problem
 
 Before you can manually corrupt data, you need to import enough data so that the cluster creates persistent `.sst` files.
 
-1. In the same terminal, enable the "experimental" [`IMPORT`](../v1.1/import.html) feature:
+1. In the same terminal, enable the "experimental" [`IMPORT`](../import.html) feature:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
     ~~~
@@ -89,16 +86,16 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE import_test;"
     ~~~
 
-3. Run the [`IMPORT`](../v1.1/import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
+3. Run the [`IMPORT`](../import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
@@ -138,9 +135,8 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -156,9 +152,9 @@ Before you can manually corrupt data, you need to import enough data so that the
       A significantly larger value is usually needed for good performance.
       If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
     W180209 10:45:03.805541 37 gossip/gossip.go:1241  [n?] no incoming or outgoing connections
-    E180209 10:45:03.808537 1 cli/error.go:68  cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
+    E180209 10:45:03.808537 1 cli/error.go:68  cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
     *
-    * ERROR: cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
+    * ERROR: cockroach server exited with error: failed to create engines: could not open rocksdb instance: Corruption: Sst file size mismatch: /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node3/000006.sst. Size recorded in manifest 2626945, actual size 2626210
     *
     *
     Failed running "start"
@@ -181,9 +177,8 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -192,7 +187,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     --logtostderr=WARNING
     ~~~
 
-In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](../v1.1/restore.html) is best.
+In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](../restore.html) is best.
 
 {{site.data.alerts.callout_danger}}In all cases of data corruption, you should <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
 

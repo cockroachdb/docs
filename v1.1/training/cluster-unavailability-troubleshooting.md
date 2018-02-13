@@ -36,7 +36,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --port=26257 \
     --execute="SHOW DATABASES;" \
@@ -51,7 +51,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -64,7 +64,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \

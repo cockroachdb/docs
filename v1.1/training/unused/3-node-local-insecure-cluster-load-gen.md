@@ -16,7 +16,7 @@ If you missed a training session and need to set up a CockroachDB cluster, this 
 
 In this tutorial, you'll use CockroachDB, the HAProxy load balancer, and CockroachDB's version of the YCSB load generator, which requires Go. Before you begin, make sure these applications are installed:
 
-- Install the latest version of [CockroachDB](../stable/install-cockroachdb.html).
+- Install the latest version of [CockroachDB](install-cockroachdb.html).
 - Install [HAProxy](http://www.haproxy.org/). If you're on a Mac and using Homebrew, use `brew install haproxy`.
 - Install the CockroachDB version of YCSB:
 
@@ -97,7 +97,7 @@ $ cockroach start \
 
 ## Step 3. Initialize the cluster
 
-In a new terminal, use the [`cockroach init`](../stable/initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -118,7 +118,7 @@ $ cockroach node status --insecure
 
 You're now running 3 nodes locally. Each of these nodes is an equally suitable SQL gateway to your cluster, but to ensure an even balancing of client requests across these nodes, you can use a TCP load balancer. Let's use the open-source [HAProxy](http://www.haproxy.org/) load balancer that you installed earlier.
 
-In a new terminal, run the [`cockroach gen haproxy`](../stable/generate-cockroachdb-resources.html) command, specifying the port of any node:
+In a new terminal, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the port of any node:
 
 {% include copy-clipboard.html %}
 ~~~ shell

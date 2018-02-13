@@ -26,15 +26,16 @@ In this scenario, you try to connect a user without without providing a client c
 
 1. In a new terminal, as the `root` user, create a new user called `kirk`:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set kirk --certs-dir=certs
+    $ ./cockroach user set kirk --certs-dir=certs
     ~~~
 
 2. As the `kirk` user, try to connect to the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --certs-dir=certs \
     --user=kirk \
     --execute="SHOW DATABASES;"
@@ -63,7 +64,7 @@ To successfully connect the user, you must first either generate a client certif
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach cert create-client \
+    $ ./cockroach cert create-client \
     kirk \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
@@ -73,7 +74,7 @@ To successfully connect the user, you must first either generate a client certif
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --certs-dir=certs \
     --user=kirk \
     --execute="SHOW DATABASES;"
@@ -102,7 +103,7 @@ Try to connect the `kirk` user:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql \
+$ ./cockroach sql \
 --certs-dir=certs \
 --user=kirk \
 --port=20000 \
@@ -127,7 +128,7 @@ To successfully connect the user, try again using a correct `--port`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql \
+$ ./cockroach sql \
 --certs-dir=certs \
 --user=kirk \
 --port=26259 \

@@ -20,13 +20,13 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 1. Start a cluster in a single US region
 
-Start a cluster like you did previously, but this time use the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
+Start a cluster like you did previously, but this time use the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node1 \
@@ -40,7 +40,7 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node2 \
@@ -54,7 +54,7 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node3 \
@@ -64,11 +64,11 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-4. In a new terminal, use the [`cockroach init`](../v1.1/initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. In a new terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Check data distribution
@@ -81,7 +81,7 @@ To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer
 
 ## Step 3. Expand into 2 more US regions
 
-Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
+Add 6 more nodes, this time using the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
 
 {{site.data.alerts.callout_info}}To simplify the process of adding more nodes, you'll start them in the background instead of in separate terminals.{{site.data.alerts.end}}
 
@@ -89,7 +89,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node4 \
@@ -104,7 +104,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node5 \
@@ -119,7 +119,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node6 \
@@ -134,7 +134,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node7 \
@@ -149,7 +149,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node8 \
@@ -164,7 +164,7 @@ Add 6 more nodes, this time using the [`--locality`](../v1.1/configure-replicati
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node9 \
@@ -185,14 +185,14 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen example-data intro | cockroach sql --insecure
+    $ ./cockroach gen example-data intro | ./cockroach sql --insecure
     ~~~
 
 2. Use the `cockroach sql` command to verify that the table was added:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT * FROM intro.mytable WHERE (l % 2) = 0;"
     ~~~
@@ -230,7 +230,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;"
     ~~~
@@ -248,13 +248,13 @@ To check this, let's create a table, which initially maps to a single underlying
 
 ## Step 5. Expand into Europe
 
-Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](../v1.1/configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
+Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
 
 1. Start node 10:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node10 \
@@ -269,7 +269,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node11 \
@@ -284,7 +284,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node12 \
@@ -303,14 +303,14 @@ Now imagine that that `intro` database you created earlier is storing data for a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen example-data startrek | cockroach sql --insecure
+    $ ./cockroach gen example-data startrek | ./cockroach sql --insecure
     ~~~
 
 2. Use the `cockroach sql` command to verify that the tables were added:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT * FROM startrek.episodes LIMIT 5;" \
     --execute="SELECT quote FROM startrek.quotes WHERE characters = 'Spock and Kirk';"
@@ -339,18 +339,18 @@ Now imagine that that `intro` database you created earlier is storing data for a
 
 Because you used the `--locality` flag to indicate the region for each of your nodes, constraining data to specific regions is simple.
 
-1. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
+1. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=eu]' | cockroach zone set startrek --insecure -f -
+    $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek --insecure -f -
     ~~~
 
-2. Use the [`cockroach zone`](../v1.1/configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
+2. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=us]' | cockroach zone set intro --insecure -f -
+    $ echo 'constraints: [+region=us]' | ./cockroach zone set intro --insecure -f -
     ~~~
 
 ## Step 8. Verify data distribution
@@ -361,7 +361,7 @@ Now verify that the data for the table in the `intro` database is located on US-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;" \
     --execute="SHOW TESTING_RANGES FROM TABLE startrek.episodes;" \

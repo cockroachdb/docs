@@ -26,7 +26,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -39,7 +39,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -52,7 +52,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -65,7 +65,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Increase the time until a node is considered dead
@@ -76,7 +76,7 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '15m0s';"
     ~~~
@@ -85,7 +85,7 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW CLUSTER SETTING server.time_until_store_dead;"
     ~~~
@@ -113,7 +113,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -132,7 +132,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -151,7 +151,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -168,7 +168,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '5m0s';"
     ~~~
@@ -177,7 +177,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW CLUSTER SETTING server.time_until_store_dead;"
     ~~~

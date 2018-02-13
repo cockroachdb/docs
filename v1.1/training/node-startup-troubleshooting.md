@@ -20,7 +20,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 ### Step 1. Generate security certificates
 
-{{site.data.alerts.callout_info}}If you have these resources still in place from the <a href="security.html">Security</a> module, you can skip this step.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}If you have these resources still in place from the <a href="security.html">Security</a> module, you can skip this step.{{site.data.alerts.end}}
 
 1. Create two directories:
 
@@ -33,7 +33,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-ca \
+  	$ ./cockroach cert create-ca \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
   	~~~
@@ -42,7 +42,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach cert create-node \
+    $ ./cockroach cert create-node \
     localhost \
     $(hostname) \
     --certs-dir=certs \
@@ -53,7 +53,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-client \
+  	$ ./cockroach cert create-client \
   	root \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
@@ -61,7 +61,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	$ cockroach cert create-client \
+  	$ ./cockroach cert create-client \
   	spock \
   	--certs-dir=certs \
   	--ca-key=my-safe-directory/ca.key
@@ -73,7 +73,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
     --host=localhost \
@@ -86,7 +86,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
     --host=localhost \
@@ -99,7 +99,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
     --host=localhost \
@@ -112,7 +112,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs
+    $ ./cockroach init --certs-dir=certs
     ~~~
 
 ### Step 3. Simulate the problem
@@ -123,7 +123,7 @@ In the same terminal, try to add another node, but leave out the `--certs-dir` f
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ ./cockroach start \
 --store=node4 \
 --host=localhost \
 --port=26260 \
@@ -153,7 +153,7 @@ To successfully join the node to the cluster, start the node again, but this tim
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ ./cockroach start \
 --certs-dir=certs \
 --store=node4 \
 --host=localhost \
@@ -172,7 +172,7 @@ In a new terminal, try to add another node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ ./cockroach start \
 --certs-dir=certs \
 --store=node5 \
 --host=localhost \
@@ -202,7 +202,7 @@ The last warning tells you that the node can't establish a connection with the a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node5 \
     --host=localhost \
@@ -221,7 +221,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
     --host=localhost \
@@ -233,11 +233,11 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
     ~~~
     CockroachDB node starting at 2018-02-08 16:30:26.690638 +0000 UTC (took 0.2s)
-    build:      CCL v1.1.4 @ 2018/01/08 17:30:06 (go1.8.3)
+    build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
     admin:      https://localhost:8085
     sql:        postgresql://root@localhost:26262?application_name=cockroach&sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
-    logs:       /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node6/logs
-    store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node6
+    logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
+    store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
     status:     initialized new cluster
     clusterID:  cfcd80ee-9005-4975-9ae9-9c36d9aaa57e
     nodeID:     1
@@ -249,7 +249,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
     --host=localhost \
@@ -281,7 +281,7 @@ $ rm -rf node6
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ ./cockroach start \
 --certs-dir=certs \
 --store=node6 \
 --host=localhost \
@@ -294,11 +294,11 @@ This time, the startup process succeeds, and the `status` tells you that the nod
 
 ~~~
 CockroachDB node starting at 2018-02-08 16:51:24.23112 +0000 UTC (took 0.2s)
-build:      CCL v1.1.4 @ 2018/01/08 17:30:06 (go1.8.3)
+build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
 admin:      https://localhost:8085
 sql:        postgresql://root@localhost:26262?application_name=cockroach&sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
-logs:       /Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node6/logs
-store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-v1.1.4.darwin-10.9-amd64/node6
+logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
+store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
 status:     initialized new node, joined pre-existing cluster
 clusterID:  5007b180-9b08-4a08-a882-53915fb459a1
 nodeID:     6    

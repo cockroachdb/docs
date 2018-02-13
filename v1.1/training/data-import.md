@@ -26,7 +26,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -39,7 +39,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -52,7 +52,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -65,18 +65,18 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure
+    $ ./cockroach init --insecure
     ~~~
 
 ## Step 2. Import tabular data from remote file storage
 
-Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in CockroachDB v1.1, it's one of the most efficient ways to get data into a cluster, so let's start with it.
+Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB v1.1, it's one of the most efficient ways to get data into a cluster, so let's start with it.
 
 1. In the same terminal, enable the "experimental" `IMPORT` feature:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
     ~~~
@@ -85,7 +85,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE import_test;"
     ~~~
@@ -94,7 +94,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
@@ -115,7 +115,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="SHOW CREATE TABLE orders;"
@@ -148,7 +148,7 @@ Although the [`IMPORT`](../v1.1/import.html) feature is "experimental" in Cockro
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="import_test" \
     --execute="SELECT o_orderkey, o_custkey, o_comment FROM orders WHERE o_orderstatus = 'O' LIMIT 10;"
@@ -187,14 +187,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/training/resources/startrek.sql
+    $ curl -O {{site.url}}/docs/v1.1/training/resources/startrek.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/training/resources/startrek.sql
+    $ wget {{site.url}}/docs/v1.1/training/resources/startrek.sql
     ~~~
     </div>
 
@@ -207,14 +207,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure < startrek.sql
+    $ ./cockroach sql --insecure < startrek.sql
     ~~~
 
 3. Check the schema of the imported `episodes` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="startrek" \
     --execute="SHOW CREATE TABLE episodes;"
@@ -241,7 +241,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --database="startrek" \
     --execute="SELECT * FROM episodes LIMIT 10;"
@@ -289,21 +289,21 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/training/resources/pg_dump.sql
+    $ curl -O {{site.url}}/docs/v1.1/training/resources/pg_dump.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/training/resources/pg_dump.sql
+    $ wget {{site.url}}/docs/v1.1/training/resources/pg_dump.sql
     ~~~
     </div>
 
 3. Take a look at the `pg_dump.sql` file, which contains 2 tables, `customers` and `accounts`, as well as some constraints on both tables.
 
     Before this file can be used to import into CockroachDB, the SQL must be edited for compatibility with CockroachDB:
-    - The two [`CREATE TABLE`](../v1.1/create-table.html) statements must be rewritten to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](../v1.1/primary-key.html#syntax) and the `accounts` table's [`FOREIGN KEY` constraint](../v1.1/foreign-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
+    - The two [`CREATE TABLE`](../create-table.html) statements must be rewritten to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](primary-key.html#syntax) and the `accounts` table's [`FOREIGN KEY` constraint](foreign-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
     - Everything but the `CREATE TABLE` and `COPY` statements must be removed.
     - The `CREATE TABLE` and `COPY` statements for the `customers` table must be reordered to come before the `CREATE TABLE` and `COPY` statements for the `accounts` table because of the `FOREIGN KEY` constraint.
 
@@ -318,14 +318,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/training/resources/pg_dump_cleaned.sql
+    $ curl -O {{site.url}}/docs/v1.1/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/training/resources/pg_dump_cleaned.sql
+    $ wget {{site.url}}/docs/v1.1/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
@@ -333,7 +333,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="CREATE DATABASE pg_import;"
     ~~~
@@ -349,7 +349,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT customers.name, accounts.balance FROM pg_import.accounts JOIN pg_import.customers ON accounts.customer_id = customers.id;"
     ~~~

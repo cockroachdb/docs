@@ -26,7 +26,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW GRANTS ON DATABASE startrek;"
     ~~~
@@ -46,7 +46,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW GRANTS ON startrek.episodes, startrek.quotes;"
     ~~~
@@ -69,14 +69,14 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set spock --insecure
+    $ ./cockroach user set spock --insecure
     ~~~
 
 2. Try to read from a table in the `startrek` database as `spock`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --user=spock \
     --database=startrek \
@@ -96,7 +96,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="GRANT SELECT ON TABLE startrek.* TO spock;"
     ~~~
@@ -105,7 +105,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="GRANT INSERT ON TABLE startrek.quotes TO spock;"
     ~~~
@@ -114,7 +114,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
@@ -138,7 +138,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --user=spock \
     --execute="SELECT count(*) FROM startrek.quotes;" \
@@ -166,7 +166,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --user=spock \
     --execute="INSERT INTO startrek.quotes VALUES ('Blah blah', 'Spock', NULL, 52);"
@@ -182,7 +182,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --user=spock \
     --execute="INSERT INTO startrek.episodes VALUES (80, 3, 25, 'The Episode That Never Was', 5951.5);"
@@ -201,7 +201,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
@@ -223,7 +223,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="REVOKE SELECT ON TABLE startrek.episodes FROM spock;"
     ~~~
@@ -232,7 +232,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
@@ -255,7 +255,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --user=spock \
     --execute="SELECT count(*) FROM startrek.episodes;"

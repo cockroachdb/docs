@@ -24,16 +24,31 @@ In this module, you'll run a load generator to simulate multiple client connecti
 
 1. In a new terminal, install HAProxy. If you're on a Mac and use Homebrew, run:
 
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
     ~~~
+    </div>
 
-2. Run the [`cockroach gen haproxy`](../stable/generate-cockroachdb-resources.html) command, specifying the port of any node:
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ sudo apt-get install haproxy
+    ~~~
+    </div>
+
+2. Run the [`cockroach gen haproxy`](../generate-cockroachdb-resources.html) command, specifying the port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen haproxy \
+    $ ./cockroach gen haproxy \
     --insecure \
     --host=localhost \
     --port=26257
@@ -90,7 +105,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl {{site.url}}/docs/training/resources/crdb-ycsb-mac.tar.gz \
+    $ curl {{site.url}}/docs/v1.1/training/resources/crdb-ycsb-mac.tar.gz \
     | tar -xJ
     ~~~
     </div>
@@ -98,7 +113,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- {{site.url}}/docs/training/resources/crdb-ycsb-linux.tar.gz \
+    $ wget -qO- {{site.url}}/docs/v1.1/training/resources/crdb-ycsb-linux.tar.gz \
     | tar xvz
     ~~~
     </div>
@@ -148,16 +163,16 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
-2. Then use the the [`cockroach quit`](../stable/stop-a-node.html) command to stop node 5:
+2. Then use the the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
+    $ ./cockroach quit \
     --insecure \
     --port=26261
     ~~~
@@ -174,13 +189,13 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -192,13 +207,13 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -226,7 +241,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ ./cockroach start \
     --insecure \
     --store=node5 \
     --host=localhost \
@@ -235,11 +250,11 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-2. In a new terminal, use the [`cockroach zone`](../stable/configure-replication-zones.html) command change the cluster's default replication factor to 5:
+2. In a new terminal, use the [`cockroach zone`](../configure-replication-zones.html) command change the cluster's default replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+    $ echo 'num_replicas: 5' | ./cockroach zone set .default --insecure -f -
     ~~~
 
     ~~~
@@ -259,16 +274,16 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 8. Simulate two simultaneous node failures
 
-1. Use the the [`cockroach quit`](../stable/stop-a-node.html) command to stop nodes 4 and 5:
+1. Use the the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --port=26260
+    $ ./cockroach quit --insecure --port=26260
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --port=26261
+    $ ./cockroach quit --insecure --port=26261
     ~~~
 
 ## Step 9. Check load continuity and cluster health
@@ -283,13 +298,13 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
@@ -301,13 +316,13 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="SELECT count(*) FROM ycsb.usertable;"
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL v1.1.4 (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
+    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
     # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
