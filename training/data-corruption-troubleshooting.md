@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this lab, you'll manually corrupt a node's data to simulate a hard drive issue or an issue somewhere in the software stack between `cockroach` and the hard drive. This makes the node die and keep dying on restart. You'll then troubleshoot and resolve the problem.
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQuOKrRv9JEUuEnbvs-_YY8rRaDIzxkaH6G54lOWba3DvCwZCfEl-Vq9842__lPPRL6IdOh86plx8hs/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {

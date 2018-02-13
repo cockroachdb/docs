@@ -5,7 +5,7 @@ toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 ---
 
-In this lab, you'll simulate, troubleshoot, and resolve various problems related to connecting clients to a cluster.
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSAcuSBQiKNT-2NbFHVTZsLbktN0UYcR1e_k5F-nAqOjqgUsxO2nbKGmmJAlPgGe43QDHnClVIuVz_x/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <style>
   #toc ul:before {
