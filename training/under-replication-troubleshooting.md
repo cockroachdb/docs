@@ -26,7 +26,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node1 \
     --host=localhost \
     --port=26257 \
@@ -40,7 +39,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node2 \
     --host=localhost \
     --port=26258 \
@@ -54,7 +52,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \
@@ -104,7 +101,6 @@ To bring the cluster back to a safe state, you need to either restart the down n
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-1 \
     --store=node3 \
     --host=localhost \
     --port=26259 \

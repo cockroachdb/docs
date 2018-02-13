@@ -14,15 +14,53 @@ In this lab, you'll cause a table's range to lose a majority of its replicas (2 
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Step 1. Start a cluster spread across 3 separate localities
 
-Make sure you have already completed [Cluster Unavailability Troubleshooting](cluster-unavailability-troubleshooting.html) and have a cluster of 3 nodes running.
+Create a 9 node cluster, with 3 nodes in each of 3 different localities.
 
-## Step 1. Prepare to simulate the problem
+1. In a new terminal, start node 1 in locality us-east-1:
 
-In preparation, add three more nodes with a distinct `--locality`, add a table, and use a replication zone to force the table's data onto the new nodes.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-1 \
+    --store=node1 \
+    --host=localhost \
+    --port=26257 \
+    --http-port=8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~~
 
-1. In a new terminal, start node 4:
+2. In the same terminal, start node 2 in locality us-east-1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-1 \
+    --store=node2 \
+    --host=localhost \
+    --port=26258 \
+    --http-port=8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~~
+
+3. In the same terminal, start node 3 in locality us-east-1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-1 \
+    --store=node3 \
+    --host=localhost \
+    --port=26259 \
+    --http-port=8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~~
+
+4. In the same terminal, start node 4 in locality us-east-2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -33,10 +71,10 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     --host=localhost \
     --port=26260 \
     --http-port=8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259
-    ~~~~
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~
 
-2. In a new terminal, start node 5:
+5. In the same terminal, start node 5 in locality us-east-2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -47,10 +85,10 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     --host=localhost \
     --port=26261 \
     --http-port=8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 &
     ~~~
 
-3. In a new terminal, start node 6:
+6. In the same terminal, start node 6 in locality us-east-2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -61,21 +99,74 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     --host=localhost \
     --port=26262 \
     --http-port=8085 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 &
     ~~~
 
-4. In a new terminal, generate an `intro` database with a `mytable` table:
+7. In the same terminal, start node 7 in locality us-east-3:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-3 \
+    --store=node7 \
+    --host=localhost \
+    --port=26263 \
+    --http-port=8086 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~
+
+8. In the same terminal, start node 8 in locality us-east-3:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-3 \
+    --store=node8 \
+    --host=localhost \
+    --port=26264 \
+    --http-port=8087 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~
+
+9. In the same terminal, start node 9 in locality us-east-3:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --locality=datacenter=us-east-3 \
+    --store=node9 \
+    --host=localhost \
+    --port=26265 \
+    --http-port=8088 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
+    ~~~
+
+10. In the same terminal, perform a one-time initialization of the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init --insecure
+    ~~~
+
+## Step 2. Simulate the problem
+
+In preparation, add a table and use a replication zone to force the table's data onto the new nodes.
+
+1. Generate an `intro` database with a `mytable` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data intro | cockroach sql --insecure
     ~~~
 
-5. Create a [replication zone](../v1.1/configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-2` locality:
+2. Create a [replication zone](../v1.1/configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+datacenter=us-east-2]' | cockroach zone set intro.mytable --insecure -f -
+    $ echo 'constraints: [+datacenter=us-east-3]' | cockroach zone set intro.mytable --insecure -f -
     ~~~
 
     ~~~
@@ -84,10 +175,10 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     gc:
       ttlseconds: 90000
     num_replicas: 3
-    constraints: [+datacenter=us-east-2]
+    constraints: [+datacenter=us-east-3]
     ~~~
 
-6. Use the `SHOW TESTING_RANGES` SQL command to verify that the replicas for the `mytable` table are now located on nodes 4, 5, and 6:
+3. Use the `SHOW TESTING_RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -100,29 +191,45 @@ In preparation, add three more nodes with a distinct `--locality`, add a table, 
     +-----------+---------+----------+--------------+
     | Start Key | End Key | Replicas | Lease Holder |
     +-----------+---------+----------+--------------+
-    | NULL      | NULL    | {4,5,6}  |            6 |
+    | NULL      | NULL    | {3,6,9}  |            9 |
     +-----------+---------+----------+--------------+
     (1 row)
     ~~~
 
-## Step 2. Simulate the problem
+4. Note that the node IDs above may not match the order in which we started the nodes, because node IDs only get allocated after `cockroach init` is run. We can verify that the nodes listed by `SHOW TESTING_RANGES`are all in the `datacenter=us-east-3` locality by opening the Node Diagnostics debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
 
-Stop 2 of the nodes containing `mytable` replicas. This will cause the range to lose a majority of its replicas and become unavailable. However, because all system ranges are on other nodes, the cluster as whole will remain available.
+    <img src="{{ 'images/training-19.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-1. In the terminal where node 5 is running, press **CTRL + C**.
+## Step 3. Simulate the problem
 
-2. In the terminal where node 6 is running, press **CTRL + C**.
+Stop 2 of the nodes containing `mytable` replicas. This will cause the range to lose a majority of its replicas and become unavailable. However, all other ranges are spread evenly across all three localities because the replication zone only applies to `mytable`, so the cluster as a whole will remain available.
 
-## Step 3. Troubleshoot the problem
+1. Kill nodes 8 and 9:
 
-1. In a new terminal, try to query the `mytable` table, pointing at a node that is still online:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit \
+    --insecure \
+    --port=26264
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit \
+    --insecure \
+    --port=26265
+    ~~~
+
+## Step 4. Troubleshoot the problem
+
+1. In a new terminal, try to insert into the `mytable` table, pointing at a node that is still online:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
     --port=26257 \
-    --execute="SELECT * FROM intro.mytable LIMIT 10;" \
+    --execute="INSERT INTO intro.mytable VALUES (42, '')" \
     --logtostderr=WARNING
     ~~~
 
@@ -136,7 +243,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     <img src="{{ 'images/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    You'll see that at least 1 range is now unavailable. If the unavailable count is larger than 1, that means that some system ranges had a majority of replicas on the down nodes as well.
+    You should see that 1 range is now unavailable. If the unavailable count is larger than 1, that would mean that some system ranges had a majority of replicas on the down nodes as well.
 
     The **Summary** panel on the right should tell you the same thing:
 
@@ -146,39 +253,39 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     <img src="{{ 'images/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 4. Resolve the problem
+## Step 5. Resolve the problem
 
-1. In the terminal where node 5 was running, restart the node:
+1. Restart the stopped nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-2 \
-    --store=node5 \
+    --locality=datacenter=us-east-3 \
+    --store=node8 \
     --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --port=26264 \
+    --http-port=8087 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
     ~~~
 
-2. In the terminal where node 6 was running, restart the node:
-
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --locality=datacenter=us-east-2 \
-    --store=node6 \
+    --locality=datacenter=us-east-3 \
+    --store=node9 \
     --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --port=26265 \
+    --http-port=8088 \
+    --join=localhost:26257,localhost:26258,localhost:26259 &
     ~~~
 
 3. Go back to the Admin UI and verify that ranges are no longer unavailable.
 
-## Step 5. Clean up
+4. Check back on your `INSERT` statement that was stuck and verify that it completed successfully.
+
+## Step 6. Clean up
 
 In the next lab, you'll start a new cluster from scratch, so take a moment to clean things up.
 
@@ -193,7 +300,7 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ rm -rf node1 node2 node3 node4 node5 node6
+    $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9
     ~~~
 
 ## What's Next?
