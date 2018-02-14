@@ -19,6 +19,8 @@ CockroachDB is well suited for applications that require reliable, available, an
 
 - Distributed or replicated OLTP
 - Multi-datacenter deployments
+- Multi-region deployments
+- Cloud migrations
 - Cloud-native infrastructure initiatives
 
 ## When is CockroachDB not a good choice?
@@ -27,7 +29,6 @@ CockroachDB is not a good choice when very low latency reads and writes are crit
 
 Also, CockroachDB is not yet suitable for:
 
-- Complex SQL JOINS ([the feature still needs optimization](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/))
 - Heavy analytics / OLAP
 
 ## How easy is it to install CockroachDB?
@@ -172,4 +173,3 @@ Not yet, but this is on our long-term roadmap.
 - [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
 - [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
 - [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
-
