@@ -103,14 +103,12 @@ $ ./cockroach start \
 
 In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
 
-1. Stop all CockroachDB nodes, HAProxy, and the YCSB load generator:
+1. Stop all CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
-
-    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
 
 2. Remove the nodes' data directories:
 

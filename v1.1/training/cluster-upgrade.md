@@ -286,7 +286,3 @@ This is the last module of the training, so feel free to stop you cluster and cl
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~
-
-## What's Next?
-
-- [Node Decommissioning](node-decommissioning.html)
