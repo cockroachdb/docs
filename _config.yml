@@ -43,8 +43,8 @@ release_info:
 
 training:
   ccl_license: crl-0-ELzpyNMFGAIiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
-  aws_access_key: AKIAJNRF52TMSNX
-  aws_secret_access_key: 6yTKDp5GHihUdVvBwUtj5PZYSSBUK3s6lQb7
+  aws_access_key: AKIAIXNAWDKXMDDNHRCA
+  aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
 exclude: ["ci", "vendor", "rfc", "v1.1/training/unused"]
 
