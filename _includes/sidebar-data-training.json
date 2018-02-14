@@ -129,7 +129,7 @@
       {
         "title": "Network Partition",
         "urls": [
-          "/training/network-partition-troubleshooting.html"
+          "/${VERSION}/training/network-partition-troubleshooting.html"
         ]
       },
       {
