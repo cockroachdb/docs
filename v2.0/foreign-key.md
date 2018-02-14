@@ -252,7 +252,7 @@ Then, create the child table:
 ~~~ sql
 > CREATE TABLE orders_2 (
     id INT PRIMARY KEY,
-    customer_id INT REFERENCES customer(id) ON UPDATE CASCADE ON DELETE CASCADE
+    customer_id INT REFERENCES customers_2(id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 ~~~
 
@@ -347,13 +347,227 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
+First, create the referenced table:
 
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE customers_3 (
+    id INT PRIMARY KEY
+  );
+~~~
+
+Then, create the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE orders_3 (
+    id INT PRIMARY KEY,
+    customer_id INT REFERENCES customers_3(id) ON UPDATE SET NULL ON DELETE SET NULL
+  );
+~~~
+
+Insert a few records in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers_3 VALUES (1), (2), (3);
+~~~
+
+Insert some records in the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
+~~~
+
+Now, let's update an `id` in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE customers_3 SET id = 23 WHERE id = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_3;
+~~~
+~~~
++----+
+| id |
++----+
+|  2 |
+|  3 |
+| 23 |
++----+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_3;
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |        NULL |
+| 101 |           2 |
+| 102 |           3 |
+| 103 |        NULL |
++-----+-------------+
+~~~
+
+When the `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
+
+Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's delete `id = 2` from `customers_3`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM customers_3 WHERE id = 2;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_3;
+~~~
+~~~
++----+
+| id |
++----+
+|  3 |
+| 23 |
++----+
+~~~
+
+Let's check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_3;
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |        NULL |
+| 101 |        NULL |
+| 102 |           3 |
+| 103 |        NULL |
++-----+-------------+
+~~~
 
 ### Use a Foreign Key Constraint with `SET DEFAULT` <span class="version-tag">New in v2.0</span>
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
 
+First, create the referenced table:
 
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE customers_4 (
+    id INT PRIMARY KEY
+  );
+~~~
+
+Then, create the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE orders_4 (
+    id INT PRIMARY KEY,
+    customer_id INT DEFAULT 9999 REFERENCES customers_4(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT
+  );
+~~~
+
+Insert a few records in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
+~~~
+
+Insert some records in the child table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
+~~~
+
+Now, let's update an `id` in the referenced table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE customers_4 SET id = 23 WHERE id = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_4;
+~~~
+~~~
++------+
+|  id  |
++------+
+|    2 |
+|    3 |
+|   23 |
+| 9999 |
++------+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_4;
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |        9999 |
+| 101 |           2 |
+| 102 |           3 |
+| 103 |        9999 |
++-----+-------------+
+~~~
+
+When the `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first row of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
+
+Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. Let's delete `id = 2` from `customers_4`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM customers_4 WHERE id = 2;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_4;
+~~~
+~~~
++------+
+|   id |
++------+
+|    3 |
+|   23 |
+| 9999 |
++------+
+~~~
+
+Let's check to make sure the row in `orders_4` where `customers_id = 2` was updated to the `DEFAULT` value (i.e., `9999`):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_4;
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |        9999 |
+| 101 |        9999 |
+| 102 |           3 |
+| 103 |        9999 |
++-----+-------------+
+~~~
 
 ## See Also
 
