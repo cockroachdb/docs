@@ -143,7 +143,11 @@
 
           var lis = items.map(function (item) {
             var urls = (item.urls || []).map(function (url) {
-                return baseUrl + url.replace("${VERSION}", pageVersion);
+                var url = url.replace("${VERSION}", pageVersion);
+                if (!/^https?:/.test(url)) {
+                  url = baseUrl + url;
+                }
+                return url;
             });
             var active = (urls.indexOf(location.pathname) !== -1);
             if (active) {
