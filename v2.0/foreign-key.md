@@ -233,7 +233,7 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 +------+----------+
 ~~~
 
-### Use a Foreign Key Constraint with `CASCADE`
+### Use a Foreign Key Constraint with `CASCADE` <span class="version-tag">New in v2.0</span>
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
@@ -342,6 +342,18 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 | 102 |            3 |
 +-----+--------------+
 ~~~
+
+### Use a Foreign Key Constraint with `SET NULL` <span class="version-tag">New in v2.0</span>
+
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
+
+
+
+### Use a Foreign Key Constraint with `SET DEFAULT` <span class="version-tag">New in v2.0</span>
+
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
+
+
 
 ## See Also
 
