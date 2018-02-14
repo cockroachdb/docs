@@ -174,5 +174,22 @@
         ]
       }
     ]
+  },
+  {
+    "title": "Wrap Up",
+    "items": [
+      {
+        "title": "Give Us Feedback",
+        "urls": [
+          "https://goo.gl/forms/pwcRFnSY7HqRo1Pi2"
+        ]
+      },
+      {
+        "title": "Explore Our Docs",
+        "urls": [
+          "/${VERSION}/"
+        ]
+      }
+    ]
   }
 ]
