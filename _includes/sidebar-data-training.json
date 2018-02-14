@@ -127,6 +127,12 @@
         ]
       },
       {
+        "title": "Network Partition",
+        "urls": [
+          "/training/network-partition-troubleshooting.html"
+        ]
+      },
+      {
         "title": "How Cockroach Labs Debugs",
         "urls": [
           "/${VERSION}/training/how-cockroach-labs-debugs.html"
