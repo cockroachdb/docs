@@ -20,7 +20,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 1. Start a cluster in a single US region
 
-Start a cluster like you did previously, but this time use the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
+Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
 1. In a new terminal, start node 1:
 
@@ -81,7 +81,7 @@ To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer
 
 ## Step 3. Expand into 2 more US regions
 
-Add 6 more nodes, this time using the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
+Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
 
 {{site.data.alerts.callout_info}}To simplify the process of adding more nodes, you'll start them in the background instead of in separate terminals.{{site.data.alerts.end}}
 
@@ -248,7 +248,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
 ## Step 5. Expand into Europe
 
-Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
+Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
 
 1. Start node 10:
 
