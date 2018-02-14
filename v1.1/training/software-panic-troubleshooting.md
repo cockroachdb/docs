@@ -95,4 +95,4 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
 
 ## What's Next?
 
-[How Cockroach Labs Debugs](how-cockroach-labs-debugs.html)
+[Network Partition Troubleshooting](network-partition-troubleshooting.html)
