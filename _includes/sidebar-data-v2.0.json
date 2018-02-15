@@ -1102,19 +1102,25 @@
         "title": "Monitor CockroachDB with the Admin UI",
         "items": [
           {
-            "title": "Overview",
+            "title": "Admin UI Overview",
             "urls": [
               "/${VERSION}/admin-ui-overview.html"
             ]
           },
           {
-            "title": "Access and Navigate the Admin UI",
+            "title": "Cluster Overview Page",
             "urls": [
-              "/${VERSION}/admin-ui-access-and-navigate.html"
+              "/${VERSION}/admin-ui-cluster-overview.html"
             ]
           },
           {
-            "title": "Overview Dashboard",
+            "title": "Time Series Graphs",
+            "urls": [
+              "/${VERSION}/admin-ui-time-series.html"
+            ]
+          },
+          {
+            "title": "Metrics Overview Dashboard",
             "urls": [
               "/${VERSION}/admin-ui-overview-dashboard.html"
             ]

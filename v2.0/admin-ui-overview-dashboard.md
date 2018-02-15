@@ -1,14 +1,14 @@
 ---
-title: Overview Dashboard
-summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
+title: Metrics Overview Dashboard
+summary: The Metrics Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
 toc: false
 ---
 
-On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the **Overview** is shown by default. This dashboard lets you monitor important SQL performance, replication, and storage metrics.
+On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the **Metrics Overview** is shown by default. This dashboard lets you monitor important SQL performance, replication, and storage metrics.
 
 <div id="toc"></div>
 
-The **Overview** dashboard displays the following time series graphs:
+The **Metrics Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 
