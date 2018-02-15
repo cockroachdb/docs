@@ -146,7 +146,7 @@ First, create the referenced table:
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 ~~~
 
-Next, create the child table:
+Next, create the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -158,12 +158,15 @@ Next, create the child table:
   );
 ~~~
 
-Let's insert a records into each table:
+Let's insert a record into each table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders VALUES (1, 1002, 29.99);
 ~~~
 ~~~
@@ -172,12 +175,15 @@ pq: foreign key violation: value [1002] not found in customers@primary [id]
 
 The second record insertion returns an error because the customer `1002` doesn't exist in the referenced table.
 
-Let's insert a records in the child table and try to update the referenced table:
+Let's insert a record into the referencing table and try to update the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1001, 29.99);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE customers SET id = 1002 WHERE id = 1001;
 ~~~
 ~~~
@@ -246,7 +252,7 @@ First, create the referenced table:
   );
 ~~~
 
-Then, create the child table:
+Then, create the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -256,14 +262,14 @@ Then, create the child table:
   );
 ~~~
 
-Insert a few records in the referenced table:
+Insert a few records into the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_2 VALUES (1), (2), (3);
 ~~~
 
-Insert some records in the child table:
+Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -306,7 +312,7 @@ Now, let's update an `id` in the referenced table:
 +-----+--------------+
 ~~~
 
-When the `id = 1` was updated to `id =23` in `customers_2`, the update propagated to the child table `orders_2`.
+When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated to the referencing table `orders_2`.
 
 Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
@@ -356,7 +362,7 @@ First, create the referenced table:
   );
 ~~~
 
-Then, create the child table:
+Then, create the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -366,14 +372,14 @@ Then, create the child table:
   );
 ~~~
 
-Insert a few records in the referenced table:
+Insert a few records into the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_3 VALUES (1), (2), (3);
 ~~~
 
-Insert some records in the child table:
+Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -416,7 +422,7 @@ Now, let's update an `id` in the referenced table:
 +-----+-------------+
 ~~~
 
-When the `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
+When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
 
 Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's delete `id = 2` from `customers_3`:
 
@@ -468,7 +474,7 @@ First, create the referenced table:
   );
 ~~~
 
-Then, create the child table:
+Then, create the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -478,14 +484,14 @@ Then, create the child table:
   );
 ~~~
 
-Insert a few records in the referenced table:
+Insert a few records into the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
 ~~~
 
-Insert some records in the child table:
+Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -529,7 +535,7 @@ Now, let's update an `id` in the referenced table:
 +-----+-------------+
 ~~~
 
-When the `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first row of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
+When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first and last rows of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
 
 Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. Let's delete `id = 2` from `customers_4`:
 
@@ -552,7 +558,7 @@ Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` va
 +------+
 ~~~
 
-Let's check to make sure the row in `orders_4` where `customers_id = 2` was updated to the `DEFAULT` value (i.e., `9999`):
+Let's check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
