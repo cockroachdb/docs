@@ -3,6 +3,7 @@ title: Users and Privileges
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /training/users-and-privileges.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRCnd6jA1VlsfozEjJukJSZgrMA83qTFeWiMc5mP7moYxy3tOcTT8NHsEnt2eAkHKT9J6XVjDUgbiTv/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

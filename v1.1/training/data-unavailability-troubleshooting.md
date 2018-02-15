@@ -3,6 +3,7 @@ title: Data Unavailability Troubleshooting
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /training/data-unavailability-troubleshooting.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQwCCLjWfQRS32P_lbRgOlRRoQUt77KGMrsRrg08_cT_R19YD-CUPe3fQZMNTPxNW2hz9PGcotH7M6J/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

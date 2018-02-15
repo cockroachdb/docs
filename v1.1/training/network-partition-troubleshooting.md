@@ -3,6 +3,7 @@ title: Network Partition Troubleshooting
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /training/network-partition-troubleshooting.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRGqsJXtK3qaCx7c5DC7R17ngFgsBPUGDUC1saTsLwlhaS8UAZN9_deuWHH0IvG97Pk9ahMhGktR42n/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

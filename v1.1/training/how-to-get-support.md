@@ -3,6 +3,7 @@ title: How to Get Support
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /training/how-to-get-support.html
 ---
 
 When you encounter a problem that you can't troubleshoot yourself (e.g., data corruption or software panic), [file an issue in the `cockroach` GitHub repository](https://github.com/cockroachdb/cockroach/issues/new) and include the following details.
