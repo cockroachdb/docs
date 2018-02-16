@@ -132,7 +132,7 @@ Now that you have a load balancer running in front of your cluster, download and
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
-    This command initiates 3 concurrent client workloads for 20 minutes, but limits each worker to 100 operations per second (since you're running everything on a single machine).
+    This command initiates 3 concurrent client workloads for 20 minutes, but limits the benchmark to just 100 operations per second (since you're running everything on a single machine).
 
     Also, the `-splits` flag tells the load generator to manually split ranges a number of times. This is not something you'd normally do, but for the purpose of this training, it makes it easier to visualize the movement of data in the cluster.
 
