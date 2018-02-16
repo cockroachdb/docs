@@ -230,7 +230,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
+    $ ./cockroach sql \
     --insecure \
     --execute="BACKUP DATABASE startrek TO 's3://cockroach-training/[initials]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
     ~~~
