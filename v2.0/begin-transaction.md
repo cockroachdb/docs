@@ -27,8 +27,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 
 The following aliases also exist for [isolation levels](transactions.html#isolation-levels):
 
-- `REPEATABLE READ` is an alias for `SERIALIZABLE`
-- `READ UNCOMMITTED` and `READ COMMITTED` are aliases for `SNAPSHOT`
+- `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`
 
 For more information on isolation level aliases, see [Comparison to ANSI SQL Isolation Levels](transactions.html#comparison-to-ansi-sql-isolation-levels).
 
@@ -36,7 +35,7 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 
 | Parameter | Description |
 |-----------|-------------|
-| `ISOLATION LEVEL` | If you don't want the transaction to run as `SERIALIZABLE` (CockroachDB's default, which provides the highest level of isolation), you can specify `SNAPSHOT`, which can provide better performance in high-contention scenarios.<br/><br/>For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` |
+| `ISOLATION LEVEL` | If you don't want the transaction to run as `SERIALIZABLE` (CockroachDB's default, which provides the highest level of isolation), you can specify `SNAPSHOT` (**deprecated**), which can provide fewer restarts in high-contention scenarios, but can cause inconsistencies.<br/><br/>For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` |
 | `PRIORITY` | If you don't want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL` |
 
 ## Examples
