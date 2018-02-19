@@ -41,11 +41,12 @@ table tr td:nth-child(2) {
 | `AUTO INCREMENT` | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) |
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
 | <span class="version-tag">New in v1.1:</span> `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
-| <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | Standard | [`UUID` documentation](uuid.html) |
+| <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html) |
 | JSON | Planned | Common Extension | [GitHub issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
 | `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
+| `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
 
 ### Constraints
 
@@ -158,7 +159,7 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| Column families | ✓ | CockroachDB Extension | [Column Families documentation](https://www.cockroachlabs.com/docs/column-families.html) |
+| Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html) |
 | Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html) |
 | Parallel Statement Execution | ✓ | CockroachDB Extension | [Parallel Statement Execution documentation](parallel-statement-execution.html) |
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
@@ -168,4 +169,4 @@ table tr td:nth-child(2) {
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |
-| Sequences | Planned | Common Extension | [GitHub issue tracking sequence support.](https://github.com/cockroachdb/cockroach/issues/5811) |
+| <span class="version-tag">New in v2.0:</span> Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html) |
