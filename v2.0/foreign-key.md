@@ -386,6 +386,21 @@ Insert some records into the referencing table:
 > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers_3;
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |           1 |
+| 101 |           2 |
+| 102 |           3 |
+| 103 |           1 |
++-----+-------------+
+~~~
+
 Now, let's update an `id` in the referenced table:
 
 {% include copy-clipboard.html %}
@@ -474,7 +489,7 @@ First, create the referenced table:
   );
 ~~~
 
-Then, create the referencing table:
+Then, create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -496,6 +511,16 @@ Insert some records into the referencing table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
+~~~
+~~~
++-----+-------------+
+| id  | customer_id |
++-----+-------------+
+| 100 |           1 |
+| 101 |           2 |
+| 102 |           3 |
+| 103 |           1 |
++-----+-------------+
 ~~~
 
 Now, let's update an `id` in the referenced table:
