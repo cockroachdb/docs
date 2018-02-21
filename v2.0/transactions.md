@@ -4,7 +4,7 @@ summary: CockroachDB supports bundling multiple SQL statements into a single all
 toc: false
 ---
 
-CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions.
+CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
 
 {{site.data.alerts.callout_info}}For a detailed discussion of CockroachDB transaction semantics, see <a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/">How CockroachDB Does Distributed Atomic Transactions</a> and <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>. Note that the explanation of the transaction model described in this blog post is slightly out of date. See the <a href="#transaction-retries">Transaction Retries</a> section for more details.{{site.data.alerts.end}}
 
@@ -61,7 +61,7 @@ Type | Description
 
 Transactions in CockroachDB lock data resources that are written during their execution. In the event that a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. CockroachDB implements a distributed deadlock detection algorithm to discover dependency cycles. Deadlocks are resolved by allowing transactions with higher priority to abort their dependencies. Transactions which are aborted to avoid deadlock must be retried.
 
-Transactions executed with the serializable isolation level may also require retries if they experience read/write contention with other concurrent transactions. Note that these types of transaction retries do not occur for transactions executing with the snapshot isolation level. Consider using snapshot isolation if your use case has high contention and your clients are retrying frequently. See [Isolation Levels](#isolation-levels) for more details.
+Transactions may require retries if they experience deadlock or read/write contention with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
 
 There are two cases for handling transaction retries:
 
@@ -199,7 +199,7 @@ The client can also display the current priority of the transaction with [`SHOW 
 
 ### Isolation Levels
 
-CockroachDB supports two transaction isolation levels: `SERIALIZABLE` and `SNAPSHOT`. By default, transactions use the `SERIALIZABLE` isolation level, but the client can explicitly set a transaction's isolation when starting the transaction:
+CockroachDB efficiently supports the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolaton levels (e.g., `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks. CockroachDB continues to support an additional non-ANSI isolation level, `SNAPSHOT`, although it is deprecated. Clients can explicitly set a transaction's isolation when starting the transaction:
 
 ~~~ sql
 > BEGIN ISOLATION LEVEL <SERIALIZABLE | SNAPSHOT>;
@@ -219,11 +219,11 @@ The client can also display the current isolation level of the transaction with 
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default.
 
-Unlike `SNAPSHOT`, `SERIALIZABLE` isolation permits no anomalies. However, due to CockroachDB's transaction model, `SERIALIZABLE` isolation may require more transaction restarts, especially in the presence of high contention between concurrent transactions. Consider using `SNAPSHOT` isolation for high contention workloads.
+Unlike `SNAPSHOT`, `SERIALIZABLE` isolation permits no anomalies. In order to prevent [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts.
 
 #### Snapshot Isolation
 
-With `SNAPSHOT` isolation, a transaction behaves as if it were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT` isolation permits the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly, but in cases where write skew conditions are unlikely, this isolation level can be highly performant.
+With `SNAPSHOT` isolation (**deprecated**), a transaction behaves as if it were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT` isolation permits the write skew anomaly. This isolation level is still supported for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. Concurrency-based attacks can coerce inconsistencies into meaningfully adverse effects to system state. For this same reason, CockroachDB upgrades all requests for the much weaker ANSI `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` isolation levels into `SERIALIZABLE`.
 
 ### Comparison to ANSI SQL Isolation Levels
 
@@ -231,15 +231,12 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 #### Aliases
 
-- `REPEATABLE READ` is an alias for `SERIALIZABLE`.
-- `READ UNCOMMITTED` and `READ COMMITTED` are aliases for `SNAPSHOT`.
-
-{{site.data.alerts.callout_success}}Despite similarity in names, <code>REPEATABLE READ</code> does <em>not</em> equate to <code>SNAPSHOT</code> in CockroachDB. We made this choice to avoid potential confusion between them and the anomalies they can introduce. <code>REPEATABLE READ</code> permits the <a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Phantom_reads">phantom read</a> anomaly, while <code>SNAPSHOT</code> permits the <a href="https://en.wikipedia.org/wiki/Snapshot_isolation">write skew</a> anomaly.{{site.data.alerts.end}}
+- `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
 
 #### Comparison
 
-- The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `REPEATABLE READ` level and equivalent to the ANSI SQL `SERIALIZABLE` level.
-- The CockroachDB `SNAPSHOT` level is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
+- The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
+- The CockroachDB `SNAPSHOT` level (**deprecated**) is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
