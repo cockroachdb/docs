@@ -144,7 +144,12 @@ To verify the table partitions, use the [`SHOW CREATE TABLE`](show-create-table.
 
 ### Define Table Partitions by List
 
-Consider a table of the users of a global e-commerce website, RoachMart. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the users' data closer to their locations, that is, we want to keep data of the users located in United States and Canada in the United States datacenter, and the data of users located in Australia and New Zealand in the Australian datacenter. We can achieve this by partitioning on country and use the `PARTITION BY LIST` syntax. 
+Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the students' data closer to their locations: 
+
+- We want to keep the data of the students located in United States and Canada in the United States datacenter
+- We want to keep the data of students located in Australia and New Zealand in the Australian datacenter. 
+
+We can achieve this by partitioning on country and use the `PARTITION BY LIST` syntax. 
 
 #### Step 1: Set the enterprise license
 
@@ -166,13 +171,13 @@ $ cockroach start --insecure --host=node2 --locality=datacenter=aus-1 \
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> CREATE TABLE users_by_list (
+> CREATE TABLE students_by_list (
     id SERIAL,
     name STRING,
     email STRING,
     country STRING,
-    last_seen DATE,   
-    PRIMARY KEY (country, last_seen, id))
+    graduation_date DATE,   
+    PRIMARY KEY (country, id))
     PARTITION BY LIST (country)
       (PARTITION north_america VALUES IN ('CA','US'), 
       PARTITION australia VALUES IN ('AU','NZ'), 
@@ -194,25 +199,13 @@ constraints: [+datacenter=au1]
 
 {% include copy-clipboard.html %} 
 ~~~ shell
-$ cockroach zone set blog.users_by_list.north_america --insecure  -f north_america.zone.yml
-$ cockroach zone set blog.users_by_list.australia --insecure  -f australia.zone.yml
+$ cockroach zone set roachlearn.students_by_list.north_america --insecure  -f north_america.zone.yml
+$ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
-
-### Partitioned Secondary Indexes
-
-RoachMart’s warehouse team wants to know how many orders are processed for each part they sell. They want a secondary index to make the query efficient. Since the common operation is to look at one country’s orders at a time, they partition the index on the same columns as users.
-
-{% include copy-clipboard.html %} 
-~~~ sql
-> CREATE INDEX part_idx ON roachmart.orders (user_country, part_id)
-  PARTITION BY LIST (user_country) (
-  ...
-  );
- ~~~
 
 ### Define Table Partitions by Range
 
-Consider the table of users of the same global e-commerce website, RoachMart. Suppose we want to store the recent users on fast and expensive storage devices (example: ssd) and store the data of the users who have not been to the website recently on slower, cheaper storage devices(example: hdd). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
+Consider the table of students of the same global online learning portal, RoachLearn. Suppose we want to store the data of current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
 
 #### Step 1: Set the enterprise license
 
@@ -230,26 +223,26 @@ $ cockroach start --store=path=/mnt/crdb,attrs=hdd
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> CREATE TABLE users_by_range (
+> CREATE TABLE students_by_range (
    id SERIAL,
    name STRING,
    email STRING,                                                                                           
    country STRING, 
-   last_seen DATE,                                                                                      
-   PRIMARY KEY (last_seen, id)) 
-   PARTITION BY RANGE (last_seen) 
-      (PARTITION archived VALUES FROM (MINVALUE) TO ('2018-02-15'), 
-      PARTITION recent VALUES FROM ('2017-02-15') TO (MAXVALUE));
+   graduation_date DATE,                                                                                      
+   PRIMARY KEY (graduation_date, id)) 
+   PARTITION BY RANGE (graduation_date) 
+      (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'), 
+      PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
 ~~~
 
 #### Step 4: Create corresponding zone configurations:
 
 {% include copy-clipboard.html %} 
 ~~~ shell
-$ cat recent.zone.yml
+$ cat current.zone.yml
 constraints: [+ssd]
 
-$ cat archived.zone.yml
+$ cat graduated.zone.yml
 constraints: [+hdd]
 ~~~
 
@@ -257,8 +250,8 @@ constraints: [+hdd]
 
 {% include copy-clipboard.html %} 
 ~~~ shell
-$ cockroach zone set blog.users_by_range.recent --insecure  -f recent.zone.yml
-$ cockroach zone set blog.users_by_range.archived --insecure  -f archived.zone.yml
+$ cockroach zone set roachlearn.students_by_range.current --insecure  -f current.zone.yml
+$ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f graduated.zone.yml
 ~~~
 
 ### Define Subpartitions on a Table
@@ -267,7 +260,7 @@ A list partition can itself be partitioned, forming a subpartition. There is no 
 
 {{site.data.alerts.callout_info}}Range partitions cannot be subpartitioned.{{site.data.alerts.end}}
 
-Going back to RoachMart's scenario, suppose we want to do all of the following:
+Going back to RoachLearn's scenario, suppose we want to do all of the following:
 
 - Keep the users' data close to their location
 - Store the recent users' data on faster storage devices
@@ -295,35 +288,35 @@ $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=aus-1
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> CREATE TABLE users (
+> CREATE TABLE students (
     id SERIAL, 
     name STRING,
     email STRING,
     country STRING, 
-    last_seen DATE, 
-    PRIMARY KEY (country, last_seen, id))
+    graduation_date DATE, 
+    PRIMARY KEY (country, graduation_date, id))
     PARTITION BY LIST (country)(
-        PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (last_seen)(PARTITION archived_au VALUES FROM (MINVALUE) TO ('2017-06-04'), PARTITION recent_au VALUES FROM ('2017-06-04') TO (MAXVALUE)),
-        PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (last_seen)(PARTITION archived_us VALUES FROM (MINVALUE) TO ('2017-06-04'), PARTITION recent_us VALUES FROM ('2017-06-04') TO (MAXVALUE))
+        PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (graduation_date)(PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)),
+        PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (graduation_date)(PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE))
     );
 ~~~
 
-Subpartition names must be unique within a table. In our example, even though `archived` and `recent` are sub-partitions of distinct partitions, they still need to be uniquely named. Hence the names `archived_au`, `archived_us`, and `recent_au` and `recent_us`.
+Subpartition names must be unique within a table. In our example, even though `graduated` and `current` are sub-partitions of distinct partitions, they still need to be uniquely named. Hence the names `graduated_au`, `graduated_us`, and `current_au` and `current_us`.
 
 #### Step 4: Create corresponding zone configurations:
 
 {% include copy-clipboard.html %} 
 ~~~ shell
-$ cat recent_us.zone.yml
+$ cat current_us.zone.yml
 constraints: [+ssd,+datacenter=us1]
 
-$ cat archived_us.zone.yml
+$ cat graduated_us.zone.yml
 constraints: [+hdd,+datacenter=us1]
 
-$ cat recent_au.zone.yml
+$ cat current_au.zone.yml
 constraints: [+ssd,+datacenter=au1]
 
-$ cat archived_au.zone.yml
+$ cat graduated_au.zone.yml
 constraints: [+hdd,+datacenter=au1]
 ~~~
 
@@ -331,22 +324,22 @@ constraints: [+hdd,+datacenter=au1]
 
 {% include copy-clipboard.html %} 
 ~~~ shell
-$ cockroach zone set blog.users.recent_us --insecure -f recent_us.zone.yml
-$ cockroach zone set blog.users.archived_us --insecure -f archived_us.zone.yml
+$ cockroach zone set roachlearn.students.current_us --insecure -f current_us.zone.yml
+$ cockroach zone set roachlearn.students.graduated_us --insecure -f graduated_us.zone.yml
 
-$ cockroach zone set blog.users.recent_au --insecure -f recent_au.zone.yml
-$ cockroach zone set blog.users.archived_au --insecure -f archived_au.zone.yml
+$ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zone.yml
+$ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au.zone.yml
 ~~~
 
 ### Repartition a Table
 
-Consider the partitioned table of users of RoachMart. Suppose the table has been partitioned on range to store the recent users on fast and expensive storage devices (example: SSD) and store the data of the users who have not been to the website recently on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the users will be considered recent to `2018-03-01`. We can achieve this by using the `ALTER TABLE` command. 
+Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the users will be considered current to `2018-08-15`. We can achieve this by using the `ALTER TABLE` command. 
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> ALTER TABLE users_by_range PARTITION BY RANGE (last_seen) (
-    PARTITION archived VALUES FROM (MINVALUE) TO ('2018-03-01'), 
-    PARTITION recent VALUES FROM ('2018-03-01') TO (MAXVALUE));
+> ALTER TABLE users_by_range PARTITION BY RANGE (graduation_date) (
+    PARTITION archived VALUES FROM (MINVALUE) TO ('2018-08-15'), 
+    PARTITION recent VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
 
 ### Unpartition a Table
@@ -355,7 +348,7 @@ You can remove the partitions on a table by using the `PARTITION BY NOTHING` syn
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> ALTER TABLE users_by_range PARTITION BY NOTHING;
+> ALTER TABLE students PARTITION BY NOTHING;
 ~~~
 
 ## Licensing Requirements
