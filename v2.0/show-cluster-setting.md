@@ -11,9 +11,9 @@ via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required Privileges <span class="version-tag">Changed in v2.0</span>
 
-No [privileges](privileges.html) are required to display the cluster settings.
+Only the `root` user can display cluster settings.
 
 ## Synopsis
 
