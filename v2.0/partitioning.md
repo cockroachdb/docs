@@ -45,14 +45,14 @@ Consider the database of a global online learning portal that has a table for st
     name STRING,
     email STRING,
     country STRING,
-    last_seen DATE,   
+    graduation_date DATE,   
     PRIMARY KEY (country, id));
 ~~~
 
 #### Partitioning Key Considerations
 
-- Once you set the primary key, you can’t change it later. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `last_seen` in the future, define the primary key as `(country, last_seen, id)`.
-- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, last_seen, id)`, the primary partition is by `country`, and then subpartition is by `last_seen`. You can’t skip `country` and partition by `last_seen`.
+- Once you set the primary key, you can’t change it later. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `graduation_date` in the future, define the primary key as `(country, graduation_date, id)`.
+- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `graduation_date`. You can’t skip `country` and partition by `graduation_date`.
 
 #### Partitioning and Index Columns
 
@@ -262,9 +262,9 @@ A list partition can itself be partitioned, forming a subpartition. There is no 
 
 Going back to RoachLearn's scenario, suppose we want to do all of the following:
 
-- Keep the users' data close to their location
-- Store the recent users' data on faster storage devices
-- Store the data of the users who have not been to the website recently on slower, cheaper storage devices (example: hdd)
+- Keep the students' data close to their location
+- Store the current students' data on faster storage devices
+- Store the graduated students' data on slower, cheaper storage devices (example: hdd)
 
 We can achieve this by partitioning the table first by location and then by date.
 
@@ -333,13 +333,13 @@ $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au
 
 ### Repartition a Table
 
-Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the users will be considered current to `2018-08-15`. We can achieve this by using the `ALTER TABLE` command. 
+Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the `ALTER TABLE` command. 
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> ALTER TABLE users_by_range PARTITION BY RANGE (graduation_date) (
-    PARTITION archived VALUES FROM (MINVALUE) TO ('2018-08-15'), 
-    PARTITION recent VALUES FROM ('2018-08-15') TO (MAXVALUE));
+> ALTER TABLE students_by_range PARTITION BY RANGE (graduation_date) (
+    PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'), 
+    PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
 
 ### Unpartition a Table
@@ -373,7 +373,7 @@ However, the following features will continue to work even with an expired enter
 
 ## Locality–Resilience Tradeoff
 
-There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachmart.users` for Australian users. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, than reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then loss of one datacenter can lead to data unavailability, so some deployments may want two separate Austrialian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
+There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, than reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then loss of one datacenter can lead to data unavailability, so some deployments may want two separate Austrialian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
 
 ## How CockroachDB's Partitioning Differs from Other Databases
 
