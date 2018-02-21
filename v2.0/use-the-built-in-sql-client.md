@@ -25,7 +25,7 @@ $ cockroach sql <flags> < file-containing-statements.sql
 $ cockroach sql --help
 ~~~
 
-## Flags <span class="version-tag">Changed in v1.1</span>
+## Flags
 
 The `sql` command supports the following [general-use](#general) and [logging](#logging) flags.
 
@@ -54,7 +54,7 @@ By default, the `sql` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## SQL Shell Welcome <span class="version-tag">Changed in v1.1</span>
+## SQL Shell Welcome
 
 When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
 
@@ -91,7 +91,7 @@ Command | Usage
 `\?`<br>`help` | View this help within the shell.
 `\h <statement>`<br>`\hf <function>` | <span class="version-tag">New in v1.1:</span> View help for specific SQL statements or functions. See [SQL Shell Help](#sql-shell-help-new-in-v1-1) for more details.
 
-### SQL Shell Options <span class="version-tag">Changed in v1.1</span>
+### SQL Shell Options
 
 To see current settings, use `\set` without any options. To enable or disable a shell option, use `\set <option>` or `\unset <option>`.
 
@@ -100,18 +100,18 @@ Client Options | Description
 `display_format` | <span class="version-tag">New in v1.1:</span> How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>This option is set to whatever value was passed to the `--format` flag when the shell was started. If the `--format` flag was not used, this option defaults to `pretty`.<br><br>To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
 `echo` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `errexit` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set errexti`.
-`check_syntax` | Validate SQL syntax on the client-side before it is sent to the server. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
+`check_syntax` | Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
 `normalize_history` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `check_syntax` is enabled as well. To disable this option, run `\unset normalize_history`.
 `show_times` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset show_times`.
 `smart_prompt` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
-### SQL Shell Help <span class="version-tag">New in v1.1</span>
+### SQL Shell Help
 
 Within the SQL shell, you can get interactive help about statements and functions:
 
 Command | Usage
 --------|------
-`\h`<br>`?` | List all available SQL statements, by category.
+`\h`<br>`??` | List all available SQL statements, by category.
 `\hf` | List all available SQL functions, in alphabetical order.
 `\h <statement>`<br>or `<statement> ?` | View help for a specific SQL statement.
 `\hf <function>`<br>or `<function> ?` | View help for a specific SQL function.
