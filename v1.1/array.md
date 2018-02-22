@@ -1,6 +1,6 @@
 ---
-title: ARRAYS
-summary: The ARRAYS data type stores 
+title: ARRAY
+summary: The ARRAY data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array data types
 toc: false
 ---
 
@@ -22,11 +22,11 @@ A value of data type `ARRAY` can be expressed in the following ways:
 
 ## Size
 
-The size of a `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of an `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
 
 ## Examples
 
-### Creating an array column by appending square brackets 
+### Creating an array column by appending square brackets
 
 ~~~ sql
 > CREATE TABLE a (b STRING[]);

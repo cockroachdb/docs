@@ -1,6 +1,6 @@
 ---
-title: ARRAYS
-summary: The ARRAYS data type stores
+title: ARRAY
+summary: The ARRAY data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array data types.
 toc: false
 ---
 
