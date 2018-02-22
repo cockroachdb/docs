@@ -38,6 +38,7 @@
       no_windows: true
     - date: Jan 22, 2018
       version: v2.0-alpha.20180122
+      withdrawn: true
     - date: Jan 16, 2018
       version: v2.0-alpha.20180116
       withdrawn: true
