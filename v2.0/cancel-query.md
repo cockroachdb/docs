@@ -25,7 +25,7 @@ The `root` user can cancel any currently active queries, whereas non-`root` user
 
 Parameter | Description
 ----------|------------
-`query_id` | The ID of the query to cancel, or a [`SELECT`](select.html) statement that returns the ID of the query to cancel.
+`query_id` | The ID of the query to cancel, or a nested [`SELECT`](select.html) statement that returns the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a nested `SELECT` statement returns multiple IDs, the `CANCEL QUERY` statement will therefore fail.
 
 ## Response
 
@@ -68,6 +68,8 @@ In this example, we nest a [`SELECT`](select.html) statement that retrieves the 
           AND username = 'mroach'
           AND query = 'SELECT * FROM test.kv ORDER BY k');
 ~~~
+
+{{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If a nested <code>SELECT</code> statement returns multiple IDs, the <code>CANCEL QUERY</code> statement will therefore fail.{{site.data.alerts.end}}
 
 ## See Also
 
