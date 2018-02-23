@@ -45,14 +45,14 @@ Consider the database of a global online learning portal that has a table for st
     name STRING,
     email STRING,
     country STRING,
-    graduation_date DATE,   
+    expected_graduation_date DATE,   
     PRIMARY KEY (country, id));
 ~~~
 
 #### Partitioning Key Considerations
 
-- Once you set the primary key, you can’t change it later. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `graduation_date` in the future, define the primary key as `(country, graduation_date, id)`.
-- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `graduation_date`. You can’t skip `country` and partition by `graduation_date`.
+- Once you set the primary key, you can’t change it later. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `expected_graduation_date` in the future, define the primary key as `(country, expected_graduation_date, id)`.
+- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You can’t skip `country` and partition by `expected_graduation_date`.
 
 #### Partitioning and Index Columns
 
@@ -176,7 +176,7 @@ $ cockroach start --insecure --host=node2 --locality=datacenter=aus-1 \
     name STRING,
     email STRING,
     country STRING,
-    graduation_date DATE,   
+    expected_graduation_date DATE,   
     PRIMARY KEY (country, id))
     PARTITION BY LIST (country)
       (PARTITION north_america VALUES IN ('CA','US'), 
@@ -228,9 +228,9 @@ $ cockroach start --store=path=/mnt/crdb,attrs=hdd
    name STRING,
    email STRING,                                                                                           
    country STRING, 
-   graduation_date DATE,                                                                                      
-   PRIMARY KEY (graduation_date, id)) 
-   PARTITION BY RANGE (graduation_date) 
+   expected_graduation_date DATE,                                                                                      
+   PRIMARY KEY (expected_graduation_date, id)) 
+   PARTITION BY RANGE (expected_graduation_date) 
       (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'), 
       PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
 ~~~
@@ -293,11 +293,11 @@ $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=aus-1
     name STRING,
     email STRING,
     country STRING, 
-    graduation_date DATE, 
-    PRIMARY KEY (country, graduation_date, id))
+    expected_graduation_date DATE, 
+    PRIMARY KEY (country, expected_graduation_date, id))
     PARTITION BY LIST (country)(
-        PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (graduation_date)(PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)),
-        PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (graduation_date)(PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE))
+        PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date)(PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)),
+        PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (expected_graduation_date)(PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE))
     );
 ~~~
 
@@ -337,7 +337,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 
 {% include copy-clipboard.html %} 
 ~~~ sql
-> ALTER TABLE students_by_range PARTITION BY RANGE (graduation_date) (
+> ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'), 
     PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
