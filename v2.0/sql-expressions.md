@@ -57,33 +57,7 @@ An expression in a query can refer to columns in the current data source in two 
 An expression prefixed by a unary operator, or two expressions
 separated by a binary operator, form a new expression.
 
-CockroachDB supports the following operators:
-
-| Operator | Description |
-|----------|-------------|
-| `-` (unary) | numeric negation |
-| `+` (unary) | no-op, exists only for symmetry with unary `-` |
-| `~` (unary) | 64-bit binary complement |
-| `NOT` (unary) | boolean/logical negation |
-| `+` | addition |
-| `-` | substraction |
-| `*` | multiplication |
-| `/` | numeric division |
-| `//` | division with rounding ("integer division") |
-| `%`  | rest of division ("modulo") |
-| `&`  | bitwise AND |
-| `|`  | bitwise OR |
-| `^`, `#`  | bitwise XOR |
-| `<<` | binary shift left |
-| `>>` | binary shift right |
-| `~` `!~`, `~*`, `!~*` | match using regular expression |
-| `||` | concatenation for strings or byte arrays |
-| `<`, `>`, `<=`, `>=`, `<>`, `!=`, `IS` | comparison |
-| `LIKE`, `ILIKE`, `SIMILAR TO` | match using string pattern |
-| `IN` | test for value in set |
-
-See also [this section over which data types are valid operands
-for each operator](functions-and-operators.html#operators).
+For a full list of CockroachDB operators, with details about their order of precedence and which data types are valid operands for each operator, see [Functions and Operators](functions-and-operators.html#operators).
 
 ### Value Comparisons
 
@@ -251,27 +225,6 @@ For example:
 #### Typing rule
 
 The operands must be either both `STRING` or both `BYTES`. The result has type `BOOL`.
-
-### Operator Precedence
-
-CockroachDB uses the following grouping precedence of
-operators in expressions:
-
-| Level | Operators |
-|-------|-----------|
-| 1 | `~` (unary) |
-| 2 | `-` (unary) |
-| 3 | `*`, `/`, `//`, `%` |
-| 4 | `+`, `-` (binary) |
-| 5 | `<<`, `>>` |
-| 6 | `&` |
-| 7 | `^`, `#` |
-| 8 | `|` |
-| 9 | `||` |
-| 10 | `IN`, `LIKE`, `ILIKE`, `SIMILAR TO`, `!~`, `!~*` `~*`, `~` (binary) |
-| 11 | `<` `>` `=` `<=` `>=` `<>` `!=` |
-| 12 | `IS` |
-| 13 | `NOT` |
 
 ## Function Calls and SQL Special Forms
 
@@ -714,3 +667,4 @@ The result has the given type.
 - [Selection Clauses](selection-clauses.html)
 - [Table Expressions](table-expressions.html)
 - [Data Types](data-types.html)
+- [Functions and Operators](functions-and-operators.html)
