@@ -143,7 +143,7 @@ To verify the table partitions, use the [`SHOW CREATE TABLE`](show-create-table.
 
 Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the students' data closer to their locations: 
 
-- We want to keep the data of the students located in United States and Canada in the United States datacenter.
+- We want to keep the data of the students located in the United States and Canada in the United States datacenter.
 - We want to keep the data of students located in Australia and New Zealand in the Australian datacenter. 
 
 We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax. 
@@ -370,7 +370,7 @@ However, the following features continue to work even with an expired enterprise
 
 ## Locality–Resilience Tradeoff
 
-There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, than reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then loss of one datacenter can lead to data unavailability, so some deployments may want two separate Austrialian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
+There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then the loss of one datacenter can lead to data unavailability, so some deployments may want two separate Australian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
 
 ## How CockroachDB's Partitioning Differs from Other Databases
 
