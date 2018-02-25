@@ -4,28 +4,24 @@ summary: Partitioning is an enterprise feature that gives you row-level control 
 toc: false
 ---
 
-CockroachDB's partitioning feature gives you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs, and can assist in meeting regulatory requirements for your data. 
+CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs, and can assist in meeting regulatory requirements for your data. 
 
-{{site.data.alerts.callout_info}}The Partitioning feature is only available to <a href="enterprise-licensing.html">enterprise</a> users. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Table partitioning is an <a href="enterprise-licensing.html">enterprise-only</a> feature. {{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ## Overview
 
-Partitioning allows you to meet your latency and cost requirements:
+Table partitioning helps you reduce latency and cost:
 
-- **Reduce latency**: Geo-partitioning allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby reducing latency and improving user experience. To geo-partition a table, define location-based partitions while creating a table, create location-specific zone configurations, and apply the zone configurations to the corresponding partitions. 
+- **Reduce latency**: Geo-partitioning allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby reducing latency. To geo-partition a table, define location-based partitions while creating a table, create location-specific zone configurations, and apply the zone configurations to the corresponding partitions. 
 - **Reduce costs**: Archival-partitioning allows you to store infrequently-accessed data on slower and cheaper storage. To archival-partition a table, define frequency-based partitions while creating a table, create frequency-specific zone configurations with appropriate storage devices constraints, and apply the zone configurations to the corresponding partitions.
 
 ## Define Table Partitions
 
-You can define partitions and subpartitions over one or more columns of a table. You can declare which values belong to which partition in one of two ways. In list partitioning, (`PARTITION BY LIST`) you enumerate all possible values for each partition. In range partitioning (`PARTITION BY RANGE`), you specify a contiguous "range" of values for each partition by specifying lower and upper bounds. List partitioning is a good choice when the number of possible values is small; conversely, range partitioning is a good choice when the number of possible values is too large to explicitly list out.
-
-To partition a table:
-
 1. [Set the enterprise license key.](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) 
 2. [Start the nodes with the right constraints](configure-replication-zones.html) (localities, storage devices, and other constraints).
-3. [Create table with partitions (and subpartitions)](partitioning.html#create-a-table-with-partitions) and define the primary key.](partitioning.html#define-the-primary-key)
+3. [Create table with partitions (and subpartitions)](partitioning.html#create-a-table-with-partitions) and [define the primary key.](partitioning.html#define-the-primary-key)
 4. [Create appropriate location-specific or storage-specific zone configurations and apply zone configurations to corresponding partitions](partitioning.html#set-zone-configurations)
 
 ### Define the Primary Key
@@ -63,7 +59,7 @@ The primary key discussed above has two drawbacks:
 
 To ensure uniqueness or fast lookups, create a unique, unpartitioned secondary index on the identifier.
 
-Indexes can also be partitioned, but are not required to be. Each partition is required to have a name that is unique among all partitions on that table and its indexes. The uniqueness requirements can be surprising. For example, the following `CREATE INDEX` scenario will fail because it reuses the name of a partition of the primary key:
+Indexes can also be partitioned, but are not required to be. Each partition is required to have a name that is unique among all partitions on that table and its indexes. For example, the following `CREATE INDEX` scenario will fail because it reuses the name of a partition of the primary key:
 
 ~~~ sql
 CREATE TABLE foo (a STRING PRIMARY KEY, b STRING) PARTITION BY LIST (a) (
@@ -78,11 +74,12 @@ CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
 
 Consider using a naming scheme that uses the index name to avoid conflicts. For example, the partitions above could be named `primary_idx_bar`, `primary_idx_default`, `b_idx_baz`, `b_idx_default`.
 
-See [Partitioning Indexes example](#partitioned-secondary-indexes).
-
 ### Create a Table with Partitions
 
-You can partition a table either by list or by range. When declaring a table's partitions, you can declare what values belong to each partition by enumerating all possible values for each partition (PARTITION BY LIST)
+You can define partitions and subpartitions over one or more columns of a table. You can declare which values belong to which partition in one of two ways: 
+
+- List partitioning: Enumerate all possible values for each partition. List partitioning is a good choice when the number of possible values is small.
+- Range partitioning: Specify a contiguous range of values for each partition by specifying lower and upper bounds. Range partitioning is a good choice when the number of possible values is too large to explicitly list out.
 
 #### Define Table Partitions by List
 
@@ -98,7 +95,7 @@ To define a table partition by range, use the `PARTITION BY RANGE` syntax while 
 
 While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively. 
 
-{{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For the purpose of range partitions, `NULL` is considered less than any other data, which is consistent with our key encoding ordering and `ORDER BY` behavior.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For range partitions, `NULL` is considered less than any other data, which is consistent with our key encoding ordering and `ORDER BY` behavior.{{site.data.alerts.end}}
 
 See [Partition by Range example](#partition-by-range).
 
@@ -106,7 +103,7 @@ Partition values can be any SQL expression, but it’s only evaluated once. If y
 
 #### Define Partitions on Interleaved Tables
 
-For [interleaved tables](interleave-in-parent.html), partitions can be defined only the root table of the interleave hierarchy, while children will naturally be interleaved the same as their parents.
+For [interleaved tables](interleave-in-parent.html), partitions can be defined only on the root table of the interleave hierarchy, while children are interleaved the same as their parents.
 
 ### Set Zone Configurations
 
@@ -146,10 +143,10 @@ To verify the table partitions, use the [`SHOW CREATE TABLE`](show-create-table.
 
 Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the students' data closer to their locations: 
 
-- We want to keep the data of the students located in United States and Canada in the United States datacenter
+- We want to keep the data of the students located in the United States and Canada in the United States datacenter.
 - We want to keep the data of students located in Australia and New Zealand in the Australian datacenter. 
 
-We can achieve this by partitioning on country and use the `PARTITION BY LIST` syntax. 
+We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax. 
 
 #### Step 1: Set the enterprise license
 
@@ -205,7 +202,7 @@ $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f austra
 
 ### Define Table Partitions by Range
 
-Consider the table of students of the same global online learning portal, RoachLearn. Suppose we want to store the data of current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
+Consider the table of students of the global online learning portal, RoachLearn. Suppose we want to store the data of current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
 
 #### Step 1: Set the enterprise license
 
@@ -262,9 +259,9 @@ A list partition can itself be partitioned, forming a subpartition. There is no 
 
 Going back to RoachLearn's scenario, suppose we want to do all of the following:
 
-- Keep the students' data close to their location
-- Store the current students' data on faster storage devices
-- Store the graduated students' data on slower, cheaper storage devices (example: hdd)
+- Keep the students' data close to their location.
+- Store the current students' data on faster storage devices.
+- Store the graduated students' data on slower, cheaper storage devices (example: HDD).
 
 We can achieve this by partitioning the table first by location and then by date.
 
@@ -357,31 +354,25 @@ You require an enterprise license to partition or repartition a table, and to ad
 
 ### Expired License
 
-The following features will not work with an expired license:
+The following features don't work with an expired license:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
 - Changing the zone config for a partition
 
-However, the following features will continue to work even with an expired enterprise license:
+However, the following features continue to work even with an expired enterprise license:
 
-- Querying a partitioned table (e.g., `SELECT foo PARTITION`)
+- Querying a partitioned table (for example, `SELECT foo PARTITION`)
 - Inserting or updating data in a partitioned table
 - Dropping a partitioned table
 - Unpartitioning a partitioned table
-- Making non-partitioning changes to a partitioned table (e.g., adding a column/index/foreign key/check constraint) 
+- Making non-partitioning changes to a partitioned table (for example, adding a column/index/foreign key/check constraint) 
 
 ## Locality–Resilience Tradeoff
 
-There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, than reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then loss of one datacenter can lead to data unavailability, so some deployments may want two separate Austrialian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
+There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow. If two replicas are pinned to an Australian datacenter, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then the loss of one datacenter can lead to data unavailability, so some deployments may want two separate Australian datacenters. If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
 
 ## How CockroachDB's Partitioning Differs from Other Databases
-
-There is unfortunately no SQL standard for partitioning. As a result, separate partitioning syntaxes have emerged:
-
-- MySQL and Oracle specify partitions inline in `CREATE TABLE`, similar to CockroachDB.
-- Microsoft SQL Server requires four steps: allocating physical storage called “filegroups” for each partition with `ALTER DATABASE… ADD FILE`, followed by `CREATE PARTITION FUNCTION` to define the partition split points, followed by `CREATE PARTITION SCHEME` to tie the partition function output to the created file groups, followed by `CREATE TABLE... ON partition_scheme` to tie the table to the partitioning scheme.
-- PostgreSQL 10 takes a hybrid approach: the partition columns and scheme (i.e, RANGE or LIST) are specified in the `CREATE TABLE` statement, but the partition split points are specified by running `CREATE TABLE… PARTITION OF… FOR VALUES` once for each partition.
 
 Other databases use partitioning for three additional use cases: secondary indexes, sharding, and bulk loading/deleting. CockroachDB addresses these use-cases not by using partitioning, but in the following ways:
 
