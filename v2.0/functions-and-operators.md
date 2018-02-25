@@ -42,6 +42,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 10 | <code>&#124;</code> | Bitwise or | binary |
 | 11 | <code>&#124;&#124;</code> | Concatenation | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
+|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary | 
 |  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
 |  | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
 |  | `[NOT] ILIKE` | Matches [or not] LIKE expression, case insensitive | binary |
