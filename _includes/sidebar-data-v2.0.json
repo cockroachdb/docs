@@ -801,6 +801,12 @@
             ]
           },
           {
+            "title": "<code>JSONB</code>",
+            "urls": [
+              "/${VERSION}/jsonb.html"
+            ]
+          },
+          {
             "title": "<code>SERIAL</code>",
             "urls": [
               "/${VERSION}/serial.html"
