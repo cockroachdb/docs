@@ -129,9 +129,4 @@ To use GCE's TCP Proxy Load Balancing service:
 
 ## See Also
 
-- [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
-- [AWS Deployment](deploy-cockroachdb-on-aws.html)
-- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestration](orchestration.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

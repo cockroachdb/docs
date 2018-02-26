@@ -107,9 +107,4 @@ Now that your deployment is working, you can:
 
 ## See Also
 
-- [Google Cloud GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
-- [AWS Deployment](deploy-cockroachdb-on-aws.html)
-- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestration](orchestration.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

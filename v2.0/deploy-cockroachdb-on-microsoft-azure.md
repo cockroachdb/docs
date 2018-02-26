@@ -136,8 +136,4 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 ## See Also
 
-- [GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
-- [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
-- [AWS Deployment](deploy-cockroachdb-on-aws.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestration](orchestration.html)
+{% include prod_deployment/prod-see-also.md %}
