@@ -1,8 +1,10 @@
 ---
-title: Manual Deployment (Insecure)
+title: Deploy On-Premises (Insecure)
 summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
 toc: false
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+redirect_from: manual-deployment-insecure.html
+key: manual-deployment-insecure.html
 ---
 
 <div class="filters filters-big clearfix">
