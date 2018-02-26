@@ -14,7 +14,10 @@ toc: false
 
 ## Alias
 
-In CockroachDB, the `JSON` is an alias for `JSONB`.
+In CockroachDB, `JSON` is an alias for `JSONB`.
+
+{{site.data.alerts.callout_info}}The <code>JSONB</code> / <code>JSON</code> data type in CockroachDB is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
+{{site.data.alerts.end}}
 
 ## Considerations
 
@@ -29,15 +32,14 @@ string literal
 [annotated with](sql-expressions.html#explicitly-typed-expressions)
 type `JSONB`.
 
-There are seven types of `JSONB` values:
+There are six types of `JSONB` values:
 
-- `true`
-- `false`
--  `null`
-- Strings
-- Numbers (i.e., [`decimal`](decimal))
-- Arrays (i.e., an ordered sequence of `JSONB` values)
-- Objects (i.e., a mapping from strings to `JSONB` values)
+- `null`
+- Boolean
+- String
+- Number (i.e., [`decimal`](decimal), **not** the standard `int64`)
+- Array (i.e., an ordered sequence of `JSONB` values)
+- Object (i.e., a mapping from strings to `JSONB` values)
 
 Examples:
 
@@ -105,6 +107,7 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 ## See Also
 
 - [Data Types](data-types.html)
+- [Functions and Operators](functions-and-operators.html)
 
 <!-- - [`JSONB` Tutorials]()
 - [Inverted Indexes]() -->
