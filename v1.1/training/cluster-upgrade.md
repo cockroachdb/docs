@@ -82,7 +82,7 @@ Start and initialize a cluster like you did in previous modules.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180212.darwin-10.9-amd64.tgz \
+    $ curl https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180129.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
     </div>
@@ -90,7 +90,7 @@ Start and initialize a cluster like you did in previous modules.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180212.linux-amd64.tgz \
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180129.linux-amd64.tgz \
     | tar  xvz
     ~~~
     </div>
@@ -100,16 +100,16 @@ Start and initialize a cluster like you did in previous modules.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v2.0-alpha.20180212.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0-alpha.20180212.darwin-10.9-amd64
+    $ mv cockroach-v2.0-alpha.20180129.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0-alpha.20180129.darwin-10.9-amd64
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v2.0-alpha.20180212.linux-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0-alpha.20180212.linux-amd64
+    $ mv cockroach-v2.0-alpha.20180129.linux-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0-alpha.20180129.linux-amd64
     ~~~
     </div>
 
@@ -161,7 +161,7 @@ Start and initialize a cluster like you did in previous modules.
     +----+-----------------+---------------------+---------------------+---------------------+
     | id |     address     |        build        |     updated_at      |     started_at      |
     +----+-----------------+---------------------+---------------------+---------------------+
-    |  1 | localhost:26257 | v2.0-alpha.20180212 | 2018-02-13 15:32:38 | 2018-02-13 15:30:48 |
+    |  1 | localhost:26257 | v2.0-alpha.20180129 | 2018-02-13 15:32:38 | 2018-02-13 15:30:48 |
     |  2 | localhost:26258 | v1.1.5              | 2018-02-13 15:32:47 | 2018-02-13 15:26:07 |
     |  3 | localhost:26259 | v1.1.5              | 2018-02-13 15:32:38 | 2018-02-13 15:26:08 |
     +----+-----------------+---------------------+---------------------+---------------------+
@@ -250,9 +250,9 @@ $ ./cockroach node status \
 +----+-----------------+---------------------+---------------------+---------------------+
 | id |     address     |        build        |     updated_at      |     started_at      |
 +----+-----------------+---------------------+---------------------+---------------------+
-|  1 | localhost:26257 | v2.0-alpha.20180212 | 2018-02-13 10:59:42 | 2018-02-13 10:47:22 |
-|  2 | localhost:26258 | v2.0-alpha.20180212 | 2018-02-13 10:59:49 | 2018-02-13 10:55:49 |
-|  3 | localhost:26259 | v2.0-alpha.20180212 | 2018-02-13 10:59:42 | 2018-02-13 10:56:12 |
+|  1 | localhost:26257 | v2.0-alpha.20180129 | 2018-02-13 10:59:42 | 2018-02-13 10:47:22 |
+|  2 | localhost:26258 | v2.0-alpha.20180129 | 2018-02-13 10:59:49 | 2018-02-13 10:55:49 |
+|  3 | localhost:26259 | v2.0-alpha.20180129 | 2018-02-13 10:59:42 | 2018-02-13 10:56:12 |
 +----+-----------------+---------------------+---------------------+---------------------+
 (3 rows)
 ~~~
