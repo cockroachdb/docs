@@ -1,8 +1,7 @@
 ---
-title: Recommended Production Settings
+title: Production Checklist
 summary: Recommended settings for production deployments.
 toc: false
-<!-- toc_not_nested: true -->
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
@@ -74,7 +73,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 ## Clock Synchronization
 
-{% include faq/clock-synchronization.html %}
+{% include faq/clock-synchronization_v2.0.html %}
 
 ## Cache and SQL Memory Size <span class="version-tag">Changed in v1.1</span>
 
