@@ -937,8 +937,8 @@
           {
             "title": "On-Premises",
             "urls": [
-              "/${VERSION}/deploy-on-premises.html",
-              "/${VERSION}/deployment-on-premises-insecure.html"
+              "/${VERSION}/deploy-cockroachdb-on-premises.html",
+              "/${VERSION}/deployment-cockroachdb-on-premises-insecure.html"
             ]
           },
           {
@@ -1003,14 +1003,9 @@
         ]
       },
       {
-        "title": "Production Monitoring",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/production-monitoring.html"
-            ]
-          }
+        "title": "Monitoring and Alerting",
+        "urls": [
+          "/${VERSION}/monitoring-and-alerting.html"
         ]
       },
       {
@@ -1068,7 +1063,7 @@
     "title": "Manage",
     "items": [
       {
-        "title": "Use the Admin UI",
+        "title": "Monitor CockroachDB with the Admin UI",
         "items": [
           {
             "title": "Overview",

@@ -257,8 +257,4 @@ Once you're done with your test cluster:
 
 ## See Also
 
-- [Start a Local Cluster](start-a-local-cluster.html)
-- [Recommended Production Settings](recommended-production-settings.html)
-- [Orchestration](orchestration.html)
-- [Cloud Deployment](cloud-deployment.html)
-- [Manual Deployment](manual-deployment.html)
+{% include prod_deployment/prod-see-also.md %}
