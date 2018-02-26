@@ -1003,14 +1003,9 @@
         ]
       },
       {
-        "title": "Production Monitoring",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/production-monitoring.html"
-            ]
-          }
+        "title": "Monitoring and Alerting",
+        "urls": [
+          "/${VERSION}/monitoring-and-alerting.html"
         ]
       },
       {
