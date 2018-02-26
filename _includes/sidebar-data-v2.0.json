@@ -153,7 +153,7 @@
             ]
           },
           {
-            "title": "Automated Operations",
+            "title": "Orchestration",
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
@@ -914,31 +914,31 @@
     "title": "Deploy",
     "items": [
       {
-        "title": "Deploy a Test Cluster",
-        "urls": [
-          "/${VERSION}/deploy-a-test-cluster.html"
-        ]
-      },
-      {
-        "title": "Recommended Production Settings",
+        "title": "Production Checklist",
         "urls": [
           "/${VERSION}/recommended-production-settings.html"
         ]
       },
       {
-        "title": "Manual Deployment",
+        "title": "Test Deployment",
         "urls": [
-          "/${VERSION}/manual-deployment.html",
-          "/${VERSION}/manual-deployment-insecure.html"
+          "/${VERSION}/deploy-a-test-cluster.html"
         ]
       },
       {
-        "title": "Cloud Deployment",
+        "title": "Manual Deployment",
         "items": [
           {
             "title": "Overview",
             "urls": [
-              "/${VERSION}/cloud-deployment.html"
+              "/${VERSION}/manual-deployment.html"
+            ]
+          },
+          {
+            "title": "On-Premises",
+            "urls": [
+              "/${VERSION}/deploy-on-premises.html",
+              "/${VERSION}/deployment-on-premises-insecure.html"
             ]
           },
           {
@@ -972,7 +972,7 @@
         ]
       },
       {
-        "title": "Orchestration",
+        "title": "Orchestrated Deployment",
         "items": [
           {
             "title": "Overview",
@@ -998,6 +998,17 @@
             "title": "Mesosphere DC/OS",
             "urls": [
               "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Production Monitoring",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/production-monitoring.html"
             ]
           }
         ]
@@ -1057,7 +1068,7 @@
     "title": "Manage",
     "items": [
       {
-        "title": "Monitor CockroachDB with the Admin UI",
+        "title": "Use the Admin UI",
         "items": [
           {
             "title": "Overview",

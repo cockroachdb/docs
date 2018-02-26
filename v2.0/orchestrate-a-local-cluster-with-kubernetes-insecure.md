@@ -1,5 +1,5 @@
 ---
-title: Automated Operations
+title: Orchestration
 summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
 toc: false
 ---
