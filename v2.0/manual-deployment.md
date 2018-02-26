@@ -7,7 +7,7 @@ redirect_from: cloud-deployment.html
 
 Use the following guides to deploy CockroachDB manually on-premises or on popular cloud platforms:
 
-- [On-Premises](deploy-on-premises.html)
+- [On-Premises](deploy-cockroachdb-on-premises.html)
 - [Amazon Web Services (AWS)](deploy-cockroachdb-on-aws.html)
 - [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html)
 - [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
@@ -18,6 +18,7 @@ Use the following guides to deploy CockroachDB manually on-premises or on popula
 ## See Also
 
 - [Production Checklist](recommended-production-settings.html)
-- [Monitoring and Alerting](monitoring-and-alerting..html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Orchestrated Deployment](orchestration.html)
+- [Monitoring and Alerting](monitoring-and-alerting.html)
+- [Test Deployment](deploy-a-test-cluster.html)
+- [Local Deployment](start-a-local-cluster.html)

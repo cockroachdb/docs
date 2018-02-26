@@ -92,8 +92,8 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	Field | Description
 	------|------------
-	`timout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
-	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is also used for inter-node communication.
+	`timeout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
+	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
 	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
 	`server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--host` flag on node startup.
 
@@ -142,7 +142,4 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 ## See Also
 
-- [Cloud Deployment](cloud-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
-- [Monitoring](monitor-cockroachdb-with-prometheus.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

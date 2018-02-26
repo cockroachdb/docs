@@ -130,9 +130,4 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 ## See Also
 
-- [Google Cloud Platform GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
-- [Digital Ocean Deployment](deploy-cockroachdb-on-digital-ocean.html)
-- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestration](orchestration.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}
