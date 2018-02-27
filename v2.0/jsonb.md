@@ -37,7 +37,7 @@ There are six types of `JSONB` values:
 - `null`
 - Boolean
 - String
-- Number (i.e., [`decimal`](decimal), **not** the standard `int64`)
+- Number (i.e., [`decimal`](decimal.html), **not** the standard `int64`)
 - Array (i.e., an ordered sequence of `JSONB` values)
 - Object (i.e., a mapping from strings to `JSONB` values)
 
@@ -53,6 +53,8 @@ Examples:
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Example
+
+### Create a Table with a `JSONB` Column
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -90,13 +92,76 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 > SELECT * FROM users;
 ~~~
 ~~~
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------------------+
-|              profile_id              |           last_updated           |                                     user_profile                                     |
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------------------+
-| 59d6fbd5-71d7-4a3d-af8c-ecb95cd56146 | 2018-02-21 18:13:45.997355+00:00 | {"first_name":"Ernie","location":"Brooklyn","status":"Looking for treats"}           |
-| de672e78-a20c-49f6-ac7a-64b4b7c802c5 | 2018-02-21 18:13:45.997355+00:00 | {"first_name":"Lola","friends":547,"last_name":"Dog","location":"NYC","online":true} |
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------------------+
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+|              profile_id              |           last_updated           |                               user_profile                               |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+| 33c0a5d8-b93a-4161-a294-6121ee1ade93 | 2018-02-27 16:39:28.155024+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
+|                                      |                                  | "NYC", "online": true}                                                   |
+| 6a7c15c9-462e-4551-9e93-f389cf63918a | 2018-02-27 16:39:28.155024+00:00 | {"first_name": "Ernie", "location": "Brooklyn", "status": "Looking for   |
+|                                      |                                  | treats"}                                                                 |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
 ~~~
+
+### Retrieve Formatted `JSONB` Data
+
+To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
+~~~
+~~~
++--------------------------------------+----------------------------------+------------------------------------+
+|              profile_id              |           last_updated           |            jsonb_pretty            |
++--------------------------------------+----------------------------------+------------------------------------+
+| 33c0a5d8-b93a-4161-a294-6121ee1ade93 | 2018-02-27 16:39:28.155024+00:00 | {                                  |
+|                                      |                                  |     "first_name": "Lola",          |
+|                                      |                                  |     "friends": 547,                |
+|                                      |                                  |     "last_name": "Dog",            |
+|                                      |                                  |     "location": "NYC",             |
+|                                      |                                  |     "online": true                 |
+|                                      |                                  | }                                  |
+| 6a7c15c9-462e-4551-9e93-f389cf63918a | 2018-02-27 16:39:28.155024+00:00 | {                                  |
+|                                      |                                  |     "first_name": "Ernie",         |
+|                                      |                                  |     "location": "Brooklyn",        |
+|                                      |                                  |     "status": "Looking for treats" |
+|                                      |                                  | }                                  |
++--------------------------------------+----------------------------------+------------------------------------+
+~~~
+
+### Access a JSON field and Return a `JSONB` Value
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->'first_name' FROM users;
+~~~
+~~~
++----------------------------+
+| user_profile->'first_name' |
++----------------------------+
+| "Lola"                     |
+| "Ernie"                    |
++----------------------------+
+~~~
+
+For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
+
+### Access a JSON field and Return a `STRING`
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->>'first_name' FROM users;
+~~~
+~~~
++----------------------------+
+| user_profile->'first_name' |
++----------------------------+
+| "Lola"                     |
+| "Ernie"                    |
++----------------------------+
+~~~
+
+For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
 ## Supported Casting & Conversion
 
