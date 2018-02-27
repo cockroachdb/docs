@@ -10,7 +10,7 @@ We made CockroachDB open source to empower developers to fix and extend the prod
 
 ## Introduction
 
-A good way to find a project properly sized for a first time contributor is to search for open issues with the label ["helpwanted"](https://github.com/cockroachdb/cockroach/labels/help%20wanted).
+A good way to find a project properly sized for a first time contributor is to search for open issues with the label ["help wanted"](https://github.com/cockroachdb/cockroach/labels/help%20wanted).
 
 We separate three levels of complexity for projects:
 
