@@ -1,6 +1,6 @@
 ---
 title: Manual Deployment
-summary: Learn how to deploy CockroachDB on Google Cloud Platform GCE or AWS.
+summary: Learn how to deploy CockroachDB manually on-premises or on popular cloud platforms.
 toc: false
 redirect_from: cloud-deployment.html
 ---

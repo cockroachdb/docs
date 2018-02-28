@@ -4,7 +4,7 @@ summary: Perform a one-time-only initialization of a CockroachDB cluster.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.
+<span class="version-tag">New in v1.1:</span> This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}When <a href="start-a-node.html#start-a-single-node-cluster">starting a single-node cluster</a>, you don't need to use the <code>cockroach init</code> command. You can simply run the <code>cockroach start</code> command without the <code>--join</code> flag to start and initialize the single-node cluster.{{site.data.alerts.end}}
 
@@ -41,7 +41,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see [Manual Deployment](manual-deployment.html) or one of the [Cloud Deployment](cloud-deployment.html) tutorials.
+These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 ### Initialize a Cluster on a Node's Machine
 
@@ -112,6 +112,8 @@ These examples assume that nodes have already been started with [`cockroach star
 ## See Also
 
 - [Manual Deployment](manual-deployment.html)
-- [Cloud Deployment](cloud-deployment.html)
+- [Orchestrated Deployment](orchestration.html)
+- [Test Deployment](deploy-a-test-cluster.html)
+- [Local Deployment](start-a-local-cluster.html)
 - [`cockroach start`](start-a-node.html)
 - [Other Cockroach Commands](cockroach-commands.html)

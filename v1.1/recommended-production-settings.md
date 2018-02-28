@@ -1,5 +1,5 @@
 ---
-title: Recommended Production Settings
+title: Production Checklist
 summary: Recommended settings for production deployments.
 toc: false
 <!-- toc_not_nested: true -->
@@ -71,6 +71,10 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
     For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
 - **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+
+## Monitoring and Alerting
+
+{% include prod_deployment/monitor-cluster.md %}
 
 ## Clock Synchronization
 

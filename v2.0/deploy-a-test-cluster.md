@@ -181,6 +181,8 @@ You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the `ran
 
 4. Explore other areas of the [Admin UI](admin-ui-overview.html).
 
+5. Learn more about [production monitoring and alerting](monitoring-and-alerting.html).
+
 ## Step 5. Simulate node failure
 
 Kubernetes ensures that the cluster always has the number of nodes you specified during initial configuration (3 by default). When a node fails, Kubernetes automatically creates another node with the same network identity and persistent storage.

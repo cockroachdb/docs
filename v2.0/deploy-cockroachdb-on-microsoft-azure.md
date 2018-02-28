@@ -100,7 +100,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 2.  Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
-{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Azure's managed load balancing, see <a href="manual-deployment.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Azure's managed load balancing, see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
 
 ## Step 5. Generate certificates
 
@@ -126,9 +126,9 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 11. Monitor the cluster
+## Step 11. Set up monitoring and alerting
 
-{% include prod_deployment/secure-monitor-cluster.md %}
+{% include prod_deployment/monitor-cluster.md %}
 
 ## Step 12. Scale the cluster
 
