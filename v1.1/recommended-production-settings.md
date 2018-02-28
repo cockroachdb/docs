@@ -72,6 +72,12 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
     For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
 - **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
 
+## Monitoring and Alerting
+
+Despite CockroachDB's various [built-in safeguards against failure](high-availability.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+
+For details about available monitoring options and the most important events and metrics to alert on, see [Monitoring and Alerting](monitoring-and-alerting.html).
+
 ## Clock Synchronization
 
 {% include faq/clock-synchronization_v1.1.html %}

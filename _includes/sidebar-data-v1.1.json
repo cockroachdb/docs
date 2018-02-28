@@ -950,6 +950,12 @@
         ]
       },
       {
+        "title": "Monitoring and Alerting",
+        "urls": [
+          "/${VERSION}/monitoring-and-alerting.html"
+        ]
+      }
+      {
         "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
