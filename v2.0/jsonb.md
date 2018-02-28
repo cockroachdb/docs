@@ -4,7 +4,7 @@ summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. JSONB supports inverted indexing.
+<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports inverted indexing.
 
 <!--To Do:
 - This is a good opportunity to communicate how useful this feature is.
@@ -21,7 +21,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ## Considerations
 
-- The [primary key](primary-key.html) and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
+- The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
 - A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an inverted index.
 
 ## Syntax
@@ -52,7 +52,7 @@ Examples:
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
-## Example
+## Examples
 
 ### Create a Table with a `JSONB` Column
 
@@ -129,36 +129,34 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 +--------------------------------------+----------------------------------+------------------------------------+
 ~~~
 
-### Access a JSON field and Return a `JSONB` Value
+### Retrieve Specific Fields from a `JSONB` Value
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->'first_name' FROM users;
+> SELECT user_profile->'first_name',user_profile->`location` FROM users;
 ~~~
 ~~~
-+----------------------------+
-| user_profile->'first_name' |
-+----------------------------+
-| "Lola"                     |
-| "Ernie"                    |
-+----------------------------+
++----------------------------+--------------------------+
+| user_profile->'first_name' | user_profile->'location' |
++----------------------------+--------------------------+
+| "Lola"                     | "NYC"                    |
+| "Ernie"                    | "Brooklyn"               |
++----------------------------+--------------------------+
 ~~~
 
-For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
-
-### Access a JSON field and Return a `STRING`
+You can also use the ->> operator to return `JSONB` field values as `STRING` values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->>'first_name' FROM users;
+> SELECT user_profile->>'first_name', user_profile->>`location` FROM users;
 ~~~
 ~~~
-+----------------------------+
-| user_profile->'first_name' |
-+----------------------------+
-| "Lola"                     |
-| "Ernie"                    |
-+----------------------------+
++-----------------------------+---------------------------+
+| user_profile->>'first_name' | user_profile->>'location' |
++-----------------------------+---------------------------+
+| Lola                        | NYC                       |
+| Ernie                       | Brooklyn                  |
++-----------------------------+---------------------------+
 ~~~
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
