@@ -8,7 +8,7 @@ Other tutorials in this section feature the ways that CockroachDB automates oper
 
 This page walks you through a simple demonstration, using the open-source Kubernetes orchestration system. Starting with a few configuration files, you'll quickly create an insecure 3-node local cluster. You'll run a load generator against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
-{{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestrate-cockroachdb-with-kubernetes.html">Orchestrate CockroachDB with Kubernetes</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
