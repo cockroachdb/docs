@@ -16,7 +16,7 @@ toc: false
 
 In CockroachDB, `JSON` is an alias for `JSONB`.
 
-{{site.data.alerts.callout_info}}The <code>JSONB</code> / <code>JSON</code> data type in CockroachDB is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
+{{site.data.alerts.callout_info}}In PosgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
 {{site.data.alerts.end}}
 
 ## Considerations
