@@ -32,7 +32,7 @@ flag.
 
 ## Why is memory usage increasing despite lack of traffic?
 
-Like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of timeseries data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. For information about manually controlling the cache size, see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1).
+Like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of timeseries data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. For information about manually controlling the cache size, see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size).
 
 ## Why is disk usage increasing despite lack of writes?
 
@@ -105,7 +105,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 ## What happens when node clocks are not properly synchronized?
 
-{% include faq/clock-synchronization.html %}
+{% include faq/clock-synchronization_v2.0.html %}
 
 ## See Also
 

@@ -153,7 +153,7 @@
             ]
           },
           {
-            "title": "Automated Operations",
+            "title": "Orchestration",
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
@@ -861,31 +861,31 @@
     "title": "Deploy",
     "items": [
       {
-        "title": "Deploy a Test Cluster",
-        "urls": [
-          "/${VERSION}/deploy-a-test-cluster.html"
-        ]
-      },
-      {
-        "title": "Recommended Production Settings",
+        "title": "Production Notes",
         "urls": [
           "/${VERSION}/recommended-production-settings.html"
         ]
       },
       {
-        "title": "Manual Deployment",
+        "title": "Test Deployment",
         "urls": [
-          "/${VERSION}/manual-deployment.html",
-          "/${VERSION}/manual-deployment-insecure.html"
+          "/${VERSION}/deploy-a-test-cluster.html"
         ]
       },
       {
-        "title": "Cloud Deployment",
+        "title": "Manual Deployment",
         "items": [
           {
             "title": "Overview",
             "urls": [
-              "/${VERSION}/cloud-deployment.html"
+              "/${VERSION}/manual-deployment.html"
+            ]
+          },
+          {
+            "title": "On-Premises",
+            "urls": [
+              "/${VERSION}/deploy-cockroachdb-on-premises.html",
+              "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
             ]
           },
           {
@@ -919,7 +919,7 @@
         ]
       },
       {
-        "title": "Orchestration",
+        "title": "Orchestrated Deployment",
         "items": [
           {
             "title": "Overview",
@@ -947,6 +947,12 @@
               "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Monitoring and Alerting",
+        "urls": [
+          "/${VERSION}/monitoring-and-alerting.html"
         ]
       },
       {

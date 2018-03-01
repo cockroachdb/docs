@@ -320,7 +320,4 @@ $ sudo docker volume rm cockroachdb-0
 
 ## See Also
 
-- [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
-- [Cloud Deployment](cloud-deployment.html)
-- [Manual Deployment](manual-deployment.html)
-- [Local Deployment](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

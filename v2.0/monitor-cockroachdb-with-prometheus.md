@@ -12,7 +12,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 ## Before You Begin
 
-Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](cloud-deployment.html).
+Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](manual-deployment.html).
 
 ## Step 1. Install Prometheus
 

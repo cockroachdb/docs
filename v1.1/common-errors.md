@@ -143,7 +143,7 @@ To prevent this from happening, you should run clock synchronization software on
 
 Environment | Recommended Approach
 ------------|---------------------
-[Manual](manual-deployment.html#step-1-synchronize-clocks) | Use NTP with Google's external NTP service.
+[On Premises](deploy-cockroachdb-on-premises.html#step-1-synchronize-clocks) | Use NTP with Google's external NTP service.
 [AWS](deploy-cockroachdb-on-aws.html#step-3-synchronize-clocks) | Use the Amazon Time Sync Service.
 [Azure](deploy-cockroachdb-on-microsoft-azure.html#step-3-synchronize-clocks) | Disable Hyper-V time synchronization and use NTP with Google's external NTP service.
 [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-2-sychronize-clocks) | Use NTP with Google's external NTP service.
