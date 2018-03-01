@@ -66,7 +66,12 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
 
 5. Verify that the pod for the load generator was added successfully:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
     NAME                      READY     STATUS    RESTARTS   AGE
     cockroachdb-0             1/1       Running   0          28m
     cockroachdb-1             1/1       Running   0          27m
