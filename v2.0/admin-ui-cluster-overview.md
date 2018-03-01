@@ -1,13 +1,13 @@
 ---
-title: Cluster Overview Page
+title: Overview Page
 toc: false
 ---
 
-The **Cluster Overview** page of the Admin UI provides an overview of the cluster metrics, and lets you view either the Cluster visualization or the Nodes list, depending on your license type.
+On [accessing the Admin UI](admin-ui-access-and-navigate.html), the **Overview** page is displayed by default. The **Overview** page has three components: the [Cluster Overview panel](#cluster-overview-panel), the [Node List](#node-list), and the [Node Map](#node-map).
 
 <div id="toc"></div>
 
-## Cluster Overview panel
+## Cluster Overview Panel
 <img src="{{ 'images/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
 
 The **Cluster Overview** panel provides the following metrics:
@@ -18,13 +18,9 @@ Capacity Usage | <ul><li>The storage capacity used as a percentage of total stor
 Node Status | <ul><li>The number of [live nodes](admin-ui-access-and-navigate.html#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.</li>
 Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
-## Cluster Visualization
+## Node List
 
-
-
-## Nodes List
-
-To see basic details about the nodes in your cluster, click **View nodes list** in the **Summary** panel.
+To see basic details about the nodes in your cluster, select **Node List** from the **View** drop-down box below the Cluster Overview panel. 
 <img src="{{ 'images/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
@@ -63,4 +59,6 @@ Down Since | How long the node has been down.
 
 When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down. See [Remove Nodes](remove-nodes.html) for more information.
 
+## Node Map
 
+The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster. To configure and understand the Node Map, see [Node Map](admin-ui-node-map.html).

@@ -1114,6 +1114,12 @@
             ]
           },
           {
+            "title": "Node Map",
+            "urls": [
+              "/${VERSION}/admin-ui-node-map.html"
+            ]
+          },
+          {
             "title": "Time Series Graphs",
             "urls": [
               "/${VERSION}/admin-ui-time-series.html"
