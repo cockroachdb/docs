@@ -131,6 +131,8 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 ### Retrieve Specific Fields from a `JSONB` Value
 
+To retrieve a specific field from a `JSONB` value, use the `->` operator:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->'first_name',user_profile->`location` FROM users;
@@ -144,7 +146,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 +----------------------------+--------------------------+
 ~~~
 
-You can also use the ->> operator to return `JSONB` field values as `STRING` values:
+You can also use the `->>` operator to return `JSONB` field values as `STRING` values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
