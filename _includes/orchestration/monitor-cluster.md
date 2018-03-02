@@ -11,6 +11,8 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
     Forwarding from 127.0.0.1:8080 -> 8080
     ~~~
 
+    {{site.data.alerts.callout_info}}The <code>port-forward</code> command must be run on the same machine as the web browser in which you want to view the Admin UI. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring <code>kubectl</code> locally and running the above <code>port-forward</code> command on your local machine.{{site.data.alerts.end}}
+
 {% if page.secure == true %}
 
 2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a>.
