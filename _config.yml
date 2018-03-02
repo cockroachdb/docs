@@ -1,5 +1,5 @@
 homepage_title: CockroachDB Docs
-site_title: Cockroach Labs
+site_title: CockroachDB
 
 url: "https://www.cockroachlabs.com"
 baseurl: "/docs"
