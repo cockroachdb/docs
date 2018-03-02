@@ -10,16 +10,23 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 ## Step 2. Start Kubernetes
 
-<div class="filter-content" markdown="1" data-scope="gke-hosted">
+<section class="filter-content" markdown="1" data-scope="gke-hosted">
 
-1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation. The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the CockroachDB Admin UI using the steps in this guide.
+1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
 
     This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
+    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the CockroachDB Admin UI using the steps in this guide.{{site.data.alerts.end}}
+
 2. From your local workstation, start the Kubernetes cluster:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb
+    ~~~
+
+    ~~~
+    Creating cluster cockroachdb...done.
     ~~~
 
     This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
@@ -30,6 +37,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 3. Get the email address associated with your Google Cloud account:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -40,6 +48,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
     ~~~
@@ -51,9 +60,9 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 {% endif %}
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="gce-manual">
+<section class="filter-content" markdown="1" data-scope="gce-manual">
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](http://kubernetes.io/docs/getting-started-guides/gce/) documentation.
 
@@ -64,10 +73,10 @@ The process includes:
 - Creating GCE instances and joining them into a single Kubernetes cluster.
 - Installing `kubectl`, the command-line tool used to manage Kubernetes from your workstation.
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="aws-manual">
+<section class="filter-content" markdown="1" data-scope="aws-manual">
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](http://kubernetes.io/docs/getting-started-guides/aws/) documentation.
 
-</div>
+</section>
