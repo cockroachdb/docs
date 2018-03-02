@@ -10,7 +10,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 ## Step 2. Start Kubernetes
 
-<div class="filter-content" markdown="1" data-scope="gke-hosted">
+<section class="filter-content" markdown="1" data-scope="gke-hosted">
 
 1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation. The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the CockroachDB Admin UI using the steps in this guide.
 
@@ -58,9 +58,9 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 {% endif %}
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="gce-manual">
+<section class="filter-content" markdown="1" data-scope="gce-manual">
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](http://kubernetes.io/docs/getting-started-guides/gce/) documentation.
 
@@ -71,10 +71,10 @@ The process includes:
 - Creating GCE instances and joining them into a single Kubernetes cluster.
 - Installing `kubectl`, the command-line tool used to manage Kubernetes from your workstation.
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="aws-manual">
+<section class="filter-content" markdown="1" data-scope="aws-manual">
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](http://kubernetes.io/docs/getting-started-guides/aws/) documentation.
 
-</div>
+</section>
