@@ -35,6 +35,7 @@
       version: v2.0-beta.20180305
     - date: Feb 12, 2018
       version: v2.0-alpha.20180212
+      withdrawn: true
     - date: Jan 29, 2018
       version: v2.0-alpha.20180129
       no_windows: true

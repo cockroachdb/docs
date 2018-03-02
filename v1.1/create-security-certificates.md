@@ -283,8 +283,9 @@ Certificate directory: certs
 
 ## See Also
 
-- [Manual Deployment](manual-deployment.html)
-- [Cloud Deployment](cloud-deployment.html)
-- [Local Test Deployment](secure-a-cluster.html)
 - [Rotate Security Certificates](rotate-certificates.html)
+- [Manual Deployment](manual-deployment.html)
+- [Orchestrated Deployment](orchestration.html)
+- [Local Deployment](secure-a-cluster.html)
+- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

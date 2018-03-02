@@ -56,7 +56,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 	- Configure health checks to use HTTP port **8080** and path `/health`.
 2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
-{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see <a href="manual-deployment-insecure.html">Manual Deployment</a> for guidance.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see the <a href="deploy-cockroachdb-on-premises-insecure.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
 
 ## Step 4. Configure your network
 
@@ -97,9 +97,9 @@ Now that your deployment is working, you can:
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
 
-## Step 10. Monitor the cluster
+## Step 10. Set up monitoring and alerting
 
-{% include prod_deployment/insecure-monitor-cluster.md %}
+{% include prod_deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
 
@@ -107,9 +107,4 @@ Now that your deployment is working, you can:
 
 ## See Also
 
-- [Google Cloud GCE Deployment](deploy-cockroachdb-on-google-cloud-platform.html)
-- [AWS Deployment](deploy-cockroachdb-on-aws.html)
-- [Azure Deployment](deploy-cockroachdb-on-microsoft-azure.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestration](orchestration.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

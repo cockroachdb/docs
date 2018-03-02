@@ -128,7 +128,7 @@ Now that you have a load balancer running in front of your cluster, download and
     -tolerate-errors \
     -concurrency 3 \
     -splits 50 \
-    -rate-limit 100 \
+    -max-rate 100 \
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 

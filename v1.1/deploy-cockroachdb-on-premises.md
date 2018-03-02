@@ -1,46 +1,50 @@
 ---
-title: Manual Deployment (Insecure)
-summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
+title: Deploy CockroachDB On-Premises
+summary: Learn how to manually deploy a secure, multi-node CockroachDB cluster on multiple machines.
 toc: false
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="manual-deployment.html"><button class="filter-button">Secure</button></a>
-  <a href="manual-deployment-insecure.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
+  <a href="deploy-cockroachdb-on-premises.html"><button class="filter-button current"><strong>Secure</strong></button></a>
+  <a href="deploy-cockroachdb-on-premises-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
-This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
+This tutorial shows you how to manually deploy a secure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
-{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
 <div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include prod_deployment/secure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include prod_deployment/secure-recommendations.md %}
 
 ## Step 1. Synchronize clocks
 
 {% include prod_deployment/synchronize-clocks.md %}
 
-## Step 2. Start nodes
+## Step 2. Generate certificates
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include prod_deployment/secure-generate-certificates.md %}
 
-## Step 3. Initialize the cluster
+## Step 3. Start nodes
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include prod_deployment/secure-start-nodes.md %}
 
-## Step 4. Test the cluster
+## Step 4. Initialize the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include prod_deployment/secure-initialize-cluster.md %}
 
-## Step 5. Set up HAProxy load balancers
+## Step 5. Test the cluster
+
+{% include prod_deployment/secure-test-cluster.md %}
+
+## Step 6. Set up HAProxy load balancers
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
 
@@ -51,39 +55,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. SSH to the machine where you want to run HAProxy.
-
-2. Install HAProxy:
+1. On your local machine, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
     {% include copy-clipboard.html %}
 	~~~ shell
-	$ apt-get install haproxy
-	~~~
-
-3. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
-    ~~~
-
-4. Copy the binary into the `PATH`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
-    ~~~
-
-	If you get a permissions error, prefix the command with `sudo`.
-
-5. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
-
-    {% include copy-clipboard.html %}
-	~~~ shell
-	$ cockroach gen haproxy --insecure \
+	$ cockroach gen haproxy \
+	--certs-dir=certs \
 	--host=<address of any node> \
-	--port=26257 \
+	--port=26257
 	~~~
 
 	By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
@@ -118,34 +97,47 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
-6. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
+2. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
+
+	{% include copy-clipboard.html %}
+	~~~ shell
+	$ scp haproxy.cfg <username>@<haproxy address>:~/
+	~~~
+
+3. SSH to the machine where you want to run HAProxy.
+
+4. Install HAProxy:
+
+    {% include copy-clipboard.html %}
+	~~~ shell
+	$ apt-get install haproxy
+	~~~
+
+5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
     {% include copy-clipboard.html %}
 	~~~ shell
 	$ haproxy -f haproxy.cfg
 	~~~
 
-7. Repeat these steps for each additional instance of HAProxy you want to run.
+6. Repeat these steps for each additional instance of HAProxy you want to run.
 
-## Step 6. Test load balancing
+## Step 7. Test load balancing
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 7. Use the cluster
+## Step 8. Use the cluster
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 8. Monitor the cluster
+## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/insecure-monitor-cluster.md %}
+{% include prod_deployment/monitor-cluster.md %}
 
-## Step 9. Scale the cluster
+## Step 10. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include prod_deployment/secure-scale-cluster.md %}
 
 ## See Also
 
-- [Cloud Deployment](cloud-deployment.html)
-- [Orchestration](orchestration.html)
-- [Monitoring](monitor-cockroachdb-with-prometheus.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

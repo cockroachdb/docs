@@ -59,7 +59,7 @@ Flag | Description
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>You cannot set a password for the `root` user. For secure clusters, the `root` user must authenticate with a client certificate and key.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
+`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
 `-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 `--url` | Connect to the cluster on the provided URL, e.g., `postgresql://myuser@localhost:26257/mydb`. If left blank, the connection flags are used (`host`, `port`, `user`, `database`, `insecure`, `certs`). <br/><br/>**Env Variable:** `COCKROACH_URL`
@@ -81,78 +81,106 @@ Secure clusters require users to authenticate their access to databases and tabl
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
-{{site.data.alerts.callout_info}}Insecure clusters do not support user authentication, but you can still create passwords for users (besides <code>root</code>) through the <code>--password</code> flag.{{site.data.alerts.end}}
+    <span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters.
 
 ## Examples
 
 ### Create a User
 
-#### Insecure Cluster
-
-~~~ shell
-$ cockroach user set jpointsman --insecure
-~~~
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
+  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
+</div>
+<p></p>
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 
-After creating users, you must [grant them privileges to databases](grant.html).
+<div class="filter-content" markdown="1" data-scope="secure">
 
-#### Secure Cluster
-
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set jpointsman --certs-dir=certs
 ~~~
 
 {{site.data.alerts.callout_success}}If you want to allow password authentication for the user, include the <code>--password</code> flag and then enter and confirm the password at the command prompt.{{site.data.alerts.end}}
 
-Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-
 After creating users, you must:
 
 - [Create their client certificates](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client).
 - [Grant them privileges to databases](grant.html).
 
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach user set jpointsman --insecure
+~~~
+
+After creating users, you must [grant them privileges to databases](grant.html).
+
+</div>
+
 ### Authenticate as a Specific User
 
-#### Insecure Clusters
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
+  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
+</div>
+<p></p>
 
-~~~ shell
-$ cockroach sql --insecure --user=jpointsman
-~~~
+<div class="filter-content" markdown="1" data-scope="secure">
 
 #### Secure Clusters with Client Certificates
 
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
 #### Secure Clusters with Passwords
 
-[Users with passwords](create-and-manage-users.html#secure-cluster) can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
+Users with passwords can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
 
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --user=jpointsman
+~~~
+
+</div>
+
 ### Update a User's Password
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set jpointsman --certs-dir=certs --password
 ~~~
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
 
-{{site.data.alerts.callout_danger}}You cannot add password authentication to the <code>root</code> user.{{site.data.alerts.end}}
+<span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
 ### List All Users
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user ls --insecure
 ~~~
+
 ~~~
 +------------+
 |  username  |
@@ -163,9 +191,11 @@ $ cockroach user ls --insecure
 
 ### Find a Specific User
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user get jpointsman --insecure
 ~~~
+
 ~~~
 +------------+--------------------------------------------------------------+
 |  username  |                        hashedPassword                        |
@@ -178,6 +208,7 @@ $ cockroach user get jpointsman --insecure
 
 {{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user rm jpointsman --insecure
 ~~~
@@ -188,6 +219,7 @@ $ cockroach user rm jpointsman --insecure
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach user rm jpointsman --insecure --echo-sql
 ~~~

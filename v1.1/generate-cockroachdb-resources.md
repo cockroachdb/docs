@@ -280,4 +280,4 @@ For more details about these and other configuration settings, see the [HAProxy 
 ## See Also
 
 - [Other Cockroach Commands](cockroach-commands.html)
-- [Manual Deployment](manual-deployment.html) (using HAProxy for load balancing)
+- [Deploy CockroachDB On-Premises](deploy-cockroachdb-on-premises.html) (using HAProxy for load balancing)

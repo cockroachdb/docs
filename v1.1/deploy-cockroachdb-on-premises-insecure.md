@@ -1,13 +1,14 @@
 ---
-title: Manual Deployment (Insecure)
+title: Deploy CockroachDB On-Premises (Insecure)
 summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
 toc: false
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+redirect_from: manual-deployment-insecure.html
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="manual-deployment.html"><button class="filter-button">Secure</button></a>
-  <a href="manual-deployment-insecure.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
+  <a href="deploy-cockroachdb-on-premises.html"><button class="filter-button">Secure</button></a>
+  <a href="deploy-cockroachdb-on-premises-insecure.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
 This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
@@ -135,9 +136,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 {% include prod_deployment/use-cluster.md %}
 
-## Step 8. Monitor the cluster
+## Step 8. Set up monitoring and alerting
 
-{% include prod_deployment/insecure-monitor-cluster.md %}
+{% include prod_deployment/monitor-cluster.md %}
 
 ## Step 9. Scale the cluster
 
@@ -145,7 +146,4 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 ## See Also
 
-- [Cloud Deployment](cloud-deployment.html)
-- [Orchestration](orchestration.html)
-- [Monitoring](monitor-cockroachdb-with-prometheus.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
+{% include prod_deployment/prod-see-also.md %}

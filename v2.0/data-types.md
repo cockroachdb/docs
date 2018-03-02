@@ -17,9 +17,10 @@ Type | Description | Example
 [`DATE`](date.html) | A date. | `DATE '2016-01-25'`
 [`DECIMAL`](decimal.html) | An exact, fixed-point number. | `1.2345`
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number. | `1.2345`
-[`INET`](inet.html) | <span class="version-tag">New in v2.0:</span> A IPv4 or IPv6 address. | `192.168.0.1`
+[`INET`](inet.html) | <span class="version-tag">New in v2.0:</span> An IPv4 or IPv6 address. | `192.168.0.1`
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
+[`JSONB`](jsonb.html) | <span class="version-tag">New in v2.0:</span> JSON (JavaScript Object Notation) data. | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`TIME`](time.html) | <span class="version-tag">New in v2.0:</span> A time of day with no time zone. | `TIME '01:23:45.123456'`

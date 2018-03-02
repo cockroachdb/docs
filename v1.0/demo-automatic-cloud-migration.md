@@ -113,10 +113,10 @@ In a new terminal, start `ycsb`, pointing it at HAProxy's port:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ $HOME/go/bin/ycsb -duration 20m -tolerate-errors -concurrency 10 -rate-limit 100 'postgresql://root@localhost:26000?sslmode=disable'
+$ $HOME/go/bin/ycsb -duration 20m -tolerate-errors -concurrency 10 -max-rate 1000 'postgresql://root@localhost:26000?sslmode=disable'
 ~~~
 
-This command initiates 10 concurrent client workloads for 20 minutes, but limits each worker to 100 operations per second (since you're running everything on a single machine).
+This command initiates 10 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
 
 ## Step 5. Watch data balance across all 3 nodes
 

@@ -86,5 +86,5 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## See Also
 
-[Data Types](data-types.html)
-[Functions and Operators](functions-and-operators.html)
+- [Data Types](data-types.html)
+- [Functions and Operators](functions-and-operators.html)
