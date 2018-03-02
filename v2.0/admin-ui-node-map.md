@@ -38,17 +38,20 @@ The **Node Map** view helps you identify and preempt any scenarios that might ca
 - Confirm that configuration changes were persisted to the cluster.
 - Observe QPS across nodes to ensure that queries are rerouted to live nodes if a node failure occurs.
 
-## Configure the Node Map
+## Configure and Navigate the Node Map
 
 To configure the **Node Map**, you need to start the cluster with the correct `--localities` flags and assign the latitudes and longitudes for each region.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-Consider a three-node geographically distributed cluster with the following configuration: 
+Consider a four-node geo-distributed cluster with the following configuration:
 
-- One node in the `us-east` region
-- One node in the `us-west` region 
-- Two nodes in the `eu-west` region 
+|  Node | Region | Datacenter |
+|  ------ | ------ | ------ |
+|  N1 | us-east | us-east-1 |
+|  N2 | us-east | us-east-1 |
+|  N3 | us-west | us-west-1 |
+|  N4 | eu-west | eu-west-1 |
 
 #### Step 1. Ensure the CockroachDB version is 2.0 or higher
 
@@ -58,7 +61,7 @@ $ ./cockroach version
 
 If not, [upgrade to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-#### Step 2. Start the three nodes with the correct `--localities` flags
+#### Step 2. Start the nodes with the correct `--localities` flags
 
 In a new terminal, start Node 1:
 
@@ -66,7 +69,7 @@ In a new terminal, start Node 1:
 ~~~ shell
 ./cockroach start \
 --insecure \
---locality=region=us-east-1  \
+--locality=region=us-east,datacenter=us-east-1  \
 --store=node1 \
 --host=localhost \
 --port=26257 \
@@ -80,7 +83,7 @@ In a new terminal, start Node 2:
 ~~~ shell
 ./cockroach start \
 --insecure \
---locality=region=us-west-1 \
+--locality=region=us-east,datacenter=us-east-1 \
 --store=node2 \
 --host=localhost \
 --port=26258 \
@@ -94,7 +97,7 @@ In a new terminal, start Node 3:
 ~~~ shell
 ./cockroach start \
 --insecure \
---locality=region=eu-west-1 \
+--locality=region=us-west,datacenter=us-west-1 \
 --store=node3 \
 --host=localhost \
 --port=26259 \
@@ -108,7 +111,7 @@ In a new terminal, start Node 4:
 ~~~ shell
 ./cockroach start \
 --insecure \
---locality=region=eu-west-1 \
+--locality=region=eu-west,datacenter=eu-west-1 \
 --store=node4 \
 --host=localhost \
 --port=26260 \
@@ -130,12 +133,14 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
-  ('region', 'us-east-1', 40.367474, -82.996216), 
-  ('region', 'us-west-1', 43.8041334, -120.55420119999997), 
-  ('region', 'eu-west-1', 48.856614, 2.3522219000000177);
+  ('region', 'us-east', 40.367474, -82.996216), 
+  ('region', 'us-west', 43.8041334, -120.55420119999997), 
+  ('region', 'eu-west', 48.856614, 2.3522219000000177);
 ~~~
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
+
+To get the latitudes and longitudes of AWS regions, see [Locations Co-ordinates for Reference](#location-co-ordinates-for-reference).
 
 #### Step 5. Verify the settings 
 
@@ -145,16 +150,36 @@ Navigate to `https://localhost:8080/#/reports/localities` and use the **Localiti
 
 [Navigate to the **Overview page**](admin-ui-cluster-overview.html) and switch to the **Node Map** view from the drop-down box.
 
-## Node Representation
+#### Step 7. Navigate the Node Map
+
+Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in the region `us-east`. To navigate to Node 2:
+
+1. Click on map component marked as **region=us-east** on the Node Map. The datacenter view is displayed.
+2. Click on the datacenter component marked as **datacenter=us-east-1**. The individual node components are displayed.
+3. To navigate back to the cluster view, either click on **Cluster** in the bread-crumb trail at the top of the Node Map, or click **Up to Cluster** in the lower left-hand side of the Node Map.
+
+## Understand the Node Map Components
 
 <img src="{{ 'images/admin-ui-node-map-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
-## Navigate the Node Map
+## Location Co-ordinates for Reference
 
-<Add screenshots/gifs of Navigation/drill down/navigate to higher level>
-
-
-## Location Co-ordinates for AWS Regions
-
-
-
+|  **Location** | **AWS Region** | **GCE Region Name** | **Azure Region** | **Latitude** | **Longitude** |
+|  ------ | ------ | ------ | ------ | ------ | ------ |
+|  US East (N. Virginia) | us-east-1 | us-east4 | East US | 37.478397 | -76.453077 |
+|  US East (Ohio) | us-east-2 |  |  | 40.417287 | -82.907123 |
+|  US Central (Iowa) |  | us-central1 | Central US |  |  |
+|  US West (N. California) | us-west-1 |  | West US | 38.837522 | -120.895824 |
+|  US West (Oregon) | us-west-2 | us-west1 |  | 43.804133 | -120.554201 |
+|  Canada (Central) | ca-central-1 | northamerica-northeast1 | Canada Central | 56.130366 | -106.346771 |
+|  EU (Frankfurt) | eu-central-1 | europe-west3 | Germany Central | 50.110922 | 8.682127 |
+|  EU (Ireland) | eu-west-1 |  | North Europe | 53.142367 | -7.692054 |
+|  EU (London) | eu-west-2 | europe-west2 | UK South | 51.507351 | -0.127758 |
+|  EU (Paris) | eu-west-3 |  |  | 48.856614 | 2.352222 |
+|  Asia Pacific (Tokyo) | ap-northeast-1 | asia-northeast1 | Japan East | 35.689487 | 139.691706 |
+|  Asia Pacific (Seoul) | ap-northeast-2 |  | Korea Central | 37.566535 | 126.977969 |
+|  Asia Pacific (Osaka-Local) | ap-northeast-3 |  | Japan West | 34.693738 | 135.502165 |
+|  Asia Pacific (Singapore) | ap-southeast-1 | asia-southeast1 | Southeast Asia | 1.352083 | 103.819836 |
+|  Asia Pacific (Sydney) | ap-southeast-2 | australia-southeast1 |  | -33.86882 | 151.209296 |
+|  Asia Pacific (Mumbai) | ap-south-1 | asia-south1 | West India | 19.075984 | 72.877656 |
+|  South America (São Paulo) | sa-east-1 | southamerica-east1 | Brazil South | -23.55052 | -46.633309 |
