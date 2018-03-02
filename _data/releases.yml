@@ -31,6 +31,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: Mar 05, 2018
+      version: v2.0-beta.20180305
     - date: Feb 12, 2018
       version: v2.0-alpha.20180212
       withdrawn: true
