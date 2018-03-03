@@ -6,13 +6,15 @@ toc: false
 
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
-{{site.data.alerts.callout_success}}All files used in this tutorial can be found in the <a href="https://github.com/cockroachdb/cockroach/tree/master/monitoring"><code>monitoring</code></a> directory of the CockroachDB repository.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For details about other monitoring options, see <a href="monitoring-and-alerting.html">Monitoring and Alerting</a>. {{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ## Before You Begin
 
-Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](manual-deployment.html).
+- Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](manual-deployment.html).
+
+- Note that all files used in this tutorial can be found in the [`monitoring`](https://github.com/cockroachdb/cockroach/tree/master/monitoring) directory of the CockroachDB repository.
 
 ## Step 1. Install Prometheus
 
@@ -160,3 +162,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
     ~~~
 
 8. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
+
+## See Also
+
+- [Monitoring and Alerting](monitoring-and-alerting.html)
