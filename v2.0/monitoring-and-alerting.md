@@ -24,6 +24,7 @@ Every node of a CockroachDB cluster exports granular timeseries metrics at `http
 
 For a tutorial on using Prometheus, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -54,6 +55,7 @@ CockroachDB provides two HTTP endpoints for checking the health of individual no
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connnection refused` error:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -89,9 +91,10 @@ Otherwise, it returns an HTTP `200 OK` status response code with details about t
 
 <span class="version-tag">New in v2.0:</span> The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is being decommissioned or in the process of shutting down and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers don't direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).    
+- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](stop-a-node.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers don't direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).    
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_admin/v1/health
 ~~~
@@ -128,7 +131,7 @@ The [`cockroach node status`](view-node-details.html) command gives you metrics 
 
 ## Events to Alert On
 
-Active monitoring helps you spot problems early to ensure the overall performance and health of a cluster, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus Endpoint](#prometheus-endpoint) metrics to use for detecting the event.
+Active monitoring helps you spot problems early, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus Endpoint](#prometheus-endpoint) metrics to use for detecting the events.
 
 {{site.data.alerts.callout_success}}If you use Prometheus for monitoring, you can also use our pre-defined <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules">alerting rules</a> with Alertmanager. See <a href="monitor-cockroachdb-with-prometheus.html">Monitor CockroachDB with Prometheus</a> for guidance.{{site.data.alerts.end}}
 
