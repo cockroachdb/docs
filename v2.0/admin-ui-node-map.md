@@ -48,10 +48,10 @@ Consider a four-node geo-distributed cluster with the following configuration:
 
 |  Node | Region | Datacenter |
 |  ------ | ------ | ------ |
-|  N1 | us-east | us-east-1 |
-|  N2 | us-east | us-east-1 |
-|  N3 | us-west | us-west-1 |
-|  N4 | eu-west | eu-west-1 |
+|  Node1 | us-east | us-east-1 |
+|  Node2 | us-east | us-east-1 |
+|  Node3 | us-west | us-west-1 |
+|  Node4 | eu-west | eu-west-1 |
 
 #### Step 1. Ensure the CockroachDB version is 2.0 or higher
 
@@ -162,24 +162,24 @@ Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in th
 
 <img src="{{ 'images/admin-ui-node-map-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
-## Location Co-ordinates for Reference
+## Location Coordinates for Reference
 
-|  **Location** | **AWS Region** | **GCE Region Name** | **Azure Region** | **Latitude** | **Longitude** |
-|  ------ | ------ | ------ | ------ | ------ | ------ |
-|  US East (N. Virginia) | us-east-1 | us-east4 | East US | 37.478397 | -76.453077 |
-|  US East (Ohio) | us-east-2 |  |  | 40.417287 | -82.907123 |
-|  US Central (Iowa) |  | us-central1 | Central US |  |  |
-|  US West (N. California) | us-west-1 |  | West US | 38.837522 | -120.895824 |
-|  US West (Oregon) | us-west-2 | us-west1 |  | 43.804133 | -120.554201 |
-|  Canada (Central) | ca-central-1 | northamerica-northeast1 | Canada Central | 56.130366 | -106.346771 |
-|  EU (Frankfurt) | eu-central-1 | europe-west3 | Germany Central | 50.110922 | 8.682127 |
-|  EU (Ireland) | eu-west-1 |  | North Europe | 53.142367 | -7.692054 |
-|  EU (London) | eu-west-2 | europe-west2 | UK South | 51.507351 | -0.127758 |
-|  EU (Paris) | eu-west-3 |  |  | 48.856614 | 2.352222 |
-|  Asia Pacific (Tokyo) | ap-northeast-1 | asia-northeast1 | Japan East | 35.689487 | 139.691706 |
-|  Asia Pacific (Seoul) | ap-northeast-2 |  | Korea Central | 37.566535 | 126.977969 |
-|  Asia Pacific (Osaka-Local) | ap-northeast-3 |  | Japan West | 34.693738 | 135.502165 |
-|  Asia Pacific (Singapore) | ap-southeast-1 | asia-southeast1 | Southeast Asia | 1.352083 | 103.819836 |
-|  Asia Pacific (Sydney) | ap-southeast-2 | australia-southeast1 |  | -33.86882 | 151.209296 |
-|  Asia Pacific (Mumbai) | ap-south-1 | asia-south1 | West India | 19.075984 | 72.877656 |
-|  South America (São Paulo) | sa-east-1 | southamerica-east1 | Brazil South | -23.55052 | -46.633309 |
+|  **Location** | **SQL Statement** |  
+|  ------ | ------ | ------ | ------ |
+|  US East (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)`|
+|  US East (Ohio) | `INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)` |
+|  US Central (Iowa) | `INSERT into system.locations VALUES ('region', 'us-central', 42.032974, -93.581543)` |
+|  US West (N. California) |` INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824) |
+|  US West (Oregon) | `INSERT into system.locations VALUES ('region', 'us-west-2', 43.804133, -120.554201)` |
+|  Canada (Central) | `INSERT into system.locations VALUES ('region', 'ca-central-1', 56.130366, -106.346771)` |
+|  EU (Frankfurt) | `INSERT into system.locations VALUES ('region', 'eu-central-1', 50.110922, 8.682127)` |
+|  EU (Ireland) | `INSERT into system.locations VALUES ('region', 'eu-west-1', 53.142367, -7.692054)` |
+|  EU (London) | `INSERT into system.locations VALUES ('region', 'eu-west-2', 51.507351, -0.127758)` |
+|  EU (Paris) | `INSERT into system.locations VALUES ('region', 'eu-west-3', 48.856614, 2.352222)` |
+|  Asia Pacific (Tokyo) | `INSERT into system.locations VALUES ('region', 'ap-northeast-1', 35.689487, 139.691706)` |
+|  Asia Pacific (Seoul) | `INSERT into system.locations VALUES ('region', 'ap-northeast-2', 37.566535, 126.977969)` |
+|  Asia Pacific (Osaka-Local) | `INSERT into system.locations VALUES ('region', 'ap-northeast-3', 34.693738, 135.502165)` |
+|  Asia Pacific (Singapore) | `INSERT into system.locations VALUES ('region', 'ap-southeast-1', 1.352083, 103.819836)` |
+|  Asia Pacific (Sydney) | `INSERT into system.locations VALUES ('region', 'ap-southeast-2', -33.86882, 151.209296)` |
+|  Asia Pacific (Mumbai) | `INSERT into system.locations VALUES ('region', 'ap-south-1', 19.075984, 72.877656)` |
+|  South America (São Paulo) | `INSERT into system.locations VALUES ('region', 'sa-east-1', -23.55052, -46.633309)` |
