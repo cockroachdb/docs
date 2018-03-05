@@ -169,7 +169,7 @@ Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in th
 |  US East (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)`|
 |  US East (Ohio) | `INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)` |
 |  US Central (Iowa) | `INSERT into system.locations VALUES ('region', 'us-central', 42.032974, -93.581543)` |
-|  US West (N. California) |` INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824) |
+|  US West (N. California) | `INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824)` |
 |  US West (Oregon) | `INSERT into system.locations VALUES ('region', 'us-west-2', 43.804133, -120.554201)` |
 |  Canada (Central) | `INSERT into system.locations VALUES ('region', 'ca-central-1', 56.130366, -106.346771)` |
 |  EU (Frankfurt) | `INSERT into system.locations VALUES ('region', 'eu-central-1', 50.110922, 8.682127)` |
