@@ -1007,7 +1007,8 @@ section.footer {
         margin-left: 50px; } }
   section.footer .footer-nav {
     width: 100%;
-    list-style: none; }
+    list-style: none;
+    margin-bottom: 0; }
     @media screen and (max-width: 991px) {
       section.footer .footer-nav {
         border-top: 1px solid #DADADA;

@@ -63,6 +63,7 @@ section.footer {
 	.footer-nav {
 		width: 100%;
 		list-style: none;
+		margin-bottom: 0;
 
 		// mobile only
 		@include at-query($max, $screen-md) {
