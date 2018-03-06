@@ -1,33 +1,29 @@
 section.footer {
 	background: $cl_gray_footer;
-	padding: 0 0 30px;
+	padding: 0 0 40px;
 
-	@include at-query($min, $screen-sm) {
-		padding-bottom: 40px;
+	@include at-query($min, $screen-md) {
 		border-top: 1px solid $cl_gray_medium;
 		background: #fff;
 	}
 
 	.container {
-		padding-left: 0px;
-		padding-right: 0px;
+		width: 100%;
+		padding-left: 0;
+		padding-right: 0;
+		margin: 0;
+		max-width: 100%;
 
-		@include at-query($min, $screen-sm) {
+		@include at-query($min, $screen-md) {
 			display: -webkit-box;
 			display: -ms-flexbox;
 			display: flex;
 			-ms-flex-wrap: wrap;
 			    flex-wrap: wrap;
-			padding: 60px 60px 20px 40px;
-		}
-
-		@include at-query($min, $screen-md) {
-			width: 970px;
+			padding: 60px 60px 20px 60px;
 			margin: 0 auto;
-		}
-
-		@include at-query($min, $max-plus-gutters) {
-			width: 1110px;
+			width: 1170px;
+			max-width: 1100px;
 		}
 	}
 
@@ -42,56 +38,40 @@ section.footer {
 			-ms-flex-wrap: wrap;
 			    flex-wrap: wrap;
 
-			@include at-query($min, $screen-sm) {
-				width: 65%;
-			}
-
 			@include at-query($min, $screen-md) {
-				width: 75%;
+				width: 68%;
 			}
 		}
 
-		&__support {
+		&__right {
+			display: flex;
 			border-bottom: solid 1px $cl_gray_medium;
 
-			@include at-query($min, $screen-sm) {
+			@include at-query($min, $screen-md) {
 				border-bottom: none;
 				border-left: solid 1px $cl_gray_medium;
-				width: 34%;
+				width: 25%;
 				padding-top: 0;
 				padding-left: 60px;
-			}
-
-			@include at-query($min, $screen-md) {
-				width: 25%;
-			}
-
-			.footer-nav {
-				width: 100%;
+				margin-left: 50px;
 			}
 		}
 	}
 
 	// Nav Items
 	.footer-nav {
-		list-style: none;
 		width: 100%;
-		margin-bottom: 0;
+		list-style: none;
 
 		// mobile only
-		@include at-query($max, $screen-sm) {
+		@include at-query($max, $screen-md) {
 			border-top: 1px solid $cl_gray_medium;
 			padding: 20px;
 		}
 
-		@include at-query($min, $screen-sm) {
-			width: calc(100% / 2);
-			margin-bottom: 30px;
-			padding-left: 0;
-		}
-
 		@include at-query($min, $screen-md) {
 			width: calc(100% / 4 - 1px);
+			padding-left: 0;
 
 			&--product {
 				-webkit-box-ordinal-group: -1;
@@ -115,13 +95,9 @@ section.footer {
 			margin: 0 10px 0 0;
 			text-indent:0;
 
-			@include at-query($min, $screen-sm) {
-				width:100%;
-				margin-right: 20px;
-			}
-
 			@include at-query($min, $screen-md) {
-				text-align: left;
+				width: 100%;
+				margin-right: 20px;
 			}
 
 			a {
@@ -133,7 +109,7 @@ section.footer {
 				display: block;
 				@include groovy(color);
 
-				@include at-query($min, $screen-sm) {
+				@include at-query($min, $screen-md) {
 					// back to normal
 					line-height: 25px;
 					margin-bottom: 10px;
@@ -149,7 +125,7 @@ section.footer {
 			@include button-text--heavy--medium;
 			text-transform: uppercase;
 
-			@include at-query($min, $screen-sm) {
+			@include at-query($min, $screen-md) {
 				margin-bottom: 15px;
 			}
 		}
@@ -167,7 +143,7 @@ section.footer {
 		margin-top: 10px;
 		padding-left: 0;
 
-		@include at-query($min, $screen-sm) {
+		@include at-query($min, $screen-md) {
 			display: block;
 		}
 	}
@@ -177,16 +153,11 @@ section.footer {
 		@include type-caption-3;
 		color: $cl_blue;
 
-		@include at-query($min, $screen-sm) {
-			text-align: center;
-			width: 100%;
-			margin-top: 65px;
-			margin-left: 0;
-		}
-
 		@include at-query($min, $screen-md) {
 			text-align: left;
+			width: 100%;
 			margin-top: 15px;
+			margin-left: 0;
 		}
 	}
 }
@@ -201,7 +172,7 @@ section.footer {
 	-webkit-transform: rotate(45deg);
 	float: right;
 
-	@include at-query($min, $screen-sm) {
+	@include at-query($min, $screen-md) {
 		display: none;
 	}
 
