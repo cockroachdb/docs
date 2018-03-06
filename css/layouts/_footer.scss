@@ -1,10 +1,11 @@
 section.footer {
 	background: $cl_gray_footer;
-	padding: 0 0 40px;
+	padding: 0 0 20px;
 
 	@include at-query($min, $screen-md) {
 		border-top: 1px solid $cl_gray_medium;
 		background: #fff;
+		padding: 0 0 40px;
 	}
 
 	.container {

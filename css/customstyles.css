@@ -959,11 +959,12 @@ a:not([href]) {
 
 section.footer {
   background: #F7F7F7;
-  padding: 0 0 40px; }
+  padding: 0 0 20px; }
   @media screen and (min-width: 992px) {
     section.footer {
       border-top: 1px solid #DADADA;
-      background: #fff; } }
+      background: #fff;
+      padding: 0 0 40px; } }
   section.footer .container {
     width: 100%;
     padding-left: 0;
