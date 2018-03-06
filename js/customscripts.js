@@ -73,7 +73,7 @@ $(function() {
   $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
 
-    if(_viewport_width > 768) {
+    if(_viewport_width > 992) {
       $('body').removeClass('menu_open');
       // make sure all footer menu items are visible
       $('.footer-sub-nav').show();
