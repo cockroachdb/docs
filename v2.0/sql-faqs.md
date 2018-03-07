@@ -42,7 +42,7 @@ To learn more, see our blog posts on CockroachDB's JOINs:
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
-Not currently, but [we plan to offer JSON/Protobuf datatypes](https://github.com/cockroachdb/cockroach/issues/2969).
+Yes, as of v2.0, the [`JSONB`](jsonb.html) data type is supported.
 
 ## How do I know which index CockroachDB will select for a query?
 
