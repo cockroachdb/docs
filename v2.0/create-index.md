@@ -6,6 +6,8 @@ toc: false
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
+<span class="version-tag">New in v2.0:</span> To create an index for a column containing schemaless data (i.e., [`JSONB`](jsonb.html)), use an [inverted index](inverted-indexes.html).
+
 {{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="primary-key.html"><code>PRIMARY KEY</code></a> and <a href="unique.html"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest index. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
@@ -18,6 +20,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 {% include sql/{{ page.version.version }}/diagrams/create_index.html %}
 
+{% include sql/{{ page.version.version }}/diagrams/create_inverted_index.html %}
+
 ## Parameters
 
 <style>
@@ -29,13 +33,14 @@ table td:first-child {
 | Parameter | Description |
 |-----------|-------------|
 |`UNIQUE` | Apply the [Unique constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the Unique constraint at the table level, so the system checks for duplicate values when inserting or updating data.|
+| `INVERTED` | <span class="version-tag">New in v2.0:</span> Create an [inverted index](inverted-indexes.html) on the specified column, which contains schemaless data (i.e., [`JSONB`](jsonb.html)).<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).|
 |`IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.|
 |`index_name` | The [`name`](sql-grammar.html#name) of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you don't specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the Unique constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
 |`table_name` | The [`qualified_name`](sql-grammar.html#qualified_name) of the table you want to create the index on. |
 |`column_name` | The name of the column you want to index.|
 |`ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`|
-|`STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).<br><br>`COVERING` aliases `STORING` and works identically.
-`opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.
+|`STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).<br><br>`COVERING` aliases `STORING` and works identically. |
+| `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data. |
 
 ## Examples
 
@@ -78,6 +83,20 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 
 ~~~ sql
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
+~~~
+
+#### Inverted Indexes <span class="version-tag">New in v2.0</span>
+
+[Inverted indexes](inverted-indexes.html) apply to columns of schemaless data (i.e., [`JSONB`](jsonb.html))
+
+~~~ sql
+> CREATE INVERTED INDEX ON users (profile);
+~~~
+
+The above example is equivalent to the following PostgreSQL-compatible syntax:
+
+~~~ sql
+> CREATE INDEX ON users USING GIN(profile jsonb_path_ops);
 ~~~
 
 ### Store Columns
@@ -124,6 +143,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ## See Also
 
 - [Indexes](indexes.html)
+- [Inverted Indexes](inverted-indexes.html) <span class="version-tag">New in v2.0</span>
 - [`SHOW INDEX`](show-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)

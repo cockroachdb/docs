@@ -22,7 +22,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an inverted index.
+- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
 
 ## Syntax
 
@@ -61,7 +61,8 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     last_updated TIMESTAMP DEFAULT now(),
-    user_profile JSONB
+    user_profile JSONB,
+    INVERTED INDEX details (user_profile)
   );
 ~~~
 
@@ -70,13 +71,13 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 > SHOW COLUMNS FROM users;
 ~~~
 ~~~
-+--------------+-----------+-------+-------------------+-------------+
-|    Field     |   Type    | Null  |      Default      |   Indices   |
-+--------------+-----------+-------+-------------------+-------------+
-| profile_id   | UUID      | false | gen_random_uuid() | {"primary"} |
-| last_updated | TIMESTAMP | true  | now()             | {}          |
-| user_profile | JSON      | true  | NULL              | {}          |
-+--------------+-----------+-------+-------------------+-------------+
++--------------+-----------+-------+-------------------+-----------------------+
+|    Field     |   Type    | Null  |      Default      |        Indices        |
++--------------+-----------+-------+-------------------+-----------------------+
+| profile_id   | UUID      | false | gen_random_uuid() | {"primary","details"} |
+| last_updated | TIMESTAMP | true  | now()             | {}                    |
+| user_profile | JSON      | true  | NULL              | {"details"}           |
++--------------+-----------+-------+-------------------+-----------------------+
 ~~~
 
 {% include copy-clipboard.html %}
@@ -173,6 +174,6 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)
+- [Inverted Indexes](inverted-indexes.html)
 
-<!-- - [`JSONB` Tutorials]()
-- [Inverted Indexes]() -->
+<!-- - [`JSONB` Tutorials]() -->
