@@ -29,6 +29,14 @@ Before starting the upgrade, complete the following steps.
 
 4. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
+5. By default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. If you expect any nodes to be offline for longer than 5 minutes, you can prevent the cluster from unnecessarily rebalancing data off the nodes by increasing the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to match the estimated maintenance window.
+
+    For example, let's say you expect nodes to be offline for up to 10 minutes during the rolling upgrade. Before starting, you would change the `server.time_until_store_dead` cluster setting as follows:
+
+    ~~~ sql
+    > SET CLUSTER SETTING server.time_until_store_dead = '15m0s';
+    ~~~
+
 ## Step 2. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
@@ -153,6 +161,12 @@ For each node in your cluster, complete the following steps.
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
 {{site.data.alerts.callout_danger}}During this phase, avoid using any new 2.0 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.1, if necessary.{{site.data.alerts.end}}
+
+Also, if you increased the `server.time_until_store_dead` [cluster setting](cluster-settings.html) before starting the upgrade to prevent the cluster from unnecessarily rebalancing data off nodes, change the setting back to its default of 5 minutes:
+
+~~~ sql
+> SET CLUSTER SETTING server.time_until_store_dead = '5m0s';
+~~~
 
 ## Step 4. Finalize or revert the upgrade
 
