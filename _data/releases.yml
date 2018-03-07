@@ -1,8 +1,10 @@
 - title: Production Releases
   releases:
+    - date: Mar 12, 2018
+      version: v1.1.6
+      latest: true
     - date: Feb 5, 2018
       version: v1.1.5
-      latest: true
     - date: Jan 8, 2018
       version: v1.1.4
     - date: Nov 27, 2017
@@ -31,6 +33,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: Mar 12, 2018
+      version: v2.0-beta.20180312
     - date: Mar 05, 2018
       version: v2.0-beta.20180305
     - date: Feb 12, 2018
