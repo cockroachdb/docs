@@ -29,6 +29,8 @@ Before starting the upgrade, complete the following steps.
 
 4. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
+{{site.data.alerts.callout_info}}By default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. 5 minutes should be more than sufficient for upgrading a node, but if for some reason you expect any nodes to be offline for longer, you can prevent the cluster from unnecessarily rebalancing data off the nodes by increasing the <code>server.time_until_store_dead</code> cluster setting to match the estimated maintenance window. See this <a href="operational-faqs.html#how-do-i-prepare-for-planned-node-maintenance">FAQ</a> for more details.{{site.data.alerts.end}}
+
 ## Step 2. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.

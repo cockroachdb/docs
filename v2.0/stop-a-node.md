@@ -4,7 +4,7 @@ summary: Learn how to temporarily stop a CockroachDB node.
 toc: false
 ---
 
-This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html).
+This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).
 
 For information about permanently removing nodes to downsize a cluster or react to hardware failures, see [Remove Nodes](remove-nodes.html).
 
@@ -26,19 +26,7 @@ Basic terms:
 
 ### Considerations
 
-As mentioned above, by default, if a node stays offline for more than 5 minutes, the cluster will consider it dead and will rebalance its data to other nodes. Therefore, before temporarily stopping nodes, if you expect any node to be offline for longer than 5 minutes, you should first set the `server.time_until_store_dead` [cluster setting](cluster-settings.html) to higher than the `5m0s` default.
-
-For example, let's say you're upgrading system software on a group of servers, and the nodes running on the servers may be offline for up to 15 minutes as a result. Before shutting down the nodes, you would change the `server.time_until_store_dead` cluster setting as follows:
-
-~~~ sql
-> SET CLUSTER SETTING server.time_until_store_dead = '15m0s';
-~~~
-
-After completing the system upgrades and restarting the nodes, you would then change the setting back to its default:
-
-~~~ sql
-> SET CLUSTER SETTING server.time_until_store_dead = '5m0s';
-~~~
+{% include faq/planned-maintenance.md %}
 
 ## Synopsis
 
