@@ -14,7 +14,7 @@ The Distribution Layer of CockroachDB's architecture provides a unified view of 
 
 To make all data in your cluster accessible from any node, CockroachDB stores data in a monolithic sorted map of key-value pairs. This keyspace describes all of the data in your cluster, as well as its location, and is divided into what we call "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 
-CockroachDB implements an sorted map to enable:
+CockroachDB implements a sorted map to enable:
 
   - **Simple lookups**: Because we identify which nodes are responsible for certain portions of the data, queries are able to quickly locate where to find the data they want.
   - **Efficient scans**: By defining the order of data, it's easy to find data within a particular range during a scan.
