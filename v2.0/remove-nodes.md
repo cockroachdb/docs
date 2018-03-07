@@ -1,5 +1,5 @@
 ---
-title: Remove Nodes
+title: Decommission Nodes
 summary: Permanently remove one or more nodes from a cluster.
 toc: false
 toc_not_nested: true
