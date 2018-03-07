@@ -156,6 +156,7 @@ Each range in CockroachDB contains metadata, known as a Range Descriptor. A Rang
 Because Range Descriptors comprise the key-value data of the `meta2` range, each node's `meta2` cache also stores Range Descriptors.
 
 Range Descriptors are updated whenever there are:
+
 - Membership changes to a range's Raft group (discussed in more detail in the [Replication Layer](replication-layer.html#membership-changes-rebalance-repair))
 - Leaseholder changes
 - Range splits
