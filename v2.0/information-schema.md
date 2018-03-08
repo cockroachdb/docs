@@ -49,6 +49,10 @@ Column | Description
 `NUMERIC_PRECISION` | If `DATA_TYPE` is numeric, the declared or implicit precision (i.e. number of significant digits); otherwise *NULL*.
 `NUMERIC_SCALE` | If `DATA_TYPE` is an exact numeric type, the scale (i.e. number of digits to the right of the decimal point); otherwise *NULL*.
 `DATETIME_PRECISION` | Always *NULL* (unsupported by CockroachDB).
+`CHARACTER_SET_CATALOG` | Always *NULL* (unsupported by CockroachDB).
+`CHARACTER_SET_SCHEMA` | Always *NULL* (unsupported by CockroachDB).
+`CHARACTER_SET_NAME` | Always *NULL* (unsupported by CockroachDB).
+`GENERATION_EXPRESSION` | The expression used for computing the column value in a computed column.
 
 ### key_column_usage
 
