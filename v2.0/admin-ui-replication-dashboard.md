@@ -72,14 +72,14 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 <img src="{{ 'images/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
-Usually the nodes in a Raft group stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (for instance, if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, we can send it a snapshot of the range and it can start following along from there.
+Usually the nodes in a Raft group stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (for instance, if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionaly the Raft protocol itself will request the snapshot.
 
 Metric | Description
 -------|------------
 Generated | The number of snapshots created per second.
 Normal-applied | The number of snapshots applied to nodes per second that were initiated within Raft.
 Preemptive-applied | The number of snapshots applied to nodes per second that were anticipated ahead of time (for instance, because a node was about to be added to a raft group).
-Reserved | [TO BE DETERMINED]
+Reserved | The number of slots reserved per second for incoming snapshots that will be send to a node.
 
 ### Other Graphs
 
