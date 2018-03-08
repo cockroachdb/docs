@@ -14,7 +14,7 @@ The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 - **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 - **Under-replicated Ranges:** When a cluster is first initialized, the few default starting ranges will only have a single replica, but as soon as other nodes are available, they will replicate to them until they've reached their desired replication factor, the default being 3. If a range does not have enough replicas, the range is said to be "under-replicated".
-- **Unavailable Ranges:** If a store has not been heard from in some time, the default setting being 5 minutes, the cluster will consider this store to be dead. When this happens, all ranges that have replicas on that store are determined to be "unavailable" and removed.
+- **Unavailable Ranges:** If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/)
 
