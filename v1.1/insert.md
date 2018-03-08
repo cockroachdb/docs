@@ -44,6 +44,15 @@ Parameter | Description
 
 ## Examples
 
+All of the examples below assume you've already created a table accounts:
+
+~~~ sql
+> CREATE TABLE accounts(
+    id INT DEFAULT unique_rowid(),
+    balance DECIMAL
+);
+~~~
+
 ### Insert a Single Row
 
 ~~~ sql
@@ -79,7 +88,7 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  10000.5 |
+|  1 | 10000.50 |
 |  2 | 20000.75 |
 +----+----------+
 ~~~
@@ -97,10 +106,10 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  10000.5 |
+|  1 | 10000.50 |
 |  2 | 20000.75 |
 |  3 |  8100.73 |
-|  4 |   9400.1 |
+|  4 |  9400.10 |
 +----+----------+
 ~~~
 
@@ -449,7 +458,26 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 +----+---------+
 | id | balance |
 +----+---------+
-|  8 |   500.5 |
+|  8 |  500.50 |
++----+---------+
+~~~
+
+
+You can also update the row using an existing value:
+
+~~~ sql
+> INSERT INTO accounts (id, balance)
+    VALUES (8, 500.50)
+    ON CONFLICT (id)
+    DO UPDATE SET balance = accounts.balance + excluded.balance;
+
+> SELECT * FROM accounts WHERE id = 8;
+~~~
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  8 | 1001.00 |
 +----+---------+
 ~~~
 
