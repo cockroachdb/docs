@@ -29,7 +29,13 @@ $ cockroach start --help
 
 ## Flags <span class="version-tag">Changed in v1.1</span>
 
-The `start` command supports the following [general-use](#general) and [logging](#logging) flags.
+The `start` command supports the following [general-use](#general) and
+[logging](#logging) flags. All flags must be specified each time the
+node is started, as they will not be remembered, with the exception of
+the <code>--join</code> flag. Nevertheless, we recommend specifying
+_all_ flags every time, including the `--join` flag, as that will
+allow restarted nodes to join the cluster even if their data directory
+was destroyed.
 
 {{site.data.alerts.callout_success}}When adding a node to an existing cluster, include the <code>--join</code> flag.{{site.data.alerts.end}}
 
