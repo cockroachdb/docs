@@ -59,7 +59,7 @@ Field | Description
 `id` | The ID of the node.<br><br>**Required flag:** None
 `address` | The address of the node.<br><br>**Required flag:** None
 `build` | The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br><br>**Required flag:** None
-`updated_at` | The date and time when the node last reported its status.<br><br>**Required flag:** None
+`updated_at` | The date and time when the node last recorded the information displayed in this command's output. When healthy, a new status should be recorded every 10 seconds or so, but when unhealthy this command's stats may be much older.<br><br>**Required flag:** None
 `started_at` | The date and time when the node was started.<br><br>**Required flag:** None
 `live_bytes` | The amount of live data used by both applications and the CockroachDB system. This excludes historical and deleted data.<br><br>**Required flag:** `--stats` or `--all`
 `key_bytes` | The amount of live and non-live data from keys in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
