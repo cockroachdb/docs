@@ -51,9 +51,6 @@ Metric | Description
 --------|----
 User CPU Time | Total CPU seconds per second used by the CockroachDB process across all nodes.
 Sys CPU Time | Total CPU seconds per second used by the system calls made by CockroachDB across all nodes.
-GC Pause Time | Time required by the Garbage Collection process of Go.
-
-{{site.data.alerts.callout_info}}The GC Pause Time metric is important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the User CPU Time and Sys CPU Time.{{site.data.alerts.end}}
 
 ## Other Graphs
 
