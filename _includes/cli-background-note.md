@@ -1,0 +1,1 @@
+{{site.data.alerts.callout_info}} `--background` is not full daemonization (it doesn't write PID files, among other things).  Tools like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) are recommended for deployments that require daemonization. {{site.data.alerts.end}}
