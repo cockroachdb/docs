@@ -5,15 +5,15 @@ toc: false
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
-[selection clauses](selection-clauses.html), allowed also in the [`CREATE
-TABLE AS`](create-table-as.html), [`INSERT`](insert.html) and
-[`UPSERT`](upsert.html) statements.
+[`SELECT` clauses](select.html).
 
 <div id="toc"></div>
 
 ## Introduction
 
-Table expressions are used in [selection clauses](selection-clauses.html):
+Table expressions are used in the [`SELECT`](select.html) variant of
+[selection clauses](selection-clauses.html), and thus can appear
+everywhere where a selection clause is possible. For example:
 
 ~~~sql
 > SELECT ... FROM <table expr>, <table expr>, ...
