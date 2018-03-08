@@ -77,7 +77,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 ## Clock Synchronization
 
-{% include faq/clock-synchronization_v2.0.html %}
+{% include faq/clock-synchronization-effects.html %}
 
 ## Cache and SQL Memory Size
 
