@@ -60,4 +60,6 @@ Capacity | The maximum storage capacity allocated to CockroachDB. You can config
 Available | The free storage capacity available to CockroachDB.
 Used | Disk space used by the data in the CockroachDB store. Note that this value is less than (Capacity - Available) because Capacity and Available metrics consider the entire disk and all applications on the disk including CockroachDB, whereas Used metric tracks only the store's disk usage.
 
-{{site.data.alerts.callout_info}}If you are running multiple nodes on a single machine (not recommended), and haven't specified the maximum allocated storage capacity for each node using the <code>--store</code> flag, then the available capacity displayed in the graph is incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as available store for each node, while in reality, only one hard disk is available for all nodes. The total available capacity is then displayed as the hard disk size multiplied by the number of nodes on the machine.  {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+{% include available-capacity-metric.md %}
+{{site.data.alerts.end}}
