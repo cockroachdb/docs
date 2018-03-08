@@ -30,6 +30,17 @@ Views | [tables](#tables), [views](#views)| [`SHOW CREATE VIEW`](show-create-vie
 
 The `information_schema` database is comprised of many views representing your cluster's schema, each of which is detailed below.
 
+### applicable_roles
+
+The `applicable_roles` view identifies all roles whose privileges the current user can use. This implies there is a chain
+of role grants from the current user to the role in question. The current user itself is also an applicable role.
+
+Column | Description
+-------|-----------
+`GRANTEE` | Name of the user to which this role membership was granted (always the current user).
+`ROLE_NAME` | Name of a role.
+`IS_GRANTABLE` | `YES` if the grantee has the admin option on the role; `NO` if not.
+
 ### columns
 
 The `columns` view contains information about the columns in each table.
@@ -49,6 +60,14 @@ Column | Description
 `NUMERIC_PRECISION` | If `DATA_TYPE` is numeric, the declared or implicit precision (i.e. number of significant digits); otherwise *NULL*.
 `NUMERIC_SCALE` | If `DATA_TYPE` is an exact numeric type, the scale (i.e. number of digits to the right of the decimal point); otherwise *NULL*.
 `DATETIME_PRECISION` | Always *NULL* (unsupported by CockroachDB).
+
+### enabled_roles
+
+The `enabled_roles` view identifies enabled roles for the current user. This includes both direct and indirect roles.
+
+Column | Description
+-------|-----------
+`ROLE_NAME` | Name of a role.
 
 ### key_column_usage
 
