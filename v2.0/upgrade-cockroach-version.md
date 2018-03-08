@@ -11,7 +11,18 @@ Because of CockroachDB's multi-active availability design, you can perform a "ro
 
 <div id="toc"></div>
 
-## Step 1. Prepare to upgrade
+## Step 1. Verify that you can upgrade
+
+When upgrading, you can skip patch releases, *but you cannot skip full
+releases*. Thus, you cannot upgrade to v2.0 from v1.0.x. You must
+first upgrade to v1.1.x, and then perform a second rolling upgrade to
+v2.0.y.
+
+You can upgrade to any v2.0.x release from any v1.1.y release or from
+any v2.0.z release, you do not have to go through intermediate
+releases.
+
+## Step 2. Prepare to upgrade
 
 Before starting the upgrade, complete the following steps.
 
@@ -29,7 +40,7 @@ Before starting the upgrade, complete the following steps.
 
 4. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
-## Step 2. Perform the rolling upgrade
+## Step 3. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
 
@@ -148,13 +159,13 @@ For each node in your cluster, complete the following steps.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
-## Step 3. Monitor the upgraded cluster
+## Step 4. Monitor the upgraded cluster
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
 {{site.data.alerts.callout_danger}}During this phase, avoid using any new 2.0 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.1, if necessary.{{site.data.alerts.end}}
 
-## Step 4. Finalize or revert the upgrade
+## Step 5. Finalize or revert the upgrade
 
 Once you have monitored the upgraded cluster for at least one day:
 
