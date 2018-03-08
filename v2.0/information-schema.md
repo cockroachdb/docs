@@ -30,6 +30,16 @@ Views | [tables](#tables), [views](#views)| [`SHOW CREATE VIEW`](show-create-vie
 
 The `information_schema` database is comprised of many views representing your cluster's schema, each of which is detailed below.
 
+### administrable_role_authorizations
+
+The `administrable_role_authorizations` view identifies all roles that the current user has the admin option for.
+
+Column | Description
+-------|-----------
+`GRANTEE` | The name of the user to which this role membership was granted (always the current user).
+`ROLE_NAME` | Name of a role.
+`IS_GRANTABLE` | `YES` if the grantee has the admin option on the role; `NO` if not.
+
 ### columns
 
 The `columns` view contains information about the columns in each table.
