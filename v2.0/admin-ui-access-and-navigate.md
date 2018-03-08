@@ -10,7 +10,7 @@ The CockroachDB Admin UI provides details about your cluster and database config
 
 Area | Description
 --------|----
-[Cluster Visualization]() | View and monitor the metrics and geographical configuration of your cluster.
+[Node Map](admin-ui-node-map.html) | View and monitor the metrics and geographical configuration of your cluster.
 [Cluster Health](admin-ui-access-and-navigate.html#cluster-overview-panel) | View essential metrics about the cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 [Overview Metrics](admin-ui-overview-dashboard.html) | View important SQL performance, replication, and storage metrics.
 [Runtime Metrics](admin-ui-runtime-dashboard.html) | View metrics about node count, CPU time, and memory usage.
@@ -40,13 +40,13 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [Cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
 
-The main panel display changes for each page: 
+The main panel displays changes for each page: 
 
 Page | Main Panel Component
 -----------|------------
-Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-access-and-navigate.html#cluster-overview-panel)</li><li>Either the [Node List](admin-ui-access-and-navigate.html#nodes-list) (for OSS users) or [Cluster Visualization]() (for enterprise users)</li></ul>
+Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-access-and-navigate.html#cluster-overview-panel)</li><li>Either the [Node List](admin-ui-access-and-navigate.html#nodes-list) (for Core users) or [Cluster Visualization]() (for enterprise users)</li></ul>
 Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html#time-series-graphs)</li><li>[Events List](admin-ui-time-series.html#events-panel)</li></ul>
-Databases | Information about the Tables or Grants in your databases. 
-Jobs | Information about all currently active schema changes and backup/restore jobs.
+Databases | Information about the Tables or Grants in your [databases](admin-ui-databases-page.html).
+Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
 <img src="{{ 'images/admin_ui_overview.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />

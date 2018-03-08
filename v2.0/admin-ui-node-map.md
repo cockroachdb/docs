@@ -24,9 +24,9 @@ The **Node Map** view provides:
 
 The **Node Map** view helps you:
 
-- Confirm that the database is balanced and you are utilizing the resource effectively. This helps you provision hardware and plan ahead for scale.
+- Confirm that the database is balanced and you are utilizing resources effectively. This helps you provision hardware and plan ahead for scale.
 - Ensure that storage capacity is balanced across the disks available to the extent that they match the zone configs.
-- Check if there resource congestion anywhere (for example certain nodes going beyond capacity).
+- Check if there is resource congestion anywhere (for example certain nodes going beyond capacity).
 
 ### Troubleshoot the Cluster
 
@@ -128,7 +128,16 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 
 #### Step 3. [Set the enterprise license](enterprise-licensing.html)
 
-#### Step 4. Insert the latitudes and longitudes of each region into the `systems.locations` table
+#### Step 4. Set the latitudes and longitudes of each region
+
+Launch the built-in SQL client:
+
+{% include copy-clipboard.html %}
+~~~ sql
+cockroach sql --insecure --host=localhost
+~~~
+
+Insert the latitudes and longitudes of each region into the `systems.locations` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -160,7 +169,31 @@ Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in th
 
 ## Understand the Node Map Components
 
-<img src="{{ 'images/admin-ui-node-map-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+### Node component
+
+<img src="{{ 'images/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+### Region component
+
+<img src="{{ 'images/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+## Troubleshoot the Node Map
+
+### Nodes do not show up on the Node Map
+
+The **Node Map** won't be displayed until all nodes have localities and are assigned the corresponding latitudes and longitudes. To verify if you have assigned localities as well as latitude and longitudes assigned to all nodes, navigate to the Localities debug page (`https://localhost:8080/#/reports/localities`) in the Admin UI.
+
+The Localities debug page displays the following: 
+
+- Localities configuration that you set up while starting the nodes with the `--localities` options. 
+- Nodes corrsponding to each locality.
+- Latitude and longitude coordinates for each locality/node.
+
+On the page, ensure that every node has a locality as well as latitude and longitude coordinates assigned to them.
+
+### Capacity displayed is more than capacity configured
+
+If you are running multiple nodes on a single machine (not recommended), this value may be incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as separate stores for each node, while in reality, only one hard disk is used for all nodes. The Capacity Used is then displayed as the hard disk capacity used multiplied by the number of nodes on the machine.
 
 ## Location Coordinates for Reference
 

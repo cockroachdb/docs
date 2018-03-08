@@ -4,7 +4,9 @@ summary: The Metrics Overview dashboard lets you monitor important SQL performan
 toc: false
 ---
 
-On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the **Metrics Overview** is shown by default. This dashboard lets you monitor important SQL performance, replication, and storage metrics.
+The **Metrics Overview** dashboard in the CockroachDB Admin UI enables you to monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and select **Metrics** on the left-navigation pane. Then select **Dashboard** > **Overview**.
+
+On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the **Metrics Overview** is shown by default. This dashboard lets you monitor 
 
 <div id="toc"></div>
 
