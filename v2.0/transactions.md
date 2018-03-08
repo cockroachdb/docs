@@ -78,31 +78,32 @@ CockroachDB automatically retries any of the following types of transactions:
     > DELETE FROM customers WHERE id = 1;
     ~~~
 
-- Transactions sent from the client as a single batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests.
+- Transactions sent from the client as a single batch. Batching implies that CockroachDB receives multiple statements without being asked to return results in between them; it has the option of delivering all the results after executing all the statements. Batching is generally controlled by your driver or client's behavior; technically, it can be achieved in two ways, both supporting automatic retries:
+    1. When the client/driver is using the [Postgres Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers have support for constructing such batches through explicit batching constructs.
+    2. The the client/driver is using the [Postgres Simple Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#id-1.10.5.7.4), a batch is made up semicolon-separated strings sent as a unit to CockroachDB. For example, in Go, this code would send a single batch (which would be automatically retried):
+      ~~~ go
+      db.Exec(
+        "BEGIN;
 
-    From the perspective of CockroachDB, a transaction sent as a batch looks like this:
+        DELETE FROM customers WHERE id = 1;
 
-    ~~~ sql
-    > BEGIN; DELETE FROM customers WHERE id = 1; DELETE orders WHERE customer = 1; COMMIT;
-    ~~~
+        DELETE orders WHERE customer = 1;
 
-    However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would be sent as a single batch (and automatically retried):
+        COMMIT;"
+      )
+      ~~~
 
-    ~~~ go
-    db.Exec(
-      "BEGIN;
+  Within a batch of statements, CockroachDB infers that the statements are not
+  conditional on the results of previous statements, so it can retry all of
+  them.
 
-      DELETE FROM customers WHERE id = 1;
-
-      DELETE orders WHERE customer = 1;
-
-      COMMIT;"
-    )
-    ~~~
-
-    In these cases, CockroachDB infers there is nothing conditional about these values, so it can continue to retry the transaction with the same values it originally received.
-
-    However, if the transaction relies on conditional logic, you should instead write your transactions to use [client-side intervention](#client-side-intervention). This provides an opportunity for the client to check the transaction's conditions before deciding whether or not to retry the transaction, as well as update any values.
+  However, if the transaction relies on conditional logic (say, statement 2 is
+  executed only for some results of statement 1) and results for some
+  statements in the transaction have already been delivered to the client (say,
+  results of statement 1 have been delivered), CockroachDB cannot automatically
+  retry statement 2 alone. Instead you should instead write your transactions
+  to use [client-side intervention](#client-side-intervention), so that the
+  client gets to retry statement 1.
 
 ### Client-Side Intervention
 
