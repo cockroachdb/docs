@@ -47,7 +47,7 @@ However, if the nodes were started with the [`--locality`](start-a-node.html#loc
 In this tutorial, you'll use CockroachDB, the `comcast` network tool to simulate network latency on your local workstation, and the `kv` load generator to simulate client workloads. Before you begin, make sure these applications are installed:
 
 - Install the latest version of [CockroachDB](install-cockroachdb.html).
-- Install [Go](https://golang.org/dl/). If you're on a Mac and using Homebrew, use `brew install go`.
+- Install [Go](https://golang.org/doc/install) version 1.9 or higher. If you're on a Mac and using Homebrew, use `brew install go`. You can check your local version by running `go version`.
 - Install the [`comcast`](https://github.com/tylertreat/comcast) network simulation tool: `go get github.com/tylertreat/comcast`
 - Install the [`kv`](https://github.com/cockroachdb/loadgen/tree/master/kv) load generator: `go get github.com/cockroachdb/loadgen/kv`
 
