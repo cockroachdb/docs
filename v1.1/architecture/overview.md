@@ -44,6 +44,7 @@ Term | Definition
 **Node** | An individual machine running CockroachDB. Many nodes join together to create your cluster.
 **Range** | A set of sorted, contiguous data from your cluster.
 **Replicas** | Copies of your ranges, which are stored on at least 3 nodes to ensure survivability.
+**Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 
 ### Concepts
 
