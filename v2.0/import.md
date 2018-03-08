@@ -1,5 +1,5 @@
 ---
-title: IMPORT
+title: IMPORT (Beta)
 summary: Import CSV data into your CockroachDB cluster.
 toc: false
 ---
