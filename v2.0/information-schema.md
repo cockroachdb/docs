@@ -128,7 +128,8 @@ Column | Description
 `COLLATION` | Always *NULL* (unsupported by CockroachDB).
 `CARDINALITY` | Always *NULL* (unsupported by CockroachDB).
 `DIRECTION` | `ASC` (ascending) or `DESC` (descending) order.
-`STORING` | `YES` if column is [stored](create-index.html#store-columns); `NO` if it's indexed.
+`STORING` | `YES` if column is [stored](create-index.html#store-columns); `NO` if it's indexed or implicit.
+`IMPLICIT` | `YES` if column is implicit (i.e. it is not specified in the index and not stored); `NO` if it's indexed or stored.
 
 ### table_constraints
 
