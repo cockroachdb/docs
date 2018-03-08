@@ -105,7 +105,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 ## What happens when node clocks are not properly synchronized?
 
-{% include faq/clock-synchronization_v2.0.html %}
+{% include faq/clock-synchronization.html %}
 
 ## How do I prepare for planned node maintenance?
 
