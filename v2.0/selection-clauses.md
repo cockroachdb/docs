@@ -1,19 +1,23 @@
 ---
-title: SELECT Clauses
-summary: SELECT clauses define tabular data.
+title: Selection Clauses
+summary: Selection clauses define tabular data.
 toc: false
 toc_not_nested: true
 ---
 
-`SELECT` clauses define tabular data. They can be used either as standalone statements, of which [`SELECT`](select.html) is the most common, or as [subqueries in table expressions](table-expressions.html#subqueries-as-table-expressions).
+Selection clauses define tabular data. They can be used either as
+standalone statements, of which [`SELECT`](select.html) is the most
+common, or as [subqueries in table
+expressions](table-expressions.html#subqueries-as-table-expressions).
 
 <div id="toc"></div>
 
 ## Overview
 
-SQL is fundamentally about manipulating tabular data, and `SELECT` clauses are the primary way to obtain tabular data for manipulation.
+SQL is fundamentally about manipulating tabular data, and selection
+clauses are the primary way to obtain tabular data for manipulation.
 
-There are three specific syntax forms collectively named `SELECT` clauses:
+There are three specific syntax forms collectively named selection clauses:
 
 Form | Usage
 -----|--------
@@ -21,7 +25,7 @@ Form | Usage
 [`TABLE`](#table-clause) | Load tabular data from the database.
 [`SELECT`](#select-clause) | Load or compute tabular data from various sources.
 
-`SELECT` clauses appear in every statement that takes tabular data as input, for example:
+Selection clauses appear in every statement that takes tabular data as input, for example:
 
 - As operand to [`INSERT`](insert.html), [`UPSERT`](upsert.html) and
   [`CREATE TABLE AS`](create-table-as.html) statements.
