@@ -37,7 +37,7 @@ Imported tables must not exist and must be created in the [`IMPORT`](import.html
 
 You can only import a single table at a time.
 
-The target database can be specified either in the table name in the [`IMPORT`](import.html) statement or, if not present there, will be active database in the SQL session.
+The target database can be specified either in the table name in the [`IMPORT`](import.html) statement or, if not present there, will be the active database in the SQL session.
 
 ### Create Table
 
@@ -67,7 +67,7 @@ You can store the tabular data you want to import using remote cloud storage (Am
 
 For simplicity's sake, we *highly recommend* using cloud/remote storage for the data you want to import.
 
-Local files are supported, however they must be accessible identically from all nodes in the cluster.
+Local files are supported. However, they must be accessible identically from all nodes in the cluster.
 
 ### Table Users and Privileges
 
@@ -89,11 +89,11 @@ Only the `root` user can run [`IMPORT`](import.html).
 
 | Parameter | Description |
 |-----------|-------------|
-| **table_name** | The name of the table you want to import/create. |
-| **create_table_file** | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-create-table-statement-from-a-file)). |
-| **table_elem_list** | The table definition you want to use (see [this example for syntax](#use-create-table-statement-from-a-statement)). |
-| **file_to_import** | The URL of the file you want to import.|
-| `WITH` **kv_option** | Control your import's behavior with [these options](#import-options). |
+| `table_name` | The name of the table you want to import/create. |
+| `create_table_file` | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-create-table-statement-from-a-file)). |
+| `table_elem_list` | The table definition you want to use (see [this example for syntax](#use-create-table-statement-from-a-statement)). |
+| `file_to_import` | The URL of the file you want to import.|
+| `WITH kv_option` | Control your import's behavior with [these options](#import-options). |
 
 ### Import File URLs
 
