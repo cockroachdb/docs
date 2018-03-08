@@ -161,6 +161,7 @@ The cluster-wide replication zone (`.default`) is initially set to replicate dat
 
 To view the default replication zone, use the `cockroach zone get .default` command with appropriate flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach zone get .default --insecure
 ~~~
@@ -179,6 +180,7 @@ constraints: []
 
 To edit the default replication zone, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat default_update.yaml
 ~~~
@@ -187,6 +189,7 @@ $ cat default_update.yaml
 num_replicas: 5
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach zone set .default --insecure -f default_update.yaml
 ~~~
@@ -202,6 +205,7 @@ constraints: []
 
 Alternately, you can pass the YAML content via the standard input:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 ~~~
@@ -210,6 +214,7 @@ $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 
 To control replication for a specific database, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat database_zone.yaml
 ~~~
@@ -218,6 +223,7 @@ $ cat database_zone.yaml
 num_replicas: 7
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach zone set db1 --insecure -f database_zone.yaml
 ~~~
@@ -233,6 +239,7 @@ constraints: []
 
 Alternately, you can pass the YAML content via the standard input:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ echo 'num_replicas: 5' | cockroach zone set db1 --insecure -f -
 ~~~
@@ -241,6 +248,7 @@ $ echo 'num_replicas: 5' | cockroach zone set db1 --insecure -f -
 
 To control replication for a specific table, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat table_zone.yaml
 ~~~
@@ -249,6 +257,7 @@ $ cat table_zone.yaml
 num_replicas: 7
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach zone set db1.t1 --insecure -f table_zone.yaml
 ~~~
@@ -264,6 +273,7 @@ constraints: []
 
 Alternately, you can pass the YAML content via the standard input:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
@@ -280,6 +290,7 @@ Zone Name | Description
 
 To control replication for one of the above sets of system ranges, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat meta_zone.yaml
 ~~~
@@ -288,6 +299,7 @@ $ cat meta_zone.yaml
 num_replicas: 7
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach zone set .meta --insecure -f meta_zone.yaml
 ~~~
@@ -303,6 +315,7 @@ constraints: []
 
 Alternately, you can pass the YAML content via the standard input:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
 ~~~
@@ -320,6 +333,7 @@ $ echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
 
 Start each node with its datacenter location specified in the `--locality` flag:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Start the two nodes in datacenter 1:
 $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
@@ -354,6 +368,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with its datacenter location specified in the `--locality` flag:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Start the three nodes in datacenter 1:
     $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
@@ -373,6 +388,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, configure a replication zone for the database used by application 1:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Create a YAML file with the replica count set to 5:
     $ cat app1_zone.yaml
@@ -382,6 +398,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     num_replicas: 5
     ~~~
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Apply the replication zone to the database used by application 1:
     $ cockroach zone set app1_db --insecure -f app1_zone.yaml
@@ -399,6 +416,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 3. On any node, configure a replication zone for the database used by application 2:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Create a YAML file with 1 datacenter as a required constraint:
     $ cat app2_zone.yaml
@@ -408,6 +426,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     constraints: [+datacenter=us-2]
     ~~~
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Apply the replication zone to the database used by application 2:
     $ cockroach zone set app2_db --insecure -f app2_zone.yaml
@@ -435,6 +454,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with `ssd` or `hdd` specified as store attributes:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Start the 5 nodes with SSD storage:
     $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
@@ -456,6 +476,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, configure a replication zone for the table that must be replicated more strictly:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Create a YAML file with the replica count set to 5
     # and the ssd attribute as a required constraint:
@@ -467,6 +488,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     constraints: [+ssd]
     ~~~
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Apply the replication zone to the table:
     $ cockroach zone set db.important_table --insecure -f table_zone.yaml
@@ -495,6 +517,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with a different locality attribute:
 
+    {% include copy-clipboard.html %}
    ~~~ shell
    $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
    $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-2 \
@@ -513,6 +536,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, configure the default replication zone:
 
+    {% include copy-clipboard.html %}
    ~~~ shell
    echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
    ~~~
@@ -530,6 +554,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 3. On any node, configure the `.meta` replication zone:
 
+    {% include copy-clipboard.html %}
    ~~~ shell
    echo 'num_replicas: 7' | cockroach zone set .meta --insecure -f -
    ~~~
@@ -547,6 +572,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 4. On any node, configure the `.timeseries` replication zone:
 
+    {% include copy-clipboard.html %}
    ~~~ shell
    echo 'num_replicas: 3' | cockroach zone set .timeseries --insecure -f -
    ~~~
