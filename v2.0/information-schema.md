@@ -98,7 +98,7 @@ Column | Description
 `TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
 `TABLE_SCHEMA` | Name of the database that contains the constrained table.
 `TABLE_NAME` | Name of the table	 .
-`NON_UNIQUE` | `false` if the index was created by a Unique constraint; `true` if the index was not created by a Unique constraint.
+`NON_UNIQUE` | `NO` if the index was created by a Unique constraint; `YES` if the index was not created by a Unique constraint.
 `INDEX_SCHEMA` | Name of the database that contains the index.
 `INDEX_NAME` | Name of the index.
 `SEQ_IN_INDEX` | Ordinal position of the column within the index (begins at 1).
@@ -106,7 +106,7 @@ Column | Description
 `COLLATION` | Always *NULL* (unsupported by CockroachDB).
 `CARDINALITY` | Always *NULL* (unsupported by CockroachDB).
 `DIRECTION` | `ASC` (ascending) or `DESC` (descending) order.
-`STORING` | `true` if column is [stored](create-index.html#store-columns); `false` if it's indexed.
+`STORING` | `YES` if column is [stored](create-index.html#store-columns); `NO` if it's indexed.
 
 ### table_constraints
 
