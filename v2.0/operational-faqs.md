@@ -107,6 +107,10 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 {% include faq/clock-synchronization_v2.0.html %}
 
+## How do I prepare for planned node maintenance?
+
+{% include faq/planned-maintenance.md %}
+
 ## See Also
 
 - [Product FAQs](frequently-asked-questions.html)
