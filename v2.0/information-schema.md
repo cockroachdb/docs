@@ -64,6 +64,22 @@ Column | Description
 `CHARACTER_SET_NAME` | Always *NULL* (unsupported by CockroachDB).
 `GENERATION_EXPRESSION` | The expression used for computing the column value in a computed column.
 
+### column_privileges
+
+The `column_privileges` view identifies all privileges granted on columns to a currently enabled role or by a currently enabled role.
+There is one row for each combination of grantor, grantee, and column (defined by `table_catalog`, `table_schema`, `table_name`, and `column_name`).
+
+Column | Description
+-------|-----------
+`GRANTOR` | Name of the role that granted the privilege.
+`GRANTEE` | Name of the role that was granted the privilege.
+`TABLE_CATALOG` | Name of the database containing the table that contains the column (always the current database).
+`TABLE_SCHEMA` | Name of the schema containing the table that contains the column.
+`TABLE_NAME` | Name of the table.
+`COLUMN_NAME` | Name of the column.
+`PRIVILEGE_TYPE` | Name of the [privilege](privileges.html).
+`IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
+
 ### key_column_usage
 
 The `key_column_usage` view identifies columns with [Primary Key](primary-key.html), [Unique](unique.html), or [Foreign Key](foreign-key.html) constraints.
