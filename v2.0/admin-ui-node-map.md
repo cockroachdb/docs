@@ -56,7 +56,7 @@ Consider a four-node geo-distributed cluster with the following configuration:
 #### Step 1. Ensure the CockroachDB version is 2.0 or higher
 
 ~~~ shell
-$ ./cockroach version
+$ cockroach version
 ~~~
 
 If not, [upgrade to CockroachDB v2.0](upgrade-cockroach-version.html).
@@ -67,7 +67,7 @@ In a new terminal, start Node 1:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach start \
+$ cockroach start \
 --insecure \
 --locality=region=us-east,datacenter=us-east-1  \
 --store=node1 \
@@ -81,7 +81,7 @@ In a new terminal, start Node 2:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach start \
+$ cockroach start \
 --insecure \
 --locality=region=us-east,datacenter=us-east-1 \
 --store=node2 \
@@ -95,7 +95,7 @@ In a new terminal, start Node 3:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach start \
+$ cockroach start \
 --insecure \
 --locality=region=us-west,datacenter=us-west-1 \
 --store=node3 \
@@ -109,7 +109,7 @@ In a new terminal, start Node 4:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach start \
+$ cockroach start \
 --insecure \
 --locality=region=eu-west,datacenter=eu-west-1 \
 --store=node4 \
@@ -123,7 +123,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach init --insecure
+$ cockroach init --insecure
 ~~~
 
 #### Step 3. [Set the enterprise license](enterprise-licensing.html)
@@ -134,7 +134,7 @@ Launch the built-in SQL client:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-cockroach sql --insecure --host=localhost
+$ cockroach sql --insecure --host=localhost
 ~~~
 
 Insert the latitudes and longitudes of each region into the `systems.locations` table:

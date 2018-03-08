@@ -21,7 +21,6 @@ Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>
 ## Node List
 
 The **Node List** is displayed by default on the **Cluster Overview** page. 
-
 <img src="{{ 'images/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
