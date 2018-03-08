@@ -11,7 +11,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 ## Performance Best Practices
 
 - A single [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement is faster than multiple single-row `INSERT` statements. To bulk-insert data into an existing table, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
-- The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table. 
+- The experimental [`IMPORT`](import.html) statement performs better than `INSERT` when inserting into a new table.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required Privileges
@@ -43,6 +43,15 @@ Parameter | Description
 `RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
 ## Examples
+
+All of the examples below assume you've already created a table `accounts`:
+
+~~~ sql
+> CREATE TABLE accounts(
+    id INT DEFAULT unique_rowid(),
+    balance DECIMAL
+);
+~~~
 
 ### Insert a Single Row
 
@@ -79,7 +88,7 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  10000.5 |
+|  1 | 10000.50 |
 |  2 | 20000.75 |
 +----+----------+
 ~~~
@@ -97,16 +106,16 @@ If you don't list column names, the statement will use the columns of the table 
 +----+----------+
 | id | balance  |
 +----+----------+
-|  1 |  10000.5 |
+|  1 | 10000.50 |
 |  2 | 20000.75 |
 |  3 |  8100.73 |
-|  4 |   9400.1 |
+|  4 |  9400.10 |
 +----+----------+
 ~~~
 
 ### Insert Multiple Rows into a New Table
 
-The experimental <a href=import.html><code>IMPORT</code></a> statement performs better than <code>INSERT</code> when inserting rows into a new table.
+The experimental [`IMPORT`](import.html) statement performs better than `INSERT` when inserting into a new table.
 
 ### Insert from a `SELECT` Statement
 
@@ -449,7 +458,26 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 +----+---------+
 | id | balance |
 +----+---------+
-|  8 |   500.5 |
+|  8 |  500.50 |
++----+---------+
+~~~
+
+
+You can also update the row using an existing value:
+
+~~~ sql
+> INSERT INTO accounts (id, balance)
+    VALUES (8, 500.50)
+    ON CONFLICT (id)
+    DO UPDATE SET balance = accounts.balance + excluded.balance;
+
+> SELECT * FROM accounts WHERE id = 8;
+~~~
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  8 | 1001.00 |
 +----+---------+
 ~~~
 
