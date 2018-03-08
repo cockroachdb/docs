@@ -7,7 +7,7 @@ toc_not_nested: true
 
 Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
 
-{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0.x to v1.1, or from v1.1 to a patch release in the 1.1.x series. To upgrade within the 1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the 1.0 version of this page</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} When upgrading, you can skip patch releases, but you cannot skip full releases. Since v1.1 is the second CockroachDB release, you do not have to go through intermediate releases. You can upgrade to any v1.1.x release from any v1.0.y release, or from any v1.1.z release. To upgrade within the 1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the 1.0 version of this page</a>. {{site.data.alerts.end}}
 
 <div id="toc"></div>
 
