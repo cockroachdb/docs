@@ -84,6 +84,22 @@ Column | Description
 `TABLE_NAME` | Name of the table containing the constraint.
 `REFERENCED_TABLE_NAME` | Name of the table containing the unique or primary key constraint that the foreign key constraint references.
 
+### role_table_grants
+
+The `role_table_grants` view identifies which [privileges](privileges.html) have been granted on tables or views where the grantor
+or grantee is a currently enabled role. This table is identical to the [table privileges](#table_privileges) view.
+
+Column | Description
+-------|-----------
+`GRANTOR` | Name of the role that granted the privilege.
+`GRANTEE` | Name of the role that was granted the privilege.
+`TABLE_CATALOG` | Name of the database containing the table.
+`TABLE_SCHEMA` | Name of the schema containing the table.
+`TABLE_NAME` | Name of the table.
+`PRIVILEGE_TYPE` | Name of the [privilege](privileges.html).
+`IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
+`WITH_HIERARCHY` | Always *NULL* (unsupported by CockroachDB).
+
 ### schema_privileges
 
 The `schema_privileges` view identifies which [privileges](privileges.html) have been granted to each user at the database level.
