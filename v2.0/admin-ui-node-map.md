@@ -191,6 +191,17 @@ The Localities debug page displays the following:
 
 On the page, ensure that every node has a locality as well as latitude and longitude coordinates assigned to them.
 
+### Unable to assign latitude/longitude coordinates to localities
+
+One scenario where you would be unable to assign latitude/longitude coordinates to localities is if components of your localities have the same name. For example, consider the following configuration:
+
+|  Node | Region | Datacenter |
+|  ------ | ------ | ------ |
+|  Node1 | us-east | datacenter-1 |
+|  Node2 | us-west | datacenter-1 |
+
+In this case, if you try to set the latitude/longitude coordinates to the datacenter components of the localities, you will get the "primary key exists" error and the Node Map won't be displayed. You can, however, set the latitude/longitude coordinates to the region components of the localities, and the Node Map will be displayed.
+
 ### Capacity displayed is more than capacity configured
 
 If you are running multiple nodes on a single machine (not recommended), this value may be incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as separate stores for each node, while in reality, only one hard disk is used for all nodes. The Capacity Used is then displayed as the hard disk capacity used multiplied by the number of nodes on the machine.
