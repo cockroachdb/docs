@@ -13,7 +13,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 - If you add a `CHECK` constraint to an existing table, existing values are not checked. However, any updates to those values will be.
   {{site.data.alerts.callout_info}}In the future we plan to expand the `CHECK` constraint to include a check on any existing values in the column.{{site.data.alerts.end}}
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level Check constraints are converted to table-level constraints so they can be handled consistently.
-- You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example
+- You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
   ~~~ sql
   warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
@@ -24,7 +24,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
   ~~~ sql
   warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
   ~~~
-- When a column with a `CHECK` constraint is dropped, the `CHECK` constaint is also dropped.
+- When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped.
 
 ## Syntax
 
