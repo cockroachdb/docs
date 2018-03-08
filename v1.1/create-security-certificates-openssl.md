@@ -17,13 +17,13 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 
 Subcommand | Usage
 -----------|------
-[`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) | Create an RSA private key.
-[`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) | Create CA certificate and CSRs (certificate signing requests).
-[`openssl ca`](https://wiki.openssl.org/index.php/Manual:Ca(1)) | Create node and client certificates using the CSRs.
+[`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) | Create an RSA private key.
+[`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) | Create CA certificate and CSRs (certificate signing requests).
+[`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) | Create node and client certificates using the CSRs.
 
 ## Configuration Files
 
-To use [`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) and [`openssl ca`](https://wiki.openssl.org/index.php/Manual:Ca(1)) subcommands, you need the following configuration files:
+To use [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) and [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) subcommands, you need the following configuration files:
 
 File name pattern | File usage
 -------------|------------
@@ -35,7 +35,7 @@ File name pattern | File usage
 
 To create node and client certificates using the OpenSSL commands, you need access to a local copy of the CA certificate and key. We recommend creating all certificates (node, client, and CA certificates), and node and client keys in one place and then distributing them appropriately. Store the CA key somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. 
 
-Use the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) and [`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) subcommands to create all certificates, and node and client keys in a single directory, with the files named as follows:
+Use the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) and [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) subcommands to create all certificates, and node and client keys in a single directory, with the files named as follows:
 
 File name pattern | File usage
 -------------|------------
@@ -118,7 +118,7 @@ Note the following:
 
     {{site.data.alerts.callout_info}}The <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters. {{site.data.alerts.end}}
   
-3. Create the CA key using the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) command:
+3. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -129,7 +129,7 @@ Note the following:
     $ chmod 400 my-safe-directory/ca.key
     ~~~
 
-4. Create the CA certificate using the [`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) command:
+4. Create the CA certificate using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -182,7 +182,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {{site.data.alerts.callout_info}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. It is also important that <code>commonName</code> be set to <code>node</code>. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
   
-2. Create the key for the first node using the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) command:
+2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -193,7 +193,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 certs/node.key
     ~~~
 
-3. Create the CSR for the first node using the [`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) command:
+3. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -206,7 +206,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://wiki.openssl.org/index.php/Manual:Ca(1)) command. 
+4. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. 
 
     You can set the node certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the node certificate expiration period, which is 1830 days.
 
@@ -276,7 +276,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {{site.data.alerts.callout_info}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
   
-2. Create the key for the first client using the [`openssl genrsa`](https://wiki.openssl.org/index.php/Manual:Genrsa(1)) command:
+2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -287,7 +287,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 certs/client.<username>.key
     ~~~
 
-3. Create the CSR for the first client using the [`openssl req`](https://wiki.openssl.org/index.php/Manual:Req(1)) command:
+3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -300,7 +300,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://wiki.openssl.org/index.php/Manual:Ca(1)) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
+4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
 
     {% include copy-clipboard.html %}
     ~~~ shell
