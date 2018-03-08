@@ -56,19 +56,21 @@ For the `node ls` command, only the `id` field is returned for each node. For th
 
 Field | Description
 ----------|------------
-`id` |
-`address` |
-`build` |
-`updated_at` |
-`started_at` |
-`live_bytes` |
-`key_bytes` |
-`value_bytes` |
-`intent_bytes` |
-`system_bytes` |
-`leader_ranges` |
-`repl_ranges` |
-`avail_ranges` |
+`id` | The ID of the node.<br><br>**Required flag:** None
+`address` | The address of the node.<br><br>**Required flag:** None
+`build` | The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br><br>**Required flag:** None
+`updated_at` | The date and time when the node last reported its status.<br><br>**Required flag:** None
+`started_at` | The date and time when the node was started.<br><br>**Required flag:** None
+`live_bytes` | The amount of live data used by both applications and the CockroachDB system. This excludes historical and deleted data.<br><br>**Required flag:** `--stats` or `--all`
+`key_bytes` | The amount of live and non-live data from keys in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
+`value_bytes` | The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
+`intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
+`system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
+`replicas_leaders` | The number of range replicas on the node that are the Raft leader for their range. See `replicas_leaseholders` below for more details.<br><br>**Required flag:** `--ranges` or `--all`
+`replicas_leaseholders` | The number of range replicas on the node that are the leaseholder for their range. A "leaseholder" replica handles all read requests for a range and directs write requests to the range's Raft leader (usually the same replica as the leaseholder).<br><br>**Required flag:** `--ranges` or `--all`
+`ranges` | The number of ranges that have replicas on the node.<br><br>**Required flag:** `--ranges` or `--all`
+`ranges_unavailable` | The number of unavailable ranges that have replicas on the node.<br><br>**Required flag:** `--ranges` or `--all`
+`ranges_underreplicated` | The number of underreplicated ranges that have replicas on the node.<br><br>**Required flag:** `--ranges` or `--all`
 
 ## Examples
 
