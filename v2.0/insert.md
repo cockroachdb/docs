@@ -11,7 +11,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 ## Performance Best Practices
 
 - A single [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement is faster than multiple single-row `INSERT` statements. To bulk-insert data into an existing table, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
-- The experimental [`IMPORT`](import.html) statement performs better than `INSERT` when inserting into a new table.
+- The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required Privileges
@@ -116,7 +116,11 @@ If you don't list column names, the statement will use the columns of the table 
 
 ### Insert Multiple Rows into a New Table
 
+<<<<<<< HEAD
 The experimental [`IMPORT`](import.html) statement performs better than `INSERT` when inserting into a new table.
+=======
+The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
+>>>>>>> c895b463... Fixes
 
 ### Insert from a `SELECT` Statement
 
