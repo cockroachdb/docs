@@ -4,9 +4,30 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statements. You can then use this information to optimize those queries.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute the [explainable statements](#explainable-statments). You can then use this information to optimize those queries.
 
 <div id="toc"></div>
+
+## Explainable Statements
+
+- [`ALTER`](sql-grammar.html#alter_stmt)
+- [`BACKUP`](sql-grammar.html#backup_stmt)
+- [`CANCEL`](sql-grammar.html#cancel_stmt)
+- [`CREATE`](sql-grammar.html#create_stmt)
+- [`DELETE`](delete.html)
+- [`DROP`](sql-grammar.html#drop_stmt)
+- [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [`IMPORT`](sql-grammar.html#import_stmt)
+- [`PAUSE JOB`](sql-grammar.html#pause_stmt)
+- [`RESET`](sql-grammar.html#reset_stmt)
+- [`RESTORE`](restore.html)
+- [`RESUME JOB`](sql-grammar.html#resume_stmt)
+- [`SELECT`](select.html)
+- [`SET SESSION`](sql-grammar.html#set_session_stmt)
+- [`SET CLUSTER SETTING`](set-cluster-settings.html)
+- [`SHOW`](sql-grammar.html#show_stmt)
+- [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
 
 ## Query Optimization
 

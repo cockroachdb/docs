@@ -4,9 +4,23 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statements. You can then use this information to optimize those queries.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute the [explainable statements](#explainable-statments). You can then use this information to optimize those queries.
 
 <div id="toc"></div>
+
+## Explainable statements
+
+You can use `EXPLAIN` on the following statements:
+
+- [`ALTER TABLE`](alter-table.html)
+- [`CREATE`](sql-grammar.html#create_stmt)
+- [`DELETE`](delete.html)
+- [`HELP`](sql-grammar.html#help_stmt)
+- [`INSERT`](insert.html)
+- [`SELECT`](select.html)
+- [`SHOW`](sql-grammar.html#show_stmt)
+- [`SPLIT`](sql-grammar.html#split_stmt)
+- [`UPDATE`](update.html)
 
 ## Query Optimization
 
