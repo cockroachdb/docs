@@ -4,7 +4,7 @@ summary: Perform a one-time-only initialization of a CockroachDB cluster.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+<span class="version-tag">New in v1.1:</span> This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. The target of the `cockroach init` command must appear in the `--join` flag of the [`cockroach start`](start-a-cluster.html) command which have been run on the other nodes in the cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}When <a href="start-a-node.html#start-a-single-node-cluster">starting a single-node cluster</a>, you don't need to use the <code>cockroach init</code> command. You can simply run the <code>cockroach start</code> command without the <code>--join</code> flag to start and initialize the single-node cluster.{{site.data.alerts.end}}
 
@@ -41,7 +41,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html), with the target of the `cockroach init` command specified in the `--join` flag when starting the other nodes, but they are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 ### Initialize a Cluster on a Node's Machine
 
