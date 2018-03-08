@@ -109,7 +109,7 @@ Field | Description
 `id` | The ID of the node.<br><br>**Required flag:** None
 `address` | The address of the node.<br><br>**Required flag:** None
 `build` | The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br><br>**Required flag:** None
-`updated_at` | The date and time when the node last reported its status.<br><br>**Required flag:** None
+`updated_at` | The date and time when the node last recorded the information displayed in this command's output. When healthy, a new status should be recorded every 10 seconds or so, but when unhealthy this command's stats may be much older.<br><br>**Required flag:** None
 `started_at` | The date and time when the node was started.<br><br>**Required flag:** None
 `replicas_leaders` | The number of range replicas on the node that are the Raft leader for their range. See `replicas_leaseholders` below for more details.<br><br>**Required flag:** `--ranges` or `--all`
 `replicas_leaseholders` | The number of range replicas on the node that are the leaseholder for their range. A "leaseholder" replica handles all read requests for a range and directs write requests to the range's Raft leader (usually the same replica as the leaseholder).<br><br>**Required flag:** `--ranges` or `--all`
@@ -121,7 +121,7 @@ Field | Description
 `value_bytes` | The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
-`is_live` | If `true`, the node is live.<br><br>**Required flag:** `--decommission` or `--all`
+`is_live` | If `true`, the node is currently live.<br><br>**Required flag:** `--decommission` or `--all`
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
