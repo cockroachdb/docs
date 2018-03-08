@@ -62,8 +62,8 @@ or view is searched in the database with that name. See the section on
 For example:
 
 ~~~sql
-> SELECT * FROM users -- uses table `users` in the current database;
-> SELECT * FROM mydb.users -- uses table `users` in database `mydb`;
+> SELECT * FROM users; -- uses table `users` in the current database
+> SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
 ~~~
 
 ## Table Generator Functions
