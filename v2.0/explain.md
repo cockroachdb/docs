@@ -62,11 +62,13 @@ Successful `EXPLAIN` statements return tables with the following columns:
 ### Default Query Plans
 
 By default, `EXPLAIN` includes the least detail about the query plan but can be
-useful to find out which indexes and index key ranges are used by a query.
+useful to find out which indexes and index key ranges are used by a query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
+
 ~~~
 +-----------+-------+-------------+
 |   Tree    | Field | Description |
@@ -80,19 +82,21 @@ useful to find out which indexes and index key ranges are used by a query.
 ~~~
 
 The first column shows the tree structure of the query plan; a set of properties
-is displayed for each node in the tree. Most importantly, for scans we can see
+is displayed for each node in the tree. Most importantly, for scans, you can see
 the index that is scanned (`primary` in this case) and what key ranges of the
-index we are scanning (in this case we are doing a full table scan). For more
-information on indexes and key ranges, see the relevant 
-[section](#find-the-indexes-and-key-ranges-a-query-uses) below.
+index you are scanning (in this case, a full table scan). For more
+information on indexes and key ranges, see the
+[example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
 ### `EXPRS` Option
 
-The `EXPRS` option includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
+The `EXPRS` option includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (EXPRS) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
+
 ~~~
 +-----------+--------+-------------+
 |   Tree    | Field  | Description |
@@ -109,11 +113,13 @@ The `EXPRS` option includes SQL expressions that are involved in each processing
 ### `METADATA` Option
 
 The `METADATA` option includes detail about which columns are being used by each
-level, as well as properties of the result set on that level.
+level, as well as properties of the result set on that level:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
+
 ~~~
 +-----------+-------+------+-------+-------------+---------+------------------------------+
 |   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
@@ -129,14 +135,16 @@ level, as well as properties of the result set on that level.
 The **Ordering** column most importantly includes the ordering of the rows at
 that level (`+v` in this case), but it also includes other information about the
 result set at that level. In this case, CockroachDB was able to deduce that `k`
-and `v` cannot be `NULL`, and `k` is a "key", meaning that we cannot have more
+and `v` cannot be `NULL`, and `k` is a "key", meaning that you cannot have more
 than one row with any given value of `k`.
 
 Note that descending (`DESC`) orderings are indicated by the `-` sign:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v DESC;
 ~~~
+
 ~~~
 +-----------+-------+------+-------+-------------+---------+------------------------------+
 |   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
@@ -150,12 +158,14 @@ Note that descending (`DESC`) orderings are indicated by the `-` sign:
 ~~~
 
 Another property that is reported in the **Ordering** column is information
-about columns which are known to be equal on any row, and "constant" columns
-which are known to have the same value on all rows. For example:
+about columns that are known to be equal on any row, and "constant" columns
+that are known to have the same value on all rows. For example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
 ~~~
+
 ~~~
 +-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
 |   Tree    | Level | Type |     Field      | Description  |        Columns        |           Ordering            |
@@ -178,11 +188,13 @@ and that all rows have the same value on column `c`.
 
 ### `QUALIFY` Option
 
-`QUALIFY` uses `<table name>.<column name>` notation for columns in the query plan. However, `QUALIFY` must be used with `EXPRS` to show the SQL values used.
+`QUALIFY` uses `<table name>.<column name>` notation for columns in the query plan. However, `QUALIFY` must be used with `EXPRS` to show the SQL values used:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (EXPRS, QUALIFY) SELECT a.v, b.v FROM t.kv AS a, t.kv AS b;
 ~~~
+
 ~~~
 +----------------+----------+-------------+
 |      Tree      |  Field   | Description |
@@ -201,11 +213,13 @@ and that all rows have the same value on column `c`.
 +----------------+----------+-------------+
 ~~~
 
-You can contrast this with the same statement not including the `QUALIFY` option to see that the column references are not qualified, which can lead to ambiguity if multiple tables have columns with the same names.
+You can contrast this with the same statement not including the `QUALIFY` option to see that the column references are not qualified, which can lead to ambiguity if multiple tables have columns with the same names:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 >  EXPLAIN (EXPRS) SELECT a.v, b.v FROM kv AS a, kv AS b;
 ~~~
+
 ~~~
 +-------+--------+----------+-------------+
 | Level |  Type  |  Field   | Description |
@@ -224,11 +238,13 @@ You can contrast this with the same statement not including the `QUALIFY` option
 
 ### `VERBOSE` Option
 
-The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options.
+The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
 ~~~
+
 ~~~
 +---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
 |        Tree         | Level |  Type  |     Field      |   Description    |        Columns        |           Ordering           |
@@ -255,11 +271,13 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 
 ### `TYPES` Option
 
-The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well.
+The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
+
 ~~~
 +-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
 |   Tree    | Level | Type | Field  |         Description         |    Columns     |           Ordering           |
@@ -278,15 +296,18 @@ The `TYPES` mode includes the types of the values used in the query plan, and im
 You can use `EXPLAIN` to understand which indexes and key ranges queries use,
 which can help you ensure a query isn't performing a full table scan.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
+
 ~~~
 +-------+------+-------+-------------+
 | Level | Type | Field | Description |
@@ -297,13 +318,19 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 +-------+------+-------+-------------+
 ~~~
 
-If we had an index on `v`, CockroachDB would be able to avoid scanning the
+If there were an index on `v`, CockroachDB would be able to avoid scanning the
 entire table:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX v ON kv (v);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
+
 ~~~
 +------+-------+-------------+
 | Tree | Field | Description |
@@ -314,7 +341,7 @@ entire table:
 +------+-------+-------------+
 ~~~
 
-We are now scanning part of the index `v` (specifically the key range starting
+Now, only part of the index `v` is getting scanned, specifically the key range starting
 at (and including) 4 and stopping before 6.
 
 ## See Also
