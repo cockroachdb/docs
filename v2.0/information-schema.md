@@ -19,7 +19,7 @@ To perform introspection on objects, you can either read from the related `infor
 Object | Information Schema View| SHOW .
 -------|--------------|--------
 Columns | [columns](#columns)| [`SHOW COLUMNS`](show-columns.html)
-Constraints | [key_column_usage](#key_column_usage), [table_constraints](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
+Constraints | [key_column_usage](#key_column_usage), [referential_constraints](#referential_constraints), [table_constraints](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [schemata](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [statistics](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [schema_privileges](#schema_privileges), [table_privileges](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
@@ -36,8 +36,8 @@ The `columns` view contains information about the columns in each table.
 
 Column | Description
 -------|-----------
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database containing the table.
+`TABLE_CATALOG` | Name of the database containing the table.
+`TABLE_SCHEMA` | Name of the schema containing the table.
 `TABLE_NAME` | Name of the table.
 `COLUMN_NAME` | Name of the column.
 `ORDINAL_POSITION` | Ordinal position of the column in the table (begins at 1).
@@ -56,15 +56,33 @@ The `key_column_usage` view identifies columns with [Primary Key](primary-key.ht
 
 Column | Description
 -------|-----------
-`CONSTRAINT_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`CONSTRAINT_SCHEMA` | Name of the database containing the constraint.
+`CONSTRAINT_CATALOG` | Name of the database containing the constraint.
+`CONSTRAINT_SCHEMA` | Name of the schema containing the constraint.
 `CONSTRAINT_NAME` | Name of the constraint.
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that contains the constrained table.
+`TABLE_CATALOG` | Name of the database containing the constrained table.
+`TABLE_SCHEMA` | Name of the schema containing the constrained table.
 `TABLE_NAME` | Name of the constrained table.
 `COLUMN_NAME` | Name of the constrained column.
 `ORDINAL_POSITION` | Ordinal position of the column within the constraint (begins at 1).
 `POSITION_IN_UNIQUE_CONSTRAINT` | For Foreign Key constraints, ordinal position of the referenced column within its Unique constraint (begins at 1).
+
+### referential_constraints
+
+The `referential_constraints` view identifies all referential ([Foreign Key](foreign-key.html)) constraints.
+
+Column | Description
+-------|-----------
+`CONSTRAINT_CATALOG` | Name of the database containing the constraint.
+`CONSTRAINT_SCHEMA` | Name of the schema containing the constraint.
+`CONSTRAINT_NAME` | Name of the constraint.
+`UNIQUE_CONSTRAINT_CATALOG` | Name of the database containing the unique or primary key constraint that the foreign key constraint references (always the current database).
+`UNIQUE_CONSTRAINT_SCHEMA` | Name of the schema containing the unique or primary key constraint that the foreign key constraint references.
+`UNIQUE_CONSTRAINT_NAME` | Name of the unique or primary key constraint.
+`MATCH_OPTION` | Match option of the foreign key constraint: `FULL`, `PARTIAL`, or `NONE`.
+`UPDATE_RULE` | Update rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
+`DELETE_RULE` | Delete rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
+`TABLE_NAME` | Name of the table containing the constraint.
+`REFERENCED_TABLE_NAME` | Name of the table containing the unique or primary key constraint that the foreign key constraint references.
 
 ### schema_privileges
 
@@ -73,8 +91,8 @@ The `schema_privileges` view identifies which [privileges](privileges.html) have
 Column | Description
 -------|-----------
 `GRANTEE` | Username of user with grant.
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that contains the constrained table.
+`TABLE_CATALOG` | Name of the database containing the constrained table.
+`TABLE_SCHEMA` | Name of the schema containing the constrained table.
 `PRIVILEGE_TYPE` | Name of the [privilege](privileges.html).
 `IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
 
@@ -84,8 +102,8 @@ The `schemata` view identifies the cluster's databases.
 
 Column | Description
 -------|-----------
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`SCHEMA_NAME` | Name of the database.
+`TABLE_CATALOG` | Name of the database.
+`TABLE_SCHEMA` | Name of the schema.
 `DEFAULT_CHARACTER_SET_NAME` |  Always *NULL* (unsupported by CockroachDB).
 `SQL_PATH` |  Always *NULL* (unsupported by CockroachDB).
 
@@ -95,8 +113,8 @@ The `statistics` view identifies table's [indexes](indexes.html).
 
 Column | Description
 -------|-----------
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that contains the constrained table.
+`TABLE_CATALOG` | Name of the database that contains the constrained table.
+`TABLE_SCHEMA` | Name of the schema that contains the constrained table.
 `TABLE_NAME` | Name of the table	 .
 `NON_UNIQUE` | `NO` if the index was created by a Unique constraint; `YES` if the index was not created by a Unique constraint.
 `INDEX_SCHEMA` | Name of the database that contains the index.
@@ -114,12 +132,15 @@ The `table_constraints` view identifies [constraints](constraints.html) applied 
 
 Column | Description
 -------|-----------
-`CONSTRAINT_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`CONSTRAINT_SCHEMA` | Name of the database that contains the constraint.
+`CONSTRAINT_CATALOG` | Name of the database containing the constraint.
+`CONSTRAINT_SCHEMA` | Name of the schema containing the constraint.
 `CONSTRAINT_NAME` | Name of the constraint.
-`TABLE_SCHEMA` | Name of the database that contains the constrained table.
+`TABLE_CATALOG` | Name of the database containing the constrained table.
+`TABLE_SCHEMA` | Name of the schema containing the constrained table.
 `TABLE_NAME` | Name of the constrained table.
 `CONSTRAINT_TYPE` | Type of [constraint](constraints.html): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.
+`IS_DEFERRABLE` | `YES` if the constraint can be deferred; `NO` if not.
+`INITIALLY_DEFERRED` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 
 ### table_privileges
 
@@ -129,8 +150,8 @@ Column | Description
 -------|-----------
 `GRANTOR` | Always *NULL* (unsupported by CockroachDB).
 `GRANTEE` | Username of user with grant.
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that the grant applies to.
+`TABLE_CATALOG` | Name of the database that the grant applies to.
+`TABLE_SCHEMA` | Name of the schema that the grant applies to.
 `TABLE_NAME` | Name of the table that the grant applies to.
 `PRIVILEGE_TYPE` | Type of [privilege](privileges.html): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
 `IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
@@ -142,8 +163,8 @@ The `tables` view identifies tables and views in the cluster.
 
 Column | Description
 -------|-----------
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that contains the table.
+`TABLE_CATALOG` | Name of the database that contains the table.
+`TABLE_SCHEMA` | Name of the schema that contains the table.
 `TABLE_NAME` | Name of the table.
 `TABLE_TYPE` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `VERSION` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table.
@@ -158,7 +179,7 @@ The `user_privileges` view identifies global [privileges](privileges.html).
 Column | Description
 -------|-----------
 `GRANTEE` | Username of user with grant.
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
+`TABLE_CATALOG` | Name of the database that the privilege applies to.
 `PRIVELEGE_TYPE` | Type of [privilege](privileges.html).
 `IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
 
@@ -168,9 +189,9 @@ The `views` view identifies [views](views.html) in the cluster.
 
 Column | Description
 -------|-----------
-`TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`TABLE_SCHEMA` | Name of the database that the view reads from.
-`TABLE_NAME` | Name of the table the view reads from.
+`TABLE_CATALOG` | Name of the database that contains the view.
+`TABLE_SCHEMA` | Name of the schema that contains the view.
+`TABLE_NAME` | Name of the view.
 `VIEW_DEFINITION` | `AS` clause used to [create the view](views.html#creating-views).
 `CHECK_OPTION` | Always *NULL* (unsupported by CockroachDB).
 `IS_UPDATABLE` | Always *NULL* (unsupported by CockroachDB).
