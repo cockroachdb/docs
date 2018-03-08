@@ -10,18 +10,6 @@ The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) i
 
 <div id="toc"></div>
 
-## Functional Overview
-
-Because importing data is a complex task, it can be useful to have a high-level understanding of the process.
-
-1. A single node receives the [`IMPORT`](import.html) request.
-2. All nodes of the cluster are assigned CSV files from which to sample data. Samples are collected to build a profile of the data.
-3. CSVs are read a second time, converting its contents into CockroachDB-compatible key-value data.
-4. As the key-value data is generated, it is sent to an assigned node which stores it in the node's temp directory.
-4. Once all import files have been converted to key-value data, relevant nodes import key-value data from their temp directories.
-
-## Preparation
-
 Before using [`IMPORT`](import.html), you should have:
 
 - The schema of the table you want to import.
@@ -270,6 +258,14 @@ CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE
 WITH
 	nullif = ''
 ;
+~~~
+
+## Known Limitation
+
+`IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` setting to a value below your max disk write speed. For example, to set it to 10MB/s, execute: 
+
+~~~ sql
+> set cluster setting kv.bulk_io_write.max_rate = '10MB'.
 ~~~
 
 ## See Also
