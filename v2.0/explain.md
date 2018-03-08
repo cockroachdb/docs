@@ -51,33 +51,40 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
 | Column | Description |
 |-----------|-------------|
-| **Level** | The level of hierarchy of the query plan. <br/><br/>`0` represents the last processing stage that produces the results sent to the SQL client receiving the data; the highest level represents the operation at the key-value layer accessing data. <br/><br/>The query plan has a tree structure; it is thus possible to see multiple processing stages at the same level, which indicates they are sibling stages feeding data to the previous processing stage with a lower level.|
-| **Type** | The query plan node's type, which are described in the [CockroachDB source on GitHub](https://github.com/cockroachdb/cockroach/pull/10055/files#diff-542aa8b21b245d1144c920577333ceedR764). |
-| **Field** | The type of parameter being used by the query plan node. |
-| **Description** | Additional information describing the **Field** value. |
+| **Tree** | A tree representation showing the hierarchy of the query plan.
+| **Field** | The name of a parameter relevant to the query plan node immediately above. |
+| **Description** | Additional information for the parameter in  **Field**. |
 | **Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
-| **Ordering** | The order in which results are presented to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
+| **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
 
 ## Examples
 
 ### Default Query Plans
 
-By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and keys a query uses.
+By default, `EXPLAIN` includes the least detail about the query plan but can be
+useful to find out which indexes and index key ranges are used by a query.
 
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
 ~~~
-+-------+------+-------+-------------+
-| Level | Type | Field | Description |
-+-------+------+-------+-------------+
-|     0 | sort |       |             |
-|     0 |      | order | +v          |
-|     1 | scan |       |             |
-|     1 |      | table | kv@primary  |
-|     1 |      | spans | ALL         |
-+-------+------+-------+-------------+
++-----------+-------+-------------+
+|   Tree    | Field | Description |
++-----------+-------+-------------+
+| sort      |       |             |
+|  │        | order | +v          |
+|  └── scan |       |             |
+|           | table | kv@primary  |
+|           | spans | ALL         |
++-----------+-------+-------------+
 ~~~
+
+The first column shows the tree structure of the query plan; a set of properties
+is displayed for each node in the tree. Most importantly, for scans we can see
+the index that is scanned (`primary` in this case) and what key ranges of the
+index we are scanning (in this case we are doing a full table scan). For more
+information on indexes and key ranges, see the relevant 
+[section](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
 ### `EXPRS` Option
 
@@ -87,55 +94,87 @@ The `EXPRS` option includes SQL expressions that are involved in each processing
 > EXPLAIN (EXPRS) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
 ~~~
-+-------+------+--------+-------------+
-| Level | Type | Field  | Description |
-+-------+------+--------+-------------+
-|     0 | sort |        |             |
-|     0 |      | order  | +v          |
-|     1 | scan |        |             |
-|     1 |      | table  | kv@primary  |
-|     1 |      | spans  | ALL         |
-|     1 |      | filter | v > 3       |
-+-------+------+--------+-------------+
++-----------+--------+-------------+
+|   Tree    | Field  | Description |
++-----------+--------+-------------+
+| sort      |        |             |
+|  │        | order  | +v          |
+|  └── scan |        |             |
+|           | table  | kv@primary  |
+|           | spans  | ALL         |
+|           | filter | v > 3       |
++-----------+--------+-------------+
 ~~~
 
 ### `METADATA` Option
 
-The `METADATA` option includes detail about which columns are being used by each level, as well as how columns are being ordered.
+The `METADATA` option includes detail about which columns are being used by each
+level, as well as properties of the result set on that level.
 
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
 ~~~
-+-------+------+-------+-------------+---------+--------------+
-| Level | Type | Field | Description | Columns |   Ordering   |
-+-------+------+-------+-------------+---------+--------------+
-|     0 | sort |       |             | (k, v)  | +v           |
-|     0 |      | order | +v          |         |              |
-|     1 | scan |       |             | (k, v)  | +k,+v,unique |
-|     1 |      | table | kv@primary  |         |              |
-|     1 |      | spans | ALL         |         |              |
-+-------+------+-------+-------------+---------+--------------+
++-----------+-------+------+-------+-------------+---------+------------------------------+
+|   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
++-----------+-------+------+-------+-------------+---------+------------------------------+
+| sort      |     0 | sort |       |             | (k, v)  | k!=NULL; v!=NULL; key(k); +v |
+|  │        |     0 |      | order | +v          |         |                              |
+|  └── scan |     1 | scan |       |             | (k, v)  | k!=NULL; v!=NULL; key(k)     |
+|           |     1 |      | table | kv@primary  |         |                              |
+|           |     1 |      | spans | ALL         |         |                              |
++-----------+-------+------+-------+-------------+---------+------------------------------+
 ~~~
 
-When looking at the **Ordering** column, we can also sort by descending (`DESC`) values of `k`, which is indicated by the `-` sign.
+The **Ordering** column most importantly includes the ordering of the rows at
+that level (`+v` in this case), but it also includes other information about the
+result set at that level. In this case, CockroachDB was able to deduce that `k`
+and `v` cannot be `NULL`, and `k` is a "key", meaning that we cannot have more
+than one row with any given value of `k`.
+
+Note that descending (`DESC`) orderings are indicated by the `-` sign:
 
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v DESC;
 ~~~
 ~~~
-+-------+------+-------+-------------+---------+--------------+
-| Level | Type | Field | Description | Columns |   Ordering   |
-+-------+------+-------+-------------+---------+--------------+
-|     0 | sort |       |             | (k, v)  | -v           |
-|     0 |      | order | -v          |         |              |
-|     1 | scan |       |             | (k, v)  | +k,+v,unique |
-|     1 |      | table | kv@primary  |         |              |
-|     1 |      | spans | ALL         |         |              |
-+-------+------+-------+-------------+---------+--------------+
++-----------+-------+------+-------+-------------+---------+------------------------------+
+|   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
++-----------+-------+------+-------+-------------+---------+------------------------------+
+| sort      |     0 | sort |       |             | (k, v)  | k!=NULL; v!=NULL; key(k); -v |
+|  │        |     0 |      | order | -v          |         |                              |
+|  └── scan |     1 | scan |       |             | (k, v)  | k!=NULL; v!=NULL; key(k)     |
+|           |     1 |      | table | kv@primary  |         |                              |
+|           |     1 |      | spans | ALL         |         |                              |
++-----------+-------+------+-------+-------------+---------+------------------------------+
 ~~~
 
-{{site.data.alerts.callout_info}}In some cases the <strong>Ordering</strong> details report a column ordering with an equal sign (e.g. <code>=k</code>). This is a side effect of the internal ordering analysis performed by CockroachDB and merely indicates that CockroachDB has found that only one row matches a <code>WHERE</code> expression.{{site.data.alerts.end}}
+Another property that is reported in the **Ordering** column is information
+about columns which are known to be equal on any row, and "constant" columns
+which are known to have the same value on all rows. For example:
+
+~~~ sql
+> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
+~~~
+~~~
++-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
+|   Tree    | Level | Type |     Field      | Description  |        Columns        |           Ordering            |
++-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
+| join      |     0 | join |                |              | (a, b, c, d, e, f, g) | a=e; c=CONST; a!=NULL; key(a) |
+|  │        |     0 |      | type           | inner        |                       |                               |
+|  │        |     0 |      | equality       | (a) = (e)    |                       |                               |
+|  │        |     0 |      | mergeJoinOrder | +"(a=e)"     |                       |                               |
+|  ├── scan |     1 | scan |                |              | (a, b, c, d)          | c=CONST; a!=NULL; key(a); +a  |
+|  │        |     1 |      | table          | abcd@primary |                       |                               |
+|  │        |     1 |      | spans          | ALL          |                       |                               |
+|  └── scan |     1 | scan |                |              | (e, f, g)             | e!=NULL; key(e); +e           |
+|           |     1 |      | table          | efg@primary  |                       |                               |
+|           |     1 |      | spans          | ALL          |                       |                               |
++-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
+~~~
+
+This indicates that on any row, column `a` has the same value with column `e`,
+and that all rows have the same value on column `c`.
 
 ### `QUALIFY` Option
 
@@ -145,25 +184,27 @@ When looking at the **Ordering** column, we can also sort by descending (`DESC`)
 > EXPLAIN (EXPRS, QUALIFY) SELECT a.v, b.v FROM t.kv AS a, t.kv AS b;
 ~~~
 ~~~
-+-------+--------+----------+-------------+
-| Level |  Type  |  Field   | Description |
-+-------+--------+----------+-------------+
-|     0 | render |          |             |
-|     0 |        | render 0 | a.v         |
-|     0 |        | render 1 | b.v         |
-|     1 | join   |          |             |
-|     1 |        | type     | cross       |
-|     2 | scan   |          |             |
-|     2 |        | table    | kv@primary  |
-|     2 | scan   |          |             |
-|     2 |        | table    | kv@primary  |
-+-------+--------+----------+-------------+
++----------------+----------+-------------+
+|      Tree      |  Field   | Description |
++----------------+----------+-------------+
+| render         |          |             |
+|  │             | render 0 | a.v         |
+|  │             | render 1 | b.v         |
+|  └── join      |          |             |
+|       │        | type     | cross       |
+|       ├── scan |          |             |
+|       │        | table    | kv@primary  |
+|       │        | spans    | ALL         |
+|       └── scan |          |             |
+|                | table    | kv@primary  |
+|                | spans    | ALL         |
++----------------+----------+-------------+
 ~~~
 
 You can contrast this with the same statement not including the `QUALIFY` option to see that the column references are not qualified, which can lead to ambiguity if multiple tables have columns with the same names.
 
 ~~~ sql
->  EXPLAIN (EXPRS) SELECT a.v, b.v FROM t.kv AS a, t.kv AS b;
+>  EXPLAIN (EXPRS) SELECT a.v, b.v FROM kv AS a, kv AS b;
 ~~~
 ~~~
 +-------+--------+----------+-------------+
@@ -183,56 +224,59 @@ You can contrast this with the same statement not including the `QUALIFY` option
 
 ### `VERBOSE` Option
 
-The `VERBOSE` option implies the `EXPRS`, `METADATA`, and `QUALIFY` options.
+The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options.
 
 ~~~ sql
 > EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
 ~~~
 ~~~
-+-------+--------+----------+-------------+-------------------------------------------------+--------------+
-| Level |  Type  |  Field   | Description |                     Columns                     |   Ordering   |
-+-------+--------+----------+-------------+-------------------------------------------------+--------------+
-|     0 | sort   |          |             | (k, v, v)                                       | -v           |
-|     0 |        | order    | -v          |                                                 |              |
-|     1 | render |          |             | (k, v, v)                                       |              |
-|     1 |        | render 0 | k           |                                                 |              |
-|     1 |        | render 1 | a.v         |                                                 |              |
-|     1 |        | render 2 | bank.kv.v   |                                                 |              |
-|     2 | join   |          |             | (k, k[hidden,omitted], v, k[hidden,omitted], v) |              |
-|     2 |        | type     | inner       |                                                 |              |
-|     2 |        | equality | (k) = (k)   |                                                 |              |
-|     3 | scan   |          |             | (k, v)                                          | +k,+v,unique |
-|     3 |        | table    | kv@primary  |                                                 |              |
-|     3 |        | spans    | ALL         |                                                 |              |
-|     3 |        | filter   | v > 3       |                                                 |              |
-|     3 | scan   |          |             | (k, v)                                          | +k,+v,unique |
-|     3 |        | table    | kv@primary  |                                                 |              |
-+-------+--------+----------+-------------+-------------------------------------------------+--------------+
++---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
+|        Tree         | Level |  Type  |     Field      |   Description    |        Columns        |           Ordering           |
++---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
+| sort                |     0 | sort   |                |                  | (k, v, v)             | k!=NULL; key(k); -v          |
+|  │                  |     0 |        | order          | -v               |                       |                              |
+|  └── render         |     1 | render |                |                  | (k, v, v)             | k!=NULL; key(k)              |
+|       │             |     1 |        | render 0       | a.k              |                       |                              |
+|       │             |     1 |        | render 1       | a.v              |                       |                              |
+|       │             |     1 |        | render 2       | radu.public.kv.v |                       |                              |
+|       └── join      |     2 | join   |                |                  | (k, v, k[omitted], v) | k=k; k!=NULL; key(k)         |
+|            │        |     2 |        | type           | inner            |                       |                              |
+|            │        |     2 |        | equality       | (k) = (k)        |                       |                              |
+|            │        |     2 |        | mergeJoinOrder | +"(k=k)"         |                       |                              |
+|            ├── scan |     3 | scan   |                |                  | (k, v)                | k!=NULL; v!=NULL; key(k); +k |
+|            │        |     3 |        | table          | kv@primary       |                       |                              |
+|            │        |     3 |        | spans          | ALL              |                       |                              |
+|            │        |     3 |        | filter         | v > 3            |                       |                              |
+|            └── scan |     3 | scan   |                |                  | (k, v)                | k!=NULL; key(k); +k          |
+|                     |     3 |        | table          | kv@primary       |                       |                              |
+|                     |     3 |        | spans          | ALL              |                       |                              |
++---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
 ~~~
 
 ### `TYPES` Option
 
-The `TYPES` mode includes the types of the values used in the query plan, as well as implying the `METADATA` and `EXPRS` options.
+The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well.
 
 ~~~ sql
-> EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 order by v;
+> EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
 ~~~
-+-------+------+--------+-----------------------------+----------------+--------------+
-| Level | Type | Field  |         Description         |    Columns     |   Ordering   |
-+-------+------+--------+-----------------------------+----------------+--------------+
-|     0 | sort |        |                             | (k int, v int) | +v           |
-|     0 |      | order  | +v                          |                |              |
-|     1 | scan |        |                             | (k int, v int) | +k,+v,unique |
-|     1 |      | table  | kv@primary                  |                |              |
-|     1 |      | spans  | ALL                         |                |              |
-|     1 |      | filter | ((v)[int] > (3)[int])[bool] |                |              |
-+-------+------+--------+-----------------------------+----------------+--------------+
++-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
+|   Tree    | Level | Type | Field  |         Description         |    Columns     |           Ordering           |
++-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
+| sort      |     0 | sort |        |                             | (k int, v int) | k!=NULL; v!=NULL; key(k); +v |
+|  │        |     0 |      | order  | +v                          |                |                              |
+|  └── scan |     1 | scan |        |                             | (k int, v int) | k!=NULL; v!=NULL; key(k)     |
+|           |     1 |      | table  | kv@primary                  |                |                              |
+|           |     1 |      | spans  | ALL                         |                |                              |
+|           |     1 |      | filter | ((v)[int] > (3)[int])[bool] |                |                              |
++-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
 ~~~
 
 ### Find the Indexes and Key Ranges a Query Uses
 
-You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
+You can use `EXPLAIN` to understand which indexes and key ranges queries use,
+which can help you ensure a query isn't performing a full table scan.
 
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
@@ -253,20 +297,25 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 +-------+------+-------+-------------+
 ~~~
 
-However, in the following query, column `k` is sorted in the `primary` index, so CockroachDB can avoid scanning the entire table:
+If we had an index on `v`, CockroachDB would be able to avoid scanning the
+entire table:
 
 ~~~ sql
-> EXPLAIN SELECT * FROM kv WHERE k BETWEEN 4 AND 5;
+> CREATE INDEX v ON kv (v);
+> EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
 ~~~
-+-------+------+-------+-------------+
-| Level | Type | Field | Description |
-+-------+------+-------+-------------+
-|     0 | scan |       |             |
-|     0 |      | table | kv@primary  |
-|     0 |      | spans | /4-/6       |
-+-------+------+-------+-------------+
++------+-------+-------------+
+| Tree | Field | Description |
++------+-------+-------------+
+| scan |       |             |
+|      | table | kv@v        |
+|      | spans | /4-/6       |
++------+-------+-------------+
 ~~~
+
+We are now scanning part of the index `v` (specifically the key range starting
+at (and including) 4 and stopping before 6.
 
 ## See Also
 
