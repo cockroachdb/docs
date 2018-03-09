@@ -78,12 +78,6 @@ To ensure correctness among distributed nodes, you can identify a Maximum Clock 
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
-### Timestamp Cache
-
-To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a Timestamp Cache, which shows the high-water mark for values being read.
-
-Whenever a write occurs, its timestamp is checked against the Timestamp Cache. If the timestamp is less than the Timestamp Cache's latest value, we attempt to move the timestamp for its transaction forward to a later time. In the case of serializable transactions, this causes them to restart in the second phase of the transaction.
-
 ### client.Txn and TxnCoordSender
 
 As we mentioned in the SQL layer's architectural overview, CockroachDB converts all SQL statements into key-value (KV) operations, which is how data is ultimately stored and accessed.
@@ -132,26 +126,31 @@ CockroachDB efficiently supports the strongest ANSI transaction isolation level:
 
 - **Serializable Snapshot Isolation** _(Serializable)_ transactions are CockroachDB's default (equivalent to ANSI SQL's `SERIALIZABLE` isolation level, which is the highest of the four standard levels). This isolation level does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
 
-- **Snapshot Isolation** _(Snapshot)_ transactions trade correctness in order to avoid retries when serializability violations are possible. This is achieved by always reading at an initial transaction timestamp, but allowing the transaction's commit timestamp to be moved forward in the event of [transaction conflicts](#transaction-conflicts). Snapshot isolation cannot prevent an anomaly known as [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation).
+- **Snapshot Isolation** _(Snapshot)_ transactions trade correctness in order to avoid retries when serializability violations are possible. This is achieved by always reading at an initial transaction timestamp, but allowing the transaction's commit timestamp to be pushed forward in the event of [transaction conflicts](#transaction-conflicts). Snapshot isolation cannot prevent an anomaly known as [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation).
 
 ### Transaction Conflicts
 
-CockroachDB's transactions allow the following types of conflicts:
+CockroachDB's transactions allow the following types of conflicts that involve running into an intent:
 
 - **Write/Write**, where two `PENDING` transactions create Write Intents for the same key.
 - **Write/Read**, when a read encounters an existing Write Intent with a timestamp less than its own.
 
 To make this simpler to understand, we'll call the first transaction `TxnA` and the transaction that encounters its Write Intents `TxnB`.
 
-CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp moved, or enters the `PushTxnQueue`.
+CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `PushTxnQueue`.
 
-1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted.
+1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
 
 2. `TxnB` tries to push `TxnA`'s timestamp forward.
 
     This succeeds only in the case that `TxnA` has snapshot isolation and `TxnB`'s operation is a read. In this case, the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly occurs.
 
 3. `TxnB` enters the `PushTxnQueue` to wait for `TxnA` to complete.
+
+Additionally, the following types of conflicts that don't involve running into intents can arise:
+
+- **Write after read**, when a write with a lower timestamp encounters a later read. This is handled through the [Timestamp Cache](#timestamp-cache).
+- **Read within uncertainty window**, when a read encounters a value with a higher timestamp but it's ambiguous whether the value should be considered to be in the future or in the past of the transaction because of possible *clock skew*. This is handled by attempting to push the transaction's timestamp beyond the uncertain value (see [read refreshing](#read-refreshing)). Note that, if the transaction has to be retried, reads will never encounter uncertainty issues on any node which was previously visited, and that there's never any uncertainty on values read from the transaction's gateway node.
 
 ### PushTxnQueue
 
@@ -171,6 +170,17 @@ Once the transaction does resolve––by committing or aborting––a signal i
 Blocked transactions also check the status of their own transaction to ensure they're still active. If the blocked transaction was aborted, it's simply removed.
 
 If there is a deadlock between transactions (i.e., they're each blocked by each other's Write Intents), one of the transactions is randomly aborted. In the above example, this would happen if `TxnA` blocked `TxnB` on `key1` and `TxnB` blocked `TxnA` on `key2`.
+
+### Timestamp Cache
+
+To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a Timestamp Cache, which shows the high-water mark for values being read.
+
+Whenever a write occurs, its timestamp is checked against the Timestamp Cache. If the timestamp is less than the Timestamp Cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. In the case of serializable transactions, this might cause them to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
+
+### Read Refreshing
+
+Whenever a transaction's timestamp has been pushed, additional checks are required before allowing serializable transactions to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
+If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.
 
 ## Technical Interactions with Other Layers
 
