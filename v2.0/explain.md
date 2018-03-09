@@ -4,7 +4,7 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statements](#explainable-statements). You can then use this information to optimize the query.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](#explainable-statements). You can then use this information to optimize the query.
 
 <div id="toc"></div>
 
@@ -51,7 +51,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/explain.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/explain.html %}</section>
 
 ## Required Privileges
 
