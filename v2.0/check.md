@@ -1,6 +1,6 @@
 ---
-title: Check Constraint
-summary: The Check constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
+title: CHECK Constraint
+summary: The CHECK constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
 toc: false
 ---
 
@@ -10,8 +10,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ## Details
 
-- If you add a `CHECK` constraint to an existing table, existing values are not checked. However, any updates to those values will be.
-  {{site.data.alerts.callout_info}}In the future we plan to [expand the `CHECK` constraint](https://github.com/cockroachdb/cockroach/issues/23663) to include a check on any existing values in the column.{{site.data.alerts.end}}
+- If you add a `CHECK` constraint to an existing table, added values, along with any updates to current values, are checked. To check the existing rows, use [`VALIDATE CONSTRAINT`](validate-constraint.html).
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 - You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 

@@ -1,35 +1,34 @@
 ---
-title: Check Constraint
-summary: The Check constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
+title: CHECK Constraint
+summary: The CHECK constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
 toc: false
 ---
 
-The Check [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
+The `CHECK` [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
 
 <div id="toc"></div>
 
 ## Details
 
-- If you add a Check constraint to an existing table, existing values are not checked. However, any updates to those values will be.
-  {{site.data.alerts.callout_info}}In the future we plan to expand the Check constraint to include a check on any existing values in the column.{{site.data.alerts.end}}
-- Check constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level Check constraints are converted to table-level constraints so they can be handled consistently.
-- You can have multiple Check constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example
+- If you add a `CHECK` constraint to an existing table, added values, along with any updates to current values, are checked. To check the existing rows, use [`VALIDATE CONSTRAINT`](validate-constraint.html).
+- `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
+- You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
   ~~~ sql
   warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
   ~~~
-  
+
   should be specified as:
-  
+
   ~~~ sql
   warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
   ~~~
 
 ## Syntax
 
-Check constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+`CHECK` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-{{site.data.alerts.callout_info}}You can also add the Check constraint to existing tables through <a href="add-constraint.html#add-the-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You can also add the <code>CHECK</code> constraint to existing tables through <a href="add-constraint.html#add-the-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
 ### Column Level
 
@@ -82,7 +81,7 @@ Check constraints can be defined at the [table level](#table-level). However, if
 
 ## Usage Example
 
-Check constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level Check constraints are converted to table-level constraints so they can be handled in a consistent fashion.
+`CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled in a consistent fashion.
 
 ~~~ sql
 > CREATE TABLE inventories (
