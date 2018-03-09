@@ -332,7 +332,22 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 8. Back in the Admin UI, click **View nodes list** on the right to ensure that the fourth node successfully joined the cluster.
 
-## Step 10. Stop the cluster
+## Step 10. Upgrade the cluster
+
+{% include orchestration/kubernetes-upgrade-cluster.md %}
+
+4. If this was an upgrade between minor or major versions (e.g., between v1.0.x and v1.1.y or between v1.1.y and v2.0.z), then you'll want to [finalize the upgrade](upgrade-cockroach-version.html#finalize-the-upgrade) if you're happy with the new version. Assuming you upgraded to the v2.0 minor version, you'd run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public -e "SET CLUSTER SETTING version = crdb_internal.node_executable_version();"
+    ~~~
+
+    ~~~
+    SET CLUSTER SETTING
+    ~~~
+
+## Step 11. Stop the cluster
 
 To shut down the CockroachDB cluster:
 
