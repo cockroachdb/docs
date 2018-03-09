@@ -4,22 +4,21 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute the [explainable statements](#explainable-statments). You can then use this information to optimize those queries.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statements](#explainable-statements). You can then use this information to optimize the query.
 
 <div id="toc"></div>
 
-## Explainable statements
+## Explainable Statements
 
 You can use `EXPLAIN` on the following statements:
 
 - [`ALTER TABLE`](alter-table.html)
-- [`CREATE`](sql-grammar.html#create_stmt)
+- [`CREATE DATABASE`](create-database.html), [`CREATE INDEX`](create-index.html), [`CREATE TABLE`](create-table.html), [`CREATE TABLE AS`](create-table-as.html), [`CREATE USER`](create-user.html), [`CREATE VIEW`](create-view.html)
 - [`DELETE`](delete.html)
-- [`HELP`](sql-grammar.html#help_stmt)
+- `EXPLAIN`
 - [`INSERT`](insert.html)
 - [`SELECT`](select.html)
-- [`SHOW`](sql-grammar.html#show_stmt)
-- [`SPLIT`](sql-grammar.html#split_stmt)
+- [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE TABLE`](show-create-table.html), [`SHOW CREATE VIEW`](show-create-view.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW TABLES`](show-tables.html), [`SHOW USERS`](show-users.html)
 - [`UPDATE`](update.html)
 
 ## Query Optimization
