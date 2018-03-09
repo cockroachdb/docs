@@ -20,30 +20,30 @@ The user granting privileges must have the `GRANT` privilege on the target datab
 
 ## Supported Privileges
 
-Users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below). 
+Users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below).
 
-- When a user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. 
+- When a user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
 - When a user is granted privileges for a table, the privileges are limited to the table.
-- The `root` user is automatically assigned the `ALL` privilege for new databases and is the only user allowed to create databases. 
+- The `root` user is automatically assigned the `ALL` privilege for new databases and is the only user allowed to create databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 Privilege | Levels
-----------|------------ 
+----------|------------
 `ALL` | Database, Table
 `CREATE` | Database, Table
 `DROP` | Database, Table
 `GRANT` | Database, Table
-`SELECT` | Table 
-`INSERT` | Table 
-`DELETE` | Table 
-`UPDATE` | Table 
+`SELECT` | Table
+`INSERT` | Table
+`DELETE` | Table
+`UPDATE` | Table
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. 
-`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases.
+`table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but won't affect tables created after the grant.
+`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but don't affect existing tables in the database.
 `user_name` | A comma-separated list of [users](create-and-manage-users.html).
 
 ## Examples

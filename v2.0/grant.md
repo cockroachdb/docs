@@ -43,7 +43,7 @@ Privilege | Levels
 Parameter | Description
 ----------|------------
 `table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but won't affect tables created after the grant.
-`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but existing tables in the database are not changed.
+`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but don't affect existing tables in the database.
 `user_name` | A comma-separated list of [users](create-and-manage-users.html).
 
 ## Examples
