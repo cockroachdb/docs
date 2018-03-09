@@ -18,7 +18,7 @@ The following details are displayed for each table:
 Metric | Description
 --------|----
 Table Name | The name of the table.
-Size | The size of the table in bytes.
+Size | Approximate total disk size of the table across all replicas.
 Ranges | The number of ranges in the table.
 \# of Columns | The number of columns in the table.
 \# of Indices | The number of indices for the table.

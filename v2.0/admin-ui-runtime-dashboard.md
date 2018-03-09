@@ -39,11 +39,11 @@ CGo Total | Total memory managed by the C layer.
 
 ## CPU Time
 
-<img src="{{ 'images/admin_ui_cpu_time.png' | relative_url }}" alt="CockroachDB Admin UI CPU Time" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/admin_ui_cpu_time_2.0.png' | relative_url }}" alt="CockroachDB Admin UI CPU Time" style="border:1px solid #eee;max-width:100%" />
+
 
 - In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
-
-In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
+- In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
 
 On hovering over the CPU Time graph, the values for the following metrics are displayed:
 
@@ -51,9 +51,6 @@ Metric | Description
 --------|----
 User CPU Time | Total CPU seconds per second used by the CockroachDB process across all nodes.
 Sys CPU Time | Total CPU seconds per second used by the system calls made by CockroachDB across all nodes.
-GC Pause Time | Time required by the Garbage Collection process of Go.
-
-{{site.data.alerts.callout_info}}The GC Pause Time metric is important for CockroachDB developers. For monitoring CockroachDB, it is sufficient to monitor the User CPU Time and Sys CPU Time.{{site.data.alerts.end}}
 
 ## Other Graphs
 
