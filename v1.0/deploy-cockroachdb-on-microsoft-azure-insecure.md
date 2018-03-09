@@ -47,33 +47,35 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 2. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
 
-3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following rules to it:
+3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
     - **Admin UI support**:
 
         | Field | Recommended Value |
         |-------|-------------------|
         | Name | **cockroachadmin** |
-        | Priority | Any value > 1000 |
-        | Source | **CIDR block** |
-        | IP address range | Your local network’s IP ranges |
-        | Service | **Custom** |
+        | Source | **IP Addresses** |
+        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
+        | Source port ranges | * |
+        | Destination | **Any** |
+        | Destination port range | **8080** |
         | Protocol | **TCP** |
-        | Port range | **8080** |
         | Action | **Allow** |
-    - **Application support:**
+        | Priority | Any value > 1000 |
+    - **Application support**:
 
         {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you won't need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
-    
+
         | Field | Recommended Value |
         |-------|-------------------|
         | Name | **cockroachapp** |
-        | Priority | Any value > 1000 |
-        | Source | **CIDR block** |
-        | IP address range | Your application’s IP ranges |
-        | Service | **Custom** |
+        | Source | **IP Addresses** |
+        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
+        | Source port ranges | * |
+        | Destination | **Any** |
+        | Destination port range | **26257** |
         | Protocol | **TCP** |
-        | Port range | **26257** |
         | Action | **Allow** |
+        | Priority | Any value > 1000 |
 
 ## Step 2. Create VMs
 
