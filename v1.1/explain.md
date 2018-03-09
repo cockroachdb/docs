@@ -4,28 +4,31 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute the [explainable statements](#explainable-statments). You can then use this information to optimize those queries.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statements](#explainable-statements). You can then use this information to optimize the query.
 
 <div id="toc"></div>
 
 ## Explainable Statements
 
-- [`ALTER`](sql-grammar.html#alter_stmt)
-- [`BACKUP`](sql-grammar.html#backup_stmt)
-- [`CANCEL`](sql-grammar.html#cancel_stmt)
-- [`CREATE`](sql-grammar.html#create_stmt)
+You can `EXPLAIN` on the following statements:
+
+- [`ALTER TABLE`](alter-table.html), [`ALTER INDEX`](alter-index.html), [`ALTER VIEW`](alter-view.html), [`ALTER DATABASE`](alter-database.html)
+- [`BACKUP`](backup.html)
+- [`CANCEL JOB`](cancel-job.html), [`CANCEL QUERY`](cancel-query.html)
+- [`CREATE DATABASE`](create-database.html), [`CREATE INDEX`](create-index.html), [`CREATE TABLE`](create-table.html), [`CREATE TABLE AS`](create-table-as.html), [`CREATE USER`](create-user.html), [`CREATE VIEW`](create-view.html)
 - [`DELETE`](delete.html)
-- [`DROP`](sql-grammar.html#drop_stmt)
+- [`DROP DATABASE`](drop-database.html), [`DROP INDEX`](drop-index.html), [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), [`DROP USER`](drop-user.html)
 - [`EXECUTE`](sql-grammar.html#execute_stmt)
-- [`IMPORT`](sql-grammar.html#import_stmt)
-- [`PAUSE JOB`](sql-grammar.html#pause_stmt)
-- [`RESET`](sql-grammar.html#reset_stmt)
+- `EXPLAIN`
+- [`IMPORT`](import.html)
+- [`PAUSE JOB`](pause-job.html)
+- [`RESET SESSION`](reset-vars.html), [`RESET CLUSTER SETTINGS`](reset-cluster-setting.html)
 - [`RESTORE`](restore.html)
-- [`RESUME JOB`](sql-grammar.html#resume_stmt)
+- [`RESUME JOB`](resume-job.html)
 - [`SELECT`](select.html)
-- [`SET SESSION`](sql-grammar.html#set_session_stmt)
-- [`SET CLUSTER SETTING`](set-cluster-settings.html)
-- [`SHOW`](sql-grammar.html#show_stmt)
+- [`SET SESSION`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SHOW BACKUP`](show-backup.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE TABLE`](show-create-table.html), [`SHOW CREATE VIEW`](show-create-view.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW JOBS`](show-jobs.html), [`SHOW QUERIES`](show-queries.html), [`SHOW SESSIONS`](show-sessions.html), [`SHOW TABLES`](show-tables.html), [`SHOW TRACE`](show-trace.html), [`SHOW USERS`](show-users.html)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)
 
