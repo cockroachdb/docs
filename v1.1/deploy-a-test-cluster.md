@@ -45,7 +45,9 @@ Before getting started, it's important to review some limitations and requiremen
     - Add an **IP Address Whitelist** to restrict user access to the CockroachDB admin UI and SQL client access to the cluster. By default, all locations have access.
     - Increase the initial **Cluster Size**. The default is **3** nodes.
 
-3. When you're ready to start the cluster, click **Create**.
+3.  In the **Load Generators** section, select the type of **Workload** you would like to run against the cluster.
+
+4. When you're ready to start the cluster, click **Create**.
 
     The launch process generally takes 10 to 15 minutes. Once you see the `CREATE_COMPLETE` status in the CloudFormation UI, the cluster is ready for testing.
 
@@ -112,66 +114,13 @@ Before getting started, it's important to review some limitations and requiremen
 
 {{site.data.alerts.callout_success}}With the <code>cockroach</code> binary on your local machine, other client <a href="cockroach-commands.html"><code>cockroach</code> commands</a> can be run in the same way.{{site.data.alerts.end}}
 
-## Step 3. Start a load generator
+## Step 3. Monitor the cluster
 
-CockroachDB provides a number of [example load generators](https://github.com/cockroachdb/loadgen) in Go for simulating client workloads. The program you'll use here is called [`rand`](https://github.com/cockroachdb/loadgen/tree/master/rand). It will generate and insert random data into the `bank.accounts` table you created in the previous step.
-
-1. In a new terminal, install [Go](https://golang.org/dl/). If you're on a Mac and using Homebrew, use `brew install go`.
-
-2. Install the `rand` load generator:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ go get github.com/cockroachdb/loadgen/rand
-    ~~~
-
-3. Start the `rand` load generator:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ rand --host=Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com bank accounts
-    ~~~
-    - Set the `--host` flag to just the hostname portion of the **ConnnectionString** from the CloudFormation UI.
-    - Be sure to list `bank accounts` **after** the `--host` flag.
-
-4. Back in the terminal with the SQL shell, check the random data that `rand` is inserting into the `bank.accounts` table:
-
-    ~~~ sql
-    > SELECT * FROM bank.accounts LIMIT 10;
-    ~~~
-
-    ~~~
-    +-------+---------+
-    |  id   | balance |
-    +-------+---------+
-    |     1 | 1000.50 |
-    |  5250 |      84 |
-    |  6205 |      60 |
-    | 13086 |       4 |
-    | 16745 |      12 |
-    | 19124 |      85 |
-    | 25573 |      54 |
-    | 26957 |      46 |
-    | 31117 |      65 |
-    | 37195 |      59 |
-    +-------+---------+
-    (10 rows)
-    ~~~
-
-5. Exit the SQL shell:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
-
-## Step 4. Monitor the cluster
-
-You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the `rand` workload and overall cluster behavior.
+You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the workload and overall cluster behavior.
 
 1. In the **Outputs** section of the CloudFormation UI, click the **Web UI** link.
 
-2. On the **Cluster Overview** page, hover over the **SQL Queries** graph to see the proportion of reads and writers coming from the `rand` program.
+2. On the **Cluster Overview** page, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
 
     <img src="{{ 'images/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -183,7 +132,7 @@ You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the `ran
 
 5. Learn more about [production monitoring and alerting](monitoring-and-alerting.html).
 
-## Step 5. Simulate node failure
+## Step 4. Simulate node failure
 
 Kubernetes ensures that the cluster always has the number of nodes you specified during initial configuration (3 by default). When a node fails, Kubernetes automatically creates another node with the same network identity and persistent storage.
 
@@ -224,7 +173,7 @@ To see this in action:
 
     <img src="{{ 'images/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 6. Scale the cluster
+## Step 5. Scale the cluster
 
 To scale the cluster, you need to first adjust the AWS Auto Scaling group size and then the Kubernetes replica count.
 
@@ -249,13 +198,9 @@ To scale the cluster, you need to first adjust the AWS Auto Scaling group size a
 
     <img src="{{ 'images/cloudformation_admin_ui_rebalancing.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Stop the cluster
+## Step 6. Stop the cluster
 
-Once you're done with your test cluster:
-
-1. Stop the `rand` load generator running locally, if you haven't already.
-
-2. In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This last step is essential for deleting all AWS resources tied to your cluster. If you don't delete these resources, AWS will continue to charge you for them.
+In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you don't delete these resources, AWS will continue to charge you for them.
 
 ## See Also
 
