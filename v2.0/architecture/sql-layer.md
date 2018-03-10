@@ -1,12 +1,12 @@
 ---
 title: SQL Layer
-summary: 
+summary:
 toc: false
 ---
 
 The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
 
-{{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overivew</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -78,7 +78,7 @@ You can find more exhaustive detail in the [Encoding Tech Note](https://github.c
 
 Because CockroachDB is a distributed database, we've developed a Distributed SQL (DistSQL) optimization tool for some queries, which can dramatically speed up queries that involve many ranges. Though DistSQL's architecture is worthy of its own documentation, this cursory explanation can provide some insight into how it works.
 
-In non-distributed queries, the coordinating node receives all of the rows that match its query, and then performs any computations on the entire data set. 
+In non-distributed queries, the coordinating node receives all of the rows that match its query, and then performs any computations on the entire data set.
 
 However, for DistSQL-compatible queries, each node does computations on the rows it contains, and then sends the results (instead of the entire rows) to the coordinating node. The coordinating node then aggregates the results from each node, and finally returns a single response to the client.
 
