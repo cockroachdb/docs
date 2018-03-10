@@ -8,25 +8,26 @@ run() {
   "$(dirname "$0")"/builder run "$@"
 }
 
-baseurl=/$BUILD_VCS_NUMBER
+baseurl=$BUILD_VCS_NUMBER
 
 # Step 1. Build the docs.
 cat > _config_prod.yml <<EOF
 url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
-baseurl: $baseurl
+baseurl: /$baseurl
+destination: _site/$baseurl
 EOF
 run bundle exec jekyll build --config _config.yml,_config_prod.yml
 
 # Step 2. Upload the docs to S3.
-run aws s3 sync --quiet --region=us-east-1 ./_site s3://cockroach-docs-review/"$BUILD_VCS_NUMBER"/
+run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review
 
 # Step 3. Post a link to the docs on the GitHub pull request. We do this before
-# running HTMLProofer to provide fast feedback. HTMLProofer can take upwards of
-# five minutes to complete. No need to do this in the container.
+# running htmltest to provide fast feedback, as htmltest can take several
+# minutes to complete. No need to do this in the container.
 curl \
   --header "Authorization: token $GITHUB_TOKEN" \
   --data "{\"body\": \"http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/\"}" \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
-# Step 4. Run HTML proofer.
-run env JEKYLL_BASEURL="$baseurl" bundle exec rake htmlproofer
+# Step 4. Run htmltest, but skip checking external links to speed things up.
+run htmltest --skip-external

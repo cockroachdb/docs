@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+run() {
+  echo "$@"
+  "$(dirname "$0")"/builder run "$@"
+}
+
+run bundle exec jekyll build
+run htmltest

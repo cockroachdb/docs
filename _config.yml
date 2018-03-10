@@ -3,6 +3,7 @@ site_title: CockroachDB
 
 url: "https://www.cockroachlabs.com"
 baseurl: "/docs"
+destination: _site/docs
 
 gems:
 - jekyll-sitemap

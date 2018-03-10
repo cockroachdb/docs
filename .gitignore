@@ -7,3 +7,4 @@ _site
 .jekyll-metadata
 bootstrap
 vendor/
+tmp/
