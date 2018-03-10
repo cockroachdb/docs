@@ -6,8 +6,11 @@ task :htmlproofer do
   HTMLProofer.check_directory("./_site", {
     :allow_hash_href => true,
     :url_swap => { /^#{Regexp.quote(baseurl)}/ => '' },
-    :typhoeus => {
-      :ssl_verifypeer => false,
-      :ssl_verifyhost => 0}
+    :disable_external => true,
+    :checks_to_ignore => ["ImageCheck", "ScriptCheck"]
+    # :parallel => { :in_processes => 4 }
+    # :typhoeus => {
+    #   :ssl_verifypeer => false,
+    #   :ssl_verifyhost => 0}
   }).run
 end
