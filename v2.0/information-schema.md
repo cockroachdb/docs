@@ -37,6 +37,16 @@ The `administrable_role_authorizations` view identifies all roles that the curre
 Column | Description
 -------|-----------
 `GRANTEE` | The name of the user to which this role membership was granted (always the current user).
+
+### applicable_roles
+
+The `applicable_roles` view identifies all roles whose privileges the current user can use. This implies there is a chain
+of role grants from the current user to the role in question. The current user itself is also an applicable role, but is
+not listed.
+
+Column | Description
+-------|-----------
+`GRANTEE` | Name of the user to which this role membership was granted (always the current user).
 `ROLE_NAME` | Name of a role.
 `IS_GRANTABLE` | `YES` if the grantee has the admin option on the role; `NO` if not.
 
@@ -79,6 +89,14 @@ Column | Description
 `COLUMN_NAME` | Name of the column.
 `PRIVILEGE_TYPE` | Name of the [privilege](privileges.html).
 `IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
+
+### enabled_roles
+
+The `enabled_roles` view identifies enabled roles for the current user. This includes both direct and indirect roles.
+
+Column | Description
+-------|-----------
+`ROLE_NAME` | Name of a role.
 
 ### key_column_usage
 
