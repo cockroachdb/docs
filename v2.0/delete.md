@@ -47,6 +47,28 @@ Successful `DELETE` statements return one of the following:
 |`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that don't delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
 |Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)|
 
+## Disk Space Usage After Deletes
+
+Deleting a row does not immediately free up the disk space. This is
+due to the fact that CockroachDB retains [the ability to query tables
+historically](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
+
+If disk usage is a concern, there are two potential solutions. The
+first is to [reduce the time-to-live](configure-replication-zones.html)
+(TTL) for the zone, which will cause garbage collection to clean up
+deleted rows more frequently. Second, unlike `DELETE`,
+[truncate](truncate.html) immediately deletes the entire table, so
+consider if you can use `TRUNCATE` instead.
+
+## Select Performance on Deleted Rows
+
+Queries that scan across tables that have lots of deleted rows will
+have to scan over deletions that have not yet been garbage
+collected. Certain database usage patterns that frequently scan over
+and delete lots of rows will want to reduce the
+[time-to-live](configure-replication-zones.html) values to clean up
+deleted rows more frequently.
+
 ## Examples
 
 ### Delete All Rows
