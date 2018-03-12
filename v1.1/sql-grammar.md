@@ -21,4 +21,17 @@ a[name]:focus {
 This page describes the full CockroachDB SQL grammar. However, as a starting point, it's best to reference our <a href="sql-statements.html">SQL statements pages</a> first, which provide detailed explanations and examples.
 {{site.data.alerts.end}}
 
+{% comment %}
+TODO: clean up the SQL diagrams not to link to these missing nonterminals.
+{% endcomment %}
+<a id="col_label"></a>
+<a id="column_constraints"></a>
+<a id="column_name"></a>
+<a id="fk_column_name"></a>
+<a id="interleave_prefix"></a>
+<a id="limit_val"></a>
+<a id="offset_val"></a>
+<a id="ref_column_name"></a>
+<a id="timestamp"></a>
+
 <div>{% include sql/{{ page.version.version }}/diagrams/grammar.html %}</div>
