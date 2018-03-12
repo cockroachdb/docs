@@ -120,7 +120,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 #### Auto-Included Content
 
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
+Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page includes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 
@@ -131,7 +131,7 @@ New and changed features should be called out in the documentation using version
 - To add a version tag to a paragraph, place `<span class="version-tag">New in vX.X:</span>` at the start of the paragraph, e.g:
 
     ```
-    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global priveleges.
+    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global privileges.
     ```
 
 - To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, e.g.:

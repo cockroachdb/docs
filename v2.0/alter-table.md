@@ -23,7 +23,7 @@ Subcommand | Description
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns.
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.
 [`RENAME TABLE`](rename-table.html) | Change the names of tables.
-`SPLIT AT` | *(Documentation pending)* Potentially improve performance by identifying ideal locations to split data in the key-value layer.
+[`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table.
 
 ## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
 
