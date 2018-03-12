@@ -4,9 +4,34 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: false
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan to execute [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statements. You can then use this information to optimize those queries.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](#explainable-statements). You can then use this information to optimize the query.
 
 <div id="toc"></div>
+
+## Explainable Statements
+
+You can `EXPLAIN` on the following statements:
+
+- [`ALTER USER`](sql-grammar.html#alter_user_stmt), [`ALTER TABLE`](alter-table.html), [`ALTER INDEX`](alter-index.html), [`ALTER VIEW`](alter-view.html), [`ALTER DATABASE`](alter-database.html), [`ALTER SEQUENCE`](alter-sequence.html)
+- [`BACKUP`](backup.html)
+- [`CANCEL JOB`](cancel-job.html), [`CANCEL QUERY`](cancel-query.html)
+- [`CREATE DATABASE`](create-database.html), [`CREATE INDEX`](create-index.html), [`CREATE TABLE`](create-table.html), [`CREATE TABLE AS`](create-table-as.html), [`CREATE USER`](create-user.html), [`CREATE VIEW`](create-view.html), [`CREATE SEQUENCE`](create-sequence.html)
+- [`DELETE`](delete.html)
+- [`DROP DATABASE`](drop-database.html), [`DROP INDEX`](drop-index.html), [`DROP SEQUENCE`](drop-sequence.html), [`DROP TABLE`](drop-table.html), [`DROP USER`](drop-user.html), [`DROP VIEW`](drop-view.html)
+- [`EXECUTE`](sql-grammar.html#execute_stmt)
+- `EXPLAIN`
+- [`IMPORT`](import.html)
+- [`INSERT`](insert.html)
+- [`PAUSE JOB`](pause-job.html)
+- [`RESET`](reset-vars.html)
+- [`RESTORE`](restore.html)
+- [`RESUME JOB`](resume-job.html)
+- [`SELECT`](select.html)
+- [`SET`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SHOW BACKUP`](show-backup.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE TABLE`](show-create-table.html), [`SHOW CREATE VIEW`](show-create-view.html), [`SHOW CREATE SEQUENCE`](show-create-sequence.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW JOBS`](show-jobs.html), [`SHOW QUERIES`](show-queries.html), [`SHOW SESSIONS`](show-sessions.html), [`SHOW TABLES`](show-tables.html), [`SHOW TRACE`](show-trace.html), [`SHOW USERS`](show-users.html), [`SHOW HISTOGRAM`](sql-grammar.html#show_histogram_stmt)
+- [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
 
 ## Query Optimization
 
@@ -26,7 +51,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/explain.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/explain.html %}</section>
 
 ## Required Privileges
 
@@ -41,7 +66,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 | `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
 | `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
 | `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statement you want detail about. |
+| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -346,8 +371,23 @@ at (and including) 4 and stopping before 6.
 
 ## See Also
 
+- [`ALTER TABLE`](alter-table.html)
+- [`ALTER SEQUENCE`](alter-sequence.html)
+- [`BACKUP`](backup.html)
+- [`CANCEL JOB`](cancel-job.html)
+- [`CREATE DATABASE`](create-database.html)
+- [`DROP DATABASE`](drop-database.html)
+- [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [`IMPORT`](import.html)
 - [Indexes](indexes.html)
-- [`DELETE`](delete.html)
 - [`INSERT`](insert.html)
+- [`PAUSE JOB`](pause-job.html)
+- [`RESET`](reset-vars.html)
+- [`RESTORE`](restore.html)
+- [`RESUME JOB`](resume-job.html)
 - [`SELECT`](select.html)
+- [`SET`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SHOW COLUMNS`](show-columns.html)
 - [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
