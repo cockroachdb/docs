@@ -10,14 +10,6 @@ This page describes newly identified limitations in the CockroachDB v1.1 release
 
 ## New Limitations
 
-### Enterprise restores after creating, dropping, or truncating tables
-
-{{site.data.alerts.callout_info}}As of <a href="../releases/v1.1.1.html">v1.1.1</a>, it is no longer possible to create an incremental backup if a table has been created, dropped, or truncated after the full backup. This prevents attempts to restore from a broken backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
-
-It is not possible to perform an [enterprise `RESTORE`](restore.html) from a full [`BACKUP`](backup.html) with incremental backups if you [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) any tables after the full backup. Attempting to restore in this case will fail with an error.
-
-As a workaround, any time you create, drop, or truncate a table, perform another full `BACKUP` of your cluster.
-
 ### Available capacity metric in the Admin UI
 
 If you are running multiple nodes on a single machine (not recommended) and didnt' specified the maximum allocated storage capacity for each node using the [`--store`](start-a-node.html#store) flag, the available capacity shown in the [**Capacity**](admin-ui-storage-dashboard.html#capacity) graph in the Admin UI is incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as an available store for each node, while in reality, only one hard disk is available for all nodes. The total available capacity is then calculated as the hard disk size multiplied by the number of nodes on the machine.
