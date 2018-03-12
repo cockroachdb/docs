@@ -26,7 +26,7 @@ module JekyllVersions
     end
 
     def url
-      page.url.split('/')
+      page.url.split('/', -1)
         .map { |p| p.gsub(Version::REGEX, version.slug) }
         .join('/')
     end
