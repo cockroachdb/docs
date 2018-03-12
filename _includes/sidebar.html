@@ -194,7 +194,7 @@
             {% for v in page.versions %}
               <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
                 <a
-                {% if v.url %}href="{{ v.url | relative_url }}"
+                {% if v.url %}href="{{ v.url | relative_url }}/"
                 {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
                   {{ v.version.name }}
                   {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}

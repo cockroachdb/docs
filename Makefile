@@ -41,7 +41,8 @@ serve: bootstrap
 
 .PHONY: test
 test: bootstrap
-	bundle exec rake htmlproofer
+	go get -u github.com/cockroachdb/htmltest
+	htmltest
 
 bootstrap: Gemfile.lock
 	gem install bundler

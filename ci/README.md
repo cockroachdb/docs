@@ -10,11 +10,15 @@ Versioning the build script along with the code means we can isolate build
 script changes to one branch and atomically update the configuration when that
 branch merges.
 
+To save time, pull requests don't check external links. Those are instead
+checked every night when TeamCity triggers an automatic run of the `nightly`
+script in this repository.
+
 The `builder` script and the `Dockerfile` configure a Docker image,
 `cockroachdb/docs-builder`, that bundles all the necessary dependencies to run
-the `pull-request` script. If you're familiar with the [cockroachdb/cockroach]
-repository, `builder` operates much like the [CockroachDB `build/builder`
-script][cockroachdb-builder].
+the `nightly` and `pull-request` scripts. If you're familiar with the
+[cockroachdb/cockroach] repository, `builder` operates much like the
+[CockroachDB `build/builder` script][cockroachdb-builder].
 
 [cockroachdb/cockroach]: https://github.com/cockroachdb/cockroach
 [cockroachdb-builder]: https://github.com/cockroachdb/cockroach/blob/master/build/builder.sh
@@ -32,7 +36,7 @@ script][cockroachdb-builder].
 3. Locally test your changes:
 
     ```shell
-    $ COCKROACH_DOCS_BUILDER_VERSION=latest ci/builder run [bundle exec jekyll build]
+    $ COCKROACH_DOCS_BUILDER_VERSION=latest ci/builder run htmltest
     ````
 
 4. Push your changes to the Docker repository.
