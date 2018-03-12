@@ -4,7 +4,7 @@ summary: Use CockroachDB's CloudFormation template to deploy a Kubernetes-orches
 toc: false
 ---
 
-This page shows you the easiest way to test an insecure, multi-node CockroachDB cluster, using CockroachDB's [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template to simplify setup and [Kubernetes](https://kubernetes.io/) to automate deployment, scaling, maintenance, and load balancing of client workloads.
+This page shows you the easiest way to test an insecure, multi-node CockroachDB cluster, using CockroachDB's [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template to simplify setup and [Kubernetes](https://kubernetes.io/) to automate deployment, maintenance, and load balancing of client workloads.
 
 {{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}}
 
@@ -172,31 +172,6 @@ To see this in action:
     You can also select the **Runtime** dashboard and see the restarting of the node in the **Live Node Count** graph.
 
     <img src="{{ 'images/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-## Step 5. Scale the cluster
-
-To scale the cluster, you need to first adjust the AWS Auto Scaling group size and then the Kubernetes replica count.
-
-1. In the **Resources** section of the CloudFormation UI, find **K8sStack** and click the corresponding **Physical ID** link.
-
-2. In the **Resources** section of the new screen, find **K8sNodeGroup** and click the corresponding **Physical ID** link.
-
-3. In the final screen, click **Edit**, update the **Desired** field to the new number of nodes you want in the cluster, and click **Save**.
-
-4. In the terminal where you SSHed into the Kubernetes master node, use `kubectl` to scale your cluster to match your Auto Scaling group size:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl scale statefulsets cockroachdb --replicas=5
-    ~~~
-
-    ~~~
-    statefulset "cockroachdb" scaled
-    ~~~
-
-5. In the Admin UI, check the **Replicas per Node** graph again to see how CockroachDB automatically rebalances your data evenly across all nodes.
-
-    <img src="{{ 'images/cloudformation_admin_ui_rebalancing.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 6. Stop the cluster
 
