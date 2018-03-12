@@ -861,7 +861,7 @@
     "title": "Deploy",
     "items": [
       {
-        "title": "Production Notes",
+        "title": "Production Checklist",
         "urls": [
           "/${VERSION}/recommended-production-settings.html"
         ]
