@@ -606,6 +606,12 @@
             ]
           },
           {
+            "title": "<code>SPLIT AT</code>",
+            "urls": [
+              "/${VERSION}/split-at.html"
+            ]
+          },
+          {
             "title": "<code>TRUNCATE</code>",
             "urls": [
               "/${VERSION}/truncate.html"
