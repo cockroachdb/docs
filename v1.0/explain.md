@@ -54,7 +54,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 | `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
 | `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
 | `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statement you want detail about. |
+| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -283,8 +283,13 @@ However, in the following query, column `k` is sorted in the `primary` index, so
 
 ## See Also
 
-- [Indexes](indexes.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`CREATE DATABASE`](create-database.html)
+- [`CREATE TABLE`](create-table.html)
 - [`DELETE`](delete.html)
+- [Indexes](indexes.html)
 - [`INSERT`](insert.html)
 - [`SELECT`](select.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`SHOW CREATE TABLE`](show-create-table.html)
 - [`UPDATE`](update.html)

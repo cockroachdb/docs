@@ -65,7 +65,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 | `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
 | `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
 | `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statement you want detail about. |
+| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -294,8 +294,27 @@ However, in the following query, column `k` is sorted in the `primary` index, so
 
 ## See Also
 
-- [Indexes](indexes.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`BACKUP`](backup.html)
+- [`CANCEL JOB`](cancel-job.html)
+- [`CANCEL QUERY`](cancel-query.html)
+- [`CREATE DATABASE`](create-database.html)
+- [`CREATE TABLE`](create-table.html)
 - [`DELETE`](delete.html)
+- [`DROP DATABASE`](drop-database.html)
+- [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [Indexes](indexes.html)
 - [`INSERT`](insert.html)
+- [`IMPORT`](import.html)
+- [`PAUSE JOB`](pause-job.html)
+- [`RESET SESSION`](reset-vars.html)
+- [`RESET CLUSTER SETTINGS`](reset-cluster-setting.html)
+- [`RESTORE`](restore.html)
+- [`RESUME JOB`](resume-job.html)
 - [`SELECT`](select.html)
+- [`SET SESSION`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`SHOW CREATE TABLE`](show-create-table.html)
 - [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)

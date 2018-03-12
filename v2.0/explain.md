@@ -66,7 +66,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 | `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
 | `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
 | `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [`DELETE`](delete.html), [`INSERT`](insert.html), [`SELECT`](select.html) or [`UPDATE`](update.html) statement you want detail about. |
+| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -371,8 +371,23 @@ at (and including) 4 and stopping before 6.
 
 ## See Also
 
+- [`ALTER TABLE`](alter-table.html)
+- [`ALTER SEQUENCE`](alter-sequence.html)
+- [`BACKUP`](backup.html)
+- [`CANCEL JOB`](cancel-job.html)
+- [`CREATE DATABASE`](create-database.html)
+- [`DROP DATABASE`](drop-database.html)
+- [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [`IMPORT`](import.html)
 - [Indexes](indexes.html)
-- [`DELETE`](delete.html)
 - [`INSERT`](insert.html)
+- [`PAUSE JOB`](pause-job.html)
+- [`RESET`](reset-vars.html)
+- [`RESTORE`](restore.html)
+- [`RESUME JOB`](resume-job.html)
 - [`SELECT`](select.html)
+- [`SET`](set-vars.html)
+- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SHOW COLUMNS`](show-columns.html)
 - [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
