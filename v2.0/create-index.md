@@ -96,7 +96,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 ~~~ sql
-> CREATE INDEX ON users USING GIN(profile jsonb_path_ops);
+> CREATE INDEX ON users USING GIN (profile);
 ~~~
 
 ### Store Columns

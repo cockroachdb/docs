@@ -13,7 +13,10 @@ toc_not_nested: true
 
 Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, schemaless data like `JSONB` cannot be queried without a full table scan, since it does not adhere to ordinary value prefix comparison operators. `JSONB` needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
 
-Inverted indexes filter on components of tokenizable data. The `JSONB` data type is tokenized by key-value pairs.
+Inverted indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
+
+- **Objects** - Collections of key-value pairs where each key-value pair is a token.
+- **Arrays** - Ordered lists of values where every value in the array is a token.
 
 For example, take the following `JSONB` value in column `person`:
 
@@ -54,7 +57,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 - Using the following PostgreSQL-compatible syntax:
 
    ~~~ sql
-   > CREATE INDEX <optional name> ON <table> USING GIN(<column> jsonb_path_ops);
+   > CREATE INDEX <optional name> ON <table> USING GIN (<column>);
    ~~~
 
 ### Selection
