@@ -148,25 +148,22 @@ Consider a global online learning portal, RoachLearn, that has a database contai
 
 We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax. 
 
-#### Step 1: Set the enterprise license
+#### Step 1: Start each node with its datacenter location specified in the `--locality` flag:
+
+~~~ shell
+# Start the node in the US datacenter:
+$ cockroach start --insecure --locality=region=us-1  --store=node1 --host=<node1 hostname> --port=26257 --http-port=8080 --join=<node1 hostname>:26257,<node2 hostname>:26258
+
+# Start the node in the AUS datacenter:
+$ cockroach start --insecure --locality=region=aus-1 --store=node2 --host=<node2 hostname> --port=26258 --http-port=8081 --join=<node1 hostname>:26257,<node2 hostname>:26258
+~~~
+
+#### Step 2: Set the enterprise license
 
 To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
 
-#### Step 2: Start each node with its datacenter location specified in the `--locality` flag:
-
-{% include copy-clipboard.html %} 
-~~~ shell
-# Start the node in the US datacenter:
-$ cockroach start --insecure --host=node1 --locality=datacenter=us-1
-
-# Start the node in the AUS datacenter:
-$ cockroach start --insecure --host=node2 --locality=datacenter=aus-1 \
---join=node1:27257
-~~~
-
 #### Step 3: Create a table with the appropriate partitions:
 
-{% include copy-clipboard.html %} 
 ~~~ sql
 > CREATE TABLE students_by_list (
     id SERIAL,
@@ -183,18 +180,16 @@ $ cockroach start --insecure --host=node2 --locality=datacenter=aus-1 \
 
 #### Step 4: Create corresponding zone configurations:
 
-{% include copy-clipboard.html %} 
 ~~~ shell
-$ cat north_america.zone.yml
+$ cat > north_america.zone.yml
 constraints: [+datacenter=us1]
 
-$ cat australia.zone.yml
+$ cat > australia.zone.yml
 constraints: [+datacenter=au1]
 ~~~
 
 #### Step 5: Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %} 
+ 
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_list.north_america --insecure  -f north_america.zone.yml
 $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
@@ -210,15 +205,14 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 
 #### Step 2: Start each node with the appropriate storage device specified in the `--store` flag:
 
-{% include copy-clipboard.html %} 
 ~~~ shell
-$ cockroach start --store=path=/mnt/crdb,attrs=ssd
-$ cockroach start --store=path=/mnt/crdb,attrs=hdd
+$ cockroach start --insecure --attrs=ssd --store=node1 --host=<node1 hostname> --port=26257 --http-port=8080 --join=<node1 hostname>:26257,<node2 hostname>:26258
+
+$ cockroach start --insecure --attrs=hdd --store=node2 --host=<node2 hostname> --port=26258 --http-port=8081 --join=<node1 hostname>:26257,<node2 hostname>:26258
 ~~~
 
 #### Step 3: Create a table with the appropriate partitions:
-
-{% include copy-clipboard.html %} 
+ 
 ~~~ sql
 > CREATE TABLE students_by_range (
    id SERIAL,
@@ -233,19 +227,17 @@ $ cockroach start --store=path=/mnt/crdb,attrs=hdd
 ~~~
 
 #### Step 4: Create corresponding zone configurations:
-
-{% include copy-clipboard.html %} 
+ 
 ~~~ shell
-$ cat current.zone.yml
+$ cat > current.zone.yml
 constraints: [+ssd]
 
-$ cat graduated.zone.yml
+$ cat > graduated.zone.yml
 constraints: [+hdd]
 ~~~
 
 #### Step 5: Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %} 
+ 
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_range.current --insecure  -f current.zone.yml
 $ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f graduated.zone.yml
@@ -265,25 +257,23 @@ Going back to RoachLearn's scenario, suppose we want to do all of the following:
 
 We can achieve this by partitioning the table first by location and then by date.
 
-#### Step 1: Set the enterprise license
-
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
-
-#### Step 2: Start each node with the appropriate storage device specified in the `--store` flag:
-
-{% include copy-clipboard.html %} 
+#### Step 1: Start each node with the appropriate storage device specified in the `--store` flag:
+ 
 ~~~ shell
 # Start the node in the US datacenter:
 $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 --store=path=/mnt/crdb,attrs=ssd,hdd
 
 # Start the node in the AUS datacenter:
 $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=aus-1 --store=path=/mnt/crdb,attrs=ssd,hdd \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 ~~~
+
+#### Step 2: Set the enterprise license
+
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
 
 #### Step 3: Create a table with the appropriate partitions:
 
-{% include copy-clipboard.html %} 
 ~~~ sql
 > CREATE TABLE students (
     id SERIAL, 
@@ -302,24 +292,22 @@ Subpartition names must be unique within a table. In our example, even though `g
 
 #### Step 4: Create corresponding zone configurations:
 
-{% include copy-clipboard.html %} 
 ~~~ shell
-$ cat current_us.zone.yml
+$ cat > current_us.zone.yml
 constraints: [+ssd,+datacenter=us1]
 
-$ cat graduated_us.zone.yml
+$ cat > graduated_us.zone.yml
 constraints: [+hdd,+datacenter=us1]
 
-$ cat current_au.zone.yml
+$ cat > current_au.zone.yml
 constraints: [+ssd,+datacenter=au1]
 
-$ cat graduated_au.zone.yml
+$ cat > graduated_au.zone.yml
 constraints: [+hdd,+datacenter=au1]
 ~~~
 
 #### Step 5: Apply zone configurations to corresponding partitions:
 
-{% include copy-clipboard.html %} 
 ~~~ shell
 $ cockroach zone set roachlearn.students.current_us --insecure -f current_us.zone.yml
 $ cockroach zone set roachlearn.students.graduated_us --insecure -f graduated_us.zone.yml
@@ -332,7 +320,6 @@ $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au
 
 Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the `ALTER TABLE` command. 
 
-{% include copy-clipboard.html %} 
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'), 
@@ -342,8 +329,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 ### Unpartition a Table
 
 You can remove the partitions on a table by using the `PARTITION BY NOTHING` syntax with the `ALTER TABLE` command:
-
-{% include copy-clipboard.html %} 
+ 
 ~~~ sql
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
