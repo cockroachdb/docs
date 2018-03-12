@@ -135,7 +135,7 @@ To retrieve a specific field from a `JSONB` value, use the `->` operator:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->'first_name',user_profile->`location` FROM users;
+> SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
 ~~~
 +----------------------------+--------------------------+
@@ -150,7 +150,7 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->>'first_name', user_profile->>`location` FROM users;
+> SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~
 ~~~
 +-----------------------------+---------------------------+
