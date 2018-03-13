@@ -52,7 +52,7 @@ To see which indexes CockroachDB is using for a given query, you can use the [`E
 > EXPLAIN SELECT col1 FROM tbl1;
 ~~~
 
-If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](select.html#force-index-selection-index-hints):
+If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](select.html#force-index-selection):
 
 ~~~ sql
 > SELECT col1 FROM tbl1@idx1;
