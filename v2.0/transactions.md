@@ -61,7 +61,7 @@ Type | Description
 
 Transactions in CockroachDB lock data resources that are written during their execution. In the event that a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. CockroachDB implements a distributed deadlock detection algorithm to discover dependency cycles. Deadlocks are resolved by allowing transactions with higher priority to abort their dependencies. Transactions which are aborted to avoid deadlock must be retried.
 
-Transactions may require retries if they experience deadlock or read/write contention with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
+Transactions may require retries if they experience deadlock or read/write contention with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability). (However, it's possible to mitigate read-write conflicts by performing reads using [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).)
 
 There are two cases for handling transaction retries:
 
