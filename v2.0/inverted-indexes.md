@@ -108,7 +108,7 @@ Now, let's run a query:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM users where user_profile @> '{"location":"NYC"}';
+> SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
@@ -128,14 +128,14 @@ The query took 11.406928ms. An inverted index will optimize the performance. Let
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE INVERTED INDEX user_details ON users(user_profile);
+> CREATE INVERTED INDEX user_details ON users(user_profile);
 ~~~
 
 Now, run the query again:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM users where user_profile @> '{"location":"NYC"}';
+> SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
