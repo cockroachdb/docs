@@ -18,7 +18,7 @@ When you stop a node, it performs the following steps:
 
 - Finishes in-flight requests. Note that this is a best effort that times out after the duration specified by the `server.shutdown.query_wait` [cluster setting](cluster-settings.html).
 - Transfers all *range leases* and Raft leadership to other nodes.
-- Gossips its draining state to the cluster, so that other nodes do not try to distribute query planning to the draining node, and no leases are transferred to the draining node. Note that this is a best effort that times out at the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html), so other nodes may not receive the gossip info in time.
+- Gossips its draining state to the cluster, so that other nodes do not try to distribute query planning to the draining node, and no leases are transferred to the draining node. Note that this is a best effort that times out after the duration specified by the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html), so other nodes may not receive the gossip info in time.
 - No new ranges are transferred to the draining node, to avoid a possible loss of quorum after the node shuts down.
 
 If the node then stays offline for a certain amount of time (5 minutes by default), the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
