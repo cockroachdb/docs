@@ -38,7 +38,11 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 ## Step 5. Run the Python code
 
 The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) to map Python-specific objects to SQL operations. Specifically, `Base.metadata.create_all(engine)` creates an `accounts` table based on the Account class, `session.add_all([Account(),...
-])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed. Also note that the [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL.
+])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
+
+{{site.data.alerts.callout_info}}
+The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
+{{site.data.alerts.end}}
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
