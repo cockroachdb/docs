@@ -22,23 +22,6 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {% include settings/v2.0/settings.md %}
 
-<!-- Add this section back in once `system.settings` has been fleshed out.
-
-## Settings
-
-types:
-
-settings-registry.go
-
-s = string
-b = boolean
-i = int
-f = float
-d = duration
-z = byte-size (can set them with set cluster setting = 32 MiB)
-
--->
-
 ## View Current Cluster Settings
 
 Use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement.
