@@ -653,6 +653,12 @@
             ]
           },
           {
+            "title": "Ordering Query Results",
+            "urls": [
+              "/${VERSION}/query-order.html"
+            ]
+          },          
+          {
             "title": "Value Expressions",
             "urls": [
               "/${VERSION}/sql-expressions.html"

@@ -26,7 +26,7 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | `target_elem` | The name of the column you want select (`*` to retrieve all columns), the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use. |
 | `AS col_label` | In the retrieved table, change the column label to `col_label`. |
 | `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.|
-| `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/). |
+| `index_name` | The name of an [explicit index](#forced-index-selection) to use to access the table. Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/). |
 | `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).<br/><br/>Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. |
 | `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).  |
 | `GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`. |
@@ -35,9 +35,10 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 | `INTERSECT` | Only retrieve rows that exist in both the preceding and following `SELECT` statements. Returns distinct values. |
 | `EXCEPT` | Only retrieve rows that are in the preceding `SELECT` statement but not in the following `SELECT` statement.  Returns distinct values.|
 | `ALL` | Include duplicate rows in the returned values of `UNION`, `INTERSECT`, or `EXCEPT`. |
-| `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column.<br><br>When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.|
+| `ORDER BY sortby_list` | Sort retrieved rows in the order specified by `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column. See [Ordering Query Results](query-order.html) for more details. |
 | `LIMIT limit_val` | Only retrieve `limit_val` number of rows. <br><br>For PostgreSQL compatibility, CockroachDB also supports `FETCH FIRST limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases for `LIMIT`. If `limit_val` is omitted, then one row is fetched.|
 | `OFFSET offset_val` | Do not include the first `offset_value` number of rows.<br/><br/>`OFFSET` is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.|
+
 ## Examples
 
 ### Choose Columns
@@ -549,9 +550,9 @@ OFFSET 5;
 +----+------------------+
 ~~~
 
-### Force Index Selection (Index Hints)
+### Forced Index Selection
 
-By using "index hints", you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for your `SELECT` statement.
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for your `SELECT` statement.
 
 {{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a <code>SELECT</code> statement.{{site.data.alerts.end}}
 
