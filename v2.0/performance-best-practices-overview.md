@@ -210,4 +210,11 @@ This query retrieves all data stored in the table. A more efficient query would 
 This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for Large Tables
+
 `SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead.
+
+### Use `AS OF SYSTEM TIME` to Decrease Conflicts with Long-Running Queries
+
+If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`...AS OF SYSTEM TIME` clause](select.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
+
+However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.

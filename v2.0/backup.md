@@ -68,7 +68,7 @@ For best performance, we also recommend always starting backups with a specific 
 > BACKUP...AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
 
-This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries).
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
 ## Automating Backups
 
