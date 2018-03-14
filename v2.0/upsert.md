@@ -14,7 +14,7 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 - When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
-- A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements. 
+- A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 
 ## Required Privileges
 
@@ -28,10 +28,11 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 Parameter | Description
 ----------|------------
-`qualified_name` | The name of the table.
-`AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`qualified_name_list` | A comma-separated list of column names, in parentheses.
-`select_stmt` | A [selection clause](selection-clauses.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`opt_with_clause` | Docs coming soon.
+`table_name` | The name of the table.
+`AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
+`insert_column_list` | A comma-separated list of column names, in parentheses.
+`select_stmt` | A [selection clause](selection-clauses.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`insert_column_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
 `RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
@@ -82,7 +83,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert Multiple Rows 
+### Upsert Multiple Rows
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 

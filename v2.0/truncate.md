@@ -12,7 +12,7 @@ The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/truncate.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/truncate.html %}</section>
 
 ## Required Privileges
 
@@ -22,7 +22,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 
 Parameter | Description
 ----------|------------
-`table_name` | The [`qualified_name`](sql-grammar.html#qualified_name) of the table to truncate.
+`table_name` | The name of the table to truncate.
 `CASCADE` | Truncate all tables with [Foreign Key](foreign-key.html) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key](foreign-key.html) dependencies on it.
 
