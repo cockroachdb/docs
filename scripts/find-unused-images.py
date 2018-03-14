@@ -14,15 +14,10 @@ for root, dirs, files in os.walk("../images", onerror=_error):
         images.append(f)
 print("Total # of image files:", len(images))
 
-dirs = list()
-for path, subdirs, files in os.walk("../", onerror=_error):
-    dirs.append(path)
-
 docs = list()
-for d in dirs:
-    for path, dirs, files in os.walk(d, onerror=_error):
-        for name in files:
-            docs.append(os.path.join(path, name))
+for path, dirs, files in os.walk("../", onerror=_error):
+    for name in files:
+        docs.append(os.path.join(path, name))
 
 unused_images = images
 for doc in docs:
