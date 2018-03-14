@@ -195,6 +195,33 @@ $ cockroach zone set roachlearn.students_by_list.north_america --insecure  -f no
 $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
 
+#### Step 6: Verify table partitions
+
+~~~ sql
+> show testing_ranges from table students_by_list;
+~~~
+
+You should see the following output:
+
+~~~ sql
++-----------------+-----------------+----------+----------+--------------+
+|    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
++-----------------+-----------------+----------+----------+--------------+
+| NULL            | /"AU"           |      251 | {1,2,3}  |            1 |
+| /"AU"           | /"AU"/PrefixEnd |      257 | {1,2,3}  |            1 |
+| /"AU"/PrefixEnd | /"CA"           |      258 | {1,2,3}  |            1 |
+| /"CA"           | /"CA"/PrefixEnd |      252 | {1,2,3}  |            1 |
+| /"CA"/PrefixEnd | /"NZ"           |      253 | {1,2,3}  |            1 |
+| /"NZ"           | /"NZ"/PrefixEnd |      256 | {1,2,3}  |            1 |
+| /"NZ"/PrefixEnd | /"US"           |      259 | {1,2,3}  |            1 |
+| /"US"           | /"US"/PrefixEnd |      254 | {1,2,3}  |            1 |
+| /"US"/PrefixEnd | NULL            |      255 | {1,2,3}  |            1 |
++-----------------+-----------------+----------+----------+--------------+
+(9 rows)
+
+Time: 7.209032ms
+~~~
+
 ### Define Table Partitions by Range
 
 Consider the table of students of the global online learning portal, RoachLearn. Suppose we want to store the data of current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
@@ -243,6 +270,26 @@ $ cockroach zone set roachlearn.students_by_range.current --insecure  -f current
 $ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f graduated.zone.yml
 ~~~
 
+#### Step 6: Verify table partitions
+
+~~~ sql
+> show testing_ranges from table students_by_range;
+~~~
+
+You should see the following output:
+
+~~~ sql
++-----------+---------+----------+----------+--------------+
+| Start Key | End Key | Range ID | Replicas | Lease Holder |
++-----------+---------+----------+----------+--------------+
+| NULL      | /17393  |      244 | {1,2,3}  |            1 |
+| /17393    | NULL    |      242 | {1,2,3}  |            1 |
++-----------+---------+----------+----------+--------------+
+(2 rows)
+
+Time: 5.850903ms
+~~~
+
 ### Define Subpartitions on a Table
 
 A list partition can itself be partitioned, forming a subpartition. There is no limit on the number of levels of subpartitioning; that is, list partitions can be infinitely nested.
@@ -266,6 +313,12 @@ $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1 
 # Start the node in the AUS datacenter:
 $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=aus-1 --store=path=/mnt/crdb,attrs=ssd,hdd \
 --join=<node1 hostname>:26257
+~~~
+
+Initialize the cluster
+
+~~~ shell
+$ cockroach init --insecure --host=<node1 hostname>
 ~~~
 
 #### Step 2: Set the enterprise license
@@ -314,6 +367,37 @@ $ cockroach zone set roachlearn.students.graduated_us --insecure -f graduated_us
 
 $ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zone.yml
 $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au.zone.yml
+~~~
+
+#### Step 6: Verify table partitions
+
+~~~ sql
+> show testing_ranges from table students;
+~~~
+
+You should see the following output:
+
+~~~ sql
++-----------------+-----------------+----------+----------+--------------+
+|    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
++-----------------+-----------------+----------+----------+--------------+
+| NULL            | /"AU"           |      260 | {1,2,3}  |            1 |
+| /"AU"           | /"AU"/17393     |      268 | {1,2,3}  |            1 |
+| /"AU"/17393     | /"AU"/PrefixEnd |      266 | {1,2,3}  |            1 |
+| /"AU"/PrefixEnd | /"CA"           |      267 | {1,2,3}  |            1 |
+| /"CA"           | /"CA"/17393     |      265 | {1,2,3}  |            1 |
+| /"CA"/17393     | /"CA"/PrefixEnd |      261 | {1,2,3}  |            1 |
+| /"CA"/PrefixEnd | /"NZ"           |      262 | {1,2,3}  |            3 |
+| /"NZ"           | /"NZ"/17393     |      284 | {1,2,3}  |            3 |
+| /"NZ"/17393     | /"NZ"/PrefixEnd |      282 | {1,2,3}  |            3 |
+| /"NZ"/PrefixEnd | /"US"           |      283 | {1,2,3}  |            3 |
+| /"US"           | /"US"/17393     |      281 | {1,2,3}  |            3 |
+| /"US"/17393     | /"US"/PrefixEnd |      263 | {1,2,3}  |            1 |
+| /"US"/PrefixEnd | NULL            |      264 | {1,2,3}  |            1 |
++-----------------+-----------------+----------+----------+--------------+
+(13 rows)
+
+Time: 11.586626ms
 ~~~
 
 ### Repartition a Table
