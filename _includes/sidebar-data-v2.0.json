@@ -157,7 +157,13 @@
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
-          }
+          },
+          {
+            "title": "JSON Support",
+            "urls": [
+              "/${VERSION}/demo-json-support.html"
+            ]
+          },
         ]
       }
     ]
