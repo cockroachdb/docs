@@ -2,7 +2,6 @@
 title: Inverted Indexes
 summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data.
 toc: false
-toc_not_nested: true
 ---
 
 <span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate schemaless data (i.e., [`JSONB`](jsonb.html)).
@@ -11,7 +10,7 @@ toc_not_nested: true
 
 ## How Do Inverted Indexes Work?
 
-Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, schemaless data like `JSONB` cannot be queried without a full table scan, since it does not adhere to ordinary value prefix comparison operators. `JSONB` needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
+Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, schemaless data like [`JSONB`](jsonb.html) cannot be queried without a full table scan, since it does not adhere to ordinary value prefix comparison operators. `JSONB` needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
 
 Inverted indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
 
@@ -28,7 +27,7 @@ For example, take the following `JSONB` value in column `person`:
   "address": {
     "state": "NY",
     "postalCode": "10021"
-  }
+  },
   "cars": [“Subaru”,
      “Honda”]
 }
@@ -46,7 +45,7 @@ An inverted index for this object would have an entry per component, mapping it 
 "cars" : "Honda"
 ~~~
 
-This allows us to search based on subcomponents.
+This lets you to search based on subcomponents.
 
 ### Creation
 
@@ -56,9 +55,9 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
 - Using the following PostgreSQL-compatible syntax:
 
-   ~~~ sql
-   > CREATE INDEX <optional name> ON <table> USING GIN (<column>);
-   ~~~
+    ~~~ sql
+    > CREATE INDEX <optional name> ON <table> USING GIN (<column>);
+    ~~~
 
 ### Selection
 
@@ -104,7 +103,7 @@ First, create a table and add some data:
   );
 ~~~
 
-Now, let's run a query:
+Now, let's run a query that filters on the `JSONB` column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -124,7 +123,7 @@ Now, let's run a query:
 Time: 11.406928ms
 ~~~
 
-The query took 11.406928ms. An inverted index will optimize the performance. Let's create an inverted index:
+The query took 11.406928ms. An inverted index will optimize the performance. Let's create an inverted index on the `JSONB` index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -155,6 +154,7 @@ After creating the inverted index, the query now takes 2.536174ms.
 
 ## See Also
 
+- [`JSONB`](jsonb.html)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
