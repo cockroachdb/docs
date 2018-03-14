@@ -212,9 +212,7 @@ As mentioned earlier, CockroachDB automatically replicates your data behind-the-
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
-{{site.data.alerts.callout_info}}
-{% include available-capacity-metric.md %}
-{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this <a href="known-limitations.html#available-capacity-metric-in-the-admin-ui">limitation</a>. {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
