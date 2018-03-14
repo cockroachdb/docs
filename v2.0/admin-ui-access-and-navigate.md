@@ -56,11 +56,15 @@ Metric | Description
 --------|----
 Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](#nodes-list).
 Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.
-Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.<br /><br />**Note**: {% include available-capacity-metric.md %}
+Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The number of SQL queries executed per second.
 P50 Latency | The 50th percentile of service latency. Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 P99 Latency | The 99th percentile of service latency.
+
+{{site.data.alerts.callout_info}}
+{% include available-capacity-metric.md %}
+{{site.data.alerts.end}}
 
 ### Nodes List
 
