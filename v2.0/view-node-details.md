@@ -14,8 +14,8 @@ To view details for each node in the cluster, use the `cockroach node` [command]
 
 Subcommand | Usage
 -----------|------
-`ls` | List the ID of each active node in the cluster. This does not include dead nodes or inactive nodes (i.e., nodes that have been decommissioned). To retrieve the IDS for inactive nodes, use `node status --decommision`.
-`status` | View the status of one or all nodes. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
+`ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
+`status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | <span class="version-tag">New in v1.1:</span> Decommission nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 `recommission` | <span class="version-tag">New in v1.1:</span> Recommission nodes that were accidentally decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
 
