@@ -74,9 +74,17 @@ This then lets the node primarily responsible for the range (i.e., the Leasehold
 
 #### Max Clock Offset Enforcement
 
-To ensure correctness among distributed nodes, you can identify a Maximum Clock Offset. Because CockroachDB relies on clock synchronization, nodes run a version of [Marzullo’s algorithm](http://infolab.stanford.edu/pub/cstr/reports/csl/tr/83/247/CSL-TR-83-247.pdf) amongst themselves to measure maximum clock offset within the cluster. If the configured maximum offset is exceeded by any node, it commits suicide, preventing it from potentially creating consistency issues within the cluster.
+CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), **it crashes immediately**.
+
+This avoids the risk of violating [serializable consistency](https://en.wikipedia.org/wiki/Serializability) and causing stale reads and write skews, but it's important to prevent clocks from drifting too far in the first place by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+
+### Timestamp Cache
+
+To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a Timestamp Cache, which shows the high-water mark for values being read.
+
+Whenever a write occurs, its timestamp is checked against the Timestamp Cache. If the timestamp is less than the Timestamp Cache's latest value, we attempt to move the timestamp for its transaction forward to a later time. In the case of serializable transactions, this causes them to restart in the second phase of the transaction.
 
 ### client.Txn and TxnCoordSender
 
