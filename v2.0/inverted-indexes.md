@@ -81,18 +81,19 @@ Indexes create a trade-off: they greatly improve the speed of queries, but sligh
 
 ## Example
 
-Let's see how an inverted index can optimize the performance of a query on a `JSONB` column.
-
-First, create a table and add some data:
+In this example, let's create a table with a `JSONB` column and an inverted index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     last_updated TIMESTAMP DEFAULT now(),
-    user_profile JSONB
+    user_profile JSONB,
+    INVERTED INDEX user_details (user_profile)
   );
 ~~~
+
+Then, insert a few rows a data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -103,7 +104,39 @@ First, create a table and add some data:
   );
 ~~~
 
-Now, let's run a query that filters on the `JSONB` column:
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT *, jsonb_pretty(user_profile) FROM users;
+~~~
+~~~
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+|              profile_id              |           last_updated           |                               user_profile                               |            jsonb_pretty            |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+| 81330a51-80b2-44aa-b793-1b8d84ba69c9 | 2018-03-13 18:26:24.521541+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           | {                                  |
+|                                      |                                  | "Kimball", "location": "NYC"}                                            |                                    |
+|                                      |                                  |                                                                          |     "breed": "Boston Terrier",     |
+|                                      |                                  |                                                                          |     "first_name": "Carl",          |
+|                                      |                                  |                                                                          |     "last_name": "Kimball",        |
+|                                      |                                  |                                                                          |     "location": "NYC"              |
+|                                      |                                  |                                                                          | }                                  |
+| 81c87adc-a49c-4bed-a59c-3ac417756d09 | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Ernie", "location": "Brooklyn", "status": "Looking for   | {                                  |
+|                                      |                                  | treats"}                                                                 |                                    |
+|                                      |                                  |                                                                          |     "first_name": "Ernie",         |
+|                                      |                                  |                                                                          |     "location": "Brooklyn",        |
+|                                      |                                  |                                                                          |     "status": "Looking for treats" |
+|                                      |                                  |                                                                          | }                                  |
+| ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   | {                                  |
+|                                      |                                  | "NYC", "online": true}                                                   |                                    |
+|                                      |                                  |                                                                          |     "first_name": "Lola",          |
+|                                      |                                  |                                                                          |     "friends": 547,                |
+|                                      |                                  |                                                                          |     "last_name": "Dog",            |
+|                                      |                                  |                                                                          |     "location": "NYC",             |
+|                                      |                                  |                                                                          |     "online": true                 |
+|                                      |                                  |                                                                          | }                                  |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+~~~
+
+Now, run a query that filters on the `JSONB` column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -113,44 +146,13 @@ Now, let's run a query that filters on the `JSONB` column:
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
 |              profile_id              |           last_updated           |                               user_profile                               |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
-| 079e4836-3571-4126-9632-3abc1358c226 | 2018-03-07 17:52:39.469827+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
-|                                      |                                  | "NYC", "online": true}                                                   |
-| 3a34e39f-4d32-4716-bbf1-9a50bb30b391 | 2018-03-07 17:52:39.469827+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           |
+| 81330a51-80b2-44aa-b793-1b8d84ba69c9 | 2018-03-13 18:26:24.521541+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           |
 |                                      |                                  | "Kimball", "location": "NYC"}                                            |
+| ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
+|                                      |                                  | "NYC", "online": true}                                                   |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
 (2 rows)
-
-Time: 11.406928ms
 ~~~
-
-The query took 11.406928ms. An inverted index will optimize the performance. Let's create an inverted index on the `JSONB` index:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INVERTED INDEX user_details ON users(user_profile);
-~~~
-
-Now, run the query again:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM users where user_profile @> '{"location":"NYC"}';
-~~~
-~~~
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
-|              profile_id              |           last_updated           |                               user_profile                               |
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
-| 079e4836-3571-4126-9632-3abc1358c226 | 2018-03-07 17:52:39.469827+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
-|                                      |                                  | "NYC", "online": true}                                                   |
-| 3a34e39f-4d32-4716-bbf1-9a50bb30b391 | 2018-03-07 17:52:39.469827+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           |
-|                                      |                                  | "Kimball", "location": "NYC"}                                            |
-+--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
-(2 rows)
-
-Time: 2.536174ms
-~~~
-
-After creating the inverted index, the query now takes 2.536174ms.
 
 ## See Also
 
