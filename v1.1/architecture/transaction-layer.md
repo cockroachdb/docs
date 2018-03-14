@@ -74,7 +74,7 @@ This then lets the node primarily responsible for the range (i.e., the Leasehold
 
 #### Max Clock Offset Enforcement
 
-To ensure correctness among distributed nodes, you can identify a Maximum Clock Offset. Because CockroachDB relies on clock synchronization, nodes run a version of [Marzullo’s algorithm](http://infolab.stanford.edu/pub/cstr/reports/csl/tr/83/247/CSL-TR-83-247.pdf) amongst themselves to measure maximum clock offset within the cluster. If the configured maximum offset is exceeded by any node, it commits suicide, preventing it from potentially creating consistency issues within the cluster.
+To ensure correctness among distributed nodes, you can identify a Maximum Clock Offset. Because CockroachDB relies on clock synchronization, nodes run a version of [Marzullo’s algorithm](http://infolab.stanford.edu/pub/cstr/reports/csl/tr/83/247/CSL-TR-83-247.pdf) amongst themselves to measure maximum clock offset within the cluster. If the configured maximum offset is exceeded by any node, it shuts down as soon as possible, preventing it from potentially creating consistency issues within the cluster.
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
