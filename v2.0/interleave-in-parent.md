@@ -57,13 +57,23 @@ The entire set of these relationships is referred to as the **interleaved hierar
 
 In general, reads, writes, and joins of values related through the interleave prefix are *much* faster. However, you can also improve performance with any of the following:
 
-- Filtering more columns in the interleave prefix (from left to right).<br/><br/>For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on `customer` would be fast, but filtering on `customer` *and* `order` would be faster.
+- Filtering more columns in the interleave prefix (from left to right).
+
+    For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on `customer` would be fast, but filtering on `customer` *and* `order` would be faster.
+
 - Using only tables in the interleaved hierarchy.
 
 ### Tradeoffs
 
-- In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.<br/><br/>However, an exception to this is performing operations on ranges of table values in the greatest descendant in the interleaved hierarchy that filters on all columns of the interleave prefix with constant values.<br/><br/>For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.<br/><br/>For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
+- In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.
+
+    However, an exception to this is performing operations on ranges of table values in the greatest descendant in the interleaved hierarchy that filters on all columns of the interleave prefix with constant values.
+
+    For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
+
+- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.
+
+    For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
 ## Syntax
 
@@ -74,20 +84,27 @@ In general, reads, writes, and joins of values related through the interleave pr
 | Parameter | Description |
 |-----------|-------------|
 | `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
-| `parent_table` | The name of the parent table you want to interleave the new child table into. |
-| `interleave_prefix` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). |
+| `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into. |
+| `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). |
 
 ## Requirements
 
 - You can only interleave tables when creating the child table.
-- Each child table's Primary Key must contain its parent table's Primary Key as a prefix (known as the **interleave prefix**).<br/><br/>For example, if the parent table's primary key is `(a INT, b STRING)`, the child table's primary key could be `(a INT, b STRING, c DECIMAL)`.
-  {{site.data.alerts.callout_info}}This requirement is enforced only by ensuring that the columns use the same data types. However, we recommend ensuring the columns refer to the same values by using the  <a href="foreign-key.html">Foreign Key constraint</a>.{{site.data.alerts.end}}
+
+- Each child table's Primary Key must contain its parent table's Primary Key as a prefix (known as the **interleave prefix**).
+
+    For example, if the parent table's primary key is `(a INT, b STRING)`, the child table's primary key could be `(a INT, b STRING, c DECIMAL)`.
+
+    {{site.data.alerts.callout_info}}This requirement is enforced only by ensuring that the columns use the same data types. However, we recommend ensuring the columns refer to the same values by using the  <a href="foreign-key.html">Foreign Key constraint</a>.{{site.data.alerts.end}}
+
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
 ## Recommendations
 
 - Use interleaved tables when your schema forms a hierarchy, and the Primary Key of the root table (for example, a "user ID" or "account ID") is a parameter to most of your queries.
+
 - To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](foreign-key.html) on the child table.
+
 - In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
 
 ## Examples
@@ -164,4 +181,3 @@ To better understand how CockroachDB writes key-value data, see our blog post [M
 - [`CREATE TABLE`](create-table.html)
 - [Foreign Keys](foreign-key.html)
 - [Column Families](column-families.html)
-

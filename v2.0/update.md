@@ -16,7 +16,7 @@ The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<div>{% include sql/v1.0/diagrams/update.html %}</div>
+<div>{% include sql/v2.0/diagrams/update.html %}</div>
 
 ## Parameters
 
@@ -30,6 +30,8 @@ Parameter | Description
 `column_name_list` | A comma-separated list of column names, in parentheses.
 `select_with_parens` | A comma-separated list of values or [value expressions](sql-expressions.html), in parentheses. To update values of multiple rows, use a comma-separated list of parentheses. <br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
+`ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column. See [Ordering Query Results](query-order.html) for more details.
+`LIMIT count` | Only retrieve `count` number of rows. <br><br>For compatibility with PostgreSQL, CockroachDB also supports `FETCH FIRST count ROWS ONLY` and `FETCH NEXT count ROWS ONLY` as aliases for `LIMIT`. If `count` is omitted, then one row is fetched.
 `RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
 ## Examples
