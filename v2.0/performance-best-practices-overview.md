@@ -12,7 +12,7 @@ This page provides best practices for optimizing SQL performance in CockroachDB.
 
 ### Use Multi-Row DML instead of Multiple Single-Row DMLs
 
-For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs. 
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs.
 
 For more information, see:
 
@@ -33,7 +33,7 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 
 ### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
-To bulk-insert data into a brand new table, the (experimental) [`IMPORT`](import.html) statement performs better than `INSERT`.
+To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
 ## Execute Statements in Parallel
 
@@ -41,7 +41,7 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 ## Assign Column Families
 
-A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store. 
+A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
 
 When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
@@ -52,11 +52,11 @@ When a table is created, all columns are stored as a single column family. This 
 ## Unique ID Best Practices
 
 The common approach for generating unique IDs is one of the following:
- 
+
  - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
  - Use `SERIAL` variables to generate random unique IDs
- 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table. 
+
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
 
 The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
@@ -91,7 +91,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
   	DO UPDATE SET ID3=X.ID3+1;
 
 > SELECT * FROM X WHERE ID1=1 AND ID2=1;
-  
+
 > COMMIT;
 ~~~
 
@@ -169,7 +169,7 @@ In contrast, hash joins are computationally expensive and require additional mem
 
 A merge join requires both tables to be indexed on the merge columns. In case this condition is not met, CockroachDB resorts to the slower hash joins. So while using `JOIN` on two tables, first create indexes on the tables and then use the `JOIN` operator.
 
-Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/). 
+Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 ### Drop Unused Indexes
 
@@ -187,8 +187,8 @@ Suppose the table schema is as follows:
 
 ~~~ sql
 > CREATE TABLE accounts (
-	id INT, 
-	customer STRING, 
+	id INT,
+	customer STRING,
 	address STRING,
 	balance INT
 	nominee STRING

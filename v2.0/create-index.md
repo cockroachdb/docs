@@ -81,6 +81,20 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
+#### Inverted Indexes <span class="version-tag">New in v2.0</span>
+
+[Inverted indexes](inverted-indexes.html) apply to columns of schemaless data (i.e., [`JSONB`](jsonb.html))
+
+~~~ sql
+> CREATE INVERTED INDEX ON users (profile);
+~~~
+
+The above example is equivalent to the following PostgreSQL-compatible syntax:
+
+~~~ sql
+> CREATE INDEX ON users USING GIN (profile);
+~~~
+
 ### Store Columns
 
 Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
