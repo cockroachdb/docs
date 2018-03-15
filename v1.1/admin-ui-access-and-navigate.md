@@ -53,11 +53,15 @@ Metric | Description
 --------|----
 Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](#nodes-list).
 Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.
-Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.<br><br>**Note:** If you are running multiple nodes on a single machine (not recommended), this value may be incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as separate stores for each node, while in reality, only one hard disk is used for all nodes. The Capacity Used is then displayed as the hard disk capacity used multiplied by the number of nodes on the machine.
+Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The number of SQL queries executed per second.
 P50 Latency | The 50th percentile of service latency. Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 P99 Latency | The 99th percentile of service latency.
+
+{{site.data.alerts.callout_info}}
+{% include available-capacity-metric.md %}
+{{site.data.alerts.end}}
 
 ### Nodes List
 
