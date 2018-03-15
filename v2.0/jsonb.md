@@ -52,6 +52,14 @@ Examples:
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
+## `JSONB` Functions
+
+| Function | Description | Example |
+
+## `JSONB` Operators
+
+| Operators | Description | Example |
+
 ## Examples
 
 ### Create a Table with a `JSONB` Column
