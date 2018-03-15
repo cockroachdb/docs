@@ -14,7 +14,7 @@ For information about permanently removing nodes to downsize a cluster or react 
 
 ### How It Works
 
-- Finishes in-flight requests.  Note that this is a best effort that times out after the duration specified by the `???` cluster setting (1.1.5)
+- Cancels all current sessions without waiting.
 - Transfers all *range leases* and Raft leadership to other nodes. (1.1.6)
 - Gossips its draining state to the cluster so that no leases are transferred to the draining node. Note that this is a best effort that times out after the duration specified by the `???` cluster setting, so other nodes may not receive the gossip info in time. (1.1.6)
 - No new ranges are transferred to the draining node, to avoid a possible loss of quorum after the node shuts down. (1.1.5)
