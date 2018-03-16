@@ -384,7 +384,7 @@
             ]
           },
           {
-            "title": "<code>IMPORT</code> (Beta)",
+            "title": "<code>IMPORT</code>",
             "urls": [
               "/${VERSION}/import.html"
             ]
