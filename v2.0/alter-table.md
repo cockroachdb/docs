@@ -25,6 +25,6 @@ Subcommand | Description
 [`RENAME TABLE`](rename-table.html) | Change the names of tables.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table.
 
-## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+## Viewing Schema Changes
 
 {% include custom/schema-change-view-job.md %}

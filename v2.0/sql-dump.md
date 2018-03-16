@@ -49,7 +49,7 @@ $ cockroach dump <database> <table> <flags> > dump-file.sql
 $ cockroach dump --help
 ~~~
 
-## Flags <span class="version-tag">Changed in v1.1</span>
+## Flags
 
 The `dump` command supports the following [general-use](#general) and [logging](#logging) flags.
 

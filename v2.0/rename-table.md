@@ -26,7 +26,8 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 | `current_name` | The current name of the table. |
 | `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
 
-## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+## Viewing Schema Changes
+
 {% include custom/schema-change-view-job.md %}
 
 ## Examples
@@ -69,7 +70,7 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
-~~~ sql 
+~~~ sql
 > SHOW DATABASES;
 ~~~
 ~~~

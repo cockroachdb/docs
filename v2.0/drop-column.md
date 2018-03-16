@@ -25,7 +25,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br><span class="version-tag">New in v2.0:</span> `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. |
 | `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it. |
 
-## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+## Viewing Schema Changes
 
 {% include custom/schema-change-view-job.md %}
 

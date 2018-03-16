@@ -69,7 +69,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 {{site.data.alerts.callout_info}}When a <code>RESTORE</code> fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.{{site.data.alerts.end}}
 
-## Viewing and Controlling Restore Jobs <span class="version-tag">New in v1.1</span>
+## Viewing and Controlling Restore Jobs
 
 Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -115,7 +115,7 @@ The URL for your backup's locations must use the following format:
 
 - The backup location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 - Backups stored on NFSes work only if each node in the cluster accesses the drive in the same way.
-- The file system backup location on a local node or NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then backups and restores from local directories and NFS drives are disabled. 
+- The file system backup location on a local node or NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then backups and restores from local directories and NFS drives are disabled.
 
 ### Restore Option List
 

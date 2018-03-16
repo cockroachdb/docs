@@ -78,7 +78,7 @@ To automate backups, you must have a client send the `BACKUP` statement to the c
 
 Once the backup is complete, your client will receive a `BACKUP` response.
 
-## Viewing and Controlling Backups Jobs <span class="version-tag">New in v1.1</span>
+## Viewing and Controlling Backups Jobs
 
 Whenever you initiate a backup, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -164,10 +164,10 @@ AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 Incremental backups must be based off of full backups you've already created.
 
 ~~~ sql
-> BACKUP DATABASE bank to 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' 
-AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00' 
+> BACKUP DATABASE bank to 'azure://acme-co-backup/database-bank-2017-03-29-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00'
 INCREMENTAL FROM 'azure://acme-co-backup/database-bank-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-, 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'; 
+, 'azure://acme-co-backup/database-bank-2017-03-28-incremental?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 ## See Also

@@ -17,10 +17,10 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
-[`IMPORT`](import.html) | <span class="version-tag">New in v1.1:</span> Import an entire table's data via CSV files.
+[`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select.html) | Select rows from a table.
-[`SHOW TRACE`](show-trace.html) | <span class="version-tag">New in v1.1:</span> Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
+[`SHOW TRACE`](show-trace.html) | Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
 [`UPSERT`](upsert.html) | Insert rows that do not violate uniqueness constraints; update rows that do.
@@ -82,7 +82,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
-[`DROP USER`](drop-user.html) | <span class="version-tag">New in v1.1:</span> Remove SQL users.
+[`DROP USER`](drop-user.html) | <span class="version-tag">:</span> Remove SQL users.
 [`GRANT`](grant.html) | Grant privileges to users.
 [`REVOKE`](revoke.html) | Revoke privileges from users.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
@@ -92,7 +92,7 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`RESET`](reset-vars.html) | <span class="version-tag">New in v1.1:</span> Reset a session variable to its default value.
+[`RESET`](reset-vars.html) | Reset a session variable to its default value.
 [`SET`](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
@@ -101,7 +101,7 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | <span class="version-tag">New in v1.1:</span> Reset a cluster setting to its default value.
+[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | <span class="version-tag">:</span> Reset a cluster setting to its default value.
 [`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
@@ -110,8 +110,8 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CANCEL QUERY`](cancel-query.html) | <span class="version-tag">New in v1.1:</span> Cancel a running SQL query.
-[`SHOW QUERIES`](show-queries.html) | <span class="version-tag">New in v1.1:</span> List details about current active SQL queries.
+[`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
+[`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 
 ## Job Management Statements
 
@@ -119,10 +119,10 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Cancel a `BACKUP` or `RESTORE` job.
-[`PAUSE JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Pause a `BACKUP` or `RESTORE` job.
-[`RESUME JOB`](resume-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Resume paused `BACKUP` or `RESTORE` jobs.
-[`SHOW JOBS`](show-jobs.html) | <span class="version-tag">New in v1.1:</span> View information on jobs.
+[`CANCEL JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Cancel a `BACKUP` or `RESTORE` job.
+[`PAUSE JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Pause a `BACKUP` or `RESTORE` job.
+[`RESUME JOB`](resume-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Resume paused `BACKUP` or `RESTORE` jobs.
+[`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
 ## Backup & Restore Statements (Enterprise)
 
@@ -134,4 +134,4 @@ Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
-[`SHOW BACKUP`](show-backup.html) | <span class="version-tag">New in v1.1:</span> List the contents of a backup.
+[`SHOW BACKUP`](show-backup.html) | <span class="version-tag">:</span> List the contents of a backup.
