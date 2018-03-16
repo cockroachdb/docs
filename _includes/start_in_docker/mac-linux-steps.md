@@ -1,6 +1,6 @@
 ## Before You Begin
 
-Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
+If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 
 <!-- TODO: update the asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.

@@ -33,7 +33,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 <div class="filter-content" markdown="1" data-scope="os-windows">
 ## Before You Begin
 
-Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
+If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 
 ## Step 1. Create a bridge network
 
