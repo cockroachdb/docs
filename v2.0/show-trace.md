@@ -1,10 +1,10 @@
 ---
 title: SHOW TRACE
-summary: The SHOW TRACE statement...
+summary: The SHOW TRACE statement returns details about how CockroachDB executed a statement or series of statements.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
+The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
@@ -19,28 +19,27 @@ Statement | Usage
 [`SHOW TRACE FOR <stmt>`](#show-trace-for-stmt) | Execute a single [explainable](sql-grammar.html#explainable_stmt) statement and return a trace of its actions.
 [`SHOW TRACE FOR SESSION`](#show-trace-for-session) | Return a trace of all executed statements recorded during a session.
 
-### `SHOW TRACE FOR <stmt>`
+### SHOW TRACE FOR &lt;stmt&gt;
 
-This use of `SHOW TRACE` executes a single [explainable](sql-grammar.html#explainable_stmt) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
+This use of `SHOW TRACE` executes a single [explainable](explain.html#explainable-statements) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
 
 - `SHOW TRACE FOR <stmt>` executes the target statement and, once execution has completed, then returns a trace of the actions taken. For example, tracing an `INSERT` statement inserts data and then returns a trace, a `DELETE` statement deletes data and then returns a trace, etc. This is different than the [`EXPLAIN`](explain.html) statement, which does not execute its target statement but instead returns details about its predicted execution plan.
-    - The target statement must be an [`explainable`](sql-grammar.html#explainable_stmt) statement. All non-explainable statements are not supported.
+    - The target statement must be an [`explainable`](explain.html#explainable-statements) statement. All non-explainable statements are not supported.
     - The target statement is always executed with the local SQL engine. Due to this [known limitation](https://github.com/cockroachdb/cockroach/issues/16562), the trace will not reflect the way in which some statements would have been executed when not the target of `SHOW TRACE FOR <stmt>`. This limitation does not apply to `SHOW TRACE FOR SESSION`.
 
 - If the target statement encounters errors, those errors are not returned to the client. Instead, they are included in the trace. This has the following important implications for [transaction retries](transactions.html#transaction-retries):
     - Normally, individual statements (considered implicit transactions) and multi-statement transactions batched by the client are [automatically retried](transactions.html#automatic-retries) by CockroachDB when [retryable errors](transactions.html#error-handling) are encountered due to contention. However, when such statements are the target of `SHOW TRACE FOR <stmt>`, CockroachDB does **not** automatically retry.
     - When each statement in a multi-statement transaction is sent individually (as opposed to being batched), if one of the statements is the target or `SHOW TRACE <stmt>`, retryable errors encountered by that statement will not be returned to the client.
 
-- When tracing an `INSERT/UPDATE/UPSERT/DELETE` statement running outside of an
-  implicit transaction (i.e. running as an implicit transaction), the tracing
-  might change the way in which the statememt commits its data - tracing
+    {{site.data.alerts.callout_success}}Given these implications, when you expect transaction retries or want to trace across retries, it's recommended to use <code>SHOW TRACE FOR SESSION</code>.{{site.data.alerts.end}}
+
+- When tracing an individual statement (i.e., an implicit transaction), the tracing
+  might change the way in which the statement commits its data; tracing
   inhibits the "one-phase commit" optimization for transactions that touch a
   single range. The trace will not reflect the committing of the transaction.
   `SHOW TRACE FOR SESSION` does not have this effect.
 
-    {{site.data.alerts.callout_success}}Given these implications, when you expect transaction retries or want to trace across retries, it's recommended to use <code>SHOW TRACE FOR SESSION</code>.{{site.data.alerts.end}}
-
-### `SHOW TRACE FOR SESSION`
+### SHOW TRACE FOR SESSION
 
 This use of `SHOW TRACE` returns messages and timing information for all statements recorded during a session. It's important to note the following:
 
@@ -65,8 +64,8 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 Parameter | Description
 ----------|------------
 `KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
-`COMPACT` | If specified, fewer columns are returned by the statement. See [Response](#Response).
-`explainable_stmt` | The statement to execute and trace. Only [explainable](sql-grammar.html#explainable_stmt) statements are supported.
+`COMPACT` | <span class="version-tag">New in v2.0:</span> If specified, fewer columns are returned by the statement. See [Response](#response) for more details.
+`explainable_stmt` | The statement to execute and trace. Only [explainable](explain.html#explainable-statements) statements are supported.
 
 ## Trace Description
 
@@ -117,11 +116,11 @@ Column | Type | Description
 `age` | interval | The age of the message relative to the beginning of the trace (i.e., the beginning of the statement execution in the case of `SHOW TRACE FOR <stmt>` and the beginning of the recording in the case of `SHOW TRACE FOR SESSION`.
 `message` | string | The log message.
 `tag` | string | Meta-information about the message's context. This is the same information that appears in the beginning of log file messages in between square brackets (e.g, `[client=[::1]:49985,user=root,n1]`).
-`loc` | string | The file:line location of the line of code that produced the message. Only some of the messages have this field set; it depends on specifically how the message was logged. The `--vmodule` flag passed to the node producing the message also affects what rows get this field populated - generally if `--vmodule=<file>=<level>` is specified, messages produced by that file will have the field populated.
+`loc` | string | <span class="version-tag">New in v2.0:</span> The file:line location of the line of code that produced the message. Only some of the messages have this field set; it depends on specifically how the message was logged. The `--vmodule` flag passed to the node producing the message also affects what rows get this field populated. Generally, if `--vmodule=<file>=<level>` is specified, messages produced by that file will have the field populated.
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message was logged.
 `span` | int | The index of the span within the virtual list of all spans if they were ordered by the span's start time.
 
-If the `COMPACT` keyword was specified, only the `age`, `message`, `tag` and `operation` columns are returned. In addition, the value of the `loc` columns is prepended to `message`.
+{{site.data.alerts.callout_info}}If the <code>COMPACT</code> keyword was specified, only the <code>age</code>, <code>message</code>, <code>tag</code> and <code>operation</code> columns are returned. In addition, the value of the <code>loc</code> columns is prepended to <code>message</code>.{{site.data.alerts.end}}
 
 ## Examples
 
