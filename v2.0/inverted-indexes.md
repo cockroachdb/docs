@@ -1,6 +1,6 @@
 ---
 title: Inverted Indexes
-summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data.
+summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data in a JSONB column.
 toc: false
 ---
 
@@ -61,7 +61,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 
 ### Selection
 
-If a query contains a constraint against an indexed `JSONB` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
+If a query contains a filter against an indexed `JSONB` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
