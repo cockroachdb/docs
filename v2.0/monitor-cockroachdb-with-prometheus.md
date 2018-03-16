@@ -24,6 +24,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 3. Make sure Prometheus installed successfully:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ prometheus --version
     ~~~
@@ -39,10 +40,15 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) and [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules) for CockroachDB:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # Configuration file:
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml \
     -O prometheus.yml
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     # Aggregation rules:
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules
     ~~~
@@ -65,6 +71,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 1. Start the Prometheus server, with the `--config.file` flag pointing to the configuration file:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ prometheus --config.file=prometheus.yml
     ~~~
@@ -103,16 +110,26 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 4. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards) for CockroachDB:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     # runtime dashboard: node status, including uptime, memory, and cpu.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/runtime.json
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     # storage dashboard: storage availability.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/storage.json
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     # sql dashboard: sql queries/transactions.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/sql.json
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
     # replicas dashboard: replica information and operations.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/replicas.json
     ~~~
@@ -129,6 +146,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 
 3. Make sure Alertmanager installed successfully:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --version
     ~~~
@@ -142,6 +160,7 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 
 4. Download the [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules) for CockroachDB to the `rules/` directory, where the Prometheus config expects to find it:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules
     ~~~
@@ -150,12 +169,14 @@ If you like, you can connect [Alertmanager](https://prometheus.io/docs/alerting/
 
 6. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --config.file=simple.yml
     ~~~
 
 7. In the shell running Prometheus, use **CTRL + C** to stop Prometheus and then restart it with the `--config.file` flag pointing to the Prometheus configuration file and the `--alertmanager.url` flag pointing to the machine running Alertmanager:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ prometheus --config.file=prometheus.yml \
     --alertmanager.url=http://<hostname of machine running alertmanager>:9093
