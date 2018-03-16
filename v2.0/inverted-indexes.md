@@ -4,7 +4,7 @@ summary: Inverted indexes improve your database's performance and usefulness by 
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate schemaless data (i.e., [`JSONB`](jsonb.html)).
+<span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
 
 <div id="toc"></div>
 
