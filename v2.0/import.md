@@ -36,7 +36,7 @@ Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (
 - A reference to a file that contains a `CREATE TABLE` statement
 - An inline `CREATE TABLE` statement
 
-We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-indexes). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
+We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
 
 ### Object Dependencies
 

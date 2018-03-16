@@ -23,7 +23,7 @@ Each table automatically has an index created called `primary`, which indexes ei
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the Unique constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
@@ -89,6 +89,7 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 
 ## See Also
 
+- [Inverted Indexes](inverted-indexes.html)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
