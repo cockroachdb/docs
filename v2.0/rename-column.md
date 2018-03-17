@@ -27,7 +27,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `current_name` | The current name of the column. |
 | `name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
 
-## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
+## Viewing Schema Changes
+
 {% include custom/schema-change-view-job.md %}
 
 ## Example

@@ -234,7 +234,7 @@ Column | Description
 `TABLE_TYPE` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `VERSION` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table.
 
-### user_privileges <div class="version-tag">New in v1.1</div>
+### user_privileges
 
 The `user_privileges` view identifies global [privileges](privileges.html).
 
