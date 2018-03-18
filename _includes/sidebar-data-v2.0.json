@@ -890,6 +890,12 @@
             ]
           },
           {
+            "title": "Inverted Indexes",
+            "urls": [
+              "/${VERSION}/inverted-indexes.html"
+            ]
+          },
+          {
             "title": "Column Families",
             "urls": [
               "/${VERSION}/column-families.html"
