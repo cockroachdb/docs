@@ -42,7 +42,7 @@ table tr td:nth-child(2) {
 | Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store) |
 | <span class="version-tag">New in v1.1:</span> `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
 | <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html) |
-| JSON | Planned | Common Extension | [GitHub issue tracking JSON support](https://github.com/cockroachdb/cockroach/issues/2969) |
+| <span class="version-tag">New in v2.0:</span> JSON | ✓ | Common Extension | [`JSONB` documentation](jsonb.html) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
 | `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
@@ -76,6 +76,7 @@ table tr td:nth-child(2) {
 | Indexes | ✓ | Common Extension | [Indexes documentation](https://www.cockroachlabs.com/docs/indexes.html) |
 | Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include |
 | Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns) |
+| <span class="version-tag">New in v2.0:</span> Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html) |
 | Multiple indexes per query | Planned | Common Extension | Use multiple indexes to filter the table's values for a single query |
 | Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821) |
 | Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them |
