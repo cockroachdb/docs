@@ -20,36 +20,7 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {{site.data.alerts.callout_danger}}Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.{{site.data.alerts.end}}
 
-The following settings can be configured without further input from Cockroach Labs:
-
-| Setting | Description | Value type    | Default value |
-|---------|-------------|---------------|---------------|
-| `diagnostics.reporting.enabled` | Enable automatic reporting of usage data to Cockroach Labs. | Boolean | `true` |
-| `diagnostics.reporting.interval` | Interval between automatic reports. **Note that increasing this value will also cause memory usage per node to increase, as the reporting data is collected into RAM.** | Interval | 1 hour |
-| `diagnostics.reporting.report_metrics` | Enable collection and reporting of diagnostic metrics. Only applicable if `diagnostics.reporting.enabled` is `true`. | Boolean | `true` |
-| `diagnostics.reporting.send_crash_reports` | Enable collection and reporting of node crashes. Only applicable if `diagnostics.reporting.enabled` is `true`. | Boolean | `true` |
-| `sql.defaults.distsql` | Define whether new client sessions try to [distribute query execution](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/) by default. | Integer | 1 (automatic) |
-| `sql.metrics.statement_details.enabled` | Collect per-node, per-statement query statistics, visible in the virtual table `crdb_internal.node_statement_statistics`. | Boolean | `true` |
-| `sql.metrics.statement_details.dump_to_logs` | On each node, also copy collected per-statement statistics to the [logging output](debug-and-error-logs.html) when automatic reporting is enabled. | Boolean | `false` |
-| `sql.metrics.statement_details.threshold` | Only collect per-statement statistics for statements that run longer than this threshold. | Interval | 0 seconds (all statements) |
-| `sql.trace.log_statement_execute` | On each node, copy all executed statements to the [logging output](debug-and-error-logs.html). | Boolean | `false` |
-
-<!-- Add this section back in once `system.settings` has been fleshed out.
-
-## Settings
-
-types:
-
-settings-registry.go
-
-s = string
-b = boolean
-i = int
-f = float
-d = duration
-z = byte-size (can set them with set cluster setting = 32 MiB)
-
--->
+{% include settings/v2.0/settings.md %}
 
 ## View Current Cluster Settings
 

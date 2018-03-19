@@ -14,7 +14,12 @@ For information about permanently removing nodes to downsize a cluster or react 
 
 ### How It Works
 
-When you stop a node, CockroachDB lets the node finish in-flight requests and transfers all **range leases** off the node before shutting it down. If the node then stays offline for a certain amount of time (5 minutes by default), the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
+- Cancels all current sessions without waiting.
+- Transfers all **range leases** and Raft leadership to other nodes.
+- Gossips its draining state to the cluster so that no leases are transferred to the draining node. Note that this is a best effort, so other nodes may not receive the gossip info in time.
+- No new ranges are transferred to the draining node, to avoid a possible loss of quorum after the node shuts down.
+
+If the node then stays offline for a certain amount of time (5 minutes by default), the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
 
 After that, if the node comes back online, its range replicas will determine whether or not they are still valid members of replica groups. If a range replica is still valid and any data in its range has changed, it will receive updates from another replica in the group. If a range replica is no longer valid, it will be removed from the node.
 
