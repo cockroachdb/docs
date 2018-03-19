@@ -196,5 +196,3 @@ For the full list of functions and operators we support, see [Functions and Oper
 - [Data Types](data-types.html)
 - [Inverted Indexes](inverted-indexes.html)
 - [Functions and Operators](functions-and-operators.html)
-
-<!-- - [`JSONB` Tutorials]()
