@@ -56,7 +56,8 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 
 Function | Description
 ---------|------------
-`jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list.
+`json_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values.
+`jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values.
 `jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key value pairs.
 `jsonb_object_keys(<jsonb>)` | Returns sorted set of keys in the outermost JSON object.
 `jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. See the [example](#retrieve-formatted-jsonb-data) below.
@@ -68,8 +69,8 @@ For the full list of supported `JSONB` functions, see [Functions and Operators](
 Operator | Description | Example |
 ---------|-------------|---------|
 `->` | Access a `JSONB` field, returning a JSON value. | `'{"foo":"bar"}'::JSONB->'foo'` = `'bar'::JSONB`
-`-->` | Access a `JSONB` field, returning a string. | `'{"foo":"bar"}'::JSONB->>'foo'` = `'bar'::STRING`
-`@>` | Path-value check. | `'{"foo": {"baz": 3}, "bar": 2}'::JSONB @> '{"foo": {"baz": 3}}'::JSONB"` = `true`
+`->>` | Access a `JSONB` field, returning a string. | `'{"foo":"bar"}'::JSONB->>'foo'` = `'bar'::STRING`
+`@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `'{"foo": {"baz": 3}, "bar": 2}'::JSONB @> '{"foo": {"baz": 3}}'::JSONB"` = `true`
 
 For the full list of supported `JSONB` operators, see [Functions and Operators](functions-and-operators.html).
 
