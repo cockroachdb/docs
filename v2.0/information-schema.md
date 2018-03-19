@@ -4,19 +4,19 @@ summary: The information_schema database contains read-only views that you can u
 toc: false
 ---
 
-CockroachDB provides a virtual schema called `information_schema`, that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+CockroachDB provides a virtual schema called `information_schema` that contains read-only [views](views.html) of your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
-The definition of `information_schema` is part of the SQL standard, is portable, and can be relied on to remain stable over time. This contrasts with the `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB, but not standardized. It also contrasts with the virtual schema `crdb_internal` which reflects internals of CockroachDB and may thus change across CockroachDB versions.
+The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema `crdb_internal`, which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
 
 {{site.data.alerts.callout_info}}The <code>information_schema</code> views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the <code>root</code> user.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Data Exposed By `information_schema`
+## Data Exposed by information_schema
 
 To perform introspection on objects, you can either read from the related `information_schema` view or use one of CockroachDB's `SHOW` statements.
 
-Object | Information Schema Table | Corresponding `SHOW` Statement
+Object | Information Schema View | Corresponding `SHOW` Statement
 -------|--------------|--------
 Columns | [columns](#columns)| [`SHOW COLUMNS`](show-columns.html)
 Constraints | [key_column_usage](#key_column_usage), [referential_constraints](#referential_constraints), [table_constraints](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
@@ -26,11 +26,11 @@ Privileges | [schema_privileges](#schema_privileges), [table_privileges](#table_
 Tables | [tables](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [tables](#tables), [views](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
 
-## Tables in `information_schema`
+## Views in information_schema
 
-The virtual schema `information_schema` contains tables representing the database's objects, each of which is detailed below.
+The virtual schema `information_schema` contains [views](views.html) representing the database's objects, each of which is detailed below.
 
-### `administrable_role_authorizations`
+### administrable_role_authorizations
 
 `administrable_role_authorizations` identifies all roles that the current user has the admin option for.
 
@@ -38,7 +38,7 @@ Column | Description
 -------|-----------
 `grantee` | The name of the user to which this role membership was granted (always the current user).
 
-### `applicable_roles`
+### applicable_roles
 
 `applicable_roles` identifies all roles whose privileges the current user can use. This implies there is a chain
 of role grants from the current user to the role in question. The current user itself is also an applicable role, but is
@@ -50,7 +50,7 @@ Column | Description
 `role_name` | Name of a role.
 `is_grantable` | `YES` if the grantee has the admin option on the role; `NO` if not.
 
-### `columns`
+### columns
 
 `columns` contains information about the columns in each table.
 
@@ -74,7 +74,7 @@ Column | Description
 `character_set_name` | Always *NULL* (unsupported by CockroachDB).
 `generation_expression` | The expression used for computing the column value in a computed column.
 
-### `column_privileges`
+### column_privileges
 
 `column_privileges` identifies all privileges granted on columns to a currently enabled role or by a currently enabled role.
 There is one row for each combination of grantor, grantee, and column (defined by `table_catalog`, `table_schema`, `table_name`, and `column_name`).
@@ -90,7 +90,7 @@ Column | Description
 `privilege_type` | Name of the [privilege](privileges.html).
 `is_grantable` | Always *NULL* (unsupported by CockroachDB).
 
-### `enabled_roles`
+### enabled_roles
 
 The `enabled_roles` view identifies enabled roles for the current user. This includes both direct and indirect roles.
 
@@ -98,7 +98,7 @@ Column | Description
 -------|-----------
 `role_name` | Name of a role.
 
-### `key_column_usage`
+### key_column_usage
 
 `key_column_usage` identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [`FOREIGN KEY` / `REFERENCES`](foreign-key.html) constraints.
 
@@ -114,7 +114,7 @@ Column | Description
 `ordinal_position` | Ordinal position of the column within the constraint (begins at 1).
 `position_in_unique_constraint` | For foreign key constraints, ordinal position of the referenced column within its uniqueness constraint (begins at 1).
 
-### `referential_constraints`
+### referential_constraints
 
 `referential_constraints` identifies all referential ([Foreign Key](foreign-key.html)) constraints.
 
@@ -132,7 +132,7 @@ Column | Description
 `table_name` | Name of the table containing the constraint.
 `referenced_table_name` | Name of the table containing the unique or primary key constraint that the foreign key constraint references.
 
-### `role_table_grants`
+### role_table_grants
 
 `role_table_grants` identifies which [privileges](privileges.html) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
@@ -148,7 +148,7 @@ Column | Description
 `is_grantable` | Always *NULL* (unsupported by CockroachDB).
 `with_hierarchy` | Always *NULL* (unsupported by CockroachDB).
 
-### `schema_privileges`
+### schema_privileges
 
 `schema_privileges` identifies which [privileges](privileges.html) have been granted to each user at the database level.
 
@@ -160,7 +160,7 @@ Column | Description
 `privilege_type` | Name of the [privilege](privileges.html).
 `is_grantable` | Always *NULL* (unsupported by CockroachDB).
 
-### `schemata`
+### schemata
 
 `schemata` identifies the database's schemas.
 
@@ -171,7 +171,7 @@ Column | Description
 `default_character_set_name` |  Always *NULL* (unsupported by CockroachDB).
 `sql_path` |  Always *NULL* (unsupported by CockroachDB).
 
-### `statistics`
+### statistics
 
 `statistics` identifies table [indexes](indexes.html).
 
@@ -191,7 +191,7 @@ Column | Description
 `storing` | `YES` if column is [stored](create-index.html#store-columns); `NO` if it's indexed or implicit.
 `implicit` | `YES` if column is implicit (i.e. it is not specified in the index and not stored); `NO` if it's indexed or stored.
 
-### `table_constraints`
+### table_constraints
 
 `table_constraints` identifies [constraints](constraints.html) applied to tables.
 
@@ -207,7 +207,7 @@ Column | Description
 `is_deferrable` | `YES` if the constraint can be deferred; `NO` if not.
 `initially_deferred` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 
-### `table_privileges`
+### table_privileges
 
 `table_privileges`  identifies which [privileges](privileges.html) have been granted to each user at the table level.
 
@@ -222,7 +222,7 @@ Column | Description
 `is_grantable` | Always *NULL* (unsupported by CockroachDB).
 `with_hierarchy` | Always *NULL* (unsupported by CockroachDB).
 
-### `tables`
+### tables
 
 `tables` identifies tables and views in the database.
 
@@ -234,7 +234,7 @@ Column | Description
 `table_type` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `version` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table.
 
-### `user_privileges`
+### user_privileges
 
 `user_privileges` identifies global [privileges](privileges.html).
 
@@ -248,7 +248,7 @@ Column | Description
 `privelege_type` | Type of [privilege](privileges.html).
 `is_grantable` | Always *NULL* (unsupported by CockroachDB).
 
-### `views`
+### views
 
 `views` identifies [views](views.html) in the database.
 
