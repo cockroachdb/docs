@@ -198,7 +198,7 @@ CREATE VIEW
 
 ### Listing Views
 
-Once created, views are represented as virtual tables alongside other virtual and standard tables in the database:
+Once created, views are listed alongside regular tables in the database:
 
 ~~~ sql
 > SHOW TABLES FROM bank;
@@ -214,36 +214,26 @@ Once created, views are represented as virtual tables alongside other virtual an
 (2 rows)
 ~~~
 
-To list just views, you can query the `views` table in the built-in `information_schema` database:
+<span class="version-tag">Changed in v2.0:</span> To list just views, you can query the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
 
 ~~~ sql
-> SELECT * FROM information_schema.views;
+> SELECT * FROM bank.information_schema.views;
+> SELECT * FROM startrek.information_schema.views;
 ~~~
 
 ~~~
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| table_catalog |   table_schema    |      table_name      |            view_definition                  | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| bank          | public            | user_accounts        | SELECT type, email FROM bank.accounts       | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+(1 row)
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
+| table_catalog |   table_schema    |      table_name      |                                                                              view_definition                                                                              | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
+| startrek      | public            | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-(2 rows)
-~~~
-
-Alternatively, you can query the `pg_views` table in the built-in `pg_catalog` database:
-
-~~~ sql
-> SELECT * FROM pg_catalog.pg_views;
-~~~
-
-~~~
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|    schemaname     |       viewname       | viewowner |                                                                                definition                                                                                 |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
-| startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-(2 rows)
+(1 row)
 ~~~
 
 ### Querying Views
@@ -282,20 +272,19 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in `information_schema` database:
+<span class="version-tag">Changed in v2.0:</span> You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
 
 ~~~ sql
-> SELECT * FROM information_schema.views;
+> SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
 ~~~
 
 ~~~
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-(2 rows)
++----------------------------------------+
+|             view_definition            |
++----------------------------------------+
+| SELECT type, email FROM bank.accounts  |
++----------------------------------------+
+(1 row)
 ~~~
 
 ### View Dependencies

@@ -82,12 +82,9 @@ $ cockroach sql --insecure --port=26257
 +--------------------+
 |      Database      |
 +--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
-(4 rows)
+(1 row)
 ~~~
 
 Exit the SQL shell:

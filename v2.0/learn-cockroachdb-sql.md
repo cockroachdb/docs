@@ -47,12 +47,9 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 |      Database      |
 +--------------------+
 | bank               |
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
-(5 rows)
+(2 rows)
 ~~~
 
 ## Set the Default Database
