@@ -8,9 +8,9 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 2. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
 
-3. CockroachDB uses [Jekyll](https://jekyllrb.com/docs/installation/) to transform Markdown and layout files into a complete, static HTML site. We also use [HTMLProofer](https://github.com/gjtorikian/html-proofer) to check the generated HTML for errors (broken internal and external links, missing images, etc.).
+3. CockroachDB uses [Jekyll](https://jekyllrb.com/docs/installation/) to transform Markdown and layout files into a complete, static HTML site. We also use [htmltest](https://github.com/cockroachdb/htmltest) to check the generated HTML for errors (broken internal and external links, missing images, etc.).
 
-    Install Jekyll, HTMLProofer, and some other dependencies so you can view doc changes locally:
+    Install Jekyll, htmltest, and some other dependencies so you can view doc changes locally:
 
     ``` shell
     $ cd path/to/docs
@@ -44,7 +44,7 @@ Once you're ready to contribute:
 
 6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
-We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [HTMLProofer](https://github.com/gjtorikian/html-proofer) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the Teamcity fail status.
+We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the Teamcity fail status.
 
 ## Keep Contributing
 
@@ -149,10 +149,10 @@ that don't correspond to a section heading on the page. This is
 currently used for pages with JavaScript toggle buttons, where the
 toggle to activate by default can be specified in the URL hash. If you
 attempt to link to, for example, `page-with-toggles.html#toggle-id` without
-listing `toggle-id` in `allowed_hashes`, our HTML proofer will complain
+listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
 that `toggle-id` does not exist on the page. Listing a hash in
 `allowed_hashes` will generate a dummy element with that ID at the top
-of the page, which keeps our HTML proofer happy.
+of the page, which keeps our HTML tester happy.
 
 Here's an example from a page with OS toggles:
 
