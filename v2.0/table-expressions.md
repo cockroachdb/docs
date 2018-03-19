@@ -49,15 +49,16 @@ Syntax:
 ~~~
 identifier
 identifier.identifier
+identifier.identifier.identifier
 ~~~
 
 A single SQL identifier in a table expression context designates
-the contents of the table or [view](views.html) with that name
+the contents of the table, [view](views.html) or sequence with that name
 in the current database, as configured by [`SET DATABASE`](set-vars.html).
 
-If the name is prefixed by another identifier and a period, the table
-or view is searched in the database with that name. See the section on
-[name resolution](sql-name-resolution.html) for more details.
+If the name is composed of two or more identifiers, the rules
+described in the separate page on [name
+resolution](sql-name-resolution.html) apply.
 
 For example:
 
@@ -77,6 +78,10 @@ name ( arguments... )
 The name of a table generator function, followed by an opening
 parenthesis, followed by zero or more expression arguments, followed
 by a closing parenthesis.
+
+The resolution of the function name follows the same rules as the
+resolution of table names, see [name
+resolution](sql-name-resolution.html) for more details.
 
 This designates a transient data source produced by the designated
 function.

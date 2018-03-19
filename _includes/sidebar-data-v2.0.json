@@ -588,6 +588,12 @@
             ]
           },
           {
+            "title": "<code>SHOW SCHEMAS</code>",
+            "urls": [
+              "/${VERSION}/show-schemas.html"
+            ]
+          },
+          {
             "title": "<code>SHOW TABLES</code>",
             "urls": [
               "/${VERSION}/show-tables.html"
