@@ -33,13 +33,11 @@ In [`ADD CONSTRAINT`](add-constraint.html), we [added a foreign key constraint](
 ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id);
 ~~~
 
-In order to ensure that all new updates to the `orders` table honor that constraint, run the following:
+In order to ensure that the data added to the `orders` table prior to the creation of the `customer_fk` constraint conforms to that constraint, run the following:
 
 ~~~ sql
 ALTER TABLE orders VALIDATE CONSTRAINT customer_fk;
 ~~~
-
-This will also validate all of the existing data and bring the table into a fully validated state.
 
 {{site.data.alerts.callout_info}}If present in a <a href="create-table.html"><code>CREATE TABLE</code></a> statement, the table is considered validated because an empty table trivially meets its constraints.{{site.data.alerts.end}}
 
