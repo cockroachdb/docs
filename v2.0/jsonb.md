@@ -4,7 +4,7 @@ summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports inverted indexing.
+<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
 
 <!--To Do:
 - This is a good opportunity to communicate how useful this feature is.
@@ -22,7 +22,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an inverted index.
+- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
 
 ## Syntax
 
@@ -194,7 +194,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 ## See Also
 
 - [Data Types](data-types.html)
+- [Inverted Indexes](inverted-indexes.html)
 - [Functions and Operators](functions-and-operators.html)
 
 <!-- - [`JSONB` Tutorials]()
-- [Inverted Indexes]() -->
