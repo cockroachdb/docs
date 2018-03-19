@@ -96,7 +96,7 @@ Otherwise, it returns an HTTP `200 OK` status response code with details about t
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl http://localhost:8080/_admin/v1/health
+$ curl http://localhost:8080/health?ready=1
 ~~~
 
 ~~~
