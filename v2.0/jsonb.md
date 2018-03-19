@@ -56,7 +56,7 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 
 Function | Description
 ---------|------------
-`json_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values.
+`jsonb_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values.
 `jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values.
 `jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key value pairs.
 `jsonb_object_keys(<jsonb>)` | Returns sorted set of keys in the outermost JSON object.
