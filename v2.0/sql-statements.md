@@ -62,7 +62,7 @@ Statement | Usage
 [`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
-[`SHOW TABLES`](show-tables.html) | List tables in a database.
+[`SHOW TABLES`](show-tables.html) | List tables or views in a schema or database.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction Management Statements

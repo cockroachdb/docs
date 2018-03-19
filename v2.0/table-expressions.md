@@ -42,7 +42,7 @@ consecutive table expressions at the top level, separated by
 commas. This is a shorthand notation for `CROSS JOIN`, documented in
 the `JOIN` syntax below.
 
-## Table or View Names
+## Table or View Names <span class="version-tag">Changed in v2.0</span>
 
 Syntax:
 
@@ -53,12 +53,10 @@ identifier.identifier.identifier
 ~~~
 
 A single SQL identifier in a table expression context designates
-the contents of the table, [view](views.html) or sequence with that name
+the contents of the table, [view](views.html), or sequence with that name
 in the current database, as configured by [`SET DATABASE`](set-vars.html).
 
-If the name is composed of two or more identifiers, the rules
-described in the separate page on [name
-resolution](sql-name-resolution.html) apply.
+If the name is composed of two or more identifiers, [name resolution](sql-name-resolution.html) rules apply.
 
 For example:
 
@@ -79,9 +77,7 @@ The name of a table generator function, followed by an opening
 parenthesis, followed by zero or more expression arguments, followed
 by a closing parenthesis.
 
-The resolution of the function name follows the same rules as the
-resolution of table names, see [name
-resolution](sql-name-resolution.html) for more details.
+The resolution of the function name follows the same rules as the resolution of table names. See [Name Resolution](sql-name-resolution.html) for more details.
 
 This designates a transient data source produced by the designated
 function.

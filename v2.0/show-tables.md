@@ -5,7 +5,7 @@ keywords: reflection
 toc: false
 ---
 
-The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](views.html) in a schema or database. 
+The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](views.html) in a schema or database.
 
 {{site.data.alerts.callout_info}}While a table or view is being <a href="drop-table.html">dropped</a>, <code>SHOW TABLES</code> will list the object with a <code>(dropped)</code> suffix.{{site.data.alerts.end}}
 
@@ -23,17 +23,15 @@ No [privileges](privileges.html) are required to list the tables in a schema or 
 
 Parameter | Description
 ----------|------------
-`name` | The name of the schema or database for which to show tables. When omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
+`name` | <span class="version-tag">Changed in v2.0:</span> The name of the schema or database for which to show tables. When omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
 
-`SHOW TABLES` will attempt to find a schema with the specified name
-first. If that fails, it will try to find a database with that name
-instead, and list the tables of its `public` schema.
+`SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution](sql-name-resolution.html).
 
 ## Examples
 
-### Show Tables In The Current Database
+These example assumes that the `bank` database has been set as the current database for the session, either via the [`SET`](set-vars.html) statement or in the client's connection string.
 
-This example assumes that the `bank` database has been set as the current database for the session, either via the [`SET`](set-vars.html) statement or in the client's connection string.
+### Show Tables in the Current Database
 
 ~~~ sql
 > SHOW TABLES;
@@ -49,11 +47,9 @@ This example assumes that the `bank` database has been set as the current databa
 (2 rows)
 ~~~
 
-This uses the [current
-schema](sql-name-resolution.html#current-schema) `public` set by
-default in `search_path`.
+This uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`.
 
-### Show Tables In A Different Schema
+### Show Tables in a Different Schema
 
 ~~~ sql
 > SHOW TABLES FROM information_schema;
@@ -86,7 +82,7 @@ default in `search_path`.
 (18 rows)
 ~~~
 
-### Show Tables In A Different Database
+### Show Tables in a Different Database
 
 ~~~ sql
 > SHOW TABLES FROM startrek.public;

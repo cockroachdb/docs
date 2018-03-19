@@ -214,7 +214,7 @@ Once created, views are listed alongside regular tables in the database:
 (2 rows)
 ~~~
 
-To list just views, you can query the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
+<span class="version-tag">Changed in v2.0:</span> To list just views, you can query the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
 
 ~~~ sql
 > SELECT * FROM bank.information_schema.views;
@@ -272,7 +272,7 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
+<span class="version-tag">Changed in v2.0:</span> You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in [`information_schema` virtual schema](information-schema.html):
 
 ~~~ sql
 > SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
