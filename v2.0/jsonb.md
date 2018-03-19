@@ -4,7 +4,7 @@ summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports inverted indexing.
+<span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
 
 <!--To Do:
 - This is a good opportunity to communicate how useful this feature is.
@@ -22,7 +22,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an inverted index.
+- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
 
 ## Syntax
 
@@ -51,6 +51,28 @@ Examples:
 ## Size
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
+
+## `JSONB` Functions
+
+Function | Description
+---------|------------
+`jsonb_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values.
+`jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values.
+`jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key-value pairs.
+`jsonb_object_keys(<jsonb>)` | Returns sorted set of keys in the outermost `JSONB` object.
+`jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. See the [example](#retrieve-formatted-jsonb-data) below.
+
+For the full list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators.html#jsonb-functions).
+
+## `JSONB` Operators
+
+Operator | Description | Example |
+---------|-------------|---------|
+`->` | Access a `JSONB` field, returning a `JSONB` value. | `'{"foo":"bar"}'::JSONB->'foo'` = `'bar'::JSONB`
+`->>` | Access a `JSONB` field, returning a string. | `'{"foo":"bar"}'::JSONB->>'foo'` = `'bar'::STRING`
+`@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `'{"foo": {"baz": 3}, "bar": 2}'::JSONB @> '{"foo": {"baz": 3}}'::JSONB"` = `true`
+
+For the full list of supported `JSONB` operators, see [Functions and Operators](functions-and-operators.html).
 
 ## Examples
 
@@ -172,7 +194,5 @@ For the full list of functions and operators we support, see [Functions and Oper
 ## See Also
 
 - [Data Types](data-types.html)
+- [Inverted Indexes](inverted-indexes.html)
 - [Functions and Operators](functions-and-operators.html)
-
-<!-- - [`JSONB` Tutorials]()
-- [Inverted Indexes]() -->
