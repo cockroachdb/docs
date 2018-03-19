@@ -72,10 +72,9 @@ In the [built-in SQL client](use-the-built-in-sql-client.html), create a table c
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE programming (
-    id UUID NULL DEFAULT uuid_v4()::UUID,
-    posts JSONB NULL,
-    FAMILY "primary" (id, posts, rowid)
+> CREATE TABLE rprogramming (
+    id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
+    posts JSONB
   );
 ~~~
 
@@ -84,15 +83,16 @@ In the [built-in SQL client](use-the-built-in-sql-client.html), create a table c
 > SHOW CREATE TABLE programming;
 ~~~
 ~~~
-+-------------+--------------------------------------------+
-|    Table    |                CreateTable                 |
-+-------------+--------------------------------------------+
-| programming | CREATE TABLE programming (                 |
-|             |     id UUID NULL DEFAULT uuid_v4()::UUID,  |
-|             |     posts JSONB NULL,                      |
-|             |     FAMILY "primary" (id, posts, rowid)    |
-|             | )                                          |
-+-------------+--------------------------------------------+
++--------------+-------------------------------------------------+
+|    Table     |                   CreateTable                   |
++--------------+-------------------------------------------------+
+| programming  | CREATE TABLE programming (                      |
+|              |     id UUID NOT NULL DEFAULT uuid_v4()::UUID,   |
+|              |     posts JSON NULL,                            |
+|              |     CONSTRAINT "primary" PRIMARY KEY (id ASC),  |
+|              |     FAMILY "primary" (id, posts)                |
+|              | )                                               |
++--------------+-------------------------------------------------+
 ~~~
 
 ## Step 6. Run the code
@@ -129,15 +129,13 @@ The program will take a few minutes to insert rows into your table. If you want 
 +-------+
 | count |
 +-------+
-|  4175 |
+|  7500 |
 +-------+
 ~~~
 
-{{site.data.alerts.callout_info}}Since you are querying live data, your results for this and the following steps may vary from the results documented in this tutorial.{{site.data.alerts.end}}
+## Step 7. Query the data
 
-## Step 7. Query over the data
-
-Once there is data in your table, run a query:
+Once there is data in your table, you can query the data. For this example, retrieve all the entries where the link is pointing to somewhere on YouTube. Specifically, all the entries where `object.data.domain` is `"youtube.com"`. To do that, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -148,6 +146,8 @@ Once there is data in your table, run a query:
 
 Time: 105.877736ms
 ~~~
+
+{{site.data.alerts.callout_info}}Since you are querying live data, your results for this and the following steps may vary from the results documented in this tutorial.{{site.data.alerts.end}}
 
 ## Step 8. Create an inverted index to optimize performance
 
