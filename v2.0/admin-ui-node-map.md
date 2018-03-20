@@ -40,7 +40,7 @@ The **Node Map** view helps you identify and preempt any scenarios that might ca
 
 ## Configure and Navigate the Node Map
 
-To configure the **Node Map**, you need to start the cluster with the correct `--localities` flags and assign the latitudes and longitudes for each region.
+To configure the **Node Map**, you need to start the cluster with the correct `--locality` flags and assign the latitudes and longitudes for each region.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
@@ -61,7 +61,7 @@ $ cockroach version
 
 If not, [upgrade to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-#### Step 2. Start the nodes with the correct `--localities` flags
+#### Step 2. Start the nodes with the correct `--locality` flags
 
 In a new terminal, start Node 1:
 
@@ -157,7 +157,7 @@ Navigate to `https://localhost:8080/#/reports/localities` and use the **Localiti
 
 #### Step 6. View the Node Map
 
-[Navigate to the **Overview page**](admin-ui-cluster-overview.html) and switch to the **Node Map** view from the drop-down box.
+[Navigate to the **Overview page**](admin-ui-cluster-overview.html) to view the **Node Map**.
 
 #### Step 7. Navigate the Node Map
 
@@ -165,7 +165,7 @@ Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in th
 
 1. Click on map component marked as **region=us-east** on the Node Map. The datacenter view is displayed.
 2. Click on the datacenter component marked as **datacenter=us-east-1**. The individual node components are displayed.
-3. To navigate back to the cluster view, either click on **Cluster** in the bread-crumb trail at the top of the Node Map, or click **Up to Cluster** in the lower left-hand side of the Node Map.
+3. To navigate back to the cluster view, either click on **Cluster** in the bread-crumb trail at the top of the Node Map, or click **Up to region=us-east** and then click **Up to Cluster** in the lower left-hand side of the Node Map.
 
 ## Understand the Node Map Components
 
@@ -185,7 +185,7 @@ The **Node Map** won't be displayed until all nodes have localities and are assi
 
 The Localities debug page displays the following: 
 
-- Localities configuration that you set up while starting the nodes with the `--localities` options. 
+- Localities configuration that you set up while starting the nodes with the `--locality` flags. 
 - Nodes corrsponding to each locality.
 - Latitude and longitude coordinates for each locality/node.
 
