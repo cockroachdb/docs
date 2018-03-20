@@ -62,7 +62,8 @@ Statement | Usage
 [`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
-[`SHOW TABLES`](show-tables.html) | List tables in a database.
+[`SHOW SCHEMAS`](show-schemas.html) | <span class="version-tag">New in v2.0:</span> List the schemas in a database.
+[`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction Management Statements
@@ -82,7 +83,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
-[`DROP USER`](drop-user.html) | <span class="version-tag">:</span> Remove SQL users.
+[`DROP USER`](drop-user.html) | Remove SQL users.
 [`GRANT`](grant.html) | Grant privileges to users.
 [`REVOKE`](revoke.html) | Revoke privileges from users.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
@@ -101,7 +102,7 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | <span class="version-tag">:</span> Reset a cluster setting to its default value.
+[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | Reset a cluster setting to its default value.
 [`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
@@ -134,4 +135,4 @@ Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
-[`SHOW BACKUP`](show-backup.html) | <span class="version-tag">:</span> List the contents of a backup.
+[`SHOW BACKUP`](show-backup.html) | List the contents of a backup.

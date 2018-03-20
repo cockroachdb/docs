@@ -39,7 +39,7 @@ The variable name is case insensitive. The value can be a list of one or more it
 | `database` | The default database for the current session. | Database in connection string, or empty if not specified | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified  | Yes |
 | `sql_safe_updates` | If `false`, allow potentially unsafe SQL statements, including `DROP` of a non-empty database and all dependent objects, `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE .. DROP COLUMN`. See [Allow Potentially Unsafe SQL Statements](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) for more details. | `true` for interactive sessions from the [built-in SQL client](use-the-built-in-sql-client.html),<br>`false` for sessions from other clients | Yes |
-| `search_path` | A list of databases or namespaces that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{pg_catalog}`" (for ORM compatibility) | Yes |
+| `search_path` | <span class="version-tag">Changed in v2.0:</span> A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{public}`" | Yes |
 | `time zone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.</br><br>See [`SET TIME ZONE`](#set-time-zone) for more details. | `UTC` | Yes |
 | `tracing` | The trace recording state.<br><br>See [`SET TRACING`](#set-tracing) for more details. | `off` | Yes |
 | `client_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A | No |
@@ -100,7 +100,7 @@ The following demonstrates how to use quoting to use values containing spaces:
 The following demonstrates how to assign a list of values:
 
 ~~~ sql
-> SET search_path = mydb, otherdb;
+> SET search_path = pg_catalog,public;
 > SHOW search_path;
 ~~~
 
@@ -108,7 +108,7 @@ The following demonstrates how to assign a list of values:
 +---------------------------+
 |        search_path        |
 +---------------------------+
-| pg_catalog, mydb, otherdb |
+| pg_catalog, public        |
 +---------------------------+
 (1 row)
 ~~~

@@ -27,9 +27,6 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 |      Database      |
 +--------------------+
 | bank               |
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
 (5 rows)
@@ -37,5 +34,6 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 
 ## See Also
 
+- [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)

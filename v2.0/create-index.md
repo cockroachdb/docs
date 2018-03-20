@@ -18,15 +18,15 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/create_index.html %}
+**Standard index:**
+
+<section>{% include sql/{{ page.version.version }}/diagrams/create_index.html %}</section>
+
+**Inverted index:**
+
+<section>{% include sql/{{ page.version.version }}/diagrams/create_inverted_index.html %}</section>
 
 ## Parameters
-
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -43,7 +43,7 @@ table td:first-child {
 
 ## Examples
 
-### Create Indexes
+### Create Standard Indexes
 
 To create the most efficient indexes, we recommend reviewing:
 
@@ -84,7 +84,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
-#### Inverted Indexes <span class="version-tag">New in v2.0</span>
+### Create Inverted Indexes <span class="version-tag">New in v2.0</span>
 
 [Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 
