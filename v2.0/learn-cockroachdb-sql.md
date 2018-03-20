@@ -47,12 +47,9 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 |      Database      |
 +--------------------+
 | bank               |
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
-(5 rows)
+(2 rows)
 ~~~
 
 ## Set the Default Database
@@ -411,4 +408,3 @@ Just as with the `UPDATE` statement, if a table has a primary key, you can use t
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
-

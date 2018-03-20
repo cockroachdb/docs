@@ -65,12 +65,10 @@ $ cockroach sql --insecure
 +--------------------+
 |      Database      |
 +--------------------+
-| information_schema |
-| pg_catalog         |
 | intro              |
 | system             |
 +--------------------+
-(4 rows)
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
