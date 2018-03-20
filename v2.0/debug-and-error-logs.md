@@ -103,7 +103,7 @@ The `--log-backtrace-at`, `--verbosity`, and `--v` flags are intended for intern
 
 {% include log-file-format.md %}
 
-For more information about how to turn SQL audit logging on and off, see [`EXPERIMENTAL_AUDIT`](experimental-audit.html).
+For more information about SQL audit logging, see [`EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 ## See Also
 
