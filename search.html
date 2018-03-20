@@ -64,4 +64,19 @@ index.search(searchConfig, function searchDone(err, data) {
 	}
 	$('.post-content').html(div);
 });
+
+$('#search-input').autocomplete({ minLength: 3, hint: false, debug: true }, [
+  {
+    source: $.fn.autocomplete.sources.hits(index, { hitsPerPage: 10 }),
+    displayKey: '',
+    templates: {
+      suggestion: function(suggestion) {
+				return '<span>' + suggestion.hierarchy.lvl0 + '</span>';
+      }
+    }
+  }
+]).on('autocomplete:selected', function(event, suggestion, dataset) {
+	console.log(event, suggestion, dataset);
+	location.href = suggestion.url;
+});
 </script>
