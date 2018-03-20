@@ -61,12 +61,9 @@ Proceed through the following steps until you locate the source of the issue wit
 
     ~~~
     +--------------------+
-    |      Database      |
+    |      Database      |
     +--------------------+
-    | crdb_internal      |
-    | information_schema |
-    | pg_catalog         |
-    | system             |
+    | system             |
     +--------------------+
     ~~~
 
