@@ -1485,6 +1485,11 @@ a.accordion-toggle {
         width: 90%;
         margin-bottom: 30px; } }
 
+.search-by-algolia {
+  height: 16px;
+  margin-top: 15px;
+  margin-right: 45px; }
+
 li.search-wrap {
   margin-bottom: 0; }
 

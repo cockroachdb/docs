@@ -40,13 +40,10 @@ var searchConfig = {
 	facetFilters: ['version:' + currentVersion]
 };
 
-function getCookie(key) {
-	var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
-	return keyValue ? keyValue[2] : null;
-}
-
 index.search(searchConfig, function searchDone(err, data) {
 	var div = $('<div/>');
+
+	$('.post-header').append('<img class="search-by-algolia" src="{{ 'images/algolia.svg' | relative_url }}" />');
 
 	if (data.hits) {
 		data.hits.forEach(function(hit) {
@@ -67,5 +64,4 @@ index.search(searchConfig, function searchDone(err, data) {
 	}
 	$('.post-content').html(div);
 });
-
 </script>
