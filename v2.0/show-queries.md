@@ -94,7 +94,7 @@ Alternatively, you can use `SHOW QUERIES` to receive the same response.
 
 ### Filter for Specific Queries
 
-You can use a [`SELECT`](select.html) statement to filter the list of active queries by one or more of the [response fields](#response).
+You can use a [`SELECT`](select-clause.html) statement to filter the list of active queries by one or more of the [response fields](#response).
 
 #### Show all queries on node 2
 

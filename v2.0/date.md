@@ -13,9 +13,9 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 A constant value of type `DATE` can be expressed using an
 [interpreted literal](sql-constants.html#interpreted-literals), or a
 string literal
-[annotated with](sql-expressions.html#explicitly-typed-expressions)
+[annotated with](scalar-expressions.html#explicitly-typed-expressions)
 type `DATE` or
-[coerced to](sql-expressions.html#explicit-type-coercions) type
+[coerced to](scalar-expressions.html#explicit-type-coercions) type
 `DATE`.
 
 The string format for dates is `YYYY-MM-DD`. For example: `DATE '2016-12-23'`.

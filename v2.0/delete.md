@@ -20,6 +20,8 @@ The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on th
 
 {% include sql/{{ page.version.version }}/diagrams/delete.html %}
 
+<div markdown="1"></div>
+
 ## Parameters
 
 <style>
@@ -30,13 +32,13 @@ table td:first-child {
 
 | Parameter | Description |
 |-----------|-------------|
-|`relation_expr` | The name of the table you want to delete rows from.<br><br>Deleting from multiple tables in a single statement is not supported.|
-|`AS table_alias_name` | Create an alias for the table name, completely hiding its original name. All subsequent references to the table must use its alias.|
+| `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
+| `table_name` | The name of the table that contains the rows you want to update.
+| `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 |`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__|
-| `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column. See [Ordering Query Results](query-order.html) for more details. |
-| `LIMIT count` | Only retrieve `count` number of rows. <br><br>For compatibility with PostgreSQL, CockroachDB also supports `FETCH FIRST count ROWS ONLY` and `FETCH NEXT count ROWS ONLY` as aliases for `LIMIT`. If `count` is omitted, then one row is fetched.|
-|`RETURNING ...`<br>| Retrieve a table of deleted rows using [all columns](#use-all-columns) (`*`) or [specific columns](#use-specific-columns) (named in `a_expr`).<br><br>To return nothing in the response, not even the number of rows affected, use `RETURNING NOTHING`.|
-|`AS target_name`| In the retrieved table, change the column label from `a_expr` to `target_name`.<br><br>You can also change column labels with an `identifier`, but must follow [these rules](keywords-and-identifiers.html#identifiers).|
+| `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
+| `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
+| `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`. |
 
 ## Success Responses
 
@@ -185,8 +187,11 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 ## See Also
 
 - [`INSERT`](insert.html)
+- [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
 - [`TRUNCATE`](truncate.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
+- [Limiting Query Results](limit-offset.html)

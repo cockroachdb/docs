@@ -303,7 +303,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 (16 rows)
 ~~~
 
-Next, let's use a [time-travel query](select.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
+Next, let's use a [time-travel query](select-clause.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
 
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
