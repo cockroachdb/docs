@@ -8,7 +8,7 @@ toc: false
 
 For a hands-on demonstration of using an inverted index to improve query performance on a `JSONB` column, see the [JSON tutorial](demo-json-support.html).
 
-<!-- {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}} -->
+{{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -112,7 +112,7 @@ Then, insert a few rows a data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *, jsonb_pretty(user_profile) FROM users;
+> SELECT * jsonb_pretty(user_profile) FROM users;
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
@@ -164,6 +164,7 @@ Now, run a query that filters on the `JSONB` column:
 
 - [`JSONB`](jsonb.html)
 - [JSON tutorial](demo-json-support.html)
+- [Computed Columns](computed-columns.html)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)

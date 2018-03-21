@@ -8,10 +8,6 @@ toc: false
 
 For a hands-on demonstration of storing and querying JSON data from a third-party API, see the [JSON tutorial](demo-json-support.html).
 
-<!--To Do:
-- This is a good opportunity to communicate how useful this feature is.
-- Docs will leverage blog content for this (Andy to draft in early March) -->
-
 <div id="toc"></div>
 
 ## Alias
@@ -128,7 +124,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 ### Retrieve Formatted `JSONB` Data
 
-To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example:
+To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -155,7 +151,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 ### Retrieve Specific Fields from a `JSONB` Value
 
-To retrieve a specific field from a `JSONB` value, use the `->` operator:
+To retrieve a specific field from a `JSONB` value, use the `->` operator. For example, retrieve a field from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -187,6 +183,10 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
+### Create a table with a `JSONB` column and a computed column
+
+{% include computed-columns/jsonb.md %}
+
 ## Supported Casting & Conversion
 
 `JSONB` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
@@ -197,5 +197,6 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 - [JSON tutorial](demo-json-support.html)
 - [Inverted Indexes](inverted-indexes.html)
+- [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)

@@ -689,6 +689,12 @@
             ]
           },
           {
+            "title": "Computed Columns",
+            "urls": [
+              "/${VERSION}/computed-columns.html"
+            ]
+          },
+          {
             "title": "Name Resolution",
             "urls": [
               "/${VERSION}/sql-name-resolution.html"
