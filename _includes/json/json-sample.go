@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("postgres", "user=root dbname=d sslmode=disable port=26257")
+	db, err := sql.Open("postgres", "user=maxroach dbname=jsonb_test sslmode=disable port=26257")
 	if err != nil {
 		panic(err)
 	}
