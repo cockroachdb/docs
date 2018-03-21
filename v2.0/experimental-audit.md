@@ -15,6 +15,10 @@ The audit logs contain detailed information about queries being executed against
 
 For a detailed description of exactly what is logged, see the [Log File Format](#log-file-format) section below.
 
+{{site.data.alerts.callout_success}}
+This page has reference information about the `EXPERIMENTAL_AUDIT` subcommand.  For a SQL audit logging tutorial, see [Enable SQL Audit Logs](enable-sql-audit-logs.html).
+{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Synopsis

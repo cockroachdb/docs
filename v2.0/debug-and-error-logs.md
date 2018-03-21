@@ -6,6 +6,10 @@ toc: false
 
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
+{{site.data.alerts.callout_success}}
+For more information about SQL audit logs, see [Enable SQL Audit Logs](enable-sql-audit-logs.html).
+{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Details
