@@ -65,7 +65,9 @@ Restore Type | Parameters
 
 ### Point-in-time Restore
 
-If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history.
+If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup. 
+
+If you do not specify a point-in-time, the data will be restored to the backup timestamp (that is, the restore will work as if the data was backed up without revision history).
 
 ## Performance
 

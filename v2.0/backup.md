@@ -1,4 +1,4 @@
- ---
+---
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: false
@@ -44,7 +44,7 @@ CockroachDB offers two types of backups: full and incremental.
 
 #### Full Backups
 
-Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups either as of a given timestamp or with full revision history.
+Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available revision history.
 
 #### Incremental Backups
 
@@ -60,7 +60,12 @@ Note the following restrictions:
 
 ### Backups with Revision History
 
-You can create full or incremental backups with revision history, which allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history.
+You can create full or incremental backups with revision history:
+
+- Taking full backups with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. 
+- Taking incremental backups with revision history allows you to back up every change made since the last backup and within the garbage collection period leading up to and including the given timestamp. You can take incremental backups with revision history even when your previous full or incremental backups were taken without revision history.
+
+You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history.
 
 ## Performance
 
