@@ -41,6 +41,7 @@ var searchConfig = {
 };
 
 index.search(searchConfig, function searchDone(err, data) {
+	console.log('DATA: ', data);
 	var div = $('<div/>');
 
 	$('.post-header').append('<img class="search-by-algolia" src="{{ 'images/algolia.svg' | relative_url }}" />');
@@ -56,27 +57,12 @@ index.search(searchConfig, function searchDone(err, data) {
 			var r = $('<div/>', {class: 'search-item'});
 			r.append(h);
 			r.append($('<div/>', {class: 'search-link'}).html(hit.url));
-			r.append($('<div/>', {class: 'search-snippet'}).html(hit.content));
+			r.append($('<div/>', {class: 'search-snippet'}).html(hit._highlightResult.content.value));
 			div.append(r);
 		});
 	} else {
 		div.append($('<p>No results.</p>'));
 	}
 	$('.post-content').html(div);
-});
-
-$('#search-input').autocomplete({ minLength: 3, hint: false, debug: true }, [
-  {
-    source: $.fn.autocomplete.sources.hits(index, { hitsPerPage: 10 }),
-    displayKey: '',
-    templates: {
-      suggestion: function(suggestion) {
-				return '<span>' + suggestion.hierarchy.lvl0 + '</span>';
-      }
-    }
-  }
-]).on('autocomplete:selected', function(event, suggestion, dataset) {
-	console.log(event, suggestion, dataset);
-	location.href = suggestion.url;
 });
 </script>
