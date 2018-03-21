@@ -43,6 +43,55 @@
           "/${VERSION}/training/locality-and-replication-zones.html"
         ]
       },
+    ]
+  },
+  {
+    "title": "More Training?",
+    "urls": [
+      "https://goo.gl/forms/UmtasgsYrBgQrrKl1"
+    ]
+  }
+]
+
+/*
+  {
+    "title": "Introduction",
+    "items": [
+      {
+        "title": "Why CockroachDB?",
+        "urls": [
+          "/${VERSION}/training/why-cockroachdb.html"
+        ]
+      },
+      {
+        "title": "Architecture Overview",
+        "urls": [
+          "/${VERSION}/training/architecture-overview.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ops Basics",
+    "items": [
+      {
+        "title": "Cluster Startup and Scaling",
+        "urls": [
+          "/${VERSION}/training/cluster-startup-and-scaling.html"
+        ]
+      },
+      {
+        "title": "Fault Tolerance and Automated Repair",
+        "urls": [
+          "/${VERSION}/training/fault-tolerance-and-automated-repair.html"
+        ]
+      },
+      {
+        "title": "Locality and Replication Zones",
+        "urls": [
+          "/${VERSION}/training/locality-and-replication-zones.html"
+        ]
+      },
       {
         "title": "Data Import",
         "urls": [
@@ -192,4 +241,4 @@
       }
     ]
   }
-]
+] */
