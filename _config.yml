@@ -30,17 +30,17 @@ release_info:
     build_time: 2017/02/13 15:13:51 (go1.8.3)
     start_time: 2017-02-13 13:33:22.046027038 -0400 EDT
   v1.1:
-    name: v1.1.6
-    version: v1.1.6
+    name: v1.1.7
+    version: v1.1.7
     docker_image: cockroachdb/cockroach
-    build_time: 2018/03/12 14:48:26 (go1.8.3)
-    start_time: 2018-03-12 15:10:52.34274101 +0000 UTC
+    build_time: 2018/03/26 14:48:26 (go1.8.3)
+    start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
   v2.0:
     name: v2.0-beta
-    version: v2.0-beta.20180319
+    version: v2.0-beta.20180326
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2018/03/19 14:48:26 (go1.10)
-    start_time: 2018-03-19 15:10:52.34274101 +0000 UTC
+    build_time: 2018/03/26 14:48:26 (go1.10)
+    start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
