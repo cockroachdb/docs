@@ -19,23 +19,51 @@ Table partitioning helps you reduce latency and cost:
 
 ## How to Use Table Partitioning
 
-1. [Start the nodes with the right constraints](#start-the-nodes-with-the-right-constraints).
-2. [Set the enterprise license key](#set-the-enterprise-license-key). 
-3. [Create table with partitions and define the primary key](#create-the-table-with-partitions-and-define-the-primary-key).
-4. [Set zone configurations](#set-zone-configurations).
-5. [Verify table partitions](#verify-table-partitions).
+1. [Identify the Partitioning method](#identify-the-partitioning-method).
+2. [Start the nodes with the right constraints](#start-the-nodes-with-the-right-constraints).
+3. [Set the enterprise license key](#set-the-enterprise-license-key). 
+4. [Define the table partitions using a primary key or secondary index](#define-table-partitions-using-primary-key-or-secondary-index).
+5. [Set zone configurations](#set-zone-configurations).
+6. [Verify table partitions](#verify-table-partitions).
 
-## Start the Nodes with the Right Constraints
+### Identify the Partitioning Method
+
+You can define partitions and subpartitions over one or more columns of a table. You can declare which values belong to each partition in one of two ways: 
+
+- **List partitioning**: Enumerate all possible values for each partition. List partitioning is a good choice when the number of possible values is small. List partitioning is well-suited for geo-partitioning.
+- **Range partitioning**: Specify a contiguous range of values for each partition by specifying lower and upper bounds. Range partitioning is a good choice when the number of possible values is too large to explicitly list out. Range partitioning is well-suited for archival-partitioning.
+
+#### Partition by List
+
+`PARTITION BY LIST` lets you map one or more tuples to a partition.
+
+To partition a table by list, use the `PARTITION BY LIST` syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions. 
+
+See [Partition by List](#partition-by-list) example below for more details.
+
+#### Partition by Range
+
+`PARTITION BY RANGE` lets you map ranges of tuples to a partition.
+
+To define a table partition by range, use the `PARTITION BY RANGE` syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively. 
+
+{{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For range partitions, <code>NULL</code> is considered less than any other data, which is consistent with our key encoding ordering and <code>ORDER BY</code> behavior.{{site.data.alerts.end}}
+
+Partition values can be any SQL expression, but it’s only evaluated once. If you create a partition with value `< (now() - '1d')` on 2017-01-30, it would be contain all values less than 2017-01-29. It would not update the next day, it would continue to contain values less than 2017-01-29.
+
+See [Partition by Range](#partition-by-range) example below for more details.
+
+### Start the Nodes with the Right Constraints
 
 Start the nodes with the right constraits (localities, storage devices, and other constraints).
 
 See [Configure replication zones](configure-replication-zones.html) for more information.
 
-## Set the Enterprise License Key
+### Set the Enterprise License Key
 
 You require an enterprise license to partition or repartition a table, and to add or edit the zone configurations of a partition or an index. To enable partitioning, [set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
 
-### Expired License
+#### Expired License
 
 The following features don't work with an expired license:
 
@@ -51,17 +79,15 @@ However, the following features continue to work even with an expired enterprise
 - Unpartitioning a partitioned table
 - Making non-partitioning changes to a partitioned table (for example, adding a column/index/foreign key/check constraint) 
 
-## Create the Table with Partitions and Define the Primary Key
-
-### Define the Primary Key
+### Define Table Partitions using Primary Key or Secondary Index
 
 A table can be partitioned based on either its primary key or secondary index. 
 
+#### Define Table Partitions using Primary Key
+
 The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. 
 
-#### Example
-
-Consider the database of a global online learning portal that has a table for students of all the courses across the world. If you want to geo-partition the table based on the countries of the students, then the primary key needs to be defined as:
+For instance, consider the database of a global online learning portal that has a table for students of all the courses across the world. If you want to geo-partition the table based on the countries of the students, then the primary key needs to be defined as:
 
 {% include copy-clipboard.html %} 
 ~~~ sql
@@ -74,12 +100,12 @@ Consider the database of a global online learning portal that has a table for st
     PRIMARY KEY (country, id));
 ~~~
 
-### Partitioning Key Considerations
+**Primary Key Considerations**
 
 - For v2.0, you cannot change the primary key after you create the table. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `expected_graduation_date` in the future, define the primary key as `(country, expected_graduation_date, id)`. v2.1 will allow you to change the primary key.
 - The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You can’t skip `country` and partition by `expected_graduation_date`.
 
-### Partitioning and Index Columns
+#### Define Table Partitions using Secondary Index
 
 The primary key discussed above has two drawbacks: 
 
@@ -103,44 +129,17 @@ CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
 
 Consider using a naming scheme that uses the index name to avoid conflicts. For example, the partitions above could be named `primary_idx_bar`, `primary_idx_default`, `b_idx_baz`, `b_idx_default`.
 
-### Define the Table Partitions
-
-You can define partitions and subpartitions over one or more columns of a table. You can declare which values belong to which partition in one of two ways: 
-
-- **List partitioning**: Enumerate all possible values for each partition. List partitioning is a good choice when the number of possible values is small.
-- **Range partitioning**: Specify a contiguous range of values for each partition by specifying lower and upper bounds. Range partitioning is a good choice when the number of possible values is too large to explicitly list out.
-
-#### Partition by List
-
-`PARTITION BY LIST` lets you map one or more tuples to a partition.
-
-To partition a table by list, use the `PARTITION BY LIST` syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions. 
-
-See [Partition by List](#partition-by-list) example below for more details.
-
-#### Partition by Range
-
-`PARTITION BY RANGE` lets you map ranges of tuples to a partition.
-
-To define a table partition by range, use the `PARTITION BY RANGE` syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively. 
-
-{{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For range partitions, <code>NULL</code> is considered less than any other data, which is consistent with our key encoding ordering and <code>ORDER BY</code> behavior.{{site.data.alerts.end}}
-
-Partition values can be any SQL expression, but it’s only evaluated once. If you create a partition with value `< (now() - '1d')` on 2017-01-30, it would be contain all values less than 2017-01-29. It would not update the next day, it would continue to contain values less than 2017-01-29.
-
-See [Partition by Range](#partition-by-range) example below for more details.
-
-### Define Partitions on Interleaved Tables
+#### Define Partitions on Interleaved Tables
 
 For [interleaved tables](interleave-in-parent.html), partitions can be defined only on the root table of the interleave hierarchy, while children are interleaved the same as their parents.
 
-## Set Zone Configurations
+### Set Zone Configurations
 
 On their own, partitions are inert and simply apply a label to the rows of the table that satisfy the criteria of the defined partitions. Applying functionality to a partition requires creating and applying the [zone configurations](configure-replication-zones.html) to the corresponding partitions.
 
 CockroachDB uses the most granular zone config available. Zone configs that target a partition are considered more granular than those that target a table or index, which in turn are considered more granular than those that target a database. 
 
-## Verify Table Partitions
+### Verify Table Partitions
 
 To verify the table partitions, use the [`SHOW CREATE TABLE`](show-create-table.html) statement.
 
@@ -153,9 +152,11 @@ Consider a global online learning portal, RoachLearn, that has a database contai
 - We want to keep the data of the students located in the United States and Canada in the United States datacenter.
 - We want to keep the data of students located in Australia and New Zealand in the Australian datacenter. 
 
-We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax. 
+#### Step 1. Identify the partitioning method
 
-#### Step 1. Start each node with its datacenter location specified in the `--locality` flag:
+We want to geo-partition the table to keep the students' data closer to their locations. We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax.
+
+#### Step 2. Start each node with its datacenter location specified in the `--locality` flag
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -181,11 +182,11 @@ $ cockroach start --insecure \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
 ~~~
 
-#### Step 2. Set the enterprise license
+#### Step 3. Set the enterprise license
 
 To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
 
-#### Step 3. Create a table with the appropriate partitions:
+#### Step 4. Create a table with the appropriate partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -202,7 +203,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
       PARTITION DEFAULT VALUES IN (default));
 ~~~
 
-#### Step 4. Create and apply corresponding zone configurations:
+#### Step 5. Create and apply corresponding zone configurations
 
 Create appropriate zone configurations:
 
@@ -230,7 +231,7 @@ $ cockroach zone set roachlearn.students_by_list.north_america --insecure  -f no
 $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
 
-#### Step 5. Verify table partitions
+#### Step 6. Verify table partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -260,13 +261,17 @@ Time: 7.209032ms
 
 ### Define Table Partitions by Range
 
-Suppose we want to store the data of current students on fast and expensive storage devices (e.g., SSD) and store the data of the graduated students on slower, cheaper storage devices (e.g., HDD). We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
+Suppose we want to store the data of current students on fast and expensive storage devices (e.g., SSD) and store the data of the graduated students on slower, cheaper storage devices (e.g., HDD). 
 
-#### Step 1. Set the enterprise license
+#### Step 1. Identify the partitioning method
+
+We want to archival-partition the table to keep newer data on faster devices and older data on slower devices. We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax. 
+
+#### Step 2. Set the enterprise license
 
 To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
 
-#### Step 2. Start each node with the appropriate storage device specified in the `--store` flag
+#### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -288,7 +293,7 @@ $ cockroach start --insecure \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
 ~~~
 
-#### Step 3. Create a table with the appropriate partitions
+#### Step 4. Create a table with the appropriate partitions
 
 {% include copy-clipboard.html %} 
 ~~~ sql
@@ -304,7 +309,7 @@ $ cockroach start --insecure \
       PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
 ~~~
 
-#### Step 4. Create and apply corresponding zone configurations
+#### Step 5. Create and apply corresponding zone configurations
 
 Create appropriate zone configurations:
 
@@ -332,7 +337,7 @@ $ cockroach zone set roachlearn.students_by_range.current --insecure  -f current
 $ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f graduated.zone.yml
 ~~~
 
-#### Step 5. Verify table partitions
+#### Step 6. Verify table partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -365,9 +370,11 @@ Going back to RoachLearn's scenario, suppose we want to do all of the following:
 - Store the current students' data on faster storage devices.
 - Store the graduated students' data on slower, cheaper storage devices (example: HDD).
 
-We can achieve this by partitioning the table first by location and then by date.
+#### Step 1. Identify the Partitioning method
 
-#### Step 1. Start each node with the appropriate storage device specified in the `--store` flag
+We want to geo-partition as well as archival-partition the table. We can achieve this by partitioning the table first by location and then by date.
+
+#### Step 2. Start each node with the appropriate storage device specified in the `--store` flag
 
 Start a node in the US datacenter: 
 
@@ -399,11 +406,11 @@ Initialize the cluster:
 $ cockroach init --insecure --host=<node1 hostname>
 ~~~
 
-#### Step 2. Set the enterprise license
+#### Step 3. Set the enterprise license
 
 To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
 
-#### Step 3. Create a table with the appropriate partitions
+#### Step 4. Create a table with the appropriate partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -422,7 +429,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 
 Subpartition names must be unique within a table. In our example, even though `graduated` and `current` are sub-partitions of distinct partitions, they still need to be uniquely named. Hence the names `graduated_au`, `graduated_us`, and `current_au` and `current_us`.
 
-#### Step 4. Create and apply corresponding zone configurations
+#### Step 5. Create and apply corresponding zone configurations
 
 Create appropriate zone configurations:
 
@@ -472,7 +479,7 @@ $ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zon
 $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au.zone.yml
 ~~~
 
-#### Step 5. Verify table partitions
+#### Step 6. Verify table partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
