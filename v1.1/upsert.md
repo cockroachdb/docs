@@ -48,7 +48,7 @@ Parameter | Description
     DO UPDATE SET c = excluded.c;
 ~~~
 
-`INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primay Key)](#upsert-that-fails-conflict-on-non-primay-key) example below.
+`INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primary Key)](#upsert-that-fails-conflict-on-non-primary-key) example below.
 
 ## Examples
 
@@ -153,7 +153,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert that Fails (Conflict on Non-Primay Key)
+### Upsert that Fails (Conflict on Non-Primary Key)
 
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
