@@ -14,16 +14,18 @@ CockroachDB supports the following SQL statements. Click a statement for more de
 
 Statement | Usage
 ----------|------------
-[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
+[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPLAIN`](explain.html) | View debugging and analysis details for a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
+[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
-[`SELECT`](select.html) | Select rows from a table.
+[`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
 [`SHOW TRACE`](show-trace.html) | Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
+[`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
 [`UPSERT`](upsert.html) | Insert rows that do not violate uniqueness constraints; update rows that do.
+[`VALUES`](selection-queries.html#values-clause) | Return rows containing specific values.
 
 ## Data Definition Statements
 
@@ -41,7 +43,7 @@ Statement | Usage
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SEQUENCE`](create-sequence.html) | <span class="version-tag">New in v2.0:</span> Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
-[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a `SELECT` statement.
+[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DROP COLUMN`](drop-column.html) | Remove columns from a table.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.

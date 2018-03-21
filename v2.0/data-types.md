@@ -39,7 +39,7 @@ CockroachDB supports explicit type conversions using the following methods:
 
     {{site.data.alerts.callout_success}}
     To create constant values, consider using a
-    <a href="sql-expressions.html#explicitly-typed-expressions">type annotation</a>
+    <a href="scalar-expressions.html#explicitly-typed-expressions">type annotation</a>
     instead of a cast, as it provides more predictable results.
     {{site.data.alerts.end}}
 

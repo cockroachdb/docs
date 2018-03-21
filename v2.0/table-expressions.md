@@ -5,44 +5,58 @@ toc: false
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
-[`SELECT` clauses](select.html).
+[simple `SELECT` clauses](select-clause.html), or as parameter to
+[`TABLE`](selection-queries.html#table-clause).
+
+[SQL Joins](joins.html) are a particular kind of table
+expression.
 
 <div id="toc"></div>
 
-## Introduction
+## Synopsis
 
-Table expressions are used in the [`SELECT`](select.html) variant of
-[selection clauses](selection-clauses.html), and thus can appear
-everywhere where a selection clause is possible. For example:
+<div>{% include sql/{{ page.version.version }}/diagrams/table_ref.html %}</div>
 
-~~~sql
-> SELECT ... FROM <table expr>, <table expr>, ...
-> INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
-> CREATE TABLE ... AS SELECT ... FROM <table expr>, <table expr>, ...
-> UPSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
-~~~
+<div markdown="1"></div>
 
-CockroachDB recognizes the following table expressions:
+## Parameters
 
-- a [table or view name](#table-or-view-names);
-- a [table generator function](#table-generator-functions);
-- a [selection clause](selection-clauses.html) between parentheses (including
-  `SELECT`, `VALUES` and `TABLE`), as [a
-  sub-query](#subqueries-as-table-expressions);
-- an [aliased table expression](#aliased-table-expressions), using an `AS` clause;
-- an explicit [`JOIN` expression](#join-expressions);
-- a CockroachDB statement that returns values, between square brackets '[...]';
-- another table expression [annoted with `WITH ORDINALITY`](#ordinality-annotation); or
-- another table expression between parentheses.
+Parameter | Description
+----------|------------
+`table_name` | A [table or view name](#table-or-view-names).
+`table_alias_name` | A name to use in an [aliased table expression](#aliased-table-expressions).
+`name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
+`scan_parameters` | Optional syntax to [force index selection](#force-index-selection).
+`func_application` | [Results from a function](#results-from-a-function).
+`explainable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](explain.html#explainable-statements).
+`select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
+`joined_table` | A [join expression](joins.html).
+
+## Table Expressions Language
+
+The synopsis above really defines a mini-language to construct
+complex table expressions from simpler parts.
+
+Construct | Description | Examples
+----------|-------------|------------
+`table_name [@ scan_parameters]` | [Access a table or view](#access-a-table-or-view). | `accounts`, `accounts@name_idx`
+`function_name ( exprs ... )` | Generate tabular data using a [scalar function](#scalar-function-as-data-source) or [table generator function](#table-generator-functions). | `sin(1.2)`, `generate_series(1,10)`
+`<table expr> [AS] name [( name [, ...] )]` | [Rename a table and optionally columns](#aliased-table-expressions). | `accounts a`, `accounts AS a`, `accounts AS a(id, b)`
+`<table expr> WITH ORDINALITY` | [Enumerate the result rows](#ordinality-annotation). | `accounts WITH ORDINALITY`
+`<table expr> JOIN <table expr> ON ...` | [Join expression](joins.html). | `orders o JOIN customers c ON o.customer_id = c.id`
+`(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#subqueries-as-table-expressions). | `(SELECT * FROM customers c)`
+`[... statement ...]` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](explain.html#explainable-statements).<br><br>This is a CockroachDB extension. | `[SHOW COLUMNS FROM accounts]`
 
 The following sections provide details on each of these options.
 
-In addition to this, the `FROM` clause itself accepts more than one
-consecutive table expressions at the top level, separated by
-commas. This is a shorthand notation for `CROSS JOIN`, documented in
-the `JOIN` syntax below.
+## Table Expressions That Generate Data
 
-## Table or View Names
+The following sections decribe primary table expressions that produce
+data.
+
+### Access a Table or View
+
+#### Table or View Names
 
 Syntax:
 
@@ -60,12 +74,66 @@ in the current database, as configured by [`SET DATABASE`](set-vars.html).
 
 For example:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM users; -- uses table `users` in the current database
 > SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
 ~~~
 
-## Table Generator Functions
+#### Force Index Selection
+
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) when reading from a named table.
+
+{{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a query.{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES FROM accounts;
+~~~
+~~~
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+|  Table   |       Name        | Unique | Seq | Column | Direction | Storing | Implicit |
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+| accounts | primary           | true   |   1 | id     | ASC       | false   | false    |
+| accounts | accounts_name_idx | false  |   1 | name   | ASC       | false   | false    |
+| accounts | accounts_name_idx | false  |   2 | id     | ASC       | false   | true     |
++----------+-------------------+--------+-----+--------+-----------+---------+----------+
+(3 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name, balance
+FROM accounts@accounts_name_idx
+WHERE name = 'Edna Barath';
+~~~
+~~~
++-------------+---------+
+|    name     | balance |
++-------------+---------+
+| Edna Barath |     750 |
+| Edna Barath |    2200 |
++-------------+---------+
+~~~
+
+### Access a Common Table Expression
+
+A single identifier in a table expression context can refer to a
+[common table expression](common-table-expressions.html) defined
+earlier.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH a AS (SELECT * FROM users)
+  SELECT * FROM a; -- "a" refers to "WITH a AS .."
+~~~
+
+### Results From a Function
+
+A table expression can use the results from a function application as
+a data source.
 
 Syntax:
 
@@ -73,22 +141,50 @@ Syntax:
 name ( arguments... )
 ~~~
 
-The name of a table generator function, followed by an opening
-parenthesis, followed by zero or more expression arguments, followed
-by a closing parenthesis.
+The name of a function, followed by an opening parenthesis, followed
+by zero or more [scalar expressions](scalar-expressions.html), followed by
+a closing parenthesis.
 
-The resolution of the function name follows the same rules as the resolution of table names. See [Name Resolution](sql-name-resolution.html) for more details.
+The resolution of the function name follows the same rules as the
+resolution of table names. See [Name
+Resolution](sql-name-resolution.html) for more details.
 
-This designates a transient data source produced by the designated
-function.
+#### Scalar Function as Data Source
 
-Currently CockroachDB only supports the generator function
-`pg_catalog.generate_series()`, for compatibility with
-[the PostgreSQL set-generating function of the same name](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
+<span class="version-tag">New in v2.0</span>
+
+When a [function returning a single
+value](scalar-expressions.html#function-calls-and-sql-special-forms) is
+used as a table expression, it is interpreted as tabular data with a
+single column and single row containing the function results.
 
 For example:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM sin(3.2)
+~~~
+~~~
++-----------------------+
+|          sin          |
++-----------------------+
+| -0.058374143427580086 |
++-----------------------+
+~~~
+
+{{site.data.alerts.callout_info}}CockroachDB only supports this syntax for compatibility with PostgreSQL. The canonical syntax to evaluate <a href="scalar-expressions.html">scalar functions</a> is as a direct target of <code>SELECT</code>, for example <code>SELECT sin(3.2)</code>.{{site.data.alerts.end}}
+
+
+#### Table Generator Functions
+
+Some functions directly generate tabular data with multiple rows from
+a single function application. This is also called a "set-returning
+function".
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM generate_series(1, 3)
 ~~~
 ~~~
@@ -101,26 +197,18 @@ For example:
 +-----------------+
 ~~~
 
-## Subqueries as Table Expressions
+{{site.data.alerts.callout_info}}Currently CockroachDB only supports a small set of generator function compatible with <a href="https://www.postgresql.org/docs/9.6/static/functions-srf.html">the PostgreSQL set-generating functions of the same name</a>.{{site.data.alerts.end}}
 
-Any [selection clause](selection-clauses.html) enclosed between parentheses
-can be used as a table expression. This is called a "subquery".
+## Operators That Extend a Table Expression
 
-Syntax:
+The following sections describe table expressions that change the
+metadata around tabular data, or add more data, without modifying the
+data of the underlying operand.
 
-~~~
-( ... subquery ... )
-~~~
+### Aliased Table Expressions
 
-For example:
-
-~~~sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
-> SELECT *                            FROM (VALUES(1), (2), (3));
-> SELECT firstname || ' ' || lastname FROM (TABLE employees);
-~~~
-
-## Aliased Table Expressions
+Aliased table expressions rename tables and columns temporarily in
+the context of the current query.
 
 Syntax:
 
@@ -136,40 +224,100 @@ In the second form, the columns are also renamed.
 
 For example:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
 > SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
 ~~~
 
-## Join Expressions
+### Ordinality Annotation
 
 Syntax:
 
-~~~ shell
-# Inner joins:
-<table expr> [ INNER ] JOIN <table expr> ON <val expr>
-<table expr> [ INNER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-<table expr> NATURAL [ INNER ] JOIN <table expr>
-<table expr> CROSS JOIN <table expr>
-
-# Left outer joins:
-<table expr> LEFT [ OUTER ] JOIN <table expr> ON <val expr>
-<table expr> LEFT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-<table expr> NATURAL LEFT [ OUTER ] JOIN <table expr>
-
-# Right outer joins:
-<table expr> RIGHT [ OUTER ] JOIN <table expr> ON <val expr>
-<table expr> RIGHT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
-<table expr> NATURAL RIGHT [ OUTER ] JOIN <table expr>
+~~~
+<table expr> WITH ORDINALITY
 ~~~
 
-These expressions designate the
-[SQL join operation](https://en.wikipedia.org/wiki/Join_(SQL)) on the
-two operand table expressions.
+Designates a data source equivalent to the table expression operand with
+an extra "Ordinality" column that enumerates every row in the data source.
 
-Currently works only with small data sets; find more info in our [blog post](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+For example:
 
-## Using the Output of Other Statements
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM (VALUES('a'),('b'),('c'));
+~~~
+~~~
++---------+
+| column1 |
++---------+
+| a       |
+| b       |
+| c       |
++---------+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
+~~~
+~~~
++---------+------------+
+| column1 | ordinality |
++---------+------------+
+| a       |          1 |
+| b       |          2 |
+| c       |          3 |
++---------+------------+
+~~~
+
+{{site.data.alerts.callout_info}}<code>WITH ORDINALITY</code> necessarily prevents some optimizations of the surrounding query. Use it sparingly if performance is a concern, and always check the output of <a href="explain.html"><code>EXPLAIN</code></a> in case of doubt. {{site.data.alerts.end}}
+
+## Join Expressions
+
+Join expressions combine the results of two or more table expressions
+based on conditions on the values of particular columns.
+
+See [Join Expressions](joins.html) for more details.
+
+## Using Other Queries as Table Expressions
+
+The following sections describe how to use the results produced by
+another SQL query or statement as a table expression.
+
+### Subqueries as Table Expressions
+
+Any [selection
+query](selection-queries.html) enclosed
+between parentheses can be used as a table expression, including
+[simple `SELECT` clauses](select-clause.html). This is called a
+"[subquery](subqueries.html)".
+
+Syntax:
+
+~~~
+( ... subquery ... )
+~~~
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT firstname || ' ' || lastname FROM (TABLE employees);
+~~~
+
+{{site.data.alerts.callout_info}}
+<ul>
+<li>See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.</li>
+<li>To use other statements that produce data in a table expression, for example <code>SHOW</code>, use the <a href="#using-the-output-of-other-statements">square bracket notation</a>.</li>
+</ul>
+{{site.data.alerts.end}}
+
+<div markdown="1"></div>
+
+### Using the Output of Other Statements
 
 Syntax:
 
@@ -177,23 +325,19 @@ Syntax:
 [ <statement> ]
 ~~~
 
-A statement between square brackets in a table expression context
-designates the output of executing said statement. The following
-statements produce values that can be used in this way:
+An [explainable statement](explain.html#explainable-statements)
+between square brackets in a table expression context designates the
+output of executing said statement.
 
-- All `SHOW` variants.
-- [`INSERT`](insert.html), [`DELETE`](delete.html),
-  [`UPDATE`](update.html) and [`DELETE`](delete.html) with
-  `RETURNING`.
-- [`EXPLAIN`](explain.html).
-- All [selection clauses](selection-clauses.html). However the fact they can
-  be used between square brackets is merely a convenience; it is more
-  common to use them enclosed in parentheses, as outlined in the next
-  section.
+{{site.data.alerts.callout_info}}This is a CockroachDB extension. This
+syntax complements the <a
+href="#subqueries-as-table-expressions">subquery syntax using
+parentheses</a>, which is restricted to <a href="selection-queries.html">selection queries</a>. It was introduced to enable use of any <a href="explain.html#explainable-statements">explainable statement</a> as subquery, including <code>SHOW</code> and other non-query statements.{{site.data.alerts.end}}
 
 For example:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT "Field" FROM [SHOW COLUMNS FROM customer];
 ~~~
 ~~~
@@ -211,60 +355,38 @@ immediately creates a matching entry in the `management` table with the
 auto-generated employee ID, without requiring a round trip with the SQL
 client:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO management(manager, reportee)
     VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
             (SELECT id FROM [INSERT INTO employee(name) VALUES ('Albert') RETURNING id]));
 ~~~
 
-## Ordinality Annotation
+## Composability
 
-Syntax:
+Table expressions are used in the [`SELECT`](select-clause.html) and
+[`TABLE`](selection-queries.html#table-clause) variants of [selection
+clauses](selection-queries.html#selection-clauses), and thus can appear everywhere where
+a selection clause is possible. For example:
 
-~~~
-<table expr> WITH ORDINALITY
-~~~
-
-Designates a data source equivalent to the table expression operand with
-an extra "Ordinality" column that enumerates every row in the data source.
-
-For example:
-
-~~~sql
-> SELECT * FROM (VALUES('a'),('b'),('c'));
-~~~
-~~~
-+---------+
-| column1 |
-+---------+
-| a       |
-| b       |
-| c       |
-+---------+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT ... FROM <table expr>, <table expr>, ...
+> TABLE <table expr>
+> INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
+> INSERT INTO ... TABLE <table expr>
+> CREATE TABLE ... AS SELECT ... FROM <table expr>, <table expr>, ...
+> UPSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
 ~~~
 
-~~~sql
-> SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
-~~~
-~~~
-+---------+------------+
-| column1 | ordinality |
-+---------+------------+
-| a       |          1 |
-| b       |          2 |
-| c       |          3 |
-+---------+------------+
-~~~
-
-{{site.data.alerts.callout_info}}
-<code>WITH ORDINALITY</code> necessarily prevents some optimizations of the
-surrounding query. Use it sparingly if performance is a concern, and
-always check the output of <a href="explain.html">EXPLAIN</a> in case of doubt.
-{{site.data.alerts.end}}
+For more options to compose query results, see [Selection Queries](selection-queries.html).
 
 ## See Also
 
 - [Constants](sql-constants.html)
-- [Selection Clauses](selection-clauses.html)
-- [Value Expressions](sql-expressions.html)
+- [Selection Queries](selection-queries.html)
+  - [Selection Clauses](selection-queries.html#selection-clauses)
+- [Explainable Statements](explain.html#explainable-statements)
+- [Scalar Expressions](scalar-expressions.html)
 - [Data Types](data-types.html)
+- [Subqueries](subqueries.html)

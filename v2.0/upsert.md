@@ -4,7 +4,7 @@ summary: The UPSERT statement inserts rows when values do not violate uniqueness
 toc: false
 ---
 
-The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
+The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html#on-conflict-clause). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
 
 <div id="toc"></div>
 
@@ -24,17 +24,19 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 {% include sql/{{ page.version.version }}/diagrams/upsert.html %}
 
+<div markdown="1"></div>
+
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`opt_with_clause` | Docs coming soon.
+`common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `table_name` | The name of the table.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`insert_column_list` | A comma-separated list of column names, in parentheses.
-`select_stmt` | A [selection clause](selection-clauses.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`insert_column_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`column_name` | The name of a column to populate during the insert.
+`select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html).<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
 ## How `UPSERT` Transforms into `INSERT ON CONFLICT`
 
@@ -196,6 +198,12 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 
 ## See Also
 
-- [Selection Clauses](selection-clauses.html)
+- [Selection Queries](selection-queries.html)
+- [`DELETE`](delete.html)
 - [`INSERT`](insert.html)
+- [`UPDATE`](update.html)
+- [`TRUNCATE`](truncate.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`DROP TABLE`](drop-table.html)
+- [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)

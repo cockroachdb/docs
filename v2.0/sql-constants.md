@@ -215,7 +215,7 @@ BOOL 'FALSE'
 Additionally, for compatibility with PostgreSQL, the notation
 `'string'::type` and `CAST('string' AS type)` is also recognized as an
 interpreted literal. These are special cases of
-[cast expressions](sql-expressions.html).
+[cast expressions](scalar-expressions.html).
 
 For more information about the allowable format of interpreted
 literals, refer to the "Syntax" section of the respective data types:
@@ -234,5 +234,5 @@ type during expression evaluation is determined based on context.
 
 ## See Also
 
-- [Value Expressions](sql-expressions.html)
+- [Scalar Expressions](scalar-expressions.html)
 - [Data Types](data-types.html)
