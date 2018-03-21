@@ -25,7 +25,7 @@ The `root` user can cancel any currently active queries, whereas non-`root` user
 
 Parameter | Description
 ----------|------------
-`query_id` | The ID of the query to cancel, or a nested [`SELECT`](select.html) statement that returns the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a nested `SELECT` statement returns multiple IDs, the `CANCEL QUERY` statement will therefore fail.
+`query_id` | A [scalar expression](scalar-expressions.html) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will therefore fail.
 
 ## Response
 
@@ -58,9 +58,9 @@ In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-### Cancel a Query via a Nested `SELECT` Statement
+### Cancel a Query via a Subquery
 
-In this example, we nest a [`SELECT`](select.html) statement that retrieves the ID of a query inside the `CANCEL QUERY` statement:
+In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
 ~~~ sql
 > CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
@@ -69,7 +69,7 @@ In this example, we nest a [`SELECT`](select.html) statement that retrieves the 
           AND query = 'SELECT * FROM test.kv ORDER BY k');
 ~~~
 
-{{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If a nested <code>SELECT</code> statement returns multiple IDs, the <code>CANCEL QUERY</code> statement will therefore fail.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If subquery is used and returns multiple IDs, the <code>CANCEL QUERY</code> statement will therefore fail.{{site.data.alerts.end}}
 
 ## See Also
 

@@ -56,7 +56,7 @@ Field | Description
 
 ### Filter Jobs
 
-You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select.html) statement, and then filtering the values with the `WHERE` clause.
+You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;

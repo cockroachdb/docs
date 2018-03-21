@@ -4,8 +4,12 @@ summary: The ORDER BY clause controls the order of rows.
 toc: false
 ---
 
-The `ORDER BY` clause controls the order in which rows are returned or processed.
-It can be used in [`SELECT` clauses](select.html) and [`INSERT`](insert.html), [`UPSERT`](upsert.html), [`DELETE`](delete.html), and [`UPDATE`](update.html) statements.
+The `ORDER BY` clause controls the order in which rows are returned or
+processed. It can be used in any [statement-like
+query](relational-expressions.html#statement-like-queries), including
+as operand of [`INSERT`](insert.html) or [`UPSERT`](upsert.html), as
+well as with [`DELETE`](delete.html) and [`UPDATE`](update.html)
+statements.
 
 <div id="toc"></div>
 
@@ -22,9 +26,9 @@ by the keyword `ASC` or `DESC`.
 Each **column selection** can take one of the following forms:
 
 - A simple column selection, determined as follows:
-  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause](select.html). This uses the value computed by the `SELECT` clause as the sorting key.
+  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause](select-clause.html). This uses the value computed by the `SELECT` clause as the sorting key.
   2. A positive integer number, designating one of the columns in the data source, either the `FROM` clause of the `SELECT` clause where it happens or the table being written to by `DELETE` or `UPDATE`. This uses the corresponding input value from the data source to use as the sorting key.
-  3. An arbitrary [value expression](sql-expressions.html). This uses the result of evaluating that expression as the sorting key.
+  3. An arbitrary [scalar expression](scalar-expressions.html). This uses the result of evaluating that expression as the sorting key.
 - The notation `PRIMARY KEY <table_name>`. This uses the primary key column(s) of the given table as sorting key. This table must be part of the data source.
 - The notation `INDEX <table_name>@<index_name>`. This uses the columns indexed by the given index as sorting key. This table must be part of the data source.
 
@@ -60,7 +64,7 @@ significant:
 3. The ordering of the data source for an [`INSERT`](insert.html)
    statement or an [`UPSERT`](upsert.html) statement that also uses
    `LIMIT` is preserved, to determine which rows are processed.
-4. The ordering of a sub-query used in a scalar context (a value expression)
+4. The ordering of a sub-query used in a scalar expression
    is preserved.
 
 For example, using `WITH ORDINALITY`:
@@ -139,7 +143,7 @@ take priority over the data source columns, for example:
 > SELECT a,      b      FROM ab ORDER BY b; -- orders by column b
 ~~~
 
-It is also possible to sort using an arbitrary value expression computed for each row, for example:
+It is also possible to sort using an arbitrary scalar expression computed for each row, for example:
 
 ~~~ sql
 > SELECT a, b FROM ab ORDER BY a + b; -- orders by the result of computing a+b.
@@ -240,8 +244,8 @@ that may be lifted in the future.
 
 ## See Also
 
-- [Selection Clauses](selection-clauses.html)
-- [Value Expressions](sql-expressions.html)
+- [Statement-like Queries](relational-expressions.html#statement-like-queries)
+- [Scalar Expressions](scalar-expressions.html)
 - [`INSERT`](insert.html)
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)

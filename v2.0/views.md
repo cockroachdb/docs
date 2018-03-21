@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-A view is a stored `SELECT` query represented as a virtual table. Unlike a standard table, a view is not part of the physical schema; instead, it is a virtual table that forms dynamically when requested.
+A view is a stored [statement-like query](relational-expressions.html#statement-like-queries) and provides a shorthand name for it. CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
 
 <div id="toc"></div>
 
@@ -196,6 +196,8 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 CREATE VIEW
 ~~~
 
+{{site.data.alerts.callout_info}}Any <a href="relational-expressions.html#statement-like-queries">Statement-like Query</a> is valid as operand to <code>CREATE VIEW</code>, not just <a href="select-clause.html">Simple <code>SELECT</code> Clauses</a>.{{site.data.alerts.end}}
+
 ### Listing Views
 
 Once created, views are listed alongside regular tables in the database:
@@ -238,7 +240,10 @@ To list just views, you can query the `views` table in the [Information Schema](
 
 ### Querying Views
 
-To query a view, target it with a [`SELECT`](select.html) statement just as you would a standard table:
+To query a view, target it with a [table
+expression](table-expressions.html#table-or-view-names), for example
+using a [`SELECT` clause](select-clause.html), just as you would with
+a stored table:
 
 ~~~ sql
 > SELECT * FROM bank.user_accounts;
@@ -289,7 +294,7 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 ### View Dependencies
 
-A view depends on the objects targeted by its `SELECT` statement. Attempting to rename an object referenced in a view's `SELECT` statement therefore results in an error:
+A view depends on the objects targeted by its underlying query. Attempting to rename an object referenced in a view's stored query therefore results in an error:
 
 ~~~ sql
 > ALTER TABLE bank.accounts RENAME TO bank.accts;
@@ -299,7 +304,7 @@ A view depends on the objects targeted by its `SELECT` statement. Attempting to 
 pq: cannot rename table "bank.accounts" because view "user_accounts" depends on it
 ~~~
 
-Likewise, attempting to drop an object referenced in a view's `SELECT` statement results in an error:
+Likewise, attempting to drop an object referenced in a view's stored query results in an error:
 
 ~~~ sql
 > DROP TABLE bank.accounts;
@@ -341,7 +346,7 @@ To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 RENAME VIEW
 ~~~
 
-It is not possible to change the `SELECT` statement executed by the view. Instead, you must drop the existing view and create a new view.
+It is not possible to change the stored query executed by the view. Instead, you must drop the existing view and create a new view.
 
 ### Removing Views
 
@@ -357,9 +362,10 @@ DROP VIEW
 
 ## See Also
 
+- [Statement-like Queries](relational-expressions.html#statement-like-queries)
+- [Simple `SELECT` Clauses](select-clause.html)
 - [`CREATE VIEW`](create-view.html)
 - [`SHOW CREATE VIEW`](show-create-view.html)
 - [`GRANT`](grant.html)
-- [`SELECT`](select.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)

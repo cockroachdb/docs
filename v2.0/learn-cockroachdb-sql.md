@@ -263,7 +263,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 
 ## Query a Table
 
-To query a table, use [`SELECT`](select.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
