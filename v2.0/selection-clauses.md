@@ -5,49 +5,41 @@ toc: false
 toc_not_nested: true
 ---
 
-Selection clauses define tabular data. They can be used either as
-standalone statements, of which [`SELECT`](select.html) is the most
-common, or as [subqueries in table
+Selection clauses define tabular data. [`SELECT`](select-clause.html)
+is the most common selection clause. They can be used either as
+[standalone
+statements](relational-expressions.html#statement-like-queries),
+or as [subqueries in table
 expressions](table-expressions.html#subqueries-as-table-expressions).
 
 <div id="toc"></div>
 
+## Synopsis
+
+{% include sql/{{ page.version.version }}/diagrams/select_clause.html %}
+
+<div markdown="1"></div>
+
 ## Overview
 
-SQL is fundamentally about manipulating tabular data, and selection
-clauses are the primary way to obtain tabular data for manipulation.
-
-There are three specific syntax forms collectively named selection clauses:
+There are four specific syntax forms collectively named selection clauses:
 
 Form | Usage
 -----|--------
 [`VALUES`](#values-clause) | List tabular data by the client.
 [`TABLE`](#table-clause) | Load tabular data from the database.
 [`SELECT`](#select-clause) | Load or compute tabular data from various sources.
+[Set Operations](set-operations.html) | Combine tabular data from two or more selection clauses.
 
-Selection clauses appear in every statement that takes tabular data as input, for example:
+{{site.data.alerts.callout_info}}To combine selection clauses with <a href="query-order.html"><code>ORDER BY</code></a>, <a href="limit-offset.html"><code>LIMIT</code> or <code>OFFSET</code></a>, use a <a href="relational-expressions.html#statement-like-queries">Statement-like Query</a>.{{site.data.alerts.end}}
 
-- As operand to [`INSERT`](insert.html), [`UPSERT`](upsert.html) and
-  [`CREATE TABLE AS`](create-table-as.html) statements.
-- As [sub-queries in table expressions](table-expressions.html#subqueries-as-table-expressions).
-
-## Possible Combinations
-
-| Statement | Example using `SELECT` | Example using `VALUES` | Example using `TABLE` |
-|----------------|-----------------------------------|------------------------------------|-------------------------------|
-| `INSERT` | `INSERT INTO foo SELECT * FROM bar` | `INSERT INTO foo VALUES (1), (2), (3)` | `INSERT INTO foo TABLE bar`
-| `UPSERT` | `UPSERT INTO foo SELECT * FROM bar` | `UPSERT INTO foo VALUES (1), (2), (3)` | `UPSERT INTO foo TABLE bar`
-| `CREATE TABLE AS` | `CREATE TABLE foo AS SELECT * FROM bar` | `CREATE TABLE foo AS VALUES (1),(2),(3)` | `CREATE TABLE foo AS TABLE bar`
-| `SELECT` | `SELECT * FROM (SELECT * FROM bar)` | `SELECT * FROM (VALUES (1),(2),(3))` | `SELECT * FROM (TABLE bar)`
-| Expression subquery | `SELECT * FROM foo WHERE x IN (SELECT * FROM bar)` | `SELECT * FROM foo WHERE x IN (VALUES (1),(2),(3))` | `SELECT * FROM foo WHERE x IN (TABLE bar)`
+{{site.data.alerts.callout_info}}To perform joins or other relational operations over selection clauses, use a <a href="table-expressions.html">table expression</a> and <a href="relational-expressions.html#composability">convert it back</a> into a selection clause with <a href="#table-clause"><code>TABLE</code></a> or <a href="select-clause.html"><code>SELECT</code></a>.{{site.data.alerts.end}}
 
 ## `VALUES` Clause
 
 ### Syntax
 
-~~~sql
-VALUES (<expr>, <expr>, ...), (<expr>, <expr>, ...), ...
-~~~
+{% include sql/{{ page.version.version }}/diagrams/values_clause.html %}
 
 A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
@@ -78,16 +70,19 @@ names. [These names can be modified with
 
 ### Syntax
 
-~~~sql
-TABLE <tablename>
-~~~
+{% include sql/{{ page.version.version }}/diagrams/table_clause.html %}
+
+<div markdown="1"></div>
 
 A `TABLE` clause reads tabular data from a specified table. The
 columns of the resulting table data are named after the schema of the
 table.
 
 In general, `TABLE x` is equivalent to `SELECT * FROM x`, but it is
-shorter to type.
+shorter to type. 
+
+{{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just
+<a href="table-expressions.html#table-or-view-names">simple table or view names</a>.{{site.data.alerts.end}}
 
 ### Example
 
@@ -116,9 +111,22 @@ Other examples:
 
 ## `SELECT` Clause
 
-The `SELECT` clause is documented separately as the stand-alone [`SELECT` statement](select.html), which is its most common use in SQL. However, it's important to note the broader application of `SELECT` clauses, which can be used alongside the other two selection clause forms everywhere such a clause is admissible.
+Simple `SELECT` clauses are commonly found as [standalone queries](relational-expressions.html#statement-like-queries). However, it is important to note
+the broader application of `SELECT` clauses, which can be used
+alongside the other two selection clause forms everywhere such a
+clause is admissible.
+
+See [Simple `SELECT` Clause](select-clause.html) for more
+details.
+
+## Set Operations
+
+See [Set Operations](set-operations.html) for more
+details.
 
 ## See Also
 
+- [Simple `SELECT` Clause](select-clause.html)
 - [Table Expressions](table-expressions.html)
-- [`SELECT`](select.html)
+- [Set Operations](set-operations.html)
+- [Relational Expressions](relational-expressions.html)

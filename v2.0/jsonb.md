@@ -31,7 +31,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). A constant value of type `JSONB` can be expressed using an
 [interpreted literal](sql-constants.html#interpreted-literals) or a
 string literal
-[annotated with](sql-expressions.html#explicitly-typed-expressions)
+[annotated with](scalar-expressions.html#explicitly-typed-expressions)
 type `JSONB`.
 
 There are six types of `JSONB` values:

@@ -71,7 +71,7 @@ If a query contains a filter against an indexed `JSONB` column that uses any of 
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can also force [queries to use a specific index](select.html#force-index-selection) (also known as "index hinting").
+To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
 
 ### Storage
 

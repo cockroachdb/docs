@@ -18,9 +18,9 @@ In CockroachDB, the following are aliases:
 A constant value of type `TIME` can be expressed using an
 [interpreted literal](sql-constants.html#interpreted-literals), or a
 string literal
-[annotated with](sql-expressions.html#explicitly-typed-expressions)
+[annotated with](scalar-expressions.html#explicitly-typed-expressions)
 type `TIME` or
-[coerced to](sql-expressions.html#explicit-type-coercions) type
+[coerced to](scalar-expressions.html#explicit-type-coercions) type
 `TIME`.
 
 The string format for time is `HH:MM:SS.SSSSSS`. For example: `TIME '05:40:00.000001'`.

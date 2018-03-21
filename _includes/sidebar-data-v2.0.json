@@ -488,7 +488,7 @@
           {
             "title": "<code>SELECT</code>",
             "urls": [
-              "/${VERSION}/select.html"
+              "/${VERSION}/select-clause.html"
             ]
           },
           {
@@ -671,21 +671,51 @@
             ]
           },
           {
+            "title": "Set Operations",
+            "urls": [
+              "/${VERSION}/set-operations.html"
+            ]
+          },
+          {
+            "title": "Join Expressions",
+            "urls": [
+              "/${VERSION}/joins.html"
+            ]
+          },
+          {
             "title": "Ordering Query Results",
             "urls": [
               "/${VERSION}/query-order.html"
             ]
           },
           {
-            "title": "Value Expressions",
+            "title": "Limiting Query Results",
             "urls": [
-              "/${VERSION}/sql-expressions.html"
+              "/${VERSION}/limit-offset.html"
+            ]
+          },
+          {
+            "title": "Relational Expressions",
+            "urls": [
+              "/${VERSION}/relational-expressions.html"
             ]
           },
           {
             "title": "Table Expressions",
             "urls": [
               "/${VERSION}/table-expressions.html"
+            ]
+          },
+          {
+            "title": "Scalar Expressions",
+            "urls": [
+              "/${VERSION}/scalar-expressions.html"
+            ]
+          },
+          {
+            "title": "Subqueries",
+            "urls": [
+              "/${VERSION}/subqueries.html"
             ]
           },
           {
