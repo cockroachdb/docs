@@ -3,6 +3,7 @@ title: CockroachDB Training
 summary: Learn how to use CockroachDB for your applications
 toc: false
 sidebar_data: sidebar-data-training.json
+feedback: false
 redirect_from:
 - /training/index.html
 - /training/overview.html
@@ -15,9 +16,9 @@ This training introduces you to the fundamentals of CockroachDB, with an emphasi
 - **Understanding the architecture**
 - **Operational basics**
 
-The modules build on each other, so it important to complete them in order. As you go, feel free to ask questions on our pubic [Gitter chat channel](https://gitter.im/cockroachdb/cockroach) or [support forum](https://forum.cockroachlabs.com/).
+The modules build on each other, so it's important to complete them in order. As you go, feel free to ask questions on our pubic [Gitter chat channel](https://gitter.im/cockroachdb/cockroach) or [support forum](https://forum.cockroachlabs.com/).
 
-{{site.data.alerts.callout_success}}If you're interested in more detailed training around deploying, monitoring, troubleshooting, and maintaining CockroachDB, please <strong><a href="https://goo.gl/forms/UmtasgsYrBgQrrKl1">let us know</a></strong>.{{site.data.alerts.end}}
+Once you've finished, [let us know if you are interested in more detailed training](https://goo.gl/forms/UmtasgsYrBgQrrKl1) on deploying, monitoring, troubleshooting, and maintaining CockroachDB.
 
 ## What's First?
 
