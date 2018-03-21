@@ -47,7 +47,7 @@ training:
   aws_access_key: AKIAIXNAWDKXMDDNHRCA
   aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
-exclude: ["ci", "vendor", "rfc", "v1.1/training/unused"]
+exclude: ["ci", "vendor", "rfc", "v1.1/training/unused", "v2.0/training/unused"]
 
 defaults:
   -
