@@ -4,9 +4,7 @@ summary: Use a local cluster to explore how CockroachDB can store and query unst
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> CockroachDB now supports [`JSONB`](jsonb.html) columns.
-
-This page walks you through a simple demonstration of how CockroachDB can store and query unstructured `JSONB` data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
+<span class="version-tag">New in v2.0:</span> This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
 
 <div id="toc"></div>
 
@@ -23,7 +21,7 @@ For the purpose of this tutorial, you need only one CockroachDB node running in 
 ~~~ shell
 $ cockroach start \
 --insecure \
---store=hello-1 \
+--store=json-test \
 --host=localhost
 ~~~
 
@@ -63,16 +61,16 @@ Then [grant privileges](grant.html) to the `maxroach` user:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON DATABASE jsonb_test TO maxroach
+> GRANT ALL ON DATABASE jsonb_test TO maxroach;
 ~~~
 
 ## Step 5. Create a table
 
-In the [built-in SQL client](use-the-built-in-sql-client.html), create a table called `programming`:
+Still in the SQL shell, create a table called `programming`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE rprogramming (
+> CREATE TABLE programming (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
     posts JSONB
   );
@@ -101,9 +99,9 @@ Now that you have a database, user, and a table, let's run code to insert rows i
 
 The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in [/r/programming](https://www.reddit.com/r/programming/). The Reddit API only returns 25 results per page; however, each page returns an `"after"` string that tells you how to get the next page. Therefore, the program does the following in a loop:
 
-1. Makes a request to the API
-2. Inserts the results into the table and grabs the `"after"` string
-3. Uses the new `"after"` string as the basis for the next request
+1. Makes a request to the API.
+2. Inserts the results into the table and grabs the `"after"` string.
+3. Uses the new `"after"` string as the basis for the next request.
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
@@ -112,14 +110,30 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 {% include json/json-sample.go %}
 ~~~
 
-From a new terminal window, navigate to your sample code file and run it:
+In a new terminal window, navigate to your sample code file and run it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ go run json_sample.go
 ~~~
 
-The program will take a few minutes to insert rows into your table. If you want to verify that rows of data were inserted into your table,  use the [built-in SQL client](use-the-built-in-sql-client.html):
+The program will take awhile to finish, but you can start querying the data right away with the [built-in SQL client](use-the-built-in-sql-client.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT count(*) FROM programming;
+~~~
+~~~
++-------+
+| count |
++-------+
+|  4100 |
++-------+
+~~~
+
+## Step 7. Query the data
+
+Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -133,15 +147,44 @@ The program will take a few minutes to insert rows into your table. If you want 
 +-------+
 ~~~
 
-## Step 7. Query the data
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT count(*) FROM programming;
+~~~
+~~~
++-------+
+| count |
++-------+
+|  8000 |
++-------+
+~~~
 
-Once there is data in your table, you can query the data. For this example, retrieve all the entries where the link is pointing to somewhere on YouTube. Specifically, all the entries where `object.data.domain` is `"youtube.com"`. To do that, run:
+Now, retrieve all the current entries where the link is pointing to somewhere on YouTube.(i.e., where `object.data.domain` is `"youtube.com"`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming WHERE posts @> '{"data": {"domain": "youtube.com"}}';
 ~~~
 ~~~
++--------------------------------------+
+|                  id                  |
++--------------------------------------+
+| 0036d489-3fe3-46ec-8219-2eaee151af4b |
+| 00538c2f-592f-436a-866f-d69b58e842b6 |
+| 00aff68c-3867-4dfe-82b3-2a27262d5059 |
+| 00cc3d4d-a8dd-4c9a-a732-00ed40e542b0 |
+| 00ecd1dd-4d22-4af6-ac1c-1f07f3eba42b |
+| 012de443-c7bf-461a-b563-925d34d1f996 |
+| 014c0ac8-4b4e-4283-9722-1dd6c780f7a6 |
+| 017bfb8b-008e-4df2-90e4-61573e3a3f62 |
+| 0271741e-3f2a-4311-b57f-a75e5cc49b61 |
+| 02f31c61-66a7-41ba-854e-1ece0736f06b |
+| 035f31a1-b695-46be-8b22-469e8e755a50 |
+| 03bd9793-7b1b-4f55-8cdd-99d18d6cb3ea |
+| 03e0b1b4-42c3-4121-bda9-65bcb22dcf72 |
+| 0453bc77-4349-4136-9b02-3a6353ea155e |
+...
++--------------------------------------+
 (334 rows)
 
 Time: 105.877736ms
@@ -151,7 +194,7 @@ Time: 105.877736ms
 
 ## Step 8. Create an inverted index to optimize performance
 
-The query in the previous step took 105.877736ms. An [inverted index](inverted-indexes.html) will optimize the performance. Let's create an inverted index on the `JSONB` column:
+The query in the previous step took 105.877736ms. To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](inverted-indexes.html) on the column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -160,7 +203,7 @@ The query in the previous step took 105.877736ms. An [inverted index](inverted-i
 
 ## Step 9. Run the query again
 
-Now that there is an inverted index, the query should run faster. Run the same query:
+Now that there is an inverted index, the same query will run much faster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -172,7 +215,7 @@ Now that there is an inverted index, the query should run faster. Run the same q
 Time: 28.646769ms
 ~~~
 
-After creating the inverted index, the query now takes 28.646769ms.
+Instead of 105.877736ms, the query now takes 28.646769ms.
 
 ## What's Next?
 
