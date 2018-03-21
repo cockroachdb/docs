@@ -117,19 +117,7 @@ In a new terminal window, navigate to your sample code file and run it:
 $ go run json_sample.go
 ~~~
 
-The program will take awhile to finish, but you can start querying the data right away with the [built-in SQL client](use-the-built-in-sql-client.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT count(*) FROM programming;
-~~~
-~~~
-+-------+
-| count |
-+-------+
-|  4100 |
-+-------+
-~~~
+The program will take awhile to finish, but you can start querying the data right away.
 
 ## Step 7. Query the data
 
@@ -143,7 +131,7 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 +-------+
 | count |
 +-------+
-|  7500 |
+|  1120 |
 +-------+
 ~~~
 
@@ -155,11 +143,11 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 +-------+
 | count |
 +-------+
-|  8000 |
+|  2400 |
 +-------+
 ~~~
 
-Now, retrieve all the current entries where the link is pointing to somewhere on YouTube.(i.e., where `object.data.domain` is `"youtube.com"`):
+Now, retrieve all the current entries where the link is pointing to somewhere on YouTube (i.e., where `object.data.domain` is `"youtube.com"`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
