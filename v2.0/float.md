@@ -27,7 +27,7 @@ The special IEEE754 values for positive infinity, negative infinity
 and Not A Number (NaN) cannot be entered using numeric literals
 directly and must be converted using an
 [interpreted literal](sql-constants.html#interpreted-literals) or an
-[explicit conversion](sql-expressions.html#explicit-type-coercions) from
+[explicit conversion](scalar-expressions.html#explicit-type-coercions) from
 a string literal instead. For example:
 
 - `FLOAT '+Inf'`

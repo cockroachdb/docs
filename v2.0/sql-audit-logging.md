@@ -133,7 +133,7 @@ Let's populate the `orders` table with some dummy data using [`CREATE SEQUENCE`]
 > CREATE SEQUENCE product_ids_asc START 1 INCREMENT 1;
 ~~~
 
-Evaluate the below a few times to generate data; note that this would error if [`SELECT`](select.html) returned multiple results, but it doesn't in this case.
+Evaluate the below a few times to generate data; note that this would error if [`SELECT`](select-clause.html) returned multiple results, but it doesn't in this case.
 
 {% include copy-clipboard.html %}
 ~~~ sql

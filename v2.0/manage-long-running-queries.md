@@ -55,7 +55,7 @@ Once you've identified a long-running query via [`SHOW QUERIES`](show-queries.ht
 
 When a query is successfully cancelled, CockroachDB sends a `query execution canceled` error to the client that issued the query.
 
-- If the canceled query was a single, standalone statement, no further action is required by the client.
+- If the canceled query was a single, stand-alone statement, no further action is required by the client.
 - If the canceled query was part of a larger, multi-statement [transaction](transactions.html), the client should then issue a [`ROLLBACK`](rollback-transaction.html) statement.
 
 ## Improve Query Performance

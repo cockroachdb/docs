@@ -23,7 +23,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table or ind
 | Parameter | Description |
 |-----------|-------------|
 | `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. |
-| `select_stmt` | A [`SELECT`](selection-clauses.html) clause that produces one or more rows at which to split the table or index at. |
+| `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index at. |
 
 ## Why Manual Split a Range?
 
@@ -159,5 +159,6 @@ the ranges that store tables or indexes:
 
 ## See Also
 
+- [Selection Queries](selection-queries.html)
 - [Distribution Layer](architecture/distribution-layer.html)
 - [Replication Layer](architecture/replication-layer.html)

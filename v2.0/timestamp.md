@@ -36,9 +36,9 @@ In CockroachDB, the following are aliases:
 A constant value of type `TIMESTAMP`/`TIMESTAMPTZ` can be expressed using an
 [interpreted literal](sql-constants.html#interpreted-literals), or a
 string literal
-[annotated with](sql-expressions.html#explicitly-typed-expressions)
+[annotated with](scalar-expressions.html#explicitly-typed-expressions)
 type `TIMESTAMP`/`TIMESTAMPTZ` or
-[coerced to](sql-expressions.html#explicit-type-coercions) type
+[coerced to](scalar-expressions.html#explicit-type-coercions) type
 `TIMESTAMP`/`TIMESTAMPTZ`.
 
 `TIMESTAMP` constants can be expressed using the

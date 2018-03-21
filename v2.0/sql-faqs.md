@@ -52,7 +52,7 @@ To see which indexes CockroachDB is using for a given query, you can use the [`E
 > EXPLAIN SELECT col1 FROM tbl1;
 ~~~
 
-If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](select.html#force-index-selection):
+If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](table-expressions.html#force-index-selection):
 
 ~~~ sql
 > SELECT col1 FROM tbl1@idx1;
@@ -84,7 +84,10 @@ Yes. For more details, see [`UUID`](uuid.html).
 
 ## How does CockroachDB sort results when `ORDER BY` is not used?
 
-When an [`ORDER BY`](select.html#sorting-retrieved-values) clause is not used in a `SELECT` query, retrieved rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.
+When an [`ORDER BY`](query-order.html) clause is not used in a query, rows are processed or returned in a
+non-deterministic order. "Non-deterministic" means that the actual order
+can depend on the logical plan, the order of data on disk, the topology
+of the CockroachDB cluster, and is generally variable over time.
 
 ## Why are my `INT` columns returned as strings in JavaScript?
 

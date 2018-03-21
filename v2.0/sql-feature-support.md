@@ -129,25 +129,25 @@ table tr td:nth-child(2) {
 | Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions) |
 | `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation) |
 
-### Value Expressions and Boolean Formulas
+### Scalar Expressions and Boolean Formulas
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| Common functions | ✓ | Standard | [Functions calls and SQL special forms documentation](sql-expressions.html#function-calls-and-sql-special-forms)
-| Common operators | ✓ | Standard | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
-| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `AND`/`OR` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](sql-expressions.html#string-pattern-matching) |
-| `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](sql-expressions.html#string-matching-using-sql-regular-expressions) |
-| Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](sql-expressions.html#string-matching-using-posix-regular-expressions) |
-| `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](sql-expressions.html#existence-test-on-the-result-of-subqueries); correlated are not. Currently works only with small data sets. |
-| Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](sql-expressions.html#scalar-subqueries); correlated are not. Currently works only with small data sets. |
-| Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
-| Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](sql-expressions.html#array-constructors) and [Subscripting](sql-expressions.html#subscripted-expressions) |
-| `COLLATE`| ✓ | Standard | [Collation expressions documentation](sql-expressions.html#collation-expressions) |
-| Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](sql-expressions.html#column-references) |
-| Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](sql-expressions.html#explicitly-typed-expressions) |
+| Common functions | ✓ | Standard | [Functions calls and SQL special forms documentation](scalar-expressions.html#function-calls-and-sql-special-forms)
+| Common operators | ✓ | Standard | [Operators documentation](scalar-expressions.html#unary-and-binary-operations) |
+| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `AND`/`OR` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](scalar-expressions.html#string-pattern-matching) |
+| `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](scalar-expressions.html#string-matching-using-sql-regular-expressions) |
+| Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](scalar-expressions.html#string-matching-using-posix-regular-expressions) |
+| `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries); correlated are not. Currently works only with small data sets. |
+| Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries); correlated are not. Currently works only with small data sets. |
+| Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](scalar-expressions.html#unary-and-binary-operations) |
+| Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](scalar-expressions.html#array-constructors) and [Subscripting](scalar-expressions.html#subscripted-expressions) |
+| `COLLATE`| ✓ | Standard | [Collation expressions documentation](scalar-expressions.html#collation-expressions) |
+| Column ordinal references | ✓ | CockroachDB Extension | [Column references documentation](scalar-expressions.html#column-references) |
+| Type annotations | ✓ | CockroachDB Extension | [Type annotations documentation](scalar-expressions.html#explicitly-typed-expressions) |
 
 ### Permissions
 
@@ -166,7 +166,7 @@ table tr td:nth-child(2) {
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
 | Views | ✓ | Standard | [Views documentation](views.html) |
 | Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html) |
-| Common Table Expressions | Planned | Common Extension | Similar to Views, though they are not stored. |
+| Common Table Expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html) |
 | Stored Procedures | Planned | Common Extension | Execute a procedure explicitly. |
 | Cursors | ✗ | Standard | Traverse a table's rows. |
 | Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. |

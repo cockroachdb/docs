@@ -244,7 +244,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 ## NULLs and Set Operations
 
-`NULL` values are considered as part of a `UNION` set operation.
+`NULL` values are considered as part of a `UNION` [set operation](selection-queries.html#set-operations).
 
 ~~~ sql
 > SELECT b FROM t1 UNION SELECT b FROM t1;
@@ -262,7 +262,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 ## NULLs and Sorting
 
-When [sorting a column](select.html#sorting-retrieved-values) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
+When [sorting a column](query-order.html) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
 Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB, so you cannot change where `NULL` values appear in the sort order.
 
