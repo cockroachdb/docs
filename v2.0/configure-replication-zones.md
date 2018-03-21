@@ -37,7 +37,7 @@ range_max_bytes: <size-in-bytes>
 gc:
   ttlseconds: <time-in-seconds>
 num_replicas: <number-of-replicas>
-constraints: [comma-separated constraint list]
+constraints: <json-formatted-constraints>
 ~~~
 
 Field | Description
@@ -46,7 +46,7 @@ Field | Description
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
 `ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `90000` (25 hours)
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3`
-`constraints` | A comma-separated list of required and/or prohibited constraints influencing the location of replicas. See [Constraints in Replication Zones](#constraints-in-replication-zones) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
+`constraints` | A JSON object or array of required and/or prohibited constraints influencing the location of replicas. See [Types of Constraints](#types-of-constraints) and [Scope of Constraints](#scope-of-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
 
 ### Replication Constraints
 
@@ -64,7 +64,7 @@ Attribute Type | Description
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
-#### Constraints in Replication Zones
+#### Types of Constraints
 
 The node-level and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance:
 
@@ -73,8 +73,17 @@ The node-level and store-level descriptive attributes mentioned above can be use
 
 Constraint Type | Description | Syntax
 ----------------|-------------|-------
-**Required** | When placing replicas, the cluster will consider only nodes/stores with matching attributes. When there are no matching nodes/stores with capacity, new replicas will not be added. | `[+ssd]`
-**Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes. When there are no alternate nodes/stores with capacity, new replicas will not be added. | `[-ssd]`
+**Required** | When placing replicas, the cluster will consider only nodes/stores with matching attributes or localities. When there are no matching nodes/stores, new replicas will not be added. | `+ssd`
+**Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes or localities. When there are no alternate nodes/stores, new replicas will not be added. | `-ssd`
+
+#### Scope of Constraints
+
+Constraints can be specified such that they apply to all replicas in a zone or such that different constraints apply to different replicas, meaning you can effectively pick the exact location of each replica.
+
+Constraint Scope | Description | Syntax
+-----------------|-------------|-------
+**All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints: [+ssd, -region=west]`
+**Per-Replica** | <span class="version-tag">New in v2.0:</span> Multiple lists of constraints can be provided in a JSON object mapping the list of constraints to an integer number of replicas in each range that the constraints should apply to. The total number of replicas constrained cannot be greater than the configured number of replicas for the zone. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
 
 ### Node/Replica Recommendations
 
@@ -397,6 +406,61 @@ $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-3 
 ~~~
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
+
+### Per-Replica Constraints to Specific Datacenters <span class="version-tag">New in v2.0</span>
+
+**Scenario:**
+
+- You have 5 nodes across 5 datacenters in 3 regions, 1 node in each datacenter.
+- You want data replicated 3 times, with a quorum of replicas for a database holding West Coast data centered on the West Coast and a database for nation-wide data replicated across the entire country.
+
+**Approach:**
+
+1. Start each node with its region and datacenter location specified in the `--locality` flag:
+
+    ~~~ shell
+    # Start the four nodes:
+    $ cockroach start --insecure --host=<node1 hostname> --locality=region=us-west1,datacenter=us-west1-a
+    $ cockroach start --insecure --host=<node2 hostname> --locality=region=us-west1,datacenter=us-west1-b \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node3 hostname> --locality=region=us-central1,datacenter=us-central1-a \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node4 hostname> --locality=region=us-east1,datacenter=us-east1-a \
+    --join=<node1 hostname>:27257
+    $ cockroach start --insecure --host=<node4 hostname> --locality=region=us-east1,datacenter=us-east1-b \
+    --join=<node1 hostname>:27257
+    ~~~
+
+2. On any node, configure a replication zone for the database used by the West Coast application:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Create a YAML file with the replica count set to 5:
+    $ cat west_app_zone.yaml
+    ~~~
+
+    ~~~
+    constraints: {"+region=us-west1": 2, "+region=us-central1": 1}
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Apply the replication zone to the database used by the West Coast application:
+    $ cockroach zone set west_app_db --insecure -f west_app_zone.yaml
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 86400
+    num_replicas: 3
+    constraints: {+region=us-central1: 1, +region=us-west1: 2}
+    ~~~
+
+    Two of the database's three replicas will be put in `region=us-west1` and its remaining replica will be put in `region=us-central1`. This gives the application the resilience to survive the total failure of any one datacenter while providing low-latency reads and writes on the West Coast because a quorum of replicas are located there.
+
+3. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
 
 ### Multiple Applications Writing to Different Databases
 
