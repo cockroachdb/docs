@@ -56,7 +56,7 @@ index.search(searchConfig, function searchDone(err, data) {
 			var r = $('<div/>', {class: 'search-item'});
 			r.append(h);
 			r.append($('<div/>', {class: 'search-link'}).html(hit.url));
-			r.append($('<div/>', {class: 'search-snippet'}).html(hit.content));
+			r.append($('<div/>', {class: 'search-snippet'}).html(hit._highlightResult.content.value));
 			div.append(r);
 		});
 	} else {

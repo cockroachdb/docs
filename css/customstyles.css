@@ -3524,4 +3524,7 @@ img.mfp-img {
   border-width: 2px 0 0 2px;
   top: 10px; }
 
+.algolia-docsearch-suggestion--highlight {
+  font-weight: bold; }
+
 /*# sourceMappingURL=customstyles.css.map */
