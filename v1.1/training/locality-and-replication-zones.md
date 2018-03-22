@@ -420,7 +420,7 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 ## What's Next?
 
-- [Give us feedback on this training](https://goo.gl/forms/UmtasgsYrBgQrrKl1) and let us know if you'd like more
+- [Give us feedback on this training](https://www.surveymonkey.com/r/5TGPWRJ) and let us know if you'd like more
 - [Read our docs](../)
 
 <!-- - [Data Import](data-import.html) -->
