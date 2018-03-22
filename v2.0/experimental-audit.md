@@ -39,6 +39,7 @@ Only the `root` user can enable audit logs on a table.
 |--------------+----------------------------------------------------------|
 | `READ`       | Log all table reads to the audit log file.               |
 | `WRITE`      | Log all table writes to the audit log file.              |
+| `OFF`        | Turn off audit logging.                                  |
 | `table_name` | The name of the table you want to create audit logs for. |
 
 {{site.data.alerts.callout_info}}
