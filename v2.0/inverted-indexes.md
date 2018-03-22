@@ -110,7 +110,7 @@ Then, insert a few rows a data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * jsonb_pretty(user_profile) FROM users;
+> SELECT *, jsonb_pretty(user_profile) FROM users;
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+

@@ -21,7 +21,7 @@ Computed columns are especially useful when used with partitioning or [`JSONB`](
 Computed columns:
 
 - Cannot be added once a table is created.
-- Cannot reference other computer columns.
+- Cannot reference other computed columns.
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 
@@ -30,7 +30,7 @@ Computed columns:
 Computed columns can only be added at the time of [table creation](create-table.html). Use the following syntax:
 
 ~~~
-column_name <type> AS <expr> [ STORED | VIRTUAL]
+column_name <type> AS (<expr>) STORED
 ~~~
 
 Parameter | Description
@@ -38,8 +38,7 @@ Parameter | Description
 `column_name` | The [name/identifier](keywords-and-identifiers.html#identifiers) of the computed column.
 `<type>` | The [data type](data-types.html) of the computed column.
 `<expr>` | The pure [expression](sql-expressions.html) used to compute column values. Any functions marked as `impure`, such as `now()` or `nextval()` cannot be used.
-`STORED` | _(Default)_ The computed column is stored alongside other columns. This is required if the column appears in the [Primary Key](primary-key.html).
-`VIRTUAL` | The computed column is only computed when rows are read.
+`STORED` | _(Required)_ The computed column is stored alongside other columns.
 
 ## Examples
 

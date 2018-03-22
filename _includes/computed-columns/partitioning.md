@@ -13,8 +13,7 @@ In this example, let's create a table with geo-partitioning and a computed colum
     PRIMARY KEY (locality, id))
     PARTITION BY LIST (locality)
     (PARTITION north_america VALUES IN ('north_america'),
-    PARTITION australia VALUES IN ('australia')
-  );
+    PARTITION australia VALUES IN ('australia'));
 ~~~
 
 Then, insert a few rows of data:

@@ -17,8 +17,7 @@ Then, insert a few rows a data:
 > INSERT INTO names (id, first_name, last_name) VALUES
     (1, 'Lola', 'McDog'),
     (2, 'Carl', 'Kimball'),
-    (3, 'Ernie', 'Floof'
-  );
+    (3, 'Ernie', 'Floof');
 ~~~
 
 {% include copy-clipboard.html %}
