@@ -151,7 +151,8 @@ Now, retrieve all the current entries where the link is pointing to somewhere on
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id FROM programming WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+> SELECT id FROM programming \
+  WHERE posts @> '{"data": {"domain": "youtube.com"}}';
 ~~~
 ~~~
 +--------------------------------------+
@@ -195,7 +196,8 @@ Now that there is an inverted index, the same query will run much faster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id FROM programming WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+> SELECT id FROM programming \ 
+  WHERE posts @> '{"data": {"domain": "youtube.com"}}';
 ~~~
 ~~~
 (334 rows)
@@ -214,4 +216,6 @@ Use a local cluster to explore these other core CockroachDB features:
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
 - [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
 - [Follow-the-Workload](demo-follow-the-workload.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+
+You may also want to learn more about the [`JSONB`](jsonb.html) data type and [inverted indexes](inverted-indexes.html).

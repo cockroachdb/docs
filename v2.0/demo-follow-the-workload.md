@@ -294,4 +294,5 @@ Use a local cluster to explore these other core CockroachDB benefits
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
 - [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [JSON Support](demo-json-support.html)

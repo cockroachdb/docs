@@ -6,6 +6,10 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
 
+For a hands-on demonstration of using an inverted index to improve query performance on a `JSONB` column, see the [JSON tutorial](demo-json-support.html).
+
+<!-- {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}} -->
+
 <div id="toc"></div>
 
 ## How Do Inverted Indexes Work?
@@ -28,8 +32,10 @@ For example, take the following `JSONB` value in column `person`:
     "state": "NY",
     "postalCode": "10021"
   },
-  "cars": [“Subaru”,
-     “Honda”]
+  "cars": [
+    "Subaru",
+    "Honda"
+  ]
 }
 ~~~
 
@@ -157,6 +163,7 @@ Now, run a query that filters on the `JSONB` column:
 ## See Also
 
 - [`JSONB`](jsonb.html)
+- [JSON tutorial](demo-json-support.html)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
