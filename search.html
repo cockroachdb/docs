@@ -3,9 +3,7 @@ title: Search results
 toc: false
 contribute: false
 ---
-
 <script>
-
 // http://stackoverflow.com/a/979995/864236
 var QueryString = function () {
 	// This function is anonymous, is executed immediately and
@@ -32,28 +30,37 @@ var QueryString = function () {
 
 document.title = 'Search - ' + QueryString.q;
 
-var obj = {
-	q: QueryString.q,
-	cx: '014222686769097698638:i_krv_mjv4w',
-	key: 'AIzaSyCMGfdDaSfjqv5zYoS0mTJnOT3e9MURWkU'
+var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
+var index = client.initIndex('cockroachlabs');
+var currentVersion = getCookie('currentVersion');
+
+var searchConfig = {
+	query: QueryString.q,
+	hitsPerPage: 10,
+	facetFilters: ['version:' + currentVersion]
 };
 
-$.getJSON('https://www.googleapis.com/customsearch/v1', obj, function (data) {
+index.search(searchConfig, function searchDone(err, data) {
 	var div = $('<div/>');
-	if (data.items) {
-		data.items.forEach(function(item) {
+
+	if (data.hits) {
+		data.hits.forEach(function(hit) {
+			if (hit.content.length > 450) {
+				hit.content = hit.content.slice(0, 450) + '...'
+			}
+
 			var h = $('<div/>', {class: 'search-title'});
-			h.append($('<a/>', {href: item.link}).html(item.htmlTitle));
+			h.append($('<a/>', {href: hit.url}).html(hit.hierarchy.lvl0));
 			var r = $('<div/>', {class: 'search-item'});
 			r.append(h);
-			r.append($('<div/>', {class: 'search-link'}).html(item.formattedUrl));
-			r.append($('<div/>', {class: 'search-snippet'}).html(item.htmlSnippet));
+			r.append($('<div/>', {class: 'search-link'}).html(hit.url));
+			r.append($('<div/>', {class: 'search-snippet'}).html(hit._highlightResult.content.value));
 			div.append(r);
 		});
 	} else {
 		div.append($('<p>No results.</p>'));
 	}
 	$('.post-content').html(div);
+	$('.post-content').append('<img class="search-by-algolia" src="{{ 'images/algolia.svg' | relative_url }}" />');
 });
-
 </script>
