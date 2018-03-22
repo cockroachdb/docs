@@ -16,6 +16,11 @@ function renderTOC() {
 var $versionSwitcher, versionSwitcherBottom = Infinity;
 
 $(function() {
+  // initialize Algolia client & index for autocomplete search
+  var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
+  var index = client.initIndex('cockroachlabs');
+  var isDesktop;
+
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
       $mobile_menu = $('nav.mobile_expanded'),
@@ -72,15 +77,40 @@ $(function() {
 
   $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
+    var currentVersion;
 
-    if(_viewport_width > 992) {
+    if (_viewport_width > 992) {
       $('body').removeClass('menu_open');
       // make sure all footer menu items are visible
       $('.footer-sub-nav').show();
+
+      if (!isDesktop) {
+        currentVersion = getCookie('currentVersion');
+        $('#search-input').autocomplete({ minLength: 3, hint: false, debug: true }, [
+          {
+            source: $.fn.autocomplete.sources.hits(index, {
+              hitsPerPage: 5,
+              facetFilters: ['version:' + currentVersion]
+            }),
+            displayKey: '',
+            templates: {
+              suggestion: function(suggestion) {
+                return '<span>' + suggestion.hierarchy.lvl0 + '</span>';
+              }
+            }
+          }
+        ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+          location.href = suggestion.url;
+        });
+        isDesktop = true;
+      }
     } else {
+      isDesktop = false;
       $mobile_menu.css('visibility', 'visible');
       // collapse footer menu
       $('.footer-sub-nav').hide();
+      $('.aa-dropdown-menu').remove();
+      $('#search-input').autocomplete('destroy');
     }
 
     if (_viewport_width > 992) {
@@ -123,6 +153,7 @@ $(function() {
   });
   // Fire scroll event on load
   $(window).scroll();
+  $(window).resize();
 
   // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
   terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp

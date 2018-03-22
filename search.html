@@ -41,10 +41,7 @@ var searchConfig = {
 };
 
 index.search(searchConfig, function searchDone(err, data) {
-	console.log('DATA: ', data);
 	var div = $('<div/>');
-
-	$('.post-header').append('<img class="search-by-algolia" src="{{ 'images/algolia.svg' | relative_url }}" />');
 
 	if (data.hits) {
 		data.hits.forEach(function(hit) {
@@ -64,5 +61,6 @@ index.search(searchConfig, function searchDone(err, data) {
 		div.append($('<p>No results.</p>'));
 	}
 	$('.post-content').html(div);
+	$('.post-content').append('<img class="search-by-algolia" src="{{ 'images/algolia.svg' | relative_url }}" />');
 });
 </script>

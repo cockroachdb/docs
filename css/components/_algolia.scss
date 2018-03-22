@@ -1,4 +1,4 @@
-
+.algolia-docsearch-suggestion--highlight { font-weight: bold; }
 
 .aa-input-container {
   display: inline-block;
@@ -95,4 +95,11 @@
   font-style: normal;
   background-color: rgba(58, 150, 207, 0.1);
   padding: 2px 0 2px 2px;
+}
+
+.post-content .search-by-algolia {
+  float: right;
+  height: 16px;
+  margin-top: 45px;
+  margin-right: 5px;
 }
