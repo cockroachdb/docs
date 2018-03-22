@@ -6,6 +6,8 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
 
+For a hands-on demonstration of storing and querying JSON data from a third-party API, see the [JSON tutorial](demo-json-support.html).
+
 <!--To Do:
 - This is a good opportunity to communicate how useful this feature is.
 - Docs will leverage blog content for this (Andy to draft in early March) -->
@@ -193,6 +195,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 ## See Also
 
-- [Data Types](data-types.html)
+- [JSON tutorial](demo-json-support.html)
 - [Inverted Indexes](inverted-indexes.html)
+- [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)
