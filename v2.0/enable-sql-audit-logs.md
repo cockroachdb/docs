@@ -10,8 +10,6 @@ You may want to enable audit logs for a number of reasons, including:
 
 - You want to see what queries were run against a table containing personally identifiable information (PII)
 
-- You are troubleshooting (or just optimizing) your CockroachDB setup, and you want to see which user queries correlate with episodes of higher or lower system load, response latency, etc.
-
 This page has an example showing how to use the audit logging functionality.  For reference material, including a description of the audit log file format, see the [`EXPERIMENTAL_AUDIT`](experimental-audit.html) documentation.
 
 <div id="toc"></div>
