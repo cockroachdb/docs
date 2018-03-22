@@ -1485,11 +1485,6 @@ a.accordion-toggle {
         width: 90%;
         margin-bottom: 30px; } }
 
-.search-by-algolia {
-  height: 16px;
-  margin-top: 15px;
-  margin-right: 45px; }
-
 li.search-wrap {
   margin-bottom: 0; }
 
@@ -3526,5 +3521,11 @@ img.mfp-img {
 
 .algolia-docsearch-suggestion--highlight {
   font-weight: bold; }
+
+.post-content .search-by-algolia {
+  float: right;
+  height: 16px;
+  margin-top: 45px;
+  margin-right: 5px; }
 
 /*# sourceMappingURL=customstyles.css.map */
