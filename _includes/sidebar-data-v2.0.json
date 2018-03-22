@@ -372,6 +372,12 @@
             ]
           },
           {
+            "title": "<code>EXPERIMENTAL_AUDIT</code>",
+            "urls": [
+              "/${VERSION}/experimental-audit.html"
+            ]
+          },
+          {
             "title": "<code>EXPLAIN</code>",
             "urls": [
               "/${VERSION}/explain.html"
@@ -1233,6 +1239,12 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Enable SQL Audit Logs",
+        "urls": [
+          "/${VERSION}/enable-sql-audit-logs.html"
         ]
       }
     ]
