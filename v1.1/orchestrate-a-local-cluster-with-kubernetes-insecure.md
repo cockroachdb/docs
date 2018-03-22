@@ -172,6 +172,7 @@ Use a local cluster to explore these other core CockroachDB features:
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
 
 You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).
