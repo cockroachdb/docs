@@ -4,19 +4,21 @@ summary: Use the `EXPERIMENTAL_AUDIT` setting to enable SQL audit logs on a per-
 toc: false
 ---
 
-You may want to enable audit logs for a number of reasons, including:
+You may want to enable SQL audit logs for a number of reasons. For example, you may want to log all queries that are run against a table containing personally identifiable information (hereafter PII).
 
-- You want to see what SQL queries are being run by which users
+This page has an example showing:
 
-- You want to see what queries were run against a table containing personally identifiable information (PII)
+- How to turn on audit logging
+- Where the audit log files live
+- What the audit log files look like
 
-This page has an example showing how to use the audit logging functionality.  For reference material, including a description of the audit log file format, see the [`EXPERIMENTAL_AUDIT`](experimental-audit.html) documentation.
+For reference material, including a detailed description of the audit log file format, see [`EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 <div id="toc"></div>
 
 ## Overview
 
-In this example, we'll show how to turn on SQL audit logs for a "customers" table which contains personally identifiable information (PII) such as name, address, etc.  We'll also create an "orders" table with a foreign key into customers, which does not expose any PII.
+In this example, we'll show how to turn on audit logs for a `customers` table which contains PII such as name, address, etc.  We'll also create an `orders` table with a foreign key into `customers`, which does not expose any PII.
 
 The structure of the tables is as follows:
 
@@ -83,12 +85,13 @@ select * from customers;
 
 Given the actions we've taken so far, we should expect the audit log to show us the following:
 
-- the `ALTER TABLE` statement (since it was run against the "customers" table)
-- all reads and writes against the `customers` table from that point forward
+- The `ALTER TABLE` statement (since it was run against the `customers` table)
+- The insertions of customer data
+- The `SELECT` statement we just ran
 
 By default, the active audit log file is named `cockroach-sql-audit.log` and is stored in CockroachDB's standard log directory.  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](start-a-node.html).  Like the other log files, it's rotated according to the `--log-file-max-size` setting.
 
-When we look at the audit log for this example, we see the following lines showing every command we've run, as expected.
+When we look at the audit log for this example, we see the following lines showing every command we've run so far, as expected.
 
 ~~~
 I180321 20:54:21.381565 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user=root] 2 exec "psql" {"customers"[76]:READWRITE} "ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE" {} 4.811 0 OK
@@ -114,7 +117,7 @@ CREATE TABLE orders (
 );
 ~~~
 
-Unlike the `customers` table, `orders` doesn't have any PII, just a Product ID and a delivery status. (Note the use of the [`CHECK` constraint](check.html) as a workaround for the as-yet-unimplemented `ENUM` - see [SQL feature support](sql-feature-support.html) for details.)
+Unlike the `customers` table, `orders` doesn't have any PII, just a Product ID and a delivery status. (Note the use of the [`CHECK` constraint](check.html) as a workaround for the as-yet-unimplemented `ENUM` - see [SQL feature support](sql-feature-support.html) for more information.)
 
 Let's populate the `orders` table with some dummy data using [`CREATE SEQUENCE`](create-sequence.html):
 
@@ -146,7 +149,7 @@ select * from orders order by product_id;
 
 ## Step 5. Check the audit log again
 
-Because we used a `SELECT` against the `customers` table to generate the dummy data, those queries should also show up in the audit log:
+Because we used a `SELECT` against the `customers` table to generate the dummy data for `orders`, those queries should also show up in the audit log as follows:
 
 ~~~
 I180321 21:01:59.677273 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user=root] 7 exec "psql" {"customers"[76]:READ, "customers"[76]:READ} "INSERT INTO orders(product_id, delivery_status, customer_id) VALUES (nextval('product_ids_asc'), 'processing', (SELECT id FROM customers WHERE \"name\" ~ 'Cleve'))" {} 5.183 1 OK
