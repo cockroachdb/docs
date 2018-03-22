@@ -4,7 +4,7 @@ summary: Use the `EXPERIMENTAL_AUDIT` setting to enable SQL audit logs on a per-
 toc: false
 ---
 
-The `EXPERIMENTAL_AUDIT` [statement](sql-statements.html) is part of `ALTER TABLE` and is used to enable SQL audit logs on a per-table basis.
+The `EXPERIMENTAL_AUDIT` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) and is used to enable SQL audit logs on a per-table basis.
 
 The audit logs contain detailed information about queries being executed against your system, including:
 
@@ -13,27 +13,19 @@ The audit logs contain detailed information about queries being executed against
 - Client address
 - Application name
 
-For a detailed description of exactly what is logged, see the [Log File Format](#log-file-format) section below.
-
-{{site.data.alerts.callout_success}}
-This page has reference information about the `EXPERIMENTAL_AUDIT` subcommand.  For a SQL audit logging tutorial, see [Enable SQL Audit Logs](enable-sql-audit-logs.html).
-{{site.data.alerts.end}}
+For a detailed description of exactly what is logged, see the [Audit Log File Format](#log-file-format) section below.
 
 <div id="toc"></div>
 
 ## Synopsis
 
-*FIXME: generate sql diagram and link from here*
+*FIXME: generate sql railroad diagram*
 
 ## Required Privileges
-
-*FIXME: verify this*
 
 Only the `root` user can enable audit logs on a table.
 
 ## Parameters
-
-*FIXME: Do you need to update this once SQL diagram generation is done? Not 100% sure how we determine the parameter lists.*
 
 | Parameter    | Description                                              |
 |--------------+----------------------------------------------------------|
@@ -43,29 +35,25 @@ Only the `root` user can enable audit logs on a table.
 | `table_name` | The name of the table you want to create audit logs for. |
 
 {{site.data.alerts.callout_info}}
-As of version 2.0, this command logs all reads and writes.  Therefore, both the `READ` and  `WRITE` parameters are required (as shown in the [examples](#examples) below).
+As of version 2.0, this command logs all reads and writes, and both the `READ` and  `WRITE` parameters are required (as shown in the [examples](#examples) below).
 
 In a future release, this should change to allow logging only reads, only writes, or both.
 {{site.data.alerts.end}}
 
 ## Examples
 
-Let's say you have a  `customers` table that contains personally identifiable information (PII), like the one from the [`ADD CONSTRAINT` foreign key example](add-constraint.html#add-the-foreign-key-constraint-with-cascade).  To turn on audit logs for that table, run the following command:
+Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
 
-Now, every access of customer data is added to the SQL audit log with a line that looks like the following:
+Now, every access of customer data is added to the audit log with a line that looks like the following:
 
 ~~~
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503,user=root,n1] 13 exec "cockroach" {"customers"[53]:READ} "SELECT * FROM customers" {} 123.45 12 OK
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503,user=root,n1] 13 exec "cockroach" {"customers"[53]:READ} "SELECT nonexistent FROM customers" {} 0.123 12 ERROR
 ~~~
-
-{{site.data.alerts.callout_success}}
-Note: For a detailed description of the log file format, see [Log File Format](#log-file-format) below.
-{{site.data.alerts.end}}
 
 To turn off logging, issue the following command:
 
@@ -73,17 +61,17 @@ To turn off logging, issue the following command:
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
 
-Note that you can enable logging on multiple tables at once as follows:
+For a description of the log file format, see the [Audit Log File Format](#log-file-format) section below.
 
-~~~ sql
-ALTER TABLE (customers, orders) EXPERIMENTAL_AUDIT SET READ WRITE;
-~~~
+{{site.data.alerts.callout_success}}
+For a more detailed example, see [Enable SQL Audit Logs](enable-sql-audit-logs.html).
+{{site.data.alerts.end}}
 
 <a name="log-file-format"></a>
 
 ## Audit Log File Format
 
-The following file format is used by the audit logs.  The column numbers in the example log line below correspond to the list that follows.
+The audit log file format is as shown below.  The numbers above each column are not part of the format; they correspond to the descriptions that follow.
 
 ~~~
 [1]     [2]             [3] [4]                 [5a]                     [5b]       [5c]  [6]  [7a] [7b]        [7c]            [7d]                         [7e]  [7f]  [7g] [7h]
@@ -115,11 +103,12 @@ I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=ro
 
 ## Audit Log File Storage Location
 
-By default, SQL audit logs are stored in the same directory as the other logs generated by CockroachDB.
+By default, audit logs are stored in the same directory as the other logs generated by CockroachDB.
 
 To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](start-a-node.html).
 
 ## See Also
 
+- [Enable SQL Audit Logs](enable-sql-audit-logs.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`cockroach start` logging flags](start-a-node.html)
