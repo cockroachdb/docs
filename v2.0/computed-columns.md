@@ -20,7 +20,7 @@ Computed columns are especially useful when used with partitioning or [`JSONB`](
 
 Computed columns:
 
-- Cannot be added once a table is created.
+- Cannot be added once a table is created. Follow the [GitHub issue](https://github.com/cockroachdb/cockroach/issues/22652) for updates on this limitation.
 - Cannot reference other computed columns.
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
