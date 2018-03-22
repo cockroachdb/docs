@@ -6,8 +6,6 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
 
-For a hands-on demonstration of using an inverted index to improve query performance on a `JSONB` column, see the [JSON tutorial](demo-json-support.html).
-
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
