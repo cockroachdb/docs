@@ -3,6 +3,7 @@ title: Node Decommissioning
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+block_search: true
 redirect_from: /training/node-decommissioning.html
 ---
 

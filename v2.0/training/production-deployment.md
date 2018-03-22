@@ -2,6 +2,7 @@
 title: Production Deployment
 toc: false
 sidebar_data: sidebar-data-training.json
+block_search: true
 redirect_from: /training/production-deployment.html
 ---
 

@@ -2,6 +2,7 @@
 title: Client Connection Troubleshooting
 toc: false
 toc_not_nested: true
+block_search: true
 sidebar_data: sidebar-data-training.json
 redirect_from: /training/client-connection-troubleshooting.html
 ---
