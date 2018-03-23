@@ -1,9 +1,9 @@
 ---
-title: Node Map 
+title: Node Map
 toc: false
 ---
 
-The **Node Map** view visualizes the geographical configuration of a multi-regional cluster by plotting the node locations on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance. 
+The **Node Map** view visualizes the geographical configuration of a multi-regional cluster by plotting the node locations on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
 
 <div id="toc"></div>
 
@@ -17,7 +17,7 @@ The **Node Map View** helps you monitor the cluster health and performance, ensu
 
 The **Node Map** view provides:
 
-- A high-level graphical overview of how the cluster is configured, which helps you understand how the available hardware is servicing your users. 
+- A high-level graphical overview of how the cluster is configured, which helps you understand how the available hardware is servicing your users.
 - Important cluster health metrics, such as Capacity and CPU utilization, QPS, and uptime.
 
 ### Ensure Effective Resource Utilization
@@ -142,8 +142,8 @@ Insert the latitudes and longitudes of each region into the `systems.locations` 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
-  ('region', 'us-east', 40.367474, -82.996216), 
-  ('region', 'us-west', 43.8041334, -120.55420119999997), 
+  ('region', 'us-east', 40.367474, -82.996216),
+  ('region', 'us-west', 43.8041334, -120.55420119999997),
   ('region', 'eu-west', 48.856614, 2.3522219000000177);
 ~~~
 
@@ -151,7 +151,7 @@ Insert the latitudes and longitudes of each region into the `systems.locations` 
 
 To get the latitudes and longitudes of AWS regions, see [Locations Co-ordinates for Reference](#location-co-ordinates-for-reference).
 
-#### Step 5. Verify the settings 
+#### Step 5. Verify the settings
 
 Navigate to `https://localhost:8080/#/reports/localities` and use the **Localities** table to verify that the latitudes and longitudes correspond to the correct regions.
 
@@ -183,10 +183,10 @@ Suppose you want to navigate to Node 2, which is in datacenter `us-east-1` in th
 
 The **Node Map** won't be displayed until all nodes have localities and are assigned the corresponding latitudes and longitudes. To verify if you have assigned localities as well as latitude and longitudes assigned to all nodes, navigate to the Localities debug page (`https://localhost:8080/#/reports/localities`) in the Admin UI.
 
-The Localities debug page displays the following: 
+The Localities debug page displays the following:
 
-- Localities configuration that you set up while starting the nodes with the `--locality` flags. 
-- Nodes corrsponding to each locality.
+- Localities configuration that you set up while starting the nodes with the `--locality` flags.
+- Nodes corresponding to each locality.
 - Latitude and longitude coordinates for each locality/node.
 
 On the page, ensure that every node has a locality as well as latitude and longitude coordinates assigned to them.
