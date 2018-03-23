@@ -32,7 +32,7 @@ document.title = 'Search - ' + QueryString.q;
 
 var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
 var index = client.initIndex('cockroachlabs');
-var currentVersion = getCookie('currentVersion');
+var currentVersion = getCookie('currentVersion') || 'stable';
 
 var searchConfig = {
 	query: QueryString.q,
@@ -43,7 +43,7 @@ var searchConfig = {
 index.search(searchConfig, function searchDone(err, data) {
 	var div = $('<div/>');
 
-	if (data.hits) {
+	if (data.hits.length) {
 		data.hits.forEach(function(hit) {
 			if (hit._highlightResult.content.value.length > 450) {
 				hit._highlightResult.content.value = hit._highlightResult.content.value.slice(0, 450) + '...'
