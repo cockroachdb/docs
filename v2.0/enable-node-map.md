@@ -125,11 +125,11 @@ Insert the latitudes and longitudes of each region into the `system.locations` t
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locations Coordinates for Reference](#location-co-ordinates-for-reference).
+To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
 
 ### Step 5. View the Node Map
 
-[Navigate to the **Overview page**](admin-ui-cluster-overview.html) to view the **Node Map**.
+[Navigate to the **Overview page**](admin-ui-overview.html) to view the **Node Map**.
 
 ### Step 6. Navigate the Node Map
 
