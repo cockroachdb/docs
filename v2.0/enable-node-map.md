@@ -10,8 +10,6 @@ The **Node Map** visualizes the geographical configuration of a multi-regional c
 
 <div id="toc"></div>
 
-## Enable the Node Map
-
 To enable the **Node Map**, you need to start the cluster with the correct `--locality` flags and assign the latitudes and longitudes for each locality.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until <i>all</i> nodes are started with the correct <code>--locality</code> flags and all localities are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
