@@ -6,17 +6,19 @@ toc: false
 
 The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
 
+This page walks you through the process of setting up and enabling the **Node Map**.
+
 {{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/pricing/request-a-license/">request a trial license</a>  to enable the <b>Node Map</b>. {{site.data.alerts.end}}
 
 <div id="toc"></div>
+
+## Setting Up and Enabling the Node Map
 
 To enable the **Node Map**, you need to start the cluster with the correct `--locality` flags and assign the latitudes and longitudes for each locality.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until <i>all</i> nodes are started with the correct <code>--locality</code> flags and all localities are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-## Example
-
-Consider a four-node geo-distributed cluster with the following configuration:
+Consider a scenario of a four-node geo-distributed cluster with the following configuration:
 
 |  Node | Region | Datacenter |
 |  ------ | ------ | ------ |
@@ -129,7 +131,7 @@ To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locatio
 
 ### Step 5. View the Node Map
 
-[Navigate to the **Overview page**](admin-ui-overview.html) to view the **Node Map**.
+[Open the **Overview page**](admin-ui-overview.html) to view the **Node Map**.
 
 ### Step 6. Navigate the Node Map
 
