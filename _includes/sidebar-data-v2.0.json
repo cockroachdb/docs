@@ -1088,7 +1088,7 @@
         ]
       },
       {
-        "title": "Define Table Partitions",
+        "title": "Define Table Partitions (Enterprise)",
         "urls": [
           "/${VERSION}/partitioning.html"
         ]
