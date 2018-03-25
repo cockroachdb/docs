@@ -4,9 +4,9 @@ summary: The RESUME JOB statement lets you resume jobs that were previously paus
 toc: false
 ---
 
- The `PAUSE JOB` [statement](sql-statements.html) lets you resume [paused jobs](pause-job.html), which can be either enterprise `BACKUP` or `RESTORE` jobs.
+ The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html), [`BACKUP`](backup.html), and [`RESTORE`](restore.html) jobs.
 
-{{site.data.alerts.callout_info}}As of v1.1, you cannot pause schema changes or <code>IMPORT</code> jobs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}As of v2.0, you cannot pause schema changes.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -55,3 +55,4 @@ Once you're ready for the restore to resume:
 - [`CANCEL JOB`](cancel-job.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`IMPORT`](import.html)
