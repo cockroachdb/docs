@@ -1,4 +1,4 @@
-{{site.data.alerts.callout_info}}Partioning is an enterprise feature. To request and enable a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Partioning is an enterprise feature. To request and enable a trial or full enterprise license, see <a href="enterprise-licensing.html">Enterprise Licensing</a>.{{site.data.alerts.end}}
 
 In this example, let's create a table with geo-partitioning and a computed column:
 
