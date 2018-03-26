@@ -325,6 +325,10 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 +----+---------+-------+
 ~~~
 
+### Create a Table with a Computed Column <span class="version-tag">New in v2.0</span>
+
+{% include computed-columns/simple.md %}
+
 ### Show the Definition of a Table
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
