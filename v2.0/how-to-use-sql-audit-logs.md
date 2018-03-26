@@ -8,9 +8,9 @@ You may want to keep SQL audit logs for a number of reasons. For example, you ma
 
 This page has an example showing:
 
-- How to turn on audit logging
-- Where the audit log files live
-- What the audit log files look like
+- How to turn audit logging on and off.
+- Where the audit log files live.
+- What the audit log files look like.
 
 For reference material, including a detailed description of the audit log file format, see [`EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
 
