@@ -107,7 +107,7 @@ By default, audit logs are stored in the same directory as the other logs genera
 To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](start-a-node.html).
 
 {{site.data.alerts.callout_success}}
-If you require audit log files to be guaranteed to exist, point `--sql-audit-dir` at a directory that has permissions set so that only CockroachDB can create/delete files.
+If your deployment requires particular lifecycle and access policies for audit log files, point `--sql-audit-dir` at a directory that has permissions set so that only CockroachDB can create/delete files.
 {{site.data.alerts.end}}
 
 ## See Also
