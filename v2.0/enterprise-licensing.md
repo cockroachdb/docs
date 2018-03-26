@@ -21,7 +21,7 @@ Type | Description
 
 To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/pricing/start-trial/) and receive your trial license key via email within a few minutes. (https://www.cockroachlabs.com/pricing/start-trial/). 
 
-To upgrade to an enterprise license, contact sales at [sales@cockroachlabs.com](sales@cockroachlabs.com)
+To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 
 ## Set the Trial or Enterprise License Key
 
@@ -86,7 +86,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
 
-To renew an expired license, contact sales at [sales@cockroachlabs.com](sales@cockroachlabs.com) and then [set](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
+To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
 
 ## See Also
 
