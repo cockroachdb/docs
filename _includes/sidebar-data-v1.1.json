@@ -241,7 +241,7 @@
             ]
           },
           {
-            "title": "<code>CANCEL JOB</code> (Enterprise)",
+            "title": "<code>CANCEL JOB</code>",
             "urls": [
               "/${VERSION}/cancel-job.html"
             ]
@@ -367,7 +367,7 @@
             ]
           },
           {
-            "title": "<code>PAUSE JOB</code> (Enterprise)",
+            "title": "<code>PAUSE JOB</code>",
             "urls": [
               "/${VERSION}/pause-job.html"
             ]
@@ -421,7 +421,7 @@
             ]
           },
           {
-            "title": "<code>RESUME JOB</code> (Enterprise)",
+            "title": "<code>RESUME JOB</code>",
             "urls": [
               "/${VERSION}/resume-job.html"
             ]

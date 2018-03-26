@@ -1,6 +1,6 @@
 ---
 title: CANCEL JOB
-summary: The CANCEL JOB statement stops long-running jobs, which include enterprise BACKUP and RESTORE tasks.
+summary: The CANCEL JOB statement stops long-running jobs.
 toc: false
 ---
 
@@ -10,8 +10,7 @@ toc: false
 
 ## Limitations
 
-- This feature currently only works with enterprise features. However, in the future, we plan to let you cancel any job, including schema changes.
-- When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 
 ## Required Privileges
 
