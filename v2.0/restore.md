@@ -63,11 +63,11 @@ Restore Type | Parameters
 **Full backup** | Include only the path to the full backup.
 **Full backup + <br/>incremental backups** | Include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments.
 
-### Point-in-time Restore
+### <span class="version-tag">New in v2.0:</span>  Point-in-time Restore
 
 If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup. 
 
-If you do not specify a point-in-time, the data will be restored to the backup timestamp (that is, the restore will work as if the data was backed up without revision history).
+If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
 ## Performance
 
@@ -96,7 +96,7 @@ Only the `root` user can run `RESTORE`.
 | `table_pattern` | The table or [view](views.html) you want to restore. |
 | `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
 | `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
-| `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](timestamp.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history). |
+| `AS OF SYSTEM TIME timestamp` | <span class="version-tag">New in v2.0:</span> Restore data as it existed as of [`timestamp`](timestamp.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history). |
 | `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list). |
 
 ### Backup File URLs
@@ -153,7 +153,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 ### Restore Multiple Tables
 
 ~~~ sql
-> RESTORE bank.customers, accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 ### Restore All Tables and Views from a Database
@@ -162,22 +162,26 @@ You can include the following options as key-value pairs in the `kv_option_list`
 > RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
-### Point-in-time Restore
+### <span class="version-tag">New in v2.0:</span> Point-in-time Restore
 
 ~~~ sql
-> RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' AS OF SYSTEM TIME '2017-02-26 10:00:00';
+> RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+AS OF SYSTEM TIME '2017-02-26 10:00:00';
 ~~~
 
 ### Restore from Incremental Backups
 
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
+> RESTORE bank.customers \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
-### Point-in-time Restore from Incremental Backups
+### <span class="version-tag">New in v2.0:</span> Point-in-time Restore from Incremental Backups
 
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' AS OF SYSTEM TIME '2017-02-28 10:00:00';
+> RESTORE bank.customers \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
+AS OF SYSTEM TIME '2017-02-28 10:00:00';
 ~~~
 
 ### Restore into a Different Database
@@ -185,7 +189,8 @@ You can include the following options as key-value pairs in the `kv_option_list`
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](#into_db) option, you can control the target database.
 
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+> RESTORE bank.customers \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 WITH into_db = 'newdb';
 ~~~
 
@@ -194,7 +199,8 @@ WITH into_db = 'newdb';
 By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
 
 ~~~ sql
-> RESTORE bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+> RESTORE bank.accounts \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 WITH skip_missing_foreign_keys;
 ~~~
 
@@ -205,7 +211,8 @@ Every full backup contains the `system.users` table, which you can use to restor
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
 ~~~ sql
-> RESTORE system.users FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+> RESTORE system.users \
+FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
 WITH into_db = 'newdb';
 
 > INSERT INTO system.users SELECT * FROM newdb.users;
