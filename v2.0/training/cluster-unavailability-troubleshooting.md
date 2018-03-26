@@ -30,7 +30,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 1. Go back to the Admin UI:
 
-    <img src="{{ 'images/training-13.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/training-13.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice that an error is shown and timeseries metrics  are no longer being reported.
 

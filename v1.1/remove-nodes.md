@@ -34,39 +34,39 @@ Basic terms:
 
 In this scenario, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you try to decommission a node, the process will hang indefinitely because the cluster can't move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 To successfully decommission a node, you need to first add a 4th node:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 #### 5-node cluster with 3-way replication
 
 In this scenario, like in the scenario above, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario2.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario2.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you decommission a node, the process will run successfully because the cluster will be able to move the node's replicas to other nodes without doubling up any range replicas:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 #### 5-node cluster with 5-way replication for a specific table
 
 In this scenario, a [custom replication zone](configure-replication-zones.html#create-a-replication-zone-for-a-table) has been set to replicate a specific table 5 times (range 6), while all other data is replicated 3 times:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB won't allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 To successfully decommission a node, you need to first add a 6th node:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 ## Remove a Single Node (Live)
 
@@ -83,9 +83,9 @@ Confirm that there are enough nodes to take over the replicas from the node you 
 
 Open the Admin UI, go to the **Replication** dashboard and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
 
-<div style="text-align: center;"><img src="{{ 'images/before-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/before-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-<div style="text-align: center;"><img src="{{ 'images/before-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/before-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 ### Step 2. Decommission and remove the node
 
@@ -143,17 +143,17 @@ ok
 
 In the Admin UI, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the node that you decommissioned, the counts should be 0:
 
-<div style="text-align: center;"><img src="{{ 'images/after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-<div style="text-align: center;"><img src="{{ 'images/after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 Then click **View nodes list** in the **Summary** area and make sure all nodes but the one you removed are healthy (green):
 
-<div style="text-align: center;"><img src="{{ 'images/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 In about 5 minutes, you'll see the removed node listed under **Decommissioned Nodes**:
 
-<div style="text-align: center;"><img src="{{ 'images/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 ## Remove a Single Node (Dead)
 
@@ -170,7 +170,7 @@ To prevent the cluster from rebalancing data to a dead node if it comes back onl
 
 Open the Admin UI, click **View nodes list** in the **Summary** area, and note the ID of the node listed under **Dead Nodes**:
 
-<div style="text-align: center;"><img src="{{ 'images/remove-dead-node1.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/remove-dead-node1.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
 ### Step 2. Mark the dead node as decommissioned
 
@@ -202,7 +202,7 @@ Decommissioning finished. Please verify cluster health before removing the nodes
 
 If the node is ever restarted, it will be listed as **Live** in the Admin UI, but the cluster will recognize it as decommissioned and will not rebalance any data to the node. If the node is then stopped again, a short time later, it will be listed as **Decommissioned** in the Admin UI:
 
-<div style="text-align: center;"><img src="{{ 'images/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
 ## Remove Multiple Nodes
 
@@ -219,15 +219,15 @@ Confirm that there are enough nodes to take over the replicas from the nodes you
 
 Open the Admin UI, click **View nodes list** in the **Summary** area, and note the IDs of the nodes that you want to decommission:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple1.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple1.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 ### Step 2. Check the nodes before decommissioning
 
 In the Admin UI, go to the **Replication** dashboard and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple2.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple2.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple3.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple3.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 ### Step 3. Decommission the nodes
 
@@ -283,13 +283,13 @@ Decommissioning finished. Please verify cluster health before removing the nodes
 
 In the Admin UI, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the nodes that you decommissioned, the counts should be 0:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple4.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple4.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple5.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple5.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the decommissioned nodes have 0 replicas:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 ### Step 5. Remove the decommissioned nodes
 
@@ -311,7 +311,7 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
 
 In about 5 minutes, you'll see the nodes listed under **Decommissioned Nodes**:
 
-<div style="text-align: center;"><img src="{{ 'images/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 ## Recommission Nodes
 
@@ -326,7 +326,7 @@ If you accidentally decommissioned any nodes, or otherwise want decommissioned n
 
 Open the Admin UI, click **View nodes list** in the **Summary** area, and note the IDs of the nodes listed under **Decommissioned Nodes**:
 
-<div style="text-align: center;"><img src="{{ 'images/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v1.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
 {{site.data.alerts.callout_info}}If a decommissioned node is still live, it will be listed under <strong>Live Nodes</strong> but its replica count should be 0. In this case, you must <a href="stop-a-node.html">stop the node</a> before you can recommission it.{{site.data.alerts.end}}
 

@@ -204,7 +204,7 @@ In preparation, add a table and use a replication zone to force the table's data
 
 4. The node IDs above may not match the order in which we started the nodes because node IDs only get allocated after `cockroach init` is run. You can verify that the nodes listed by `SHOW TESTING_RANGES` are all in the `datacenter=us-east-3` locality by opening the **Node Diagnostics** debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
 
-    <img src="{{ 'images/training-19.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-19.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 3. Simulate the problem
 
@@ -247,17 +247,17 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 4. Hover over the **Ranges** graph:
 
-    <img src="{{ 'images/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You should see that 1 range is now unavailable. If the unavailable count is larger than 1, that would mean that some system ranges had a majority of replicas on the down nodes as well.
 
     The **Summary** panel on the right should tell you the same thing:
 
-    <img src="{{ 'images/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
+    <img src="{{ 'images/v1.1/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
 
 5. For more insight into the ranges that are unavailable, go to the **Problem Ranges Report** at <a href="http://localhost:8080/#/reports/problemranges" data-proofer-ignore>http://localhost:8080/#/reports/problemranges</a>.
 
-    <img src="{{ 'images/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Resolve the problem
 

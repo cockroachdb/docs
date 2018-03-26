@@ -12,7 +12,7 @@ The **SQL** dashboard displays the following time series graphs:
 
 ## SQL Connections
 
-<img src="{{ 'images/admin_ui_sql_connections.png' | relative_url }}" alt="CockroachDB Admin UI SQL Connections" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_sql_connections.png' | relative_url }}" alt="CockroachDB Admin UI SQL Connections" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of connections currently open between the client and the selected node.
 
@@ -20,7 +20,7 @@ The **SQL** dashboard displays the following time series graphs:
 
 ## SQL Byte Traffic
 
-<img src="{{ 'images/admin_ui_sql_byte_traffic.png' | relative_url }}" alt="CockroachDB Admin UI SQL Byte Traffic" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_sql_byte_traffic.png' | relative_url }}" alt="CockroachDB Admin UI SQL Byte Traffic" style="border:1px solid #eee;max-width:100%" />
 
 The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traffic, especially in bulk data inserts or analytic queries that return data in bulk.
 
@@ -30,7 +30,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 ## SQL Queries
 
-<img src="{{ 'images/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
@@ -38,7 +38,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 ## Transactions
 
-<img src="{{ 'images/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows separately the current moving average, over the last 10 seconds, of the number of opened, committed, aborted and rolled back transactions per second issued by SQL clients on the node.
 
@@ -48,7 +48,7 @@ If the graph shows excessive aborts or rollbacks, it might indicate issues with 
 
 ## Service Latency
 
-<img src="{{ 'images/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency" style="border:1px solid #eee;max-width:100%" />
 
 Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 

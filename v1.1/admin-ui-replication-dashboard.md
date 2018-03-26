@@ -24,7 +24,7 @@ The **Replication** dashboard displays the following time series graphs:
 
 ### Ranges
 
-<img src="{{ 'images/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 The **Ranges** graph shows you various details about the status of ranges.
 
@@ -45,7 +45,7 @@ Under-replicated | The number of under-replicated ranges.
 
 ### Replicas Per Store
 
-<img src="{{ 'images/admin_ui_replicas_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_replicas_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of range replicas on the store.
 
@@ -55,7 +55,7 @@ You can [Configure replication zones](configure-replication-zones.html) to set t
 
 ### Replica Quiescence
 
-<img src="{{ 'images/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of replicas on the node.
 
@@ -70,7 +70,7 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 ### Snapshots
 
-<img src="{{ 'images/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
 Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionaly the Raft protocol itself will request the snapshot.
 

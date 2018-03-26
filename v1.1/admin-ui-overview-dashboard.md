@@ -12,7 +12,7 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 
-<img src="{{ 'images/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the SQL Queries graph shows the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
@@ -20,7 +20,7 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## Service Latency: SQL, 99th percentile
 
-<img src="{{ 'images/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 
@@ -30,7 +30,7 @@ Service latency is calculated as the time between when the cluster receives a qu
 
 ## Replicas per Node
 
-<img src="{{ 'images/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
 
 Ranges are subsets of your data, which are replicated to ensure survivability. Ranges are replicated to a configurable number of CockroachDB nodes.
 
@@ -42,7 +42,7 @@ For details about how to control the number and location of replicas, see [Confi
 
 ## Capacity
 
-<img src="{{ 'images/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 You can monitor the **Capacity** graph to determine when additional storage is needed.
 

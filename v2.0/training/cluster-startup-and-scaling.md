@@ -250,7 +250,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and click **View nodes list** on the right:
 
-    <img src="{{ 'images/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     Note that the **Replicas** count is **16** on all three nodes. This indicates:
     - There are 16 initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
@@ -293,11 +293,11 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
 Go back to the **Live Nodes** list in the Admin UI and watch how the **Replicas** are automatically rebalanced to utilize the additional capacity of the new nodes:
 
-<img src="{{ 'images/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 Another way to observe this is to click **Cluster** in the upper left and scroll down to the **Replicas per Node** graph:
 
-<img src="{{ 'images/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's Next?
 

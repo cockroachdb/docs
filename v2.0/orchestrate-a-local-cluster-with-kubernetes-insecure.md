@@ -98,7 +98,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 3. On the **Cluster Overview**, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
 
-    <img src="{{ 'images/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 4. Click the **Databases** tab on the left to verify that the `bank` database you created manually, as well as the `kv` database created by the load generated, are listed.
 
