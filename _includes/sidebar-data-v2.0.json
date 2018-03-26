@@ -374,7 +374,7 @@
           {
             "title": "<code>EXPERIMENTAL_AUDIT</code>",
             "urls": [
-              "/${VERSION}/experimental-audit.html"
+              "/${VERSION}/sql-audit-logging.html"
             ]
           },
           {
