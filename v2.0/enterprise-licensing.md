@@ -14,8 +14,8 @@ This page shows you how to obtain and set the trial and enterprise license keys 
 
 Type | Description
 -------------|------------
-**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days. After the trial period, you can upgrade to the enterprise license.
-**Enterprise License** | An enterprise license enables you to use CockroachDB enterprise features for longer periods (one year or more).
+**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days for free. 
+**Enterprise License** | A paid enterprise license enables you to use CockroachDB enterprise features for longer periods (one year or more).
 
 ## Obtain a Trial or Enterprise License Key
 
