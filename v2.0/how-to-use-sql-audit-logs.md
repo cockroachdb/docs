@@ -1,10 +1,10 @@
 ---
-title: Enable SQL Audit Logs
-summary: Use the `EXPERIMENTAL_AUDIT` setting to enable SQL audit logs on a per-table basis.
+title: How to use SQL Audit Logs
+summary: Use the `EXPERIMENTAL_AUDIT` setting to turn SQL audit logging on or off for a table.
 toc: false
 ---
 
-You may want to enable SQL audit logs for a number of reasons. For example, you may want to log all queries that are run against a table containing personally identifiable information (hereafter PII).
+You may want to keep SQL audit logs for a number of reasons. For example, you may want to log all queries that are run against a table containing personally identifiable information (hereafter PII).
 
 This page has an example showing:
 

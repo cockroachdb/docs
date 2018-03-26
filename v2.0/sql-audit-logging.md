@@ -1,10 +1,10 @@
 ---
 title: EXPERIMENTAL_AUDIT
-summary: Use the `EXPERIMENTAL_AUDIT` setting to enable SQL audit logs on a per-table basis.
+summary: Use the `EXPERIMENTAL_AUDIT` setting to turn SQL audit logging on or off for a table.
 toc: false
 ---
 
-The `EXPERIMENTAL_AUDIT` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) and is used to enable SQL audit logs on a per-table basis.
+The `EXPERIMENTAL_AUDIT` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) and is used to turn SQL audit logging on or off for a table.
 
 The audit logs contain detailed information about queries being executed against your system, including:
 
@@ -66,7 +66,7 @@ ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 For a description of the log file format, see the [Audit Log File Format](#log-file-format) section below.
 
 {{site.data.alerts.callout_success}}
-For a more detailed example, see [Enable SQL Audit Logs](enable-sql-audit-logs.html).
+For a more detailed example, see [How to use SQL Audit Logs](how-to-use-sql-audit-logs.html).
 {{site.data.alerts.end}}
 
 <a name="log-file-format"></a>
@@ -115,6 +115,6 @@ If you require audit log files to be guaranteed to exist, point `--sql-audit-dir
 
 ## See Also
 
-- [Enable SQL Audit Logs](enable-sql-audit-logs.html)
+- [How to use SQL Audit Logs](how-to-use-sql-audit-logs.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`cockroach start` logging flags](start-a-node.html)
