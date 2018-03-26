@@ -12,7 +12,7 @@ This page has an example showing:
 - Where the audit log files live.
 - What the audit log files look like.
 
-For reference material, including a detailed description of the audit log file format, see [`EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
+For reference material, including a detailed description of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
 
 <div id="toc"></div>
 
@@ -101,7 +101,7 @@ I180321 20:54:39.377395 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user
 ~~~
 
 {{site.data.alerts.callout_info}}
-For reference documentation of the audit log file format, see [`EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
+For reference documentation of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
 {{site.data.alerts.end}}
 
 ## Step 4. Populate the `orders` table
@@ -158,12 +158,12 @@ I180321 21:04:08.730379 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user
 ~~~
 
 {{site.data.alerts.callout_info}}
-For reference documentation of the audit log file format, see [`EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
+For reference documentation of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](sql-audit-logging.html).
 {{site.data.alerts.end}}
 
 ## See Also
 
-- [`EXPERIMENTAL_AUDIT`](sql-audit-logging.html)
+- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](sql-audit-logging.html)
 - [`cockroach start` logging flags](start-a-node.html#logging)
 - [SQL FAQ - generating unique row IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [`CREATE SEQUENCE`](create-sequence.html)
