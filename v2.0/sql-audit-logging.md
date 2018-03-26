@@ -37,7 +37,7 @@ Only the `root` user can enable audit logs on a table.
 | `table_name` | The name of the table you want to create audit logs for. |
 
 {{site.data.alerts.callout_info}}
-As of version 2.0, this command logs all reads and writes, and both the `READ` and  `WRITE` parameters are required (as shown in the [examples](#examples) below).
+As of version 2.0, this command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below).
 
 In a future release, this should change to allow logging only reads, only writes, or both.
 {{site.data.alerts.end}}
