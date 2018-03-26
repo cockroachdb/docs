@@ -19,7 +19,7 @@ Type | Description
 
 ## Obtain a Trial or Enterprise License Key
 
-To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/pricing/start-trial/) and receive your trial license key via email within a few minutes. (https://www.cockroachlabs.com/pricing/start-trial/). 
+To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/pricing/start-trial/) and receive your trial license key via email within a few minutes.
 
 To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 
