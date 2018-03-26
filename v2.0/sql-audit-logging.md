@@ -13,7 +13,7 @@ The audit logs contain detailed information about queries being executed against
 - Client address
 - Application name
 
-For a detailed description of exactly what is logged, see the [Audit Log File Format](#log-file-format) section below.
+For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
 
 <div id="toc"></div>
 
@@ -63,13 +63,11 @@ To turn off logging, issue the following command:
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
 
-For a description of the log file format, see the [Audit Log File Format](#log-file-format) section below.
+For a description of the log file format, see the [Audit Log File Format](#audit-log-file-format) section below.
 
 {{site.data.alerts.callout_success}}
 For a more detailed example, see [How to use SQL Audit Logs](how-to-use-sql-audit-logs.html).
 {{site.data.alerts.end}}
-
-<a name="log-file-format"></a>
 
 ## Audit Log File Format
 
