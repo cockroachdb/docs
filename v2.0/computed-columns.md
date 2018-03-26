@@ -12,16 +12,16 @@ toc: false
 
 Computed columns are especially useful when used with partitioning or [`JSONB`](jsonb.html) columns.
 
-**Partitioning** requires that partitions are defined using columns that are a prefix of the [primary key](primary-key.html). In the case of geo-partitioning, some applications will want to collapse the number of possible values in this column, to make certain classes of queries more performant. For example, if a users table has a country and state column, then a CockroachDB operator could make a stored computed column locality with a reduced domain for use in partitioning. For more information, see the [partitioning example](#create-a-table-with-geo-partitions-and-a-computed-column) below.
+- **Partitioning** requires that partitions are defined using columns that are a prefix of the [primary key](primary-key.html). In the case of geo-partitioning, some applications will want to collapse the number of possible values in this column, to make certain classes of queries more performant. For example, if a users table has a country and state column, then you can make a stored computed column locality with a reduced domain for use in partitioning. For more information, see the [partitioning example](#create-a-table-with-geo-partitions-and-a-computed-column) below.
 
-**JSONB** columns are used for storing semi-structured `JSONB` data. When the table's primary information is stored in `JSONB`, it's useful to index a particular field of the `JSONB` document. In particular, computed columns allow for the following use case: a two-column table with a `PRIMARY KEY` column and a `payload` column, whose primary key is computed as some field from the `payload` column. This alleviates the need to manually separate your JSON blobs from your primary keys. For more information, see the [`JSONB` example](#create-a-table-with-a-jsonb-column-and-a-computed-column) below.
+- **JSONB** columns are used for storing semi-structured `JSONB` data. When the table's primary information is stored in `JSONB`, it's useful to index a particular field of the `JSONB` document. In particular, computed columns allow for the following use case: a two-column table with a `PRIMARY KEY` column and a `payload` column, whose primary key is computed as some field from the `payload` column. This alleviates the need to manually separate your JSON blobs from your primary keys. For more information, see the [`JSONB` example](#create-a-table-with-a-jsonb-column-and-a-computed-column) below.
 
 ## Considerations
 
 Computed columns:
 
 - Cannot be added once a table is created. Follow the [GitHub issue](https://github.com/cockroachdb/cockroach/issues/22652) for updates on this limitation.
-- Cannot reference other computed columns.
+- Cannot be used to generate other computed columns.
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 

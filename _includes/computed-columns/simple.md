@@ -17,7 +17,7 @@ Then, insert a few rows a data:
 > INSERT INTO names (id, first_name, last_name) VALUES
     (1, 'Lola', 'McDog'),
     (2, 'Carl', 'Kimball'),
-    (3, 'Ernie', 'Floof');
+    (3, 'Ernie', 'Narayan');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -25,13 +25,13 @@ Then, insert a few rows a data:
 > SELECT * FROM names;
 ~~~
 ~~~
-+----+------------+-----------+--------------+
-| id | first_name | last_name |  full_name   |
-+----+------------+-----------+--------------+
-|  1 | Lola       | McDog     | Lola McDog   |
-|  2 | Carl       | Kimball   | Carl Kimball |
-|  3 | Ernie      | Floof     | Ernie Floof  |
-+----+------------+-----------+--------------+
++----+------------+-------------+----------------+
+| id | first_name |  last_name  |   full_name    |
++----+------------+-------------+----------------+
+|  1 | Lola       | McDog       | Lola McDog     |
+|  2 | Carl       | Kimball     | Carl Kimball   |
+|  3 | Ernie      | Narayan     | Ernie Narayan  |
++----+------------+-------------+----------------+
 ~~~
 
 The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view](views.html).

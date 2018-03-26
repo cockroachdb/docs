@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
 
-For a hands-on demonstration of storing and querying JSON data from a third-party API, see the [JSON tutorial](demo-json-support.html).
+{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -103,8 +103,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
-    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}'
-  );
+    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
 {% include copy-clipboard.html %}

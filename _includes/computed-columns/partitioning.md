@@ -1,3 +1,5 @@
+{{site.data.alerts.callout_info}}Partioning is an enterprise feature. To request and enable a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).{{site.data.alerts.end}}
+
 In this example, let's create a table with geo-partitioning and a computed column:
 
 {% include copy-clipboard.html %}
@@ -27,8 +29,7 @@ Then, insert a few rows of data:
     ('James Kirk', 'us'),
     ('Scotty', 'mx'),
     ('Hikaru Sulu', 'us'),
-    ('Pavel Chekov', 'au'
-  );
+    ('Pavel Chekov', 'au');
 ~~~
 
 {% include copy-clipboard.html %}
