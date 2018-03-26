@@ -240,6 +240,12 @@
             ]
           },
           {
+            "title": "<code>ALTER TABLE ... EXPERIMENTAL_AUDIT</code>",
+            "urls": [
+              "/${VERSION}/sql-audit-logging.html"
+            ]
+          },
+          {
             "title": "<code>ALTER VIEW</code>",
             "urls": [
               "/${VERSION}/alter-view.html"
@@ -369,12 +375,6 @@
             "title": "<code>DROP VIEW</code>",
             "urls": [
               "/${VERSION}/drop-view.html"
-            ]
-          },
-          {
-            "title": "<code>EXPERIMENTAL_AUDIT</code>",
-            "urls": [
-              "/${VERSION}/sql-audit-logging.html"
             ]
           },
           {
