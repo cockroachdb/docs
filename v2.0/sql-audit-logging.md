@@ -19,9 +19,9 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 
 ## Synopsis
 
-<section>
+<div>
 {% include sql/v2.0/diagrams/experimental_audit.html %}
-</section>
+</div>
 
 ## Required Privileges
 
