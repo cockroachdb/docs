@@ -80,18 +80,17 @@ I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=ro
 
 1. Date
 2. Time (in UTC)
-3. Goroutine ID
-4. The place in the source code that generated the log line
+3. Goroutine ID - this column is used for troubleshooting CockroachDB and may change its meaning at any time
+4. Where the log line was generated
 5. Logging tags
    - a. Client address
    - b. Username
    - c. Node ID
-6. Log entry counter (Monotonically increasing)
+6. Log entry counter
 7. Log message:
    - a. Label indicating where the data was generated (useful for troubleshooting)
    - b. Current value of the [`application_name`](set-vars.html) session setting
    - c. Logging trigger:
-       - `"{}"` for execution logs, since all activities are added to the execution log
        - The list of triggering tables and access modes for audit logs, since only certain (read/write) activities are added to the audit log
    - d. Full text of the query (Note: May contain PII)
    - e. Placeholder values, if any
@@ -99,7 +98,7 @@ I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=ro
    - g. Number of rows produced
    - h. Status of the query
        - `OK` for success
-       - `ERROR` or the full error message otherwise
+       - `ERROR` otherwise
 
 ## Audit Log File Storage Location
 
