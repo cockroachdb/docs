@@ -1,6 +1,6 @@
 ---
-title: EXPERIMENTAL_AUDIT
-summary: Use the `EXPERIMENTAL_AUDIT` setting to turn SQL audit logging on or off for a table.
+title: ALTER TABLE ... EXPERIMENTAL_AUDIT
+summary: Use the `EXPERIMENTAL_AUDIT` subcommand to turn SQL audit logging on or off for a table.
 toc: false
 ---
 
