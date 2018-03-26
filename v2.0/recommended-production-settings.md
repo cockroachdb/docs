@@ -10,19 +10,56 @@ This page provides important recommendations for production deployments of Cockr
 
 ## Cluster Topology
 
+### Basic Recommendations
+
 For a replicated cluster, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
 
 - Use at least 3 nodes to ensure that a majority of replicas (2/3) remains available if a node fails.
 
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
-- Configurations with odd numbers of replicas are more robust than those with even numbers. Configurations with three replicas and configurations with four replicas can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas.
+- Configurations with odd numbers of replicas are more robust than those with even numbers. Configurations with three replicas and configurations with four replicas can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas. For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 
-- When replicating across datacenters, it's recommended to specify which datacenter each node is in using the `--locality` flag to ensure even replication (see this [example](configure-replication-zones.html#even-replication-across-datacenters) for more details). If some of your datacenters are much farther apart than others, [specifying multiple levels of locality (such as country and region) is recommended](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
+    - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.
 
-- When replicating across datacenters, be aware that the round trip latency between datacenters will have a direct effect on your database's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
+### Common Patterns
 
-For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
+#### Single Datacenter
+
+When deploying in a single datacenter:
+
+- Use at least 3 nodes to ensure that the cluster can tolerate the failure of any one node.
+
+- Although network latency between nodes should be minimal within a single datacenter (~1ms), it's recommended to set the `--locality` flag on each node to have the flexibility to customize [replication zones](configure-replication-zones.html) based on locality as you scale.
+
+#### Multiple Datacenters
+
+When deploying across multiple datacenters in one or more regions:
+
+- Use at least 3 datacenters to ensure that the cluster can tolerate the failure of 1 entire datacenter.
+
+- The round-trip latency between datacenters will have a direct effect on your cluster's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
+    - To optimize read latency for the location from which most of the workload is originating, also known as ["follow-the-workload"](demo-follow-the-workload.html), set the `--locality` flag when starting each node. When deploying across more than 3 datacenters, to ensure that all data benefits from "follow-the-workload", you must also increase your replication factor to match the total number of datacenters.
+    - To optimize read and write latency, consider using the enterprise [table partitioning](partitioning.html) feature.
+
+- If you expect region-specific concurrency and load characteristics, consider using different numbers and types of nodes per region. For example, in the following scenario, the Central region is closer to the West region than to the East region, which means that write latency would be optimized for workloads in the West and Central regions.
+
+    ~~~
+    A---C         A---C
+     \ /           \ /
+      B             B
+      West---80m---East
+         \         /  
+        20ms    60ms  
+           \    /
+            \  /
+             \/
+           Central
+            A---C   
+             \ /
+              B
+    ~~~
 
 ## Hardware
 
@@ -70,6 +107,23 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
     For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
 - **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+
+## Security
+
+An insecure cluster comes with serious risks:
+
+- Your cluster is open to any client that can access any node's IP addresses.
+- Any user, even `root`, can log in without providing a password.
+- Any user, connecting as `root`, can read or write any data in your cluster.
+- There is no network encryption or authentication, and thus no confidentiality.
+
+Therefore, to deploy CockroachDB in production, it is strongly recommended to use TLS certificates to authenticate the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](create-security-certificates.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
+
+- A certificate authority (CA) certificate and key, used to sign all of the other certificates.
+- A separate certificate and key for each node in your deployment, with the common name `node`.
+- A separate certificate and key for each client and user you want to connect to your nodes, with the common name set to the username. The default user is `root`.
+
+    Alternatively, CockroachDB does [support password authentication](create-and-manage-users.html#secure-cluster), although we typically recommend using client certificates instead.
 
 ## Load Balancing
 
