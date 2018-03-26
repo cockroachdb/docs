@@ -60,8 +60,4 @@ Now, let's run a query using the secondary index:
 +------------------+----------------+
 ~~~
 
-
-
-table: id, home team, away team, home scores (h1+h2+ot), away scores, computed column for each score, secondary index on computed columns, compare
-
-table:
+The athlete with the highest combined score of 61.833 is Simone Biles.
