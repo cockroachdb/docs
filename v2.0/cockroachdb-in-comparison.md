@@ -43,7 +43,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Automated Scaling
       <a href="#" data-toggle="tooltip" title="Automatic and continuous rebalancing of data between the nodes of a cluster.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -60,7 +60,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Automated Failover
       <a href="#" data-toggle="tooltip" title="Uninterrupted availability of data through small- and large-scale failures, from server restarts to datacenter outages.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -77,7 +77,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Automated Repair
       <a href="#" data-toggle="tooltip" title="Automatic repair of missing data after failures, using unaffected replicas as sources.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -94,7 +94,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Strongly Consistent Replication
       <a href="#" data-toggle="tooltip" title="Once a transaction is committed, all reads are guaranteed to see it.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -113,7 +113,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Consensus-Based Replication
       <a href="#" data-toggle="tooltip" title="Guarantee that progress can be made as long as any majority of nodes is available (e.g., 3 of 5).">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -132,7 +132,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Distributed Transactions
       <a href="#" data-toggle="tooltip" title="Correctly committed transactions across a distributed cluster, whether it’s a few nodes in a single location or many nodes in multiple datacenters.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -151,7 +151,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       ACID Semantics
       <a href="#" data-toggle="tooltip" title="Guarantee that every transaction provides atomicity, consistency, isolation, and durability.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -174,7 +174,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Eventually Consistent Reads
       <a href="#" data-toggle="tooltip" title="Optionally allows reading from replicas that do not have the most recently written data.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -189,7 +189,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       SQL
       <a href="#" data-toggle="tooltip" title="Developer endpoint is based on the SQL database query language standard.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -208,7 +208,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Open Source
       <a href="#" data-toggle="tooltip" title="Source code of the database is freely available for study, change, and distribution to anyone and for any purpose.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -225,7 +225,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Commercial Version
       <a href="#" data-toggle="tooltip" title="Enterprise or expanded version of the database available to paying customers.">
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -244,7 +244,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__feature">
       Support
       <a href="#" data-toggle="tooltip" title='Guidance on database usage and troubleshooting, either "Limited" (free, community-based) or "Full" (paid, 24/7 access to dedicated staff).'>
-        <img src="{{ 'images/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v2.0/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">

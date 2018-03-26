@@ -115,7 +115,7 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 
 Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.  
 
-<img src="{{ 'images/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
 ### Node Status Command
 

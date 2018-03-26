@@ -11,7 +11,7 @@ The **Databases** page of the Admin UI provides details of the databases configu
 
 The **Tables** view shows details of the system table as well as the tables in your databases. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Databases** from the left-hand navigation bar.
 
-<img src="{{ 'images/admin_ui_database_tables_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_database_tables_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 The following details are displayed for each table:
 
@@ -29,4 +29,4 @@ The **Grants** view shows the [privileges](privileges.html) granted to users for
 
 For more details about grants and privileges, see [Grants](grant.html).
 
-<img src="{{ 'images/admin_ui_database_grants_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Grants View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_database_grants_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Grants View" style="border:1px solid #eee;max-width:100%" />
