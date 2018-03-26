@@ -151,7 +151,7 @@ AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 
 ~~~ sql
 > BACKUP bank.customers, bank.accounts TO 'azure://acme-co-backup/tables-accounts-customers-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
+AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00');
 ~~~
 
 ### Backup an Entire Database
