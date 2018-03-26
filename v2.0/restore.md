@@ -63,9 +63,9 @@ Restore Type | Parameters
 **Full backup** | Include only the path to the full backup.
 **Full backup + <br/>incremental backups** | Include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments.
 
-### <span class="version-tag">New in v2.0:</span>  Point-in-time Restore
+### Point-in-time Restore
 
-If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup. 
+<span class="version-tag">New in v2.0:</span> If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup. 
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
