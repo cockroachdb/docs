@@ -4,9 +4,9 @@ summary: The RENAME SEQUENCE statement changes the name of a sequence.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `RENAME SEQUENCE` [statement](sql-statements.html) changes the name of a sequence.
+<span class="version-tag">New in v2.0:</span> The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.
 
-{{site.data.alerts.callout_danger}}If you rename a sequence that's being used in a table, the change will not propagate to the <code>DEFAULT</code> expressions that reference the sequence. {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}You cannot rename a sequence that's being used in a table. To rename the sequence, drop the <code>DEFAULT</code> expressions that reference the sequence, rename the sequence, and add the <code>DEFAULT</code> expressions back.{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
 
