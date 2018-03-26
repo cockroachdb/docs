@@ -71,6 +71,8 @@ Whenever you initiate an import, CockroachDB registers it as a job, which you ca
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
+{{site.data.alerts.callout_danger}}Pausing and then resuming an <code>`IMPORT`</code> job will cause it to restart from the beginning.{{site.data.alerts.end}}
+
 ## Synopsis
 
 {% include sql/{{ page.version.version }}/diagrams/import.html %}
