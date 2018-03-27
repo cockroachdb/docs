@@ -131,7 +131,14 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 #### `skip_missing_foreign_keys`
 
-- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skip_missing_foreign_keys) and then have it restored.
+- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
+- **Key**: `skip_missing_foreign_keys`
+- **Value**: *No value*
+- **Example**: `WITH skip_missing_foreign_keys`
+
+#### `skip_missing_sequences` <span class="version-tag">New in v2.0</span>
+
+- **Description**: If you want to restore a table that depends on a sequence but don't want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_foreign_keys`
