@@ -23,6 +23,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - Each column cannot belong to more than 1 Foreign Key constraint.
+- Cannot be a [computed column](computed-column.html).
 - Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
     - To meet this requirement when creating a new table, there are a few options:
         - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0) clause of `CREATE TABLE`.
