@@ -24,6 +24,7 @@ Computed columns:
 
 - Cannot be added after a table is created. Follow the [GitHub issue](https://github.com/cockroachdb/cockroach/issues/22652) for updates on this limitation.
 - Cannot be used to generate other computed columns.
+- Cannot be a [foreign key](foreign-key.html) reference.
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 
