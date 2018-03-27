@@ -77,6 +77,8 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {% include sql/{{ page.version.version }}/diagrams/import.html %}
 
+{{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
+
 ## Required Privileges
 
 Only the `root` user can run [`IMPORT`](import.html).
