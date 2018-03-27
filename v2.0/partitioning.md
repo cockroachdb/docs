@@ -545,4 +545,4 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Computed Columns](computed-columns)
+- [Computed Columns](computed-columns.html)
