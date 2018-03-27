@@ -113,9 +113,9 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Cancel a `BACKUP` or `RESTORE` job.
-[`PAUSE JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Pause a `BACKUP` or `RESTORE` job.
-[`RESUME JOB`](resume-job.html) | <span class="version-tag">New in v1.1:</span> [*(Enterprise)*](https://www.cockroachlabs.com/pricing/) Resume paused `BACKUP` or `RESTORE` jobs.
+[`CANCEL JOB`](cancel-job.html) | <span class="version-tag">New in v1.1:</span> Cancel a `BACKUP` or `RESTORE` job.
+[`PAUSE JOB`](pause-job.html) | <span class="version-tag">New in v1.1:</span> Pause a `BACKUP` or `RESTORE` job.
+[`RESUME JOB`](resume-job.html) | <span class="version-tag">New in v1.1:</span> Resume paused `BACKUP` or `RESTORE` jobs.
 [`SHOW JOBS`](show-jobs.html) | <span class="version-tag">New in v1.1:</span> View information on jobs.
 
 ## Backup & Restore Statements (Enterprise)

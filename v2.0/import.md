@@ -65,6 +65,14 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 
 All nodes are used during tabular data conversion into key-value data, which means all nodes' CPU and RAM will be partially consumed by the [`IMPORT`](import.html) task in addition to serving normal traffic.
 
+## Viewing and Controlling Import Jobs
+
+Whenever you initiate an import, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+
+After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+
+{{site.data.alerts.callout_danger}}Pausing and then resuming an <code>`IMPORT`</code> job will cause it to restart from the beginning.{{site.data.alerts.end}}
+
 ## Synopsis
 
 {% include sql/{{ page.version.version }}/diagrams/import.html %}

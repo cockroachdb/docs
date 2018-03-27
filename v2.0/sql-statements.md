@@ -120,9 +120,9 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Cancel a `BACKUP` or `RESTORE` job.
-[`PAUSE JOB`](pause-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Pause a `BACKUP` or `RESTORE` job.
-[`RESUME JOB`](resume-job.html) | [*(Enterprise)*](https://www.cockroachlabs.com/product/cockroachdb/) Resume paused `BACKUP` or `RESTORE` jobs.
+[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, or `IMPORT` job.
+[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, or `IMPORT` job.
+[`RESUME JOB`](resume-job.html) | Resume paused `BACKUP`, `RESTORE`, or `IMPORT` jobs.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
 ## Backup & Restore Statements (Enterprise)
