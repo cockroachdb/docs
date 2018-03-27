@@ -1094,6 +1094,12 @@
         ]
       },
       {
+        "title": "Define Table Partitions (Enterprise)",
+        "urls": [
+          "/${VERSION}/partitioning.html"
+        ]
+      },
+      {
         "title": "Enterprise Licensing",
         "urls": [
           "/${VERSION}/enterprise-licensing.html"
