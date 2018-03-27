@@ -4,7 +4,7 @@ summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: false
 ---
 
-The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables and views. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
+The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
 {{site.data.alerts.callout_success}}CockroachDB <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users can also back up their cluster's data using <a href="backup.html"><code>BACKUP</code></a>.{{site.data.alerts.end}}
 
@@ -14,8 +14,8 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 
 When `cockroach dump` is executed:
 
-- Table and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated.
+- Table, sequence, and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
+- <span class="version-tag">New in v2.0:</span> Table, sequence, and view schemas are dumped in the order in which they can successfully be recreated. However, `cockroach dump` does not support circular foreign keys.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 

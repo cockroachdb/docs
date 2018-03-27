@@ -43,6 +43,7 @@ table td:first-child {
 We support the following [SQL sequence functions](functions-and-operators.html):
 
 - `nextval('seq_name')`
+    {{site.data.alerts.callout_info}}If <code>nextval()</code> is used in conjunction with <code>RETURNING NOTHING</code> statements, the sequence increments can be reordered. For more information, see <a href="parallel-statement-execution.html">Parallel Statement Execution</a>.{{site.data.alerts.end}}
 - `currval('seq_name')`
 - `lastval()`
 - `setval('seq_name', value, is_called)`

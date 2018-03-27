@@ -24,7 +24,7 @@ The notion of "restoring a database" simply restores all of the tables and views
 
 Because this process is designed for disaster recovery, CockroachDB expects that the tables do not currently exist in the [target database](#target-database). This means the target database must have not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
 
-- [`DROP TABLE`](drop-table.html) or [`DROP VIEW`](drop-view.html) and then restore them.
+- [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
 ### Object Dependencies
@@ -33,9 +33,10 @@ Dependent objects must be restored at the same time as the objects they depend o
 
 Object | Depends On
 -------|-----------
-Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys))
-[Views](views.html) | The tables used in the view's `SELECT` statement
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy)
+Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
+Table with a [sequence](create-sequence.html) | The sequence.
+[Views](views.html) | The tables used in the view's `SELECT` statement.
+[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
 ### Target Database
 
@@ -139,10 +140,19 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 #### `skip_missing_foreign_keys`
 
-- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can [drop the Foreign Key constraint from the table](#skip_missing_foreign_keys) and then have it restored.
+- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_foreign_keys`
+
+#### `skip_missing_sequences`
+
+<span class="version-tag">New in v2.0</span>
+
+- **Description**: If you want to restore a table that depends on a sequence but don't want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
+- **Key**: `skip_missing_sequences`
+- **Value**: *No value*
+- **Example**: `WITH skip_missing_sequences`
 
 ## Examples
 
