@@ -12,7 +12,6 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 - If you add a `CHECK` constraint to an existing table, added values, along with any updates to current values, are checked. To check the existing rows, use [`VALIDATE CONSTRAINT`](validate-constraint.html).
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
-- You cannot add both a `CHECK` constraint and a [cascading referential constraint action](foreign-key.html#foreign-key-actions-new-in-v2-0) to the same column.
 - You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
   ~~~ sql
