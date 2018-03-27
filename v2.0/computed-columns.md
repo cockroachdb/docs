@@ -10,7 +10,7 @@ toc: false
 
 ## Why use computed columns?
 
-Computed columns are especially useful when used with partitioning, [`JSONB`](jsonb.html) columns, or [secondary indexes](indexes.html).
+Computed columns are especially useful when used with [partitioning](partitioning.html), [`JSONB`](jsonb.html) columns, or [secondary indexes](indexes.html).
 
 - **Partitioning** requires that partitions are defined using columns that are a prefix of the [primary key](primary-key.html). In the case of geo-partitioning, some applications will want to collapse the number of possible values in this column, to make certain classes of queries more performant. For example, if a users table has a country and state column, then you can make a stored computed column locality with a reduced domain for use in partitioning. For more information, see the [partitioning example](#create-a-table-with-geo-partitions-and-a-computed-column) below.
 
@@ -66,5 +66,4 @@ Parameter | Description
 - [Information Schema](information-schema.html)
 - [`CREATE TABLE`](create-table.html)
 - [`JSONB`](jsonb.html)
-
-<!-- - [Define Table Partitions (Enterprise)](partitioning.html) -->
+- [Define Table Partitions (Enterprise)](partitioning.html)

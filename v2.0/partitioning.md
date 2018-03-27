@@ -527,7 +527,7 @@ You can remove the partitions on a table by using the `PARTITION BY NOTHING` syn
 
 ## Locality–Resilience Tradeoff
 
-There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students. 
+There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students.
 
 - If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow.
 - If two replicas are pinned to an Australian datacenter, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then the loss of one datacenter can lead to data unavailability, so some deployments may want two separate Australian datacenters.
@@ -545,3 +545,4 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
+- [Computed Columns](computed-columns.html)
