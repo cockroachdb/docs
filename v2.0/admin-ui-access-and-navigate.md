@@ -29,11 +29,9 @@ Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html
 Databases | Information about the Tables or Grants in your [databases](admin-ui-databases-page.html).
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
-<img src="{{ 'images/admin_ui_overview.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
 ### Cluster Overview Panel
 
-<img src="{{ 'images/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
+<img src="{{ 'images/v2.0/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The **Cluster Overview** panel provides the following metrics:
 
@@ -46,7 +44,7 @@ Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>
 ### Node List
 
 The **Node List** is the default view on the **Overview** page.
-<img src="{{ 'images/v2.0/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin-ui-node-list.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
 Live nodes are nodes that are online and responding. They are marked with a green dot. If a node is removed or dies, the dot turns yellow to indicate that it is not responding. If the node remains unresponsive for a certain amount of time (5 minutes by default), the node turns red and is moved to the [**Dead Nodes**](#dead-nodes) section, indicating that it is no longer expected to come back.
@@ -88,13 +86,13 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 
 <span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster. The Node Map consists of the following components:
 
-**Node component**
-
-<img src="{{ 'images/v2.0/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
-
 **Region component**
 
 <img src="{{ 'images/v2.0/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+**Node component**
+
+<img src="{{ 'images/v2.0/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html). 
 
@@ -112,14 +110,14 @@ You can hover over each graph to see actual point-in-time values.
 #### Change time range
 
 You can change the time range by clicking on the time window.
-<img src="{{ 'images/v2.0/admin_ui_time_range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin-ui-time-range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}The Admin UI shows time in UTC, even if you set a different time zone for your cluster. {{site.data.alerts.end}}
 
 #### View metrics for a single node
 
 By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
-<img src="{{ 'images/v2.0/admin_ui_single_node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Summary Panel
 
