@@ -1100,12 +1100,6 @@
         ]
       },
       {
-        "title": "Enable Node Map (Enterprise)",
-        "urls": [
-          "/${VERSION}/enable-node-map.html"
-        ]
-      },
-      {
         "title": "Enterprise Licensing",
         "urls": [
           "/${VERSION}/enterprise-licensing.html"
