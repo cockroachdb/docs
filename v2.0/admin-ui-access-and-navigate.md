@@ -43,9 +43,9 @@ Capacity Usage | <ul><li>The storage capacity used as a percentage of total stor
 Node Status | <ul><li>The number of [live nodes](admin-ui-access-and-navigate.html#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.</li>
 Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
-### Nodes List
+### Node List
 
-To see basic details about the nodes in your cluster, click **View nodes list** in the **Summary** panel.
+The **Node List** is the default view on the **Overview** page.
 <img src="{{ 'images/v2.0/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
@@ -86,7 +86,7 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 
 ### Node Map (Enterprise)
 
-The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster. To set up and enable the Node Map, see [Enable Node Map](enable-node-map.html). The Node Map consists of the following components:
+<span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster. The Node Map consists of the following components:
 
 **Node component**
 
@@ -96,9 +96,13 @@ The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that
 
 <img src="{{ 'images/v2.0/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
+For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html). 
+
 ### Time Series Graphs
 
-The Admin UI displays time series graphs of key metrics. Time series graphs are useful to visualize and monitor data trends. You can hover over each graph to see actual point-in-time values.
+The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left-hand navigation bar.
+
+You can hover over each graph to see actual point-in-time values.
 
 <img src="{{ 'images/v2.0/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -118,6 +122,9 @@ By default, the time series panel displays the metrics for the entire cluster. T
 <img src="{{ 'images/v2.0/admin_ui_single_node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Summary Panel
+
+The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left-hand navigation bar.
+
 <img src="{{ 'images/v2.0/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
 
 The **Summary** panel provides the following metrics:
@@ -138,9 +145,9 @@ P99 Latency | The 99th percentile of service latency.
 
 ### Events Panel
 
-<img src="{{ 'images/v2.0/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
+The **Cluster Metrics** dashboards display the **Events** panel that lists the 10 most recent events logged for the all nodes across the cluster. To view the **Events** panel, click **Metrics** on the left-hand navigation bar. To see the list of all events, click **View all events** in the **Events** panel.
 
-The **Events** panel lists the 10 most recent events logged for the all nodes across the cluster. To see the list of all events, click **View all events**.
+<img src="{{ 'images/v2.0/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
 
 The following types of events are listed:
 
