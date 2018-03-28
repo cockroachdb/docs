@@ -149,7 +149,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     ~~~
 
     ~~~
-    certificatesigningrequest "default.node.cockroachdb-0" approved
+    certificatesigningrequest "default.client.root" approved
     ~~~
 
 5. Confirm that cluster initialization has completed successfully:
