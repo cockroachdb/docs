@@ -5,7 +5,7 @@ keywords: ttl, time to live, availability zone
 toc: false
 ---
 
-In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is are a few special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is are a few special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
 This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
 
@@ -17,13 +17,14 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 ### Replication Zone Levels
 
-There are three replication zone levels:
+There are four replication zone levels:
 
 - **Cluster:** CockroachDB comes with a single, default replication zone for the entire cluster. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 - **Database:** You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 - **Table:** You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
+- <span class="version-tag">New in v2.0</span> **Row:** ([For enterprise users](enterprise-licensing.html)) You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
 
-When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the table containing the data, CockroachDB uses it; otherwise, it uses the replication zone for the database containing the data. If there's no applicable table or database replication zone, CockroachDB uses the cluster-wide replication zone.
+When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the rows in a table, CockroachDB uses it; otherwise, it uses the replication zone for the table containing the data. If there's no applicable row or table replication zone, CockroachDB uses the database replication zone; otherwise it uses the cluster-wide replication zone.
 
 In addition to the databases and tables that are visible via SQL, CockroachDB stores additional internal data in what are called system ranges. You can configure replication zones for parts of these internal data ranges if you'd like to override the cluster-wide settings. See [Create a Replication Zone for System Ranges](#create-a-replication-zone-for-system-ranges) for more details.
 
@@ -121,6 +122,9 @@ $ cockroach zone set <database> --file=<zone-conent.yaml> <flags>
 
 # Create/edit the replication zone for a table:
 $ cockroach zone set <database.table> --file=<zone-content.yaml> <flags>
+
+# Create/edit the replication zone for a table partition:
+$ cockroach zone set <database.table.partition> --file=<zone-content.yaml> <flags>
 
 # Remove the replication zone for a database:
 $ cockroach zone rm <database> <flags>
@@ -304,6 +308,26 @@ Alternately, you can pass the YAML content via the standard input:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
+~~~
+
+### Create a Replication Zone for a Table Partition <span class="version-tag">New in v2.0</span>
+
+To [control replication for table partitions](partitioning.html#replication-zones), create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table.partition> -f <file.yaml>` command with appropriate flags:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cat > australia.zone.yml
+~~~
+
+~~~ shell
+constraints: [+datacenter=au1]
+~~~
+
+Apply zone configurations to corresponding partitions:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
 
 ### Create a Replication Zone for System Ranges

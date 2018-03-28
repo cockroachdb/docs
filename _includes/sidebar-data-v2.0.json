@@ -402,6 +402,12 @@
             ]
           },
           {
+            "title": "<code>PARTITION BY</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/partition-by.html"
+            ]
+          },
+          {
             "title": "<code>PAUSE JOB</code>",
             "urls": [
               "/${VERSION}/pause-job.html"
