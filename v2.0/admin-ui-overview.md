@@ -10,7 +10,7 @@ The CockroachDB Admin UI provides details about your cluster and database config
 
 Area | Description
 --------|----
-[Node Map](admin-ui-node-map.html) | View and monitor the metrics and geographical configuration of your cluster.
+[Node Map](enable-node-map.html) | View and monitor the metrics and geographical configuration of your cluster.
 [Cluster Health](admin-ui-access-and-navigate.html#summary-panel) | View essential metrics about the cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 [Overview Metrics](admin-ui-overview-dashboard.html) | View important SQL performance, replication, and storage metrics.
 [Runtime Metrics](admin-ui-runtime-dashboard.html) | View metrics about node count, CPU time, and memory usage.
