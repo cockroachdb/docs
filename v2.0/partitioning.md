@@ -1,10 +1,10 @@
 ---
-title: Define Table Partitions (Enterprise)
+title: Define Table Partitions
 summary: Partitioning is an enterprise feature that gives you row-level control of how and where your data is stored.
 toc: false
 ---
 
-CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
+<span class="version-tag">New in v2.0</span> CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {{site.data.alerts.callout_info}}Table partitioning is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -63,17 +63,17 @@ You can define partitions and subpartitions over one or more columns of a table.
 
 #### Partition by List
 
-`PARTITION BY LIST` lets you map one or more tuples to a partition.
+[`PARTITION BY LIST`](partition-by.html) lets you map one or more tuples to a partition.
 
-To partition a table by list, use the `PARTITION BY LIST` syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
+To partition a table by list, use the [`PARTITION BY LIST`](partition-by.html) syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
 
 See [Partition by List](#partition-by-list) example below for more details.
 
 #### Partition by Range
 
-`PARTITION BY RANGE` lets you map ranges of tuples to a partition.
+[`PARTITION BY RANGE`](partition-by.html) lets you map ranges of tuples to a partition.
 
-To define a table partition by range, use the `PARTITION BY RANGE` syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively.
+To define a table partition by range, use the [`PARTITION BY RANGE`](partition-by.html) syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively.
 
 {{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For range partitions, <code>NULL</code> is considered less than any other data, which is consistent with our key encoding ordering and <code>ORDER BY</code> behavior.{{site.data.alerts.end}}
 
@@ -178,7 +178,7 @@ $ cockroach start --insecure \
 
 #### Step 3. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
 
 #### Step 4. Create a table with the appropriate partitions
 
@@ -263,7 +263,7 @@ We want to archival-partition the table to keep newer data on faster devices and
 
 #### Step 2. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
 
 #### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
@@ -402,7 +402,7 @@ $ cockroach init --insecure --host=<node1 hostname>
 
 #### Step 3. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key)
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
 
 #### Step 4. Create a table with the appropriate partitions
 
@@ -507,7 +507,7 @@ Time: 11.586626ms
 
 ### Repartition a Table
 
-Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the `ALTER TABLE` command.
+Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`ALTER TABLE`](alter-table.html) command.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -518,7 +518,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 
 ### Unpartition a Table
 
-You can remove the partitions on a table by using the `PARTITION BY NOTHING` syntax with the `ALTER TABLE` command:
+You can remove the partitions on a table by using the `PARTITION BY NOTHING` syntax with the [`ALTER TABLE`](alter-table.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
