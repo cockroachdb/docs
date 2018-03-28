@@ -131,7 +131,7 @@ To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locatio
 
 ### Step 5. View the Node Map
 
-[Open the **Overview page**](admin-ui-overview.html) to view the **Node Map**.
+[Open the **Overview page**](admin-ui-overview.html) and select **Node Map** from the **View** drop-down menu to view the **Node Map**.
 
 ### Step 6. Navigate the Node Map
 
