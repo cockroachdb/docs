@@ -27,7 +27,7 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-## Step 1. Ensure the CockroachDB Version is 2.0 or Higher
+### Step 1. Ensure the CockroachDB Version is 2.0 or Higher
 
 ~~~ shell
 $ cockroach version
@@ -35,7 +35,9 @@ $ cockroach version
 
 If not, [upgrade to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-## Step 2. Start the Nodes with the Correct `--locality` Flags
+### Step 2. Start (or Restart) the Nodes with the Correct `--locality` Flags
+
+If you have a cluster running without the `--locality` flags set, restart the nodes with the correct `--locality` flags(add link to rolling restart page once it's created).
 
 To start a new cluster with the correct `--locality` flags:
 
