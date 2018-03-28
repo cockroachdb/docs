@@ -27,7 +27,7 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-## Step 1. Ensure the CockroachDB Version is 2.0 or Higher
+### Step 1. Ensure the CockroachDB Version is 2.0 or Higher
 
 ~~~ shell
 $ cockroach version
@@ -35,60 +35,64 @@ $ cockroach version
 
 If not, [upgrade to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-## Step 2. Start the Nodes with the Correct `--locality` Flags
+### Step 2. Start the Nodes with the Correct `--locality` Flags
 
 To start a new cluster with the correct `--locality` flags:
 
 In a new terminal, start Node 1:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1a  \
 --host=<node1 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--background
 ~~~
 
 In a new terminal, start Node 2:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1b \
 --host=<node2 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--background
 ~~~
 
 In a new terminal, start Node 3:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-west-1,datacenter=us-west-1a \
 --host=<node3 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--background
 ~~~
 
 In a new terminal, start Node 4:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=eu-west-1,datacenter=eu-west-1a \
 --host=<node4 address> \
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--background
 ~~~
 
 In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
