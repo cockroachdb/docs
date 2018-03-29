@@ -22,7 +22,7 @@ There are four replication zone levels:
 - **Cluster:** CockroachDB comes with a single, default replication zone for the entire cluster. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 - **Database:** You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 - **Table:** You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
-- <span class="version-tag">New in v2.0</span> **Row:** ([For enterprise users](enterprise-licensing.html)) You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
+- **Row:** ([For enterprise users](enterprise-licensing.html)) You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
 
 When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the rows in a table, CockroachDB uses it; otherwise, it uses the replication zone for the table containing the data. If there's no applicable row or table replication zone, CockroachDB uses the database replication zone; otherwise it uses the cluster-wide replication zone.
 
@@ -311,6 +311,8 @@ $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
 
 ### Create a Replication Zone for a Table Partition <span class="version-tag">New in v2.0</span>
+
+{{site.data.alerts.callout_info}}This is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
 To [control replication for table partitions](partitioning.html#replication-zones), create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table.partition> -f <file.yaml>` command with appropriate flags:
 
