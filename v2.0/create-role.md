@@ -31,13 +31,13 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 
 ## Synopsis
 
-CREATE ROLE [IF NOT EXISTS] <role>
+<section>{% include sql/{{ page.version.version }}/diagrams/create_role.html %}</section>
 
 ## Parameters
 
 | Parameter | Description |
 ------------|--------------
-`role` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
+`name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
 
 ## Examples
 

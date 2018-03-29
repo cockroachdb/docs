@@ -11,7 +11,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}</section>
 
 ## Required Privileges
 
@@ -21,9 +21,10 @@ No [privileges](privileges.html) are required to view privileges granted to user
 
 Parameter | Description
 ----------|------------
+`role_name` | A comma-separated list of role names.
 `table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
 `database_name` | A comma-separated list of database names.
-`name` | An optional, comma-separated list of grantees.
+`user_name` | An optional, comma-separated list of grantees.
 
 ## Examples
 

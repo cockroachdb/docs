@@ -21,13 +21,14 @@ Roles can only be dropped by super users, i.e., members of the `admin` role.
 
 ## Synopsis
 
-DROP ROLE [IF EXISTS] <role> [, <role>]
+<section>{% include sql/{{ page.version.version }}/diagrams/drop_role.html %}</section>
+
 
 ## Parameters
 
 | Parameter | Description |
 ------------|--------------
-`role` | The name of the role to remove. To remove multiple roles, use a comma-separate list of roles.<br><br>You can use [`SHOW ROLES`](show-roles.html) to find the names of roles.
+`name` | The name of the role to remove. To remove multiple roles, use a comma-separate list of roles.<br><br>You can use [`SHOW ROLES`](show-roles.html) to find the names of roles.
 
 ## Example
 

@@ -294,6 +294,12 @@
             ]
           },
           {
+            "title": "<code>CREATE ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/create-role.html"
+            ]
+          },
+          {
             "title": "<code>CREATE SEQUENCE</code>",
             "urls": [
               "/${VERSION}/create-sequence.html"
@@ -351,6 +357,12 @@
             "title": "<code>DROP INDEX</code>",
             "urls": [
               "/${VERSION}/drop-index.html"
+            ]
+          },
+          {
+            "title": "<code>DROP ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/drop-role.html"
             ]
           },
           {
