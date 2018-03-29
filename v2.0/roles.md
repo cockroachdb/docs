@@ -8,9 +8,11 @@ toc: false
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
+- [`GRANT [role]` (Enterprise)](grant.html)
+- [`REVOKE [role]` (Enterprise)](revoke.html)
+- [`GRANT [privilege]`](grant.html)
+- [`REVOKE [privilege]`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
 
 <div id="toc"></div>
 

@@ -27,129 +27,151 @@ Parameter | Description
 
 ## Examples
 
+### Show all grants <span class="version-tag">New in v2.0</span>
+
+To list all grants for all users on all databases and tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS;
+~~~
+~~~
++------------+--------------------+------------------+------------+------------+
+|  Database  |       Schema       |      Table       |    User    | Privileges |
++------------+--------------------+------------------+------------+------------+
+| system     | crdb_internal      | NULL             | admin      | GRANT      |
+| system     | crdb_internal      | NULL             | admin      | SELECT     |
+| system     | crdb_internal      | NULL             | root       | GRANT      |
+...
+| test_roles | public             | employees        | system_ops | CREATE     |
++------------+--------------------+------------------+------------+------------+
+(167 rows)
+~~~
+
+### Show a specific user's grants <span class="version-tag">New in v2.0</span>
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS FOR maxroach;
+~~~
+~~~
++------------+--------------------+-------+----------+------------+
+|  Database  |       Schema       | Table |   User   | Privileges |
++------------+--------------------+-------+----------+------------+
+| test_roles | crdb_internal      | NULL  | maxroach | DELETE     |
+| test_roles | information_schema | NULL  | maxroach | DELETE     |
+| test_roles | pg_catalog         | NULL  | maxroach | DELETE     |
+| test_roles | public             | NULL  | maxroach | DELETE     |
++------------+--------------------+-------+----------+------------+
+~~~
+
 ### Show grants on databases
 
 **Specific database, all users:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db2:
 ~~~
-
 ~~~ shell
-+----------+------------+------------+
-| Database |    User    | Privileges |
-+----------+------------+------------+
-| db2      | betsyroach | CREATE     |
-| db2      | root       | ALL        |
-+----------+------------+------------+
-(2 rows)
++----------+--------------------+------------+------------+
+| Database |       Schema       |    User    | Privileges |
++----------+--------------------+------------+------------+
+| db2      | crdb_internal      | admin      | ALL        |
+| db2      | crdb_internal      | betsyroach | CREATE     |
+| db2      | crdb_internal      | root       | ALL        |
+| db2      | information_schema | admin      | ALL        |
+| db2      | information_schema | betsyroach | CREATE     |
+| db2      | information_schema | root       | ALL        |
+| db2      | pg_catalog         | admin      | ALL        |
+| db2      | pg_catalog         | betsyroach | CREATE     |
+| db2      | pg_catalog         | root       | ALL        |
+| db2      | public             | admin      | ALL        |
+| db2      | public             | betsyroach | CREATE     |
+| db2      | public             | root       | ALL        |
++----------+--------------------+------------+------------+
 ~~~
 
 **Specific database, specific user:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db2 FOR betsyroach;
 ~~~
-
 ~~~ shell
-+----------+------------+------------+
-| Database |    User    | Privileges |
-+----------+------------+------------+
-| db2      | betsyroach | CREATE     |
-+----------+------------+------------+
-(1 row)
++----------+--------------------+------------+------------+
+| Database |       Schema       |    User    | Privileges |
++----------+--------------------+------------+------------+
+| db2      | crdb_internal      | betsyroach | CREATE     |
+| db2      | information_schema | betsyroach | CREATE     |
+| db2      | pg_catalog         | betsyroach | CREATE     |
+| db2      | public             | betsyroach | CREATE     |
++----------+--------------------+------------+------------+
 ~~~
 
 ### Show grants on tables
 
-**Specific tables, all users:**
+**Specific tables, all users and roles:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE db1.t1, db1.t2*;
+> SHOW GRANTS ON TABLE test_roles.employees;
 ~~~
 
 ~~~ shell
-+-------+------------+------------+
-| Table |    User    | Privileges |
-+-------+------------+------------+
-| t1    | betsyroach | DELETE     |
-| t1    | henryroach | DELETE     |
-| t1    | maxroach   | DELETE     |
-| t1    | root       | ALL        |
-| t1    | sallyroach | DELETE     |
-| t2    | betsyroach | DELETE     |
-| t2    | henryroach | DELETE     |
-| t2    | maxroach   | DELETE     |
-| t2    | root       | ALL        |
-| t2    | sallyroach | DELETE     |
-+-------+------------+------------+
-(10 rows)
++------------+--------+-----------+------------+------------+
+|  Database  | Schema |   Table   |    User    | Privileges |
++------------+--------+-----------+------------+------------+
+| test_roles | public | employees | admin      | ALL        |
+| test_roles | public | employees | root       | ALL        |
+| test_roles | public | employees | system_ops | CREATE     |
++------------+--------+-----------+------------+------------+
 ~~~
 
-**Specific tables, specific users:**
+**Specific tables, specific role or user:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE db.t1, db.t2 FOR maxroach, betsyroach;
+> SHOW GRANTS ON TABLE test_roles.employees FOR system_ops;
 ~~~
 ~~~ shell
-+-------+------------+------------+
-| Table |    User    | Privileges |
-+-------+------------+------------+
-| t1    | betsyroach | DELETE     |
-| t1    | maxroach   | DELETE     |
-| t2    | betsyroach | DELETE     |
-| t2    | maxroach   | DELETE     |
-+-------+------------+------------+
-(4 rows)
++------------+--------+-----------+------------+------------+
+|  Database  | Schema |   Table   |    User    | Privileges |
++------------+--------+-----------+------------+------------+
+| test_roles | public | employees | system_ops | CREATE     |
++------------+--------+-----------+------------+------------+
 ~~~
 
 **All tables, all users:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE db1.*;
+> SHOW GRANTS ON TABLE test_roles.*;
 ~~~
 
 ~~~ shell
-+-------+------------+------------+
-| Table |    User    | Privileges |
-+-------+------------+------------+
-| t1    | betsyroach | DELETE     |
-| t1    | henryroach | DELETE     |
-| t1    | maxroach   | DELETE     |
-| t1    | root       | ALL        |
-| t1    | sallyroach | DELETE     |
-| t2    | betsyroach | DELETE     |
-| t2    | henryroach | DELETE     |
-| t2    | maxroach   | DELETE     |
-| t2    | root       | ALL        |
-| t2    | sallyroach | DELETE     |
-| t3    | root       | ALL        |
-| t4    | maxroach   | CREATE     |
-| t4    | root       | ALL        |
-| t5    | maxroach   | CREATE     |
-| t5    | root       | ALL        |
-+-------+------------+------------+
-(15 rows)
++------------+--------+-----------+------------+------------+
+|  Database  | Schema |   Table   |    User    | Privileges |
++------------+--------+-----------+------------+------------+
+| test_roles | public | employees | admin      | ALL        |
+| test_roles | public | employees | root       | ALL        |
+| test_roles | public | employees | system_ops | CREATE     |
++------------+--------+-----------+------------+------------+
 ~~~
 
-**All tables, specific users:**
+**All tables, specific users or roles:**
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE db1.* FOR maxroach, betsyroach;
+> SHOW GRANTS ON TABLE test_roles.* FOR system_ops;
 ~~~
 
 ~~~ shell
-+-------+------------+------------+
-| Table |    User    | Privileges |
-+-------+------------+------------+
-| t1    | betsyroach | DELETE     |
-| t1    | maxroach   | DELETE     |
-| t2    | betsyroach | DELETE     |
-| t2    | maxroach   | DELETE     |
-| t4    | maxroach   | CREATE     |
-| t5    | maxroach   | CREATE     |
-+-------+------------+------------+
-(6 rows)
++------------+--------+-----------+------------+------------+
+|  Database  | Schema |   Table   |    User    | Privileges |
++------------+--------+-----------+------------+------------+
+| test_roles | public | employees | system_ops | CREATE     |
++------------+--------+-----------+------------+------------+
 ~~~
 
 ## See Also
