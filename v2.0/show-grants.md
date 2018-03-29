@@ -68,7 +68,7 @@ To list all grants for all users on all databases and tables:
 
 ### Show grants on databases
 
-**Specific database, all users:**
+**Specific database, all users and roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -93,7 +93,7 @@ To list all grants for all users on all databases and tables:
 +----------+--------------------+------------+------------+
 ~~~
 
-**Specific database, specific user:**
+**Specific database, specific user or role:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -143,7 +143,7 @@ To list all grants for all users on all databases and tables:
 +------------+--------+-----------+------------+------------+
 ~~~
 
-**All tables, all users:**
+**All tables, all users and roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -173,6 +173,57 @@ To list all grants for all users on all databases and tables:
 +------------+--------+-----------+------------+------------+
 | test_roles | public | employees | system_ops | CREATE     |
 +------------+--------+-----------+------------+------------+
+~~~
+
+### Show role memberships <span class="version-tag">New in v2.0</span>
+
+**All members of all roles:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON ROLE;
+~~~
+~~~
++--------+---------+---------+
+|  role  | member  | isAdmin |
++--------+---------+---------+
+| admin  | root    | true    |
+| design | ernie   | false   |
+| design | lola    | false   |
+| dev    | barkley | false   |
+| docs   | carl    | false   |
+| hr     | lucky   | false   |
++--------+---------+---------+
+~~~
+
+**Members of a specific role:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON ROLE design;
+~~~
+~~~
++--------+--------+---------+
+|  role  | member | isAdmin |
++--------+--------+---------+
+| design | ernie  | false   |
+| design | lola   | false   |
++--------+--------+---------+
+~~~
+
+**Roles of a specific user or role:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON ROLE FOR carl;
+~~~
+~~~
++------+--------+---------+
+| role | member | isAdmin |
++------+--------+---------+
+| dev  | carl   | false   |
+| docs | carl   | false   |
++------+--------+---------+
 ~~~
 
 ## See Also

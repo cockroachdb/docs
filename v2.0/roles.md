@@ -25,11 +25,10 @@ Term | Description
 Role | A group containing any number of [users](create-and-manage-users.html) or other roles.
 Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant.html).
 Superuser / Admin | A member of the `admin` role. Only superusers can `CREATE ROLE` or `DROP ROLE`. The `admin` role is created by default and cannot be dropped.
-`root` | A user that exists by default as a member of the `admin` role. The `root` role must always be a member of `admin`.
+`root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.
 Inherit | The behavior that grants a role's privileges to its members.
-`∈` | In the context of roles, `∈` translates to "is a member of."<br><br>Example: `A ∈ B` denotes that user or role `A` is a member of role `B`.
-Direct member | A user or role that is an immediate member of the role.<br><br>Example: `A` is a direct member of `B` if `A ∈ B`.
-Indirect member | A user or role that is a member of the role by association. <br><br>Example: `A` is an indirect member of `B` if `A ∈ C ... ∈ B` where `...` is an arbitrary number of memberships.
+Direct member | A user or role that is an immediate member of the role.<br><br>Example: `A` is a direct member of `B` if `A` is a member of `B`.
+Indirect member | A user or role that is a member of the role by association. <br><br>Example: `A` is an indirect member of `B` if `A` is a member of `C` ... is a member of `B` where "..." is an arbitrary number of memberships.
 
 ## Example
 
@@ -98,7 +97,7 @@ Next, grant privileges to the `system_ops` role you created:
 > GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
 ~~~
 
-Add the `maxroach` to the `system_ops` role:
+Add the `maxroach` user to the `system_ops` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
