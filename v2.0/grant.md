@@ -4,7 +4,7 @@ summary: The GRANT statement grants user privileges for interacting with specifi
 toc: false
 ---
 
-The `GRANT` [statement](sql-statements.html) lets you control each [role](role.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
+The `GRANT` [statement](sql-statements.html) lets you control each [role](roles.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 

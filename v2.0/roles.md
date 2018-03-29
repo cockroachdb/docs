@@ -191,7 +191,7 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)
-- [`SHOW ROLE`](show-role.html)
+- [`SHOW ROLE`](show-roles.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](create-and-manage-users.html)
