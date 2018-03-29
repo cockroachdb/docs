@@ -23,7 +23,7 @@ toc: false
 - All privileges of a role are inherited by all of its members.
 - There is no limit to the number of members in a role.
 - Roles cannot log in. They do not have a password and cannot use certs.
-- Membership loops are not allowed (direct: `A ∈ B ∈ A` or indirect: `A ∈ B ∈ C ... ∈ A`).
+- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a memeber of A`).
 
 ## Required Privileges
 

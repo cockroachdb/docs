@@ -35,7 +35,9 @@ No [privileges](privileges.html) are required to list roles.
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
+- [`GRANT <privileges>`](grant.html)
+- [`REVOKE <privileges`](revoke.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles` (Enterprise)](revoke-roles.html)
 - [Manage Roles](roles.html)
 - [Manage Users](create-and-manage-users.html)

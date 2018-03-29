@@ -1,10 +1,10 @@
 ---
-title: GRANT
+title: GRANT &lt;privileges&gt;
 summary: The GRANT statement grants user privileges for interacting with specific databases and tables.
 toc: false
 ---
 
-The `GRANT` [statement](sql-statements.html) lets you control each [role](roles.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
+The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](roles.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
@@ -12,13 +12,11 @@ For privileges required by specific statements, see the documentation for the re
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/grant.html %}</section>
+<section>{% include sql/{{ page.version.version }}/diagrams/grant_privileges.html %}</section>
 
 ## Required Privileges
 
 The user granting privileges must have the `GRANT` privilege on the target databases or tables.
-
-{{site.data.alerts.callout_info}}You must have an <a href="enterprise-licensing.html">enterprise license</a> to add a user to a role (i.e., <code>GRANT [my_role] TO ...</code>).{{site.data.alerts.end}}
 
 ## Supported Privileges
 
@@ -46,7 +44,7 @@ Parameter | Description
 ----------|------------
 `table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but won't affect tables created after the grant.
 `database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but don't affect existing tables in the database.
-`name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) to whom you want to grant privileges.
+`user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) to whom you want to grant privileges.
 
 ## Examples
 
@@ -123,29 +121,12 @@ Parameter | Description
 (4 rows)
 ~~~
 
-## Add a member to a role (Enterprise) <span class="version-tag">New in v2.0</span>
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT system_ops TO mary;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON ROLE system_ops;
-~~~
-~~~
-+------------+----------+---------+
-|    role    |  member  | isAdmin |
-+------------+----------+---------+
-| system_ops | mary     | false   |
-+------------+----------+---------+
-~~~
-
 ## See Also
 
 - [Privileges](privileges.html)
-- [`REVOKE`](revoke.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](create-and-manage-users.html)
 - [Manage Roles](roles.html)

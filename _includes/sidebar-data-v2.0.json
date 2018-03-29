@@ -396,9 +396,15 @@
             ]
           },
           {
-            "title": "<code>GRANT</code>",
+            "title": "<code>GRANT &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/grant.html"
+            ]
+          },
+          {
+            "title": "<code>GRANT</code> &lt;roles&gt; (Enterprise)",
+            "urls": [
+              "/${VERSION}/grant-roles.html"
             ]
           },
           {
@@ -480,9 +486,15 @@
             ]
           },
           {
-            "title": "<code>REVOKE</code>",
+            "title": "<code>REVOKE &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/revoke.html"
+            ]
+          },
+          {
+            "title": "<code>REVOKE</code> &lt;roles&gt; (Enterprise)",
+            "urls": [
+              "/${VERSION}/revoke-roles.html"
             ]
           },
           {

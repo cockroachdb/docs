@@ -1,0 +1,87 @@
+---
+title: GRANT &lt;roles&gt;
+summary: The GRANT <roles> statement grants user privileges for interacting with specific databases and tables.
+toc: false
+---
+
+<span class="version-tag">New in v2.0:</span> The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
+
+{{site.data.alerts.callout_info}}You must have an <a href="enterprise-licensing.html">enterprise license</a> to add a member to a role.{{site.data.alerts.end}}
+
+<div id="toc"></div>
+
+## Synopsis
+
+<section>{% include sql/{{ page.version.version }}/diagrams/grant_roles.html %}</section>
+
+## Required Privileges
+
+The user granting role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
+
+## Considerations
+
+- Users and roles can be members of roles.
+- The `root` user is automatically created as an `admin` role and assigned the `ALL` privilege for new databases.
+- All privileges of a role are inherited by all its members.
+
+## Parameters
+
+Parameter | Description
+----------|------------
+`role_name` | The name of the role to which you want to add members. To add members to multiple roles, use a comma-separated list of role names.
+`user_name` | The name of the [user](create-and-manage-users.html) or [role](roles.html) to whom you want to grant membership. To add multiple members, use a comma-separated list of user and/or role names.
+
+## Examples
+
+### Grant role membership
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT design TO ernie;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE design;
+~~~
+~~~
++--------+---------+---------+
+|  role  | member  | isAdmin |
++--------+---------+---------+
+| design | barkley | false   |
+| design | ernie   | false   |
+| design | lola    | false   |
+| design | lucky   | false   |
++--------+---------+---------+
+~~~
+
+### Grant the admin option
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT design WITH TO ERNIE WITH ADMIN OPTION;
+~~~
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE design;
+~~~
+~~~
++--------+---------+---------+
+|  role  | member  | isAdmin |
++--------+---------+---------+
+| design | barkley | false   |
+| design | ernie   | true    |
+| design | lola    | false   |
+| design | lucky   | false   |
++--------+---------+---------+
+~~~
+
+## See Also
+
+- [Privileges](privileges.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <privileges>`](grant.html)
+- [`REVOKE <privileges>`](revoke.html)
+- [`SHOW GRANTS`](show-grants.html)
+- [Manage Users](create-and-manage-users.html)
+- [Manage Roles](roles.html)

@@ -8,11 +8,12 @@ toc: false
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT [role]` (Enterprise)](grant.html)
-- [`REVOKE [role]` (Enterprise)](revoke.html)
-- [`GRANT [privilege]`](grant.html)
-- [`REVOKE [privilege]`](revoke.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <privileges>`](grant.html)
+- [`REVOKE <privileges>`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
+- [`SHOW GRANTS`](show-grants.html)
 
 <div id="toc"></div>
 
@@ -23,7 +24,7 @@ To get started, basic role terminology is outlined below:
 Term | Description
 -----|------------
 Role | A group containing any number of [users](create-and-manage-users.html) or other roles.
-Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant.html).
+Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 Superuser / Admin | A member of the `admin` role. Only superusers can `CREATE ROLE` or `DROP ROLE`. The `admin` role is created by default and cannot be dropped.
 `root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.
 Inherit | The behavior that grants a role's privileges to its members.
@@ -193,7 +194,10 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLE`](show-roles.html)
-- [`GRANT`](grant.html)
+- [`GRANT <privileges>`](grant.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <privileges>`](revoke.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](create-and-manage-users.html)
 - [Privileges](privileges.html)
