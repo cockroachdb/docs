@@ -82,6 +82,8 @@ This issue is particularly relevant when using a simple SQL table of two columns
 
 ### Repeated or combined commands in the SQL shell history
 
+{{site.data.alerts.callout_info}}Resolved as of v2.0.{{site.data.alerts.end}}
+
 Our [built-in SQL shell](use-the-built-in-sql-client.html) stores previously executed commands in the shell's history. In some cases, these commands are unexpectedly duplicated.
 
 Also, in some terminals, such  as `st` or `xterm` without `tmux`, previously executed commands are combined into a single command in the SQL shell history.
