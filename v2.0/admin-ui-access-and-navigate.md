@@ -26,7 +26,7 @@ Page | Main Panel Component
 -----------|------------
 Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-access-and-navigate.html#cluster-overview-panel)</li><li>[Node List](admin-ui-access-and-navigate.html#node-list). [Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-access-and-navigate.html#node-map-enterprise) view. </li></ul>
 Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html#time-series-graphs)</li><li>[Summary Panel](admin-ui-access-and-navigate.html#summary-panel)</li><li>[Events List](admin-ui-access-and-navigate.html#events-panel)</li></ul>
-Databases | Information about the Tables or Grants in your [databases](admin-ui-databases-page.html).
+Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
 ### Cluster Overview Panel
