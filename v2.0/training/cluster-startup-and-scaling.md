@@ -174,7 +174,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     CockroachDB node starting at 2018-02-02 05:08:22.841392 +0000 UTC
     build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
     admin:      http://localhost:8080
-    sql:        postgresql://root@localhost:26257?application_name=cockroach&sslmode=disable
+    sql:        postgresql://root@localhost:26257?sslmode=disable
     logs:       /Users/jesseseldess/cockroachdb-training/node1/logs
     store[0]:   path=/Users/jesseseldess/cockroachdb-training/node1
     status:     initialized new cluster
