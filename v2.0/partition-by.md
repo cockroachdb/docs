@@ -14,11 +14,15 @@ toc: false
 
 ### For `CREATE TABLE`
 
-
+<div>
+{% include sql/{{ page.version.version }}/diagrams/create_table_partition_by.html %}
+</div>
 
 ### For `ALTER TABLE`
 
-
+<div>
+{% include sql/{{ page.version.version }}/diagrams/alter_table_partition_by.html %}
+</div>
 
 ## Required Privileges
 
