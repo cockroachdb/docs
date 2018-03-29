@@ -507,7 +507,7 @@ Time: 11.586626ms
 
 ### Repartition a Table
 
-Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`ALTER TABLE`](alter-table.html) command.
+Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -518,7 +518,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 
 ### Unpartition a Table
 
-You can remove the partitions on a table by using the `PARTITION BY NOTHING` syntax with the [`ALTER TABLE`](alter-table.html) command:
+You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
