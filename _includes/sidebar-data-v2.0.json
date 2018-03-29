@@ -163,7 +163,7 @@
             "urls": [
               "/${VERSION}/demo-json-support.html"
             ]
-          },
+          }
         ]
       }
     ]
@@ -183,7 +183,7 @@
           {
             "title": "SQL Support Summary",
             "urls": [
-              "/${VERSION}/sql-feature-support.html",
+              "/${VERSION}/sql-feature-support.html"
             ]
           },
           {
