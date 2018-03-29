@@ -43,7 +43,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 ## Step 5. Set up HAProxy load balancers
 
-Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 

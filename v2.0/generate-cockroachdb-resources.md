@@ -245,6 +245,8 @@ $ cockroach gen haproxy --insecure \
 ~~~
 </div>
 
+By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
+
 ~~~
 global
   maxconn 4096

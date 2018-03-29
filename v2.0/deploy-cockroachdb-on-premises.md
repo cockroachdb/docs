@@ -46,7 +46,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Step 6. Set up HAProxy load balancers
 
-Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 
@@ -86,9 +86,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
         mode tcp
         balance roundrobin
         option httpchk GET /health?ready=1
-        server cockroach1 <node1 address>:26257
-        server cockroach2 <node2 address>:26257
-        server cockroach3 <node3 address>:26257
+        server cockroach1 <node1 address>:26257 check port 8080
+        server cockroach2 <node2 address>:26257 check port 8080
+        server cockroach3 <node3 address>:26257 check port 8080
     ~~~
 
   	The file is preset with the minimal [configurations](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html) needed to work with your running cluster:
@@ -99,7 +99,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
   	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
   	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
     `option httpchk` | The HTTP endpoint that HAProxy uses to check node health. [`/health?ready=1`](monitoring-and-alerting.html#health-ready-1) ensures that HAProxy doesn't direct traffic to nodes that are live but not ready to receive requests.
-    `server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--host` flag on node startup.
+    `server` | For each node in the cluster, this field specifies the interface that the node listens on (i.e., the address passed in the `--host` flag on node startup) as well as the port to use for HTTP health checks.
 
   	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
