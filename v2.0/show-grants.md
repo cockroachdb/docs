@@ -191,7 +191,9 @@ SHOW GRANTS ON ROLE;
 | design | ernie   | false   |
 | design | lola    | false   |
 | dev    | barkley | false   |
+| dev    | carl    | false   |
 | docs   | carl    | false   |
+| hr     | finance | false   |
 | hr     | lucky   | false   |
 +--------+---------+---------+
 ~~~

@@ -10,11 +10,11 @@ toc: false
 
 ## Synopsis
 
-SHOW ROLES
+<section>{% include sql/{{ page.version.version }}/diagrams/show_roles.html %}</section>
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to list users.
+No [privileges](privileges.html) are required to list roles.
 
 ## Example
 
