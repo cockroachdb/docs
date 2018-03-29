@@ -53,53 +53,53 @@ To start a new cluster with the correct `--locality` flags:
 Start Node 1:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1a  \
 --host=<node1 address> \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
 ~~~
 
 Start Node 2:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1b \
 --host=<node2 address> \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
 ~~~
 
 Start Node 3:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=us-west-1,datacenter=us-west-1a \
 --host=<node3 address> \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
 ~~~
 
 Start Node 4:
 
 {% include copy-clipboard.html %}
-~~~ shell
+~~~
 $ cockroach start \
 --insecure \
 --locality=region=eu-west-1,datacenter=eu-west-1a \
 --host=<node4 address> \
 --cache=25% \
 --max-sql-memory=25% \
---join=<node1 address>:26257,<node2 address>:26258,<node3 address>:26259,<node4 address>:26260
+--join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
 ~~~
 
 Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
