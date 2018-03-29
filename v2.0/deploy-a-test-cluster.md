@@ -65,7 +65,7 @@ Before getting started, it's important to review some limitations and requiremen
     ~~~ shell
     $ cockroach sql \
     --insecure \
-    --url="postgresql://root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257?application_name=cockroach&sslmode=disable"
+    --url="postgresql://root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257?sslmode=disable"
     ~~~
 
     ~~~

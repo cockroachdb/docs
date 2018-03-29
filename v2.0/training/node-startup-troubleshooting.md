@@ -237,7 +237,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     CockroachDB node starting at 2018-02-08 16:30:26.690638 +0000 UTC (took 0.2s)
     build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
     admin:      https://localhost:8085
-    sql:        postgresql://root@localhost:26262?application_name=cockroach&sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+    sql:        postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
     logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
     store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
     status:     initialized new cluster
@@ -298,7 +298,7 @@ This time, the startup process succeeds, and the `status` tells you that the nod
 CockroachDB node starting at 2018-02-08 16:51:24.23112 +0000 UTC (took 0.2s)
 build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
 admin:      https://localhost:8085
-sql:        postgresql://root@localhost:26262?application_name=cockroach&sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+sql:        postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
 logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
 store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
 status:     initialized new node, joined pre-existing cluster
