@@ -101,7 +101,6 @@ Client Options | Description
 `echo` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `errexit` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set errexit`.
 `check_syntax` | Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
-`normalize_history` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `check_syntax` is enabled as well. To disable this option, run `\unset normalize_history`.
 `show_times` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset show_times`.
 `smart_prompt` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
