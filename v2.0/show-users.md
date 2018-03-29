@@ -35,4 +35,4 @@ No [privileges](privileges.html) are required to list users.
 ## See Also
 
 - [`CREATE USER`](create-user.html)
-- [Create and Manage Users](create-and-manage-users.html)
+- [Manage Users](create-and-manage-users.html)

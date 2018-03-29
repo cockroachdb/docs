@@ -869,12 +869,6 @@
         ]
       },
       {
-        "title": "Privileges",
-        "urls": [
-          "/${VERSION}/privileges.html"
-        ]
-      },
-      {
         "title": "Transactions",
         "urls": [
           "/${VERSION}/transactions.html"
@@ -1082,9 +1076,26 @@
         ]
       },
       {
-        "title": "Create & Manage Users",
-        "urls": [
-          "/${VERSION}/create-and-manage-users.html"
+        "title": "Access Management",
+        "items": [
+          {
+            "title": "Manage Roles",
+            "urls": [
+              "/${VERSION}/roles.html"
+            ]
+          },
+          {
+            "title": "Manage Users",
+            "urls": [
+              "/${VERSION}/create-and-manage-users.html"
+            ]
+          },
+          {
+            "title": "Privileges",
+            "urls": [
+              "/${VERSION}/privileges.html"
+            ]
+          }
         ]
       },
       {

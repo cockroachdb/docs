@@ -21,9 +21,9 @@ No [privileges](privileges.html) are required to view privileges granted to user
 
 Parameter | Description
 ----------|------------
-`table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`. 
+`table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
 `database_name` | A comma-separated list of database names.
-`user_name` | An optional, comma-separated list of grantees. 
+`name` | An optional, comma-separated list of grantees.
 
 ## Examples
 
@@ -158,4 +158,3 @@ Parameter | Description
 - [`REVOKE`](revoke.html)
 - [Privileges](privileges.html)
 - [Information Schema](information-schema.html)
-

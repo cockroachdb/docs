@@ -1,5 +1,5 @@
 ---
-title: Create & Manage Users
+title: Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
 toc: false
 ---
@@ -237,4 +237,5 @@ DELETE 1
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
+- [Manage Roles](roles.html)
 - [Other Cockroach Commands](cockroach-commands.html)

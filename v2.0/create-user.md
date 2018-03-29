@@ -123,4 +123,5 @@ $ cockroach sql --insecure --user=jpointsman
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
+- [Manage Roles](roles.html)
 - [Other SQL Statements](sql-statements.html)

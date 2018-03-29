@@ -1,22 +1,24 @@
 ---
 title: REVOKE
-summary: The REVOKE statement revokes privileges from users.
+summary: The REVOKE statement revokes privileges from users and/or roles.
 toc: false
 ---
 
-The `REVOKE` [statement](sql-statements.html) revokes [privileges](privileges.html) from users.
+The `REVOKE` [statement](sql-statements.html) revokes [privileges](privileges.html) from [users](create-and-manage-users.html) and/or [roles](roles.html).
 
-For the list of privileges that can be granted to and revoked from users, see [`GRANT`](grant.html).
+For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
 <div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/revoke.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/revoke.html %}</section>
 
 ## Required Privileges
 
-The user revoking privileges must have the `GRANT` privilege on the target databases or tables.
+The user revoking privileges must have the [`GRANT`](grant.html) privilege on the target databases or tables.
+
+{{site.data.alerts.callout_info}}You must have an <a href="enterprise-licensing.html">enterprise license</a> to remove a user from a role (i.e., <code>REVOKE [my_role] FROM ...</code>).{{site.data.alerts.end}}
 
 ## Parameters
 
@@ -24,7 +26,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table for which you want to revoke privileges. To revoke privileges for multiple tables, use a comma-separated list of table names. To revoke privileges for all tables, use `*`.
 `database_name` | The name of the database for which you want to revoke privileges. To revoke privileges for multiple databases, use a comma-separated list of database names.<br><br>Privileges revoked for databases will be revoked for any new tables created in the databases.
-`user_name` | The name of the users from whom you want to revoke privileges. To revoke privileges from multiple users, use a comma-separated list of [users](create-and-manage-users.html).
+`name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) from whom you want to revoke privileges.
 
 
 ## Examples
@@ -145,6 +147,24 @@ Parameter | Description
 (2 rows)
 ~~~
 
+### Remove a member from a role (Enterprise) <span class="version-tag">New in v2.0</span>
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REVOKE system_ops FROM mary, maxroach;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE system_ops;
+~~~
+~~~
++------+--------+---------+
+| role | member | isAdmin |
++------+--------+---------+
++------+--------+---------+
+~~~
+
 ## See Also
 
 - [Privileges](privileges.html)
@@ -152,4 +172,5 @@ Parameter | Description
 - [`SHOW GRANTS`](show-grants.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
+- [Roles](roles.html)
 - [Other SQL Statements](sql-statements.html)
