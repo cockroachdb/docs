@@ -43,7 +43,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 ## Step 5. Set up HAProxy load balancers
 
-Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 
@@ -81,43 +81,49 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 5. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
 
     {% include copy-clipboard.html %}
-	~~~ shell
-	$ cockroach gen haproxy --insecure \
-	--host=<address of any node> \
-	--port=26257 \
-	~~~
+	  ~~~ shell
+	  $ cockroach gen haproxy --insecure \
+	  --host=<address of any node> \
+	  --port=26257 \
+	  ~~~
 
-	By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
+    By default, the generated configuration file is called `haproxy.cfg` and looks as follows, with the `server` addresses pre-populated correctly:
 
-	~~~ shell
-	global
-	  maxconn 4096
+    ~~~
+    global
+      maxconn 4096
 
-	defaults
-	    mode                tcp
-	    timeout connect     10s
-	    timeout client      1m
-	    timeout server      1m
+    defaults
+        mode                tcp
+        # Timeout values should be configured for your specific use.
+        # See: https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-timeout%20connect
+        timeout connect     10s
+        timeout client      1m
+        timeout server      1m
+        # TCP keep-alive on client side. Server already enables them.
+        option              clitcpka
 
-	listen psql
-	    bind :26257
-	    mode tcp
-	    balance roundrobin
-	    server cockroach1 <node1 address>:26257
-	    server cockroach2 <node2 address>:26257
-	    server cockroach3 <node3 address>:26257
-	~~~
+    listen psql
+        bind :26257
+        mode tcp
+        balance roundrobin
+        option httpchk GET /health?ready=1
+        server cockroach1 <node1 address>:26257 check port 8080
+        server cockroach2 <node2 address>:26257 check port 8080
+        server cockroach3 <node3 address>:26257 check port 8080
+    ~~~
 
-	The file is preset with the minimal [configurations](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html) needed to work with your running cluster:
+  	The file is preset with the minimal [configurations](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html) needed to work with your running cluster:
 
-	Field | Description
-	------|------------
-	`timeout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
-	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
-	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
-	`server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--host` flag on node startup.
+  	Field | Description
+  	------|------------
+  	`timeout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
+  	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
+  	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
+    `option httpchk` | The HTTP endpoint that HAProxy uses to check node health. [`/health?ready=1`](monitoring-and-alerting.html#health-ready-1) ensures that HAProxy doesn't direct traffic to nodes that are live but not ready to receive requests.
+    `server` | For each node in the cluster, this field specifies the interface that the node listens on (i.e., the address passed in the `--host` flag on node startup) as well as the port to use for HTTP health checks.
 
-	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
+  	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
 6. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
