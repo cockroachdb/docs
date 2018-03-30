@@ -1052,78 +1052,23 @@
       },
       {
         "title": "Monitoring and Alerting",
-        "urls": [
-          "/${VERSION}/monitoring-and-alerting.html"
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/monitoring-and-alerting.html"
+            ]
+          },
+          {
+            "title": "Use Prometheus and Alertmanager",
+            "urls": [
+              "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+            ]
+          }
         ]
       },
       {
-        "title": "Cluster Settings",
-        "urls": [
-          "/${VERSION}/cluster-settings.html"
-        ]
-      },
-      {
-        "title": "Cockroach Commands",
-        "urls": [
-          "/${VERSION}/cockroach-commands.html"
-        ]
-      },
-      {
-        "title": "Start a Node",
-        "urls": [
-          "/${VERSION}/start-a-node.html"
-        ]
-      },
-      {
-        "title": "Initialize a Cluster",
-        "urls": [
-          "/${VERSION}/initialize-a-cluster.html"
-        ]
-      },
-      {
-        "title": "Create Security Certificates",
-        "urls": [
-          "/${VERSION}/create-security-certificates.html",
-          "/${VERSION}/create-security-certificates-openssl.html"
-        ]
-      },
-      {
-        "title": "Create & Manage Users",
-        "urls": [
-          "/${VERSION}/create-and-manage-users.html"
-        ]
-      },
-      {
-        "title": "Configure Replication Zones",
-        "urls": [
-          "/${VERSION}/configure-replication-zones.html"
-        ]
-      },
-      {
-        "title": "Define Table Partitions (Enterprise)",
-        "urls": [
-          "/${VERSION}/partitioning.html"
-        ]
-      },
-      {
-        "title": "Enable Node Map (Enterprise)",
-        "urls": [
-          "/${VERSION}/enable-node-map.html"
-        ]
-      },
-      {
-        "title": "Enterprise Licensing",
-        "urls": [
-          "/${VERSION}/enterprise-licensing.html"
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Manage",
-    "items": [
-      {
-        "title": "Monitor CockroachDB with the Admin UI",
+        "title": "Use the Admin UI",
         "items": [
           {
             "title": "Overview",
@@ -1182,9 +1127,75 @@
         ]
       },
       {
-        "title": "Monitor CockroachDB with Prometheus",
+        "title": "Enterprise Licensing",
         "urls": [
-          "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+          "/${VERSION}/enterprise-licensing.html"
+        ]
+      },
+      {
+        "title": "Start a Node",
+        "urls": [
+          "/${VERSION}/start-a-node.html"
+        ]
+      },
+      {
+        "title": "Initialize a Cluster",
+        "urls": [
+          "/${VERSION}/initialize-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Create Security Certificates",
+        "urls": [
+          "/${VERSION}/create-security-certificates.html",
+          "/${VERSION}/create-security-certificates-openssl.html"
+        ]
+      },
+      {
+        "title": "Create & Manage Users",
+        "urls": [
+          "/${VERSION}/create-and-manage-users.html"
+        ]
+      },
+      {
+        "title": "Configure Replication Zones",
+        "urls": [
+          "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Define Table Partitions (Enterprise)",
+        "urls": [
+          "/${VERSION}/partitioning.html"
+        ]
+      },
+      {
+        "title": "Enable Node Map (Enterprise)",
+        "urls": [
+          "/${VERSION}/enable-node-map.html"
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Cockroach Commands",
+        "urls": [
+          "/${VERSION}/cockroach-commands.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Maintain",
+    "items": [
+      {
+        "title": "Upgrade to CockroachDB v2.0",
+        "urls": [
+          "/${VERSION}/upgrade-cockroach-version.html"
         ]
       },
       {
@@ -1194,21 +1205,21 @@
         ]
       },
       {
-        "title": "Upgrade to CockroachDB v2.0",
-        "urls": [
-          "/${VERSION}/upgrade-cockroach-version.html"
-        ]
-      },
-      {
         "title": "Stop a Node",
         "urls": [
           "/${VERSION}/stop-a-node.html"
         ]
       },
       {
-        "title": "Remove Nodes",
+        "title": "Decommission Nodes",
         "urls": [
           "/${VERSION}/remove-nodes.html"
+        ]
+      },
+      {
+        "title": "Import Data",
+        "urls": [
+          "/${VERSION}/import-data.html"
         ]
       },
       {
@@ -1227,12 +1238,6 @@
         "title": "Dump/Export Schema or Data",
         "urls": [
           "/${VERSION}/sql-dump.html"
-        ]
-      },
-      {
-        "title": "Import Data",
-        "urls": [
-          "/${VERSION}/import-data.html"
         ]
       },
       {
