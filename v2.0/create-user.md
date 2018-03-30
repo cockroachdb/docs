@@ -12,10 +12,13 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Considerations
 
-- Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+- Role names:
+    - Are case-insensitive
+    - Must start with either a letter or underscore
+    - Must contain only letters, numbers, or underscores
+    - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
-- {% include custom/remove-user-callout.html %}
 
 ## Required Privileges
 

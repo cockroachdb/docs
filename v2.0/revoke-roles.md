@@ -35,6 +35,21 @@ Parameter | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
+> SHOW GRANTS ON ROLE design;
+~~~
+~~~
++--------+---------+---------+
+|  role  | member  | isAdmin |
++--------+---------+---------+
+| design | barkley | false   |
+| design | ernie   | true    |
+| design | lola    | false   |
+| design | lucky   | false   |
++--------+---------+---------+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > REVOKE design FROM lola;
 ~~~
 

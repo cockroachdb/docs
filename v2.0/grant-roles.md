@@ -23,6 +23,7 @@ The user granting role membership must be a role admin (i.e., members with the `
 - Users and roles can be members of roles.
 - The `root` user is automatically created as an `admin` role and assigned the `ALL` privilege for new databases.
 - All privileges of a role are inherited by all its members.
+- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
 ## Parameters
 

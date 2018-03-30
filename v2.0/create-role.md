@@ -17,13 +17,13 @@ toc: false
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, or underscores
     - Must be between 1 and 63 characters.
-
+- After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
 - Roles and users share the same namespace and must be unique.
 - All privileges of a role are inherited by all of its members.
 - There is no limit to the number of members in a role.
-- Roles cannot log in. They do not have a password and cannot use certs.
-- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a memeber of A`).
+- Roles cannot log in. They do not have a password and cannot use certificates.
+- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
 ## Required Privileges
 
@@ -51,13 +51,16 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 CREATE ROLE 1
 ~~~
 
-After creating roles, you can add users to the role and grant the role privileges. For more information, see [`GRANT`](grant.html).
+After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
 
 ## See Also
 
 - [Manage Roles](roles.html)
 - [`DROP ROLE` (Enterprise)](drop-user.html)
 - [`SHOW ROLE`](show-users.html)
-- [`GRANT`](grant.html)
+- [`GRANT <privileges>`](grant.html)
+- [`REVOKE <privileges>`](revoke.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Other SQL Statements](sql-statements.html)
