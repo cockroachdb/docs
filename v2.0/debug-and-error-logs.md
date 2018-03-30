@@ -6,6 +6,10 @@ toc: false
 
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
+{{site.data.alerts.callout_success}}
+For detailed information about queries being executed against your system, see [SQL Audit Logging](sql-audit-logging.html).
+{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Details
@@ -95,7 +99,7 @@ By default, commands besides `cockroach start` discard messages with the `INFO` 
 
 ## Flags
 
-{% include custom/logging-flags.md %}
+{% include custom/v2.0/logging-flags.md %}
 
 The `--log-backtrace-at`, `--verbosity`, and `--v` flags are intended for internal debugging by CockroachDB contributors.
 

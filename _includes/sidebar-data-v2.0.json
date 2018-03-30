@@ -246,6 +246,12 @@
             ]
           },
           {
+            "title": "<code>EXPERIMENTAL_AUDIT</code>",
+            "urls": [
+              "/${VERSION}/experimental-audit.html"
+            ]
+          },
+          {
             "title": "<code>ALTER VIEW</code>",
             "urls": [
               "/${VERSION}/alter-view.html"
@@ -1263,6 +1269,12 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "SQL Audit Logging (Experimental)",
+        "urls": [
+          "/${VERSION}/sql-audit-logging.html"
         ]
       }
     ]
