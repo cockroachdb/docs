@@ -10,6 +10,8 @@ This page walks you through the process of setting up and enabling the **Node Ma
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/pricing/request-a-license/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
 
+<img src="{{ 'images/v2.0/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
 <div id="toc"></div>
 
 ## Set Up and Enable the Node Map
@@ -27,7 +29,7 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-## Step 1. Ensure the CockroachDB Version is 2.0 or Higher
+### Step 1. Ensure the CockroachDB Version is 2.0 or Higher
 
 ~~~ shell
 $ cockroach version
@@ -46,7 +48,7 @@ Build Type:   release
 
 If any node is running an earlier version, [upgrade it to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-## Step 2. Start the Nodes with the Correct `--locality` Flags
+### Step 2. Start the Nodes with the Correct `--locality` Flags
 
 To start a new cluster with the correct `--locality` flags:
 
@@ -109,7 +111,15 @@ Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-t
 $ cockroach init --insecure
 ~~~
 
-### Step 3. [Set the Enterprise License](enterprise-licensing.html)
+[Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
+
+<img src="{{ 'images/v2.0/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+### Step 3. [Set the Enterprise License](enterprise-licensing.html) and refresh the Admin UI
+
+The following page should be displayed:
+
+<img src="{{ 'images/v2.0/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 4. Set the Latitudes and Longitudes for the Localities
 
@@ -125,9 +135,9 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
-  ('region', 'us-east', 40.367474, -82.996216),
-  ('region', 'us-west', 43.8041334, -120.55420119999997),
-  ('region', 'eu-west', 48.856614, 2.3522219000000177);
+  ('region', 'us-east-1', 40.367474, -82.996216),
+  ('region', 'us-west-1', 43.8041334, -120.55420119999997),
+  ('region', 'eu-west-1', 48.856614, 2.3522219000000177);
 ~~~
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
@@ -136,7 +146,9 @@ To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locatio
 
 ### Step 5. View the Node Map
 
-[Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu.
+[Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu. The **Node Map** will be displayed:
+
+<img src="{{ 'images/v2.0/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 6. Navigate the Node Map
 
@@ -145,6 +157,8 @@ Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in
 1. Click on the map component marked as **region=us-east-1** on the **Node Map**. The datacenter view is displayed.
 2. Click on the datacenter component marked as **datacenter=us-east-1a**. The individual node components are displayed.
 3. To navigate back to the cluster view, either click on **Cluster** in the bread-crumb trail at the top of the **Node Map**, or click **Up to region=us-east-1** and then click **Up to Cluster** in the lower left-hand side of the **Node Map**.
+
+<img src="{{ 'images/v2.0/admin-ui-node-map-navigation.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Troubleshoot the Node Map
 
