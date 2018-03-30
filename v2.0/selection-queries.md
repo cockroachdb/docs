@@ -107,7 +107,7 @@ columns of the resulting table data are named after the schema of the
 table.
 
 In general, `TABLE x` is equivalent to `SELECT * FROM x`, but it is
-shorter to type. 
+shorter to type.
 
 {{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just
 <a href="table-expressions.html#table-or-view-names">simple table or view names</a>.{{site.data.alerts.end}}
@@ -448,6 +448,19 @@ For example:
 | [`ALTER ... SPLIT AT`](split-at.html) | `ALTER TABLE foo SPLIT AT SELECT * FROM bar` | `ALTER TABLE foo SPLIT AT VALUES (1),(2),(3)` | `ALTER TABLE foo SPLIT AT TABLE bar`
 | Subquery in a [table expression](table-expressions.html) | `SELECT * FROM (SELECT * FROM bar)` | `SELECT * FROM (VALUES (1),(2),(3))` | `SELECT * FROM (TABLE bar)`
 | Subquery in a [scalar expression](scalar-expressions.html) | `SELECT * FROM foo WHERE x IN (SELECT * FROM bar)` | `SELECT * FROM foo WHERE x IN (VALUES (1),(2),(3))` | `SELECT * FROM foo WHERE x IN (TABLE bar)`
+
+## Known Limitations
+
+{{site.data.alerts.callout_info}} The following limitations may be lifted
+in a future version of CockroachDB.{{site.data.alerts.end}}
+
+### Using `VALUES` Clauses with Common Table Expressions
+
+{% include known_limitations/cte-in-values-clause.md %}
+
+### Using Set Operations with Common Table Expressions
+
+{% include known_limitations/cte-in-set-expression.md %}
 
 ## See Also
 

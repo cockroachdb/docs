@@ -541,6 +541,10 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
 
+## Known Limitations
+
+{% include known_limitations/partitioning-with-placeholders.md %}
+
 ## See Also
 
 - [`CREATE TABLE`](create-table.html)

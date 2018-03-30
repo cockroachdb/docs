@@ -177,3 +177,7 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
+
+### `cockroach dump` does not support cyclic foreign key references
+
+{% include known_limitations/dump-cyclic-foreign-keys.md %}

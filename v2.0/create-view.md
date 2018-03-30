@@ -98,6 +98,13 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 (3 rows)
 ~~~
 
+## Known Limitations
+
+{{site.data.alerts.callout_info}} The following limitations may be lifted
+in a future version of CockroachDB.{{site.data.alerts.end}}
+
+{% include known_limitations/cte-with-view.md %}
+
 ## See Also
 
 - [Selection Queries](selection-queries.html)

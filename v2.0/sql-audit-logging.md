@@ -1,5 +1,5 @@
 ---
-title: SQL Audit Logging (Experimental)
+title: SQL Audit Logging
 summary: Use the EXPERIMENTAL_AUDIT setting to turn SQL audit logging on or off for a table.
 toc: false
 ---
