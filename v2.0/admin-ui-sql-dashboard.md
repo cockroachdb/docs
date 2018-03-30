@@ -4,7 +4,7 @@ summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: false
 ---
 
-The **SQL** dashboard in the CockroachDB Admin UI lets you monitor the performance of your SQL queries. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Dashboard** > **SQL**.
+The **SQL** dashboard in the CockroachDB Admin UI lets you monitor the performance of your SQL queries. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
 
 <div id="toc"></div>
 

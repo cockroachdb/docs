@@ -4,7 +4,7 @@ summary: The Replication dashboard lets you monitor the replication metrics for 
 toc: false
 ---
 
-The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Dashboard** > **Replication**.
+The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Replication**.
 
 <div id="toc"></div>
 
@@ -86,8 +86,7 @@ Reserved | The number of slots reserved per second for incoming snapshots that w
 The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 - Leaseholders per Store
-- Live Bytes per Store
-- Keys Written per Second per Store
+- Logical Bytes per Store
 - Range Operations
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
