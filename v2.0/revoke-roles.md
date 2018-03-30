@@ -73,7 +73,7 @@ To revoke a user or role's admin option from a role (without revoking the member
 ## See Also
 
 - [Privileges](privileges.html)
-- [`GRANT <roles>` (Enterprise)](grant-role.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
