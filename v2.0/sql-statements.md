@@ -36,6 +36,7 @@ Statement | Usage
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER SEQUENCE`](alter-sequence.html) | <span class="version-tag">New in v2.0:</span> Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
+[`ALTER USER`](alter-user.html) | <span class="version-tag">New in v2.0:</span> Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
