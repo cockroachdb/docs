@@ -67,10 +67,17 @@ Parameter | Description
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
+`opt_partition_by` | <span class="version-tag">New in v2.0</span>: An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information. 
 
 ## Table-Level Replication
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
+
+## Row-Level Replication <span class="version-tag">New in v2.0</span>
+
+CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more information.
+
+{{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
 ## Examples
 
@@ -329,6 +336,47 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include computed-columns/simple.md %}
 
+### Create a Table with Partitions <span class="version-tag">New in v2.0</span>
+
+{{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
+
+#### Create a Table with Partitions by List
+
+In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students_by_list (
+    id SERIAL,
+    name STRING,
+    email STRING,
+    country STRING,
+    expected_graduation_date DATE,   
+    PRIMARY KEY (country, id))
+    PARTITION BY LIST (country)
+      (PARTITION north_america VALUES IN ('CA','US'),
+      PARTITION australia VALUES IN ('AU','NZ'),
+      PARTITION DEFAULT VALUES IN (default));
+~~~
+
+#### Create a Table with Partitions by Range
+
+In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students_by_range (
+   id SERIAL,
+   name STRING,
+   email STRING,                                                                                           
+   country STRING,
+   expected_graduation_date DATE,                                                                                      
+   PRIMARY KEY (expected_graduation_date, id))
+   PARTITION BY RANGE (expected_graduation_date)
+      (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
+      PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
+~~~
+
 ### Show the Definition of a Table
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
@@ -365,3 +413,4 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 - [`SHOW COLUMNS`](show-columns.html)
 - [Column Families](column-families.html)
 - [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
+- [Define Table Partitions](partitioning.html)
