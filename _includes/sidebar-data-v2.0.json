@@ -246,6 +246,12 @@
             ]
           },
           {
+            "title": "<code>ALTER USER</code>",
+            "urls": [
+              "/${VERSION}/alter-user.html"
+            ]
+          },
+          {
             "title": "<code>EXPERIMENTAL_AUDIT</code>",
             "urls": [
               "/${VERSION}/experimental-audit.html"
