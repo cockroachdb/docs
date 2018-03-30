@@ -6,7 +6,7 @@ toc: false
 
 This page shows you the easiest way to test an insecure, multi-node CockroachDB cluster, using CockroachDB's [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template to simplify setup and [Kubernetes](https://kubernetes.io/) to automate deployment, maintenance, and load balancing of client workloads.
 
-{{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}}
+<!-- {{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}} -->
 
 <div id="toc"></div>
 

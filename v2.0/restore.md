@@ -6,7 +6,7 @@ toc: false
 
 {{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage. 
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -64,9 +64,9 @@ Restore Type | Parameters
 **Full backup** | Include only the path to the full backup.
 **Full backup + <br/>incremental backups** | Include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments.
 
-### Point-in-time Restore
+### Point-in-time Restore <span class="version-tag">New in v2.0</span>
 
-<span class="version-tag">New in v2.0:</span> If the full or incremental backup was taken [with revision history](backup.html#new-in-v2-0-backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup. 
+If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history-new-in-v2-0), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup.
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
@@ -99,7 +99,7 @@ Only the `root` user can run `RESTORE`.
 | `table_pattern` | The table or [view](views.html) you want to restore. |
 | `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
 | `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
-| `AS OF SYSTEM TIME timestamp` | <span class="version-tag">New in v2.0:</span> Restore data as it existed as of [`timestamp`](timestamp.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#new-in-v2-0-backups-with-revision-history). |
+| `AS OF SYSTEM TIME timestamp` | <span class="version-tag">New in v2.0:</span> Restore data as it existed as of [`timestamp`](timestamp.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history-new-in-v2-0). |
 | `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list). |
 
 ### Backup File URLs
@@ -174,7 +174,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 > RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
-### <span class="version-tag">New in v2.0:</span> Point-in-time Restore
+### Point-in-time Restore<span class="version-tag">New in v2.0</span>
 
 ~~~ sql
 > RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -188,7 +188,7 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
-### <span class="version-tag">New in v2.0:</span> Point-in-time Restore from Incremental Backups
+### Point-in-time Restore from Incremental Backups<span class="version-tag">New in v2.0</span>
 
 ~~~ sql
 > RESTORE bank.customers \

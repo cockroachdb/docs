@@ -160,17 +160,6 @@ The Localities debug page displays the following:
 
 On the page, ensure that every node has a locality as well as latitude/longitude coordinates assigned to them.
 
-### Unable to Assign Latitude/Longitude Coordinates to Localities
-
-You won't be able to assign latitude/longitude coordinates to localities if the components of your localities have the same name. For example, consider the following partial configuration:
-
-|  Node | Region | Datacenter |
-|  ------ | ------ | ------ |
-|  Node1 | us-east | datacenter-1 |
-|  Node2 | us-west | datacenter-1 |
-
-In this case, if you try to set the latitude/longitude coordinates to the datacenter level of the localities, you will get the "primary key exists" error and the **Node Map** won't be displayed. You can, however, set the latitude/longitude coordinates to the region components of the localities, and the **Node Map** will be displayed.
-
 ### Node Map Not Displayed for All Locality Levels
 
 The **Node Map** is displayed only for the locality levels that have latitude/longitude coordinates assigned to them:
@@ -179,6 +168,12 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 - If you assign the latitude/longitude coordinates at the datacenter level, the **Node Map** shows the regions with single datacenters at the same location assigned to the datacenter, while regions with multiple datacenters are shown at the center of the datacenter coordinates in the region. When you drill down to the datacenter levels, the **Node Map** shows the datacenter at their assigned coordinates. Further drilling down to individual nodes shows the nodes in a circular layout.
 
 [Assign latitude/longitude coordinates](#step-4-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
+
+## Known Limitations
+
+### Unable to Assign Latitude/Longitude Coordinates to Localities
+
+{% include known_limitations/node-map.md %}
 
 ### **Capacity Used** Value Displayed is More Than Configured Capacity
 
