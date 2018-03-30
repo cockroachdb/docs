@@ -83,5 +83,6 @@ Parameter | Description
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
+- [`SHOW ROLES`](show-roles.html)
 - [Manage Users](create-and-manage-users.html)
 - [Manage Roles](roles.html)

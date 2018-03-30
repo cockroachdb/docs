@@ -152,6 +152,7 @@ Parameter | Description
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
+- [`SHOW ROLES`](show-roles.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
 - [Roles](roles.html)
