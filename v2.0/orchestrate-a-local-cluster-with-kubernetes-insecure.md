@@ -94,9 +94,9 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     Forwarding from 127.0.0.1:8080 -> 8080
     ~~~
 
-2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a>.
+2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a> and click **Metrics** on the left-hand navigation bar.
 
-3. On the **Cluster Overview**, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
+3. On the **Overview** dashboard, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
 
     <img src="{{ 'images/v2.0/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

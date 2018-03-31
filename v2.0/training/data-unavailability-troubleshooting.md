@@ -241,7 +241,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
     Because the range for `mytable` no longer has a majority of its replicas, the query will hang indefinitely.
 
-2. Go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
+2. Go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and click **Metrics** on the left.
 
 3. Select the **Replication** dashboard.
 
@@ -287,7 +287,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --join=localhost:26257,localhost:26258,localhost:26259 &
     ~~~
 
-3. Go back to the Admin UI and verify that ranges are no longer unavailable.
+3. Go back to the Admin UI, click **Metrics** on the left, and verify that ranges are no longer unavailable.
 
 4. Check back on your `INSERT` statement that was stuck and verify that it completed successfully.
 

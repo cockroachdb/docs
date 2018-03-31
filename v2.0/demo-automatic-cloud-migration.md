@@ -140,7 +140,7 @@ This command initiates 10 concurrent client workloads for 20 minutes, but limits
 
 ## Step 6. Watch data balance across all 3 nodes
 
-Now open the Admin UI at `http://localhost:8080` and hover over the **SQL Queries** graph at the top. After a minute or so, you'll see that the load generator is executing approximately 95% reads and 5% writes across all nodes:
+Now open the Admin UI at `http://localhost:8080` and click **Metrics** in the left-hand navigation bar. The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top. After a minute or so, you'll see that the load generator is executing approximately 95% reads and 5% writes across all nodes:
 
 <img src="{{ 'images/v2.0/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -199,7 +199,7 @@ $ cockroach start \
 
 ## Step 8. Watch data balance across all 6 nodes
 
-Back in the Admin UI, hover over the **Replicas per Node** graph again. Because you used [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) to specify that nodes are running on 2 clouds, you'll see an approximately even number of replicas on each node, indicating that CockroachDB has automatically rebalanced replicas across both simulated clouds:
+Back on the **Overview** dashboard in Admin UI, hover over the **Replicas per Node** graph again. Because you used [`--locality`](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) to specify that nodes are running on 2 clouds, you'll see an approximately even number of replicas on each node, indicating that CockroachDB has automatically rebalanced replicas across both simulated clouds:
 
 <img src="{{ 'images/v2.0/admin_ui_replicas_migration2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -218,7 +218,7 @@ $ echo 'constraints: [+cloud=2]' | cockroach zone set .default --insecure --host
 
 ## Step 10. Verify the data migration
 
-Back in the Admin UI, hover over the **Replicas per Node** graph again. Very soon, you'll see the replica count double on nodes 4, 5, and 6 and drop to 0 on nodes 1, 2, and 3:
+Back on the **Overview** dashboard in the Admin UI, hover over the **Replicas per Node** graph again. Very soon, you'll see the replica count double on nodes 4, 5, and 6 and drop to 0 on nodes 1, 2, and 3:
 
 <img src="{{ 'images/v2.0/admin_ui_replicas_migration3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

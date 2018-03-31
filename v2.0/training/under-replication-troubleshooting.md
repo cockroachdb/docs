@@ -83,7 +83,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 3. Troubleshoot the problem
 
-1. Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
+1. Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and click **Metrics** on the left.
 
 2. Select the **Replication** dashboard.
 

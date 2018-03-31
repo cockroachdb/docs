@@ -76,7 +76,7 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
 
 By default, CockroachDB tries to balance data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
 
-To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **View nodes list** at the right, and check the the replica count is the same on all nodes.
+To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the the replica count is the same on all nodes.
 
 <img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

@@ -118,9 +118,9 @@ Before getting started, it's important to review some limitations and requiremen
 
 You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the workload and overall cluster behavior.
 
-1. In the **Outputs** section of the CloudFormation UI, click the **Web UI** link.
+1. In the **Outputs** section of the CloudFormation UI, click the **Web UI** link. Then click **Metrics** on the left-hand navigation bar.
 
-2. On the **Cluster Overview** page, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
+2. On the **Overview** dashboard, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
 
     <img src="{{ 'images/v2.0/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -167,7 +167,7 @@ To see this in action:
     pod "cockroachdb-2" deleted
     ~~~
 
-4. In the Admin UI, the **Summary** panel may show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+4. In the Admin UI, the **Cluster Overview** panel may show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
 
     You can also select the **Runtime** dashboard and see the restarting of the node in the **Live Node Count** graph.
 
