@@ -20,7 +20,7 @@ The user revoking role membership must be a role admin (i.e., members with the `
 
 ## Considerations
 
-- The `root` user can not be revoked from the `admin` role.
+- The `root` user cannot be revoked from the `admin` role.
 
 ## Parameters
 
@@ -83,7 +83,6 @@ To revoke a user or role's admin option from a role (without revoking the member
 | design | lucky   | false   |
 +--------+---------+---------+
 ~~~
-
 
 ## See Also
 

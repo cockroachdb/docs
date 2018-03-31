@@ -60,7 +60,7 @@ Parameter | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT design WITH TO ERNIE WITH ADMIN OPTION;
+> GRANT design TO ERNIE WITH ADMIN OPTION;
 ~~~
 {% include copy-clipboard.html %}
 ~~~ sql

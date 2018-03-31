@@ -41,7 +41,7 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 
 ## Examples
 
-### Create a Role
+### Create a role
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -62,5 +62,7 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 - [`REVOKE <privileges>`](revoke.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`SHOW ROLES`](show-roles.html)
+- [`SHOW USERS`](show-users.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Other SQL Statements](sql-statements.html)

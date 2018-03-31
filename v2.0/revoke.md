@@ -29,7 +29,7 @@ Parameter | Description
 
 ## Examples
 
-### Revoke Privileges on Databases
+### Revoke privileges on databases
 
 ~~~ sql
 > SHOW GRANTS ON DATABASE db1, db2;
@@ -69,7 +69,7 @@ Parameter | Description
 
 {{site.data.alerts.callout_info}} Note that any tables that previously inherited the database-level privileges retain the privileges.{{site.data.alerts.end}}
 
-### Revoke Privileges on Specific Tables in a Database
+### Revoke privileges on specific tables in a database
 
 ~~~ sql
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
@@ -113,7 +113,7 @@ Parameter | Description
 (6 rows)
 ~~~
 
-### Revoke Privileges on All Tables in a Database
+### Revoke privileges on all tables in a database
 
 ~~~ sql
 > SHOW GRANTS ON TABLE db2.t1, db2.t2;

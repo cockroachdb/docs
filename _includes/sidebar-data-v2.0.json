@@ -564,6 +564,12 @@
             ]
           },
           {
+            "title": "<code>SHOW ROLES</code>",
+            "urls": [
+              "/${VERSION}/show-roles.html"
+            ]
+          },
+          {
             "title": "<code>SHOW CREATE SEQUENCE</code>",
             "urls": [
               "/${VERSION}/show-create-sequence.html"
@@ -1103,7 +1109,7 @@
         "title": "Access Management",
         "items": [
           {
-            "title": "Manage Roles",
+            "title": "Manage Roles (Enterprise)",
             "urls": [
               "/${VERSION}/roles.html"
             ]

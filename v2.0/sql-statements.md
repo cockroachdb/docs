@@ -82,10 +82,14 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
+[`CREATE ROLE`](create-role.html) | <span class="version-tag">New in v2.0:</span> Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
+[`DROP ROLE`](drop-role.html) | <span class="version-tag">New in v2.0:</span> Remove one or more SQL [roles](roles.html).
 [`DROP USER`](drop-user.html) | Remove SQL users.
-[`GRANT`](grant.html) | Grant privileges to users.
-[`REVOKE`](revoke.html) | Revoke privileges from users.
+[`GRANT <privileges>`](grant.html) | Grant privileges to users.
+[`GRANT <roles>`](grant-roles.html) | <span class="version-tag">New in v2.0:</span> Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
+[`REVOKE <privileges>`](revoke.html) | Revoke privileges from users.
+[`REVOKE <roles>`](revoke-roles.html) | <span class="version-tag">New in v2.0:</span> Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
 
