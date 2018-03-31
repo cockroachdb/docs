@@ -145,7 +145,7 @@ CockroachDB's transactions allow the following types of conflicts that involve r
 
 To make this simpler to understand, we'll call the first transaction `TxnA` and the transaction that encounters its Write Intents `TxnB`.
 
-CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `PushTxnQueue`.
+CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `TxnWaitQueue`.
 
 1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
 
@@ -153,18 +153,18 @@ CockroachDB proceeds through the following steps until one of the transactions i
 
     This succeeds only in the case that `TxnA` has snapshot isolation and `TxnB`'s operation is a read. In this case, the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly occurs.
 
-3. `TxnB` enters the `PushTxnQueue` to wait for `TxnA` to complete.
+3. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
 Additionally, the following types of conflicts that don't involve running into intents can arise:
 
 - **Write after read**, when a write with a lower timestamp encounters a later read. This is handled through the [Timestamp Cache](#timestamp-cache).
 - **Read within uncertainty window**, when a read encounters a value with a higher timestamp but it's ambiguous whether the value should be considered to be in the future or in the past of the transaction because of possible *clock skew*. This is handled by attempting to push the transaction's timestamp beyond the uncertain value (see [read refreshing](#read-refreshing)). Note that, if the transaction has to be retried, reads will never encounter uncertainty issues on any node which was previously visited, and that there's never any uncertainty on values read from the transaction's gateway node.
 
-### PushTxnQueue
+### TxnWaitQueue
 
-The `PushTxnQueue` tracks all transactions that could not push a transaction whose writes they encountered, and must wait for the blocking transaction to complete before they can proceed.
+The `TxnWaitQueue` tracks all transactions that could not push a transaction whose writes they encountered, and must wait for the blocking transaction to complete before they can proceed.
 
-The `PushTxnQueue`'s structure is a map of blocking transaction IDs to those they're blocking. For example:
+The `TxnWaitQueue`'s structure is a map of blocking transaction IDs to those they're blocking. For example:
 
 ~~~
 txnA -> txn1, txn2
@@ -173,7 +173,7 @@ txnB -> txn3, txn4, txn5
 
 Importantly, all of this activity happens on a single node, which is the leader of the range's Raft group that contains the Transaction Record.
 
-Once the transaction does resolve––by committing or aborting––a signal is sent to the `PushTxnQueue`, which lets all transactions that were blocked by the resolved transaction begin executing.
+Once the transaction does resolve––by committing or aborting––a signal is sent to the `TxnWaitQueue`, which lets all transactions that were blocked by the resolved transaction begin executing.
 
 Blocked transactions also check the status of their own transaction to ensure they're still active. If the blocked transaction was aborted, it's simply removed.
 
