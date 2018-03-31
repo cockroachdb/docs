@@ -11,6 +11,8 @@ toc: false
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
+{{site.data.alerts.callout_info}} The <code>SHOW JOBS</code> statement shows only the long-running tasks. For an exhaustive list of jobs running in the cluster, use the <a href="sql-audit-logging.html">SQL Audit Logging (Experimental)</a> feature.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Required Privileges
