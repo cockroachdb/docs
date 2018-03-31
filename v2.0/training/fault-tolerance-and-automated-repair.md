@@ -3,7 +3,6 @@ title: Fault Tolerance and Automated Repair
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-feedback: false
 redirect_from: /training/fault-tolerance-and-automated-repair.html
 ---
 

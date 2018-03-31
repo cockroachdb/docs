@@ -3,7 +3,6 @@ title: Locality and Replication Zones
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-feedback: false
 redirect_from: /training/locality-and-replication-zones.html
 ---
 
