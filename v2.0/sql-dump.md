@@ -15,7 +15,7 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 When `cockroach dump` is executed:
 
 - Table, sequence, and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- <span class="version-tag">New in v2.0:</span> Table, sequence, and view schemas are dumped in the order in which they can successfully be recreated. However, `cockroach dump` does not support circular foreign keys.
+- **New in v2.0:** Table, sequence, and view schemas are dumped in the order in which they can successfully be recreated. However, `cockroach dump` does not support circular foreign keys.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 

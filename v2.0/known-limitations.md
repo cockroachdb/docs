@@ -1,20 +1,107 @@
 ---
-title: Known Limitations in CockroachDB v1.2
-summary: Known limitations in CockroachDB v1.2.
+title: Known Limitations in CockroachDB v2.0
+summary: Known limitations in CockroachDB v2.0.
 toc: false
 ---
 
-This page describes newly identified limitations in the CockroachDB v1.1 release as well as unresolved limitations identified in earlier releases.
+This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
 
 <div id="toc"></div>
 
 ## New Limitations
 
+### Memory flags with non-integer values and a unit suffix
+
+The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
+
+As a workaround, use integer values or a percentage, for example, `--cache=1536MiB`.
+
+### Import with a high amount of disk contention
+
+[`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+
+~~~ sql
+> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
+~~~
+
+### Check constraints with `INSERT ... ON CONFLICT`
+
+[`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
+
+~~~ sql
+> CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
+~~~
+
+A simple `INSERT` statement that fails the Check constraint fails as it should:
+
+~~~ sql
+> INSERT INTO ab (a,b) VALUES (1, 12312);
+~~~
+
+~~~
+pq: failed to satisfy CHECK constraint (b < 1)
+~~~
+
+However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
+
+~~~ sql
+> INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
+~~~
+
+~~~ sql
+> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
+~~~
+
+~~~ sql
+> SELECT * FROM ab;
+~~~
+
+~~~
++---+--------+
+| a |   b    |
++---+--------+
+| 1 | 123132 |
++---+--------+
+(1 row)
+~~~
+
+### Referring to a CTE by name more than once
+
+{% include known_limitations/cte-by-name.md %}
+
+### Using CTEs with data-modifying statements
+
+{% include known_limitations/cte-with-dml.md %}
+
+### Assigning latitude/longitude for the Node Map
+
+{% include known_limitations/node-map.md %}
+
+### Placeholders in `PARTITION BY`
+
+{% include known_limitations/partitioning-with-placeholders.md %}
+
+### Adding a column with certain `DEFAULT` values
+
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-values.html) value, for example:
+
+~~~ sql
+> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+~~~
+
+~~~ sql
+> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+~~~
+
+~~~ sql
+> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+~~~
+
+## Unresolved Limitations
+
 ### Available capacity metric in the Admin UI
 
 {% include available-capacity-metric.md %}
-
-## Unresolved Limitations
 
 ### Schema changes within transactions
 
@@ -28,15 +115,28 @@ Within a single [transaction](transactions.html):
 
 When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT PRIMARY KEY);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > PREPARE prep1 AS SELECT * FROM users;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > ALTER TABLE users ADD COLUMN name STRING;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO users VALUES (1, 'Max Roach');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > EXECUTE prep1;
 ~~~
 
@@ -95,6 +195,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -108,6 +209,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~
@@ -145,7 +247,3 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
-
-### Common Table Expressions (`WITH`)
-
-See [Known Limitations With Common Table Expressions](common-table-expressions.html#known-limitations).
