@@ -532,7 +532,7 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>random() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns a random float between 0 and 1.</p>
 </span></td></tr>
-<tr><td><code>round(input: <a href="decimal.html">decimal</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position  in <code>input using half away from zero rounding. If<code>decimal_accuracy</code> is not in the range -2^31…(2^31-1), the results are undefined.</p>
+<tr><td><code>round(input: <a href="decimal.html">decimal</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position in <code>input</code> using half away from zero rounding. If <code>decimal_accuracy</code> is not in the range -2^31…(2^31-1), the results are undefined.</p>
 </span></td></tr>
 <tr><td><code>round(input: <a href="float.html">float</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position  in <code>input</code> using half to even (banker’s) rounding.</p>
 </span></td></tr>
@@ -607,9 +607,9 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <tr><td><code>concat_ws(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Uses the first argument as a separator between the concatenation of the subsequent arguments.</p>
 <p>For example <code>concat_ws('!','wow','great')</code> returns <code>wow!great</code>.</p>
 </span></td></tr>
-<tr><td><code>decode(text: <a href="string.html">string</a>, format: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Decodes <code>data</code> as the format specified by <code>format</code> (only “hex” is supported).</p>
+<tr><td><code>decode(text: <a href="string.html">string</a>, format: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Decodes <code>data</code> as the format specified by <code>format</code> (only “hex” and “escape” are supported).</p>
 </span></td></tr>
-<tr><td><code>encode(data: <a href="bytes.html">bytes</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Encodes <code>data</code> in the text format specified by <code>format</code> (only “hex” is supported).</p>
+<tr><td><code>encode(data: <a href="bytes.html">bytes</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Encodes <code>data</code> in the text format specified by <code>format</code> (only “hex” and “escape” are supported).</p>
 </span></td></tr>
 <tr><td><code>from_ip(val: <a href="bytes.html">bytes</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the byte string representation of an IP to its character string representation.</p>
 </span></td></tr>
@@ -833,6 +833,162 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>generate_series(start: <a href="timestamp.html">timestamp</a>, end: <a href="timestamp.html">timestamp</a>, step: <a href="interval.html">interval</a>) &rarr; setof tuple{timestamp}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the timestamp values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
 </span></td></tr>
+<tr><td><code>has_any_column_privilege(table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_any_column_privilege(table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_any_column_privilege(user: <a href="string.html">string</a>, table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_any_column_privilege(user: <a href="string.html">string</a>, table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_any_column_privilege(user: oid, table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_any_column_privilege(user: oid, table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for any column of table</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(table: <a href="string.html">string</a>, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(table: <a href="string.html">string</a>, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(table: oid, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(table: oid, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: <a href="string.html">string</a>, table: <a href="string.html">string</a>, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: <a href="string.html">string</a>, table: <a href="string.html">string</a>, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: <a href="string.html">string</a>, table: oid, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: <a href="string.html">string</a>, table: oid, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: oid, table: <a href="string.html">string</a>, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: oid, table: <a href="string.html">string</a>, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: oid, table: oid, column: <a href="int.html">int</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_column_privilege(user: oid, table: oid, column: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for column</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(database: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(database: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(user: <a href="string.html">string</a>, database: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(user: <a href="string.html">string</a>, database: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(user: oid, database: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_database_privilege(user: oid, database: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for database</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(fdw: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(fdw: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(user: <a href="string.html">string</a>, fdw: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(user: <a href="string.html">string</a>, fdw: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(user: oid, fdw: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_foreign_data_wrapper_privilege(user: oid, fdw: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign-data wrapper</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(function: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(function: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(user: <a href="string.html">string</a>, function: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(user: <a href="string.html">string</a>, function: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(user: oid, function: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_function_privilege(user: oid, function: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for function</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(language: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(language: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(user: <a href="string.html">string</a>, language: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(user: <a href="string.html">string</a>, language: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(user: oid, language: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_language_privilege(user: oid, language: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for language</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(schema: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(schema: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(user: <a href="string.html">string</a>, schema: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(user: <a href="string.html">string</a>, schema: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(user: oid, schema: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_schema_privilege(user: oid, schema: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for schema</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(sequence: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(sequence: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(user: <a href="string.html">string</a>, sequence: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(user: <a href="string.html">string</a>, sequence: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(user: oid, sequence: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_sequence_privilege(user: oid, sequence: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for sequence</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(server: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(server: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(user: <a href="string.html">string</a>, server: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(user: <a href="string.html">string</a>, server: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(user: oid, server: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_server_privilege(user: oid, server: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for foreign server</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(user: <a href="string.html">string</a>, table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(user: <a href="string.html">string</a>, table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(user: oid, table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_table_privilege(user: oid, table: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for table</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(tablespace: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(tablespace: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(user: <a href="string.html">string</a>, tablespace: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(user: <a href="string.html">string</a>, tablespace: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(user: oid, tablespace: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_tablespace_privilege(user: oid, tablespace: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for tablespace</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(type: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for type</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(type: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does current user have privilege for type</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(user: <a href="string.html">string</a>, type: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for type</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(user: <a href="string.html">string</a>, type: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for type</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(user: oid, type: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for type</p>
+</span></td></tr>
+<tr><td><code>has_type_privilege(user: oid, type: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>does user have privilege for type</p>
+</span></td></tr>
 <tr><td><code>json_array_elements(input: jsonb) &rarr; setof tuple{jsonb}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of JSON values.</p>
 </span></td></tr>
 <tr><td><code>json_array_elements_text(input: jsonb) &rarr; setof tuple{string}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
@@ -856,6 +1012,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <tr><td><code>oid(int: <a href="int.html">int</a>) &rarr; oid</code></td><td><span class="funcdesc"><p>Converts an integer to an OID.</p>
 </span></td></tr>
 <tr><td><code>pg_get_keywords() &rarr; setof tuple{<a href="string.html">string</a>, <a href="string.html">string</a>, string}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
+</span></td></tr>
+<tr><td><code>pg_sleep(seconds: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>pg_sleep makes the current session’s process sleep until seconds seconds have elapsed. seconds is a value of type double precision, so fractional-second delays can be specified.</p>
 </span></td></tr>
 <tr><td><code>unnest(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows</p>
 </span></td></tr></tbody>

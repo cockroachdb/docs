@@ -67,7 +67,7 @@ Flag | Description
 
 By default, `cockroach start` writes all messages to log files, and prints nothing to `stderr`. However, you can control the process's [logging](debug-and-error-logs.html) behavior with the following flags:
 
-{% include custom/logging-flags.md %}
+{% include custom/v2.0/logging-flags.md %}
 
 #### Defaults
 

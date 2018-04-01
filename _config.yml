@@ -50,6 +50,8 @@ training:
 
 exclude: ["ci", "vendor", "rfc", "v1.1/training/unused", "v2.0/training/unused"]
 
+keep_files: [_internal]
+
 defaults:
   -
     scope:

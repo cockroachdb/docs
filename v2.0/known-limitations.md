@@ -62,12 +62,6 @@ When inserting/updating all columns of a table, and the table has no secondary i
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
 
-### Repeated or combined commands in the SQL shell history
-
-Our [built-in SQL shell](use-the-built-in-sql-client.html) stores previously executed commands in the shell's history. In some cases, these commands are unexpectedly duplicated.
-
-Also, in some terminals, such  as `st` or `xterm` without `tmux`, previously executed commands are combined into a single command in the SQL shell history.
-
 ### Using `\|` to perform a large input in the SQL shell
 
 In the [built-in SQL shell](use-the-built-in-sql-client.html), using the [`\|`](use-the-built-in-sql-client.html#sql-shell-commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).

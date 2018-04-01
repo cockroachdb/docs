@@ -10,8 +10,21 @@ toc: false
 
 ## Step 1. Install prerequisites
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="go">Go</button>
+    <button class="filter-button" data-scope="python">Python</button>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="go">
 - Install the latest version of [CockroachDB](install-cockroachdb.html).
 - Install the latest version of [Go](https://golang.org/dl/): `brew install go`
+</div>
+
+<div class="filter-content" markdown="1" data-scope="python">
+- Install the latest version of [CockroachDB](install-cockroachdb.html).
+- Install the [Python psycopg2 driver](http://initd.org/psycopg/docs/install.html): `pip install psycopg2`
+- Install the [Python Requests library](http://docs.python-requests.org/en/master/): `pip install requests`
+</div>
 
 ## Step 2. Start a single-node cluster
 
@@ -97,6 +110,12 @@ Still in the SQL shell, create a table called `programming`:
 
 Now that you have a database, user, and a table, let's run code to insert rows into the table.
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="go">Go</button>
+    <button class="filter-button" data-scope="python">Python</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="go">
 The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in [/r/programming](https://www.reddit.com/r/programming/). The Reddit API only returns 25 results per page; however, each page returns an `"after"` string that tells you how to get the next page. Therefore, the program does the following in a loop:
 
 1. Makes a request to the API.
@@ -114,8 +133,32 @@ In a new terminal window, navigate to your sample code file and run it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ go run json_sample.go
+$ go run json-sample.go
 ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in [/r/programming](https://www.reddit.com/r/programming/). The Reddit API only returns 25 results per page; however, each page returns an `"after"` string that tells you how to get the next page. Therefore, the program does the following in a loop:
+
+1. Makes a request to the API.
+2. Grabs the `"after"` string.
+3. Inserts the results into the table.
+4. Uses the new `"after"` string as the basis for the next request.
+
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include json/json-sample.py %}
+~~~
+
+In a new terminal window, navigate to your sample code file and run it:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python json-sample.py
+~~~
+</section>
 
 The program will take awhile to finish, but you can start querying the data right away.
 
@@ -152,7 +195,7 @@ Now, retrieve all the current entries where the link is pointing to somewhere on
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
-  WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+WHERE posts @> '{"data": {"domain": "youtube.com"}}';
 ~~~
 ~~~
 +--------------------------------------+
@@ -196,8 +239,8 @@ Now that there is an inverted index, the same query will run much faster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id FROM programming \ 
-  WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+> SELECT id FROM programming \
+WHERE posts @> '{"data": {"domain": "youtube.com"}}';
 ~~~
 ~~~
 (334 rows)

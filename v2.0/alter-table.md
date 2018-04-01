@@ -24,6 +24,8 @@ Subcommand | Description
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.
 [`RENAME TABLE`](rename-table.html) | Change the names of tables.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table.
+[`PARTITION BY`](partition-by.html)  | <span class="version-tag">New in v2.0</span>: Repartition or unpartition a table with partitions ([Enterprise-only](enterprise-licensing.html)).
+[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs.
 
 ## Viewing Schema Changes
 
