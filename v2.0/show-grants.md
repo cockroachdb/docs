@@ -15,7 +15,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to view privileges granted to users.
+No [privileges](privileges.html) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select.html) [privilege](privileges.html) on the system table.
 
 ## Parameters
 

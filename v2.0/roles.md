@@ -101,7 +101,34 @@ Next, grant privileges to the `system_ops` role you created:
 > GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
 ~~~
 
-Add the `maxroach` user to the `system_ops` role:
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON DATABASE test_roles;
+~~~
+~~~
++------------+--------------------+------------+------------+
+|  Database  |       Schema       |    User    | Privileges |
++------------+--------------------+------------+------------+
+| test_roles | crdb_internal      | admin      | ALL        |
+| test_roles | crdb_internal      | root       | ALL        |
+| test_roles | crdb_internal      | system_ops | CREATE     |
+| test_roles | crdb_internal      | system_ops | SELECT     |
+| test_roles | information_schema | admin      | ALL        |
+| test_roles | information_schema | root       | ALL        |
+| test_roles | information_schema | system_ops | CREATE     |
+| test_roles | information_schema | system_ops | SELECT     |
+| test_roles | pg_catalog         | admin      | ALL        |
+| test_roles | pg_catalog         | root       | ALL        |
+| test_roles | pg_catalog         | system_ops | CREATE     |
+| test_roles | pg_catalog         | system_ops | SELECT     |
+| test_roles | public             | admin      | ALL        |
+| test_roles | public             | root       | ALL        |
+| test_roles | public             | system_ops | CREATE     |
+| test_roles | public             | system_ops | SELECT     |
++------------+--------------------+------------+------------+
+~~~
+
+Now, add the `maxroach` user to the `system_ops` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -150,6 +177,7 @@ You cannot drop the table because your current user (`maxroach`) is a member of 
 | test_roles | public | employees | admin      | ALL        |
 | test_roles | public | employees | root       | ALL        |
 | test_roles | public | employees | system_ops | CREATE     |
+| test_roles | public | employees | system_ops | SELECT     |
 +------------+--------+-----------+------------+------------+
 ~~~
 
@@ -167,6 +195,43 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 {% include copy-clipboard.html %}
 ~~~ sql
 > REVOKE ALL ON DATABASE test_roles FROM system_ops;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON DATABASE test_roles;
+~~~
+~~~
++------------+--------------------+-------+------------+
+|  Database  |       Schema       | User  | Privileges |
++------------+--------------------+-------+------------+
+| test_roles | crdb_internal      | admin | ALL        |
+| test_roles | crdb_internal      | root  | ALL        |
+| test_roles | information_schema | admin | ALL        |
+| test_roles | information_schema | root  | ALL        |
+| test_roles | pg_catalog         | admin | ALL        |
+| test_roles | pg_catalog         | root  | ALL        |
+| test_roles | public             | admin | ALL        |
+| test_roles | public             | root  | ALL        |
++------------+--------------------+-------+------------+
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REVOKE ALL ON TABLE test_roles.* FROM system_ops;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TABLE test_roles.*;
+~~~
+~~~
++------------+--------+-----------+-------+------------+
+|  Database  | Schema |   Table   | User  | Privileges |
++------------+--------+-----------+-------+------------+
+| test_roles | public | employees | admin | ALL        |
+| test_roles | public | employees | root  | ALL        |
++------------+--------+-----------+-------+------------+
 ~~~
 
 {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
