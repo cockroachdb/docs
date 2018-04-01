@@ -55,7 +55,6 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 
 - [Manage Roles](roles.html)
 - [`DROP ROLE` (Enterprise)](drop-user.html)
-- [`SHOW ROLE`](show-users.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
