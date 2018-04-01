@@ -1,20 +1,117 @@
 ---
-title: Known Limitations in CockroachDB v1.2
-summary: Known limitations in CockroachDB v1.2.
+title: Known Limitations in CockroachDB v2.0
+summary: Known limitations in CockroachDB v2.0.
 toc: false
 ---
 
-This page describes newly identified limitations in the CockroachDB v1.1 release as well as unresolved limitations identified in earlier releases.
+This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
 
 <div id="toc"></div>
 
 ## New Limitations
 
+### Memory flags with non-integer values and a unit suffix
+
+The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
+
+As a workaround, use integer values or a percentage, for example, `--cache=1610612736B`.
+
+### Import with a high amount of disk contention
+
+[`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+
+~~~ sql
+> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
+~~~
+
+### Check constraints with `INSERT ... ON CONFLICT`
+
+[`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
+
+~~~ sql
+> CREATE TABLE ab(a INT PRIMARY KEY, b INT, CHECK (b < 1))
+~~~
+
+A simple `INSERT` statement that fails the Check constraint fails as it should:
+
+~~~ sql
+> INSERT INTO ab(a,b) VALUES(1, 12312);
+~~~
+
+~~~
+pq: failed to satisfy CHECK constraint (b < 1)
+~~~
+
+However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
+
+~~~ sql
+> INSERT INTO ab(a, b) VALUES (1,0); -- create some initial valid value
+~~~
+
+~~~ sql
+> INSERT INTO ab(a, b) VALUES (1,0) ON CONFLICT(a) DO UPDATE SET b = 123132;
+~~~
+
+~~~ sql
+> SELECT * FROM ab;
+~~~
+
+~~~
++---+--------+
+| a |   b    |
++---+--------+
+| 1 | 123132 |
++---+--------+
+(1 row)
+~~~
+
+### Common Table Expressions with `UNION` or `VALUES` clauses
+
+A Common Table Expression with `UNION` or `VALUES` clauses results in an unexpected error. For example:
+
+~~~ sql
+> WITH outermost(x) AS (
+  SELECT 1
+  UNION (WITH innermost as (SELECT 2)
+         SELECT * FROM innermost
+         UNION SELECT 3)
+)
+SELECT * FROM outermost ORDER BY 1;
+~~~
+
+The expected result would be:
+
+~~~
+x
+---
+1
+2
+3
+(3 rows)
+~~~
+
+The actual result is:
+
+~~~
+relation "innermost" does not exist
+~~~
+
+### Assigning latitude/longitude coordinates to localities
+
+When configuring the [**Node Map**](enable-node-map.html) in the Admin UI, you cannot assign latitude/longitude coordinates to localities if the components of the localities have the same name. For example, consider the following partial configuration:
+
+|  Node | Region | Datacenter |
+|  ------ | ------ | ------ |
+|  Node1 | us-east | datacenter-1 |
+|  Node2 | us-west | datacenter-1 |
+
+In this case, if you try to set the latitude/longitude coordinates to the datacenter level of the localities, you will get the "primary key exists" error and the **Node Map** won't be displayed. You can, however, set the latitude/longitude coordinates to the region components of the localities, and the **Node Map** will be displayed.
+
+## Unresolved Limitations
+
 ### Available capacity metric in the Admin UI
 
 {% include available-capacity-metric.md %}
-
-## Unresolved Limitations
 
 ### Schema changes within transactions
 
