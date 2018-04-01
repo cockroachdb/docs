@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
 
-{{site.data.alerts.callout_info}}You must have an <a href="enterprise-licensing.html">enterprise license</a> to add a member to a role.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}<code>GRANT &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -31,10 +31,11 @@ Parameter | Description
 ----------|------------
 `role_name` | The name of the role to which you want to add members. To add members to multiple roles, use a comma-separated list of role names.
 `user_name` | The name of the [user](create-and-manage-users.html) or [role](roles.html) to whom you want to grant membership. To add multiple members, use a comma-separated list of user and/or role names.
+`WITH ADMIN OPTION` | Designate the user as an role admin. Role admins can grant or revoke membership for the specified role.
 
 ## Examples
 
-### Grant role membership
+### Grant Role Membership
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -56,7 +57,7 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-### Grant the admin option
+### Grant the Admin Option
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -25,23 +25,26 @@ Term | Description
 -----|------------
 Role | A group containing any number of [users](create-and-manage-users.html) or other roles.
 Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
-Superuser / Admin | A member of the `admin` role. Only superusers can `CREATE ROLE` or `DROP ROLE`. The `admin` role is created by default and cannot be dropped.
+Superuser / Admin | A member of the `admin` role. Only superusers can [`CREATE ROLE`](create-role.html) or [`DROP ROLE`](drop-role.html). The `admin` role is created by default and cannot be dropped.
 `root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.
 Inherit | The behavior that grants a role's privileges to its members.
-Direct member | A user or role that is an immediate member of the role.<br><br>Example: `A` is a direct member of `B` if `A` is a member of `B`.
-Indirect member | A user or role that is a member of the role by association. <br><br>Example: `A` is an indirect member of `B` if `A` is a member of `C` ... is a member of `B` where "..." is an arbitrary number of memberships.
+Direct member | A user or role that is an immediate member of the role.<br><br>Example: `A` is a member of `B`.
+Indirect member | A user or role that is a member of the role by association. <br><br>Example: `A` is a member of `C` ... is a member of `B` where "..." is an arbitrary number of memberships.
 
 ## Example
 
-For the purpose of this example, you need only one CockroachDB node running in insecure mode:
+For the purpose of this example, you need:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start \
---insecure \
---store=roles \
---host=localhost
-~~~
+- An [enterprise license](enterprise-licensing.html)
+- One CockroachDB node running in insecure mode:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=roles \
+    --host=localhost
+    ~~~
 
 In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
 
@@ -105,22 +108,18 @@ Add the `maxroach` user to the `system_ops` role:
 > GRANT system_ops TO maxroach;
 ~~~
 
-To test the privileges you just added to the `system_ops` role, log in as the `maxroach` user (who is a member of the `system_ops` role).
-
-Log out of the `root` user first by exiting the interactive shell. To exit the interactive shell, use `\q` or `ctrl-d`.
-
-Next, open `cockroach sql` as `maxroach`:
+To test the privileges you just added to the `system_ops` role, use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `maxroach` user (who is a member of the `system_ops` role):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --user=maxroach --insecure
+$ cockroach sql --user=maxroach --database=test_roles --insecure
 ~~~
 
 Create a table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE test_roles.employees (
+> CREATE TABLE employees (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
     profile JSONB
   );
@@ -130,7 +129,7 @@ You were able to create the table because `maxroach` has `CREATE` privileges. No
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE test_roles.employees;
+> DROP TABLE employees;
 ~~~
 ~~~
 pq: user maxroach does not have DROP privilege on relation employees
@@ -138,11 +137,11 @@ pq: user maxroach does not have DROP privilege on relation employees
 
 You cannot drop the table because your current user (`maxroach`) is a member of the `system_ops` role, which doesn't have `DROP` privileges.
 
-`maxroach` has `CREATE` and `SELECT` privileges, so let's try a couple of `SHOW` statements:
+`maxroach` has `CREATE` and `SELECT` privileges, so try a `SHOW` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test_roles.employees;
+> SHOW GRANTS ON TABLE employees;
 ~~~
 ~~~
 +------------+--------+-----------+------------+------------+
@@ -152,18 +151,6 @@ You cannot drop the table because your current user (`maxroach`) is a member of 
 | test_roles | public | employees | root       | ALL        |
 | test_roles | public | employees | system_ops | CREATE     |
 +------------+--------+-----------+------------+------------+
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON ROLE system_ops;
-~~~
-~~~
-+------------+-----------+---------+
-|    role    |  member   | isAdmin |
-+------------+-----------+---------+
-| system_ops | maxroach  | false   |
-+------------+-----------+---------+
 ~~~
 
 Let's switch back to the `root` user to test more of the SQL statements related to roles. Log out of the `maxroach` user by exiting the interactive shell. To exit the interactive shell, use `\q` or `ctrl-d`.

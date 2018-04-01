@@ -28,9 +28,9 @@ Parameter | Description
 
 ## Examples
 
-### Show all grants <span class="version-tag">New in v2.0</span>
+### Show All Grants <span class="version-tag">New in v2.0</span>
 
-To list all grants for all users on all databases and tables:
+To list all grants for all users and roles on all databases and tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -49,7 +49,7 @@ To list all grants for all users on all databases and tables:
 (167 rows)
 ~~~
 
-### Show a specific user's grants <span class="version-tag">New in v2.0</span>
+### Show a Specific User or Role's Grants <span class="version-tag">New in v2.0</span>
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -66,7 +66,7 @@ To list all grants for all users on all databases and tables:
 +------------+--------------------+-------+----------+------------+
 ~~~
 
-### Show grants on databases
+### Show Grants on Databases
 
 **Specific database, all users and roles:**
 
@@ -110,7 +110,7 @@ To list all grants for all users on all databases and tables:
 +----------+--------------------+------------+------------+
 ~~~
 
-### Show grants on tables
+### Show Grants on Tables
 
 **Specific tables, all users and roles:**
 
@@ -175,7 +175,7 @@ To list all grants for all users on all databases and tables:
 +------------+--------+-----------+------------+------------+
 ~~~
 
-### Show role memberships <span class="version-tag">New in v2.0</span>
+### Show Role Memberships <span class="version-tag">New in v2.0</span>
 
 **All members of all roles:**
 
@@ -230,7 +230,16 @@ SHOW GRANTS ON ROLE FOR carl;
 
 ## See Also
 
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
+- [`CREATE ROLE`](create-role.html)
+- [`DROP ROLE`](drop-role.html)
+- [`SHOW ROLES`](show-roles.html)
+- [`GRANT <privileges>`](grant.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <privileges>`](revoke.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`SHOW GRANTS`](show-grants.html)
+- [Manage Users](create-and-manage-users.html)
+- [Manage Roles](roles.html)
 - [Privileges](privileges.html)
+- [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

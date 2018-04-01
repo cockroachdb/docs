@@ -78,19 +78,20 @@ Statement | Usage
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
-## Privilege Management Statements
+## Access Management Statements
 
 Statement | Usage
 ----------|------------
 [`CREATE ROLE`](create-role.html) | <span class="version-tag">New in v2.0:</span> Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
 [`DROP ROLE`](drop-role.html) | <span class="version-tag">New in v2.0:</span> Remove one or more SQL [roles](roles.html).
-[`DROP USER`](drop-user.html) | Remove SQL users.
-[`GRANT <privileges>`](grant.html) | Grant privileges to users.
+[`DROP USER`](drop-user.html) | Remove one or more SQL users.
+[`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](roles.html).
 [`GRANT <roles>`](grant-roles.html) | <span class="version-tag">New in v2.0:</span> Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from users.
+[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](roles.html).
 [`REVOKE <roles>`](revoke-roles.html) | <span class="version-tag">New in v2.0:</span> Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
+[`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
 
 ## Session Management Statements

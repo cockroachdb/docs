@@ -14,7 +14,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to list users.
+The user must have the [`SELECT`](select.html) [privilege](privileges.html) on the system table.
 
 ## Example
 

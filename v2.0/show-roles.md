@@ -14,7 +14,7 @@ toc: false
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to list roles.
+The user must have the [`SELECT`](select.html) [privilege](privileges.html) on the system table.
 
 ## Example
 

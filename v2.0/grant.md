@@ -24,7 +24,7 @@ Roles and users can be granted the following privileges. Some privileges are app
 
 - When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
-- The `root` user is automatically created as an `admin` role and assigned the `ALL` privilege for new databases.
+- The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 Privilege | Levels
@@ -48,7 +48,7 @@ Parameter | Description
 
 ## Examples
 
-### Grant privileges on databases
+### Grant Privileges on Databases
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -74,7 +74,7 @@ Parameter | Description
 (6 rows)
 ~~~
 
-### Grant privileges on specific tables in a database
+### Grant Privileges on Specific Tables in a Database
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -98,7 +98,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Grant privileges on all tables in a database
+### Grant Privileges on All Tables in a Database
 
 {% include copy-clipboard.html %}
 ~~~ sql

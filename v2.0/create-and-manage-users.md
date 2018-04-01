@@ -215,7 +215,7 @@ $ cockroach user rm jpointsman --insecure
 
 {{site.data.alerts.callout_success}}You can also use the <a href="drop-user.html"><code>DROP USER</code></a> SQL statement to remove users.{{site.data.alerts.end}}
 
-### Reveal the SQL statements sent implicitly by the command-line utility
+### Reveal the SQL Statements Sent Implicitly by the Command-line Utility
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 

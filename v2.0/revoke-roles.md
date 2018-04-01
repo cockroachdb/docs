@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.0:</span> The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
 
-{{site.data.alerts.callout_info}}You must have an <a href="enterprise-licensing.html">enterprise license</a> to remove a member from a role.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}<code>REVOKE &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -26,12 +26,13 @@ The user revoking role membership must be a role admin (i.e., members with the `
 
 Parameter | Description
 ----------|------------
+`ADMIN OPTION` | Revoke the user's role admin status.
 `role_name` | The name of the role from which you want to remove members. To revoke members from multiple roles, use a comma-separated list of role names.
 `user_name` | The name of the [user](create-and-manage-users.html) or [role](roles.html) from whom you want to revoke membership. To revoke multiple members, use a comma-separated list of user and/or role names.
 
 ## Examples
 
-### Revoke role membership
+### Revoke Role Membership
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -67,7 +68,7 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-### Revoke the admin option
+### Revoke the Admin Option
 
 To revoke a user or role's admin option from a role (without revoking the membership):
 {% include copy-clipboard.html %}
