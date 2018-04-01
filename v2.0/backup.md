@@ -59,11 +59,11 @@ Note the following restrictions:
 
 - It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups).
 
-### <span class="version-tag">New in v2.0:</span> Backups with Revision History 
+### Backups with Revision History<span class="version-tag">New in v2.0</span>
 
 You can create full or incremental backups with revision history:
 
-- Taking full backups with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. 
+- Taking full backups with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.
 - Taking incremental backups with revision history allows you to back up every change made since the last backup and within the garbage collection period leading up to and including the given timestamp. You can take incremental backups with revision history even when your previous full or incremental backups were taken without revision history.
 
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history.
@@ -164,7 +164,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-03-26 23:59:00'; 
+AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~
 
 ### Backup an Entire Database
@@ -175,7 +175,7 @@ TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~
 
-### <span class="version-tag">New in v2.0:</span> Backup with Revision History
+### Backup with Revision History<span class="version-tag">New in v2.0</span> 
 
 ~~~ sql
 > BACKUP DATABASE bank \
@@ -191,16 +191,16 @@ Incremental backups must be based off of full backups you've already created.
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-03-28 23:59:00' \
-INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly'; 
+INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly';
 ~~~
 
-### <span class="version-tag">New in v2.0:</span> Create Incremental Backups with Revision History
+### Create Incremental Backups with Revision History<span class="version-tag">New in v2.0</span>
 
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-03-28 23:59:00' \
-INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history; 
+INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
 ## See Also
