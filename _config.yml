@@ -19,7 +19,7 @@ redcarpet:
   - with_toc_data
 
 versions:
-  stable: v1.1
+  stable: v2.0
   dev: v2.0
   v1.2: v2.0
   v2.1: v2.0
@@ -37,11 +37,17 @@ release_info:
     build_time: 2018/03/26 14:48:26 (go1.8.3)
     start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
   v2.0:
-    name: v2.0-beta
-    version: v2.0-beta.20180326
-    docker_image: cockroachdb/cockroach-unstable
-    build_time: 2018/03/26 14:48:26 (go1.10)
-    start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
+    name: v2.0
+    version: v2.0.0
+    docker_image: cockroachdb/cockroach
+    build_time: 2018/04/04 14:48:26 (go1.10)
+    start_time: 2018-04-04 15:10:52.34274101 +0000 UTC
+  # v2.1:
+  #   name: v2.1
+  #   version: v2.0.0
+  #   docker_image: cockroachdb/cockroach-unstable
+  #   build_time: 2018/03/26 14:48:26 (go1.10)
+  #   start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
