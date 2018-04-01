@@ -12,10 +12,13 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Considerations
 
-- Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+- Role names:
+    - Are case-insensitive
+    - Must start with either a letter or underscore
+    - Must contain only letters, numbers, or underscores
+    - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
-- {% include custom/remove-user-callout.html %}
 
 ## Required Privileges
 
@@ -35,7 +38,7 @@ table td:first-child {
 
 | Parameter | Description |
 |-----------|-------------|
-|`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
+|`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
 |`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.|
 
 ## User Authentication
@@ -123,4 +126,5 @@ $ cockroach sql --insecure --user=jpointsman
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
+- [Manage Roles](roles.html)
 - [Other SQL Statements](sql-statements.html)

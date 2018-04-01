@@ -1,5 +1,5 @@
 ---
-title: Create & Manage Users
+title: Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
 toc: false
 ---
@@ -215,7 +215,7 @@ $ cockroach user rm jpointsman --insecure
 
 {{site.data.alerts.callout_success}}You can also use the <a href="drop-user.html"><code>DROP USER</code></a> SQL statement to remove users.{{site.data.alerts.end}}
 
-### Reveal the SQL statements sent implicitly by the command-line utility
+### Reveal the SQL Statements Sent Implicitly by the Command-line Utility
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 
@@ -237,4 +237,5 @@ DELETE 1
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
+- [Manage Roles](roles.html)
 - [Other Cockroach Commands](cockroach-commands.html)

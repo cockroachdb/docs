@@ -300,6 +300,12 @@
             ]
           },
           {
+            "title": "<code>CREATE ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/create-role.html"
+            ]
+          },
+          {
             "title": "<code>CREATE SEQUENCE</code>",
             "urls": [
               "/${VERSION}/create-sequence.html"
@@ -360,6 +366,12 @@
             ]
           },
           {
+            "title": "<code>DROP ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/drop-role.html"
+            ]
+          },
+          {
             "title": "<code>DROP SEQUENCE</code>",
             "urls": [
               "/${VERSION}/drop-sequence.html"
@@ -390,9 +402,15 @@
             ]
           },
           {
-            "title": "<code>GRANT</code>",
+            "title": "<code>GRANT &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/grant.html"
+            ]
+          },
+          {
+            "title": "<code>GRANT &lt;roles&gt;</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/grant-roles.html"
             ]
           },
           {
@@ -480,9 +498,15 @@
             ]
           },
           {
-            "title": "<code>REVOKE</code>",
+            "title": "<code>REVOKE &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/revoke.html"
+            ]
+          },
+          {
+            "title": "<code>REVOKE &lt;roles&gt;</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/revoke-roles.html"
             ]
           },
           {
@@ -549,6 +573,12 @@
             "title": "<code>SHOW CONSTRAINTS</code>",
             "urls": [
               "/${VERSION}/show-constraints.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW ROLES</code>",
+            "urls": [
+              "/${VERSION}/show-roles.html"
             ]
           },
           {
@@ -878,12 +908,6 @@
               "/${VERSION}/uuid.html"
             ]
           }
-        ]
-      },
-      {
-        "title": "Privileges",
-        "urls": [
-          "/${VERSION}/privileges.html"
         ]
       },
       {
