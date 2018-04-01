@@ -3,7 +3,6 @@ title: CockroachDB Training
 summary: Learn how to use CockroachDB for your applications
 toc: false
 sidebar_data: sidebar-data-training.json
-feedback: false
 redirect_from:
 - /training/index.html
 - /training/overview.html

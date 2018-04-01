@@ -74,6 +74,12 @@ Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`]
 - If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
 - If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
 
+## Join flags when restarting a cluster with different addresses
+
+In all our deployment tutorials, we provide the addresses of the first few nodes in the cluster to the `--join` flag when starting each node. In a new cluster, this ensures that all nodes are able to learn the location of the first key-vlaue range, which is part of a meta-index identifying where all range replicas are stored, and which nodes require to initialize themselves and start accepting incoming connections. Each node also persists the addresses of all other nodes in the cluster on disk such that it can reconnect to them if the nodes in the `--join` flag ever happen to be unavailable when restarting. This ensures that a restarting node will always be able to connect to a node with a copy of the first range even if they're no longer located on the nodes in the `--join` flag.
+
+However, if the nodes in a cluster are restarted with different addresses for some reason, then it's not guaranteed that a copy of the first range will be on the nodes in the join flags. In such cases, the `--join` flags must form a fully-connected directed graph. The easiest way to do this is to put all of the new nodes' addresses into each node's `--join` flag, which ensures all nodes can join a node with a copy of the first key-value range.
+
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
@@ -81,6 +87,8 @@ When inserting/updating all columns of a table, and the table has no secondary i
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
 
 ### Repeated or combined commands in the SQL shell history
+
+{{site.data.alerts.callout_info}}Resolved as of v2.0.{{site.data.alerts.end}}
 
 Our [built-in SQL shell](use-the-built-in-sql-client.html) stores previously executed commands in the shell's history. In some cases, these commands are unexpectedly duplicated.
 

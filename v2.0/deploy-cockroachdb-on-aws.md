@@ -81,7 +81,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 4. Set up load balancing
 
-Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use TCP load balancing:
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 
@@ -90,8 +90,8 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 AWS offers fully-managed load balancing to distribute traffic between instances.
 
 1. [Add AWS load balancing](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html). Be sure to:
-    - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
-    - Configure health checks to use HTTP port **8080** and path `/health`.
+    - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the nodes.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers don't direct traffic to nodes that are live but not ready to receive requests.
 2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of AWS's managed load balancing, see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}

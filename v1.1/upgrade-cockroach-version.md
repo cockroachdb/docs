@@ -15,7 +15,7 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 Before starting the upgrade, complete the following steps.
 
-1. Make sure your cluster is behind a load balancer, or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+1. Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
 2. Verify the cluster's overall health by running the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 

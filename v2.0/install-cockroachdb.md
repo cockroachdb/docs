@@ -41,7 +41,7 @@ $(document).ready(function(){
 <div id="os-tabs" class="clearfix">
     <button id="mac" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button>
     <button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button>
-    <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button> 
+    <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
 <div id="macinstall">
@@ -149,7 +149,7 @@ $(document).ready(function(){
       </tr>
       <tr>
         <td>Go</td>
-        <td>Version 1.9 or higher is required.</td>
+        <td>Version 1.10 or higher is required.</td>
       </tr>
       <tr>
         <td>Bash</td>
@@ -333,7 +333,7 @@ $(document).ready(function(){
       </tr>
       <tr>
         <td>Go</td>
-        <td>Version 1.9 or higher is required.</td>
+        <td>Version 1.10 or higher is required.</td>
       </tr>
       <tr>
         <td>Bash</td>
@@ -566,4 +566,4 @@ $(document).ready(function(){
 {% include diagnostics-callout.html %}
 
 </div>
-</div> 
+</div>
