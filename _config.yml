@@ -37,11 +37,11 @@ release_info:
     build_time: 2018/03/26 14:48:26 (go1.8.3)
     start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
   v2.0:
-    name: v2.0-beta
-    version: v2.0-beta.20180326
+    name: v2.0-rc1
+    version: v2.0-rc1
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2018/03/26 14:48:26 (go1.10)
-    start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
+    build_time: 2018/04/02 14:48:26 (go1.10)
+    start_time: 2018-04-02 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
