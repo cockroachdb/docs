@@ -14,7 +14,7 @@ toc: false
 
 ## Required Privileges
 
-The user must have the [`SELECT`](select.html) [privilege](privileges.html) on the system table.
+The user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
 
 ## Example
 

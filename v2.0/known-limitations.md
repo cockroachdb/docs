@@ -83,7 +83,7 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 ### Adding a column with certain `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-values.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
 
 ~~~ sql
 > ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
