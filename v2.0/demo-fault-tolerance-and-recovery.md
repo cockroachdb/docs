@@ -290,7 +290,7 @@ $ cockroach sql --insecure --port=26258
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
 
-Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080` to see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 {{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
 

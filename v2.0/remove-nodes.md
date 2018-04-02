@@ -141,13 +141,13 @@ ok
 
 ### Step 3. Check the node and cluster after decommissioning
 
-In the Admin UI, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the node that you decommissioned, the counts should be 0:
+In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the node that you decommissioned, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-Then click **View nodes list** in the **Summary** area and make sure all nodes but the one you removed are healthy (green):
+Then view **Node List** on the **Overview** page and make sure all nodes but the one you removed are healthy (green):
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -172,7 +172,7 @@ To prevent the cluster from rebalancing data to a dead node if it comes back onl
 
 ### Step 1. Identify the ID of the dead node
 
-Open the Admin UI and select the **Node List** view, or go to **Metrics** on the left and click **View nodes list** in the **Summary** area. Note the ID of the node listed under **Dead Nodes**:
+Open the Admin UI and select the **Node List** view. Note the ID of the node listed under **Dead Nodes**:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/remove-dead-node1.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -287,7 +287,7 @@ Decommissioning finished. Please verify cluster health before removing the nodes
 
 ### Step 4. Check the nodes and cluster after decommissioning
 
-In the Admin UI, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the nodes that you decommissioned, the counts should be 0:
+In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the nodes that you decommissioned, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-multiple4.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -330,7 +330,7 @@ If you accidentally decommissioned any nodes, or otherwise want decommissioned n
 
 ### Step 1. Identify the IDs of the decomissioned nodes
 
-Open the Admin UI and select the **Node List** view, or go to **Metrics** on the left and click **View nodes list** in the **Summary** area. Note the IDs of the nodes listed under **Decommissioned Nodes**:
+Open the Admin UI and select the **Node List** view. Note the IDs of the nodes listed under **Decommissioned Nodes**:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 

@@ -247,7 +247,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     **Range** | CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs.<br><br>This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
     **Range Replica** | CockroachDB replicates each range 3 times by default and stores each replica on a different node.<br><br>In a later module, you'll learn how to control replication.
 
-2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and click **View nodes list** on the right:
+2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and view the **Node List**:
 
     <img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

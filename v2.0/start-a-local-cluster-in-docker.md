@@ -27,13 +27,13 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 ## Step 5. Monitor the cluster
 
-When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`, and click **Metrics** on the left-hand navigation bar.
 
-<img src="{{ 'images/v1.1/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
 
-<img src="{{ 'images/v1.1/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
@@ -66,7 +66,7 @@ $ rm -rf cockroach-data
 
 ## Step 5. Monitor the cluster
 
-When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080` and click **Metrics** on the left.
 
 <img src="{{ 'images/v1.1/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -233,7 +233,7 @@ When you're done, exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](admin-ui-overview.html) for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`.
+When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](admin-ui-overview.html) metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080` and click **Metrics** on the left.
 
 <img src="{{ 'images/v2.0/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

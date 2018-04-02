@@ -20,7 +20,7 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [Cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
 
-The main panel displays changes for each page: 
+The main panel displays changes for each page:
 
 Page | Main Panel Component
 -----------|------------
@@ -82,7 +82,11 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 
 ### Node Map (Enterprise)
 
-<span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster. The Node Map consists of the following components:
+<span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster.
+
+<img src="{{ 'images/v2.0/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+The Node Map consists of the following components:
 
 **Region component**
 
@@ -92,7 +96,7 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 
 <img src="{{ 'images/v2.0/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
-For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html). 
+For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
 
 ### Time Series Graphs
 

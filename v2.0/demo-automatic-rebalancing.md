@@ -149,7 +149,7 @@ Once it's running, `block_writer` will output the number of rows written per sec
 
 ## Step 6. Watch the replica count increase
 
-Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
+Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
 
 <img src="{{ 'images/v2.0/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

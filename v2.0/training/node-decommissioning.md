@@ -89,7 +89,7 @@ $ ./cockroach start \
     ok
     ~~~
 
-2. Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and hover over the **Replicas per Node** graph.
+2. Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **Metrics** on the left, and hover over the **Replicas per Node** graph in the **Overview** dashboard.
 
     You'll see that node 3 now has 0 replicas while the other nodes have equal replica counts.
 

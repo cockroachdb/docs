@@ -330,7 +330,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     cockroachdb-client-secure   1/1       Running   0          15m
     ~~~
 
-8. Back in the Admin UI, click **View nodes list** on the right to ensure that the fourth node successfully joined the cluster.
+8. Back in the Admin UI, view **Node List** to ensure that the fourth node successfully joined the cluster.
 
 ## Step 10. Upgrade the cluster
 

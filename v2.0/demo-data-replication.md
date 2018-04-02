@@ -156,7 +156,7 @@ $ cockroach start \
 
 ## Step 4. Watch data replicate to the new nodes
 
-Open the Admin UI at `http://localhost:8080` and click **View nodes list** on the right. You'll see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Open the Admin UI at `http://localhost:8080` to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 <img src="{{ 'images/v2.0/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

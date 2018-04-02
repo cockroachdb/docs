@@ -98,7 +98,7 @@ Proceed through the following steps until you locate the source of the issue wit
     - [Networking issues](#networking-troubleshooting)
     - [Nodes not joining the cluster](#node-wont-join-cluster)
 
-3. Visit the Admin UI on any node at `http://[node host]:8080`. All nodes in the cluster should be listed and have data replicated onto them.
+3. Visit the Admin UI on any node at `http://[node host]:8080` and click **Metrics** on the left-hand navigation bar. All nodes in the cluster should be listed and have data replicated onto them.
 
     Errors at this stage potentially include:
     - [Networking issues](#networking-troubleshooting)

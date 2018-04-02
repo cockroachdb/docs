@@ -4,7 +4,7 @@ summary: The Storage dashboard lets you monitor the storage utilization for your
 toc: false
 ---
 
-The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then selecte **Dashboard** > **Storage**.
+The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Storage**.
 
 <div id="toc"></div>
 
@@ -55,5 +55,7 @@ The **Storage** dashboard shows other time series graphs that are important for 
 - Command Commit Latency
 - RocksDB Read Amplification
 - RocksDB SSTables
+- Time Series Writes
+- Time Series Bytes Written
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
