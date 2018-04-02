@@ -60,7 +60,25 @@ If you'd like to tell the query planner which index to use, you can do so via so
 
 ## How do I log SQL queries?
 
-For production clusters, the best way to log queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
+There are several ways to log SQL queries.  The type of logging you use will depend on your requirements.
+
+- For per-table audit logs, turn on [SQL audit logs](#sql-audit-logs).
+- For system troubleshooting and performance optimization, turn on [cluster-wide execution logs](#cluster-wide-execution-logs).
+- For local testing, turn on [per-node execution logs](#per-node-execution-logs).
+
+### SQL audit logs
+
+{% include experimental-warning.md %}
+
+SQL audit logging is useful if you want to log all queries that are run against a table containing personally identifiable information (PII).
+
+- For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
+
+- For SQL reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+
+### Cluster-wide execution logs
+
+For production clusters, the best way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
 
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
@@ -71,6 +89,8 @@ With this setting on, each node of the cluster writes all SQL queries it execute
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
 ~~~
+
+### Per-node execution logs
 
 Alternatively, if you are testing CockroachDB locally and want to log queries executed just by a specific node, you can pass `--vmodule=executor=2` to the [`cockroach start`](start-a-node.html) command when starting the node. For example, to start a single node locally and log all SQL queries it executes, you'd run:
 
