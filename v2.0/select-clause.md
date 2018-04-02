@@ -2,7 +2,7 @@
 title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
 toc: false
-redirect-from: select.html
+redirect_from: select.html
 key: select.html
 ---
 

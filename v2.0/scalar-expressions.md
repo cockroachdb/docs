@@ -2,7 +2,7 @@
 title: Scalar Expressions
 summary: Scalar expressions allow the computation of new values from basic parts.
 toc: false
-redirect-from: sql-expressions.html
+redirect_from: sql-expressions.html
 key: sql-expressions.html
 ---
 
