@@ -117,7 +117,7 @@ Suppose the table schema is as follows:
 	);
 ~~~
 
-The common approach to generate random Unique IDs is a transaction using the `SELECT` statement:
+The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
 ~~~ sql
 > BEGIN;
@@ -175,11 +175,19 @@ Also note that merge `JOIN`s can be used only with [distributed query processing
 
 Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
 
+## Join Best Practices
+
+See [Join Performance Best Practices](joins.html#performance-best-practices).
+
+## Subquery Best Practices
+
+See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
+
 ## Table Scans Best Practices
 
 ### Avoid `SELECT *` for Large Tables
 
-For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in the `SELECT` statement.
+For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
 
 #### Example
 
@@ -211,10 +219,10 @@ This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for Large Tables
 
-`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead.
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select-clause.html#filter-rows) instead.
 
 ### Use `AS OF SYSTEM TIME` to Decrease Conflicts with Long-Running Queries
 
-If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`...AS OF SYSTEM TIME` clause](select.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
+If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause](select-clause.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.

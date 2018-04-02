@@ -1,17 +1,19 @@
 ---
-title: Value Expressions
-summary: Value expressions allow the computation of new values from basic parts.
+title: Scalar Expressions
+summary: Scalar expressions allow the computation of new values from basic parts.
 toc: false
+redirect-from: sql-expressions.html
+key: sql-expressions.html
 ---
 
-Most SQL statements can contain *value expressions* that compute new
+Most SQL statements can contain *scalar expressions* that compute new
 values from data.  For example, in the query `SELECT ceil(price) FROM
 items`, the expression `ceil(price)` computes the rounded-up value of
 the values from the `price` column.
 
-Value expressions produce values suitable to store in a single table
+Scalar expressions produce values suitable to store in a single table
 cell (one column of one row). They can be contrasted with
-[table expressions](table-expressions.html), which produce results
+[table expressions](table-expressions.html) and [selection queries](selection-queries.html), which produce results
 structured as a table.
 
 The following sections provide details on each of these options.
@@ -96,7 +98,7 @@ Syntax:
 
 Returns `TRUE` if and only if the value of the left operand is part of
 the result of evaluating the right operand. In the subquery form, any
-[selection clause](selection-clauses.html) can be used.
+[selection query](selection-queries.html) can be used.
 
 For example:
 
@@ -105,6 +107,8 @@ For example:
 > SELECT a IN (SELECT * FROM allowedvalues) FROM sometable;
 > SELECT ('x', 123) IN (SELECT * FROM rows);
 ~~~
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -440,7 +444,7 @@ The difference between aggregate expressions and function calls is
 that the former use
 [aggregate functions](functions-and-operators.html#aggregate-functions)
 and can only appear in the list of rendered expressions in a
-[`SELECT` clause](select.html).
+[`SELECT` clause](select-clause.html).
 
 An aggregate expression computes a combined value, depending on
 which aggregate function is used, across all the rows currently
@@ -522,8 +526,10 @@ NOT EXISTS ( ... subquery ... )
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`). Any [selection clause](selection-clauses.html)
+any row (for `NOT EXISTS`). Any [selection query](selection-queries.html)
 can be used as subquery.
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -538,7 +544,8 @@ Syntax:
 ~~~
 
 Evaluates the subquery, asserts that it returns a single row and single column,
-and then evaluates to the value of that single cell. Any [selection clause](selection-clauses.html) can be used as subquery.
+and then evaluates to the value of that single cell. Any [selection query](selection-queries.html)
+can be used as subquery.
 
 For example:
 
@@ -548,6 +555,8 @@ For example:
 
 returns `TRUE` if there are more rows in table `users` than in table
 `admins`.
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -664,7 +673,8 @@ The result has the given type.
 ## See Also
 
 - [Constants](sql-constants.html)
-- [Selection Clauses](selection-clauses.html)
+- [Selection Queries](selection-queries.html)
 - [Table Expressions](table-expressions.html)
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)
+- [Subqueries](subqueries.html)

@@ -22,7 +22,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table. To us
 
 <div>{% include sql/{{ page.version.version }}/diagrams/insert.html %}</div>
 
-<div markdown="1">
+<div markdown="1"></div>
 
 ## Parameters
 
@@ -34,14 +34,41 @@ table td:first-child {
 
 Parameter | Description
 ----------|------------
-`opt_with_clause` | Docs coming soon.
+`common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `table_name` | The table you want to write data to.|
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`insert_column_list` | A comma-separated list of column names, in parentheses.
-`select_stmt` | A [selection clause](selection-clauses.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`insert_column_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`column_name` | The name of a column to populate during the insert.
+`select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
-`on_conflict` | Normally, when inserted values conflict with a Unique constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`](update.html) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update Values `ON CONFLICT`](#update-values-on-conflict) and [Do Not Update Values `ON CONFLICT`](#do-not-update-values-on-conflict) examples below.<br><br>Note that it's not possible to update the same row twice with a single `INSERT ON CONFLICT` statement. Also, if the values in the `SET` expression cause uniqueness conflicts, CockroachDB will return an error.<br><br>As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`](upsert.html) statement. However, `UPSERT` does not let you specify the column with the unique constraint; it assumes that the column is the primary key. Using `ON CONFLICT` is therefore more flexible.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+
+### `ON CONFLICT` clause
+
+{% include sql/{{ page.version.version }}/diagrams/on_conflict.html %}
+
+<div markdown="1"></div>
+
+Normally, when inserted values
+conflict with a `UNIQUE` constraint on one or more columns, CockroachDB
+returns an error. To update the affected rows instead, use an `ON
+CONFLICT` clause containing the column(s) with the unique constraint
+and the `DO UPDATE SET` expression set to the column(s) to be updated
+(any `SET` expression supported by the [`UPDATE`](update.html)
+statement is also supported here, including those with `WHERE`
+clauses). To prevent the affected rows from updating while allowing
+new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the
+[Update Values `ON CONFLICT`](#update-values-on-conflict) and [Do Not
+Update Values `ON CONFLICT`](#do-not-update-values-on-conflict)
+examples below.
+
+If the values in the `SET` expression cause uniqueness conflicts,
+CockroachDB will return an error.
+
+As a short-hand alternative to the `ON
+CONFLICT` clause, you can use the [`UPSERT`](upsert.html)
+statement. However, `UPSERT` does not let you specify the column with
+the unique constraint; it assumes that the column is the primary
+key. Using `ON CONFLICT` is therefore more flexible.
 
 ## Examples
 
@@ -116,11 +143,7 @@ If you don't list column names, the statement will use the columns of the table 
 
 ### Insert Multiple Rows into a New Table
 
-<<<<<<< HEAD
-The experimental [`IMPORT`](import.html) statement performs better than `INSERT` when inserting into a new table.
-=======
 The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
->>>>>>> c895b463... Fixes
 
 ### Insert from a `SELECT` Statement
 
@@ -486,7 +509,7 @@ You can also update the row using an existing value:
 +----+---------+
 ~~~
 
-<span class="version-tag">New in v1.1:</span> You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
+You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
 ~~~ sql
 > INSERT INTO accounts (id, balance)
@@ -567,6 +590,12 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 ## See Also
 
-- [Selection Clauses](selection-clauses.html)
+- [Selection Queries](selection-queries.html)
+- [`DELETE`](delete.html)
+- [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)
+- [`TRUNCATE`](truncate.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`DROP TABLE`](drop-table.html)
+- [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
