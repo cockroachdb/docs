@@ -12,7 +12,7 @@ toc: false
 
 ## Considerations
 
-- Password creation and alteration is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
+- Password creation and alteration is supported only in secure clusters for non-`root` users.
 
 ## Required Privileges
 
@@ -20,7 +20,7 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/alter_user_password.html %}</section>
+<div>{% include sql/{{ page.version.version }}/diagrams/alter_user_password.html %}</div>
 
 ## Parameters
 
@@ -33,16 +33,43 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password you want to create or add.
-`password` | Let the user [authenticate their access to a secure cluster](create-user.html#user-authentication) using this new password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).
+`password` | Let the user [authenticate their access to a secure cluster](create-user.html#user-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#changing-password-using-an-identifier), although this is discouraged.
 
-## Example
+## Examples
+
+### Change Password Using a String Literal
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl WITH PASSWORD 'ilov3beefjerky';
+~~~
+~~~
+ALTER USER 1
+~~~
+
+### Change Password Using an Identifier
+
+The following statement changes the password to `ilov3beefjerky`, as above:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD ilov3beefjerky;
 ~~~
+
+This is equivalent to the example in the previous section because the password contains only lowercase characters.
+
+In contrast, the following statement changes the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl WITH PASSWORD ThereIsNoTomorrow;
 ~~~
-ALTER USER 1
+
+To preserve case in a password specified using identifier syntax, use double quotes:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
 ~~~
 
 ## See Also
