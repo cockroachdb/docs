@@ -10,6 +10,14 @@ This page describes newly identified limitations in the CockroachDB v1.1 release
 
 ## New Limitations
 
+### Write and update limits for a single statement
+
+A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
+
+If you need to increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
+
+In the 1.1 release, the limit referred to a whole transaction (i.e. the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement.
+
 ### Available capacity metric in the Admin UI
 
 {% include available-capacity-metric.md %}
@@ -115,12 +123,6 @@ Many string operations are not properly overloaded for [collated strings](collat
 ~~~
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
-
-### Write and update limits for a single transaction
-
-A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
-
-If you need to increase these limits, you can update the [cluster-wide settings](cluster-settings.html) `kv.transaction.max_intents` and `kv.raft.command.max_size`. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
 
 ### Max size of a single column family
 
