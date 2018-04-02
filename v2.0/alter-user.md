@@ -20,7 +20,7 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/alter_user.html %}</section>
+<section>{% include sql/{{ page.version.version }}/diagrams/alter_user_password.html %}</section>
 
 ## Parameters
 
