@@ -283,6 +283,7 @@ Certificate directory: certs
 
 ## See Also
 
+- [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)

@@ -178,6 +178,12 @@
         ]
       },
       {
+        "title": "Client Connection Parameters",
+        "urls": [
+          "/${VERSION}/connection-parameters.html"
+        ]
+      },
+      {
         "title": "SQL Feature Support",
         "items": [
           {
