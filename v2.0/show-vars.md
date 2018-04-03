@@ -34,7 +34,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | Variable name | Description | Initial value |  Can be modified with [`SET`](set-vars.html)? |
 |---------------|-------------|---------------|-----------------------------------------------|
 | `application_name` | The current application name for statistics collection. | Empty string, or `cockroach` for sessions from the [built-in SQL client](use-the-built-in-sql-client.html)  | Yes |
-| `database` | The default database for the current session. | Database in connection string, or empty if not specified | Yes |
+| `database` | The [current database](sql-name-resolution.html#current-database). | Database in connection string, or empty if not specified | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or `SERIALIZABLE` if not specified | Yes |
 | `distsql` | | `auto` | |
 | `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |

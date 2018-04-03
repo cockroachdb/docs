@@ -58,14 +58,18 @@ The `dump` command supports the following [general-use](#general) and [logging](
 Flag | Description
 -----|------------
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br><span class="version-tag">New in v1.1:</span> Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
-`--user`<br>`-u` | The [user](create-and-manage-users.html) executing the `dump` command. The user must exist and have the `SELECT` privilege on the target table.<br><br>**Default:** `root`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
+
+{{site.data.alerts.callout_info}}The user specified with <code>--user</code> must
+have the <code>SELECT</code> privilege on the target
+tables.{{site.data.alerts.end}}
 
 ### Logging
 

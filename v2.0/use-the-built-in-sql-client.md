@@ -36,17 +36,16 @@ The `sql` command supports the following [general-use](#general) and [logging](#
 
 Flag | Description
 -----|------------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions<br><br>The `display_format` [SQL shell option](#sql-shell-options) can also be used to change the format within an interactive session.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--safe-updates` | <span class="version-tag">Changed in v2.0:</span> Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true`<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
-`--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must exist and have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Logging
 
@@ -613,6 +612,7 @@ Time: 2.426534ms
 
 ## See Also
 
+- [Client Connection Parameters](connection-parameters.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
