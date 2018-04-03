@@ -751,7 +751,7 @@
           {
             "title": "Computed Columns",
             "urls": [
-		"/${VERSION}/computed-columns.html"
+		          "/${VERSION}/computed-columns.html"
             ]
           },
           {
@@ -1212,9 +1212,26 @@
         ]
       },
       {
-        "title": "Create & Manage Users",
-        "urls": [
-          "/${VERSION}/create-and-manage-users.html"
+        "title": "Access Management",
+        "items": [
+        {
+            "title": "Manage Users",
+            "urls": [
+               "/${VERSION}/create-and-manage-users.html"
+            ]
+         },
+         {
+            "title": "Manage Roles (Enterprise)",
+            "urls": [
+              "/${VERSION}/roles.html"
+            ]
+          },
+          {
+            "title": "Privileges",
+            "urls": [
+              "/${VERSION}/privileges.html"
+            ]
+          }
         ]
       },
       {
