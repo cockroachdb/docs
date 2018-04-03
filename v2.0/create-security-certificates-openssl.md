@@ -326,4 +326,5 @@ In the following steps, replace the placeholder text in the code with the actual
 ## See Also
 
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster.
+- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster
+- [Client Connection Parameters](connection-parameters.html)
