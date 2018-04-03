@@ -24,14 +24,11 @@ $ cockroach init --help
 
 The `cockroach init` command supports the following [general-use](#general) and [logging](#logging) flags.
 
-### General
+### Client Connection
 
-Flag | Description
------|-----------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). If the cluster is secure, this directory must contain a valid CA certificate and a client certificate and key for the `root` user. Client certificates for other users are not supported.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--host` | The server host to connect to. This must appear in the `--join` flag of the other nodes. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:**`localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+{% include sql/{{ page.version.version }}/connection-parameters.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for details.
 
 ### Logging
 
