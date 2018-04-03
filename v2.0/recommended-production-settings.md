@@ -10,56 +10,32 @@ This page provides important recommendations for production deployments of Cockr
 
 ## Cluster Topology
 
+### Terminology
+
+To properly plan a cluster's topology, it's important to review some basic CockroachDB-specific terminology:
+
+Term | Description
+-----|------------
+**Range** | CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+**Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
+**Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+
 ### Basic Recommendations
-
-For a replicated cluster, each replica will be on a different node and a majority of replicas must remain available for the cluster to make progress. Therefore:
-
-- Use at least 3 nodes to ensure that a majority of replicas (2/3) remains available if a node fails.
 
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
-- Configurations with odd numbers of replicas are more robust than those with even numbers. Configurations with three replicas and configurations with four replicas can each tolerate one node failure and still reach a majority (2/3 and 3/4 respectively), so the fourth replica doesn't add any extra fault-tolerance. To survive two simultaneous failures, you must have five replicas. For details about controlling the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
+- When deploying in a single datacenter:
+    - To be able to tolerate the failure of any 1 node, use at least 3 nodes with the [default 3-way replication factor](configure-replication-zones.html#view-the-default-replication-zone). In this case, if 1 node fails, each range retains 2 of its 3 replicas, a majority.
+    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the replication factor to 5](configure-replication-zones.html#edit-the-default-replication-zone). In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
-- When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
-    - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.
+- When deploying across multiple datacenters in one or more regions:
+    - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more on `--locality`). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
+    - When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
+        - CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. However, locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
+        - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of datacenters.
+        - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.        
 
-### Common Patterns
-
-#### Single Datacenter
-
-When deploying in a single datacenter:
-
-- Use at least 3 nodes to ensure that the cluster can tolerate the failure of any one node.
-
-- Although network latency between nodes should be minimal within a single datacenter (~1ms), it's recommended to set the `--locality` flag on each node to have the flexibility to customize [replication zones](configure-replication-zones.html) based on locality as you scale.
-
-#### Multiple Datacenters
-
-When deploying across multiple datacenters in one or more regions:
-
-- Use at least 3 datacenters to ensure that the cluster can tolerate the failure of 1 entire datacenter.
-
-- The round-trip latency between datacenters will have a direct effect on your cluster's performance, with cross-continent clusters performing noticeably worse than clusters in which all nodes are geographically close together.
-    - To optimize read latency for the location from which most of the workload is originating, also known as ["follow-the-workload"](demo-follow-the-workload.html), set the `--locality` flag when starting each node. When deploying across more than 3 datacenters, to ensure that all data benefits from "follow-the-workload", you must also increase your replication factor to match the total number of datacenters.
-    - To optimize read and write latency, consider using the enterprise [table partitioning](partitioning.html) feature.
-
-- If you expect region-specific concurrency and load characteristics, consider using different numbers and types of nodes per region. For example, in the following scenario, the Central region is closer to the West region than to the East region, which means that write latency would be optimized for workloads in the West and Central regions.
-
-    ~~~
-    A---C         A---C
-     \ /           \ /
-      B             B
-      West---80m---East
-         \         /  
-        20ms    60ms  
-           \    /
-            \  /
-             \/
-           Central
-            A---C   
-             \ /
-              B
-    ~~~
+{{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
 
 ## Hardware
 
