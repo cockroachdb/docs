@@ -462,4 +462,5 @@ To shut down the CockroachDB cluster:
 
 ## See Also
 
+- [Kubernetes Performance Guide](orchestrate-cockroachdb-with-kubernetes-performance.html)
 {% include prod_deployment/prod-see-also.md %}

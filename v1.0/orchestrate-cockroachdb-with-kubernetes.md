@@ -360,6 +360,7 @@ To shut down the CockroachDB cluster:
 
 ## See Also
 
+- [Kubernetes Performance Guide](orchestrate-cockroachdb-with-kubernetes-performance.html)
 - [Orchestrate CockroachDB with Docker Swarm](orchestrate-cockroachdb-with-docker-swarm.html)
 - [Orchestrate CockroachDB with Mesosphere](orchestrate-cockroachdb-with-mesosphere-insecure.html)
 - [Cloud Deployment](cloud-deployment.html)
