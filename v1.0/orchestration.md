@@ -8,9 +8,10 @@ Orchestration systems automate the deployment, scaling, and management of contai
 
 Use the following guides to run CockroachDB with popular open-source orchestration systems:
 
-- [Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
-- [Docker Swarm](orchestrate-cockroachdb-with-docker-swarm.html)
-- [Mesosphere DC/OS](orchestrate-cockroachdb-with-mesosphere-insecure.html)
+- [Kubernetes Deployment](orchestrate-cockroachdb-with-kubernetes.html)
+- [Kubernetes Performance Optimization](kubernetes-performance.html)
+- [Docker Swarm Deployment](orchestrate-cockroachdb-with-docker-swarm.html)
+- [Mesosphere DC/OS Deployment](orchestrate-cockroachdb-with-mesosphere-insecure.html)
 
 ## See Also
 

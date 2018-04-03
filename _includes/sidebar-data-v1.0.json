@@ -796,20 +796,26 @@
             ]
           },
           {
-            "title": "Kubernetes",
+            "title": "Kubernetes Deployment",
             "urls": [
               "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html"
             ]
           },
           {
-            "title": "Docker Swarm",
+            "title": "Kubernetes Performance Optimization",
+            "urls": [
+              "/${VERSION}/kubernetes-performance.html"
+            ]
+          },
+          {
+            "title": "Docker Swarm Deployment",
             "urls": [
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
               "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
             ]
           },
           {
-            "title": "Mesosphere DC/OS",
+            "title": "Mesosphere DC/OS Deployment",
             "urls": [
               "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
             ]
