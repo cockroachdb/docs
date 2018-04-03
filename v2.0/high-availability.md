@@ -12,7 +12,7 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 
 - Different servers within a rack to tolerate server failures
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
-- Different servers in different datacenters to tolerate large scale network or power outages 
+- Different servers in different datacenters to tolerate large scale network or power outages
 
 When replicating across datacenters, be aware that the round-trip latency between datacenters will have a direct effect on your database's performance. Latency in cross-continent clusters will be noticeably worse than in clusters where all nodes are geographically close together.
 
