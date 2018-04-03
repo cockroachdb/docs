@@ -16,7 +16,8 @@ Node startup | [`node belongs to cluster <cluster ID> but is attempting to conne
 Node configuration | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
 Node configuration | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
 Replication | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
-Ambiguous | [`context deadline exceeded`](#context-deadline-exceeded)
+Deadline exceeded | [`context deadline exceeded`](#context-deadline-exceeded)
+Ambiguous results | [`result is ambiguous`](#result-is-ambiguous)
 
 ## connection refused
 
@@ -152,6 +153,37 @@ Environment | Recommended Approach
 ## context deadline exceeded
 
 This message occurs when a component of CockroachDB gives up because it was relying on another component that has not behaved as expected, for example, another node dropped a network connection. To investigate further, look in the node's logs for the primary failure that is the root cause.
+
+## result is ambiguous
+
+In a distributed system, some errors can have ambiguous results. For
+example, if you receive a `connection closed` error while processing a
+`COMMIT` statement, you can't tell whether the transaction
+successfully committed or not. These errors are possible in any
+database, but CockroachDB is somewhat more likely to produce them than
+other databases because ambiguous results can be caused by failures
+between the nodes of a cluster. These errors are reported with the
+PostgreSQL error code `40003` (`statement_completion_unknown`) and the
+message `result is ambiguous`.
+
+Ambiguous errors can be caused by nodes crashing, network failures, or
+timeouts. If you experience a lot of these errors when things are
+otherwise stable, look for performance issues. Note that ambiguity is
+only possible for the last statement of a transaction (`COMMIT` or
+`RELEASE SAVEPOINT`) or for statements outside a transaction. If a connection drops during a transaction that has not yet tried to commit, the transaction will definitely be aborted.
+
+In general, you should handle ambiguous errors the same way as
+`connection closed` errors. If your transaction is
+[idempotent](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
+it is safe to retry it on ambiguous errors. `UPSERT` operations are
+typically idempotent, and other transactions can be written to be
+idempotent by verifying the expected state before performing any
+writes. Increment operations such as `UPDATE my_table SET x=x+1 WHERE
+id=$1` are typical examples of operations that cannot easily be made
+idempotent. If your transaction is not idempotent, then you should
+decide whether to retry or not based on whether it would be better for
+your application to apply the transaction twice or return an error to
+the user.
 
 ## Something Else?
 
