@@ -12,10 +12,12 @@ This page provides important recommendations for production deployments of Cockr
 
 ### Terminology
 
-To properly plan a cluster's topology, it's important to review some basic CockroachDB-specific terminology:
+To properly plan your cluster's topology, it's important to review some basic CockroachDB-specific terminology:
 
-Term | Description
+Term | Definition
 -----|------------
+**Cluster** | Your CockroachDB deployment, which acts as a single logical application that contains one or more databases.
+**Node** | An individual machine running CockroachDB. Many nodes join together to create your cluster.
 **Range** | CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 **Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
@@ -29,10 +31,10 @@ Term | Description
     - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the replication factor to 5](configure-replication-zones.html#edit-the-default-replication-zone). In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
 - When deploying across multiple datacenters in one or more regions:
-    - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more on `--locality`). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
+    - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more details). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
     - When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
         - CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. However, locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
-        - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of datacenters.
+        - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must [increase the replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to match the total number of datacenters.
         - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.        
 
 {{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
@@ -99,7 +101,7 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 - A separate certificate and key for each node in your deployment, with the common name `node`.
 - A separate certificate and key for each client and user you want to connect to your nodes, with the common name set to the username. The default user is `root`.
 
-    Alternatively, CockroachDB does [support password authentication](create-and-manage-users.html#secure-cluster), although we typically recommend using client certificates instead.
+    Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
 
 ## Load Balancing
 

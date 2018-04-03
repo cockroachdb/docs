@@ -1,8 +1,7 @@
 ---
-title: Fault Tolerance
+title: High Availability
 summary: CockroachDB is designed to survive software and hardware failures, from server restarts to datacenter outages.
 toc: false
-redirect-from: high-availability.html
 ---
 
 CockroachDB is designed to survive software and hardware failures, from server restarts to datacenter outages. This is accomplished without confusing artifacts typical of other distributed systems (e.g., stale reads) using strongly-consistent replication as well as automated repair after failures.
