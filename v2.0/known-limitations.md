@@ -1,6 +1,6 @@
 ---
-title: Known Limitations in CockroachDB v1.2
-summary: Known limitations in CockroachDB v1.2.
+title: Known Limitations in CockroachDB v2.0
+summary: Known limitations in CockroachDB v2.0.
 toc: false
 ---
 
