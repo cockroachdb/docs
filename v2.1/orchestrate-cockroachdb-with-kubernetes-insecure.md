@@ -13,6 +13,8 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see <a href="kubernetes-performance.html">CockroachDB Performance on Kubernetes</a>.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Before You Begin
@@ -118,4 +120,5 @@ To shut down the CockroachDB cluster:
 
 ## See Also
 
+- [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include prod_deployment/prod-see-also.md %}
