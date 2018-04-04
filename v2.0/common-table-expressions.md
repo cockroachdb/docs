@@ -2,6 +2,7 @@
 title: Common Table Expressions
 summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
 toc: false
+toc_not_nested: true
 ---
 
 
@@ -150,46 +151,25 @@ in a future version of CockroachDB.
 
 <div markdown="1"></div>
 
-### Use CTEs At Most Once
+### Referring to a CTE by name more than once
 
-It is currently not possible to refer to a CTE by name more than once.
+{% include known_limitations/cte-by-name.md %}
 
-For example, the following query is invalid because the CTE `a` is
-referred to twice:
+### Using CTEs with data-modifying statements
 
-{% include copy-clipboard.html %}
-~~~ sql
-> WITH a AS (VALUES (1), (2), (3))
-  SELECT * FROM a, a;
-~~~
+{% include known_limitations/cte-with-dml.md %}
 
-### Use CTEs With Data Modifying Statements At Least Once
+### Using CTEs with views
 
-If a CTE containing data-modifying statement is not referred to,
-either directly or indirectly, by the top level query, the
-data-modifying statement will not be executed at all.
+{% include known_limitations/cte-with-view.md %}
 
-For example, the following query does not insert any row, because the CTE `a` is not used:
+### Using CTEs with `VALUES` clauses
 
-{% include copy-clipboard.html %}
-~~~ sql
-> WITH a AS (INSERT INTO t(x) VALUES (1), (2), (3))
-  SELECT * FROM b;
-~~~
+{% include known_limitations/cte-in-values-clause.md %}
 
-Also, the following query does not insert any row, even though the CTE `a` is used, because
-the other CTE that uses `a` are themselves not used:
+### Using CTEs with Set Operations
 
-{% include copy-clipboard.html %}
-~~~ sql
-> WITH a AS (INSERT INTO t(x) VALUES (1), (2), (3)),
-       b AS (SELECT * FROM a)
-  SELECT * FROM c;
-~~~
-
-To determine whether a modification will effectively take place, use
-[`EXPLAIN`](explain.html) and check whether the desired data
-modification is part of the final plan for the overall query.
+{% include known_limitations/cte-in-set-expression.md %}
 
 ## See also
 

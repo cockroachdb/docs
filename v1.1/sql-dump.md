@@ -15,7 +15,7 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 When `cockroach dump` is executed:
 
 - Table and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated.
+- **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated. However, `cockroach dump` does not support circular foreign keys. See this [known limitation](#known-limitations) for more details.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
@@ -344,6 +344,10 @@ INSERT INTO dump_test (id, name) VALUES
 ~~~
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
+
+## Known Limitations
+
+{% include known_limitations/dump-cyclic-foreign-keys.md %}
 
 ## See Also
 

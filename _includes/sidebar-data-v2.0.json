@@ -1128,6 +1128,29 @@
         ]
       },
       {
+        "title": "Access Management",
+        "items": [
+        {
+            "title": "Manage Users",
+            "urls": [
+               "/${VERSION}/create-and-manage-users.html"
+            ]
+         },
+         {
+            "title": "Manage Roles (Enterprise)",
+            "urls": [
+              "/${VERSION}/roles.html"
+            ]
+          },
+          {
+            "title": "Privileges",
+            "urls": [
+              "/${VERSION}/privileges.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Use the Admin UI",
         "items": [
           {
@@ -1209,29 +1232,6 @@
         "urls": [
           "/${VERSION}/create-security-certificates.html",
           "/${VERSION}/create-security-certificates-openssl.html"
-        ]
-      },
-      {
-        "title": "Access Management",
-        "items": [
-        {
-            "title": "Manage Users",
-            "urls": [
-               "/${VERSION}/create-and-manage-users.html"
-            ]
-         },
-         {
-            "title": "Manage Roles (Enterprise)",
-            "urls": [
-              "/${VERSION}/roles.html"
-            ]
-          },
-          {
-            "title": "Privileges",
-            "urls": [
-              "/${VERSION}/privileges.html"
-            ]
-          }
         ]
       },
       {
