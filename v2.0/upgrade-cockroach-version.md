@@ -162,7 +162,7 @@ For each node in your cluster, complete the following steps.
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.0 features. Doing so will prevent you from being able to perform a rolling downgrade to v1.1, if necessary.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.0 features. Doing so may prevent you from being able to perform a rolling downgrade to v1.1, if necessary.<br><br.Also, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs during this phase.{{site.data.alerts.end}}
 
 ## Step 5. Finalize or revert the upgrade
 
@@ -176,11 +176,9 @@ Once you have monitored the upgraded cluster for at least one day:
 
 {{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the v2.0.x series, you don't need to take any further action.{{site.data.alerts.end}}
 
-1. [Back up the cluster](back-up-data.html).
+1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 
-2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
-
-3. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
+2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
     ~~~ sql
     > SELECT crdb_internal.node_executable_version();
@@ -188,7 +186,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
     Make sure the version matches your expectations. Since you upgraded each node, this version should be running on all other nodes as well.
 
-4. Use the same function to finalize the upgrade:
+3. Use the same function to finalize the upgrade:
 
     ~~~ sql
     > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
