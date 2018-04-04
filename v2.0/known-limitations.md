@@ -10,6 +10,10 @@ This page describes newly identified limitations in the CockroachDB v2.0 release
 
 ## New Limitations
 
+### Enterprise backup/restore during rolling upgrades
+
+In the upgrade process, after upgrading all binaries to v2.0, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.0 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
+
 ### Write and update limits for a single statement
 
 A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
