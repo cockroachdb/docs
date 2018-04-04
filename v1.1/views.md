@@ -163,22 +163,31 @@ pq: user bob does not have SELECT privilege on table accounts
 
 ### Simplify supporting legacy code
 
-When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. During and after changes to the original table, your application will continue uninterrupted, and you can update the legacy code at your leisure.
+When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. Once the new view is created, your application can continue uninterrupted, and you can update the legacy code at your leisure.
 
 #### Example
 
-Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`. To ensure that your application continues uninterrupted, you could execute a [transaction](transactions.html) that renames the underlying table to `client_accounts` and creates a view with the old table name, `user_accounts`:
+Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`.
+
+You can accomplish the change with a 2-step process:
+
+1. [Rename the underlying table](rename-table.html) to `client_accounts`
+2. [Create a view](create-view.html) with the old table name, `user_accounts`
+
+For example:
 
 ~~~ sql
-BEGIN;
 ALTER TABLE bank.user_accounts RENAME TO bank.client_accounts;
 CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.client_accounts;
-COMMIT;
 ~~~
 
-Your application would then continue referencing `user_accounts` without issue, and at a later time, you could update your application code to reference the new `client_accounts` table.
+Note that there will be a brief window of time after the table rename and before the view creation when there will be no relation (table or view) called `user_accounts`. During this window, if your application tries to access `user_accounts`, it will need to handle any error that occurs. In most ORMs, this will cause an exception to be thrown, followed by a retry. Once the view is created, the retry should succeed, and further accesses of `user_accounts` will work as expected.
+
+{{site.data.alerts.callout_info}}
+Unfortunately the 2-step operation described above can't be wrapped in a [transaction](transactions.html) due to a [known limitation](known-limitations.html#schema-changes-within-transactions) that a table cannot be renamed inside a transaction.
+{{site.data.alerts.end}}
 
 ## How Views Work
 
