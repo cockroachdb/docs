@@ -18,6 +18,7 @@ toc: false
 <div class="filter-content" markdown="1" data-scope="go">
 - Install the latest version of [CockroachDB](install-cockroachdb.html).
 - Install the latest version of [Go](https://golang.org/dl/): `brew install go`
+- Install the [PostgreSQL driver](https://github.com/lib/pq): `go get github.com/lib/pq`
 </div>
 
 <div class="filter-content" markdown="1" data-scope="python">
@@ -195,7 +196,7 @@ Now, retrieve all the current entries where the link is pointing to somewhere on
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
-WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+WHERE posts @> '{"data": {"domain": "github.com"}}';
 ~~~
 ~~~
 +--------------------------------------+
@@ -240,7 +241,7 @@ Now that there is an inverted index, the same query will run much faster:
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
-WHERE posts @> '{"data": {"domain": "youtube.com"}}';
+WHERE posts @> '{"data": {"domain": "github.com"}}';
 ~~~
 ~~~
 (334 rows)
