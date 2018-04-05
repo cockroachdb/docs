@@ -283,6 +283,9 @@ $(document).ready(function(){
 <div id="download-the-binary-linux" class="install-option">
   <ol>
     <li>
+      <pThe CockroachDB binary for Linux requires <code>glibc</code> and <code>libtinfo</code>, which are found by default on nearly all Linux distributions. Ensure that these libraries are on your distribution before installing CockroachDB.</p>
+    </li>
+    <li>
       <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz"  data-eventcategory="linux-binary-step1">CockroachDB archive</a> for Linux, and extract the binary:</p>
 
       <div class="copy-clipboard">
@@ -314,6 +317,7 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 
