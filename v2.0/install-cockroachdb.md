@@ -281,6 +281,9 @@ $(document).ready(function(){
 </div>
 
 <div id="download-the-binary-linux" class="install-option">
+
+{% include linux-binary-prereqs.md %}
+
   <ol>
     <li>
       <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz"  data-eventcategory="linux-binary-step1">CockroachDB archive</a> for Linux, and extract the binary:</p>
@@ -314,6 +317,7 @@ $(document).ready(function(){
       </div>
     </li>
   </ol>
+
 <h2 id="whats-next">What's Next?</h2>
 <p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 
