@@ -65,7 +65,7 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
-`--user`<br>`-u` | The [user](create-and-manage-users.html) executing the `dump` command. The user must have the `SELECT` privilege on the target table.<br><br>**Default:** `root`
+`--user`<br>`-u` | The [user](create-and-manage-users.html) executing the `dump` command. The user must exist and have the `SELECT` privilege on the target table.<br><br>**Default:** `root`
 
 ### Logging
 
