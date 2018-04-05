@@ -135,14 +135,14 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
-  ('region', 'us-east-1', 40.367474, -82.996216),
-  ('region', 'us-west-1', 43.8041334, -120.55420119999997),
-  ('region', 'eu-west-1', 48.856614, 2.3522219000000177);
+  ('region', 'us-east-1', 37.478397, -76.453077),
+  ('region', 'us-west-1', 38.837522, -120.895824),
+  ('region', 'eu-west-1', 53.142367, -7.692054);
 ~~~
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-To get the latitudes and longitudes of common AWS/Azure/GC regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
+For the latitudes and longitudes of AWS regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
 
 ### Step 5. View the Node Map
 
@@ -195,11 +195,12 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ## Location Coordinates for Reference
 
+For AWS regions, you can use these locations to populate your `system.locations` table. Other cloud provider's region locations are similar enough that you can still use these as approximations, but they're not always the same.
+
 |  Location | SQL Statement |  
 |  ------ | ------ |
 |  US East (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)`|
 |  US East (Ohio) | `INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)` |
-|  US Central (Iowa) | `INSERT into system.locations VALUES ('region', 'us-central', 42.032974, -93.581543)` |
 |  US West (N. California) | `INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824)` |
 |  US West (Oregon) | `INSERT into system.locations VALUES ('region', 'us-west-2', 43.804133, -120.554201)` |
 |  Canada (Central) | `INSERT into system.locations VALUES ('region', 'ca-central-1', 56.130366, -106.346771)` |
