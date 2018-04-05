@@ -14,7 +14,6 @@ There are various reasons to use views, including:
 
 - [Hide query complexity](#hide-query-complexity)
 - [Limit access to underlying data](#limit-access-to-underlying-data)
-- [Simplify supporting legacy code](#simplify-supporting-legacy-code)
 
 ### Hide query complexity
 
@@ -160,25 +159,6 @@ pq: user bob does not have SELECT privilege on table accounts
 +----------+-----------------+
 (5 rows)
 ~~~
-
-### Simplify supporting legacy code
-
-When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. During and after changes to the original table, your application will continue uninterrupted, and you can update the legacy code at your leisure.
-
-#### Example
-
-Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`. To ensure that your application continues uninterrupted, you could execute a [transaction](transactions.html) that renames the underlying table to `client_accounts` and creates a view with the old table name, `user_accounts`:
-
-~~~ sql
-BEGIN;
-ALTER TABLE bank.user_accounts RENAME TO bank.client_accounts;
-CREATE VIEW bank.user_accounts
-  AS SELECT type, email
-  FROM bank.client_accounts;
-COMMIT;
-~~~
-
-Your application would then continue referencing `user_accounts` without issue, and at a later time, you could update your application code to reference the new `client_accounts` table.
 
 ## How Views Work
 
