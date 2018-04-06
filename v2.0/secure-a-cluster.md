@@ -306,5 +306,6 @@ $ cockroach start \
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
+- Learn how to use [Client Connection Parameters](connection-parameters.html) to connect your app to your secure cluster
 - [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance

@@ -65,11 +65,7 @@ All `node` subcommands support the following [general-use](#general) and [loggin
 
 Flag | Description
 -----|------------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `tsv`
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 
 The `node status` subcommand also supports the following general flags:
 
@@ -85,6 +81,12 @@ The `node decommission` subcommand also supports the following general flag:
 Flag | Description
 -----|------------
 `--wait` | When to return to the client. Possible values: `all`, `live`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command won't return to the client until those nodes are back online.<br><br>If `live`, the command returns to the client after all online nodes are fully decommissioned. Any specified nodes that are offline will automatically will be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Logging
 

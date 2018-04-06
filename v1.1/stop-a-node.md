@@ -63,11 +63,13 @@ The `quit` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). If the cluster is secure, this directory must contain a valid CA certificate and a client certificate and key for the `root` user. Client certificates for other users are not supported.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--decommission` | If specified, the node will be permanently removed instead of temporarily stopped. See [Remove Nodes](remove-nodes.html) for more details.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:**`localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Logging
 
