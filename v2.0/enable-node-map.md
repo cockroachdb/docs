@@ -142,7 +142,7 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-For the latitudes and longitudes of AWS regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
+For the latitudes and longitudes of AWS and Azure regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
 
 ### Step 5. View the Node Map
 
@@ -195,9 +195,9 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ## Location Coordinates for Reference
 
-For AWS regions, you can use these locations to populate your `system.locations` table. Other cloud provider's region locations are similar enough that you can still use these as approximations, but they're not always the same.
+### AWS locations
 
-|  Location | SQL Statement |  
+|  Location | SQL Statement |
 |  ------ | ------ |
 |  US East (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)`|
 |  US East (Ohio) | `INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)` |
@@ -215,3 +215,7 @@ For AWS regions, you can use these locations to populate your `system.locations`
 |  Asia Pacific (Sydney) | `INSERT into system.locations VALUES ('region', 'ap-southeast-2', -33.86882, 151.209296)` |
 |  Asia Pacific (Mumbai) | `INSERT into system.locations VALUES ('region', 'ap-south-1', 19.075984, 72.877656)` |
 |  South America (São Paulo) | `INSERT into system.locations VALUES ('region', 'sa-east-1', -23.55052, -46.633309)` |
+
+### Azure locations
+
+{% include azure-locations.md %}
