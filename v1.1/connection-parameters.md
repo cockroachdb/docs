@@ -93,11 +93,17 @@ The following values are supported for `sslmode`, although only the first and th
 Parameter | Description | Recommended for use
 ----------|-------------|--------------------
 `sslmode=disable` | Do not use an encrypted, secure connection at all. | Use during development.
-`sslmode=allow` | Enable a secure connection only if the server requires it. |
-`sslmode=prefer` | Try to establish a secure connection, but accept an insecure connection if the server does not support secure connections. |
+`sslmode=allow` | Enable a secure connection only if the server requires it.<br><br>**Not supported in all clients.** |
+`sslmode=prefer` | Try to establish a secure connection, but accept an insecure connection if the server does not support secure connections.<br><br>**Not supported in all clients.** |
 `sslmode=require` | Force a secure connection. An error occurs if the secure connection cannot be established. |
 `sslmode=verify-ca` | Force a secure connection and verify that the client and server certificates are signed by a known CA. |
 `sslmode=verify-full` | Force a secure connection, verify that the client and server certificates are signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments](secure-a-cluster.html).
+
+{{site.data.alerts.callout_danger}}Some client drivers and the
+<code>cockroach</code> commands do not support
+<code>sslmode=allow</code> and <code>sslmode=prefer</code>. Check the
+documentation of your SQL driver to determine whether these options
+are supported.{{site.data.alerts.end}}
 
 ### Example URL for an Insecure Connection
 
