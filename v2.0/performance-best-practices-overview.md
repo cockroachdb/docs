@@ -43,7 +43,7 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
 
-When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
 ## Interleave Tables
 
