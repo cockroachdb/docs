@@ -103,6 +103,7 @@ Parameter | Description
 {% include copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE db2.* TO henryroach;
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
