@@ -1,4 +1,4 @@
-In this example, let's create a table with computed columns and indexes on those columns:
+In this example, let's create a table with a computed columns and an index on that column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
