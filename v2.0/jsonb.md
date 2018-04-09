@@ -182,7 +182,7 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
-### Create a table with a `JSONB` column and a computed column
+### Create a Table with a `JSONB` Column and a Computed Column
 
 {% include computed-columns/jsonb.md %}
 
