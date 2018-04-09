@@ -40,6 +40,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
 | `search_path` | <span class="version-tag">Changed in v2.0:</span> A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{public}` | Yes |
 | `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
+| `server_version_num` | <span class="version-tag">New in v2.0:</span> The version of PostgreSQL that CockroachDB emulates. | Version-dependent | Yes |
 | `session_user` | The user connected for the current session. | User in connection string | No |
 | `sql_safe_updates` | If `false`, potentially unsafe SQL statements are allowed, including `DROP` of a non-empty database and all dependent objects, `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE .. DROP COLUMN`. See [Allow Potentially Unsafe SQL Statements](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) for more details. | `true` for interactive sessions from the [built-in SQL client](use-the-built-in-sql-client.html),<br>`false` for sessions from other clients | Yes |
 | `time zone` | The default time zone for the current session   | `UTC` | Yes |
