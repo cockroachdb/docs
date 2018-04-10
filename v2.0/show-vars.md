@@ -62,7 +62,7 @@ Special syntax cases supported for compatibility:
 |--------|---------------|
 | `SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"` |
 | `SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"` |
-| `SHOW TIME ZONE` | `SHOW "time zone"` |
+| `SHOW TIME ZONE` | `SHOW "timezone"` |
 | `SHOW TRANSACTION STATUS` | `SHOW "transaction status"` |
 
 ## Examples
@@ -105,7 +105,7 @@ Special syntax cases supported for compatibility:
 | server_version                | 9.5.0        |
 | session_user                  | root         |
 | standard_conforming_strings   | on           |
-| time zone                     | UTC          |
+| timezone                      | UTC          |
 | transaction isolation level   | SERIALIZABLE |
 | transaction priority          | NORMAL       |
 | transaction status            | NoTxn        |

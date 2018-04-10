@@ -58,7 +58,7 @@ Special syntax cases:
 | `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
 | `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
 | `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
-| `SET TIME ZONE ...` | `SET "time zone" = ...` | This is provided for compatibility with PostgreSQL clients.
+| `SET TIME ZONE ...` | `SET "timezone" = ...` | This is provided for compatibility with PostgreSQL clients.
 
 ## Examples
 
@@ -163,7 +163,7 @@ You can control your client's default time zone for the current session with <co
 
 {{site.data.alerts.callout_info}}With setting <code>SET TIME ZONE</code>, CockroachDB uses UTC as the default time zone.{{site.data.alerts.end}}
 
-`SET TIME ZONE` uses a special syntax form used to configure the `"time zone"` session parameter because `SET` cannot assign to parameter names containing spaces.
+`SET TIME ZONE` uses a special syntax form used to configure the `"timezone"` session parameter because `SET` cannot assign to parameter names containing spaces.
 
 ### Parameters
 
@@ -177,7 +177,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ### Example: Set the Default Time Zone via `SET TIME ZONE`
 
 ~~~ sql
-> SET TIME ZONE 'EST'; -- same as SET "time zone" = 'EST'
+> SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
@@ -189,7 +189,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 (1 row)
 ~~~
 ~~~ sql
-> SET TIME ZONE DEFAULT; -- same as SET "time zone" = DEFAULT
+> SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
