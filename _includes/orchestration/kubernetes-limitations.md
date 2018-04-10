@@ -2,17 +2,7 @@
 
 #### Kubernetes Version
 
-Kubernetes 1.7 or higher is required. Earlier versions do not support the `maxUnavailabile` field and `PodDisruptionBudget` resource type used in the CockroachDB StatefulSet configuration.
-
-{% if page.secure == true %}
-
-If you want to run on Kubernetes 1.6, you can do so by removing `maxUnavailable` and `PodDisruptionBudget` from the [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file. Running on versions earlier than 1.6 would require more substantial changes.
-
-{% else %}
-
-If you want to run on Kubernetes 1.6, you can do so by removing `maxUnavailable` and `PodDisruptionBudget` from the [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file. Running on versions earlier than 1.6 would require more substantial changes.
-
-{% endif %}
+Kubernetes 1.8 or higher is required in order to use our most up-to-date configuration files. Earlier Kubernetes releases do not support some of the options used in our configuration files. If you need to run on an older version of Kubernetes, we have kept around configuration files that work on older Kubernetes releases in the versioned subdirectories of [https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) (e.g., [v1.7](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/v1.7)).
 
 #### Storage
 
