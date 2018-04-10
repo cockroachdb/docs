@@ -30,17 +30,17 @@ The user must have the `SELECT` [privilege](privileges.html) on the tables used 
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `DISTINCT` or `ALL` | See [Eliminate Duplicate Rows](#eliminate-duplicate-rows). |
-| `DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions](scalar-expressions.html) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
-| `target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row, or `*` to automatically retrieve all columns from the `FROM` clause.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation. |
-| `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression. |
-| `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).<br/><br/>Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. |
-| `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).  |
-| `GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`. |
-| `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions. |
-| `WINDOW window_definition_list` | A list of [window functions definitions](window-functions.html). |
+Parameter | Description
+----------|-------------
+`DISTINCT` or `ALL` | See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
+`DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions](scalar-expressions.html) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
+`target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row, or `*` to automatically retrieve all columns from the `FROM` clause.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
+`table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).<br /><br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Also, time-travel queries are not supported in transactions or (most) subqueries. For details, see [the example below](#select-historical-data-time-travel).
+`WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
+`GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`.
+`HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
+`WINDOW window_definition_list` | A list of [window functions definitions](window-functions.html).
 
 ## Eliminate Duplicate Rows
 
@@ -347,7 +347,7 @@ GROUP BY state_opened;
 
 #### Filter Aggregate Groups
 
-To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evlauate to a Boolean value.
+To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evaluate to a Boolean value.
 
 For example:
 
@@ -392,7 +392,7 @@ HAVING COUNT(name) > 1;
 ~~~
 
 
-### Select Historical Data (Time Travel)
+### Select Historical Data (Time-Travel)
 
 CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME`. For more details, see [SQL Performance Best Practices](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) and the blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
 
@@ -431,6 +431,53 @@ WHERE name = 'Edna Barath';
 | Edna Barath |     450 |
 | Edna Barath |    2000 |
 +-------------+---------+
+~~~
+
+Note that time-travel queries are not supported in the following scenarios:
+
+- In [transactions](transactions.html)
+- In [subqueries](subqueries.html), unless the parameter is also specified at the top-level of the query with the same timestamp.
+
+For example, the following query works (with example data taken from [SQL Audit Logging](sql-audit-logging.html)):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
++----------------------------------+
+|               name               |
++----------------------------------+
+| Vainglorious K. Snerptwiddle III |
++----------------------------------+
+(1 row)
+~~~
+
+These queries do not:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
+ERROR:  AS OF SYSTEM TIME must be provided on a top-level statement
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:30:00'
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
+ERROR:  cannot specify AS OF SYSTEM TIME with different timestamps
 ~~~
 
 ## Advanced Uses of `SELECT` Clauses
