@@ -150,7 +150,11 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Write and update limits for a single transaction
 
-A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
+A single transaction can contain at most 100,000 write operations (e.g.,
+deletions or changes to individual columns) and at most 64MiB of combined
+updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO
+.... SELECT FROM ...` and `DELETE FROM ... WHERE <non-selective filter>`
+queries commonly encounter these limits.
 
 If you need to increase these limits, you can update the [cluster-wide settings](cluster-settings.html) `kv.transaction.max_intents` and `kv.raft.command.max_size`. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
 
