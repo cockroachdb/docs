@@ -1580,7 +1580,12 @@ li.search-wrap {
     background-color: #ECF7FF;
     border-left-color: #3A7DE0; }
     .bs-callout--info h4, .bs-callout--info .bs-callout__label {
-      color: #3A7DE0; }
+        color: #3A7DE0; }
+  .bs-callout--warning {
+    background-color: #fcf8e3;
+    border-left-color: orange; }
+    .bs-callout--warning h4, .bs-callout--warning .bs-callout__label {
+      color: orange; }
 
 #toc > ul {
   background-color: #F0FFE8;
