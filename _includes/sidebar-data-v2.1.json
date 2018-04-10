@@ -618,6 +618,12 @@
             ]
           },
           {
+            "title": "<code>SHOW EXPERIMENTAL_RANGES</code>",
+            "urls": [
+              "/${VERSION}/show-experimental-ranges.html"
+            ]
+          },
+          {
             "title": "<code>SHOW GRANTS</code>",
             "urls": [
               "/${VERSION}/show-grants.html"
