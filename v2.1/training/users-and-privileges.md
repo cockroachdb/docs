@@ -17,7 +17,7 @@ redirect_from: /training/users-and-privileges.html
 
 ## Before you begin
 
-Make sure you have already completed [Data Import](data-import.html).
+Make sure you have already completed [SQL Basics](sql-basics.html).
 
 ## Step 1. Check initial privileges
 
