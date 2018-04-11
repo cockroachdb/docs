@@ -91,7 +91,8 @@ Otherwise, it returns an HTTP `200 OK` status response code with details about t
 
 <span class="version-tag">New in v2.0:</span> The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](stop-a-node.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers don't direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).    
+- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](stop-a-node.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers don't direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+    {{site.data.alerts.callout_success}}To cause a node to return <code>503 Service Unavailable</code> even before it has started shutting down, you can increase the <code>server.shutdown.drain_wait</code> <a href="cluster-settings.html">cluster setting</a>.{{site.data.alerts.end}}
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
 {% include copy-clipboard.html %}
