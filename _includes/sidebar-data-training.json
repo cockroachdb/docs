@@ -50,6 +50,12 @@
         ]
       },
       {
+        "title": "SQL Basics",
+        "urls": [
+          "/${VERSION}/training/sql-basics.html"
+        ]
+      },
+      {
         "title": "Users and Privileges",
         "urls": [
           "/${VERSION}/training/users-and-privileges.html"
