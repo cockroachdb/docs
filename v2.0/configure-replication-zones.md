@@ -243,6 +243,8 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 ~~~
 
+{{site.data.alerts.callout_danger}}At this time, changes to a cluster's default replication factor (<code>num_replicas</code>) are not automatically applied to the <a href="#create-a-replication-zone-for-system-ranges">replication zones for system ranges</a>. Therefore, if you increase the default replication factor, you must also increase the replication factor for system ranges to ensure that important "meta" information is as resilient as your data.{{site.data.alerts.end}}
+
 ### Create a Replication Zone for a Database
 
 To control replication for a specific database, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags:
