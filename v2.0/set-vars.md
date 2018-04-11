@@ -58,7 +58,7 @@ Special syntax cases:
 | `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
 | `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
 | `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
-| `SET TIME ZONE ...` | `SET "timezone" = ...` | This is provided for compatibility with PostgreSQL clients.
+| `SET TIME ZONE ...` | `SET timezone = ...` | This is provided for compatibility with PostgreSQL clients.
 
 ## Examples
 
