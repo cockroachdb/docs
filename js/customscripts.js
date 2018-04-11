@@ -85,7 +85,7 @@ $(function() {
       $('.footer-sub-nav').show();
 
       if (!isDesktop) {
-        currentVersion = getCookie('currentVersion');
+        currentVersion = getCookie('currentVersion') || 'stable';
         $('#search-input').autocomplete({ minLength: 3, hint: false, debug: true }, [
           {
             source: $.fn.autocomplete.sources.hits(index, {
