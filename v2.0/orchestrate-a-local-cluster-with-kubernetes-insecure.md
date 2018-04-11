@@ -94,11 +94,11 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     Forwarding from 127.0.0.1:8080 -> 8080
     ~~~
 
-2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a>.
+2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a> and click **Metrics** on the left-hand navigation bar.
 
-3. On the **Cluster Overview**, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
+3. On the **Overview** dashboard, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
 
-    <img src="{{ 'images/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 4. Click the **Databases** tab on the left to verify that the `bank` database you created manually, as well as the `kv` database created by the load generated, are listed.
 
@@ -172,6 +172,8 @@ Use a local cluster to explore these other core CockroachDB features:
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
+- [JSON Support](demo-json-support.html)
 
 You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).

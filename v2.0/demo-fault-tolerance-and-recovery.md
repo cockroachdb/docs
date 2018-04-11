@@ -82,12 +82,9 @@ $ cockroach sql --insecure --port=26257
 +--------------------+
 |      Database      |
 +--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
-(4 rows)
+(1 row)
 ~~~
 
 Exit the SQL shell:
@@ -131,12 +128,10 @@ $ cockroach sql --insecure --port=26259
 +--------------------+
 |      Database      |
 +--------------------+
-| information_schema |
-| pg_catalog         |
 | bank               |
 | system             |
 +--------------------+
-(4 rows)
+(2 rows)
 ~~~
 
 As you see, despite one node being offline, the cluster continues uninterrupted because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one node live, the cluster would be unresponsive until another node was brought back online.
@@ -184,13 +179,10 @@ $ cockroach sql --insecure --port=26259
 +--------------------+
 |      Database      |
 +--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | startrek           |
 | system             |
 +--------------------+
-(5 rows)
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -298,11 +290,11 @@ $ cockroach sql --insecure --port=26258
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
 
-Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you'll see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080` to see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 {{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
 
-<img src="{{ 'images/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 9. Add another node
 
@@ -352,11 +344,11 @@ server drained and shutdown completed
 
 Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
-<img src="{{ 'images/recovery2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/recovery2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicating that the node is not expected to come back. At this point, in the **Live Nodes** section, you should also see that the **Replicas** count for node 4 matches the count for node 1 and 3, the other live nodes. This indicates that all missing replicas (those that were on node 2) have been re-replicated to node 4.
 
-<img src="{{ 'images/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 12.  Stop the cluster
 
@@ -377,5 +369,7 @@ Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [JSON Support](demo-json-support.html)

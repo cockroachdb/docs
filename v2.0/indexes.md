@@ -23,7 +23,7 @@ Each table automatically has an index created called `primary`, which indexes ei
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the Unique constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
@@ -33,7 +33,7 @@ To create the most useful secondary indexes, you should also check out our [best
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e. the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can also force [queries to use a specific index](select.html#force-index-selection-index-hints) (also known as "index hinting").
+To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
 
 ### Storage
 
@@ -51,7 +51,7 @@ To maximize your indexes' performance, we recommend following a few [best practi
 
 ## Best Practices
 
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that: 
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
 - [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
@@ -89,8 +89,9 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 
 ## See Also
 
+- [Inverted Indexes](inverted-indexes.html)
 - [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html) 
-- [`RENAME INDEX`](rename-index.html) 
+- [`DROP INDEX`](drop-index.html)
+- [`RENAME INDEX`](rename-index.html)
 - [`SHOW INDEX`](show-index.html)
 - [SQL Statements](sql-statements.html)

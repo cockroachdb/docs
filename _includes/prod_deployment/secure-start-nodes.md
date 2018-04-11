@@ -28,9 +28,10 @@ For each initial node of your cluster, complete the following steps:
     $ cockroach start \
     --certs-dir=certs \
     --host=<node1 address> \
-    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+    --locality=<key-value pairs> \
     --cache=25% \
     --max-sql-memory=25% \
+    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
     --background
     ~~~
 
@@ -40,8 +41,9 @@ For each initial node of your cluster, complete the following steps:
     -----|------------
     `--certs-dir` | Specifies the directory where you placed the `ca.crt` file and the `node.crt` and `node.key` files for the node.
     `--host` | Specifies the hostname or IP address to listen on for intra-cluster and client communication, as well as to identify the node in the Admin UI. If it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>If you want the node to listen on multiple interfaces, leave `--host` empty.<br><br>If you want the node to communicate with other nodes on an internal address (e.g., within a private network) while listening on all interfaces, leave `--host` empty and set the `--advertise-host` flag to the internal address.
-    `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster.
+    `--locality` | Key-value pairs that describe the location of the node, e.g., country, region, datacenter, rack, etc. It is recommended to set `--locality` when deploying across multiple datacenters or when there is otherwise high latency between nodes. It is also required to use certain enterprise features. For more details, see [Locality](start-a-node.html#locality).
     `--cache`<br>`--max-sql-memory` | Increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing (see [Recommended Production Settings](recommended-production-settings.html) for more details).
+    `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster.
     `--background` | Starts the node in the background so you gain control of the terminal to issue more commands.
 
 	For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data`, binds internal and client communication to `--port=26257`, and binds Admin UI HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](start-a-node.html).

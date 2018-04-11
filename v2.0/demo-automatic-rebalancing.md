@@ -82,12 +82,9 @@ $ cockroach sql --insecure --port=26257
 +--------------------+
 |      Database      |
 +--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
 | system             |
 +--------------------+
-(4 rows)
+(1 row)
 ~~~
 
 Exit the SQL shell:
@@ -152,9 +149,9 @@ Once it's running, `block_writer` will output the number of rows written per sec
 
 ## Step 6. Watch the replica count increase
 
-Open the Admin UI at `http://localhost:8080`, click **View nodes list** on the right, and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
+Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
 
-<img src="{{ 'images/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 7. Add 2 more nodes
 
@@ -186,7 +183,7 @@ $ cockroach start --insecure \
 
 Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
 
-<img src="{{ 'images/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 9.  Stop the cluster
 
@@ -207,5 +204,7 @@ Use a local cluster to explore these other core CockroachDB features:
 
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [JSON Support](demo-json-support.html)

@@ -1,5 +1,6 @@
 You might also be interested in using a local cluster to explore the following CockroachDB benefits:
 
+- [Client Connection Parameters](connection-parameters.html)
 - [Data Replication](demo-data-replication.html)
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)

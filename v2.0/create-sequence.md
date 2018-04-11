@@ -36,13 +36,17 @@ table td:first-child {
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
-`CYCLE` / `NO CYCLE` | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value. Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
+`NO CYCLE` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
+
+<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
+`CACHE <seq_value>` | The number of sequence values to allocate in memory for faster access. Currently, you can only `CACHE 1` or leave unspecified.-->
 
 ## Sequence Functions
 
 We support the following [SQL sequence functions](functions-and-operators.html):
 
 - `nextval('seq_name')`
+    {{site.data.alerts.callout_info}}If <code>nextval()</code> is used in conjunction with <code>RETURNING NOTHING</code> statements, the sequence increments can be reordered. For more information, see <a href="parallel-statement-execution.html">Parallel Statement Execution</a>.{{site.data.alerts.end}}
 - `currval('seq_name')`
 - `lastval()`
 - `setval('seq_name', value, is_called)`

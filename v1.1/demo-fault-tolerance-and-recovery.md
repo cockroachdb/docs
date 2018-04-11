@@ -302,7 +302,7 @@ Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http:/
 
 {{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
 
-<img src="{{ 'images/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 9. Add another node
 
@@ -352,11 +352,11 @@ server drained and shutdown completed
 
 Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
 
-<img src="{{ 'images/recovery2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/recovery2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicating that the node is not expected to come back. At this point, in the **Live Nodes** section, you should also see that the **Replicas** count for node 4 matches the count for node 1 and 3, the other live nodes. This indicates that all missing replicas (those that were on node 2) have been re-replicated to node 4.
 
-<img src="{{ 'images/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 12.  Stop the cluster
 
@@ -377,5 +377,6 @@ Use a local cluster to explore these other core CockroachDB benefits:
 
 - [Data Replication](demo-data-replication.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)

@@ -8,9 +8,9 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 2. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
 
-3. CockroachDB uses [Jekyll](https://jekyllrb.com/docs/installation/) to transform Markdown and layout files into a complete, static HTML site. We also use [HTMLProofer](https://github.com/gjtorikian/html-proofer) to check the generated HTML for errors (broken internal and external links, missing images, etc.).
+3. CockroachDB uses [Jekyll](https://jekyllrb.com/docs/installation/) to transform Markdown and layout files into a complete, static HTML site. We also use [htmltest](https://github.com/cockroachdb/htmltest) to check the generated HTML for errors (broken internal and external links, missing images, etc.).
 
-    Install Jekyll, HTMLProofer, and some other dependencies so you can view doc changes locally:
+    Install Jekyll, htmltest, and some other dependencies so you can view doc changes locally:
 
     ``` shell
     $ cd path/to/docs
@@ -44,7 +44,7 @@ Once you're ready to contribute:
 
 6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
-We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [HTMLProofer](https://github.com/gjtorikian/html-proofer) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the Teamcity fail status.
+We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the Teamcity fail status.
 
 ## Keep Contributing
 
@@ -101,6 +101,7 @@ Field | Description | Default
 `redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
+`block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
 
 #### Page TOC
 
@@ -120,7 +121,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 #### Auto-Included Content
 
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page inludes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
+Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page includes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
 
 The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
 
@@ -131,7 +132,7 @@ New and changed features should be called out in the documentation using version
 - To add a version tag to a paragraph, place `<span class="version-tag">New in vX.X:</span>` at the start of the paragraph, e.g:
 
     ```
-    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global priveleges.
+    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global privileges.
     ```
 
 - To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, e.g.:
@@ -149,10 +150,10 @@ that don't correspond to a section heading on the page. This is
 currently used for pages with JavaScript toggle buttons, where the
 toggle to activate by default can be specified in the URL hash. If you
 attempt to link to, for example, `page-with-toggles.html#toggle-id` without
-listing `toggle-id` in `allowed_hashes`, our HTML proofer will complain
+listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
 that `toggle-id` does not exist on the page. Listing a hash in
 `allowed_hashes` will generate a dummy element with that ID at the top
-of the page, which keeps our HTML proofer happy.
+of the page, which keeps our HTML tester happy.
 
 Here's an example from a page with OS toggles:
 

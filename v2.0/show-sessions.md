@@ -92,7 +92,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### Filter for Specific Sessions
 
-You can use a [`SELECT`](select.html) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
+You can use a [`SELECT`](select-clause.html) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
 
 #### Show sessions associated with a specific user
 

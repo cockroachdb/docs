@@ -4,7 +4,7 @@ summary: The Replication dashboard lets you monitor the replication metrics for 
 toc: false
 ---
 
-The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Dashboard** > **Replication**.
+The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Replication**.
 
 <div id="toc"></div>
 
@@ -24,7 +24,7 @@ The **Replication** dashboard displays the following time series graphs:
 
 ### Ranges
 
-<img src="{{ 'images/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 The **Ranges** graph shows you various details about the status of ranges.
 
@@ -45,7 +45,7 @@ Under-replicated | The number of under-replicated ranges.
 
 ### Replicas Per Store
 
-<img src="{{ 'images/admin_ui_replicas_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_replicas_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of range replicas on the store.
 
@@ -55,7 +55,7 @@ You can [Configure replication zones](configure-replication-zones.html) to set t
 
 ### Replica Quiescence
 
-<img src="{{ 'images/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of replicas on the node.
 
@@ -68,14 +68,25 @@ Metric | Description
 Replicas | The number of replicas.
 Quiescent | The number of replicas that haven't been accessed for a while.
 
+### Snapshots
+
+<img src="{{ 'images/v2.0/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
+
+Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionaly the Raft protocol itself will request the snapshot.
+
+Metric | Description
+-------|------------
+Generated | The number of snapshots created per second.
+Applied (Raft-initiated) | The number of snapshots applied to nodes per second that were initiated within Raft.
+Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).
+Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
+
 ### Other Graphs
 
 The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 - Leaseholders per Store
-- Live Bytes per Store
-- Keys Written per Second per Store
+- Logical Bytes per Store
 - Range Operations
-- Snapshots
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.

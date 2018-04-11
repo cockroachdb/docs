@@ -4,7 +4,7 @@ summary: The CREATE VIEW statement creates a .
 toc: false
 ---
 
-The `CREATE VIEW` statement creates a new [view](views.html), which is a stored `SELECT` query represented as a virtual table.
+The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.
 
 <div id="toc"></div>
 
@@ -21,8 +21,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 Parameter | Description
 ----------|------------
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
-`column_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
-`AS select_stmt` | The [`SELECT`](select.html) statement to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
+`name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
+`AS select_stmt` | The [selection query](selection-queries.html) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
 
 ## Example
 
@@ -98,8 +98,16 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 (3 rows)
 ~~~
 
+## Known Limitations
+
+{{site.data.alerts.callout_info}} The following limitations may be lifted
+in a future version of CockroachDB.{{site.data.alerts.end}}
+
+{% include known_limitations/cte-with-view.md %}
+
 ## See Also
 
+- [Selection Queries](selection-queries.html)
 - [Views](views.html)
 - [`SHOW CREATE VIEW`](show-create-view.html)
 - [`ALTER VIEW`](alter-view.html)

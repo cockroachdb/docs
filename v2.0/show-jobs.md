@@ -11,6 +11,8 @@ toc: false
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
+{{site.data.alerts.callout_info}} The <code>SHOW JOBS</code> statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the <a href="sql-audit-logging.html">SQL Audit Logging (Experimental)</a> feature.{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Required Privileges
@@ -56,7 +58,7 @@ Field | Description
 
 ### Filter Jobs
 
-You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select.html) statement, and then filtering the values with the `WHERE` clause.
+You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;

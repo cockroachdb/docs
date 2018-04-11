@@ -61,16 +61,23 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
-`any_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any Primary Key, Unique, and Check [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE TABLE`](show-create-table.html) statement to view them at the table level.
-`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes](#create-a-table-with-secondary-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
+`table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) or other column qualification (e.g., [computed columns](computed-columns.html)) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any Primary Key, Unique, and Check [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE TABLE`](show-create-table.html) statement to view them at the table level.
+`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and Inverted Indexes](#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
+`opt_partition_by` | <span class="version-tag">New in v2.0</span>: An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 
 ## Table-Level Replication
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
+
+## Row-Level Replication <span class="version-tag">New in v2.0</span>
+
+CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more information.
+
+{{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
 ## Examples
 
@@ -152,10 +159,15 @@ In this example, we create a table with three columns. One column is the [primar
 (3 rows)
 ~~~
 
-### Create a Table with Secondary Indexes
+### Create a Table with Secondary and Inverted Indexes <span class="version-tag">New in v2.0</span>
 
 In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
+[Inverted indexes](inverted-indexes.html), which are new in v2.0, allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
+
+This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE product_information (
     product_id           INT PRIMARY KEY NOT NULL,
@@ -170,9 +182,11 @@ In this example, we create two secondary indexes during table creation. Secondar
     min_price            DECIMAL(8,2),
     catalog_url          STRING(50) UNIQUE,
     date_added           DATE DEFAULT CURRENT_DATE(),
+    misc                 JSONB,     
     CONSTRAINT price_check CHECK (list_price >= min_price),
     INDEX date_added_idx (date_added),
-    INDEX supp_id_prod_status_idx (supplier_id, product_status)
+    INDEX supp_id_prod_status_idx (supplier_id, product_status),
+    INVERTED INDEX details (misc)
 );
 
 > SHOW INDEX FROM product_information;
@@ -192,8 +206,10 @@ In this example, we create two secondary indexes during table creation. Secondar
 | product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   | false    |
 | product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   | false    |
 | product_information | supp_id_prod_status_idx              | false  |   3 | product_id     | ASC       | false   | true     |
+| product_information | details                              | false  |   1 | misc           | ASC       | false   | false    |
+| product_information | details                              | false  |   2 | product_id     | ASC       | false   | true     |
 +---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
-(10 rows)
+(12 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -316,6 +332,51 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 +----+---------+-------+
 ~~~
 
+### Create a Table with a Computed Column <span class="version-tag">New in v2.0</span>
+
+{% include computed-columns/simple.md %}
+
+### Create a Table with Partitions <span class="version-tag">New in v2.0</span>
+
+{{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
+
+#### Create a Table with Partitions by List
+
+In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students_by_list (
+    id SERIAL,
+    name STRING,
+    email STRING,
+    country STRING,
+    expected_graduation_date DATE,   
+    PRIMARY KEY (country, id))
+    PARTITION BY LIST (country)
+      (PARTITION north_america VALUES IN ('CA','US'),
+      PARTITION australia VALUES IN ('AU','NZ'),
+      PARTITION DEFAULT VALUES IN (default));
+~~~
+
+#### Create a Table with Partitions by Range
+
+In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students_by_range (
+   id SERIAL,
+   name STRING,
+   email STRING,                                                                                           
+   country STRING,
+   expected_graduation_date DATE,                                                                                      
+   PRIMARY KEY (expected_graduation_date, id))
+   PARTITION BY RANGE (expected_graduation_date)
+      (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
+      PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
+~~~
+
 ### Show the Definition of a Table
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
@@ -352,3 +413,4 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 - [`SHOW COLUMNS`](show-columns.html)
 - [Column Families](column-families.html)
 - [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
+- [Define Table Partitions](partitioning.html)

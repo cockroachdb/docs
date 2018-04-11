@@ -6,13 +6,13 @@ toc: false
 
 The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.
 
-{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a <a href="delete.html#delete-all-rows"><code>DELETE</code> statement without a <code>WHERE</code> clause<a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a <a href="delete.html#delete-all-rows"><code>DELETE</code> statement without a <code>WHERE</code> clause</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/truncate.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/truncate.html %}</section>
 
 ## Required Privileges
 
@@ -22,7 +22,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table.
 
 Parameter | Description
 ----------|------------
-`table_name` | The [`qualified_name`](sql-grammar.html#qualified_name) of the table to truncate.
+`table_name` | The name of the table to truncate.
 `CASCADE` | Truncate all tables with [Foreign Key](foreign-key.html) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key](foreign-key.html) dependencies on it.
 

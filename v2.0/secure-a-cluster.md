@@ -200,17 +200,19 @@ Exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-To access the [Admin UI](admin-ui-access-and-navigate.html) for your cluster, point a browser to `https://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup.
+Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to `http://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup. Then click **Metrics** on the left-hand navigation bar.
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
-<img src="{{ 'images/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Node** graph and hover over the line:
 
-<img src="{{ 'images/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
+
+{{site.data.alerts.callout_info}}Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this <a href="known-limitations.html#available-capacity-metric-in-the-admin-ui">limitation</a>. {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
@@ -304,5 +306,6 @@ $ cockroach start \
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
+- Learn how to use [Client Connection Parameters](connection-parameters.html) to connect your app to your secure cluster
 - [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance

@@ -5,17 +5,27 @@ toc: false
 toc_not_nested: true
 ---
 
-Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
+Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.1.x to v2.0, or from v2.0 to a patch release in the 2.0.x series. To upgrade within the 1.1.x series, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the 1.1 version of this page</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This page shows you how to upgrade to v2.0 from v1.1.x, or from any patch release in the v2.0.x series. To upgrade within the v1.1.x series, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the v1.1 version of this page</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Step 1. Prepare to upgrade
+## Step 1. Verify that you can upgrade
+
+When upgrading, you can skip patch releases, **but you cannot skip full releases**. Therefore, if you are upgrading from v1.0.x to v2.0:
+
+1. First [upgrade to v1.1](../v1.1/upgrade-cockroach-version.html). Be sure to complete all the steps, include the [finalization step](../v1.1/upgrade-cockroach-version.html#finalize-the-upgrade) (i.e., `SET CLUSTER SETTING version = '1.1';`).
+
+2. Then return to this page and perform a second rolling upgrade to v2.0.
+
+If you are upgrading from v1.1.x or from any v2.0.x patch release, you do not have to go through intermediate releases; continue to step 2.
+
+## Step 2. Prepare to upgrade
 
 Before starting the upgrade, complete the following steps.
 
-1. Make sure your cluster is behind a load balancer, or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+1. Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
 2. Verify the cluster's overall health by running the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 
@@ -29,7 +39,7 @@ Before starting the upgrade, complete the following steps.
 
 4. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
-## Step 2. Perform the rolling upgrade
+## Step 3. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
 
@@ -148,13 +158,13 @@ For each node in your cluster, complete the following steps.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
-## Step 3. Monitor the upgraded cluster
+## Step 4. Monitor the upgraded cluster
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new 2.0 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.1, if necessary.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.0 features. Doing so may prevent you from being able to perform a rolling downgrade to v1.1, if necessary. Also, it is not currently possible to run enterprise <a href="backup.html"><code>BACKUP</code></a> and <a href="restore.html"><code>RESTORE</code></a> jobs during this phase. You can track this known limitation <a href="https://github.com/cockroachdb/cockroach/issues/24490">here</a>. {{site.data.alerts.end}}
 
-## Step 4. Finalize or revert the upgrade
+## Step 5. Finalize or revert the upgrade
 
 Once you have monitored the upgraded cluster for at least one day:
 
@@ -164,13 +174,11 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the v2.0.x series, you don't need to take any further action.{{site.data.alerts.end}}
 
-1. [Back up the cluster](back-up-data.html).
+1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 
-2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
-
-3. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
+2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
     ~~~ sql
     > SELECT crdb_internal.node_executable_version();
@@ -178,7 +186,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
     Make sure the version matches your expectations. Since you upgraded each node, this version should be running on all other nodes as well.
 
-4. Use the same function to finalize the upgrade:
+3. Use the same function to finalize the upgrade:
 
     ~~~ sql
     > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
@@ -192,7 +200,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
-3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-2-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
+3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-3-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
 
 ## See Also
 

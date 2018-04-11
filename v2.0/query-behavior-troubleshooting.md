@@ -24,6 +24,8 @@ If queries are taking longer than expected to process, there are a few things yo
 
 - [Identify and cancel long-running queries](manage-long-running-queries.html).
 
+- [Turn on cluster-wide SQL execution logs](sql-faqs.html#cluster-wide-execution-logs).
+
 If you're still unable to determine why the query executes slowly, please [file an issue](file-an-issue.html).
 
 ## `bad connection` & `closed` Responses

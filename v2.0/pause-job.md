@@ -1,14 +1,14 @@
 ---
 title: PAUSE JOB
-summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs, such as schema changes and enterprise backups.
+summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `PAUSE JOB` [statement](sql-statements.html) lets you pause enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
+<span class="version-tag">New in v1.1:</span> The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html) jobs.
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
-{{site.data.alerts.callout_info}}As of v1.1, you cannot pause schema changes or enterprise <code>IMPORT</code> jobs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You cannot pause schema changes.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -51,3 +51,4 @@ Parameter | Description
 - [`CANCEL JOB`](cancel-job.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`IMPORT`](import.html)

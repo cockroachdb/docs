@@ -13,9 +13,9 @@ The `INTERVAL` [data type](data-types.html) stores a value that represents a spa
 A constant value of type `INTERVAL` can be expressed using an
 [interpreted literal](sql-constants.html#interpreted-literals), or a
 string literal
-[annotated with](sql-expressions.html#explicitly-typed-expressions)
+[annotated with](scalar-expressions.html#explicitly-typed-expressions)
 type `INTERVAL` or
-[coerced to](sql-expressions.html#explicit-type-coercions) type
+[coerced to](scalar-expressions.html#explicit-type-coercions) type
 `INTERVAL`.
 
 `INTERVAL` constants can be expressed using the following formats:

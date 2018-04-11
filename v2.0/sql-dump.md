@@ -4,7 +4,7 @@ summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: false
 ---
 
-The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables and views. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
+The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
 {{site.data.alerts.callout_success}}CockroachDB <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users can also back up their cluster's data using <a href="backup.html"><code>BACKUP</code></a>.{{site.data.alerts.end}}
 
@@ -14,8 +14,8 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 
 When `cockroach dump` is executed:
 
-- Table and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- **New in v1.1:** Table and view schemas are dumped in the order in which they can successfully be recreated.
+- Table, sequence, and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
+- Table and view schemas are dumped in the order in which they can successfully be recreated. As of v2.0, this is true of sequences as well. However, `cockroach dump` does not support circular foreign keys. See this [known limitation](#known-limitations) for more details.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
@@ -49,7 +49,7 @@ $ cockroach dump <database> <table> <flags> > dump-file.sql
 $ cockroach dump --help
 ~~~
 
-## Flags <span class="version-tag">Changed in v1.1</span>
+## Flags
 
 The `dump` command supports the following [general-use](#general) and [logging](#logging) flags.
 
@@ -58,14 +58,18 @@ The `dump` command supports the following [general-use](#general) and [logging](
 Flag | Description
 -----|------------
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br><span class="version-tag">New in v1.1:</span> Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
-`--user`<br>`-u` | The [user](create-and-manage-users.html) executing the `dump` command. The user must have the `SELECT` privilege on the target table.<br><br>**Default:** `root`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
+
+{{site.data.alerts.callout_info}}The user specified with <code>--user</code> must
+have the <code>SELECT</code> privilege on the target
+tables.{{site.data.alerts.end}}
 
 ### Logging
 
@@ -303,7 +307,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 (16 rows)
 ~~~
 
-Next, let's use a [time-travel query](select.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
+Next, let's use a [time-travel query](select-clause.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
 
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
@@ -344,6 +348,10 @@ INSERT INTO dump_test (id, name) VALUES
 ~~~
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
+
+## Known Limitations
+
+{% include known_limitations/dump-cyclic-foreign-keys.md %}
 
 ## See Also
 

@@ -15,7 +15,7 @@ You can run `cockroach help` in your shell to get similar guidance.
 Command | Usage
 --------|----
 [`start`](start-a-node.html) | Start a node.
-[`init`](initialize-a-cluster.html) | <span class="version-tag">New in v1.1:</span> Initialize a cluster.
+[`init`](initialize-a-cluster.html) | Initialize a cluster.
 [`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
 [`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
@@ -41,3 +41,5 @@ CockroachDB prioritizes command flags, environment variables, and defaults as fo
 2. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
 3. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
 4. If there's no flag default, CockroachDB gives an error.
+
+For more details, see [Client Connection Parameters](connection-parameters.html).

@@ -13,4 +13,4 @@ For information on using `ALTER INDEX`, see the documents for its relevant subco
 Subcommand | Description
 -----------|------------
 [`RENAME`](rename-index.html) | Change the name of an index.
-`SPLIT AT` | *(Documentation pending)* Potentially improve performance by identifying ideal locations to split data in the key-value layer.
+[`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the index.

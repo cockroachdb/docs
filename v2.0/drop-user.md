@@ -8,8 +8,6 @@ toc: false
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user rm</code></a> command to remove users.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
-
 <div id="toc"></div>
 
 ## Required Privileges
@@ -28,7 +26,9 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Example
 
-In this example, we first check a user's privileges. We then revoke the user's privileges before removing the user.
+<span class="version-tag">New in v2.0:</span> All of a user's privileges must be revoked before the user can be dropped.
+
+In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 
 {% include copy-clipboard.html %}
 ~~~ sql

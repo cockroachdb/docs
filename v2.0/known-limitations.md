@@ -1,20 +1,134 @@
 ---
-title: Known Limitations in CockroachDB v1.2
-summary: Known limitations in CockroachDB v1.2.
+title: Known Limitations in CockroachDB v2.0
+summary: Known limitations in CockroachDB v2.0.
 toc: false
 ---
 
-This page describes newly identified limitations in the CockroachDB v1.1 release as well as unresolved limitations identified in earlier releases.
+This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
 
 <div id="toc"></div>
 
 ## New Limitations
 
-### Available capacity metric in the Admin UI
+### Enterprise backup/restore during rolling upgrades
 
-If you are running multiple nodes on a single machine (not recommended) and didnt' specified the maximum allocated storage capacity for each node using the [`--store`](start-a-node.html#store) flag, the available capacity shown in the [**Capacity**](admin-ui-storage-dashboard.html#capacity) graph in the Admin UI is incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as an available store for each node, while in reality, only one hard disk is available for all nodes. The total available capacity is then calculated as the hard disk size multiplied by the number of nodes on the machine.
+In the upgrade process, after upgrading all binaries to v2.0, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.0 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
+
+You can track this known limitation [here](https://github.com/cockroachdb/cockroach/issues/24490).
+
+### Write and update limits for a single statement
+
+A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
+
+If you need to increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
+
+In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted
+any more, large transactions can have performance implications on the cluster.
+
+### Memory flags with non-integer values and a unit suffix
+
+The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
+
+As a workaround, use integer values or a percentage, for example, `--cache=1536MiB`.
+
+### Import with a high amount of disk contention
+
+[`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+
+~~~ sql
+> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
+~~~
+
+### Check constraints with `INSERT ... ON CONFLICT`
+
+[`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
+
+~~~ sql
+> CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
+~~~
+
+A simple `INSERT` statement that fails the Check constraint fails as it should:
+
+~~~ sql
+> INSERT INTO ab (a,b) VALUES (1, 12312);
+~~~
+
+~~~
+pq: failed to satisfy CHECK constraint (b < 1)
+~~~
+
+However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
+
+~~~ sql
+> INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
+~~~
+
+~~~ sql
+> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
+~~~
+
+~~~ sql
+> SELECT * FROM ab;
+~~~
+
+~~~
++---+--------+
+| a |   b    |
++---+--------+
+| 1 | 123132 |
++---+--------+
+(1 row)
+~~~
+
+### Referring to a CTE by name more than once
+
+{% include known_limitations/cte-by-name.md %}
+
+### Using CTEs with data-modifying statements
+
+{% include known_limitations/cte-with-dml.md %}
+
+### Using CTEs with views
+
+{% include known_limitations/cte-with-view.md %}
+
+### Using CTEs with `VALUES` clauses
+
+{% include known_limitations/cte-in-values-clause.md %}
+
+### Using CTEs with Set Operations
+
+{% include known_limitations/cte-in-set-expression.md %}
+
+### Assigning latitude/longitude for the Node Map
+
+{% include known_limitations/node-map.md %}
+
+### Placeholders in `PARTITION BY`
+
+{% include known_limitations/partitioning-with-placeholders.md %}
+
+### Adding a column with certain `DEFAULT` values
+
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+
+~~~ sql
+> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+~~~
+
+~~~ sql
+> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+~~~
+
+~~~ sql
+> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+~~~
 
 ## Unresolved Limitations
+
+### Available capacity metric in the Admin UI
+
+{% include available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
@@ -28,15 +142,28 @@ Within a single [transaction](transactions.html):
 
 When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT PRIMARY KEY);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > PREPARE prep1 AS SELECT * FROM users;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > ALTER TABLE users ADD COLUMN name STRING;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO users VALUES (1, 'Max Roach');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > EXECUTE prep1;
 ~~~
 
@@ -61,12 +188,6 @@ Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`]
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
-
-### Repeated or combined commands in the SQL shell history
-
-Our [built-in SQL shell](use-the-built-in-sql-client.html) stores previously executed commands in the shell's history. In some cases, these commands are unexpectedly duplicated.
-
-Also, in some terminals, such  as `st` or `xterm` without `tmux`, previously executed commands are combined into a single command in the SQL shell history.
 
 ### Using `\|` to perform a large input in the SQL shell
 
@@ -101,6 +222,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -114,6 +236,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~
@@ -121,12 +244,6 @@ Many string operations are not properly overloaded for [collated strings](collat
 ~~~
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
-
-### Write and update limits for a single transaction
-
-A single transaction can contain at most 100,000 write operations (e.g., changes to individual columns) and at most 64MiB of combined updates. When a transaction exceeds these limits, it gets aborted. `INSERT INTO .... SELECT FROM ...` queries commonly encounter these limits.
-
-If you need to increase these limits, you can update the [cluster-wide settings](cluster-settings.html) `kv.transaction.max_intents` and `kv.raft.command.max_size`. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
 
 ### Max size of a single column family
 
@@ -151,3 +268,7 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
+
+### `cockroach dump` does not support cyclic foreign key references
+
+{% include known_limitations/dump-cyclic-foreign-keys.md %}

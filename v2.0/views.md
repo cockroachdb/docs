@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-A view is a stored `SELECT` query represented as a virtual table. Unlike a standard table, a view is not part of the physical schema; instead, it is a virtual table that forms dynamically when requested.
+A view is a stored [selection query](selection-queries.html) and provides a shorthand name for it. CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
 
 <div id="toc"></div>
 
@@ -14,7 +14,6 @@ There are various reasons to use views, including:
 
 - [Hide query complexity](#hide-query-complexity)
 - [Limit access to underlying data](#limit-access-to-underlying-data)
-- [Simplify supporting legacy code](#simplify-supporting-legacy-code)
 
 ### Hide query complexity
 
@@ -161,25 +160,6 @@ pq: user bob does not have SELECT privilege on table accounts
 (5 rows)
 ~~~
 
-### Simplify supporting legacy code
-
-When you need to alter a table in a way that will break your application, and you can't update your code right away, you can create a view with a name and schema identical to the original table. During and after changes to the original table, your application will continue uninterrupted, and you can update the legacy code at your leisure.
-
-#### Example
-
-Let's say you have a table called `user_accounts` that you want to rename to `client_accounts`, but your application has many queries to `user_accounts`. To ensure that your application continues uninterrupted, you could execute a [transaction](transactions.html) that renames the underlying table to `client_accounts` and creates a view with the old table name, `user_accounts`:
-
-~~~ sql
-BEGIN;
-ALTER TABLE bank.user_accounts RENAME TO bank.client_accounts;
-CREATE VIEW bank.user_accounts
-  AS SELECT type, email
-  FROM bank.client_accounts;
-COMMIT;
-~~~
-
-Your application would then continue referencing `user_accounts` without issue, and at a later time, you could update your application code to reference the new `client_accounts` table.
-
 ## How Views Work
 
 ### Creating Views
@@ -196,9 +176,11 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 CREATE VIEW
 ~~~
 
+{{site.data.alerts.callout_info}}Any <a href="selection-queries.html">selection query</a> is valid as operand to <code>CREATE VIEW</code>, not just <a href="select-clause.html">simple <code>SELECT</code> clauses</a>.{{site.data.alerts.end}}
+
 ### Listing Views
 
-Once created, views are represented as virtual tables alongside other virtual and standard tables in the database:
+Once created, views are listed alongside regular tables in the database:
 
 ~~~ sql
 > SHOW TABLES FROM bank;
@@ -214,41 +196,34 @@ Once created, views are represented as virtual tables alongside other virtual an
 (2 rows)
 ~~~
 
-To list just views, you can query the `views` table in the built-in `information_schema` database:
+To list just views, you can query the `views` table in the [Information Schema](information-schema.html):
 
 ~~~ sql
-> SELECT * FROM information_schema.views;
+> SELECT * FROM bank.information_schema.views;
+> SELECT * FROM startrek.information_schema.views;
 ~~~
 
 ~~~
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| table_catalog |   table_schema    |      table_name      |            view_definition                  | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+| bank          | public            | user_accounts        | SELECT type, email FROM bank.accounts       | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
++---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+(1 row)
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
+| table_catalog |   table_schema    |      table_name      |                                                                              view_definition                                                                              | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
+| startrek      | public            | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
 +---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-(2 rows)
-~~~
-
-Alternatively, you can query the `pg_views` table in the built-in `pg_catalog` database:
-
-~~~ sql
-> SELECT * FROM pg_catalog.pg_views;
-~~~
-
-~~~
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|    schemaname     |       viewname       | viewowner |                                                                                definition                                                                                 |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| bank              | user_accounts        | NULL      | SELECT type, email FROM bank.accounts                                                                                                                                     |
-| startrek          | quotes_per_season    | NULL      | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season |
-+-------------------+----------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-(2 rows)
+(1 row)
 ~~~
 
 ### Querying Views
 
-To query a view, target it with a [`SELECT`](select.html) statement just as you would a standard table:
+To query a view, target it with a [table
+expression](table-expressions.html#table-or-view-names), for example
+using a [`SELECT` clause](select-clause.html), just as you would with
+a stored table:
 
 ~~~ sql
 > SELECT * FROM bank.user_accounts;
@@ -282,25 +257,24 @@ To query a view, target it with a [`SELECT`](select.html) statement just as you 
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the built-in `information_schema` database:
+You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the [Information Schema](information-schema.html):
 
 ~~~ sql
-> SELECT * FROM information_schema.views;
+> SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
 ~~~
 
 ~~~
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |      TABLE_NAME      |                                                                              VIEW_DEFINITION                                                                              | CHECK_OPTION | IS_UPDATABLE | IS_INSERTABLE_INTO | IS_TRIGGER_UPDATABLE | IS_TRIGGER_DELETABLE | IS_TRIGGER_INSERTABLE_INTO |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| def           | bank              | user_accounts        | SELECT type, email FROM bank.accounts                                                                                                                                     | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-| def           | startrek          | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-(2 rows)
++----------------------------------------+
+|             view_definition            |
++----------------------------------------+
+| SELECT type, email FROM bank.accounts  |
++----------------------------------------+
+(1 row)
 ~~~
 
 ### View Dependencies
 
-A view depends on the objects targeted by its `SELECT` statement. Attempting to rename an object referenced in a view's `SELECT` statement therefore results in an error:
+A view depends on the objects targeted by its underlying query. Attempting to rename an object referenced in a view's stored query therefore results in an error:
 
 ~~~ sql
 > ALTER TABLE bank.accounts RENAME TO bank.accts;
@@ -310,7 +284,7 @@ A view depends on the objects targeted by its `SELECT` statement. Attempting to 
 pq: cannot rename table "bank.accounts" because view "user_accounts" depends on it
 ~~~
 
-Likewise, attempting to drop an object referenced in a view's `SELECT` statement results in an error:
+Likewise, attempting to drop an object referenced in a view's stored query results in an error:
 
 ~~~ sql
 > DROP TABLE bank.accounts;
@@ -352,7 +326,7 @@ To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 RENAME VIEW
 ~~~
 
-It is not possible to change the `SELECT` statement executed by the view. Instead, you must drop the existing view and create a new view.
+It is not possible to change the stored query executed by the view. Instead, you must drop the existing view and create a new view.
 
 ### Removing Views
 
@@ -368,9 +342,10 @@ DROP VIEW
 
 ## See Also
 
+- [Selection Queries](selection-queries.html)
+- [Simple `SELECT` Clauses](select-clause.html)
 - [`CREATE VIEW`](create-view.html)
 - [`SHOW CREATE VIEW`](show-create-view.html)
 - [`GRANT`](grant.html)
-- [`SELECT`](select.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)

@@ -4,7 +4,7 @@ summary: The UPSERT statement inserts rows when values do not violate uniqueness
 toc: false
 ---
 
-The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
+The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html#on-conflict-clause). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
 
 <div id="toc"></div>
 
@@ -14,7 +14,7 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 - When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
-- A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements. 
+- A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 
 ## Required Privileges
 
@@ -24,16 +24,19 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 {% include sql/{{ page.version.version }}/diagrams/upsert.html %}
 
+<div markdown="1"></div>
+
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`qualified_name` | The name of the table.
-`AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`qualified_name_list` | A comma-separated list of column names, in parentheses.
-`select_stmt` | A [selection clause](selection-clauses.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
+`table_name` | The name of the table.
+`AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
+`column_name` | The name of a column to populate during the insert.
+`select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html).<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
 ## How `UPSERT` Transforms into `INSERT ON CONFLICT`
 
@@ -48,7 +51,7 @@ Parameter | Description
     DO UPDATE SET c = excluded.c;
 ~~~
 
-`INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primay Key)](#upsert-that-fails-conflict-on-non-primay-key) example below.
+`INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primary Key)](#upsert-that-fails-conflict-on-non-primary-key) example below.
 
 ## Examples
 
@@ -82,7 +85,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert Multiple Rows 
+### Upsert Multiple Rows
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 
@@ -153,7 +156,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert that Fails (Conflict on Non-Primay Key)
+### Upsert that Fails (Conflict on Non-Primary Key)
 
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
@@ -195,6 +198,12 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 
 ## See Also
 
-- [Selection Clauses](selection-clauses.html)
+- [Selection Queries](selection-queries.html)
+- [`DELETE`](delete.html)
 - [`INSERT`](insert.html)
+- [`UPDATE`](update.html)
+- [`TRUNCATE`](truncate.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`DROP TABLE`](drop-table.html)
+- [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)

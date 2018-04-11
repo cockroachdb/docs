@@ -36,7 +36,7 @@ How does this work?
   This ensures that clients always observe serializable consistency
   with regards to other concurrent transactions.
 
-<img src="{{ 'images/2strong-consistency.png' | relative_url }}" alt="Strong consistency in CockroachDB" style="width: 400px" />
+<img src="{{ 'images/v1.1/2strong-consistency.png' | relative_url }}" alt="Strong consistency in CockroachDB" style="width: 400px" />
 
 ## See Also
 

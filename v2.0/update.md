@@ -16,21 +16,26 @@ The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<div>{% include sql/v1.0/diagrams/update.html %}</div>
+{% include sql/{{ page.version.version }}/diagrams/update.html %}
+
+<div markdown="1"></div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
+`common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `table_name` | The name of the table that contains the rows you want to update.
-`AS name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
+`AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `column_name` | The name of the column whose values you want to update.
-`a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use.
+`a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [scalar expression](scalar-expressions.html) you want to use.
 `DEFAULT` | To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
-`column_name_list` | A comma-separated list of column names, in parentheses.
-`select_with_parens` | A comma-separated list of values or [value expressions](sql-expressions.html), in parentheses. To update values of multiple rows, use a comma-separated list of parentheses. <br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
-`RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+`column_name` | The name of a column to update.
+`select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column on the left side of `=`.
+`WHERE a_expr`| `a_expr` must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g. `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
+`sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
+`limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
+`RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
 ## Examples
 
@@ -405,3 +410,15 @@ ID:
 ~~~
 
 </section>
+
+## See Also
+
+- [`DELETE`](delete.html)
+- [`INSERT`](insert.html)
+- [`UPSERT`](upsert.html)
+- [`TRUNCATE`](truncate.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`DROP TABLE`](drop-table.html)
+- [`DROP DATABASE`](drop-database.html)
+- [Other SQL Statements](sql-statements.html)
+- [Limiting Query Results](limit-offset.html)

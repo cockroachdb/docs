@@ -235,7 +235,7 @@ To view your cluster's Admin UI, open a browser and go to `http://<any node's ex
 
 On this page, verify that the cluster is running as expected:
 
-1. Click **View nodes list** on the right to ensure that all of your nodes successfully joined the cluster.
+1. View **Node list** to ensure that all of your nodes successfully joined the cluster.
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
@@ -274,7 +274,7 @@ To see this in action:
     4a58f86e3ced        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   7 seconds ago       Up 1 seconds        8080/tcp, 26257/tcp   cockroachdb-0.1.cph86kmhhcp8xzq6a1nxtk9ng
     ~~~
 
-4. Back in the Admin UI, click **View nodes list** on the right and verify that all 3 nodes are live.
+4. Back in the Admin UI, view the **Node list** and verify that all 3 nodes are live.
 
 ## Step 9. Scale the cluster
 

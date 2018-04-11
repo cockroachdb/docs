@@ -1,5 +1,5 @@
 ---
-title: Create & Manage Users
+title: Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
 toc: false
 ---
@@ -54,16 +54,21 @@ The `user` command and subcommands support the following [general-use](#general)
 
 Flag | Description
 -----|------------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`-d`, `--database` | _Deprecated_: Users are created for the entire cluster. However, you can control a user's privileges per database when [granting them privileges](grant.html#grant-privileges-on-databases). <br/><br/>**Env Variable:** `COCKROACH_DATABASE`
+`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.<br/><br/>[Find more detail about how CockroachDB handles passwords](#user-authentication).
-`-p`, `--port` | Connect to the cluster on the specified port.<br/><br/>**Env Variable:** `COCKROACH_PORT` <br/>**Default**: `26257`
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
-`--url` | Connect to the cluster on the provided URL, e.g., `postgresql://myuser@localhost:26257/mydb`. If left blank, the connection flags are used (`host`, `port`, `user`, `database`, `insecure`, `certs`). <br/><br/>**Env Variable:** `COCKROACH_URL`
-`-u`, `--user` | _Deprecated_: Only the `root` user can create users, so you cannot pass any other usernames into this flag. <br/><br/>**Env Variable:** `COCKROACH_USER` <br/>**Default**: `root`
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
+
+Currently, only the `root` user can create users.
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.
+{{site.data.alerts.end}}
 
 ### Logging
 
@@ -215,7 +220,7 @@ $ cockroach user rm jpointsman --insecure
 
 {{site.data.alerts.callout_success}}You can also use the <a href="drop-user.html"><code>DROP USER</code></a> SQL statement to remove users.{{site.data.alerts.end}}
 
-### Reveal the SQL statements sent implicitly by the command-line utility
+### Reveal the SQL Statements Sent Implicitly by the Command-line Utility
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 
@@ -237,4 +242,5 @@ DELETE 1
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
+- [Manage Roles](roles.html)
 - [Other Cockroach Commands](cockroach-commands.html)

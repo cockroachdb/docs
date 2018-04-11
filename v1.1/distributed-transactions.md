@@ -10,7 +10,7 @@ CockroachDB distributes [transactions](transactions.html) across your cluster, w
 -   Optimistic concurrency with distributed deadlock detection
 -   Serializable default isolation level
 
-<img src="{{ 'images/2distributed-transactions.png' | relative_url }}" alt="Distributed transactions in CockroachDB" style="width: 400px" />
+<img src="{{ 'images/v1.1/2distributed-transactions.png' | relative_url }}" alt="Distributed transactions in CockroachDB" style="width: 400px" />
 
 ## See Also
 

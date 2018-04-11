@@ -65,12 +65,10 @@ $ cockroach sql --insecure
 +--------------------+
 |      Database      |
 +--------------------+
-| information_schema |
-| pg_catalog         |
 | intro              |
 | system             |
 +--------------------+
-(4 rows)
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -158,9 +156,9 @@ $ cockroach start \
 
 ## Step 4. Watch data replicate to the new nodes
 
-Open the Admin UI at `http://localhost:8080` and click **View nodes list** on the right. You'll see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Open the Admin UI at `http://localhost:8080` to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
-<img src="{{ 'images/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Increase the replication factor
 
@@ -211,7 +209,7 @@ $ cockroach start \
 
 Back in the Admin UI, you'll see that there are now 5 nodes listed. Again, at first, the replica count will be lower for nodes 4 and 5. But because you changed the default replication factor to 5, very soon, the replica count will be identical across all 5 nodes, indicating that all data in the cluster has been replicated 5 times.
 
-<img src="{{ 'images/replication2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/replication2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 8.  Stop the cluster
 
@@ -232,5 +230,7 @@ Use a local cluster to explore these other core CockroachDB features:
 
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Automatic Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
+- [Follow-the-Workload](demo-follow-the-workload.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [JSON Support](demo-json-support.html)

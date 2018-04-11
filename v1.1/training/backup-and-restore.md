@@ -2,6 +2,7 @@
 title: Back and Restore
 toc: false
 toc_not_nested: true
+block_search: true
 sidebar_data: sidebar-data-training.json
 redirect_from: /training/backup-and-restore.html
 ---

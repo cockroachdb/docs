@@ -6,7 +6,7 @@ toc: false
 
 This page shows you the easiest way to test an insecure, multi-node CockroachDB cluster, using CockroachDB's [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template to simplify setup and [Kubernetes](https://kubernetes.io/) to automate deployment, maintenance, and load balancing of client workloads.
 
-{{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}}
+<!-- {{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}} -->
 
 <div id="toc"></div>
 
@@ -65,7 +65,7 @@ Before getting started, it's important to review some limitations and requiremen
     ~~~ shell
     $ cockroach sql \
     --insecure \
-    --url="postgresql://root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257?application_name=cockroach&sslmode=disable"
+    --url="postgresql://root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257?sslmode=disable"
     ~~~
 
     ~~~
@@ -118,15 +118,15 @@ Before getting started, it's important to review some limitations and requiremen
 
 You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the workload and overall cluster behavior.
 
-1. In the **Outputs** section of the CloudFormation UI, click the **Web UI** link.
+1. In the **Outputs** section of the CloudFormation UI, click the **Web UI** link. Then click **Metrics** on the left-hand navigation bar.
 
-2. On the **Cluster Overview** page, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
+2. On the **Overview** dashboard, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
 
-    <img src="{{ 'images/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 3. Scroll down and hover over the **Replicas per Node** graph to see how CockroachDB automatically replicates your data behind-the-scenes.
 
-    <img src="{{ 'images/cloudformation_admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/cloudformation_admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 4. Explore other areas of the [Admin UI](admin-ui-overview.html).
 
@@ -167,11 +167,11 @@ To see this in action:
     pod "cockroachdb-2" deleted
     ~~~
 
-4. In the Admin UI, the **Summary** panel may show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+4. In the Admin UI, the **Cluster Overview** panel may show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
 
     You can also select the **Runtime** dashboard and see the restarting of the node in the **Live Node Count** graph.
 
-    <img src="{{ 'images/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 6. Stop the cluster
 

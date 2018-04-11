@@ -5,9 +5,9 @@ toc: false
 toc_not_nested: true
 ---
 
-Because of CockroachDB's multi-active availability design, you can perform a "rolling upgrade" of CockroachDB on your cluster. This means you can upgrade individual nodes in your cluster one at a time without any downtime for your cluster.
+Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-{{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0.x to v1.1, or from v1.1 to a patch release in the 1.1.x series. To upgrade within the 1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the 1.0 version of this page</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}} When upgrading, you can skip patch releases, but you cannot skip full releases. Since v1.1 is the second full CockroachDB release, you do not have to go through intermediate releases. You can upgrade to any v1.1.x release from any v1.0.x release, or from any patch release in the v1.1.x series.<br><br>To upgrade within the v1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the v1.0 version of this page</a>. {{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -15,7 +15,7 @@ Because of CockroachDB's multi-active availability design, you can perform a "ro
 
 Before starting the upgrade, complete the following steps.
 
-1. Make sure your cluster is behind a load balancer, or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+1. Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
 2. Verify the cluster's overall health by running the [`cockroach node status`](view-node-details.html) command against any node in the cluster.
 
@@ -152,7 +152,7 @@ For each node in your cluster, complete the following steps.
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new 1.1 features. Doing so will prevent you from being able to perform a rolling downgrade to 1.0, if necessary.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}During this phase, avoid using any new v1.1 features. Doing so will prevent you from being able to perform a rolling downgrade to v1.0, if necessary.{{site.data.alerts.end}}
 
 ## Step 4. Finalize or revert the upgrade
 
@@ -164,7 +164,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the 1.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the v1.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
 
 1. [Back up the cluster](back-up-data.html).
 

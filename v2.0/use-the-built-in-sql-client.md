@@ -36,17 +36,17 @@ The `sql` command supports the following [general-use](#general) and [logging](#
 
 Flag | Description
 -----|------------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--database`<br>`-d` | The database to connect to.<br><br>**Env Variable:** `COCKROACH_DATABASE`
+`--database`<br>`-d` | A database name to use as [current database](sql-name-resolution.html#current-database) in the newly created session.
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for interactive sessions, `tsv` for non-interactive sessions<br><br>The `display_format` [SQL shell option](#sql-shell-options) can also be used to change the format within an interactive session.
-`--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
-`--unsafe-updates` | <span class="version-tag">New in v1.1:</span> Allow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `false`<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
-`--url` | The connection URL. If you use this flag, do not set any other connection flags.<br><br>For insecure connections, the URL format is: <br>`--url=postgresql://<user>@<host>:<port>/<database>?sslmode=disable`<br><br>For secure connections, the URL format is:<br>`--url=postgresql://<user>@<host>:<port>/<database>`<br>with the following parameters in the query string:<br>`sslcert=<path-to-client-crt>`<br>`sslkey=<path-to-client-key>`<br>`sslmode=verify-full`<br>`sslrootcert=<path-to-ca-crt>` <br><br>**Env Variable:** `COCKROACH_URL`
-`--user`<br>`-u` | The [user](create-and-manage-users.html) connecting to the database. The user must have [privileges](privileges.html) for any statement executed.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--safe-updates` | <span class="version-tag">Changed in v2.0:</span> Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true`<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
+
+### Client Connection
+
+{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+
+See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Logging
 
@@ -101,7 +101,6 @@ Client Options | Description
 `echo` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the SQL shell.<br><br>This option is disabled by default. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `errexit` | Exit the SQL shell upon encountering an error.<br><br>This option is disabled by default. To enable it, run `\set errexit`.
 `check_syntax` | Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br><br>This option is enabled by default. To disable it, run `\unset check_syntax`.
-`normalize_history` | Store normalized syntax in the shell history, e.g., capitalize keywords, normalize spacing, and recall multi-line statements as a single line.<br><br>This option is enabled by default. However, it is respected only when `check_syntax` is enabled as well. To disable this option, run `\unset normalize_history`.
 `show_times` | <span class="version-tag">New in v1.1:</span> Reveal the time a query takes to complete.<br><br>This option is enabled by default. To disable it, run `\unset show_times`.
 `smart_prompt` | <span class="version-tag">New in v1.1:</span> Query the server for the current transaction status and return it to the prompt.<br><br>This option is enabled by default. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
@@ -514,7 +513,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 ### Allow potentially unsafe SQL statements
 
-The `--unsafe-updates` flag defaults to `false`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
+The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
@@ -547,10 +546,10 @@ Error: pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
 Failed running "sql"
 ~~~
 
-However, to allow an "unsafe" statement, you can set `--unsafe-updates=true`:
+However, to allow an "unsafe" statement, you can set `--safe-updates=false`:
 
 ~~~ shell
-$ cockroach sql --insecure --unsafe-updates=true --execute="DELETE FROM db1.t1"
+$ cockroach sql --insecure --safe-updates=false --execute="DELETE FROM db1.t1"
 ~~~
 
 ~~~
@@ -614,6 +613,7 @@ Time: 2.426534ms
 
 ## See Also
 
+- [Client Connection Parameters](connection-parameters.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

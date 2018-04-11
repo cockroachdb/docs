@@ -3,6 +3,7 @@ title: Cluster Upgrade
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+block_search: true
 redirect_from: /training/cluster-upgrade.html
 ---
 
@@ -147,7 +148,7 @@ Start and initialize a cluster like you did in previous modules.
 
 4. Go to the Admin UI at <a href="http://localhost:8081" data-proofer-ignore>http://localhost:8081</a>, click **View nodes list** on the right, and then verify that the node has rejoined the cluster using the new version of the binary:
 
-    <img src="{{ 'images/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You can also use the `cockroach node status` command to check each node's version:
 
@@ -236,7 +237,7 @@ Start and initialize a cluster like you did in previous modules.
 
 Back in the Admin UI, you'll see that all 3 nodes now have the same, upgraded version:
 
-<img src="{{ 'images/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 You can also use the `cockroach node status` command to check each node's version:
 

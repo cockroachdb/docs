@@ -18,54 +18,33 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 ## Navigate the Admin UI
 
-The Admin UI is divided into three areas:
+The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [Cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
 
-- The left-hand navigation bar that allows you to navigate to the **[Cluster Metrics dashboards](admin-ui-overview.html)**, **[Database page](admin-ui-databases-page.html)**, and **[Jobs page](admin-ui-jobs-page.html)**.
-- The main panel that shows the **[Time Series graphs](admin-ui-access-and-navigate.html#time-series-graphs)**.
-- The right-hand side panel that shows the **[Summary panel](admin-ui-access-and-navigate.html#summary-panel)** and **[Events panel](admin-ui-access-and-navigate.html#events-panel)**.
+The main panel displays changes for each page:
 
-<img src="{{ 'images/admin_ui_overview.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+Page | Main Panel Component
+-----------|------------
+Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-access-and-navigate.html#cluster-overview-panel)</li><li>[Node List](admin-ui-access-and-navigate.html#node-list). [Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-access-and-navigate.html#node-map-enterprise) view. </li></ul>
+Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html#time-series-graphs)</li><li>[Summary Panel](admin-ui-access-and-navigate.html#summary-panel)</li><li>[Events List](admin-ui-access-and-navigate.html#events-panel)</li></ul>
+Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
+Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
-### Time Series Graphs
+### Cluster Overview Panel
 
-The Admin UI displays time series graphs of key metrics. Time series graphs are useful to visualize and monitor data trends. You can hover over each graph to see actual point-in-time values.
+<img src="{{ 'images/v2.0/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-<img src="{{ 'images/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-{{site.data.alerts.callout_info}}By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this <a href="operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data-new-in-v2-0">FAQ</a>.
-{{site.data.alerts.end}}
-
-#### Change time range
-
-You can change the time range by clicking on the time window.
-<img src="{{ 'images/admin_ui_time_range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-{{site.data.alerts.callout_info}}The Admin UI shows time in UTC, even if you set a different time zone for your cluster. {{site.data.alerts.end}}
-
-#### View metrics for a single node
-
-By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
-<img src="{{ 'images/admin_ui_single_node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-### Summary Panel
-<img src="{{ 'images/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
-
-The **Summary** panel provides the following metrics:
+The **Cluster Overview** panel provides the following metrics:
 
 Metric | Description
 --------|----
-Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](#nodes-list).
-Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.
-Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.<br><br>**Note:** If you are running multiple nodes on a single machine (not recommended), this value may be incorrect. This is because when multiple nodes are running on a single machine, the machine's hard disk is treated as separate stores for each node, while in reality, only one hard disk is used for all nodes. The Capacity Used is then displayed as the hard disk capacity used multiplied by the number of nodes on the machine.
-Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
-Queries per second | The number of SQL queries executed per second.
-P50 Latency | The 50th percentile of service latency. Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
-P99 Latency | The 99th percentile of service latency.
+Capacity Usage | <ul><li>The storage capacity used as a percentage of total storage capacity allocated across all nodes.</li><li>The current capacity usage.</li></ul>
+Node Status | <ul><li>The number of [live nodes](admin-ui-access-and-navigate.html#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.</li>
+Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
-### Nodes List
+### Node List
 
-To see basic details about the nodes in your cluster, click **View nodes list** in the **Summary** panel.
-<img src="{{ 'images/admin_ui_nodes_page.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+The **Node List** is the default view on the **Overview** page.
+<img src="{{ 'images/v2.0/admin-ui-node-list.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 #### Live Nodes
 Live nodes are nodes that are online and responding. They are marked with a green dot. If a node is removed or dies, the dot turns yellow to indicate that it is not responding. If the node remains unresponsive for a certain amount of time (5 minutes by default), the node turns red and is moved to the [**Dead Nodes**](#dead-nodes) section, indicating that it is no longer expected to come back.
@@ -99,15 +78,76 @@ Down Since | How long the node has been down.
 
 <span class="version-tag">New in v1.1:</span> Nodes that have been decommissioned for permanent removal from the cluster are listed in the **Decommissioned Nodes** table.
 
-<img src="{{ 'images/cluster-status-after-decommission2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
 When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down. See [Remove Nodes](remove-nodes.html) for more information.
+
+### Node Map (Enterprise)
+
+<span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster.
+
+<img src="{{ 'images/v2.0/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+The Node Map consists of the following components:
+
+**Region component**
+
+<img src="{{ 'images/v2.0/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+**Node component**
+
+<img src="{{ 'images/v2.0/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
+
+### Time Series Graphs
+
+The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left-hand navigation bar.
+
+You can hover over each graph to see actual point-in-time values.
+
+<img src="{{ 'images/v2.0/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_info}}By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this <a href="operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data-new-in-v2-0">FAQ</a>.
+{{site.data.alerts.end}}
+
+#### Change time range
+
+You can change the time range by clicking on the time window.
+<img src="{{ 'images/v2.0/admin-ui-time-range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_info}}The Admin UI shows time in UTC, even if you set a different time zone for your cluster. {{site.data.alerts.end}}
+
+#### View metrics for a single node
+
+By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
+<img src="{{ 'images/v2.0/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+### Summary Panel
+
+The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left-hand navigation bar.
+
+<img src="{{ 'images/v2.0/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
+
+The **Summary** panel provides the following metrics:
+
+Metric | Description
+--------|----
+Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](#node-list).
+Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.
+Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
+Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
+Queries per second | The number of SQL queries executed per second.
+P50 Latency | The 50th percentile of service latency. Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
+P99 Latency | The 99th percentile of service latency.
+
+{{site.data.alerts.callout_info}}
+{% include available-capacity-metric.md %}
+{{site.data.alerts.end}}
 
 ### Events Panel
 
-<img src="{{ 'images/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
+The **Cluster Metrics** dashboards display the **Events** panel that lists the 10 most recent events logged for the all nodes across the cluster. To view the **Events** panel, click **Metrics** on the left-hand navigation bar. To see the list of all events, click **View all events** in the **Events** panel.
 
-The **Events** panel lists the 10 most recent events logged for the all nodes across the cluster. To see the list of all events, click **View all events**.
+<img src="{{ 'images/v2.0/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
 
 The following types of events are listed:
 

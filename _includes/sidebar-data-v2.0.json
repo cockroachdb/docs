@@ -157,6 +157,12 @@
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
+          },
+          {
+            "title": "JSON Support",
+            "urls": [
+              "/${VERSION}/demo-json-support.html"
+            ]
           }
         ]
       }
@@ -172,12 +178,18 @@
         ]
       },
       {
+        "title": "Client Connection Parameters",
+        "urls": [
+          "/${VERSION}/connection-parameters.html"
+        ]
+      },
+      {
         "title": "SQL Feature Support",
         "items": [
           {
             "title": "SQL Support Summary",
             "urls": [
-              "/${VERSION}/sql-feature-support.html",
+              "/${VERSION}/sql-feature-support.html"
             ]
           },
           {
@@ -240,6 +252,18 @@
             ]
           },
           {
+            "title": "<code>ALTER USER</code>",
+            "urls": [
+              "/${VERSION}/alter-user.html"
+            ]
+          },
+          {
+            "title": "<code>EXPERIMENTAL_AUDIT</code>",
+            "urls": [
+              "/${VERSION}/experimental-audit.html"
+            ]
+          },
+          {
             "title": "<code>ALTER VIEW</code>",
             "urls": [
               "/${VERSION}/alter-view.html"
@@ -258,7 +282,7 @@
             ]
           },
           {
-            "title": "<code>CANCEL JOB</code> (Enterprise)",
+            "title": "<code>CANCEL JOB</code>",
             "urls": [
               "/${VERSION}/cancel-job.html"
             ]
@@ -285,6 +309,12 @@
             "title": "<code>CREATE INDEX</code>",
             "urls": [
               "/${VERSION}/create-index.html"
+            ]
+          },
+          {
+            "title": "<code>CREATE ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/create-role.html"
             ]
           },
           {
@@ -348,6 +378,12 @@
             ]
           },
           {
+            "title": "<code>DROP ROLE</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/drop-role.html"
+            ]
+          },
+          {
             "title": "<code>DROP SEQUENCE</code>",
             "urls": [
               "/${VERSION}/drop-sequence.html"
@@ -378,13 +414,19 @@
             ]
           },
           {
-            "title": "<code>GRANT</code>",
+            "title": "<code>GRANT &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/grant.html"
             ]
           },
           {
-            "title": "<code>IMPORT</code> (Beta)",
+            "title": "<code>GRANT &lt;roles&gt;</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/grant-roles.html"
+            ]
+          },
+          {
+            "title": "<code>IMPORT</code>",
             "urls": [
               "/${VERSION}/import.html"
             ]
@@ -396,7 +438,13 @@
             ]
           },
           {
-            "title": "<code>PAUSE JOB</code> (Enterprise)",
+            "title": "<code>PARTITION BY</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/partition-by.html"
+            ]
+          },
+          {
+            "title": "<code>PAUSE JOB</code>",
             "urls": [
               "/${VERSION}/pause-job.html"
             ]
@@ -456,15 +504,21 @@
             ]
           },
           {
-            "title": "<code>RESUME JOB</code> (Enterprise)",
+            "title": "<code>RESUME JOB</code>",
             "urls": [
               "/${VERSION}/resume-job.html"
             ]
           },
           {
-            "title": "<code>REVOKE</code>",
+            "title": "<code>REVOKE &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/revoke.html"
+            ]
+          },
+          {
+            "title": "<code>REVOKE &lt;roles&gt;</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/revoke-roles.html"
             ]
           },
           {
@@ -482,7 +536,7 @@
           {
             "title": "<code>SELECT</code>",
             "urls": [
-              "/${VERSION}/select.html"
+              "/${VERSION}/select-clause.html"
             ]
           },
           {
@@ -531,6 +585,12 @@
             "title": "<code>SHOW CONSTRAINTS</code>",
             "urls": [
               "/${VERSION}/show-constraints.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW ROLES</code>",
+            "urls": [
+              "/${VERSION}/show-roles.html"
             ]
           },
           {
@@ -588,6 +648,12 @@
             ]
           },
           {
+            "title": "<code>SHOW SCHEMAS</code>",
+            "urls": [
+              "/${VERSION}/show-schemas.html"
+            ]
+          },
+          {
             "title": "<code>SHOW TABLES</code>",
             "urls": [
               "/${VERSION}/show-tables.html"
@@ -603,6 +669,12 @@
             "title": "<code>SHOW USERS</code>",
             "urls": [
               "/${VERSION}/show-users.html"
+            ]
+          },
+          {
+            "title": "<code>SPLIT AT</code>",
+            "urls": [
+              "/${VERSION}/split-at.html"
             ]
           },
           {
@@ -647,21 +719,57 @@
             ]
           },
           {
-            "title": "Selection Clauses",
+            "title": "Selection Queries",
             "urls": [
-              "/${VERSION}/selection-clauses.html"
+              "/${VERSION}/selection-queries.html"
             ]
           },
           {
-            "title": "Value Expressions",
+            "title": "Ordering Query Results",
             "urls": [
-              "/${VERSION}/sql-expressions.html"
+              "/${VERSION}/query-order.html"
+            ]
+          },
+          {
+            "title": "Limiting Query Results",
+            "urls": [
+              "/${VERSION}/limit-offset.html"
             ]
           },
           {
             "title": "Table Expressions",
             "urls": [
               "/${VERSION}/table-expressions.html"
+            ]
+          },
+          {
+            "title": "Common Table Expressions",
+            "urls": [
+              "/${VERSION}/common-table-expressions.html"
+            ]
+          },
+          {
+            "title": "Join Expressions",
+            "urls": [
+              "/${VERSION}/joins.html"
+            ]
+          },
+          {
+            "title": "Computed Columns",
+            "urls": [
+              "/${VERSION}/computed-columns.html"
+            ]
+          },
+          {
+            "title": "Scalar Expressions",
+            "urls": [
+              "/${VERSION}/scalar-expressions.html"
+            ]
+          },
+          {
+            "title": "Subqueries",
+            "urls": [
+              "/${VERSION}/subqueries.html"
             ]
           },
           {
@@ -839,12 +947,6 @@
         ]
       },
       {
-        "title": "Privileges",
-        "urls": [
-          "/${VERSION}/privileges.html"
-        ]
-      },
-      {
         "title": "Transactions",
         "urls": [
           "/${VERSION}/transactions.html"
@@ -875,6 +977,12 @@
             "title": "Indexes",
             "urls": [
               "/${VERSION}/indexes.html"
+            ]
+          },
+          {
+            "title": "Inverted Indexes",
+            "urls": [
+              "/${VERSION}/inverted-indexes.html"
             ]
           },
           {
@@ -1010,66 +1118,46 @@
       },
       {
         "title": "Monitoring and Alerting",
-        "urls": [
-          "/${VERSION}/monitoring-and-alerting.html"
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/monitoring-and-alerting.html"
+            ]
+          },
+          {
+            "title": "Use Prometheus and Alertmanager",
+            "urls": [
+              "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+            ]
+          }
         ]
       },
       {
-        "title": "Cluster Settings",
-        "urls": [
-          "/${VERSION}/cluster-settings.html"
+        "title": "Access Management",
+        "items": [
+        {
+            "title": "Manage Users",
+            "urls": [
+               "/${VERSION}/create-and-manage-users.html"
+            ]
+         },
+         {
+            "title": "Manage Roles (Enterprise)",
+            "urls": [
+              "/${VERSION}/roles.html"
+            ]
+          },
+          {
+            "title": "Privileges",
+            "urls": [
+              "/${VERSION}/privileges.html"
+            ]
+          }
         ]
       },
       {
-        "title": "Cockroach Commands",
-        "urls": [
-          "/${VERSION}/cockroach-commands.html"
-        ]
-      },
-      {
-        "title": "Start a Node",
-        "urls": [
-          "/${VERSION}/start-a-node.html"
-        ]
-      },
-      {
-        "title": "Initialize a Cluster",
-        "urls": [
-          "/${VERSION}/initialize-a-cluster.html"
-        ]
-      },
-      {
-        "title": "Create Security Certificates",
-        "urls": [
-          "/${VERSION}/create-security-certificates.html",
-          "/${VERSION}/create-security-certificates-openssl.html"
-        ]
-      },
-      {
-        "title": "Create & Manage Users",
-        "urls": [
-          "/${VERSION}/create-and-manage-users.html"
-        ]
-      },
-      {
-        "title": "Configure Replication Zones",
-        "urls": [
-          "/${VERSION}/configure-replication-zones.html"
-        ]
-      },
-      {
-        "title": "Enterprise Licensing",
-        "urls": [
-          "/${VERSION}/enterprise-licensing.html"
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Manage",
-    "items": [
-      {
-        "title": "Monitor CockroachDB with the Admin UI",
+        "title": "Use the Admin UI",
         "items": [
           {
             "title": "Overview",
@@ -1128,9 +1216,69 @@
         ]
       },
       {
-        "title": "Monitor CockroachDB with Prometheus",
+        "title": "Enterprise Licensing",
         "urls": [
-          "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+          "/${VERSION}/enterprise-licensing.html"
+        ]
+      },
+      {
+        "title": "Start a Node",
+        "urls": [
+          "/${VERSION}/start-a-node.html"
+        ]
+      },
+      {
+        "title": "Initialize a Cluster",
+        "urls": [
+          "/${VERSION}/initialize-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Create Security Certificates",
+        "urls": [
+          "/${VERSION}/create-security-certificates.html",
+          "/${VERSION}/create-security-certificates-openssl.html"
+        ]
+      },
+      {
+        "title": "Configure Replication Zones",
+        "urls": [
+          "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Define Table Partitions (Enterprise)",
+        "urls": [
+          "/${VERSION}/partitioning.html"
+        ]
+      },
+      {
+        "title": "Enable Node Map (Enterprise)",
+        "urls": [
+          "/${VERSION}/enable-node-map.html"
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Cockroach Commands",
+        "urls": [
+          "/${VERSION}/cockroach-commands.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Maintain",
+    "items": [
+      {
+        "title": "Upgrade to CockroachDB v2.0",
+        "urls": [
+          "/${VERSION}/upgrade-cockroach-version.html"
         ]
       },
       {
@@ -1140,21 +1288,21 @@
         ]
       },
       {
-        "title": "Upgrade to CockroachDB v2.0",
-        "urls": [
-          "/${VERSION}/upgrade-cockroach-version.html"
-        ]
-      },
-      {
         "title": "Stop a Node",
         "urls": [
           "/${VERSION}/stop-a-node.html"
         ]
       },
       {
-        "title": "Remove Nodes",
+        "title": "Decommission Nodes",
         "urls": [
           "/${VERSION}/remove-nodes.html"
+        ]
+      },
+      {
+        "title": "Import Data",
+        "urls": [
+          "/${VERSION}/import-data.html"
         ]
       },
       {
@@ -1173,12 +1321,6 @@
         "title": "Dump/Export Schema or Data",
         "urls": [
           "/${VERSION}/sql-dump.html"
-        ]
-      },
-      {
-        "title": "Import Data",
-        "urls": [
-          "/${VERSION}/import-data.html"
         ]
       },
       {
@@ -1215,6 +1357,12 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "SQL Audit Logging (Experimental)",
+        "urls": [
+          "/${VERSION}/sql-audit-logging.html"
         ]
       }
     ]

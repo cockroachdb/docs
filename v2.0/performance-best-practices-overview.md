@@ -12,7 +12,7 @@ This page provides best practices for optimizing SQL performance in CockroachDB.
 
 ### Use Multi-Row DML instead of Multiple Single-Row DMLs
 
-For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs. 
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs.
 
 For more information, see:
 
@@ -33,7 +33,7 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 
 ### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
 
-To bulk-insert data into a brand new table, the (experimental) [`IMPORT`](import.html) statement performs better than `INSERT`.
+To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
 ## Execute Statements in Parallel
 
@@ -41,9 +41,9 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 ## Assign Column Families
 
-A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store. 
+A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
 
-When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
 ## Interleave Tables
 
@@ -52,11 +52,11 @@ When a table is created, all columns are stored as a single column family. This 
 ## Unique ID Best Practices
 
 The common approach for generating unique IDs is one of the following:
- 
+
  - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
  - Use `SERIAL` variables to generate random unique IDs
- 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table. 
+
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
 
 The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
@@ -91,7 +91,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
   	DO UPDATE SET ID3=X.ID3+1;
 
 > SELECT * FROM X WHERE ID1=1 AND ID2=1;
-  
+
 > COMMIT;
 ~~~
 
@@ -117,7 +117,7 @@ Suppose the table schema is as follows:
 	);
 ~~~
 
-The common approach to generate random Unique IDs is a transaction using the `SELECT` statement:
+The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
 ~~~ sql
 > BEGIN;
@@ -142,7 +142,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 You can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the Unique constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
@@ -169,17 +169,25 @@ In contrast, hash joins are computationally expensive and require additional mem
 
 A merge join requires both tables to be indexed on the merge columns. In case this condition is not met, CockroachDB resorts to the slower hash joins. So while using `JOIN` on two tables, first create indexes on the tables and then use the `JOIN` operator.
 
-Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/). 
+Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 ### Drop Unused Indexes
 
 Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
 
+## Join Best Practices
+
+See [Join Performance Best Practices](joins.html#performance-best-practices).
+
+## Subquery Best Practices
+
+See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
+
 ## Table Scans Best Practices
 
 ### Avoid `SELECT *` for Large Tables
 
-For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in the `SELECT` statement.
+For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
 
 #### Example
 
@@ -187,8 +195,8 @@ Suppose the table schema is as follows:
 
 ~~~ sql
 > CREATE TABLE accounts (
-	id INT, 
-	customer STRING, 
+	id INT,
+	customer STRING,
 	address STRING,
 	balance INT
 	nominee STRING
@@ -211,10 +219,10 @@ This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for Large Tables
 
-`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select.html#filter-rows) instead.
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select-clause.html#filter-rows) instead.
 
 ### Use `AS OF SYSTEM TIME` to Decrease Conflicts with Long-Running Queries
 
-If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`...AS OF SYSTEM TIME` clause](select.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
+If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause](select-clause.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.

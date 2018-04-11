@@ -34,11 +34,11 @@ However, you can cause the cluster to actively move range leases for even better
 
 In this example, let's imagine that lots of read requests are going to node 1, and that the requests are for data in range 3. Because range 3's lease is on node 3, the requests are routed to node 3, which returns the results to node 1. Node 1 then responds to the clients.
 
-<img src="{{ 'images/follow-workload-1.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
+<img src="{{ 'images/v2.0/follow-workload-1.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
 However, if the nodes were started with the [`--locality`](start-a-node.html#locality) flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network round trips and increasing the speed of reads.
 
-<img src="{{ 'images/follow-workload-2.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
+<img src="{{ 'images/v2.0/follow-workload-2.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
 ## Tutorial
 
@@ -294,4 +294,5 @@ Use a local cluster to explore these other core CockroachDB benefits
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](demo-automatic-rebalancing.html)
 - [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Automated Operations](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+- [JSON Support](demo-json-support.html)

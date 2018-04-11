@@ -3,6 +3,7 @@ title: Cluster Unavailability Troubleshooting
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+block_search: true
 redirect_from: /training/cluster-unavailability-troubleshooting.html
 ---
 
@@ -29,7 +30,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 1. Go back to the Admin UI:
 
-    <img src="{{ 'images/training-13.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-13.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice that an error is shown and timeseries metrics  are no longer being reported.
 

@@ -11,7 +11,7 @@ toc: false
 
 The **Jobs** table displays the user, description, creation time, and status of each backup and restore job, as well as schema changes performed across all nodes in the cluster.
 
-<img src="{{ 'images/admin_ui_jobs_page.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v1.1/admin_ui_jobs_page.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ## Filter Results
 

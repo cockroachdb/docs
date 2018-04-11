@@ -3,6 +3,7 @@ title: Node Decommissioning
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+block_search: true
 redirect_from: /training/node-decommissioning.html
 ---
 
@@ -92,13 +93,13 @@ $ ./cockroach start \
 
     You'll see that node 3 now has 0 replicas while the other nodes have equal replica counts.
 
-    <img src="{{ 'images/training-17.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-17.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 3. Click **View nodes list** on the right.
 
     About 5 minutes after the decommission process completes, you'll see node 3 listed under **Decommissioned Nodes**.  
 
-    <img src="{{ 'images/training-18.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v1.1/training-18.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 4. Clean up
 

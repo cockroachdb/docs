@@ -1,10 +1,10 @@
 ---
 title: SHOW TRACE
-summary: The SHOW TRACE statement...
+summary: The SHOW TRACE statement returns details about how CockroachDB executed a statement or series of statements.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
+The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
@@ -19,21 +19,27 @@ Statement | Usage
 [`SHOW TRACE FOR <stmt>`](#show-trace-for-stmt) | Execute a single [explainable](sql-grammar.html#explainable_stmt) statement and return a trace of its actions.
 [`SHOW TRACE FOR SESSION`](#show-trace-for-session) | Return a trace of all executed statements recorded during a session.
 
-### `SHOW TRACE FOR <stmt>`
+### SHOW TRACE FOR &lt;stmt&gt;
 
-This use of `SHOW TRACE` executes a single [explainable](sql-grammar.html#explainable_stmt) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
+This use of `SHOW TRACE` executes a single [explainable](explain.html#explainable-statements) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
 
 - `SHOW TRACE FOR <stmt>` executes the target statement and, once execution has completed, then returns a trace of the actions taken. For example, tracing an `INSERT` statement inserts data and then returns a trace, a `DELETE` statement deletes data and then returns a trace, etc. This is different than the [`EXPLAIN`](explain.html) statement, which does not execute its target statement but instead returns details about its predicted execution plan.
-    - The target statement must be an [`explainable`](sql-grammar.html#explainable_stmt) statement. All non-explainable statements are not supported.
+    - The target statement must be an [`explainable`](explain.html#explainable-statements) statement. All non-explainable statements are not supported.
     - The target statement is always executed with the local SQL engine. Due to this [known limitation](https://github.com/cockroachdb/cockroach/issues/16562), the trace will not reflect the way in which some statements would have been executed when not the target of `SHOW TRACE FOR <stmt>`. This limitation does not apply to `SHOW TRACE FOR SESSION`.
 
 - If the target statement encounters errors, those errors are not returned to the client. Instead, they are included in the trace. This has the following important implications for [transaction retries](transactions.html#transaction-retries):
-    - Normally, individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch are [automatically retried](transactions.html#automatic-retries) by CockroachDB when [retryable errors](transactions.html#error-handling) are encountered due to contention. However, when such statements are the target of `SHOW TRACE FOR <stmt>`, CockroachDB does **not** automatically retry.
+    - Normally, individual statements (considered implicit transactions) and multi-statement transactions batched by the client are [automatically retried](transactions.html#automatic-retries) by CockroachDB when [retryable errors](transactions.html#error-handling) are encountered due to contention. However, when such statements are the target of `SHOW TRACE FOR <stmt>`, CockroachDB does **not** automatically retry.
     - When each statement in a multi-statement transaction is sent individually (as opposed to being batched), if one of the statements is the target or `SHOW TRACE <stmt>`, retryable errors encountered by that statement will not be returned to the client.
 
     {{site.data.alerts.callout_success}}Given these implications, when you expect transaction retries or want to trace across retries, it's recommended to use <code>SHOW TRACE FOR SESSION</code>.{{site.data.alerts.end}}
 
-### `SHOW TRACE FOR SESSION`
+- When tracing an individual statement (i.e., an implicit transaction), the tracing
+  might change the way in which the statement commits its data; tracing
+  inhibits the "one-phase commit" optimization for transactions that touch a
+  single range. The trace will not reflect the committing of the transaction.
+  `SHOW TRACE FOR SESSION` does not have this effect.
+
+### SHOW TRACE FOR SESSION
 
 This use of `SHOW TRACE` returns messages and timing information for all statements recorded during a session. It's important to note the following:
 
@@ -58,7 +64,8 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 Parameter | Description
 ----------|------------
 `KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
-`explainable_stmt` | The statement to execute and trace. Only [explainable](sql-grammar.html#explainable_stmt) statements are supported.
+`COMPACT` | <span class="version-tag">New in v2.0:</span> If specified, fewer columns are returned by the statement. See [Response](#response) for more details.
+`explainable_stmt` | The statement to execute and trace. Only [explainable](explain.html#explainable-statements) statements are supported.
 
 ## Trace Description
 
@@ -73,7 +80,7 @@ Concept | Description
 
 To further clarify these concepts, let's look at a visualization of a trace for one statement. This particular trace is visualized by [Lightstep](http://lightstep.com/) (docs on integrating Lightstep with CockroachDB coming soon). The image only shows spans, but in the tool, it would be possible drill down to messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
-<div style="text-align: center;"><img src="{{ 'images/trace.png' | relative_url }}" alt="Lightstep example" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v2.0/trace.png' | relative_url }}" alt="Lightstep example" style="border:1px solid #eee;max-width:100%" /></div>
 
 ## Response
 
@@ -107,10 +114,13 @@ Column | Type | Description
 -------|------|------------
 `timestamp` | timestamptz | The absolute time when the message occurred.
 `age` | interval | The age of the message relative to the beginning of the trace (i.e., the beginning of the statement execution in the case of `SHOW TRACE FOR <stmt>` and the beginning of the recording in the case of `SHOW TRACE FOR SESSION`.
-`message` | string.html | The log message.
-`context` | string | A prefix of the respective log message indicating meta-information about the message's context. This is the same information that appears in the beginning of log file messages in between square brackets (e.g, `[client=[::1]:49985,user=root,n1]`).
+`message` | string | The log message.
+`tag` | string | Meta-information about the message's context. This is the same information that appears in the beginning of log file messages in between square brackets (e.g, `[client=[::1]:49985,user=root,n1]`).
+`loc` | string | <span class="version-tag">New in v2.0:</span> The file:line location of the line of code that produced the message. Only some of the messages have this field set; it depends on specifically how the message was logged. The `--vmodule` flag passed to the node producing the message also affects what rows get this field populated. Generally, if `--vmodule=<file>=<level>` is specified, messages produced by that file will have the field populated.
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message was logged.
-`span` | tuple(int, int) | A tuple containing the index of the transaction that generated the message (always `0` for `SHOW TRACE FOR <stmt>`) and the index of the span within the virtual list of all spans if they were ordered by the span's start time.
+`span` | int | The index of the span within the virtual list of all spans if they were ordered by the span's start time.
+
+{{site.data.alerts.callout_info}}If the <code>COMPACT</code> keyword was specified, only the <code>age</code>, <code>message</code>, <code>tag</code> and <code>operation</code> columns are returned. In addition, the value of the <code>loc</code> columns is prepended to <code>message</code>.{{site.data.alerts.end}}
 
 ## Examples
 
@@ -121,27 +131,30 @@ Column | Type | Description
 ~~~
 
 ~~~
-+----------------------------------+------------+-------------------------------------------------------+-----------------------------------+-----------------------------------+-------+
-|            timestamp             |    age     |                        message                        |              context              |             operation             | span  |
-+----------------------------------+------------+-------------------------------------------------------+-----------------------------------+-----------------------------------+-------+
-| 2017-10-03 18:43:06.878722+00:00 | 0s         | === SPAN START: sql txn implicit ===                  | NULL                              | sql txn implicit                  | (0,0) |
-| 2017-10-03 18:43:06.879117+00:00 | 395µs810ns | === SPAN START: starting plan ===                     | NULL                              | starting plan                     | (0,1) |
-| 2017-10-03 18:43:06.879124+00:00 | 402µs807ns | === SPAN START: consuming rows ===                    | NULL                              | consuming rows                    | (0,2) |
-| 2017-10-03 18:43:06.879155+00:00 | 433µs27ns  | querying next range at /Table/51/1                    | [client=[::1]:49985,user=root,n1] | sql txn implicit                  | (0,0) |
-| 2017-10-03 18:43:06.879183+00:00 | 461µs194ns | r18: sending batch 1 Scan to (n1,s1):1                | [client=[::1]:49985,user=root,n1] | sql txn implicit                  | (0,0) |
-| 2017-10-03 18:43:06.879202+00:00 | 480µs687ns | sending request to local server                       | [client=[::1]:49985,user=root,n1] | sql txn implicit                  | (0,0) |
-| 2017-10-03 18:43:06.879216+00:00 | 494µs435ns | === SPAN START: /cockroach.roachpb.Internal/Batch === | NULL                              | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879219+00:00 | 497µs599ns | 1 Scan                                                | [n1]                              | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879221+00:00 | 499µs782ns | read has no clock uncertainty                         | [n1]                              | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879226+00:00 | 504µs105ns | executing 1 requests                                  | [n1,s1]                           | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879233+00:00 | 511µs539ns | read-only path                                        | [n1,s1,r18/1:/{Table/51-Max}]     | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.87924+00:00  | 518µs150ns | command queue                                         | [n1,s1,r18/1:/{Table/51-Max}]     | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879247+00:00 | 525µs568ns | waiting for read lock                                 | [n1,s1,r18/1:/{Table/51-Max}]     | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879287+00:00 | 565µs196ns | read completed                                        | [n1,s1,r18/1:/{Table/51-Max}]     | /cockroach.roachpb.Internal/Batch | (0,3) |
-| 2017-10-03 18:43:06.879318+00:00 | 596µs812ns | plan completed execution                              | [client=[::1]:49985,user=root,n1] | consuming rows                    | (0,2) |
-| 2017-10-03 18:43:06.87932+00:00  | 598µs552ns | resources released, stopping trace                    | [client=[::1]:49985,user=root,n1] | consuming rows                    | (0,2) |
-+----------------------------------+------------+-------------------------------------------------------+-----------------------------------+-----------------------------------+-------+
-(16 rows)
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
+|            timestamp             |      age      |                        message                        |                      tag                       | loc |             operation             | span |
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
+| 2018-03-08 21:22:18.266373+00:00 | 0s            | === SPAN START: sql txn ===                           |                                                |     | sql txn                           |    0 |
+| 2018-03-08 21:22:18.267341+00:00 | 967µs713ns    | === SPAN START: session recording ===                 |                                                |     | session recording                 |    5 |
+| 2018-03-08 21:22:18.267343+00:00 | 969µs760ns    | === SPAN START: starting plan ===                     |                                                |     | starting plan                     |    1 |
+| 2018-03-08 21:22:18.267367+00:00 | 993µs551ns    | === SPAN START: consuming rows ===                    |                                                |     | consuming rows                    |    2 |
+| 2018-03-08 21:22:18.267384+00:00 | 1ms10µs504ns  | Scan /Table/51/{1-2}                                  | [n1,client=[::1]:58264,user=root]              |     | sql txn                           |    0 |
+| 2018-03-08 21:22:18.267434+00:00 | 1ms60µs392ns  | === SPAN START: dist sender ===                       |                                                |     | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267444+00:00 | 1ms71µs136ns  | querying next range at /Table/51/1                    | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267462+00:00 | 1ms88µs421ns  | r20: sending batch 1 Scan to (n1,s1):1                | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267465+00:00 | 1ms91µs570ns  | sending request to local server                       | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267467+00:00 | 1ms93µs707ns  | === SPAN START: /cockroach.roachpb.Internal/Batch === |                                                |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267469+00:00 | 1ms96µs103ns  | 1 Scan                                                | [n1]                                           |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267471+00:00 | 1ms97µs437ns  | read has no clock uncertainty                         | [n1]                                           |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267474+00:00 | 1ms101µs60ns  | executing 1 requests                                  | [n1,s1]                                        |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267479+00:00 | 1ms105µs912ns | read-only path                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267483+00:00 | 1ms110µs94ns  | command queue                                         | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267487+00:00 | 1ms114µs240ns | waiting for read lock                                 | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.26752+00:00  | 1ms146µs596ns | read completed                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267566+00:00 | 1ms192µs724ns | plan completed execution                              | [n1,client=[::1]:58264,user=root]              |     | consuming rows                    |    2 |
+| 2018-03-08 21:22:18.267568+00:00 | 1ms195µs60ns  | resources released, stopping trace                    | [n1,client=[::1]:58264,user=root]              |     | consuming rows                    |    2 |
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
+(19 rows)
 ~~~
 
 {{site.data.alerts.callout_success}}You can use <code>SHOW TRACE</code> as the <a href="table-expressions.html">data source</a> for a <code>SELECT</code> statement, and then filter the values with the <code>WHERE</code> clause. For example, to see only messages about spans starting, you might execute <code>SELECT * FROM [SHOW TRACE FOR <stmt>] where message LIKE '=== SPAN START%'</code>.{{site.data.alerts.end}}
