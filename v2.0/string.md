@@ -16,7 +16,6 @@ In CockroachDB, the following are aliases for `STRING`:
 
 - `CHARACTER`
 - `CHAR`
-- `"char"` 
 - `VARCHAR`
 - `TEXT`
 
