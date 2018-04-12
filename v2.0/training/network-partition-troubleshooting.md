@@ -33,7 +33,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v1.1/training/resources/docker-compose.yaml
+    $ curl -O {{site.url}}/docs/v2.0/training/resources/docker-compose.yaml
     ~~~
     </div>
 

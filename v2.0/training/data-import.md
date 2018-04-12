@@ -74,16 +74,7 @@ Start and initialize a cluster like you did in previous modules.
 
 Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB v1.1, it's one of the most efficient ways to get data into a cluster, so let's start with it.
 
-1. In the same terminal, enable the "experimental" `IMPORT` feature:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach sql \
-    --insecure \
-    --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
-    ~~~
-
-2. Create a database into which you'll import a new table:
+1. Create a database into which you'll import a new table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -92,7 +83,7 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     --execute="CREATE DATABASE import_test;"
     ~~~
 
-3. Run the `IMPORT` command, using schema and data files we've made publicly available on Google Cloud Storage:
+2. Run the `IMPORT` command, using schema and data files we've made publicly available on Google Cloud Storage:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -113,7 +104,7 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     (1 row)
     ~~~
 
-4. Check the schema of the imported `orders` table:
+3. Check the schema of the imported `orders` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -146,7 +137,7 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     (1 row)
     ~~~
 
-5. Read some data from the imported `orders` table:
+4. Read some data from the imported `orders` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
