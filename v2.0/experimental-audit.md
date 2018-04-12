@@ -68,7 +68,7 @@ I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=ro
    - d. Full text of the query (Note: May contain PII)
    - e. Placeholder values, if any
    - f. Query execution time (in milliseconds)
-   - g. Number of rows produced
+   - g. Number of rows produced (e.g., for `SELECT`) or processed (e.g., for `INSERT` or `UPDATE`).
    - h. Status of the query
        - `OK` for success
        - `ERROR` otherwise
