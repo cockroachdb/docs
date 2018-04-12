@@ -72,7 +72,7 @@ Start and initialize a cluster like you did in previous modules.
 
 ## Step 2. Import tabular data from remote file storage
 
-Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB v1.1, it's one of the most efficient ways to get data into a cluster, so let's start with it.
+The [`IMPORT`](../import.html) feature is one of the most efficient ways to get data into a cluster, so let's start with it.
 
 1. Create a database into which you'll import a new table:
 
@@ -90,7 +90,7 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     $ ./cockroach sql \
     --insecure \
     --database="import_test" \
-    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
+    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
     ~~~
 
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
@@ -115,25 +115,41 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     ~~~
 
     ~~~
-    +--------+----------------------------------------------------------------------------------------------------------------------------------------------+
-    | Table  |                                                                 CreateTable                                                                  |
-    +--------+----------------------------------------------------------------------------------------------------------------------------------------------+
-    | orders | CREATE TABLE orders (␤                                                                                                                       |
-    |        |     o_orderkey INTEGER NOT NULL,␤                                                                                                            |
-    |        |     o_custkey INTEGER NOT NULL,␤                                                                                                             |
-    |        |     o_orderstatus STRING(1) NOT NULL,␤                                                                                                       |
-    |        |     o_totalprice DECIMAL(15,2) NOT NULL,␤                                                                                                    |
-    |        |     o_orderdate DATE NOT NULL,␤                                                                                                              |
-    |        |     o_orderpriority STRING(15) NOT NULL,␤                                                                                                    |
-    |        |     o_clerk STRING(15) NOT NULL,␤                                                                                                            |
-    |        |     o_shippriority INTEGER NOT NULL,␤                                                                                                        |
-    |        |     o_comment STRING(79) NOT NULL,␤                                                                                                          |
-    |        |     CONSTRAINT "primary" PRIMARY KEY (o_orderkey ASC),␤                                                                                      |
-    |        |     INDEX o_ck (o_custkey ASC),␤                                                                                                             |
-    |        |     INDEX o_od (o_orderdate ASC),␤                                                                                                           |
-    |        |     FAMILY "primary" (o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, o_orderpriority, o_clerk, o_shippriority, o_comment)␤ |
-    |        | )                                                                                                                                            |
-    +--------+----------------------------------------------------------------------------------------------------------------------------------------------+
+    +--------+--------------------------------------------------------------------------+
+    | Table  |                               CreateTable                                |
+    +--------+--------------------------------------------------------------------------+
+    | orders | CREATE TABLE orders (                                                    |
+    |        |                                                                          |
+    |        |     o_orderkey INTEGER NOT NULL,                                         |
+    |        |                                                                          |
+    |        |     o_custkey INTEGER NOT NULL,                                          |
+    |        |                                                                          |
+    |        |     o_orderstatus STRING(1) NOT NULL,                                    |
+    |        |                                                                          |
+    |        |     o_totalprice DECIMAL(15,2) NOT NULL,                                 |
+    |        |                                                                          |
+    |        |     o_orderdate DATE NOT NULL,                                           |
+    |        |                                                                          |
+    |        |     o_orderpriority STRING(15) NOT NULL,                                 |
+    |        |                                                                          |
+    |        |     o_clerk STRING(15) NOT NULL,                                         |
+    |        |                                                                          |
+    |        |     o_shippriority INTEGER NOT NULL,                                     |
+    |        |                                                                          |
+    |        |     o_comment STRING(79) NOT NULL,                                       |
+    |        |                                                                          |
+    |        |     CONSTRAINT "primary" PRIMARY KEY (o_orderkey ASC),                   |
+    |        |                                                                          |
+    |        |     INDEX o_ck (o_custkey ASC),                                          |
+    |        |                                                                          |
+    |        |     INDEX o_od (o_orderdate ASC),                                        |
+    |        |                                                                          |
+    |        |     FAMILY "primary" (o_orderkey, o_custkey, o_orderstatus,              |
+    |        | o_totalprice, o_orderdate, o_orderpriority, o_clerk, o_shippriority,     |
+    |        | o_comment)                                                               |
+    |        |                                                                          |
+    |        | )                                                                        |
+    +--------+--------------------------------------------------------------------------+
     (1 row)
     ~~~
 
@@ -148,21 +164,22 @@ Although the [`IMPORT`](../import.html) feature is "experimental" in CockroachDB
     ~~~
 
     ~~~
-    +------------+-----------+-------------------------------------------------------------------------------+
-    | o_orderkey | o_custkey |                                   o_comment                                   |
-    +------------+-----------+-------------------------------------------------------------------------------+
-    |          1 |     36901 | nstructions sleep furiously among                                             |
-    |          2 |     78002 |  foxes. pending accounts at the pending, silent asymptot                      |
-    |          4 |    136777 | sits. slyly regular warthogs cajole. regular, regular theodolites acro        |
-    |          7 |     39136 | ly special requests                                                           |
-    |         32 |    130057 | ise blithely bold, regular requests. quickly unusual dep                      |
-    |         34 |     61001 | ly final packages. fluffily final deposits wake blithely ideas. spe           |
-    |         35 |    127588 | zzle. carefully enticing deposits nag furio                                   |
-    |         36 |    115252 |  quick packages are blithely. slyly silent accounts wake qu                   |
-    |         38 |    124828 | haggle blithely. furiously express ideas haggle blithely furiously regular re |
-    |         39 |     81763 | ole express, ironic requests: ir                                              |
-    +------------+-----------+-------------------------------------------------------------------------------+
-    (10 rows)    
+    +------------+-----------+--------------------------------------------------------------------------+
+    | o_orderkey | o_custkey |                                o_comment                                 |
+    +------------+-----------+--------------------------------------------------------------------------+
+    |          1 |     36901 | nstructions sleep furiously among                                        |
+    |          2 |     78002 |  foxes. pending accounts at the pending, silent asymptot                 |
+    |          4 |    136777 | sits. slyly regular warthogs cajole. regular, regular theodolites acro   |
+    |          7 |     39136 | ly special requests                                                      |
+    |         32 |    130057 | ise blithely bold, regular requests. quickly unusual dep                 |
+    |         34 |     61001 | ly final packages. fluffily final deposits wake blithely ideas. spe      |
+    |         35 |    127588 | zzle. carefully enticing deposits nag furio                              |
+    |         36 |    115252 |  quick packages are blithely. slyly silent accounts wake qu              |
+    |         38 |    124828 | haggle blithely. furiously express ideas haggle blithely furiously       |
+    |            |           | regular re                                                               |
+    |         39 |     81763 | ole express, ironic requests: ir                                         |
+    +------------+-----------+--------------------------------------------------------------------------+
+    (10 rows)
     ~~~
 
 ## Step 3. Import a generic SQL file
@@ -180,14 +197,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v1.1/training/resources/startrek.sql
+    $ curl -O {{site.url}}/docs/v2.0/training/resources/startrek.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v1.1/training/resources/startrek.sql
+    $ wget {{site.url}}/docs/v2.0/training/resources/startrek.sql
     ~~~
     </div>
 
@@ -214,19 +231,27 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     ~~~
 
     ~~~
-    +----------+----------------------------------------------------------+
-    |  Table   |                       CreateTable                        |
-    +----------+----------------------------------------------------------+
-    | episodes | CREATE TABLE episodes (␤                                 |
-    |          |     id INT NOT NULL,␤                                    |
-    |          |     season INT NULL,␤                                    |
-    |          |     num INT NULL,␤                                       |
-    |          |     title STRING NULL,␤                                  |
-    |          |     stardate DECIMAL NULL,␤                              |
-    |          |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤          |
-    |          |     FAMILY "primary" (id, season, num, title, stardate)␤ |
-    |          | )                                                        |
-    +----------+----------------------------------------------------------+
+    +----------+---------------------------------------------------------+
+    |  Table   |                       CreateTable                       |
+    +----------+---------------------------------------------------------+
+    | episodes | CREATE TABLE episodes (                                 |
+    |          |                                                         |
+    |          |     id INT NOT NULL,                                    |
+    |          |                                                         |
+    |          |     season INT NULL,                                    |
+    |          |                                                         |
+    |          |     num INT NULL,                                       |
+    |          |                                                         |
+    |          |     title STRING NULL,                                  |
+    |          |                                                         |
+    |          |     stardate DECIMAL NULL,                              |
+    |          |                                                         |
+    |          |     CONSTRAINT "primary" PRIMARY KEY (id ASC),          |
+    |          |                                                         |
+    |          |     FAMILY "primary" (id, season, num, title, stardate) |
+    |          |                                                         |
+    |          | )                                                       |
+    +----------+---------------------------------------------------------+
     (1 row)
     ~~~
 
@@ -282,14 +307,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v1.1/training/resources/pg_dump.sql
+    $ curl -O {{site.url}}/docs/v2.0/training/resources/pg_dump.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v1.1/training/resources/pg_dump.sql
+    $ wget {{site.url}}/docs/v2.0/training/resources/pg_dump.sql
     ~~~
     </div>
 
@@ -311,14 +336,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v1.1/training/resources/pg_dump_cleaned.sql
+    $ curl -O {{site.url}}/docs/v2.0/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v1.1/training/resources/pg_dump_cleaned.sql
+    $ wget {{site.url}}/docs/v2.0/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
@@ -345,6 +370,19 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     $ ./cockroach sql \
     --insecure \
     --execute="SELECT customers.name, accounts.balance FROM pg_import.accounts JOIN pg_import.customers ON accounts.customer_id = customers.id;"
+    ~~~
+
+    ~~~
+    +------------------+---------+
+    |       name       | balance |
+    +------------------+---------+
+    | Bjorn Fairclough |     100 |
+    | Arturo Nevin     |     200 |
+    | Naseem Joossens  |     200 |
+    | Juno Studwick    |     400 |
+    | Eutychia Roberts |     200 |
+    +------------------+---------+
+    (5 rows)    
     ~~~
 
 ## What's Next?

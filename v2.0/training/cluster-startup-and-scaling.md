@@ -223,17 +223,12 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
-    # Cluster ID: e446d2c6-d4df-4dbc-91c4-59fbc08d71a8
-    +--------------------+
-    |      Database      |
-    +--------------------+
-    | crdb_internal      |
-    | information_schema |
-    | pg_catalog         |
-    | system             |
-    +--------------------+
-    (4 rows)
+    +----------+
+    | Database |
+    +----------+
+    | system   |
+    +----------+
+    (1 row)
     ~~~
 
     You just queried the node listening on `26257`, but every other node is a SQL gateway to the cluster as well. We'll learn more about CockroachDB SQL and the built-in SQL client in a later module.
@@ -251,8 +246,8 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     <img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    Note that the **Replicas** count is **16** on all three nodes. This indicates:
-    - There are 16 initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
+    Note that the **Replicas** count is **20** on all three nodes. This indicates:
+    - There are 20 initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
     - Each range has been replicated 3 times (according to the CockroachDB default).
     - For each range, each replica is stored on different nodes.
 
@@ -294,7 +289,7 @@ Go back to the **Live Nodes** list in the Admin UI and watch how the **Replicas*
 
 <img src="{{ 'images/v2.0/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-Another way to observe this is to click **Cluster** in the upper left and scroll down to the **Replicas per Node** graph:
+Another way to observe this is to click **Metrics** in the upper left and scroll down to the **Replicas per Node** graph:
 
 <img src="{{ 'images/v2.0/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

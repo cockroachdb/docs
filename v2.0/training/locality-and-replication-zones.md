@@ -237,15 +237,15 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~
 
     ~~~
-    +-----------+---------+----------+--------------+
-    | Start Key | End Key | Replicas | Lease Holder |
-    +-----------+---------+----------+--------------+
-    | NULL      | NULL    | {3,4,7}  |            4 |
-    +-----------+---------+----------+--------------+
+    +-----------+---------+----------+----------+--------------+
+    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    +-----------+---------+----------+----------+--------------+
+    | NULL      | NULL    |       32 | {1,6,7}  |            6 |
+    +-----------+---------+----------+----------+--------------+
     (1 row)
     ~~~
 
-    In this case, one replica is on node 3 in `us-east`, one is on node 4 in `us-central`, and one is on node 7 in `us-west`.
+    In this case, one replica is on node 1 in `us-east`, one is on node 6 in `us-central`, and one is on node 7 in `us-west`.
 
 ## Step 5. Expand into Europe
 
@@ -370,23 +370,23 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~
 
     ~~~
-    +-----------+---------+----------+--------------+
-    | Start Key | End Key | Replicas | Lease Holder |
-    +-----------+---------+----------+--------------+
-    | NULL      | NULL    | {1,4,9}  |            1 |
-    +-----------+---------+----------+--------------+
+    +-----------+---------+----------+----------+--------------+
+    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    +-----------+---------+----------+----------+--------------+
+    | NULL      | NULL    |       32 | {1,6,7}  |            7 |
+    +-----------+---------+----------+----------+--------------+
     (1 row)
-    +-----------+---------+------------+--------------+
-    | Start Key | End Key |  Replicas  | Lease Holder |
-    +-----------+---------+------------+--------------+
-    | NULL      | NULL    | {10,11,12} |           11 |
-    +-----------+---------+------------+--------------+
+    +-----------+---------+----------+------------+--------------+
+    | Start Key | End Key | Range ID |  Replicas  | Lease Holder |
+    +-----------+---------+----------+------------+--------------+
+    | NULL      | NULL    |       42 | {10,11,12} |           11 |
+    +-----------+---------+----------+------------+--------------+
     (1 row)
-    +-----------+---------+------------+--------------+
-    | Start Key | End Key |  Replicas  | Lease Holder |
-    +-----------+---------+------------+--------------+
-    | NULL      | NULL    | {10,11,12} |           12 |
-    +-----------+---------+------------+--------------+
+    +-----------+---------+----------+------------+--------------+
+    | Start Key | End Key | Range ID |  Replicas  | Lease Holder |
+    +-----------+---------+----------+------------+--------------+
+    | NULL      | NULL    |       43 | {10,11,12} |           12 |
+    +-----------+---------+----------+------------+--------------+
     (1 row)
     ~~~
 
@@ -399,7 +399,7 @@ Now verify that the data for the table in the `intro` database is located on US-
 
 ## Step 9. Clean up
 
-In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
+Take a moment to clean things up.
 
 1. Stop all CockroachDB nodes:
 

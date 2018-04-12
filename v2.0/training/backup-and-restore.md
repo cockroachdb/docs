@@ -318,6 +318,24 @@ Again, imagine the tables in the `startrek` database have changed and you want t
     (1 row)
     ~~~
 
+## Step 6. Clean up
+
+In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
+
+1. Stop all CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3
+    ~~~
+
 ## What's Next?
 
 - [Cluster Upgrade](cluster-upgrade.html)

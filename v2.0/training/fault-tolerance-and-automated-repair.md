@@ -74,14 +74,15 @@ In this module, you'll run a load generator to simulate multiple client connecti
         option              clitcpka
 
     listen psql
-        bind :26000
+        bind :26257
         mode tcp
         balance roundrobin
-        server cockroach1 localhost:26257 check
-        server cockroach2 localhost:26259 check
-        server cockroach3 localhost:26258 check
-        server cockroach4 localhost:26260 check
-        server cockroach5 localhost:26261 check
+        option httpchk GET /health?ready=1
+        server cockroach1 localhost:26257 check port 8080
+        server cockroach2 localhost:26258 check port 8081
+        server cockroach3 localhost:26259 check port 8082
+        server cockroach4 localhost:26260 check port 8083
+        server cockroach5 localhost:26261 check port 8084
     ~~~
 
 4. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
@@ -106,7 +107,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl {{site.url}}/docs/v1.1/training/resources/crdb-ycsb-mac.tar.gz \
+    $ curl {{site.url}}/docs/v2.0/training/resources/crdb-ycsb-mac.tar.gz \
     | tar -xJ
     ~~~
     </div>
@@ -114,7 +115,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- {{site.url}}/docs/v1.1/training/resources/crdb-ycsb-linux.tar.gz \
+    $ wget -qO- {{site.url}}/docs/v2.0/training/resources/crdb-ycsb-linux.tar.gz \
     | tar xvz
     ~~~
     </div>
@@ -156,6 +157,8 @@ Initially, the load generator creates a new database called `ycsb`, creates a `u
 
     You can also view the schema of the `usertable` by clicking the table name:
 
+    <img src="{{ 'images/v2.0/training-6.1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />    
+
 ## Step 4. Simulate a single node failure
 
 When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
@@ -196,13 +199,11 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
-    # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
-    +----------+
-    | count(*) |
-    +----------+
-    |    22032 |
-    +----------+
+    +-------+
+    | count |
+    +-------+
+    | 13760 |
+    +-------+
     (1 row)
     ~~~
 
@@ -214,13 +215,11 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
-    # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
-    +----------+
-    | count(*) |
-    +----------+
-    |    22150 |
-    +----------+
+    +-------+
+    | count |
+    +-------+
+    | 13975 |
+    +-------+
     (1 row)
     ~~~
 
@@ -305,8 +304,6 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
-    # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
     +----------+
@@ -323,8 +320,6 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    # Server version: CockroachDB CCL {{page.release_info.version}} (darwin amd64, built 2018/01/08 17:30:06, go1.8.3) (same version as client)
-    # Cluster ID: de299958-a53e-4cbb-af16-eac7a8d7791c
     +----------+
     | count(*) |
     +----------+
