@@ -38,16 +38,17 @@ Because the cluster has 3 nodes, with every range on every node, it is not possi
 +----+---------+-------------------+--------------------+-------------+
 | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
 +----+---------+-------------------+--------------------+-------------+
-|  3 | true    |                16 | true               | false       |
+|  3 |  true   |                20 |        true        |    false    |
 +----+---------+-------------------+--------------------+-------------+
 (1 row)
+.
 +----+---------+-------------------+--------------------+-------------+
 | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
 +----+---------+-------------------+--------------------+-------------+
-|  3 | true    |                16 | true               | false       |
+|  3 |  true   |                20 |        true        |    true     |
 +----+---------+-------------------+--------------------+-------------+
 (1 row)
-...
+...........
 ~~~
 
 ## Step 2. Add a fourth node
@@ -72,19 +73,27 @@ $ ./cockroach start \
     You'll see that, after the fourth node was added, the node's `gossiped_replicas` count decreased to 0 and the process completed with a confirmation:
 
     ~~~
-    ...
     +----+---------+-------------------+--------------------+-------------+
     | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
     +----+---------+-------------------+--------------------+-------------+
-    |  3 | true    |                11 | true               | true        |
+    |  3 |  true   |                20 |        true        |    false    |
     +----+---------+-------------------+--------------------+-------------+
     (1 row)
+    .
     +----+---------+-------------------+--------------------+-------------+
     | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
     +----+---------+-------------------+--------------------+-------------+
-    |  3 | true    |                 0 | true               | true        |
+    |  3 |  true   |                20 |        true        |    true     |
     +----+---------+-------------------+--------------------+-------------+
     (1 row)
+    .............
+    +----+---------+-------------------+--------------------+-------------+
+    | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
+    +----+---------+-------------------+--------------------+-------------+
+    |  3 |  true   |                 0 |        true        |    true     |
+    +----+---------+-------------------+--------------------+-------------+
+    (1 row)
+
     All target nodes report that they hold no more data. Please verify cluster health before removing the nodes.
     ok
     ~~~
@@ -95,9 +104,7 @@ $ ./cockroach start \
 
     <img src="{{ 'images/v2.0/training-17.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-3. Click **View nodes list** on the right.
-
-    About 5 minutes after the decommission process completes, you'll see node 3 listed under **Decommissioned Nodes**.  
+3. Click **Overview** on the left. About 5 minutes after the decommission process completes, you'll see node 3 listed under **Decommissioned Nodes**.  
 
     <img src="{{ 'images/v2.0/training-18.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

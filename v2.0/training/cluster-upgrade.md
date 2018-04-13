@@ -20,15 +20,59 @@ redirect_from: /training/cluster-upgrade.html
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
-## Step 1. Start a cluster running v1.1
+## Step 1. Install CockroachDB v1.1
 
-Start and initialize a cluster like you did in previous modules.
+1. Download the CockroachDB v1.1 archive for your OS, and extract the binary:
+
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ curl https://binaries.cockroachdb.com/cockroach-v1.1.7.darwin-10.9-amd64.tgz \
+    | tar -xJ
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v1.1.7.linux-amd64.tgz \
+    | tar  xvz
+    ~~~
+    </div>
+
+2. Move the v1.1 binary into the parent `cockroachdb-training` directory:
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv cockroach-v1.1.7.darwin-10.9-amd64/cockroach ./cockroach-v1.1 \
+    ; rm -rf cockroach-v1.1.7.darwin-10.9-amd64
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv cockroach-v1.1.7.linux-amd64/cockroach ./cockroach-v1.1 \
+    ; rm -rf cockroach-v1.1.7.linux-amd64
+    ~~~
+    </div>
+
+## Step 2. Start a cluster running v1.1
+
+Start and initialize a cluster like you did in previous modulesm, but this time using the v1.1 binary.
 
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ ./cockroach-v1.1 start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -41,7 +85,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ ./cockroach-v1.1 start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -54,7 +98,7 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ ./cockroach-v1.1 start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -67,52 +111,8 @@ Start and initialize a cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach-v1.1 init --insecure
     ~~~
-
-## Step 2. Install CockroachDB v2.0
-
-1. Download the CockroachDB v2.0 archive for your OS, and extract the binary:
-
-    <div class="filters clearfix">
-      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
-      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
-    </div>
-    <p></p>
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180129.darwin-10.9-amd64.tgz \
-    | tar -xJ
-    ~~~
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0-alpha.20180129.linux-amd64.tgz \
-    | tar  xvz
-    ~~~
-    </div>
-
-2. Move the v2.0 binary into the parent `cockroachdb-training` directory:
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv cockroach-v2.0-alpha.20180129.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0-alpha.20180129.darwin-10.9-amd64
-    ~~~
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv cockroach-v2.0-alpha.20180129.linux-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0-alpha.20180129.linux-amd64
-    ~~~
-    </div>
 
 ## Step 3. Upgrade the first node to v2.0
 
@@ -128,16 +128,16 @@ Start and initialize a cluster like you did in previous modules.
     You should **not** see a `cockroach` process with `--store=node1` and `--port=26257`.
 
     ~~~
-    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
-    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
-    42543 ttys004    0:00.00 grep cockroach
+    6521 ttys001    0:00.86 ./cockroach-v1.1 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    6543 ttys002    0:00.00 grep cockroach-v1.1
+    6509 ttys004    0:00.98 ./cockroach-v1.1 start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
 3. In node 1's terminal, restart the node using the v2.0 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v2.0 start \
+    $ ./cockroach start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -159,13 +159,13 @@ Start and initialize a cluster like you did in previous modules.
     ~~~
 
     ~~~
-    +----+-----------------+---------------------+---------------------+---------------------+
-    | id |     address     |        build        |     updated_at      |     started_at      |
-    +----+-----------------+---------------------+---------------------+---------------------+
-    |  1 | localhost:26257 | v2.0-alpha.20180129 | 2018-02-13 15:32:38 | 2018-02-13 15:30:48 |
-    |  2 | localhost:26258 | v1.1.5              | 2018-02-13 15:32:47 | 2018-02-13 15:26:07 |
-    |  3 | localhost:26259 | v1.1.5              | 2018-02-13 15:32:38 | 2018-02-13 15:26:08 |
-    +----+-----------------+---------------------+---------------------+---------------------+
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    | id |     address     | build  |     updated_at      |     started_at      | is_live |
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    |  1 | localhost:26257 | v2.0.0 | 2018-04-13 10:17:29 | 2018-04-13 10:15:59 | true    |
+    |  2 | localhost:26258 | v1.1.7 | 2018-04-13 10:17:30 | 2018-04-13 10:14:30 | true    |
+    |  3 | localhost:26259 | v1.1.7 | 2018-04-13 10:17:30 | 2018-04-13 10:14:30 | true    |
+    +----+-----------------+--------+---------------------+---------------------+---------+
     (3 rows)
     ~~~
 
@@ -183,16 +183,16 @@ Start and initialize a cluster like you did in previous modules.
     You should not see a `cockroach` process with `--store=node2` and `--port=26258`.
 
     ~~~
-    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
-    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
-    42543 ttys004    0:00.00 grep cockroach
-    ~~~~
+    6521 ttys001    0:04.61 ./cockroach-v1.1 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    6564 ttys002    0:03.68 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
+    6641 ttys004    0:00.00 grep cockroach
+    ~~~
 
 3. Restart the node using the v2.0 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v2.0 start \
+    $ ./cockroach start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -215,16 +215,16 @@ Start and initialize a cluster like you did in previous modules.
     You should not see a `cockroach` process with `--store=node3` and `--port=26259`.
 
     ~~~
-    42471 ttys002    0:02.01 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
-    42483 ttys003    0:01.90 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
-    42543 ttys004    0:00.00 grep cockroach
-    ~~~~
+    6688 ttys001    0:00.00 grep cockroach
+    6564 ttys002    0:04.90 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
+    6668 ttys004    0:01.22 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
 7. Restart the node using the v2.0 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v2.0 start \
+    $ ./cockroach start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -248,13 +248,13 @@ $ ./cockroach node status \
 ~~~
 
 ~~~
-+----+-----------------+---------------------+---------------------+---------------------+
-| id |     address     |        build        |     updated_at      |     started_at      |
-+----+-----------------+---------------------+---------------------+---------------------+
-|  1 | localhost:26257 | v2.0-alpha.20180129 | 2018-02-13 10:59:42 | 2018-02-13 10:47:22 |
-|  2 | localhost:26258 | v2.0-alpha.20180129 | 2018-02-13 10:59:49 | 2018-02-13 10:55:49 |
-|  3 | localhost:26259 | v2.0-alpha.20180129 | 2018-02-13 10:59:42 | 2018-02-13 10:56:12 |
-+----+-----------------+---------------------+---------------------+---------------------+
++----+-----------------+--------+---------------------+---------------------+---------+
+| id |     address     | build  |     updated_at      |     started_at      | is_live |
++----+-----------------+--------+---------------------+---------------------+---------+
+|  1 | localhost:26257 | v2.0.0 | 2018-04-13 10:22:49 | 2018-04-13 10:15:59 | true    |
+|  2 | localhost:26258 | v2.0.0 | 2018-04-13 10:22:45 | 2018-04-13 10:20:24 | true    |
+|  3 | localhost:26259 | v2.0.0 | 2018-04-13 10:22:49 | 2018-04-13 10:21:59 | true    |
++----+-----------------+--------+---------------------+---------------------+---------+
 (3 rows)
 ~~~
 

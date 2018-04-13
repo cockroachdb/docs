@@ -33,15 +33,22 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     --execute="SHOW GRANTS ON DATABASE startrek;"
     ~~~
 
-    You'll see that only the `root` user has access to the database:
+    You'll see that only the `root` user (and `admin` role to which `root` belongs) has access to the database:
 
     ~~~
-    +----------+------+------------+
-    | Database | User | Privileges |
-    +----------+------+------------+
-    | startrek | root | ALL        |
-    +----------+------+------------+
-    (1 row)
+    +----------+--------------------+-------+------------+
+    | Database |       Schema       | User  | Privileges |
+    +----------+--------------------+-------+------------+
+    | startrek | crdb_internal      | admin | ALL        |
+    | startrek | crdb_internal      | root  | ALL        |
+    | startrek | information_schema | admin | ALL        |
+    | startrek | information_schema | root  | ALL        |
+    | startrek | pg_catalog         | admin | ALL        |
+    | startrek | pg_catalog         | root  | ALL        |
+    | startrek | public             | admin | ALL        |
+    | startrek | public             | root  | ALL        |
+    +----------+--------------------+-------+------------+
+    (8 rows)
     ~~~
 
 2. Check the privileges on the tables inside in the `startrek` database:
@@ -53,16 +60,18 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     --execute="SHOW GRANTS ON startrek.episodes, startrek.quotes;"
     ~~~
 
-    Again, you'll see that only the `root` user has access to the tables:
+    Again, you'll see that only the `root` user (and `admin` role to which `root` belongs) has access to the database:
 
     ~~~
-    +----------+------+------------+
-    |  Table   | User | Privileges |
-    +----------+------+------------+
-    | episodes | root | ALL        |
-    | quotes   | root | ALL        |
-    +----------+------+------------+
-    (2 rows)
+    +----------+--------+----------+-------+------------+
+    | Database | Schema |  Table   | User  | Privileges |
+    +----------+--------+----------+-------+------------+
+    | startrek | public | episodes | admin | ALL        |
+    | startrek | public | episodes | root  | ALL        |
+    | startrek | public | quotes   | admin | ALL        |
+    | startrek | public | quotes   | root  | ALL        |
+    +----------+--------+----------+-------+------------+
+    (4 rows)
     ~~~
 
 ## Step 2. Create a user
@@ -122,16 +131,18 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~
 
     ~~~
-    +----------+-------+------------+
-    |  Table   | User  | Privileges |
-    +----------+-------+------------+
-    | episodes | root  | ALL        |
-    | episodes | spock | SELECT     |
-    | quotes   | root  | ALL        |
-    | quotes   | spock | INSERT     |
-    | quotes   | spock | SELECT     |
-    +----------+-------+------------+
-    (5 rows)
+    +----------+--------+----------+-------+------------+
+    | Database | Schema |  Table   | User  | Privileges |
+    +----------+--------+----------+-------+------------+
+    | startrek | public | episodes | admin | ALL        |
+    | startrek | public | episodes | root  | ALL        |
+    | startrek | public | episodes | spock | SELECT     |
+    | startrek | public | quotes   | admin | ALL        |
+    | startrek | public | quotes   | root  | ALL        |
+    | startrek | public | quotes   | spock | INSERT     |
+    | startrek | public | quotes   | spock | SELECT     |
+    +----------+--------+----------+-------+------------+
+    (7 rows)
     ~~~
 
 ## Step 4. Connect as the user
@@ -209,16 +220,18 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~
 
     ~~~
-    +----------+-------+------------+
-    |  Table   | User  | Privileges |
-    +----------+-------+------------+
-    | episodes | root  | ALL        |
-    | episodes | spock | SELECT     |
-    | quotes   | root  | ALL        |
-    | quotes   | spock | INSERT     |
-    | quotes   | spock | SELECT     |
-    +----------+-------+------------+
-    (5 rows)
+    +----------+--------+----------+-------+------------+
+    | Database | Schema |  Table   | User  | Privileges |
+    +----------+--------+----------+-------+------------+
+    | startrek | public | episodes | admin | ALL        |
+    | startrek | public | episodes | root  | ALL        |
+    | startrek | public | episodes | spock | SELECT     |
+    | startrek | public | quotes   | admin | ALL        |
+    | startrek | public | quotes   | root  | ALL        |
+    | startrek | public | quotes   | spock | INSERT     |
+    | startrek | public | quotes   | spock | SELECT     |
+    +----------+--------+----------+-------+------------+
+    (7 rows)
     ~~~
 
 2. As the `root` user, revoke the `SELECT` privilege on the `startrek.episodes` table from `spock`::
@@ -242,15 +255,17 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     Note that `spock` no longer has the `SELECT` privilege on the `episodes` table.
 
     ~~~
-    +----------+-------+------------+
-    |  Table   | User  | Privileges |
-    +----------+-------+------------+
-    | episodes | root  | ALL        |
-    | quotes   | root  | ALL        |
-    | quotes   | spock | INSERT     |
-    | quotes   | spock | SELECT     |
-    +----------+-------+------------+
-    (4 rows)
+    +----------+--------+----------+-------+------------+
+    | Database | Schema |  Table   | User  | Privileges |
+    +----------+--------+----------+-------+------------+
+    | startrek | public | episodes | admin | ALL        |
+    | startrek | public | episodes | root  | ALL        |
+    | startrek | public | quotes   | admin | ALL        |
+    | startrek | public | quotes   | root  | ALL        |
+    | startrek | public | quotes   | spock | INSERT     |
+    | startrek | public | quotes   | spock | SELECT     |
+    +----------+--------+----------+-------+------------+
+    (6 rows)
     ~~~
 
 4. Now as the `spock` user, try to read from the `startrek.episodes` table:

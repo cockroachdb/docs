@@ -140,14 +140,11 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
-+--------------------+
-(3 rows)
++----------+
+| Database |
++----------+
++----------+
+(0 rows)
 ~~~
 
 ## Clean up
