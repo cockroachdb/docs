@@ -82,9 +82,9 @@ Parameter | Description | Default value
 ----------|-------------|---------------
 `application_name` | An initial value for the [`application_name` session variable](set-vars.html). | Empty string.
 `sslmode` | Which type of secure connection to use: `disable`, `allow`, `prefer`, `require`, `verify-ca` or `verify-full`. See [Secure Connections With URLs](#secure-connections-with-urls) for details. | `disable`
-`sslrootcert` | Client-side path to the [CA certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
-`sslcert` | Client-side path to the [client certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
-`sslkey` | Client-side path to the [client private key](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
+`sslrootcert` | Path to the [CA certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
+`sslcert` | Path to the [client certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
+`sslkey` | Path to the [client private key](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
 
 ### Secure Connections With URLs
 
@@ -96,8 +96,8 @@ Parameter | Description | Recommended for use
 `sslmode=allow` | Enable a secure connection only if the server requires it.<br><br>**Not supported in all clients.** |
 `sslmode=prefer` | Try to establish a secure connection, but accept an insecure connection if the server does not support secure connections.<br><br>**Not supported in all clients.** |
 `sslmode=require` | Force a secure connection. An error occurs if the secure connection cannot be established. |
-`sslmode=verify-ca` | Force a secure connection and verify that the client and server certificates are signed by a known CA. |
-`sslmode=verify-full` | Force a secure connection, verify that the client and server certificates are signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments](secure-a-cluster.html).
+`sslmode=verify-ca` | Force a secure connection and verify that the server certificate is signed by a known CA. |
+`sslmode=verify-full` | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments](secure-a-cluster.html).
 
 {{site.data.alerts.callout_danger}}Some client drivers and the
 <code>cockroach</code> commands do not support
