@@ -95,7 +95,7 @@ For example, using a sub-query in scalar context:
 ~~~ sql
 > SELECT ARRAY(SELECT a.x FROM a ORDER BY a.x);
   -- ensures that the array is constructed using the values of a.x in sorted order.
-> SELECT (1, 2, 3) = (SELECT a.x FROM a ORDER BY a.x);
+> SELECT ARRAY[1, 2, 3] = ARRAY(SELECT a.x FROM a ORDER BY a.x);
   -- ensures that the values on the right-hand side are compared in the order of column a.x.
 ~~~
 
