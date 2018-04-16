@@ -148,7 +148,7 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
 4. Go to the Admin UI at <a href="http://localhost:8081" data-proofer-ignore>http://localhost:8081</a> to view the **Node List** and then verify that the node has rejoined the cluster using the new version of the binary:
 
-    <img src="{{ 'images/v2.1/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.0/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You can also use the `cockroach node status` command to check each node's version:
 
@@ -237,7 +237,7 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
 Back in the Admin UI, you'll see that all 3 nodes now have the same, upgraded version:
 
-<img src="{{ 'images/v2.1/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 You can also use the `cockroach node status` command to check each node's version:
 

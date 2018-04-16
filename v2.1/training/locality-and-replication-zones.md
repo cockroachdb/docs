@@ -78,7 +78,7 @@ By default, CockroachDB tries to balance data evenly across specified "localitie
 
 To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the the replica count is the same on all nodes.
 
-<img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 3. Expand into 2 more US regions
 
