@@ -52,6 +52,13 @@ Metric | Description
 User CPU Time | Total CPU seconds per second used by the CockroachDB process across all nodes.
 Sys CPU Time | Total CPU seconds per second used by the system calls made by CockroachDB across all nodes.
 
+## Clock Offset
+
+<img src="{{ 'images/v2.0/admin_ui_clock_offset.png' | relative_url }}" alt="CockroachDB Admin UI Clock Offset" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the mean clock offset of the node against the rest of the cluster.
+- In the cluster view, the graph shows the mean clock offset of each node against the rest of the cluster.
+
 ## Other Graphs
 
 The **Runtime** dashboard shows other time series graphs that are important for CockroachDB developers:
@@ -59,6 +66,5 @@ The **Runtime** dashboard shows other time series graphs that are important for 
 - Goroutine Count
 - GC Runs
 - GC Pause Time
-- Clock Offset
 
-For monitoring CockroachDB, it is sufficient to use the [**Live Node Count**](#live-node-count), [**Memory Usage**](#memory-usage), and [**CPU Time**](#cpu-time) graphs.
+For monitoring CockroachDB, it is sufficient to use the [**Live Node Count**](#live-node-count), [**Memory Usage**](#memory-usage), [**CPU Time**](#cpu-time), and [**Clock Offset**](#clock-offset) graphs.
