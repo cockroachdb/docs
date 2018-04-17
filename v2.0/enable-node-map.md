@@ -142,7 +142,7 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-For the latitudes and longitudes of AWS and Azure regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
+For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
 
 ### Step 5. View the Node Map
 
@@ -197,24 +197,7 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ### AWS locations
 
-|  Location | SQL Statement |
-|  ------ | ------ |
-|  US East (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)`|
-|  US East (Ohio) | `INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)` |
-|  US West (N. California) | `INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824)` |
-|  US West (Oregon) | `INSERT into system.locations VALUES ('region', 'us-west-2', 43.804133, -120.554201)` |
-|  Canada (Central) | `INSERT into system.locations VALUES ('region', 'ca-central-1', 56.130366, -106.346771)` |
-|  EU (Frankfurt) | `INSERT into system.locations VALUES ('region', 'eu-central-1', 50.110922, 8.682127)` |
-|  EU (Ireland) | `INSERT into system.locations VALUES ('region', 'eu-west-1', 53.142367, -7.692054)` |
-|  EU (London) | `INSERT into system.locations VALUES ('region', 'eu-west-2', 51.507351, -0.127758)` |
-|  EU (Paris) | `INSERT into system.locations VALUES ('region', 'eu-west-3', 48.856614, 2.352222)` |
-|  Asia Pacific (Tokyo) | `INSERT into system.locations VALUES ('region', 'ap-northeast-1', 35.689487, 139.691706)` |
-|  Asia Pacific (Seoul) | `INSERT into system.locations VALUES ('region', 'ap-northeast-2', 37.566535, 126.977969)` |
-|  Asia Pacific (Osaka-Local) | `INSERT into system.locations VALUES ('region', 'ap-northeast-3', 34.693738, 135.502165)` |
-|  Asia Pacific (Singapore) | `INSERT into system.locations VALUES ('region', 'ap-southeast-1', 1.352083, 103.819836)` |
-|  Asia Pacific (Sydney) | `INSERT into system.locations VALUES ('region', 'ap-southeast-2', -33.86882, 151.209296)` |
-|  Asia Pacific (Mumbai) | `INSERT into system.locations VALUES ('region', 'ap-south-1', 19.075984, 72.877656)` |
-|  South America (São Paulo) | `INSERT into system.locations VALUES ('region', 'sa-east-1', -23.55052, -46.633309)` |
+{% include aws-locations.md %}
 
 ### Azure locations
 
@@ -222,20 +205,4 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ### Google Cloud locations
 
-|  Location | SQL Statement |
-|  ------ | ------ |
-|  us-east1 (South Carolina) | `INSERT into system.locations VALUES ('region', 'us-east1', 33.836082, -81.163727)` |
-|  us-east4 (N. Virginia) | `INSERT into system.locations VALUES ('region', 'us-east4', 37.478397, -76.453077)` |
-|  us-central1 (Iowa) | `INSERT into system.locations VALUES ('region', 'us-central1', 42.032974, -93.581543)` |
-|  us-west1 (Oregon) | `INSERT into system.locations VALUES ('region', 'us-west1', 43.804133, -120.554201)` |
-|  northamerica-northeast1 (Montreal) | `INSERT into system.locations VALUES ('region', 'northamerica-northeast1', 56.130366, -106.346771)` |
-|  europe-west1 (Belgium) | `INSERT into system.locations VALUES ('region', 'europe-west1', 50.44816, 3.81886)` |
-|  europe-west3 (Frankfurt) | `INSERT into system.locations VALUES ('region', 'europe-west3', 50.110922, 8.682127)` |
-|  europe-west4 (Netherlands) | `INSERT into system.locations VALUES ('region', 'europe-west4', 53.4386, 6.8355)` |
-|  europe-west2 (London) | `INSERT into system.locations VALUES ('region', 'europe-west2', 51.507351, -0.127758)` |
-|  asia-east1 (Taiwan) | `INSERT into system.locations VALUES ('region', 'asia-east1', 24.0717, 120.5624)` |
-|  asia-northeast1 (Tokyo) | `INSERT into system.locations VALUES ('region', 'asia-northeast1', 35.689487, 139.691706)` |
-|  asia-southeast1 (Singapore) | `INSERT into system.locations VALUES ('region', 'asia-southeast1', 1.352083, 103.819836)` |
-|  australia-southeast1 (Sydney) | `INSERT into system.locations VALUES ('region', 'australia-southeast1', -33.86882, 151.209296)` |
-|  asia-south1 (Mumbai) | `INSERT into system.locations VALUES ('region', 'asia-south1', 19.075984, 72.877656)` |
-|  southamerica-east1 (São Paulo) | `INSERT into system.locations VALUES ('region', 'southamerica-east1', -23.55052, -46.633309)` |
+{% include gce-locations.md %}
