@@ -111,7 +111,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 {% include faq/clock-synchronization-monitoring.html %}
 
-You can also see these metrics on [the Admin UI's Runtime dashboard](admin-ui-runtime-dashboard.html) in the graph titled Clock Offset as of the v2.0 release.
+You can also see these metrics in [the Clock Offset graph](admin-ui-runtime-dashboard.html#clock-offset) on the Admin UI's Runtime dashboard.
 
 ## How do I prepare for planned node maintenance?
 
