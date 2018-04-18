@@ -10,7 +10,9 @@ The `SELECT` [statement](sql-statements.html) retrieves data from a table. The `
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/select.html %}
+</div>
 
 {{site.data.alerts.callout_success}}<code>SELECT</code> also has other applications not covered here, such as executing <a href="functions-and-operators.html">functions</a> like <code>SELECT current_timestamp();</code>.{{site.data.alerts.end}}
 
@@ -20,24 +22,25 @@ The user must have the `SELECT` [privilege](privileges.html) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `DISTINCT` | Retrieve no more than one copy of a value. |
-| `target_elem` | The name of the column you want select (`*` to retrieve all columns), the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use. |
-| `AS col_label` | In the retrieved table, change the column label to `col_label`. |
-| `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.|
-| `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/). |
-| `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/). |
-| `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).  |
-| `GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`. |
-| `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions. |
-| `UNION` | Combine the retrieved rows from the preceding and following `SELECT` statements. Returns distinct values.|
-| `INTERSECT` | Only retrieve rows that exist in both the preceding and following `SELECT` statements. Returns distinct values. |
-| `EXCEPT` | Only retrieve rows that are in the preceding `SELECT` statement but not in the following `SELECT` statement.  Returns distinct values.|
-| `ALL` | Include duplicate rows in the returned values of `UNION`, `INTERSECT`, or `EXCEPT`. |
-| `ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column.<br><br>When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.|
-| `LIMIT limit_val` | Only retrieve `limit_val` number of rows. <br><br>CockroachDB also supports `FETCH FIRST limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases for `LIMIT`. If `limit_val` is omitted, then one row is fetched.|
-| `OFFSET offset_val` | Do not include the first `offset_value` number of rows.<br/><br/>`OFFSET` is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.|
+Parameter | Description
+----------|-------------
+`DISTINCT` | Retrieve no more than one copy of a value.
+`target_elem` | The name of the column you want select (`*` to retrieve all columns), the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [value expression](sql-expressions.html) you want to use.
+`AS col_label` | In the retrieved table, change the column label to `col_label`.
+`table_ref` | The [table expression](table-expressions.html) you want to retrieve data from
+`index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).<br /><br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Also, time-travel queries are not supported in transactions or (most) subqueries. For details, see [the example below](#select-historical-data-time-travel).
+`WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).
+`GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`.
+`HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
+`UNION` | Combine the retrieved rows from the preceding and following `SELECT` statements. Returns distinct values
+`INTERSECT` | Only retrieve rows that exist in both the preceding and following `SELECT` statements. Returns distinct values.
+`EXCEPT` | Only retrieve rows that are in the preceding `SELECT` statement but not in the following `SELECT` statement.  Returns distinct values
+`ALL` | Include duplicate rows in the returned values of `UNION`, `INTERSECT`, or `EXCEPT`.
+`ORDER BY sortby_list` | Sort retrieved rows in the order of comma-separated column names you include in `sortby_list`. You can optionally specify `ASC` or `DESC` order for each column.<br><br>When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them
+`LIMIT limit_val` | Only retrieve `limit_val` number of rows. <br><br>CockroachDB also supports `FETCH FIRST limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases for `LIMIT`. If `limit_val` is omitted, then one row is fetched
+`OFFSET offset_val` | Do not include the first `offset_value` number of rows.<br/><br/>`OFFSET` is often used in conjunction with `LIMIT` to "paginate" through retrieved rows
+
 ## Examples
 
 ### Choose Columns
@@ -312,7 +315,7 @@ GROUP BY state_opened;
 
 #### Filter Aggregate Groups
 
-To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evlauate to a Boolean value.
+To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evaluate to a Boolean value.
 
 ~~~ sql
 > SELECT state_opened, AVG(balance) as avg
@@ -582,7 +585,7 @@ WHERE name = 'Edna Barath';
 +-------------+---------+
 ~~~
 
-### Select Historical Data (Time Travel)
+### Select Historical Data (Time-Travel)
 
 CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME`. For more information, see our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
 
@@ -621,6 +624,52 @@ WHERE name = 'Edna Barath';
 +-------------+---------+
 ~~~
 
+Note that time-travel queries are not supported in the following scenarios:
+
+- In [transactions](transactions.html)
+- In subqueries, unless the parameter is also specified at the top-level of the query with the same timestamp.
+
+For example, the following query works:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
++----------------------------------+
+|               name               |
++----------------------------------+
+| Vainglorious K. Snerptwiddle III |
++----------------------------------+
+(1 row)
+~~~
+
+These queries do not:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
+ERROR:  AS OF SYSTEM TIME must be provided on a top-level statement
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:30:00'
+    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
+      WHERE name ~ 'Vain' LIMIT 1);
+~~~
+
+~~~
+ERROR:  cannot specify AS OF SYSTEM TIME with different timestamps
+~~~
 
 ## See Also
 

@@ -20,9 +20,8 @@ redcarpet:
 
 versions:
   stable: v2.0
-  dev: v2.0
+  dev: v2.1
   v1.2: v2.0
-  v2.1: v2.0
 
 release_info:
   v1.0:
@@ -43,19 +42,19 @@ release_info:
     docker_image: cockroachdb/cockroach
     build_time: 2018/04/04 14:48:26 (go1.10)
     start_time: 2018-04-04 15:10:52.34274101 +0000 UTC
-  # v2.1:
-  #   name: v2.1
-  #   version: v2.0.0
-  #   docker_image: cockroachdb/cockroach-unstable
-  #   build_time: 2018/03/26 14:48:26 (go1.10)
-  #   start_time: 2018-03-26 15:10:52.34274101 +0000 UTC
+  v2.1:
+    name: v2.1.0
+    version: v2.1.0-alpha.20180416
+    docker_image: cockroachdb/cockroach-unstable
+    build_time: 2018/04/16 14:48:26 (go1.10)
+    start_time: 2018-04-16 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
   aws_access_key: AKIAIXNAWDKXMDDNHRCA
   aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
-exclude: ["ci", "vendor", "rfc", "v1.1/training/unused", "v2.0/training/unused"]
+exclude: ["ci", "vendor", "rfc", "v1.1/training/unused", "v2.0/training/unused", "v2.1/training/unused"]
 
 keep_files: [_internal]
 

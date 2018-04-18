@@ -52,6 +52,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
 | `datestyle` | (Reserved; exposed only for ORM compatibility.) | `ISO` | No |
 | `extra_float_digits` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
+| `intervalstyle` | <span class="version-tag">New in v2.0:</span> (Reserved; exposed only for ORM compatibility.) | `postgres` | No |
 | `max_index_keys` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
 | `standard_conforming_strings` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
 
