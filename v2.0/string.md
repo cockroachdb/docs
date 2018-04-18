@@ -25,7 +25,8 @@ And the following are aliases for `STRING(n)`:
 - `CHARACTER VARYING(n)`
 - `CHAR(n)`
 - `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+- `VARCHAR(n)`
+
 
 ## Length
 
