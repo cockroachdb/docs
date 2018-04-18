@@ -36,6 +36,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `application_name` | The current application name for statistics collection. | Empty string, or `cockroach` for sessions from the [built-in SQL client](use-the-built-in-sql-client.html)  | Yes |
 | `database` | The [current database](sql-name-resolution.html#current-database). | Database in connection string, or empty if not specified | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or `SERIALIZABLE` if not specified | Yes |
+| `default_transaction_read_only` | <span class="version-tag">New in v2.0:</span> The default transaction access mode for the current session. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes |
 | `distsql` | | `auto` | |
 | `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
 | `search_path` | <span class="version-tag">Changed in v2.0:</span> A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{public}` | Yes |
@@ -47,6 +48,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `tracing` | | `off` | |
 | `transaction_isolation` | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details.<br><br><span class="version-tag">Changed in v2.0:</span> This session variable was called `transaction isolation level` (with spaces) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `SERIALIZABLE` | Yes |
 | `transaction_priority` | The priority of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details.<br><br><span class="version-tag">Changed in v2.0:</span> This session variable was called `transaction priority` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NORMAL` | Yes |
+| `transaction_read_only` | <span class="version-tag">New in v2.0:</span> The access mode of the current transaction. See [Set Transaction](set-transaction.html) for more details. | `off` | Yes |
 | `transaction_status` | The state of the current transaction. See [Transactions](transactions.html) for more details.<br><br><span class="version-tag">Changed in v2.0:</span> This session variable was called `transaction status` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NoTxn` | No |
 | `client_encoding` | (Reserved; exposed only for ORM compatibility.) | `UTF8` | No |
 | `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No |
