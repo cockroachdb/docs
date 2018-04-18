@@ -103,6 +103,87 @@ the ranges that store tables or indexes:
 (4 rows)
 ~~~
 
+### Split a Table with a Composite Primary Key
+
+You may want to split a table with a composite primary key (e.g., when working with [partitions](partitioning.html#partition-using-primary-key)).
+
+Given the table
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE t (k1 INT, k2 INT, v INT, w INT, PRIMARY KEY (k1, k2));
+~~~
+
+we can split it at its primary key like so:
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE t SPLIT AT VALUES (5,1), (5,2), (5,3);
+~~~
+
+~~~
++------------+-----------------+
+|    key     |     pretty      |
++------------+-----------------+
+| \xbc898d89 | /Table/52/1/5/1 |
+| \xbc898d8a | /Table/52/1/5/2 |
+| \xbc898d8b | /Table/52/1/5/3 |
++------------+-----------------+
+(3 rows)
+~~~
+
+To see more information about the range splits, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW EXPERIMENTAL_RANGES FROM TABLE t;
+~~~
+
+~~~
++-----------+---------+----------+----------+--------------+
+| Start Key | End Key | Range ID | Replicas | Lease Holder |
++-----------+---------+----------+----------+--------------+
+| NULL      | /5/1    |      151 | {2,3,5}  |            5 |
+| /5/1      | /5/2    |      152 | {2,3,5}  |            5 |
+| /5/2      | /5/3    |      153 | {2,3,5}  |            5 |
+| /5/3      | NULL    |      154 | {2,3,5}  |            5 |
++-----------+---------+----------+----------+--------------+
+(4 rows)
+~~~
+
+Alternatively, you could instead split at a prefix of the primary key columns.  For example, to add a split before all keys that start with `3`, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t SPLIT AT VALUES (3);
+~~~
+
+~~~
++----------+---------------+
+|   key    |    pretty     |
++----------+---------------+
+| \xcd898b | /Table/69/1/3 |
++----------+---------------+
+(1 row)
+~~~
+
+Conceptually, this means that the second range will include keys that start with `3` through `∞`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW TESTING_RANGES FROM TABLE t;
+~~~
+
+~~~
++-----------+---------+----------+----------+--------------+
+| Start Key | End Key | Range ID | Replicas | Lease Holder |
++-----------+---------+----------+----------+--------------+
+| NULL      | /3      |      155 | {2,3,5}  |            5 |
+| /3        | NULL    |      165 | {2,3,5}  |            5 |
++-----------+---------+----------+----------+--------------+
+(2 rows)
+~~~
+
 ### Split an Index
 
 {% include copy-clipboard.html %}
