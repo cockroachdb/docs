@@ -27,7 +27,6 @@ And the following are aliases for `STRING(n)`:
 - `CHAR VARYING(n)`
 - `VARCHAR(n)`
 
-
 ## Length
 
 To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed.
