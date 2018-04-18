@@ -142,7 +142,7 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> won't be displayed until all regions are assigned the corresponding latitudes and longitudes. {{site.data.alerts.end}}
 
-For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Locations Coordinates for Reference](#location-coordinates-for-reference).
+For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates-for-reference).
 
 ### Step 5. View the Node Map
 
