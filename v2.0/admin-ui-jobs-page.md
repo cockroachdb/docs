@@ -13,6 +13,8 @@ The **Jobs** table displays the user, description, creation time, and status of 
 
 <img src="{{ 'images/v2.0/admin_ui_jobs_page.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
+If a description is truncated, click the ellipsis to view the job's the full description.
+
 ## Filter Results
 
 You can filter the results based on the status of the jobs or the type of jobs (backups, restores, or schema changes). You can also choose to view either the latest 50 jobs or all the jobs across all nodes.
