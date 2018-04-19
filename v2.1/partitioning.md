@@ -229,7 +229,7 @@ $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f austra
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students_by_list;
+> SHOW TESTING_RANGES FROM TABLE students_by_list;
 ~~~
 
 You should see the following output:
@@ -335,7 +335,7 @@ $ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f gradu
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students_by_range;
+> SHOW TESTING_RANGES FROM TABLE students_by_range;
 ~~~
 
 You should see the following output:
@@ -477,7 +477,7 @@ $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students;
+> SHOW TESTING_RANGES FROM TABLE students;
 ~~~
 
 You should see the following output:

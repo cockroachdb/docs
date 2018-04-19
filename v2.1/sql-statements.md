@@ -53,6 +53,7 @@ Statement | Usage
 [`DROP SEQUENCE`](drop-sequence.html) | <span class="version-tag">New in v2.0:</span> Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP VIEW`](drop-view.html)| Remove a view.
+[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
@@ -67,6 +68,7 @@ Statement | Usage
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | <span class="version-tag">New in v2.0:</span> List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
+[`SHOW TESTING_RANGES`](show-testing-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction Management Statements
