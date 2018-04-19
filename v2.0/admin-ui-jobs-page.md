@@ -13,7 +13,7 @@ The **Jobs** table displays the user, description, creation time, and status of 
 
 <img src="{{ 'images/v2.0/admin_ui_jobs_page.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
-By default, the job descriptions are displayed in the truncated form. To view the full description of a job, click the expandable ellipsis next to the truncated job description in the Description column.
+If a description is truncated, click the ellipsis to view the job's the full description.
 
 ## Filter Results
 
