@@ -268,7 +268,7 @@ Column | Description
 
 ## Examples
 
-### Show All Columns from a Virtual Table in the Information Schema
+### Retrieve All Columns from an Information Schema Table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -282,18 +282,18 @@ Column | Description
 +--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
 ~~~
 
-### Show a Specific Column from a Virtual Table in the Information Schema
+### Retrieve Specific Columns from an Information Schema Table
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT table_name FROM db_name.information_schema.table_constraints;
+> SELECT table_name, constraint_name FROM db_name.information_schema.table_constraints;
 ~~~
 ~~~
-+-------------+
-| table_name  |
-+-------------+
-| programming |
-+-------------+
++-------------+-----------------+
+| table_name  | constraint_name |
++-------------+-----------------+
+| programming | primary         |
++-------------+-----------------+
 ~~~
 
 ## See Also
