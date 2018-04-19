@@ -246,7 +246,7 @@ Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database that the privilege applies to.
-`privelege_type` | Type of [privilege](privileges.html).
+`privilege_type` | Type of [privilege](privileges.html).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### views
@@ -265,6 +265,36 @@ Column | Description
 `is_trigger_updatable` | Always `NULL` (unsupported by CockroachDB).
 `is_trigger_deletable` | Always `NULL` (unsupported by CockroachDB).
 `is_trigger_insertable_into` | Always `NULL` (unsupported by CockroachDB).
+
+## Examples
+
+### Show All Columns from a Virtual Table in the Information Schema
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM db_name.information_schema.table_constraints;
+~~~
+~~~
++--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
+| constraint_catalog | constraint_schema | constraint_name | table_catalog | table_schema | table_name  | constraint_type | is_deferrable | initially_deferred |
++--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
+| jsonb_test         | public            | primary         | jsonb_test    | public       | programming | PRIMARY KEY     | NO            | NO                 |
++--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
+~~~
+
+### Show a Specific Column from a Virtual Table in the Information Schema
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT table_name FROM db_name.information_schema.table_constraints;
+~~~
+~~~
++-------------+
+| table_name  |
++-------------+
+| programming |
++-------------+
+~~~
 
 ## See Also
 
