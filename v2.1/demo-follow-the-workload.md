@@ -188,7 +188,7 @@ The load generator created a `kv` table that maps to an underlying key-value ran
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW EXPERIMENTAL_RANGES FROM TABLE test.kv;
+    > SHOW TESTING_RANGES FROM TABLE test.kv;
     ~~~
 
     ~~~
@@ -250,7 +250,7 @@ Verify that the range's lease moved to the node in the "US West" as follows.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW EXPERIMENTAL_RANGES FROM TABLE test.kv;
+    > SHOW TESTING_RANGES FROM TABLE test.kv;
     ~~~
 
     ~~~

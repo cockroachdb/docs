@@ -58,7 +58,7 @@ the ranges that store tables or indexes:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
+> SHOW TESTING_RANGES FROM TABLE kv;
 ~~~
 
 ~~~
@@ -88,7 +88,7 @@ the ranges that store tables or indexes:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
+> SHOW TESTING_RANGES FROM TABLE kv;
 ~~~
 
 ~~~
@@ -112,7 +112,7 @@ the ranges that store tables or indexes:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
+> SHOW TESTING_RANGES FROM INDEX kv@secondary;
 ~~~
 
 ~~~
@@ -142,7 +142,7 @@ the ranges that store tables or indexes:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
+> SHOW TESTING_RANGES FROM INDEX kv@secondary;
 ~~~
 
 ~~~
