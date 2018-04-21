@@ -361,3 +361,12 @@ CockroachDB does not yet provide a native Windows binary. Once that's available,
 #### Attributions
 
 This section, "File Descriptors Limit", is in part derivative of the chapter *Open File Limits* From the Riak LV 2.1.4 documentation, used under Creative Commons Attribution 3.0 Unported License.
+
+## Orchestration / Kubernetes
+
+When running CockroachDB on Kubernetes, making the following minimal customizations will result in better, more reliable performance:
+
+* Use [SSDs instead of traditional HDDs](kubernetes-performance.html#disk-type).
+* Configure CPU and memory [resource requests and limits](kubernetes-performance.html#resource-requests-and-limits).
+
+For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
