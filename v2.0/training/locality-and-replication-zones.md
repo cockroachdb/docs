@@ -227,13 +227,13 @@ To check this, let's create a table, which initially maps to a single underlying
     (21 rows)
     ~~~
 
-3. Use the `SHOW TESTING_RANGES` SQL command to find the IDs of the nodes where the new table's replicas ended up:
+3. Use the `SHOW EXPERIMENTAL_RANGES` SQL command to find the IDs of the nodes where the new table's replicas ended up:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;"
+    --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
     ~~~
 
     ~~~
@@ -364,9 +364,9 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --execute="SHOW TESTING_RANGES FROM TABLE intro.mytable;" \
-    --execute="SHOW TESTING_RANGES FROM TABLE startrek.episodes;" \
-    --execute="SHOW TESTING_RANGES FROM TABLE startrek.quotes;"
+    --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;" \
+    --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.episodes;" \
+    --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.quotes;"
     ~~~
 
     ~~~
