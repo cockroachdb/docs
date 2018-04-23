@@ -1,1 +1,1 @@
-{{site.data.alerts.callout_info}}The CockroachDB binary for Linux requires <code>glibc</code> and <code>libtinfo</code>, which are found by default on nearly all Linux distributions, with Alpine and CoreOS as notable exceptions.{{site.data.alerts.end}}
+<p>The CockroachDB binary for Linux requires <code>glibc</code> and <code>libncurses</code>, which are found by default on nearly all Linux distributions, with Alpine as the notable exception.</p>
