@@ -62,7 +62,7 @@ Flag | Description
 `--pid-file` | The file to which the node's process ID will be written on successful startup. When this flag is not set, the process ID is not written to file.
 `--port`<br>`-p` | The port to bind to for internal and client communication.<br><br>To have an unused port assigned automatically, pass `--port=0`.<br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
-`--temp-dir` | <span class="version-tag">New in v2.0:</span> The path of the given node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
+`--temp-dir` | <span class="version-tag">New in v2.0:</span> The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Locality
 
@@ -144,7 +144,7 @@ Field | Description
 `sql` | The connection URL for your client.
 `logs` | The directory containing debug log data.
 `temp dir` | The temporary store directory of the node.
-`external I/O path` | The external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives.
+`external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.
 `attrs` | If node-level attributes were specified in the `--attrs` flag, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `locality` | If values describing the locality of the node were specified in the `--locality` field, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.<br><br>If store-level attributes were specified in the `attrs` field of the [`--store`](#store) flag, they are listed in this field as well. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
