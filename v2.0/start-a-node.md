@@ -56,12 +56,13 @@ Flag | Description
 `--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br><span class="version-tag">Changed in v1.1:</span> When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
 `--locality` | Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](#locality) below.
-`--max-disk-temp-storage` | <span class="version-tag">New in v1.1: </span>The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see `--max-sql-memory`). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This value can be a percentage or any bytes-based unit (e.g., `500GB`, `1TB`, `1TiB`).<br><br><strong>Note:</strong> If you enter the maximum on-disk storage capacity as a percentage, you might need to escape the `%` sign, for instance, while configuring CockroachDB through systemd service files.<br><br>The temporary files are located in the first store's directory (see `--store`). If expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br><br>**Default:** `32GiB`
+`--max-disk-temp-storage` | <span class="version-tag">New in v1.1: </span>The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see `--max-sql-memory`). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This value can be a percentage or any bytes-based unit (e.g., `500GB`, `1TB`, `1TiB`).<br><br><strong>Note:</strong> If you enter the maximum on-disk storage capacity as a percentage, you might need to escape the `%` sign, for instance, while configuring CockroachDB through systemd service files. If expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br><br><span class="version-tag">New in v2.0:</span> The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br>**Default:** `32GiB`
 `--max-offset` | The maximum allowed clock offset for the cluster. If observed clock offsets exceed this limit, servers will crash to minimize the likelihood of reading inconsistent data. Increasing this value will increase the time to recovery of failures as well as the frequency of uncertainty-based read restarts.<br><br>Note that this value must be the same on all nodes in the cluster and cannot be changed with a [rolling upgrade](upgrade-cockroach-version.html). In order to change it, first stop every node in the cluster. Then once the entire cluster is offline, restart each node with the new value.<br><br>**Default:** `500ms`
-`--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This value can be a percentage or any bytes-based unit, for example:<br><br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br><strong>Note:</strong> If you enter the maximum in-memory storage capacity as a percentage, you might need to escape the `%` sign, for instance, while configuring CockroachDB through systemd service files.<br><br><span class="version-tag">Changed in v1.1: </span>**Default:** `128MiB`<br><br>The default SQL memory size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
+`--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This value can be a percentage or any bytes-based unit, for example:<br><br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br><span class="version-tag">New in v2.0:</span> The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you enter the maximum in-memory storage capacity as a percentage, you might need to escape the `%` sign, for instance, while configuring CockroachDB through systemd service files.<br><br><span class="version-tag">Changed in v1.1: </span>**Default:** `128MiB`<br><br>The default SQL memory size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
 `--pid-file` | The file to which the node's process ID will be written on successful startup. When this flag is not set, the process ID is not written to file.
 `--port`<br>`-p` | The port to bind to for internal and client communication.<br><br>To have an unused port assigned automatically, pass `--port=0`.<br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
+`--temp-dir` | <span class="version-tag">New in v2.0:</span> The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Locality
 
@@ -120,16 +121,18 @@ When you run `cockroach start`, some helpful details are printed to the standard
 
 ~~~ shell
 CockroachDB node starting at {{page.release_info.start_time}}
-build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:      http://ROACHs-MBP:8080
-sql:        postgresql://root@ROACHs-MBP:26257?sslmode=disable
-logs:       node1/logs
-attrs:      ram:64gb
-locality:   datacenter=us-east1
-store[0]:   path=node1,attrs=ssd
-status:     initialized new cluster
-clusterID:  7b9329d0-580d-4035-8319-53ba8b74b213
-nodeID:     1
+build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
+admin:               http://ROACHs-MBP:8080
+sql:                 postgresql://root@ROACHs-MBP:26257?sslmode=disable
+logs:                node1/logs
+temp dir:            /node1/cockroach-temp430873933
+external I/O path:   /node1/extern
+attrs:               ram:64gb
+locality:            datacenter=us-east1
+store[0]:            path=node1,attrs=ssd
+status:              initialized new cluster
+clusterID:           7b9329d0-580d-4035-8319-53ba8b74b213
+nodeID:              1
 ~~~
 
 {{site.data.alerts.callout_success}}These details are also written to the <code>INFO</code> log in the <code>/logs</code> directory in case you need to refer to them at a later time.{{site.data.alerts.end}}
@@ -140,6 +143,8 @@ Field | Description
 `admin` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
 `logs` | The directory containing debug log data.
+`temp dir` | The temporary store directory of the node.
+`external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.
 `attrs` | If node-level attributes were specified in the `--attrs` flag, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `locality` | If values describing the locality of the node were specified in the `--locality` field, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.<br><br>If store-level attributes were specified in the `attrs` field of the [`--store`](#store) flag, they are listed in this field as well. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
