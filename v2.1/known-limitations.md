@@ -20,15 +20,6 @@ In the upgrade process, after upgrading all binaries to v2.1, it's recommended t
 
 You can track this known limitation [here](https://github.com/cockroachdb/cockroach/issues/24490).
 
-### Write and update limits for a single statement
-
-A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
-
-If you need to increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
-
-In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted
-any more, large transactions can have performance implications on the cluster.
-
 ### Memory flags with non-integer values and a unit suffix
 
 The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
