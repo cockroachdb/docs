@@ -16,9 +16,9 @@ None identified yet.
 
 ### Enterprise backup/restore during rolling upgrades
 
-In the upgrade process, after upgrading all binaries to v2.1, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.1 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24493">#24493</a>.{{site.data.alerts.end}}
 
-You can track this known limitation [here](https://github.com/cockroachdb/cockroach/issues/24490).
+In the upgrade process, after upgrading all binaries to v2.1, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.1 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
 
 ### Write and update limits for a single statement
 
