@@ -31,6 +31,8 @@ any more, large transactions can have performance implications on the cluster.
 
 ### Memory flags with non-integer values and a unit suffix
 
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24381">#24381</a>.{{site.data.alerts.end}}
+
 The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
 
 As a workaround, use integer values or a percentage, for example, `--cache=1536MiB`.
