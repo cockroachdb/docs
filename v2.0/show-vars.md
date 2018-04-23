@@ -36,7 +36,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 | `application_name` | The current application name for statistics collection. | Empty string, or `cockroach` for sessions from the [built-in SQL client](use-the-built-in-sql-client.html)  | Yes |
 | `database` | The [current database](sql-name-resolution.html#current-database). | Database in connection string, or empty if not specified | Yes |
 | `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or `SERIALIZABLE` if not specified | Yes |
-| `default_transaction_read_only` | <span class="version-tag">New in v2.0:</span> The default transaction access mode for the current session. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes |
+| `default_transaction_read_only` | <span class="version-tag">New in v2.0:</span> The default transaction access mode for the current session. If set to `on`, only read operations are allowed in transactions in the current session; if set to `off`, both read and write operations are allowed. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes |
 | `distsql` | | `auto` | |
 | `node_id` | <span class="version-tag">New in v1.1:</span> The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No |
 | `search_path` | <span class="version-tag">Changed in v2.0:</span> A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{public}` | Yes |
