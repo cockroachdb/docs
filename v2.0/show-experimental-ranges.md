@@ -1,10 +1,11 @@
 ---
-title: SHOW TESTING_RANGES
-summary: The SHOW TESTING_RANGES shows information about the ranges that make up a specific table's data.
+title: SHOW EXPERIMENTAL_RANGES
+summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
 toc: false
+redirect_from: show-testing-ranges.html
 ---
 
-The `SHOW TESTING_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:
+The `SHOW EXPERIMENTAL_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:
 
 - The start and end keys for the range(s)
 - The range ID(s)
@@ -81,7 +82,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TESTING_RANGES FROM TABLE credit_users;
+> SHOW EXPERIMENTAL_RANGES FROM TABLE credit_users;
 ~~~
 
 ~~~
@@ -100,7 +101,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TESTING_RANGES FROM INDEX credit_users@areaCode;
+> SHOW EXPERIMENTAL_RANGES FROM INDEX credit_users@areaCode;
 ~~~
 
 ~~~
