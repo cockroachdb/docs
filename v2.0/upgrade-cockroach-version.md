@@ -162,7 +162,7 @@ For each node in your cluster, complete the following steps.
 
 After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.0 features. Doing so may prevent you from being able to perform a rolling downgrade to v1.1, if necessary. Also, it is not currently possible to run enterprise <a href="backup.html"><code>BACKUP</code></a> and <a href="restore.html"><code>RESTORE</code></a> jobs during this phase. You can track this known limitation <a href="https://github.com/cockroachdb/cockroach/issues/24490">here</a>. {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.0 features. Doing so may prevent you from being able to perform a rolling downgrade to v1.1, if necessary. Also, it is not recommended to run enterprise <a href="backup.html"><code>BACKUP</code></a> and <a href="restore.html"><code>RESTORE</code></a> jobs during this phase, as some features like detecting schema changes or ensuring correct target expansion may behave differently in mixed version clusters.{{site.data.alerts.end}}
 
 ## Step 5. Finalize or revert the upgrade
 
