@@ -1,0 +1,1 @@
+`timestamp` can be an [`int`](int.html) (nanoseconds since the Unix epoch), negative [`interval`](interval.html) that is added to `statement_timestamp()`, or string ([`timestamp`](timestamp.html), [`int`](int.html) of nanoseconds, or negative [`interval`](interval.html)).
