@@ -170,11 +170,13 @@ You can include the following options as key-value pairs in the `kv_option_list`
 > RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
-### Restore All Tables and Views from a Database
+### Restore an Entire Database
 
 ~~~ sql
-> RESTORE bank.* FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE DATABASE bank FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
+
+{{site.data.alerts.callout_info}}<code>RESTORE DATABASE</code> can only be used if the entire database was backed up.{{site.data.alerts.end}}
 
 ### Point-in-time Restore<span class="version-tag">New in v2.0</span>
 
