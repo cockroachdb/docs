@@ -88,21 +88,7 @@ Only the `root` user can run `RESTORE`.
 
 The URL for your backup's locations must use the following format:
 
-~~~
-[scheme]://[host]/[path to backup]?[parameters]
-~~~
-
-`[path to backup]` must be unique for each backup, but the other values depend on where you stored the backup.
-
-| Backup Location | scheme | host | parameters |
-|-----------------|--------|------|------------|
-| Amazon S3 | `s3` | Bucket name | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` |
-| Azure | `azure` | Container name | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` |
-| Google Cloud Storage | `gs` | Bucket name | None––currently only supports instance auth, but we can build non-instance auth at a customer's request |
-| HTTP | `http` | Remote host | N/A |
-| NFS | `nodelocal` | File system location | N/A |
-
-{{site.data.alerts.callout_info}}Backups stored on NFSes work only if each node in the cluster accesses the drive in the same way.{{site.data.alerts.end}}
+{% include external-urls-v1.0.md %}
 
 ### Restore Option List
 
