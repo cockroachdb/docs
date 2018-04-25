@@ -20,15 +20,6 @@ None identified yet.
 
 In the upgrade process, after upgrading all binaries to v2.1, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.1 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
 
-### Write and update limits for a single statement
-
-A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
-
-If you need to increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
-
-In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted
-any more, large transactions can have performance implications on the cluster.
-
 ### Memory flags with non-integer values and a unit suffix
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24381">#24381</a>.{{site.data.alerts.end}}
