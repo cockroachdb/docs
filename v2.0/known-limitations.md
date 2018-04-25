@@ -12,7 +12,7 @@ This page describes newly identified limitations in the CockroachDB v2.0 release
 
 ### Replication factor for system ranges
 
-Changes to a cluster's default replication factor (`num_replicas`) are not automatically applied to the [replication zones for system ranges](configure-replication-zones.html#create-a-replication-zone-for-system-ranges). Therefore, if you increase the default replication factor, you must also increase the replication factor for system ranges to ensure that important "meta" information is as resilient as your data.
+Changes to the <code>.default</code> replication zone are not automatically applied to other <a href="configure-replication-zones.html#edit-the-replication-zone-for-a-system-range">pre-configured replication zones</a> for internal system data or to any <a href="configure-replication-zones.html#user-created-replication-zones">user-created replication zones</a>. If you increase the replication factor for <code>.default</code>, you may also want to increase the replication factor for <code>.meta</code>, <code>.liveness</code>, and <code>system.jobs</code> to ensure that important internal data is as resilient as your user data.
 
 ### Enterprise backup/restore during rolling upgrades
 

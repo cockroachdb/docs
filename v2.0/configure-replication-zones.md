@@ -5,7 +5,7 @@ keywords: ttl, time to live, availability zone
 toc: false
 ---
 
-In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is are a few special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
+In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is are some special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
 This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
 
@@ -15,18 +15,36 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 ## Overview
 
-### Replication Zone Levels
+### Pre-Configured Replication Zones
 
-There are four replication zone levels:
+CockroachDB comes with pre-configured replication zones for all user data in the cluster and for some internal system data. These replication zones can be adjusted but not deleted.
 
-- **Cluster:** CockroachDB comes with a single, default replication zone for the entire cluster. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
-- **Database:** You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
-- **Table:** You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
-- **Row:** ([For enterprise users](enterprise-licensing.html)) You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
+Zone Name | Description
+----------|------------
+`.default` | This replication zone applies to all user data in the cluster not constrained by more specific, [user-created replication zones](#user-created-replication-zones).
+`.meta` | The "meta" ranges contain the authoritative information about the location of all data in the cluster. If these ranges are unavailable, the entire cluster will be unavailable, so this replication zone is pre-configured to have a lower-than-default `ttlseconds`. If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.
+`.liveness` | <span class="version-tag">New in v2.0:</span> The "liveness" range contains the authoritative information about which nodes are live at any given time. If this range is unavailable, the entire cluster will be unavailable, so this replication zone is pre-configured to have a lower-than-default `ttlseconds`. Giving it a high replication factor is also strongly recommended.
+`system.jobs` | This replication zone controls the replication of a variety of important internal data, including information needed to allocate new table IDs and track the health of a cluster's nodes. It is configured with a lower-than-default `ttlseconds` and applies to the `system.jobs` SQL table, which stores metadata about long-running jobs such as schema changes and backups.
 
-When replicating a piece of data, CockroachDB uses the most granular zone available: If there's a replication zone for the rows in a table, CockroachDB uses it; otherwise, it uses the replication zone for the table containing the data. If there's no applicable row or table replication zone, CockroachDB uses the database replication zone; otherwise it uses the cluster-wide replication zone.
+For more details about the default replication zone for user data, see [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone). For more details about the replication zones for internal system data, see [Edit the Replication Zone for a System Range](#edit-the-replication-zone-for-a-system-range).
 
-In addition to the databases and tables that are visible via SQL, CockroachDB stores additional internal data in what are called system ranges. You can configure replication zones for parts of these internal data ranges if you'd like to override the cluster-wide settings. See [Create a Replication Zone for System Ranges](#create-a-replication-zone-for-system-ranges) for more details.
+{{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other <a href="#edit-the-replication-zone-for-a-system-range">pre-configured replication zones</a> for internal system data or to any <a href="#user-created-replication-zones">user-created replication zones</a>. If you increase the replication factor for <code>.default</code>, you may also want to increase the replication factor for <code>.meta</code>, <code>.liveness</code>, and <code>system.jobs</code> to ensure that important internal data is as resilient as your user data.{{site.data.alerts.end}}
+
+### User-Created Replication Zones
+
+Initially, the pre-configured `.default` replication zone applies to all user data in the cluster as well as to internal "timeseries" data. However, you can add replication zones to further constrain data at various levels.
+
+Zone Name | Description
+----------|------------
+`<database>` | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
+`<database.table>` | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) for more details.
+`<database.table.partition>` | ([For enterprise users:](enterprise-licensing.html)) You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
+`.timeseries` | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's admin UI.
+
+When replicating a piece of user data, CockroachDB uses the most granular zone available:
+
+- If there's a replication zone for the rows in a table, CockroachDB uses it; otherwise, it uses the replication zone for the table containing the data.
+- If there's no applicable row or table replication zone, CockroachDB uses the database replication zone; otherwise it uses the cluster-wide replication zone.
 
 ### Replication Zone Format
 
@@ -172,7 +190,7 @@ These examples focus on the basic approach and syntax for working with zone conf
 
 ###  List the Pre-Configured Replication Zones
 
-<span class="version-tag">New in v2.0:</span> Newly created CockroachDB clusters start with a few special pre-configured replication zones:
+<span class="version-tag">New in v2.0:</span> Newly created CockroachDB clusters start with some special [pre-configured replication zones](#pre-configured-replication-zones):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -185,8 +203,6 @@ $ cockroach zone ls --insecure
 .meta
 system.jobs
 ~~~
-
-`.default` applies to all data in the cluster not constrained by a more specific replication zone and cannot be deleted. `.liveness` and `.meta` are explained below in the [Create a Replication Zone for System Ranges](#create-a-replication-zone-for-system-ranges) section and are specifically configured to have a lower-than-default `ttlseconds`. `system.jobs` is also configured with a lower-than-default `ttlseconds` and applies to the `system.jobs` SQL table, which stores metadata about long-running jobs such as schema changes and backups.
 
 ###  View the Default Replication Zone
 
@@ -243,7 +259,7 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 ~~~
 
-{{site.data.alerts.callout_danger}}At this time, changes to a cluster's default replication factor (<code>num_replicas</code>) are not automatically applied to the <a href="#create-a-replication-zone-for-system-ranges">replication zones for system ranges</a>. Therefore, if you increase the default replication factor, you must also increase the replication factor for system ranges to ensure that important "meta" information is as resilient as your data.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other <a href="#edit-the-replication-zone-for-a-system-range">pre-configured replication zones</a> for internal system data or to any <a href="#user-created-replication-zones">user-created replication zones</a>. If you increase the replication factor for <code>.default</code>, you may also want to increase the replication factor for <code>.meta</code>, <code>.liveness</code>, and <code>system.jobs</code> to ensure that important internal data is as resilient as your user data.{{site.data.alerts.end}}
 
 ### Create a Replication Zone for a Database
 
@@ -335,18 +351,11 @@ Apply zone configurations to corresponding partitions:
 $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
 
-### Create a Replication Zone for System Ranges
+### Edit the Replication Zone for a System Range
 
-In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores additional data in what are called system ranges. There are three categories of system ranges for which replication zones can be set:
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. CockroachDB comes with [pre-configured replication zones](#pre-configured-replication-zones) for most of these ranges.
 
-Zone Name | Description
-----------|------------
-**.meta** | The "meta" ranges contain the authoritative information about the location of all data in the cluster. If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.
-**.liveness** | <span class="version-tag">New in v2.0:</span> The "liveness" range contains the authoritative information about which nodes are live at any given time. If the liveness range is unavailable, the entire cluster will be unavailable, so giving it a high replication factor is strongly recommended.
-**.system** | The ".system" zone config controls the replication of a variety of important internal data, including information needed to allocate new table IDs and track the health of a cluster's nodes.
-**.timeseries** | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's admin UI.
-
-To control replication for one of the above sets of system ranges, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
+To control replication for a system range, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
 
 {% include copy-clipboard.html %}
 ~~~ shell
