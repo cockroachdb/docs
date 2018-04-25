@@ -22,7 +22,7 @@ You can backup entire tables (which automatically includes their indexes) or [vi
 
 ### Object Dependencies
 
-Dependent objects should be backed up at the same time as the objects they depend on; otherwise, you cannot restore the dependent objects.
+Dependent objects must be backed up at the same time as the objects they depend on.
 
 Object | Depends On
 -------|-----------
