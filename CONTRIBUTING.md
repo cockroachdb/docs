@@ -19,7 +19,7 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 3. Learn the essentials of our [Docs Structure](#docs-structure).
 
-4. Review our simple [Style Guide](#style-guide).
+4. Review our simple Style Guide.
 
 ## Get Started
 
@@ -74,7 +74,13 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 
 We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v1.0 are in the `v1.0` directory, whereas docs for CockroachDB v1.1 are in the `v1.1` directory.
 
-Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown, and must start with the following front-matter:
+Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown. File names should be lowercase with a dash between words, and should brief but descriptive.
+
+Example:
+
+- `name-of-your-file.md`
+
+Markdown pages must start with the following front-matter:
 
 ```
 ---
@@ -176,6 +182,9 @@ allowed_hashes: [os-mac, os-linux, os-windows]
   ```
   <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
   ```
+#### Images
+
+For information about how we use images in our docs, see the [Images](STYLE.html/images) in our [Style Guide](STYLE.html).
 
 #### Feedback Widget
 
@@ -259,143 +268,7 @@ This example shows some of the first section of the sidenav, `Get Started`:
 
 ## Style Guide
 
-CockroachDB docs should be:
-
-- Clear
-- Correct
-- Concise
-
-To enable this, we have the following specific guidance:
-
-- Use the imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)."
-- Use active voice instead of passive. [*Purdue Online Writing Lab resource*](https://owl.english.purdue.edu/owl/resource/539/02/)
-- Prefer periods over semicolons.
-
-We also have additional guidance to ensure consistency with our existing documents.
-
-### Code Samples
-
-Code samples are marked with an opening and closing set of 3 tildes (`~~~`). Shell and SQL commands should be syntax highlighted where appropriate using the following info.
-
-#### Shell Code Samples
-Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`.
-
-#### SQL Code Samples
-SQL code samples are broken into two sections: commands and responses.
-
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`.
-- **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
-
-  Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
-
-#### Copy to Clipboard
-
-Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add a "copy to clipboard" feature by placing `{% include copy-clipboard.html %}` on the line directly preceding the code block, for example:
-
-```
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-```
-
-### Lists
-
-For each item of a numbered list, use the step number followed by a period, e.g., `1.`.
-
-For each item of a bulleted list, use the `-` character.
-
-#### Nesting Lists
-
-To nest a list under a list item, start the list on the next line (no empty line), and indent the new list four spaces, for example:
-
-```
-1. This is a step.
-    - This is a bullet.
-    - This is a bullet.
-    - This is a bullet.
-
-2. This is a step.
-```
-
-#### Nesting Paragraphs or Code Blocks
-
-To nest a paragraph or code block under a list item, insert an empty line and then indent the paragraph or code block 4 spaces, for example:
-
-```
-1. This is a step.
-
-    This is a nested paragraph.
-
-    ~~~ shell
-    $ command
-    ~~~
-```
-
-Similarly, to nest a paragraph or code block under a *nested* list item, insert an empty line and then indent the paragraph or code block 8 spaces, for example:
-
-```
-1. This is a step.
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-
-2. This is a step.
-```
-
-### Notes, Warnings, & Tips
-
-Our docs use three classes of highlighted text.
-
-**NOTE**: The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
-
-#### Notes
-
-Use notes to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
-
-For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point misguided users to the right place.
-
-To insert a note, use the following code:
-
-```
-{{site.data.alerts.callout_info}} <tip text goes here> {{site.data.alerts.end}}
-```
-
-#### Warnings
-
-Use warning to express that a piece of information is critical to understand to prevent unexpected things from happening.
-
-For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
-
-To insert a warning, use the following code:
-
-```
-{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
-```
-
-#### Tips
-
-Use tips to highlight nice-to-know pieces of information.
-
-For example, you might include a tip to our Github repo's Terraform scripts on the Google Cloud Engine deployment page. It's nice to know it's there, but doesn't clarify anything nor is it critical.
-
-To insert a tip, use the following code:
-
-```
-{{site.data.alerts.callout_success}}{{site.data.alerts.end}}
-```
+See [Style Guide](STYLE.html) for more details.
 
 ## Build and Test the Docs Locally
 
