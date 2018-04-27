@@ -22,7 +22,7 @@ Term | Definition
 **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 **Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 
-### Basic Recommendations
+### Basic Topology Recommendations
 
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
@@ -41,7 +41,7 @@ Term | Definition
 
 ## Hardware
 
-### Basic Recommendations
+### Basic Hardware Recommendations
 
 - Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
