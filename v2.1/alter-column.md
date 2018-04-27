@@ -23,8 +23,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | Parameter | Description |
 |-----------|-------------|
 | `table_name` | The name of the table with the column you want to modify. |
-| `name` | The name of the column you want to modify. |
-| `a_expr` | The new Default Value you want to use. |
+| `column_name` | The name of the column you want to modify. |
+| `a_expr` | The new [Default Value](default-value.html) you want to use. |
 
 ## Viewing Schema Changes
 
