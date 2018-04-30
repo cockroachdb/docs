@@ -3,7 +3,7 @@
     - date: Apr 23, 2018
       version: v2.0.1
       latest: true
-    - date: Apr 04, 2018
+    - date: Apr 4, 2018
       version: v2.0.0
     - date: Apr 23, 2018
       version: v1.1.8
@@ -41,6 +41,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: May 07, 2018
+      version: v2.1.0-alpha.20180507
     - date: April 16, 2018
       version: v2.1.0-alpha.20180416
     - date: April 2, 2018
@@ -51,7 +53,7 @@
       version: v2.0-beta.20180319
     - date: Mar 12, 2018
       version: v2.0-beta.20180312
-    - date: Mar 05, 2018
+    - date: Mar 5, 2018
       version: v2.0-beta.20180305
     - date: Jan 29, 2018
       version: v2.0-alpha.20180129
