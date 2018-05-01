@@ -400,8 +400,7 @@ In all of the examples so far, we've been using the standard CockroachDB `Statef
 
 This comes with a few main benefits -- it's a more natural abstraction for cordoning off onto [dedicated nodes](#dedicated-nodes), it naturally pairs with [using the host's network](#using-the-hosts-network) since you're already coupling CockroachDB processes one-to-one with nodes, and it allows you to use [local disks](#local-disks) without relying on the beta support for using local disks with `StatefulSets`. The biggest tradeoff is that you're limiting Kubernetes' ability to help your cluster recover from failures. It can't create new pods to replace pods on nodes that fail because it's already running a CockroachDB pod on all the matching nodes. This matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
 
-<!-- TODO(a-robinson): link to the checked-in version of this file -->
-To set up a CockroachDB `DaemonSet`, a little more work is needed than for a `StatefulSet`. We will use [this example configuration file](https://gist.github.com/a-robinson/ec2b86783ccbf053c83ba83170673d63) as our base.
+To set up a CockroachDB `DaemonSet`, a little more work is needed than for a `StatefulSet`. We will use [the provided `DaemonSet` configuration file template from the CockroachDB Github repository](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml) as our base.
 
 First of all, unless you want CockroachDB running on every machine in your Kubernetes cluster, you should pick out which nodes you want to run CockroachDB on using either [node labels](#node-labels) or [node taints](#node-taints). Once you have chosen or created the nodes,  configure them and the `DaemonSet` YAML file appropriately as described in the relevant [Dedicated Nodes](#dedicated-nodes) section.
 
