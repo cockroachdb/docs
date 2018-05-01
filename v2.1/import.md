@@ -38,6 +38,12 @@ Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (
 
 We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
 
+### CSV Data
+
+The tabular data to import must be valid [CSV files](https://tools.ietf.org/html/rfc4180), with the caveat that the comma [delimiter](#delimiter) can be set to another single character. Files must be UTF-8 encoded. If the delimiter, a double quote (`"`), newline (`\n`), or carriage return (`\r`) appears in a field, the field must be surrounded by double quotes. Double quotes appearing in a field must be escaped with a backslash (`\"`).
+
+If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string, or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+
 ### Object Dependencies
 
 When importing tables, you must be mindful of the following rules because [`IMPORT`](import.html) only creates single tables which must not already exist:
