@@ -137,7 +137,7 @@ Environment | Featured Approach
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](start-a-node.html#flags-changed-in-v2-0) and [`--max-sql-memory`](start-a-node.html#flags-changed-in-v2-0) flags:
 
 ~~~ shell
-$ cockroach start --cache=25% --max-sql-memory=25% <other start flags>
+$ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
 
 ## File Descriptors Limit

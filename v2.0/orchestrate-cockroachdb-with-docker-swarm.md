@@ -331,8 +331,8 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-root-key,target=client.root.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --certs-dir=/run/secrets
     ~~~
@@ -354,8 +354,8 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-root-key,target=client.root.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --certs-dir=/run/secrets
     ~~~
@@ -377,8 +377,8 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     --secret source=cockroachdb-root-key,target=client.root.key,mode=0600 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --certs-dir=/run/secrets
     ~~~
