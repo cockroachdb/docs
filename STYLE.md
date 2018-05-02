@@ -130,7 +130,7 @@ $ go get -u github.com/lib/pq
 ~~~
 ```
 
-**Copy to Clipboard** should be used for every code block that can be executed.
+**Copy to Clipboard** should be used for every code block that can be **executed**.
 
 ### Examples
 
@@ -363,9 +363,7 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 ### Version Tags
 
-Use HTML version tags to denote new or updated features for the version.
-
-TO DO: When?
+Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell. 
 
 To insert a version tag, use the following code:
 
