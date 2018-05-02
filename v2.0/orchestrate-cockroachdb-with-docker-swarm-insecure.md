@@ -131,8 +131,8 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     --publish 8080:8080 \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --insecure
     ~~~
@@ -149,8 +149,8 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     --stop-grace-period 60s \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --insecure
     ~~~
@@ -167,8 +167,8 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     --stop-grace-period 60s \
     cockroachdb/cockroach:{{page.release_info.version}} start \
     --join=cockroachdb-1:26257,cockroachdb-2:26257,cockroachdb-3:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --logtostderr \
     --insecure
     ~~~
