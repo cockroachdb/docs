@@ -16,8 +16,9 @@ Included in this guide:
 - [Capitalization and Punctuation](#capitalization-and-punctuation)
 - [File Conventions](#file-conventions)
 - [Documentation Types](#documentation-types)
-    - [Tutorials, Training, and Examples](#tutorials-training-and-examples)
+    - [Concept Docs](#concept-docs)
     - [Reference and Task-Based Docs](#reference-and-task-based-docs)
+    - [Tutorials, Training, and Examples](#tutorials-training-and-examples)
 - [Components](#components)
     - [Code](#code)
     - [Examples](#examples)
@@ -92,13 +93,14 @@ Each version's images are found in a directory named for the version under the `
 
 ## Documentation Types
 
-### Tutorials, Training, and Examples
+### Concept Docs
 
-Tutorials, training, and examples are educational docs or sections meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
+Concept docs are guides that detail how CockroachDB is built, but does not explain how you should architect an application using CockroachDB.
 
-- **Tutorial example:** [JSON Support](demo-json-support)
-- **Training example:** [Cluster Startup and Scaling](training/cluster-startup-and-scaling.html)
-- **Example examples:** [Define Table Partitions](partitioning.html#examples), [Manage Roles](roles.html#example)
+Examples:
+
+- [Architecture Overview](architecture/overview.html)
+- [SQL Layer](architecture/sql-layer.html)
 
 ### Reference and Task-Based Docs
 
@@ -109,6 +111,14 @@ Examples:
 - **SQL reference doc example:** [`CREATE TABLE`](create-table.html)
 - **CLI reference doc example:** [Start a Local Cluster](start-a-local-cluster.html)
 - **Task-based doc example:** [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+
+### Tutorials, Training, and Examples
+
+Tutorials, training, and examples are educational docs or sections meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
+
+- **Tutorial example:** [JSON Support](demo-json-support)
+- **Training example:** [Cluster Startup and Scaling](training/cluster-startup-and-scaling.html)
+- **Example examples:** [Define Table Partitions](partitioning.html#examples), [Manage Roles](roles.html#example)
 
 ## Components
 
