@@ -10,7 +10,25 @@ The following guidance is provided to ensure consistency.
 
 **Note:** This style guide should be viewed in its [rendered state](https://github.com/cockroachdb/docs/blob/master/STYLE.md), not in raw Markdown.
 
-<div id="toc"></div>
+Included in this guide:
+
+- [Language and Tone](#language-and-tone)
+- [Capitalization and Punctuation](#capitalization-and-punctuation)
+- [File Conventions](#file-conventions)
+- [Documentation Types](#documentation-types)
+    - [Tutorials, Training, and Examples](#tutorials-training-and-examples)
+    - [Reference and Task-Based Docs](#reference-and-task-based-docs)
+- [Components](#components)
+    - [Code](#code)
+    - [Examples](#examples)
+    - [Headings](#headings)
+    - [Images](#images)
+    - [Links](#links)
+    - [Lists](#lists)
+    - [Tables](#tables)
+    - [Text Format](#text-format)
+    - [Tips, Notes, and Warnings](#tips-notes-and-warnings)
+    - [Version Tags](#version-tags)
 
 ## Language and Tone
 
@@ -29,18 +47,22 @@ Other general guidance about language and tone:
     **Example:** Now that we have a database, user, and a table, let's run the following code to insert rows into the table.
 
 - Use active voice instead of passive. For more information, refer to the [Purdue Online Writing Lab resource](https://owl.english.purdue.edu/owl/resource/539/02/).
-- Use simple and direct language. Grammar can be incorrect to save simplicity.
+- Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in [reference docs](#reference-and-task-based-docs) are phrases).
 
     **Example:** `table name`: The name of the table you want to create audit logs for.
 
 - Use contractions to simplify language.
 
+    **Example:** A primary key can't be changed using `ALTER TABLE`.
+
+    **Example:** If you leave versioned binaries on your servers, you don't need to do anything.
+
 ## Capitalization and Punctuation
 
 Capitalization rules:
 
-- Use title case for all [headings](#headings).
-- Depending on the context, use title case or sentence case for [links](#links).
+- Use title-case instead of sentence-case for all [headings](#headings).
+- Depending on the context, use title-case or sentence-case for [links](#links).
 - Capitalize proper nouns, CockroachDB specific terms, and the names of UI features:
 
     **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
@@ -49,9 +71,11 @@ Capitalization rules:
 
 Punctuation rules:
 
-- Use periods instead of semicolons.
+- Limit semicolon usage. Instead, try two simple sentences.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if it is a sentence or completes a sentence.
+
+For more detail about how to format text, see [Componenets](#components).
 
 ## File Conventions
 
@@ -70,25 +94,21 @@ Each version's images are found in a directory named for the version under the `
 
 ### Tutorials, Training, and Examples
 
-Tutorials, training, and examples are educational docs or sections, meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
+Tutorials, training, and examples are educational docs or sections meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
 
-Examples:
-
-- [JSON Support](demo-json-support)
-- [Cluster Startup and Scaling](training/cluster-startup-and-scaling.html)
-- [Define Table Partitions](partitioning.html#examples)
-- [Manage Roles](roles.html#example)
+- **Tutorial example:** [JSON Support](demo-json-support)
+- **Training example:** [Cluster Startup and Scaling](training/cluster-startup-and-scaling.html)
+- **Example examples:** [Define Table Partitions](partitioning.html#examples), [Manage Roles](roles.html#example)
 
 ### Reference and Task-Based Docs
 
-Reference and task-based docs are informational docs that provide details about a CockroachDB function or feature, as well as step-by-step instructions to help the user complete a specific task.
+Reference docs are informational and provide a comprehensive description of a CockroachDB function or feature, while task-based docs are instructional and provide prescriptive, step-by-step guidance to help a user complete a specific task.
 
 Examples:
 
-- [`CREATE TABLE`](create-table.html)
-- [Foreign Key Constraint](foreign-key.html)
-- [Start a Local Cluster](start-a-local-cluster.html)
-- [Stop a Node](stop-a-node.html)
+- **SQL reference doc example:** [`CREATE TABLE`](create-table.html)
+- **CLI reference doc example:** [Start a Local Cluster](start-a-local-cluster.html)
+- **Task-based doc example:** [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
 
 ## Components
 
@@ -140,7 +160,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
     **Example:** Create a Table that Mirrors Key-Value Storage
 
-2. **Introductory information** should be provided if some context is need to orient the user and can also be used to introduce code blocks. This should be written in a conversational tone.
+2. **Introductory information** should be provided if some context is needed to orient the user and can also be used to introduce code blocks. This should be written in a conversational tone.
 
     **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:"
 
@@ -158,7 +178,9 @@ Examples help show the feature in action. Examples follow a basic format:
 
 Use headings to demarcate content into a hierarchy to help readers find information easier.
 
-Headings should be title case, and are denoted by octothorps (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`) and Heading 3 (`###`). Heading 1 is reserved for page titles and anything under Heading 3 can be denoted by bolded text, or should be reformatted.
+Headings should be title-case, and are denoted by octothorps (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
+
+Heading 1 is reserved for page titles and anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
 
 Examples:
 
@@ -167,7 +189,7 @@ Examples:
 
 ### Images
 
-Use images to clarify a topic, and should be used only as needed. Images are either:
+Use images to clarify a topic, but only use them as needed. Images are either:
 
 - **Screenshots** - Provide a UI visual. Screenshots should show enough of the UI that the user can easily orient themselves and understand what they are being shown. If a screenshot needs an annotation, use a red box.
 - **Diagrams** - Provide a visual of a complicated theory. Diagrams should be simple and easy to read.
@@ -189,12 +211,19 @@ Link capitalization can be either title- or sentence-case:
 - **Use title-case** when referring to the linked doc by name (e.g., “See __Best Practices__ for more information”).
 - **Use sentence-case** - when linking in the middle of a sentence (e.g., “[…] follow the __identifier rules__ when creating […]“).
 
-Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative link (to other pages in the docs), include just the name of the file.
+Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
 
-Examples:
-- `[here](name-of-article.html)`
-- `[xyz](#heading-on-page-for-anchor-link)`
-- `[Cockroach Labs](cockroachlabs.com)`
+- To another page in the docs, use just the name of the file.
+
+    **Example:** `[here](name-of-article.html)`
+
+- To a specific section on another page, use the name of the file plus the heading.
+
+    **Example:** `[xyz](name-of-article.html#heading-on-page)`
+
+- To a specific section on the current page, use just the heading.
+
+    **Example:** `[xyz](#heading-on-page)`
 
 ### Lists
 
@@ -206,7 +235,7 @@ CockroachDB docs uses two types of lists:
 
 - **Bulleted** (i.e., unordered list) - Use to list related information in an easy-to-read way.
 
-    **Example:** This list is a bulleted list.
+    **Example:** [Start the First Node](start-a-local-cluster.html#step-1-start-the-first-node) in the Start a Local Cluster doc
 
 Lists should be introduced by a sentence and a colon. Use periods at the end of list items if it is a sentence or completes a sentence.
 
@@ -218,14 +247,14 @@ For each item of a **bulleted list**, use one dash followed by one space to deno
 
 To nest a list under a list item, start the list on the next line (no empty line), and indent the new list four spaces, for example:
 
-~~~
+```
 1. This is a step.
     - This is a bullet.
     - This is a bullet.
     - This is a bullet.
 
 2. This is a step.
-~~~
+```
 
 #### Nesting Paragraphs or Code Blocks
 
@@ -263,6 +292,72 @@ Similarly, to nest a paragraph or code block under a *nested* list item, insert 
 
 2. This is a step.
 ```
+
+### Tables
+
+Use tables to display structured information in an easy-to-read format.
+
+To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
+
+We do not use outer pipes.
+
+Example:
+
+~~~
+   Term   |         Description         |     Example    
+----------|-----------------------------|----------------
+ `term_1` | This is a description.      | `3.14`         
+ `term_2` | This is also a description. | `"lola mcdog"`
+~~~
+
+The following Markdown formatting can be used within a table:
+
+- [Bold](#bold)
+- [Italics](#italics)
+- [Inline code](#inline-code)
+- [Links](#links)
+
+The following formatting needs to be in HTML to be used within a table:
+
+- Paragraph breaks (`<br>`)
+- Lists (`ol` / `ul` / `<li>`)
+
+The following formatting is not supported within a table:
+
+- [Liquid tags](https://shopify.github.io/liquid/)
+- [Code blocks](#code-blocks)
+
+### Text Format
+
+#### Bold
+
+Use bolded text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Bold should not be combined with italic.
+
+To bold a word or phrase, surround the text with two asterisks (`**`).
+
+**Examples:**
+
+- The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
+- **This is an experimental feature.** The interface and output of this feature are subject to change.
+- **Default:** `NULL`
+
+#### Monospace
+
+See [Inline Code](#inline-code).
+
+#### Quotation Marks
+
+Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
+
+**Example:** As stated in RFC8259, "JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format."
+
+#### Italics
+
+Do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
+
+#### Underline
+
+Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
 
 ### Tips, Notes, and Warnings
 
@@ -310,60 +405,9 @@ To insert a warning, use the following code:
 {{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
 ~~~
 
-### Tables
-
-Use tables to display structured information in an easy-to-read format.
-
-To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column do not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
-
-We do not use outer pipes.
-
-Example:
-
-~~~
-   Term   |         Description         |     Example    
-----------|-----------------------------|----------------
- `term_1` | This is a description.      | `3.14`         
- `term_2` | This is also a description. | `"lola mcdog"`
-~~~
-
-**Note:**  If a table becomes too complex, format it in HTML.
-
-### Text Format
-
-#### Bold
-
-Use bolded text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Bold should not be combined with italic.
-
-To bold a word or phrase, surround the text with two asterisks (`**`).
-
-**Examples:**
-
-- The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
-- **This is an experimental feature.** The interface and output of this feature are subject to change.
-- **Default:** `NULL`
-
-#### Monospace
-
-See [Inline Code](#inline-code).
-
-#### Quotation Marks
-
-Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
-
-**Example:** As stated in RFC8259, "JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format."
-
-#### Italics
-
-Do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-#### Underline
-
-Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
 ### Version Tags
 
-Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell. 
+Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
 
 To insert a version tag, use the following code:
 
