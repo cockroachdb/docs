@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-"""
-Create docs issues from a release notes file.
+"""Create docs issues from a release notes file.
 
-Before running, add <!--doc--> to the end of each bullet in the release notes file
-that needs a docs issue.
+Before running, add {% comment %}doc{% endcomment %} to the end of each bullet
+in the release notes file that needs a docs issue.
 
 Help: ./issues-from-release-notes.py --help
 Example use: ./issues-from-release-notes.py --release_notes=v2.0.1.md --milestone=2.0.x
@@ -38,31 +37,47 @@ if milestone == "2.1":
 if milestone == "2.O.x":
     milestone = 10
 
+bullets_with_comments = 0
+issues_created = 0
+
 with open("../releases/" + release_notes) as file:
     for line in file:
         # Find release note bullets for which we need docs issues.
-        if line.startswith("-") and line.endswith("<!--doc-->\n"):
+        if line.startswith("-") and line.endswith("{% endcomment %}\n"):
+            bullets_with_comments += 1
+
             # For each bullet, get the title of the corresponding PR
             # from the cockroach repository.
-            pr_num = line[line.rfind("[")+2:line.rfind("]")]
-            url = "https://api.github.com/repos/cockroachdb/cockroach/pulls/" + str(pr_num)
-            req = requests.get(url)
-            resp = req.json()
-            title = resp["title"]
+            try:
+                pr_num = line[line.rfind("[")+2:line.rfind("]")]
+                url = "https://api.github.com/repos/cockroachdb/cockroach/pulls/" + str(pr_num)
+                req = requests.get(url)
+                resp = req.json()
+                title = resp["title"]
+            except Exception as e:
+                print("Exception:", e, "\n")
+                continue
+
             # For each bullet, create an issue in the docs repository.
-            issue = {"title": title,
-                     "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
-                     "labels": ["product", "ready"],
-                     "milestone": milestone}
-            url = "https://api.github.com/repos/cockroachdb/docs/issues"
-            # Your personal access token, which is required for POSTing due to 2-factor auth.
-            # Store your token as a GITHUB_ACCESS_TOKEN environment variable.
-            access_token = os.getenv("GITHUB_ACCESS_TOKEN")
-            headers = {"Authorization": "token " + access_token}
-            req = requests.post(url, headers=headers, data=json.dumps(issue))
-            if req.status_code == 201:
-                print("Successfully created issue {0:s}".format(title), "\n")
-                print(issue, "\n")
-            else:
-                print("Could not create issue {0:s}".format(title), "\n")
-                print("Response:", req.content, "\n")
+            try:
+                issue = {"title": title,
+                         "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
+                         "labels": ["product", "ready"],
+                         "milestone": 10}
+                url = "https://api.github.com/repos/cockroachdb/docs/issues"
+                access_token = os.getenv("GITHUB_ACCESS_TOKEN")
+                headers = {"Authorization": "token " + access_token}
+                req = requests.post(url, headers=headers, data=json.dumps(issue))
+                if req.status_code == 201:
+                    print("Successfully created issue {0:s}".format(title), "\n")
+                    print(issue, "\n")
+                    issues_created += 1
+                else:
+                    print("Could not create issue {0:s}".format(title), "\n")
+                    print("Response:", req.content, "\n")
+            except Exception as e:
+                print("Exception:", e, "\n")
+                continue
+
+print("Bullets with doc comments", bullets_with_comments)
+print("Docs issues created:", issues_created)
