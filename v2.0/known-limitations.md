@@ -20,12 +20,11 @@ In the upgrade process, after upgrading all binaries to v2.0, it's recommended t
 
 {{site.data.alerts.callout_info}}Resolved as of v2.1. See <a href="https://github.com/cockroachdb/cockroach/pull/23373">#23373</a>.{{site.data.alerts.end}}
 
-A single statement can perform at most at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
+A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
 
-If you need to increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
+To increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
 
-In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted
-any more, large transactions can have performance implications on the cluster.
+In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted any more, large transactions can have performance implications on the cluster.
 
 ### Memory flags with non-integer values and a unit suffix
 
