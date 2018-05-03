@@ -588,12 +588,6 @@
             ]
           },
           {
-            "title": "<code>SHOW ROLES</code>",
-            "urls": [
-              "/${VERSION}/show-roles.html"
-            ]
-          },
-          {
             "title": "<code>SHOW CREATE SEQUENCE</code>",
             "urls": [
               "/${VERSION}/show-create-sequence.html"
@@ -645,6 +639,12 @@
             "title": "<code>SHOW QUERIES</code>",
             "urls": [
               "/${VERSION}/show-queries.html"
+            ]
+          },
+          {
+            "title": "<code>SHOW ROLES</code>",
+            "urls": [
+              "/${VERSION}/show-roles.html"
             ]
           },
           {
