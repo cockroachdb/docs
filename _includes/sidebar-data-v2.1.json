@@ -414,6 +414,12 @@
             ]
           },
           {
+            "title": "<code>EXPORT</code> (Enterprise)",
+            "urls": [
+              "/${VERSION}/export.html"
+            ]
+          },
+          {
             "title": "<code>GRANT &lt;privileges&gt;</code>",
             "urls": [
               "/${VERSION}/grant.html"
