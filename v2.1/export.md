@@ -24,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/export.html %}
+<div>{% include sql/{{ page.version.version }}/diagrams/export.html %}</div>
 
 {{site.data.alerts.callout_info}}The <code>EXPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
@@ -105,6 +105,7 @@ Convert SQL *NULL* values to they match the specified string.
 
 ### Export a Table
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -113,6 +114,7 @@ Convert SQL *NULL* values to they match the specified string.
 
 ### Export using a `SELECT` statement
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -121,6 +123,7 @@ Convert SQL *NULL* values to they match the specified string.
 
 ### Non-Distributed Export Using the SQL Shell
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
