@@ -132,7 +132,6 @@ Convert values to SQL *NULL* if they match the specified string.
 
 ### Export a Table
 
-{% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -141,7 +140,6 @@ Convert values to SQL *NULL* if they match the specified string.
 
 ### Export using a `SELECT` statement
 
-{% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -152,7 +150,6 @@ Convert values to SQL *NULL* if they match the specified string.
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the non-enterprise feature to export tabular data in CSV format:
 
-{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
