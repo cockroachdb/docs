@@ -20,7 +20,7 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {{site.data.alerts.callout_danger}}Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.{{site.data.alerts.end}}
 
-{% include settings/v2.0/settings.md %}
+{% include settings/v2.1/settings.md %}
 
 ## View Current Cluster Settings
 
