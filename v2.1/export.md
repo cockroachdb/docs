@@ -6,7 +6,7 @@ toc: false
 
 The `EXPORT` [statement](sql-statements.html) exports tabular data to CSV files.
 
-{{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature in currently under development and is slated for full release in CockroachDB 2.1. Hence the feature flags and behavior are subject to change. {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature is currently under development and is slated for full release in CockroachDB 2.1. The feature flags and behavior are subject to change. {{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -39,7 +39,7 @@ Only the `root` user can run [`EXPORT`](export.html).
 | Parameter | Description |
 |-----------|-------------|
 | `file_location` | Specify the URL of the file location where you want to store the exported CSV data.|
-| `WITH kv_option` | Control your import's behavior with [these options](#export-options). |
+| `WITH kv_option` | Control your export's behavior with [these options](#export-options). |
 | `select_stmt` | Specify the query whose result you want to export to CSV format. |
 | `table_name` | Specify the name of the table you want to export to CSV format. |
 
@@ -130,18 +130,19 @@ Convert values to SQL *NULL* if they match the specified string.
 
 ## Examples
 
-### Export Entire Table
+### Export a Table
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
-### Export using `SELECT` statement
+### Export using a `SELECT` statement
 
+{% include copy-clipboard.html %}
 ~~~ sql
-
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
   FROM SELECT * FROM bank.customers WHERE id >= 100;
@@ -151,8 +152,9 @@ Convert values to SQL *NULL* if they match the specified string.
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the non-enterprise feature to export tabular data in CSV format:
 
+{% include copy-clipboard.html %}
 ~~~ shell
-> cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv;
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
 ## See Also
