@@ -618,9 +618,9 @@
             ]
           },
           {
-            "title": "<code>SHOW TESTING_RANGES</code>",
+            "title": "<code>SHOW EXPERIMENTAL_RANGES</code>",
             "urls": [
-              "/${VERSION}/show-testing-ranges.html"
+              "/${VERSION}/show-experimental-ranges.html"
             ]
           },
           {

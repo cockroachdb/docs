@@ -68,7 +68,7 @@ Statement | Usage
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | <span class="version-tag">New in v2.0:</span> List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
-[`SHOW TESTING_RANGES`](show-testing-ranges.html) | Show range information about a specific table or index.
+[`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction Management Statements

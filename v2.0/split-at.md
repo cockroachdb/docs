@@ -171,7 +171,7 @@ Conceptually, this means that the second range will include keys that start with
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW TESTING_RANGES FROM TABLE t;
+SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 ~~~
 
 ~~~
