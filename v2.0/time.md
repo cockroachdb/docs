@@ -84,4 +84,5 @@ Type | Details
 
 ## See Also
 
-[Data Types](data-types.html)
+- [Data Types](data-types.html)
+- [SQL Feature Support](sql-feature-support.html)

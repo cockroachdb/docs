@@ -43,6 +43,7 @@ table tr td:nth-child(2) {
 | <span class="version-tag">New in v1.1:</span> `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html) |
 | <span class="version-tag">New in v1.1:</span> `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html) |
 | <span class="version-tag">New in v2.0:</span> JSON | ✓ | Common Extension | [`JSONB` documentation](jsonb.html) |
+| <span class="version-tag">New in v2.0:</span> `TIME` | ✓ | Standard | [`TIME` documentation](time.html) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
 | `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
 | `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
