@@ -43,9 +43,11 @@ Only the `root` user can run [`EXPORT`](export.html).
 
 ### Export File URL
 
-URLs for the files you want to export to must use the following format:
+URLs for the file directory location you want to export to must use the following format:
 
 {% include external-urls-v2.0.md %}
+
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g. n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
 ### Export Options
 
@@ -108,7 +110,7 @@ Convert SQL *NULL* values to they match the specified string.
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
@@ -117,7 +119,7 @@ Convert SQL *NULL* values to they match the specified string.
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
