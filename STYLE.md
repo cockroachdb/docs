@@ -16,20 +16,20 @@ Included in this guide:
 - [Capitalization and Punctuation](#capitalization-and-punctuation)
 - [File Conventions](#file-conventions)
 - [Documentation Types](#documentation-types)
-    - [Concept Docs](#concept-docs)
     - [Reference and Task-Based Docs](#reference-and-task-based-docs)
     - [Tutorials, Training, and Examples](#tutorials-training-and-examples)
+    - [Concept Docs](#concept-docs)
 - [Components](#components)
+    - [Headings](#headings)
+    - [Text Format](#text-format)
+    - [Links](#links)
+    - [Tips, Notes, and Warnings](#tips-notes-and-warnings)  
     - [Code](#code)
     - [Examples](#examples)
-    - [Headings](#headings)
-    - [Images](#images)
-    - [Links](#links)
-    - [Lists](#lists)
+    - [Version Tags](#version-tags)      
     - [Tables](#tables)
-    - [Text Format](#text-format)
-    - [Tips, Notes, and Warnings](#tips-notes-and-warnings)
-    - [Version Tags](#version-tags)
+    - [Lists](#lists)
+    - [Images](#images)
 
 ## Language and Tone
 
@@ -93,34 +93,148 @@ Each version's images are found in a directory named for the version under the `
 
 ## Documentation Types
 
-### Concept Docs
-
-Concept docs are guides that detail how CockroachDB is built, but does not explain how you should architect an application using CockroachDB.
-
-Examples:
-
-- [Architecture Overview](architecture/overview.html)
-- [SQL Layer](architecture/sql-layer.html)
-
 ### Reference and Task-Based Docs
 
 Reference docs are informational and provide a comprehensive description of a CockroachDB function or feature, while task-based docs are instructional and provide prescriptive, step-by-step guidance to help a user complete a specific task.
 
 Examples:
 
-- **SQL reference doc example:** [`CREATE TABLE`](create-table.html)
-- **CLI reference doc example:** [Start a Local Cluster](start-a-local-cluster.html)
-- **Task-based doc example:** [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+- **SQL reference doc example:** [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
+- **CLI reference doc example:** [Use the Built-in SQL Client](https://www.cockroachlabs.com/docs/stable/use-the-built-in-sql-client.html)
+- **Task-based doc example:** [Orchestrate CockroachDB with Kubernetes](https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-kubernetes.html)
 
 ### Tutorials, Training, and Examples
 
 Tutorials, training, and examples are educational docs or sections meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
 
-- **Tutorial example:** [JSON Support](demo-json-support)
-- **Training example:** [Cluster Startup and Scaling](training/cluster-startup-and-scaling.html)
-- **Example examples:** [Define Table Partitions](partitioning.html#examples), [Manage Roles](roles.html#example)
+- **Tutorial example:** [JSON Support](https://www.cockroachlabs.com/docs/stable/demo-json-support)
+- **Training example:** [Cluster Startup and Scaling](https://www.cockroachlabs.com/docs/stable/training/cluster-startup-and-scaling.html)
+- **Example examples:** [Define Table Partitions](https://www.cockroachlabs.com/docs/stable/partitioning.html#examples), [Manage Roles](https://www.cockroachlabs.com/docs/stable/roles.html#example)
+
+### Concept Docs
+
+Concept docs are guides that detail how CockroachDB is built, but does not explain how you should architect an application using CockroachDB.
+
+Examples:
+
+- [Architecture Overview](https://www.cockroachlabs.com/docs/stable/architecture/overview.html)
+- [SQL Layer](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html)
 
 ## Components
+
+### Headings
+
+Use headings to demarcate content into a hierarchy to help readers find information easier.
+
+Headings should be title-case, and are denoted by number signs (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
+
+Heading 1 is reserved for page titles and anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
+
+Examples:
+
+- `## This is Heading 2`
+- `### And This is Heading 3`
+
+### Text Format
+
+#### Bold
+
+Use bolded text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Bold should not be combined with italic.
+
+To bold a word or phrase, surround the text with two asterisks (`**`).
+
+**Examples:**
+
+- The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
+- **This is an experimental feature.** The interface and output of this feature are subject to change.
+- **Default:** `NULL`
+
+#### Monospace
+
+See [Inline Code](#inline-code).
+
+#### Quotation Marks
+
+Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
+
+**Example:** As stated in RFC8259, "JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format."
+
+#### Italics
+
+Do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
+
+#### Underline
+
+Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
+
+### Links
+
+Whenever a CockroachDB feature is referenced, a link to the relevant documentation should be provided. Links to external resources can also be provided, but only if the resource is vetted and no CockroachDB documentation covers the topic.
+
+Link capitalization can be either title- or sentence-case:
+
+- **Use title-case** when referring to the linked doc by name (e.g., “See __Best Practices__ for more information”).
+- **Use sentence-case** - when linking in the middle of a sentence (e.g., “[…] follow the __identifier rules__ when creating […]“).
+
+Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
+
+- To another page in the docs, use just the name of the file.
+
+    **Example:** `[here](name-of-article.html)`
+
+- To a specific section on another page, use the name of the file plus the heading.
+
+    **Example:** `[xyz](name-of-article.html#heading-on-page)`
+
+- To a specific section on the current page, use just the heading.
+
+    **Example:** `[xyz](#heading-on-page)`
+
+### Tips, Notes, and Warnings
+
+Our docs use three classes of highlighted text:
+
+- [Tips](#tips)
+- [Notes](#notes)
+- [Warnings](#warnings)
+
+The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
+
+#### Tips
+
+Use tips to highlight nice-to-know pieces of information.
+
+For example, you might include a tip to our Github repo's Terraform scripts on the Google Cloud Engine deployment page. It's nice to know it's there, but doesn't clarify anything nor is it critical.
+
+To insert a tip, use the following code:
+
+~~~
+{{site.data.alerts.callout_success}} <tip text goes here> {{site.data.alerts.end}}
+~~~
+
+#### Notes
+
+Use notes to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
+
+For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point misguided users to the right place.
+
+To insert a note, use the following code:
+
+~~~
+{{site.data.alerts.callout_info}} <note text goes here> {{site.data.alerts.end}}
+~~~
+
+#### Warnings
+
+Use warning to express that a piece of information is critical to understand to prevent unexpected things from happening.
+
+For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
+
+To insert a warning, use the following code:
+
+~~~
+{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
+~~~
 
 ### Code
 
@@ -182,58 +296,55 @@ Examples help show the feature in action. Examples follow a basic format:
     > CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
     ~~~
 
-    When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](create-table.html#create-a-table-that-mirrors-key-value-storage)
+    When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](https://www.cockroachlabs.com/docs/stable/create-table.html#create-a-table-that-mirrors-key-value-storage)
 
-### Headings
+### Version Tags
 
-Use headings to demarcate content into a hierarchy to help readers find information easier.
+Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
 
-Headings should be title-case, and are denoted by octothorps (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
+To insert a version tag, use the following code:
 
-Heading 1 is reserved for page titles and anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
+~~~
+<span class="version-tag">New in vX.X:</span>
+~~~
 
 Examples:
 
-- `## This is Heading 2`
-- `### And This is Heading 3`
+- [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
 
-### Images
+### Tables
 
-Use images to clarify a topic, but only use them as needed. Images are either:
+Use tables to display structured information in an easy-to-read format.
 
-- **Screenshots** - Provide a UI visual. Screenshots should show enough of the UI that the user can easily orient themselves and understand what they are being shown. If a screenshot needs an annotation, use a red box.
-- **Diagrams** - Provide a visual of a complicated theory. Diagrams should be simple and easy to read.
+To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
 
-Use the following HTML and liquid to include an image in a markdown page:
+We do not use outer pipes.
 
-~~~ html
-<img src="{{ 'images/v2.1/image-name.png' | relative_url }}" alt="Alternative Text Here" style="border:1px solid #eee;max-width:100%" />
+Example:
+
+~~~
+   Term   |         Description         |     Example    
+----------|-----------------------------|----------------
+ `term_1` | This is a description.      | `3.14`         
+ `term_2` | This is also a description. | `"lola mcdog"`
 ~~~
 
-Example: [Decommission Nodes](remove-nodes.html#step-1-check-the-node-before-decommissioning)
+The following Markdown formatting can be used within a table:
 
-### Links
+- [Bold](#bold)
+- [Italics](#italics)
+- [Inline code](#inline-code)
+- [Links](#links)
 
-Whenever a CockroachDB feature is referenced, a link to the relevant documentation should be provided. Links to external resources can also be provided, but only if the resource is vetted and no CockroachDB documentation covers the topic.
+The following formatting needs to be in HTML to be used within a table:
 
-Link capitalization can be either title- or sentence-case:
+- Paragraph breaks (`<br>`)
+- Lists (`ol` / `ul` / `<li>`)
 
-- **Use title-case** when referring to the linked doc by name (e.g., “See __Best Practices__ for more information”).
-- **Use sentence-case** - when linking in the middle of a sentence (e.g., “[…] follow the __identifier rules__ when creating […]“).
+The following formatting is not supported within a table:
 
-Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
-
-- To another page in the docs, use just the name of the file.
-
-    **Example:** `[here](name-of-article.html)`
-
-- To a specific section on another page, use the name of the file plus the heading.
-
-    **Example:** `[xyz](name-of-article.html#heading-on-page)`
-
-- To a specific section on the current page, use just the heading.
-
-    **Example:** `[xyz](#heading-on-page)`
+- [Liquid tags](https://shopify.github.io/liquid/)
+- [Code blocks](#code-blocks)
 
 ### Lists
 
@@ -241,11 +352,11 @@ CockroachDB docs uses two types of lists:
 
 - **Numbered** (i.e., ordered list) - Use to list information that should appear in order, like steps.
 
-    **Example:** [Start CockroachDB](deploy-a-test-cluster.html#step-1-start-cockroachdb) in the Deploy a Test Cluster doc
+    **Example:** [Start CockroachDB](https://www.cockroachlabs.com/docs/stable/deploy-a-test-cluster.html#step-1-start-cockroachdb) in the Deploy a Test Cluster doc
 
 - **Bulleted** (i.e., unordered list) - Use to list related information in an easy-to-read way.
 
-    **Example:** [Start the First Node](start-a-local-cluster.html#step-1-start-the-first-node) in the Start a Local Cluster doc
+    **Example:** [Start the First Node](https://www.cockroachlabs.com/docs/stable/start-a-local-cluster.html#step-1-start-the-first-node) in the Start a Local Cluster doc
 
 Lists should be introduced by a sentence and a colon. Use periods at the end of list items if it is a sentence or completes a sentence.
 
@@ -303,128 +414,17 @@ Similarly, to nest a paragraph or code block under a *nested* list item, insert 
 2. This is a step.
 ```
 
-### Tables
+### Images
 
-Use tables to display structured information in an easy-to-read format.
+Use images to clarify a topic, but only use them as needed. Images are either:
 
-To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
+- **Screenshots** - Provide a UI visual. Screenshots should show enough of the UI that the user can easily orient themselves and understand what they are being shown. If a screenshot needs an annotation, use a red box.
+- **Diagrams** - Provide a visual of a complicated theory. Diagrams should be simple and easy to read.
 
-We do not use outer pipes.
+Use the following HTML and liquid to include an image in a markdown page:
 
-Example:
-
-~~~
-   Term   |         Description         |     Example    
-----------|-----------------------------|----------------
- `term_1` | This is a description.      | `3.14`         
- `term_2` | This is also a description. | `"lola mcdog"`
+~~~ html
+<img src="{{ 'images/v2.1/image-name.png' | relative_url }}" alt="Alternative Text Here" style="border:1px solid #eee;max-width:100%" />
 ~~~
 
-The following Markdown formatting can be used within a table:
-
-- [Bold](#bold)
-- [Italics](#italics)
-- [Inline code](#inline-code)
-- [Links](#links)
-
-The following formatting needs to be in HTML to be used within a table:
-
-- Paragraph breaks (`<br>`)
-- Lists (`ol` / `ul` / `<li>`)
-
-The following formatting is not supported within a table:
-
-- [Liquid tags](https://shopify.github.io/liquid/)
-- [Code blocks](#code-blocks)
-
-### Text Format
-
-#### Bold
-
-Use bolded text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Bold should not be combined with italic.
-
-To bold a word or phrase, surround the text with two asterisks (`**`).
-
-**Examples:**
-
-- The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
-- **This is an experimental feature.** The interface and output of this feature are subject to change.
-- **Default:** `NULL`
-
-#### Monospace
-
-See [Inline Code](#inline-code).
-
-#### Quotation Marks
-
-Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
-
-**Example:** As stated in RFC8259, "JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format."
-
-#### Italics
-
-Do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-#### Underline
-
-Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-### Tips, Notes, and Warnings
-
-Our docs use three classes of highlighted text:
-
-- [Tips](#tips)
-- [Notes](#notes)
-- [Warnings](#warnings)
-
-The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
-
-#### Tips
-
-Use tips to highlight nice-to-know pieces of information.
-
-For example, you might include a tip to our Github repo's Terraform scripts on the Google Cloud Engine deployment page. It's nice to know it's there, but doesn't clarify anything nor is it critical.
-
-To insert a tip, use the following code:
-
-~~~
-{{site.data.alerts.callout_success}} <tip text goes here> {{site.data.alerts.end}}
-~~~
-
-#### Notes
-
-Use notes to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
-
-For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point misguided users to the right place.
-
-To insert a note, use the following code:
-
-~~~
-{{site.data.alerts.callout_info}} <note text goes here> {{site.data.alerts.end}}
-~~~
-
-#### Warnings
-
-Use warning to express that a piece of information is critical to understand to prevent unexpected things from happening.
-
-For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
-
-To insert a warning, use the following code:
-
-~~~
-{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
-~~~
-
-### Version Tags
-
-Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
-
-To insert a version tag, use the following code:
-
-~~~
-<span class="version-tag">New in vX.X:</span>
-~~~
-
-Examples:
-
-- [`CREATE TABLE`](create-table.html)
+Example: [Decommission Nodes](https://www.cockroachlabs.com/docs/stable/remove-nodes.html#step-1-check-the-node-before-decommissioning)
