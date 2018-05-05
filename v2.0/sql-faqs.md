@@ -14,6 +14,26 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
+## How do I generate unique, slowly increasing sequential numbers in CockroachDB?
+
+{% include faq/sequential-numbers.md %}
+
+## What are the differences between `UUID`, sequences and `unique_rowid()`?
+
+{% include faq/differences-between-numberings.md %}
+
+## How do I order writes to a table to closely follow time in CockroachDB?
+
+{% include faq/sequential-transactions.md %}
+
+## Does CockroachDB support `JOIN`?
+
+CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
+
+To learn more, see our blog posts on CockroachDB's JOINs:
+- [Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
+- [On the Way to Better SQL Joins](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
+
 ## How do I get the last ID/SERIAL value inserted into a table?
 
 There’s no function in CockroachDB for returning last inserted values, but you can use the [`RETURNING` clause](insert.html#insert-and-return-values) of the `INSERT` statement.
@@ -25,14 +45,6 @@ For example, this is how you’d use `RETURNING` to return an auto-generated [`S
 
 > INSERT INTO users (name) VALUES ('mike') RETURNING id;
 ~~~
-
-## Does CockroachDB support `JOIN`?
-
-CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
-
-To learn more, see our blog posts on CockroachDB's JOINs:
-- [Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
-- [On the Way to Better SQL Joins](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
 
 ## When should I use interleaved tables?
 

@@ -14,6 +14,18 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
+## How do I generate unique, slowly increasing sequential numbers in CockroachDB?
+
+{% include faq/sequential-numbers.md %}
+
+## What are the differences between `UUID`, sequences and `unique_rowid()`?
+
+{% include faq/differences-between-numberings.md %}
+
+## How do I order writes to a table to closely follow time in CockroachDB?
+
+{% include faq/sequential-transactions.md %}
+
 ## How do I get the last ID/SERIAL value inserted into a table?
 
 There’s no function in CockroachDB for returning last inserted values, but you can use the [`RETURNING` clause](insert.html#insert-and-return-values) of the `INSERT` statement.
