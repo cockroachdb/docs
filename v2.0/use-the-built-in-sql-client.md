@@ -16,18 +16,12 @@ To exit the interactive shell, use `\q` or `ctrl-d`.
 ~~~ shell
 # Start the interactive SQL shell:
 $ cockroach sql <flags>
-~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
 # Execute SQL from the command line:
 $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
-~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
 # View help:
 $ cockroach sql --help
 ~~~
@@ -190,6 +184,7 @@ $ cockroach sql \
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql --insecure \
@@ -646,6 +641,7 @@ INSERT 3
 
 In this example, we start the interactive SQL shell and enable the `echo` shell option to reveal SQL statements sent implicitly:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
