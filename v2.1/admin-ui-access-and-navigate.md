@@ -56,7 +56,7 @@ Column | Description
 ID | The ID of the node.
 Address | The address of the node. You can click on the address to view further details about the node.
 Uptime | How long the node has been running.
-Bytes | The used capacity for the node.
+Used Capacity | The used capacity for the node.
 Replicas | The number of replicas on the node.
 Mem Usage | The memory usage for the node.
 Version | The build tag of the CockroachDB version installed on the node.
