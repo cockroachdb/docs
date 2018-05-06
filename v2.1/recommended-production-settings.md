@@ -136,6 +136,7 @@ Environment | Featured Approach
 
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](start-a-node.html#flags-changed-in-v2-0) and [`--max-sql-memory`](start-a-node.html#flags-changed-in-v2-0) flags:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
@@ -224,7 +225,7 @@ $(document).ready(function(){
     <button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
-<div id="macinstall" markdown="1">
+<section id="macinstall" markdown="1">
 
 - [Yosemite and later](#yosemite-and-later)
 - [Older versions](#older-versions)
@@ -237,8 +238,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 1.  Check the current limits:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
+    ~~~
+    ~~~
     maxfiles    10240          10240
     ~~~
 
@@ -275,8 +279,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 4.  Check the current limits:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
+    ~~~
+    ~~~
     maxfiles    35000          35000
     ~~~
 
@@ -288,8 +295,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 1.  Check the current limits:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
+    ~~~
+    ~~~
     maxfiles    10240          10240
     ~~~
 
@@ -305,14 +315,17 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 4.  Verify the new limits:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
+    ~~~
+    ~~~
     maxfiles    35000          35000
     ~~~
 
-</div>
+</section>
 
-<div id="linuxinstall" markdown="1">
+<section id="linuxinstall" markdown="1">
 
 - [Per-Process Limit](#per-process-limit)
 - [System-Wide Limit](#system-wide-limit)
@@ -380,12 +393,12 @@ You should also confirm that the file descriptors limit for the entire Linux sys
     $ echo 150000 > /proc/sys/fs/file-max
     ~~~
 
-</div>
-<div id="windowsinstall" markdown="1">
+</section>
+<section id="windowsinstall" markdown="1">
 
 CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
 
-</div>
+</section>
 
 #### Attributions
 

@@ -42,69 +42,73 @@ These examples assume that nodes have already been started with [`cockroach star
 
 ### Initialize a Cluster on a Node's Machine
 
-<div class="filters clearfix">
+<section class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="secure">
+<section class="filter-content" markdown="1" data-scope="secure">
 1. SSH to the machine where the node has been started.
 
 2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of this node>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="insecure">
 1. SSH to the machine where the node has been started.
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of this node>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
-</div>
+</section>
 
 ### Initialize a Cluster from Another Machine
 
-<div class="filters clearfix">
+<section class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="secure">
+<section class="filter-content" markdown="1" data-scope="secure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
 2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of any node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of any node>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="insecure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of any node:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.
-</div>
+</section>
 
 ## See Also
 

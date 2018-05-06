@@ -20,6 +20,7 @@ For a full list of supported privileges, see the [`GRANT`](grant.html) documenta
 
 To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT, INSERT ON bank.accounts TO maxroach;
 ~~~
@@ -28,6 +29,7 @@ To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, 
 
 To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE bank FOR maxroach;
 ~~~
@@ -36,6 +38,7 @@ To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grant
 
 To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statement, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > REVOKE INSERT ON bank.accounts FROM maxroach;
 ~~~

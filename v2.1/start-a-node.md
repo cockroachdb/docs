@@ -165,7 +165,8 @@ Field | Description
 To start a single-node cluster, run the `cockroach start` command without the `--join` flag:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=<node1 address> \
@@ -175,7 +176,8 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --insecure \
 --host=<node1 address> \
@@ -194,7 +196,8 @@ $ cockroach start \
 To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addressess of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=<node1 address> \
@@ -203,7 +206,8 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=<node2 address> \
@@ -212,7 +216,8 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=<node3 address> \
@@ -223,7 +228,8 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --insecure \
 --host=<node1 address> \
@@ -232,7 +238,8 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --insecure \
 --host=<node2 address> \
@@ -241,7 +248,8 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --insecure \
 --host=<node3 address> \
@@ -254,7 +262,8 @@ $ cockroach start \
 Then run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach init \
 --certs-dir=certs \
 --host=<address of any node>
@@ -262,7 +271,8 @@ $ cockroach init \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach init \
 --insecure \
 --host=<address of any node>
@@ -279,7 +289,8 @@ $ cockroach init \
 To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addressess of 3-5 of the nodes already in the cluster:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=<node4 address> \
@@ -290,7 +301,8 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-~~~
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach start \
 --insecure \
 --host=<node4 address> \
