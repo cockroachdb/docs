@@ -36,18 +36,27 @@ You can use either `cockroach cert` commands or [`openssl` commands](create-secu
 # If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 $ mkdir certs
 $ mkdir my-safe-directory
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Create the CA key pair:
 $ cockroach cert create-ca \
 --certs-dir=certs \
 --ca-key=my-safe-directory/ca.key
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Create a client key pair for the root user:
 $ cockroach cert create-client \
 root \
 --certs-dir=certs \
 --ca-key=my-safe-directory/ca.key
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Create a key pair for the nodes:
 $ cockroach cert create-node \
 localhost \
@@ -145,11 +154,20 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
