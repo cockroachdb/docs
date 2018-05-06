@@ -238,7 +238,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 1.  Check the current limits:
 
-{% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
     ~~~
@@ -279,7 +279,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 4.  Check the current limits:
 
-{% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
     ~~~
@@ -295,8 +295,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 1.  Check the current limits:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
+    ~~~
+    ~~~
     maxfiles    10240          10240
     ~~~
 
@@ -312,7 +315,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 4.  Verify the new limits:
 
-{% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ launchctl limit maxfiles
     ~~~
