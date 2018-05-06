@@ -31,10 +31,11 @@ To file an issue in GitHub, we need the following information:
 4. The result that actually occurred.
 
 5. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
-   
+
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ grep -F '[config]' cockroach-data/logs/cockroach.log
-    ~~~~
+    ~~~
     {{site.data.alerts.callout_info}}You might need to replace <code>cockroach-data/logs</code> with the location of your <a href="debug-and-error-logs.html">logs</a>.{{site.data.alerts.end}}
     If the logs are not available, please include the output of `cockroach version` for each node in the cluster.
 
