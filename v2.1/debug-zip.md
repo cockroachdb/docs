@@ -49,7 +49,6 @@ While the `cockroach debug` command has a few subcommands, the only subcommand u
 
 ## Synopsis
 
-{% include copy-clipboard.html %}
 ~~~ shell
 # Generate a debug zip:
 $ cockroach debug zip [ZIP file destination] [flags]
