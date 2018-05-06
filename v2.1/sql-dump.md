@@ -239,7 +239,6 @@ In this example, the `dump` command fails for a user that does not have the `SEL
 $ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ shell
 Error: pq: user leslieroach has no privileges on table episodes
 Failed running "dump"
