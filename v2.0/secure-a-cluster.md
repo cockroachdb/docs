@@ -35,6 +35,10 @@ You can use either `cockroach cert` commands or [`openssl` commands](create-secu
 # Create a certs directory and safe directory for the CA key.
 # If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 $ mkdir certs
+~~~
+
+{% include copy-clipboard.html %}
+~~~
 $ mkdir my-safe-directory
 ~~~
 
