@@ -113,6 +113,10 @@ $ cockroach gen autocomplete
 ~~~ shell
 # Add the script to your .bashrc and .bash_profle:
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bashrc
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bash_profile
 ~~~
 
