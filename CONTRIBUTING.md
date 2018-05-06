@@ -19,7 +19,7 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 3. Learn the essentials of our [Docs Structure](#docs-structure).
 
-4. Review our simple Style Guide.
+4. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
 
 ## Get Started
 
@@ -268,7 +268,7 @@ This example shows some of the first section of the sidenav, `Get Started`:
 
 ## Style Guide
 
-See [Style Guide](STYLE.html) for more details.
+See [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md) for more details.
 
 ## Build and Test the Docs Locally
 
