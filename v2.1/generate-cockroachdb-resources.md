@@ -83,23 +83,34 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Generate `man` Pages
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Generate man pages:
 $ cockroach gen man
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Move the man pages to the man directory:
 $ sudo mv man/man1/* /usr/share/man/man1
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Access man pages:
 $ man cockroach
 ~~~
 
 ### Generate a `bash` Autocompletion Script
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Generate bash autocompletion script:
 $ cockroach gen autocomplete
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Add the script to your .bashrc and .bash_profle:
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bashrc
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bash_profile
@@ -111,6 +122,7 @@ You can now use `tab` to autocomplete `cockroach` commands.
 
 To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Generate example `startrek` database:
 $ cockroach gen example-data startrek | cockroach sql --insecure
@@ -127,11 +139,13 @@ CREATE TABLE
 INSERT 200
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Launch the built-in SQL client to view it:
 $ cockroach sql --insecure
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -147,6 +161,7 @@ $ cockroach sql --insecure
 
 You can also generate an example `intro` database, which contains 1 table, `mytable`, with a hidden message:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Generate example `intro` database:
 $ cockroach gen example-data intro | cockroach sql --insecure
@@ -164,11 +179,13 @@ INSERT 1
 ...
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Launch the built-in SQL client to view it:
 $ cockroach sql --insecure
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM intro;
 ~~~
@@ -182,6 +199,7 @@ $ cockroach sql --insecure
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
 ~~~
@@ -227,6 +245,7 @@ $ cockroach sql --insecure
 <div class="filter-content" markdown="1" data-scope="secure">
 To generate an HAProxy config file for a secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory](create-security-certificates.html) and the address of any instance running a CockroachDB node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --certs-dir=<path to certs directory> \
@@ -238,6 +257,7 @@ $ cockroach gen haproxy \
 <div class="filter-content" markdown="1" data-scope="insecure">
 To generate an HAProxy config file for an insecure cluster, run the `cockroach gen haproxy` command, specifying the address of any instance running a CockroachDB node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy --insecure \
 --host=<address of any node in the cluster> \

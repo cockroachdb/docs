@@ -83,10 +83,12 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Dump a table's schema and data
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -120,10 +122,12 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 
 ### Dump just a table's schema
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=schema > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -144,10 +148,12 @@ CREATE TABLE episodes (
 
 ### Dump just a table's data
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=data > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -169,10 +175,12 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 
 ### Dump all tables in a database
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek --insecure --user=maxroach > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -226,10 +234,12 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 Error: pq: user leslieroach has no privileges on table episodes
 Failed running "dump"
@@ -239,6 +249,7 @@ Failed running "dump"
 
 In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -263,6 +274,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
     ...
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=startrek --user=maxroach < backup.sql
 ~~~
@@ -279,6 +291,7 @@ In this example, we assume there were several inserts into a table both before a
 
 First, let's use the built-in SQL client to view the table at the current time:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 ~~~
@@ -309,6 +322,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 
 Next, let's use a [time-travel query](select-clause.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
 ~~~
@@ -331,6 +345,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM T
 
 Finally, let's use `cockroach dump` with the `--as-of` flag set to dump the contents of the table as of `2017-03-07 19:55:00`.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump db1 dump_test --insecure --dump-mode=data --as-of='2017-03-07 19:55:00'
 ~~~
