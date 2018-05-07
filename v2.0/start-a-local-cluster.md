@@ -187,7 +187,7 @@ The replica count on each node is identical, indicating that all data in the clu
 
 ## Step 5.  Stop the cluster
 
-Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL + C** to stop the node.
+Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL&nbsp;+&nbsp;C** to stop the node.
 
 At this point, with 2 nodes still online, the cluster remains operational because a majority of replicas are available. To verify that the cluster has tolerated this "failure", connect the built-in SQL shell to nodes 2 or 3. You can do this in the same terminal or in a new terminal.
 
