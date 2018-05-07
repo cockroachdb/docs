@@ -185,7 +185,7 @@ The replica count on each node is identical, indicating that all data in the clu
 
 ## Step 5.  Stop the cluster
 
-Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL + C** to stop the node.
+Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL-C** to stop the node.
 
 At this point, with 2 nodes still online, the cluster remains operational because a majority of replicas are available. To verify that the cluster has tolerated this "failure", connect the built-in SQL shell to nodes 2 or 3. You can do this in the same terminal or in a new terminal.
 
@@ -215,9 +215,9 @@ Exit the SQL shell:
 > \q
 ~~~
 
-Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL + C**.
+Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 

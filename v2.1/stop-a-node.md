@@ -86,7 +86,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     $ pkill cockroach
     ~~~
 
-    If the node is running in the foreground, press `CTRL + c`.
+    If the node is running in the foreground, press `CTRL-C`.
 
 3. Verify that the `cockroach` process has stopped:
 

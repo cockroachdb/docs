@@ -22,9 +22,9 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 ## Step 1. Simulate the problem
 
-1. In the terminal where node 2 is running, press **CTRL + C**.
+1. In the terminal where node 2 is running, press **CTRL-C**.
 
-2. In the terminal where node 3 is running, press **CTRL + C**. You may need to press **CRTL + C** a second time to force this node to stop.  
+2. In the terminal where node 3 is running, press **CTRL-C**. You may need to press **CRTL + C** a second time to force this node to stop.  
 
 ## Step 2. Troubleshoot the problem
 

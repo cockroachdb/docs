@@ -131,7 +131,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 2. Open one of the `.sst` files and delete several lines.
 
-3. In the terminal where node 3 is running, press **CTRL + C** to stop it.
+3. In the terminal where node 3 is running, press **CTRL-C** to stop it.
 
 4. Try to restart node 3:
 

@@ -437,7 +437,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     > CREATE DATABASE securenodetest;
     ~~~
 
-3. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+3. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 8. Monitor the cluster
 

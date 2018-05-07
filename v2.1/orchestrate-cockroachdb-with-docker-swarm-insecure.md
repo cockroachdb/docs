@@ -225,7 +225,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     > CREATE DATABASE insecurenodetest;
     ~~~
 
-3. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+3. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Monitor the cluster
 

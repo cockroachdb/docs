@@ -23,7 +23,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	> CREATE DATABASE securenodetest;
 	~~~
 
-3. Use `\q` or **CTRL + C** to exit the SQL shell.
+3. Use `\q` or **CTRL-C** to exit the SQL shell.
 
 4. Launch the built-in SQL client against a different node:
 
@@ -52,4 +52,4 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	(5 rows)
 	~~~
 
-6. Use `\q` or **CTRL + C** to exit the SQL shell.
+6. Use `\q` or **CTRL-C** to exit the SQL shell.

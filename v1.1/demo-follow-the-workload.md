@@ -266,9 +266,9 @@ Verify that the range's lease moved to the node in the "US West" as follows.
 
 ### Step 9. Stop the cluster
 
-Once you're done with your cluster, press **CTRL + C** in each node's terminal.
+Once you're done with your cluster, press **CTRL-C** in each node's terminal.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 

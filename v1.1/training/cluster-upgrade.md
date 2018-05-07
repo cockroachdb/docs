@@ -116,7 +116,7 @@ Start and initialize a cluster like you did in previous modules.
 
 ## Step 3. Upgrade the first node to v2.0
 
-1. In node 1's terminal, press **CTRL + C** to stop the `cockroach` process.
+1. In node 1's terminal, press **CTRL-C** to stop the `cockroach` process.
 
 2. Verify that node 1 has stopped:
 
@@ -171,7 +171,7 @@ Start and initialize a cluster like you did in previous modules.
 
 ## Step 4. Upgrade the rest of the nodes
 
-1. In node 2's terminal, press **CTRL + C** to stop the `cockroach` process.
+1. In node 2's terminal, press **CTRL-C** to stop the `cockroach` process.
 
 2. Verify that node 2 has stopped:
 
@@ -203,7 +203,7 @@ Start and initialize a cluster like you did in previous modules.
 
 4. Wait 1 minute.
 
-5. In node 3's terminal, press **CTRL + C** to stop the `cockroach` process.
+5. In node 3's terminal, press **CTRL-C** to stop the `cockroach` process.
 
 6. Verify that node 3 has stopped:
 

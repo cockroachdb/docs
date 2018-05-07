@@ -169,7 +169,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 You won't be using this Docker cluster in any other labs, so take a moment to clean things up.
 
-1. In the terminal where you ran `docker-compose up`, press **CTRL + C** to stop all the CockroachDB nodes.
+1. In the terminal where you ran `docker-compose up`, press **CTRL-C** to stop all the CockroachDB nodes.
 
 2. Delete the Docker containers:
 
