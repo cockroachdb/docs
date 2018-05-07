@@ -35,11 +35,13 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 2. Run `caddy` with an [`upload` directive](https://caddyserver.com/docs/http.upload), either in the command line or via [`Caddyfile`](https://caddyserver.com/docs/caddyfile).
     - Command line example (with no TLS):
     		
+        {% include copy-clipboard.html %}
         ~~~ shell
-        caddy -root /mnt/cockroach-exports "upload / {" 'to "/mnt/cockroach-exports"' 'yes_without_tls' "}"
+        $ caddy -root /mnt/cockroach-exports "upload / {" 'to "/mnt/cockroach-exports"' 'yes_without_tls' "}"
         ~~~
     - `Caddyfile` example (using a key and cert):
 
+        {% include copy-clipboard.html %}
         ~~~ shell
         tls key cert
         root "/mnt/cockroach-exports"
@@ -54,6 +56,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 2. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
 
+    {% include copy-clipboard.html %}
     ~~~ nginx
     events {
         worker_connections  1024;

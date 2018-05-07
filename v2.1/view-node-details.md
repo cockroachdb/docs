@@ -159,6 +159,7 @@ Field | Description
 
 ### List node IDs
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node ls --insecure
 ~~~
@@ -177,6 +178,7 @@ $ cockroach node ls --insecure
 
 ### Show the status of a single node
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status 1 --insecure
 ~~~
@@ -192,6 +194,7 @@ $ cockroach node status 1 --insecure
 
 ### Show the status of all nodes
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --insecure
 ~~~
