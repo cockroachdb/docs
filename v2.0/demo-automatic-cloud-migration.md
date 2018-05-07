@@ -226,9 +226,9 @@ This indicates that all data has been migrated from cloud 1 to cloud 2. In a rea
 
 ## Step 11. Stop the cluster
 
-Once you're done with your cluster, stop YCSB by switching into its terminal and pressing **CTRL + C**. Then do the same for HAProxy and each CockroachDB node.
+Once you're done with your cluster, stop YCSB by switching into its terminal and pressing **CTRL-C**. Then do the same for HAProxy and each CockroachDB node.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 

@@ -247,7 +247,7 @@ $ sudo docker network create --driver overlay cockroachdb
     > CREATE DATABASE insecurenodetest;
     ~~~
 
-4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+4. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Monitor the cluster
 

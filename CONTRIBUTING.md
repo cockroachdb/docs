@@ -286,7 +286,7 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
     - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser.
 
-    Once you're done viewing your changes, use **CTRL + C** to stop the Jekyll server.
+    Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
 
 3.  Run automated tests against the Jekyll-generate HTML files to check for problems (broken links, missing alt texts for images, etc.):
 

@@ -256,7 +256,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	> CREATE DATABASE securenodetest;
 	~~~
 
-3. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+3. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 4. Launch the built-in SQL client with the `--host` flag set to the address of node 2 and security flags pointing to the CA cert and the client cert and key:
 
@@ -287,7 +287,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	(5 rows)
 	~~~
 
-6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 5. Set up HAProxy load balancers
 
@@ -420,7 +420,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	(1 row)
 	~~~
 
-4. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+4. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 7. Configure replication
 

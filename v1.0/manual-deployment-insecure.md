@@ -135,7 +135,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) as
 	(5 rows)
 	~~~
 
-6. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+6. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 4. Set up HAProxy load balancers
 
@@ -268,7 +268,7 @@ To test this, install CockroachDB locally and use the [built-in SQL client](use-
 	(1 row)
 	~~~
 
-5. Use **CTRL + D**, **CTRL + C**, or `\q` to exit the SQL shell.
+5. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 6. Configure replication
 

@@ -196,7 +196,7 @@ Kubectl is now configured to use the cluster.
     (1 row)
     ~~~
 
-4. When you're done with the SQL shell, use **CTRL + D**, **CTRL + C**, or `\q` to exit and delete the temporary pod.
+4. When you're done with the SQL shell, use **CTRL-D**, **CTRL-C**, or `\q` to exit and delete the temporary pod.
 
 ## Step 5. Simulate node failure
 

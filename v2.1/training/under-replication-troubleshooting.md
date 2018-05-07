@@ -79,7 +79,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
-2. In the terminal where node 3 is running, press **CTRL + C** to stop the node.
+2. In the terminal where node 3 is running, press **CTRL-C** to stop the node.
 
 ## Step 3. Troubleshoot the problem
 

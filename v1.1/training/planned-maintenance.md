@@ -105,7 +105,7 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
 
 Stop, maintain, and restart one node at a time. This ensures that, at any point, the cluster has a majority of replicas and remains available.
 
-1. In the first node's terminal, press **CTRL + C** to stop the node.
+1. In the first node's terminal, press **CTRL-C** to stop the node.
 
 2. Imagine that you are doing some maintenance on the node.
 
@@ -124,7 +124,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
-4. In the second node's terminal, press **CTRL + C** to stop the node.
+4. In the second node's terminal, press **CTRL-C** to stop the node.
 
 5. Imagine that you are doing some maintenance on the node.
 
@@ -143,7 +143,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
-7. In the third node's terminal, press **CTRL + C** to stop the node.
+7. In the third node's terminal, press **CTRL-C** to stop the node.
 
 8. Imagine that you are doing some maintenance on the node.
 

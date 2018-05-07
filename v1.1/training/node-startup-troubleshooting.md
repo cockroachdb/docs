@@ -198,7 +198,7 @@ The last warning tells you that the node can't establish a connection with the a
 
 ### Step 2. Resolve the problem
 
-1. Press **CTRL + C** twice to stop the previous startup attempt.
+1. Press **CTRL-C** twice to stop the previous startup attempt.
 
 2. To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address:
 
@@ -245,7 +245,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     nodeID:     1
     ~~~
 
-2. Press **CTRL + C** to stop the new node.
+2. Press **CTRL-C** to stop the new node.
 
 3. Start the node again, but this time include a correct `--join` address:
 

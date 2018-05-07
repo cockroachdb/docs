@@ -96,7 +96,7 @@ Exit the SQL shell:
 
 ## Step 4. Remove a node temporarily
 
-In the terminal running node 2, press **CTRL + C** to stop the node.
+In the terminal running node 2, press **CTRL-C** to stop the node.
 
 Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
@@ -325,7 +325,7 @@ nodeID:     4
 
 ## Step 10. Remove a node permanently
 
-Again, switch to the terminal running node 2 and press **CTRL + C** to stop it.
+Again, switch to the terminal running node 2 and press **CTRL-C** to stop it.
 
 Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
 
@@ -352,9 +352,9 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 ## Step 12.  Stop the cluster
 
-Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL + C**.
+Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL + C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
 
