@@ -465,19 +465,6 @@ ol.series li {
   background-color: #FAFAFA;
 }
 
-@media (min-width: 1000px) {
-  ul#mysidebar {
-    width: 225px;
-    position: relative;
-  }
-}
-
-@media (max-width: 900px) {
-  ul#mysidebar {
-    max-width: 100%;
-  }
-}
-
 span.muted {color: #C0C0C0;}
 
 .highlight .err {

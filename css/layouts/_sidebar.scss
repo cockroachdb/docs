@@ -64,17 +64,6 @@ body.sidenav-open {
   }
 }
 
-#mysidebar {
-  padding-top: 10px;
-  background-color: transparent;
-  border-radius: 0px;
-  padding-bottom: 5px;
-
-  @include at-query($min, $screen-md){
-    padding: 0;
-  }
-}
-
 .sidenav-arrow {
   position: absolute;
   z-index: 1;
@@ -84,7 +73,6 @@ body.sidenav-open {
   transform: translateY(30px);
   width: 40px;
   height: 40px;
-  // text-align: right;
   text-align: center;
 
   @include at-query($min, $screen-md) {
@@ -93,7 +81,7 @@ body.sidenav-open {
 
   .arrow-down {
     padding: 4px;
-    margin: 13px 0 2px 7px;
+    margin: 23px 0 2px 7px;
     border-width: 2px 0 0 2px;
   }
 }
@@ -109,26 +97,6 @@ body.sidenav-open {
   }
 }
 
-.arrow-down {
-  display: inline-block;
-  border: solid $cl_blue;
-  border-width: 0 2px 2px 0;
-  padding: 2px;
-  margin-left: 4px;
-  margin-bottom: 2px;
-  transition: transform 0.2s ease, margin-bottom 0.2s ease;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-
-  &--pre {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    margin-left: 0;
-    border-width: 0 1px 1px 0;
-    margin: 0 3px;
-  }
-}
-
 .nav {
   background-color: transparent;
   padding:0px;
@@ -140,6 +108,7 @@ body.sidenav-open {
 
       .arrow-down {
         border-width: 0 2px 2px 0;
+        margin-top: 13px;
       }
     }
 
@@ -162,37 +131,34 @@ body.sidenav-open {
 
   //1st level
   > li {
-    margin-bottom: 20px;
     list-style: none;
+    border-bottom: 1px solid $cl_gray_medium;
 
-    @include at-query($min, $screen-md) {
-      margin-bottom: 15px;
-    }
+    &:first-of-type { border-bottom: none; }
 
     > a {
       display: block;
       outline: none;
       text-decoration: none;
-      // padding: 0 0 0 10px;
-      padding: 0;
-      margin-left: 10px;
       color: $cl_blue;
-      @include avenir_r(17px);
-      line-height: 20px;
 
+
+      @include avenir_r(15px);
+
+      line-height: 20px;
+      padding: 0;
       @include at-query($min, $screen-md) {
         line-height: 30px;
       }
     }
 
     > ul {
-      border-left: 1px solid $cl_green_bright;
-      margin: 7px 0 0 15px;
+      margin: 7px 0 0 0;
       padding: 0;
 
       //2nd level
       > li {
-        margin: 0 0 7px 15px;
+        margin: 0 0 7px 0;
         padding: 0;
         list-style: none;
 
@@ -201,6 +167,7 @@ body.sidenav-open {
         }
 
         > a {
+          width: 100%;
           @include avenir_r(16px);
           line-height: 20px;
 
@@ -293,29 +260,81 @@ a:not([href]) {
   color: #aaa;
 }
 
+#mysidebar,
+#version-switcher {
+  li .arrow-down,
+  li .nav-expand {
+    @include at-query($min, $screen-md) { float: right; }
+  }
+}
+
+#mysidebar {
+  padding-top: 10px;
+  background-color: transparent;
+  border-radius: 0px;
+  padding-bottom: 5px;
+
+  @include at-query($min, $screen-md) { padding: 0; }
+  @include at-query($min, $screen-lg) { width: 260px; }
+
+  li.tier-1 {
+    margin-top: 5px;
+    padding-left: 10px;
+  }
+
+  li:not(.tier-1) {
+    margin-top: 0;
+    text-transform: none;
+  }
+
+  li a { width: 100%; }
+
+  li .arrow-down,
+  li .nav-expand { margin-right: 10px; }
+
+  li .nav-expand {
+    display: inline-block;
+    margin-top: 8px;
+  }
+
+  // tier 1
+  > li {
+    padding: 10px 0;
+
+    > a {
+      @include button-text--heavy--medium;
+      line-height: 25px;
+      text-transform: uppercase;
+    }
+
+    .arrow-down { margin-top: 7px; }
+
+    // tier 2
+    li .arrow-down { margin-top: 5px; }
+  }
+}
+
 #version-switcher {
   display: none;
   position: fixed;
-  left: 0; bottom: 0;
+  left: 0;
+  bottom: 0;
   width: 100%;
   background-color: $cl_gray_light;
   border-top: 1px solid $cl_gray_medium;
 
   @include at-query($min, $screen-md) {
-    width: 220px;
+    width: 227.5px;
     display: block;
     background: #fff;
     left: auto;
   }
 
-  @include at-query($min, $screen-lg) {
-    width: 250px;
-    margin-left: 5px;
-  }
+  @include at-query($min, $screen-lg) {width: 260px; }
 
   &.open {
     border-bottom: 1px solid $cl_gray_medium;
-    
+
     @include at-query($max, $screen-md) {
       box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);
     }
@@ -327,15 +346,13 @@ a:not([href]) {
     a {
       margin: 0;
       padding: 0 25px;
-      @include button-text;
+      @include button-text--heavy--medium;
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
       border-bottom: 1px solid $cl_gray_medium;
 
-      @include at-query($min, $screen-md) {
-        padding: 0 15px 0 5px;
-      }
+      @include at-query($min, $screen-md) { padding: 0 10px; }
 
       .version-name {
         @include avenir_h(16px);
@@ -346,7 +363,6 @@ a:not([href]) {
       }
 
       .arrow-down {
-        float: right;
         margin-top: 21px;
         // swapping the usual direction of this arrow
         transform: rotate(-135deg);
@@ -394,4 +410,8 @@ a:not([href]) {
       color: $cl_green;
     }
   }
+}
+
+.nav-expand {
+  content: url(../images/nav-expand.svg);
 }
