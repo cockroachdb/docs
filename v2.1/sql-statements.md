@@ -17,6 +17,7 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
+[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
@@ -68,7 +69,7 @@ Statement | Usage
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | <span class="version-tag">New in v2.0:</span> List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
-[`SHOW TESTING_RANGES`](show-testing-ranges.html) | Show range information about a specific table or index.
+[`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction Management Statements

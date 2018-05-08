@@ -1,14 +1,14 @@
 ---
 title: EXPORT
-summary: Export tabular data from CockroachDB cluster in CSV format.
+summary: Export tabular data from a CockroachDB cluster in CSV format.
 toc: false
 ---
 
-The `EXPORT` [statement](sql-statements.html) exports tabular data and results of arbitrary `SELECT` statements to CSV files.
+<span class="version-tag">New in v2.1:</span> The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
+
+Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you don't need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 {{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature is currently under development and is slated for full release in CockroachDB 2.1. The feature flags and behavior are subject to change. {{site.data.alerts.end}}
-
-`EXPORT` uses the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql) and exports the CSV data in parallel across all nodes, making it possible to export larger data sets significantly faster. If you don't need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 <div id="toc"></div>
 
@@ -114,7 +114,7 @@ Convert SQL *NULL* values to they match the specified string.
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
-### Export using a `SELECT` statement
+### Export Using a `SELECT` Statement
 
 {% include copy-clipboard.html %}
 ~~~ sql
