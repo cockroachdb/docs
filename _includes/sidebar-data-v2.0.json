@@ -1576,12 +1576,6 @@
             ]
           }
         ]
-      },
-      {
-        "title": "Known Limitations",
-        "urls": [
-          "/${VERSION}/known-limitations.html"
-        ]
       }
     ]
   }

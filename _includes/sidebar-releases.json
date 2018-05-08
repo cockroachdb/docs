@@ -1,5 +1,6 @@
 {
   "title": "Releases",
+  "is_top_level": true,
   "items": [
     {
       "title": "v2.0.1",
@@ -47,6 +48,12 @@
       "title": "Testing Releases (Alphas & Betas)",
       "urls": [
         "/releases/#testing-releases"
+      ]
+    },
+    {
+      "title": "Known Limitations",
+      "urls": [
+        "/${VERSION}/known-limitations.html"
       ]
     }
   ]
