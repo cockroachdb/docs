@@ -43,11 +43,10 @@ For example, this is how you’d use `RETURNING` to return an auto-generated [`S
 
 ## Does CockroachDB support `JOIN`?
 
-CockroachDB has basic, non-optimized support for SQL `JOIN`, whose performance we're working to improve.
+[CockroachDB supports uncorrelated SQL joins](joins.html).  We are
+working to improve their execution performance.
 
-To learn more, see our blog posts on CockroachDB's JOINs:
-- [Modesty in Simplicity: CockroachDB's JOIN](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/).
-- [On the Way to Better SQL Joins](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
+At this time, `LATERAL` (correlated) joins are not yet supported.
 
 ## When should I use interleaved tables?
 
