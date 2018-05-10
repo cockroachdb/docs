@@ -24,7 +24,7 @@ If queries are taking longer than expected to process, there are a few things yo
 
 - [Identify and cancel long-running queries](manage-long-running-queries.html).
 
-- [Turn on cluster-wide SQL execution logs](sql-faqs.html#cluster-wide-execution-logs).
+- [Turn on SQL logging](#sql-logging).
 
 If you're still unable to determine why the query executes slowly, please [file an issue](file-an-issue.html).
 
@@ -35,6 +35,10 @@ If you receive a response of `bad connection` or `closed`, this normally indicat
 Once you find the downed node, you can check its [logs](debug-and-error-logs.html) (stored in `cockroach-data/logs` by default).
 
 Because this kind of behavior is entirely unexpected, you should [file an issue](file-an-issue.html).
+
+## SQL Logging
+
+{% include faq/sql-query-logging.md %}
 
 ## Something Else?
 
