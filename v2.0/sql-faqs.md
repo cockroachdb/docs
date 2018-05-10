@@ -18,10 +18,7 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 {% include faq/sequential-numbers.md %}
 
-~~~
-~~~
-
-## What are the differences between `UUID`, sequences and `unique_rowid()`?
+## What are the differences between `UUID`, sequences, and `unique_rowid()`?
 
 {% include faq/differences-between-numberings.md %}
 
