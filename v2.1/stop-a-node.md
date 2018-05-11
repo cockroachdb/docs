@@ -37,14 +37,10 @@ Basic terms:
 
 ## Synopsis
 
-{% include copy-clipboard.html %}
 ~~~ shell
 # Temporarily stop a node:
 $ cockroach quit <flags>
-~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
 # View help:
 $ cockroach quit --help
 ~~~
@@ -104,7 +100,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-<div class="filter-content" markdown="1" data-scope="secure">
+<section class="filter-content" markdown="1" data-scope="secure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
 2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
@@ -115,9 +111,9 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     ~~~ shell
     $ cockroach quit --certs-dir=certs --host=<address of node to stop>
     ~~~
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="insecure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
 2. Run the `cockroach quit` command without the `--decommission` flag:
@@ -126,7 +122,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     ~~~ shell
     $ cockroach quit --insecure --host=<address of node to stop>
     ~~~
-</div>
+</section>
 
 ## See Also
 
