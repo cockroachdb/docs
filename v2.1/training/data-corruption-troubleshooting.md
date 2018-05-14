@@ -75,16 +75,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Before you can manually corrupt data, you need to import enough data so that the cluster creates persistent `.sst` files.
 
-1. In the same terminal, enable the "experimental" [`IMPORT`](../import.html) feature:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach sql \
-    --insecure \
-    --execute="SET CLUSTER SETTING experimental.importcsv.enabled = true;"
-    ~~~
-
-2. Create a database into which you'll import a new table:
+1. Create a database into which you'll import a new table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -93,14 +84,14 @@ Before you can manually corrupt data, you need to import enough data so that the
     --execute="CREATE DATABASE import_test;"
     ~~~
 
-3. Run the [`IMPORT`](../import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
+2. Run the [`IMPORT`](../import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --database="import_test" \
-    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH temp = 'nodelocal:///tmp', delimiter = '|';"
+    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
     ~~~
 
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
