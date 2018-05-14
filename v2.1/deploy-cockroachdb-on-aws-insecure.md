@@ -65,7 +65,7 @@ You can create these rules using [Security Groups' Inbound Rules](http://docs.aw
 
 ## Step 2. Create instances
 
-[Create an instance](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html) for each node you plan to have in your cluster.
+[Create an instance](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate instance for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
@@ -108,25 +108,25 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include prod_deployment/insecure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 8. Run a sample workload
 
 {% include prod_deployment/insecure-test-load-balancing.md %}
 
-## Step 9. Use the cluster
+## Step 9. Set up monitoring and alerting
+
+{% include prod_deployment/monitor-cluster.md %}
+
+## Step 10. Scale the cluster
+
+{% include prod_deployment/insecure-scale-cluster.md %}
+
+## Step 11. Use the cluster
 
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
-
-## Step 10. Set up monitoring and alerting
-
-{% include prod_deployment/monitor-cluster.md %}
-
-## Step 11. Scale the cluster
-
-{% include prod_deployment/insecure-scale-cluster.md %}
 
 ## See Also
 

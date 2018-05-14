@@ -22,12 +22,15 @@ For each additional node you want to add to the cluster, complete the following 
 4. Run the [`cockroach start`](start-a-node.html) command just like you did for the initial nodes:
 
     {% include copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
     --host=<node4 address> \
+    --locality=<key-value pairs> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
     --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
-    --cache=25% \
-    --max-sql-memory=25% \
     --background
     ~~~
+
+5. Update your load balancer to recognize the new node.

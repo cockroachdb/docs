@@ -37,7 +37,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#cluster-topology).
 
-## Step 2. Sychronize clocks
+## Step 2. Synchronize clocks
 
 {% include prod_deployment/synchronize-clocks.md %}
 
@@ -89,21 +89,17 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 9. Test load balancing
-
-{% include prod_deployment/secure-test-load-balancing.md %}
-
-## Step 10. Use the database
-
-{% include prod_deployment/use-cluster.md %}
-
-## Step 11. Set up monitoring and alerting
+## Step 9. Set up monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Step 12. Scale the cluster
+## Step 10. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
+
+## Step 11. Use the database
+
+{% include prod_deployment/use-cluster.md %}
 
 ## See Also
 

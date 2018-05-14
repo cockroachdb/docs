@@ -68,7 +68,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 ## Step 2. Create VMs
 
-[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster.
+[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
@@ -120,21 +120,21 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 9. Test load balancing
+## Step 9. Run a sample workload
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 10. Use the database
-
-{% include prod_deployment/use-cluster.md %}
-
-## Step 11. Set up monitoring and alerting
+## Step 10. Set up monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Step 12. Scale the cluster
+## Step 11. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
+
+## Step 12. Use the database
+
+{% include prod_deployment/use-cluster.md %}
 
 ## See Also
 
