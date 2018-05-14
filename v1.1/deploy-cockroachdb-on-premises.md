@@ -126,21 +126,21 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 6. Repeat these steps for each additional instance of HAProxy you want to run.
 
-## Step 7. Test load balancing
+## Step 7. Run a sample workload
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 8. Use the cluster
-
-{% include prod_deployment/use-cluster.md %}
-
-## Step 9. Set up monitoring and alerting
+## Step 8. Set up monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Step 10. Scale the cluster
+## Step 9. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
+
+## Step 10. Use the cluster
+
+{% include prod_deployment/use-cluster.md %}
 
 ## See Also
 

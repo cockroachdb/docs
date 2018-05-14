@@ -29,7 +29,7 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Step 1. Create Droplets
 
-[Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster.
+[Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate droplet for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
@@ -85,25 +85,25 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 {% include prod_deployment/insecure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 8. Run a sample workload
 
 {% include prod_deployment/insecure-test-load-balancing.md %}
 
-## Step 9. Use the cluster
+## Step 9. Set up monitoring and alerting
+
+{% include prod_deployment/monitor-cluster.md %}
+
+## Step 10. Scale the cluster
+
+{% include prod_deployment/insecure-scale-cluster.md %}
+
+## Step 11. Use the cluster
 
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
-
-## Step 10. Set up monitoring and alerting
-
-{% include prod_deployment/monitor-cluster.md %}
-
-## Step 11. Scale the cluster
-
-{% include prod_deployment/insecure-scale-cluster.md %}
 
 ## See Also
 

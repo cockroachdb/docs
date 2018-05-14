@@ -56,7 +56,7 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 ## Step 2. Create instances
 
-[Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster.
+[Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate instance for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
 
@@ -111,21 +111,21 @@ To use GCE's TCP Proxy Load Balancing service:
 
 {% include prod_deployment/secure-test-cluster.md %}
 
-## Step 9. Test load balancing
+## Step 9. Run a sample workload
 
 {% include prod_deployment/secure-test-load-balancing.md %}
 
-## Step 10. Use the database
-
-{% include prod_deployment/use-cluster.md %}
-
-## Step 11. Set up monitoring and alerting
+## Step 10. Set up monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Step 12. Scale the cluster
+## Step 11. Scale the cluster
 
 {% include prod_deployment/secure-scale-cluster.md %}
+
+## Step 12. Use the database
+
+{% include prod_deployment/use-cluster.md %}
 
 ## See Also
 
