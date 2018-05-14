@@ -692,6 +692,21 @@ body.sidenav-open .col-content {
               @media screen and (min-width: 992px) {
                 .nav > li > ul > li > ul > li > a {
                   font-size: 14px; } }
+            .nav > li > ul > li > ul > li > ul {
+              border-left: 1px solid #69CC00;
+              padding-left: 15px; }
+              .nav > li > ul > li > ul > li > ul > li {
+                list-style: none; }
+                .nav > li > ul > li > ul > li > ul > li > a {
+                  font-family: 'AvenirLTStd-Roman', serif;
+                  font-size: 16px;
+                  font-weight: normal;
+                  -webkit-font-smoothing: antialiased;
+                  -moz-osx-font-smoothing: grayscale;
+                  line-height: 20px; }
+                  @media screen and (min-width: 992px) {
+                    .nav > li > ul > li > ul > li > ul > li > a {
+                      font-size: 14px; } }
   .nav a {
     background-color: transparent;
     display: inline-block; }
@@ -757,7 +772,8 @@ a:not([href]) {
     margin-right: 10px; }
   #mysidebar li .nav-expand {
     display: inline-block;
-    margin-top: 8px; }
+    margin-top: 8px;
+    float: right; }
   #mysidebar > li {
     padding: 10px 0; }
     #mysidebar > li > a {

@@ -195,6 +195,25 @@ body.sidenav-open {
                 font-size: 14px;
               }
             }
+
+            > ul {
+              border-left: 1px solid $cl_green_bright;
+              padding-left: 15px;
+
+              //4th level
+              > li {
+                list-style: none;
+
+                > a {
+                  @include avenir_r(16px);
+                  line-height: 20px;
+
+                  @include at-query($min, $screen-md) {
+                    font-size: 14px;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -295,6 +314,7 @@ a:not([href]) {
   li .nav-expand {
     display: inline-block;
     margin-top: 8px;
+    float: right;
   }
 
   // tier 1
