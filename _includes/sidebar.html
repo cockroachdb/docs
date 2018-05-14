@@ -89,6 +89,31 @@
     </li>
 
     <script>
+      $(function() {
+        // var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
+        // var index = client.initIndex('cockroachlabs');
+        // var currentVersion = getCookie('currentVersion');
+        //
+        // $('#search-input').autocomplete({ minLength: 3, hint: false, debug: true }, [
+        //   {
+        //     source: $.fn.autocomplete.sources.hits(index, {
+        //       hitsPerPage: 10,
+        //       facetFilters: ['version:' + currentVersion]
+        //     }),
+        //     displayKey: '',
+        //     templates: {
+        //       suggestion: function(suggestion) {
+        //         return '<span>' + suggestion.hierarchy.lvl0 + '</span>';
+        //       }
+        //     }
+        //   }
+        // ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+        //   location.href = suggestion.url;
+        // });
+      });
+    </script>
+
+    <script>
       (function () {
         var baseUrl = "{{ site.baseurl }}";
 
