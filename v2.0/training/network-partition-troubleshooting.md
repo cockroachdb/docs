@@ -66,12 +66,12 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker network disconnect cockroachdbtraining_shared roach-4
+    $ docker network disconnect cockroachdb-training-shared roach-4
     ~~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker network disconnect cockroachdbtraining_shared roach-5
+    $ docker network disconnect cockroachdb-training-shared roach-5
     ~~~~
 
 ## Step 3. Troubleshoot the problem
@@ -155,12 +155,12 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker network connect cockroachdbtraining_shared roach-4
+    $ docker network connect cockroachdb-training-shared roach-4
     ~~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker network connect cockroachdbtraining_shared roach-5
+    $ docker network connect cockroachdb-training-shared roach-5
     ~~~~
 
 2. After a few seconds, you should see the nodes go back to healthy again.
@@ -171,22 +171,11 @@ You won't be using this Docker cluster in any other labs, so take a moment to cl
 
 1. In the terminal where you ran `docker-compose up`, press **CTRL-C** to stop all the CockroachDB nodes.
 
-2. Delete the Docker containers:
+2. Delete all Docker resources created by the tutorial:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker rm roach-0 roach-1 roach-2 roach-3 roach-4 roach-5
-    ~~~
-
-3. Delete the Docker networks:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker network rm \
-    cockroachdbtraining_shared \
-    cockroachdbtraining_dc0 \
-    cockroachdbtraining_dc1 \
-    cockroachdbtraining_dc2
+    $ docker-compose down
     ~~~
 
 ## What's Next?

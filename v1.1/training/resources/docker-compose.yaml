@@ -1,13 +1,17 @@
-version: '2.1'
+version: '3.5'
 
 networks:
-  shared:
+  cockroachdb-training-shared:
+    name: cockroachdb-training-shared
     driver: bridge
-  dc0:
+  cockroachdb-training-dc0:
+    name: cockroachdb-training-dc0
     driver: bridge
-  dc1:
+  cockroachdb-training-dc1:
+    name: cockroachdb-training-dc1
     driver: bridge
-  dc2:
+  cockroachdb-training-dc2:
+    name: cockroachdb-training-dc2
     driver: bridge
 
 services:
@@ -17,10 +21,10 @@ services:
   roach-0:
     container_name: roach-0
     hostname: roach-0
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc0
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc0
     command: start --logtostderr --insecure --locality=datacenter=dc-0 --join=roach-0,roach-1,roach-2
     ports:
       - 8080:8080
@@ -29,10 +33,10 @@ services:
   roach-1:
     container_name: roach-1
     hostname: roach-1
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc0
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc0
     command: start --logtostderr --insecure --locality=datacenter=dc-0 --join=roach-0,roach-1,roach-2
     ports:
       - 8081:8080
@@ -43,10 +47,10 @@ services:
   roach-2:
     container_name: roach-2
     hostname: roach-2
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc1
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc1
     command: start --logtostderr --insecure --locality=datacenter=dc-1 --join=roach-0,roach-1,roach-2
     ports:
       - 8082:8080
@@ -55,10 +59,10 @@ services:
   roach-3:
     container_name: roach-3
     hostname: roach-3
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc1
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc1
     command: start --logtostderr --insecure --locality=datacenter=dc-1 --join=roach-0,roach-1,roach-2
     ports:
       - 8083:8080
@@ -69,10 +73,10 @@ services:
   roach-4:
     container_name: roach-4
     hostname: roach-4
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc2
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc2
     command: start --logtostderr --insecure --locality=datacenter=dc-2 --join=roach-0,roach-1,roach-2
     ports:
       - 8084:8080
@@ -81,10 +85,10 @@ services:
   roach-5:
     container_name: roach-5
     hostname: roach-5
-    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.5}
+    image: cockroachdb/cockroach:${COCKROACH_VERSION:-v1.1.8}
     networks:
-      - shared
-      - dc2
+      - cockroachdb-training-shared
+      - cockroachdb-training-dc2
     command: start --logtostderr --insecure --locality=datacenter=dc-2 --join=roach-0,roach-1,roach-2
     ports:
       - 8085:8080
