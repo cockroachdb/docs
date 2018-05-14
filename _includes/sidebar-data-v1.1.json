@@ -1,6 +1,7 @@
 [
   {
     "title": "Get Started",
+    "is_top_level": true,
     "items": [
       {
         "title": "Install CockroachDB",
@@ -164,6 +165,7 @@
   },
   {
     "title": "Develop",
+    "is_top_level": true,
     "items": [
       {
         "title": "Install Client Drivers",
@@ -865,6 +867,7 @@
   },
   {
     "title": "Deploy",
+    "is_top_level": true,
     "items": [
       {
         "title": "Production Checklist",
@@ -1090,6 +1093,7 @@
   },
   {
     "title": "Maintain",
+    "is_top_level": true,
     "items": [
       {
         "title": "Upgrade to CockroachDB v1.1",
@@ -1179,6 +1183,7 @@
   },
   {
     "title": "Troubleshoot",
+    "is_top_level": true,
     "items": [
       {
         "title": "Overview",
@@ -1232,6 +1237,7 @@
   },
   {
     "title": "Architecture",
+    "is_top_level": true,
     "items": [
       {
         "title": "Overview",
@@ -1273,6 +1279,7 @@
   },
   {
     "title": "Contribute",
+    "is_top_level": true,
     "items": [
       {
         "title": "Contribute to CockroachDB",
@@ -1291,6 +1298,7 @@
   {% include sidebar-releases.json %},
   {
     "title": "FAQs",
+    "is_top_level": true,
     "items": [
       {
         "title": "Product FAQs",
@@ -1373,12 +1381,6 @@
               "/${VERSION}/go-implementation.html"
             ]
           }
-        ]
-      },
-      {
-        "title": "Known Limitations",
-        "urls": [
-          "/${VERSION}/known-limitations.html"
         ]
       }
     ]

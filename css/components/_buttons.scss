@@ -77,6 +77,27 @@
 	}
 }
 
+.arrow-down {
+  display: inline-block;
+
+  border: solid $cl_blue;
+  border-width: 0 2px 2px 0;
+  padding: 2px;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease, margin-bottom 0.2s ease;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+
+  &--pre {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin-left: 0;
+    border-width: 0 1px 1px 0;
+    margin: 0 3px;
+  }
+}
+
 .arrow-up {
   display: inline-block;
   border: solid $cl_blue;
