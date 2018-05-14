@@ -73,7 +73,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
-			<td>To use tab-delimited values: <code>WITH temp = '...', delimiter = e'\t'</code></td>
+			<td>To use tab-delimited values: <code>WITH delimiter = e'\t'</code></td>
 		</tr>
 	</tbody>
 </table>
@@ -98,7 +98,7 @@ Convert SQL *NULL* values to they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
-			<td>To use empty columns as <em>NULL</em>: <code>WITH temp = '...', nullas = ''</code></td>
+			<td>To use empty columns as <em>NULL</em>: <code>WITH nullas = ''</code></td>
 		</tr>
 	</tbody>
 </table>
