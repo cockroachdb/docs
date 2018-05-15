@@ -21,6 +21,7 @@ Area | Description
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Jobs Details](admin-ui-jobs-page.html) | View details of the jobs running in the cluster.
+[Custom Chart Debug Page](admin-ui-custom-chart-debug-page.html) | Create a custom dashboard choosing from over 200 available metrics.
 
 The Admin UI also provides details about the way data is **Distributed**, the state of specific **Queues**, and metrics for **Slow Queries**, but these details are largely internal and intended for use by CockroachDB developers.
 

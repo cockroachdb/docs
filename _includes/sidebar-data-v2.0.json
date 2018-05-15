@@ -1227,6 +1227,12 @@
             "urls": [
               "/${VERSION}/admin-ui-jobs-page.html"
             ]
+          },
+          {
+            "title": "Custom Chart Debug Page",
+            "urls": [
+              "/${VERSION}/admin-ui-custom-chart-debug-page.html"
+            ]
           }
         ]
       },
