@@ -119,7 +119,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
   	`timout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
   	`bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is also used for inter-node communication.
   	`balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
-  	`server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--host` flag on node startup. `check` specifies that HAProxy will confirm that a connection can be established before sending data to a node. 
+  	`server` | For each node in the cluster, this field specifies the interface that the node listens on, i.e., the address passed in the `--host` flag on node startup. `check` specifies that HAProxy will confirm that a connection can be established before sending data to a node.
 
   	{{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
@@ -132,21 +132,17 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 7. Repeat these steps for each additional instance of HAProxy you want to run.
 
-## Step 6. Test load balancing
-
-{% include prod_deployment/insecure-test-load-balancing.md %}
-
-## Step 7. Use the cluster
-
-{% include prod_deployment/use-cluster.md %}
-
-## Step 8. Set up monitoring and alerting
+## Step 6. Set up monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Step 9. Scale the cluster
+## Step 7. Scale the cluster
 
 {% include prod_deployment/insecure-scale-cluster.md %}
+
+## Step 8. Use the cluster
+
+{% include prod_deployment/use-cluster.md %}
 
 ## See Also
 

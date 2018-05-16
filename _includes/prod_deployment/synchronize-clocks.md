@@ -78,14 +78,14 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 Compute Engine instances are preconfigured to use [NTP](http://www.ntp.org/), which should keep offsets in the single-digit milliseconds. However, Google can’t predict how external NTP services, such as `pool.ntp.org`, will handle the leap second. Therefore, you should:
 
 - [Configure each GCE instances to use Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances).
-- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, [configure the non-GCE machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-sychronize-clocks).
+- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, [configure the non-GCE machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks).
 
 {% elsif page.title contains "AWS" %}
 
 Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html), which uses a fleet of satellite-connected and atomic reference clocks in each AWS Region to deliver accurate current time readings. The service also smears the leap second.
 
 - If you plan to run your entire cluster on AWS, [configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service).
-- However, if you plan to run a hybrid cluster across AWS and other cloud providers or environments, [configure all machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-sychronize-clocks), which is comparably accurate and also handles <a href="https://developers.google.com/time/smear">"smearing" the leap second</a>.
+- However, if you plan to run a hybrid cluster across AWS and other cloud providers or environments, [configure all machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks), which is comparably accurate and also handles <a href="https://developers.google.com/time/smear">"smearing" the leap second</a>.
 
 {% elsif page.title contains "Azure" %}
 

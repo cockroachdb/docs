@@ -108,25 +108,21 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include prod_deployment/insecure-test-cluster.md %}
 
-## Step 8. Test load balancing
+## Step 8. Set up monitoring and alerting
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include prod_deployment/monitor-cluster.md %}
 
-## Step 9. Use the cluster
+## Step 9. Scale the cluster
+
+{% include prod_deployment/insecure-scale-cluster.md %}
+
+## Step 10. Use the cluster
 
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
-
-## Step 10. Set up monitoring and alerting
-
-{% include prod_deployment/monitor-cluster.md %}
-
-## Step 11. Scale the cluster
-
-{% include prod_deployment/insecure-scale-cluster.md %}
 
 ## See Also
 
