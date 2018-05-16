@@ -518,6 +518,12 @@
             ]
           },
           {
+            "title": "<code>AS OF SYSTEM TIME</code>",
+            "urls": [
+              "/${VERSION}/as-of-system-time.html"
+            ]
+          },
+          {
             "title": "<code>NULL</code> Handling",
             "urls": [
               "/${VERSION}/null-handling.html"
