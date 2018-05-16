@@ -77,6 +77,87 @@ For reference, CockroachDB uses these defaults:
 - `[port]`: **26257**
 - `[user]`: **root**
 
+
+## Import from MySQL Dump
+
+{% include experimental-warning.md %}
+
+<span class="version-tag">New in v2.1:</span> This section has instructions for getting data from MySQL dump files into CockroachDB using [`IMPORT`](import.html). It uses the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
+
+- [Step 1. Dump the MySQL database](#step-1-dump-the-mysql-database)
+- [Step 2. `IMPORT` the dump files](#step-2-import-the-dump-files)
+
+### Step 1. Dump the MySQL database
+
+Make sure your MySQL user has permission to execute [`SELECT INTO OUTFILE`](https://dev.mysql.com/doc/refman/8.0/en/select.html), as required by [`mysqldump --tab`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html). Then issue a command like the following (modified as needed for your environment):
+
+{% include copy-clipboard.html %}
+~~~ sh
+$ mysqldump -uroot --tab=/tmp employees --fields-enclosed-by='"' --fields-escaped-by='\'
+~~~
+
+Always specify an escape character when running `mysqldump --tab`. If your data includes any of the special characters, the dumped data cannot be decoded correctly if they are not escaped. We also recommend specifying an enclose character.
+
+
+If you get the following error, change the value of MySQL's [`secure_file_priv` system variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_secure_file_priv):
+
+~~~
+mysqldump: Got error: 1290: The MySQL server is running with the --secure-file-priv option so it cannot execute this statement when executing 'SELECT INTO OUTFILE'
+~~~
+
+### Step 2. `IMPORT` the dump files
+
+To import the MySQL dump file for a table, issue an `IMPORT` statement like the one shown below. You must use the same settings for field enclosure and escape characters that you provided to `mysqldump --tab` in the previous step.
+
+You will need to look at the dump's `foo.sql` file that corresponds to the `foo.txt` data file and translate the MySQL `CREATE TABLE` statement there into something CockroachDB understands.
+
+This example uses S3. For a complete list of the types of cloud storage `IMPORT` can pull from, see [Import File URLs](import.html#import-file-urls).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees (
+    emp_no INT PRIMARY KEY,
+    birth_date DATE NOT NULL,
+    first_name STRING NOT NULL,
+    last_name STRING NOT NULL,
+    gender STRING NOT NULL,
+    hire_date DATE NOT NULL
+  )
+  MYSQLOUTFILE DATA ('s3://nate-external-storage/employees.txt?AWS_ACCESS_KEY_ID=ACCESSKEY&AWS_SECRET_ACCESS_KEY=SECRET')
+~~~
+
+Success will look like:
+
+~~~
++--------------------+-----------+--------------------+------+---------------+----------------+-------+
+|       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
++--------------------+-----------+--------------------+------+---------------+----------------+-------+
+| 352938237301293057 | succeeded |                  1 |    0 |             0 |              0 |     0 |
++--------------------+-----------+--------------------+------+---------------+----------------+-------+
+(1 row)
+~~~
+
+To load the data from local files, you have 2 options:
+
+- Start up a [local HTTP server](create-a-file-server.html#using-caddy-as-a-file-server) to serve the files, and point `MYSQLOUTFILE DATA` at the server's URL. This is the recommended option.
+
+- Create an `extern` subdirectory on each node and copy the MySQL dump files there. Note that you will need to copy the dump files onto every node, since CockroachDB may execute the `IMPORT` statement on any of the nodes.
+
+If you decide to load the data from the `extern` subdirectory, you will need to use [`IMPORT`'s `nodelocal` URL scheme](import.html#import-file-urls) as shown below.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees (
+   emp_no INT PRIMARY KEY,
+   birth_date DATE NOT NULL,
+   first_name STRING NOT NULL,
+   last_name STRING NOT NULL,
+   gender STRING NOT NULL,
+   hire_date DATE NOT NULL
+  )
+  MYSQLOUTFILE DATA ('nodelocal:///employees.txt') WITH fields_enclosed_by = '"', fields_escaped_by = '\';
+~~~
+
 ## See Also
 
 - [SQL Dump (Export)](sql-dump.html)
@@ -84,3 +165,4 @@ For reference, CockroachDB uses these defaults:
 - [Restore Data](restore-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
+- [`IMPORT`](import.html)
