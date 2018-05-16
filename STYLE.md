@@ -35,6 +35,8 @@ Included in this guide:
 
 CockroachDB docs should be helpful, humble, positive, and friendly. To achieve this, all docs should be factual and free from hyperbolic language.
 
+To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
+
 Other general guidance about language and tone:
 
 - For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)." These docs should be straightforward and conventional.
@@ -198,7 +200,7 @@ Our docs use three classes of highlighted text:
 - [Notes](#notes)
 - [Warnings](#warnings)
 
-The text of notes, warnings, and tips must be formatted in HTML instead of Markdown/Kramdown.
+The text of notes, warnings, and tips must be formatted in HTML instead of Markdown.
 
 #### Tips
 
@@ -216,7 +218,7 @@ To insert a tip, use the following code:
 
 Use notes to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
 
-For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point misguided users to the right place.
+For example, you might use a note to let users know that the `DELETE` statement only deletes rows and that to delete columns you must use `ALTER TABLE`. This helps clarify `DELETE`'s purpose and point users to the right place.
 
 To insert a note, use the following code:
 
@@ -265,7 +267,7 @@ SQL code samples are broken into two sections: commands and responses.
 
 **Copy to Clipboard**
 
-Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{include copy-clipboard.html}` on the line directly preceding the code block, for example:
+Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include copy-clipboard.html %}` on the line directly preceding the code block, for example:
 
 ```
 {% include copy-clipboard.html %}
