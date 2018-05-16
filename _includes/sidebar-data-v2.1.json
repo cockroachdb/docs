@@ -330,6 +330,12 @@
                 "urls": [
                   "/${VERSION}/roles.html"
                 ]
+              },
+              {
+                "title": "Encryption At Rest",
+                "urls": [
+                  "/${VERSION}/encryption.html"
+                ]
               }
             ]
           },
