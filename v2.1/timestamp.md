@@ -4,25 +4,25 @@ summary: The TIMESTAMP data type stores a date and time pair in UTC, whereas TIM
 toc: false
 ---
 
-The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC.
+The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC, whereas `TIMESTAMPTZ` stores a date and time pair with a time zone offset from UTC.
 
 <div id="toc"></div>
 
-## Time Zone Details
+## Variants
 
 `TIMESTAMP` has two variants:
 
-- `TIMESTAMP WITH TIME ZONE` converts `TIMESTAMP` values from UTC to the client's session time zone (unless another time zone is specified for the value). However, it is conceptually important to note that `TIMESTAMP WITH TIME ZONE` *does not* store any time zone data.
+- `TIMESTAMP` presents all `TIMESTAMP` values in UTC.
 
-   {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default `TIMESTAMP WITH TIME ZONE` values display in UTC.{{site.data.alerts.end}}
+- `TIMESTAMPTZ` converts `TIMESTAMP` values from UTC to the client's session time zone (unless another time zone is specified for the value). However, it is conceptually important to note that `TIMESTAMPTZ` **does not** store any time zone data.
 
-- `TIMESTAMP WITHOUT TIME ZONE` presents all `TIMESTAMP` values in UTC.
+    {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default <code>TIMESTAMPTZ</code> values display in UTC.{{site.data.alerts.end}}
 
-The difference between these two types is that `TIMESTAMP WITH TIME ZONE` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMP WITH TIME ZONE` values.
+The difference between these two variants is that `TIMESTAMPTZ` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMPTZ` values.
 
-### Best Practices
+## Best Practices
 
-We recommend always using the `...WITH TIME ZONE` variant because the `...WITHOUT TIME ZONE` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid setting a session time for your database.
+We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid setting a session time for your database.
 
 ## Aliases
 
@@ -53,7 +53,7 @@ ISO 8601 | `TIMESTAMP '2016-01-25T10:10:10.555555'`
 To express a `TIMESTAMPTZ` value (with time zone offset from UTC), use
 the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
 
-When it is unambiguous, a simple unannotated string literal can also
+When it is unambiguous, a simple unannotated [string literal](sql-constants.html#string-literals) can also
 be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
 Note that the fractional portion is optional and is rounded to
@@ -62,7 +62,7 @@ PostgreSQL wire protocol.
 
 ## Size
 
-A `TIMESTAMP` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
+A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 
