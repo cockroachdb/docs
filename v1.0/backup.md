@@ -89,7 +89,7 @@ Only the `root` user can run `BACKUP`.
 | `table_pattern` | The table or [view](views.html) you want to back up. |
 | `name` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).|
 | `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
-| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](timestamp.html). However, the `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 24 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-format)). |
+| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). However, the `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 24 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-format)). |
 | `INCREMENTAL FROM full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
 | `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
 
@@ -101,7 +101,7 @@ The path to each backup must be unique. The URL for your backup's destination/lo
 
 ## Examples
 
-Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using `AS OF SYSTEM TIME`.
+Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 ### Backup a Single Table or View
 

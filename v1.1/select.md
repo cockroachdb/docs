@@ -29,7 +29,7 @@ Parameter | Description
 `AS col_label` | In the retrieved table, change the column label to `col_label`.
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from
 `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
-`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](timestamp.html).<br/><br/>For more information, see [this example](#select-historical-data-time-travel) or our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).<br /><br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Also, time-travel queries are not supported in transactions or (most) subqueries. For details, see [the example below](#select-historical-data-time-travel).
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](as-of-system-time.html). For more information, see [this example](#select-historical-data-time-travel).<br /><br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Also, time-travel queries are not supported in transactions or (most) subqueries. For details, see [the example below](#select-historical-data-time-travel).
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).
 `GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
@@ -587,7 +587,7 @@ WHERE name = 'Edna Barath';
 
 ### Select Historical Data (Time-Travel)
 
-CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME`. For more information, see our blog post [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
+CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME` with various [supported formats](as-of-system-time.html).
 
 {{site.data.alerts.callout_info}}Historical data is available only within the garbage collection window, which is determined by the <code>ttlseconds</code> field in the <a href="configure-replication-zones.html">replication zone configuration</a>.{{site.data.alerts.end}}
 

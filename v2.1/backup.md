@@ -77,7 +77,7 @@ The `BACKUP` process minimizes its impact to the cluster's performance by distri
 For best performance, we also recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
 ~~~ sql
-> BACKUP...AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
+> BACKUP...AS OF SYSTEM TIME '-10s';
 ~~~
 
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
@@ -113,7 +113,7 @@ Only the `root` user can run `BACKUP`.
 | `table_pattern` | The table or [view](views.html) you want to back up. |
 | `name` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).|
 | `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
-| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](timestamp.html). However, the `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-format)). |
+| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). However, the `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-format)). |
 | `WITH revision_history` | <span class="version-tag">New in v2.0:</span> Create a backup with full [revision history](backup.html#backups-with-revision-history-new-in-v2-0) that records every change made to the cluster within the garbage collection period leading up to and including the given timestamp. |
 | `INCREMENTAL FROM full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups). |
 | `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
@@ -126,14 +126,14 @@ The path to each backup must be unique. The URL for your backup's destination/lo
 
 ## Examples
 
-Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using `AS OF SYSTEM TIME`.
+Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 ### Backup a Single Table or View
 
 ~~~ sql
 > BACKUP bank.customers \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-03-26 23:59:00';
+AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup Multiple Tables
@@ -141,7 +141,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-03-26 23:59:00';
+AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup an Entire Database
@@ -149,7 +149,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-03-26 23:59:00';
+AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup with Revision History<span class="version-tag">New in v2.0</span>
@@ -157,7 +157,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-03-26 23:59:00' WITH revision_history;
+AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
 ### Create Incremental Backups
@@ -167,7 +167,7 @@ Incremental backups must be based off of full backups you've already created.
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
-AS OF SYSTEM TIME '2017-03-28 23:59:00' \
+AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly';
 ~~~
 
@@ -176,7 +176,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
-AS OF SYSTEM TIME '2017-03-28 23:59:00' \
+AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
