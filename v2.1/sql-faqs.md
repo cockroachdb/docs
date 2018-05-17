@@ -39,6 +39,30 @@ For example, this is how you’d use `RETURNING` to return an auto-generated [`S
 > INSERT INTO users (name) VALUES ('mike') RETURNING id;
 ~~~
 
+## What is transaction contention?
+
+Transaction contention occurs when transactions issued from multiple
+clients at the same time operate on the same data.
+
+This can cause transactions to wait on each other and decrease
+performance, like when many people try to check out with the same
+cashier at a store.
+
+For more information about contention, see [Understanding and Avoiding
+Transaction
+Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+## Why can I not get more operations per second by increasing the number of nodes?
+
+If queries operate on different data, then increasing the number
+of nodes should improve the overall throughput (transactions/second or QPS).
+
+However, if your queries operate on the same data, you may be
+observing transaction contention. See [Understanding and Avoiding
+Transaction
+Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+for more details.
+
 ## Does CockroachDB support `JOIN`?
 
 [CockroachDB supports uncorrelated SQL joins](joins.html).  We are
