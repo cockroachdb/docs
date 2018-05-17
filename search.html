@@ -25,6 +25,8 @@ var QueryString = function () {
 			query_string[pair[0]].push(decodeURIComponent(pair[1]));
 		}
 	}
+
+	query_string.q = query_string.q.replace(/\+/g, ' ');
 	return query_string;
 }();
 
