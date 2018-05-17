@@ -29,7 +29,7 @@ Parameter | Description
 `AS col_label` | In the retrieved table, change the column label to `col_label`.
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from
 `index_name` | The name of the index you want to use, also known as "[index hints](#force-index-selection-index-hints)." Find index names using [`SHOW INDEX`](show-index.html). <br/><br/>Forced index selection overrides [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
-`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed as of [`timestamp`](as-of-system-time.html). For more information, see [this example](#select-historical-data-time-travel).<br /><br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Also, time-travel queries are not supported in transactions or (most) subqueries. For details, see [the example below](#select-historical-data-time-travel).
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`).
 `GROUP BY expr_list` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings in `expr_list`.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be an expression that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
@@ -587,89 +587,11 @@ WHERE name = 'Edna Barath';
 
 ### Select Historical Data (Time-Travel)
 
-CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME` with various [supported formats](as-of-system-time.html).
-
-{{site.data.alerts.callout_info}}Historical data is available only within the garbage collection window, which is determined by the <code>ttlseconds</code> field in the <a href="configure-replication-zones.html">replication zone configuration</a>.{{site.data.alerts.end}}
-
-Imagine this example represents the database's current data.
-
-~~~ sql
-> SELECT name, balance
-FROM accounts
-WHERE name = 'Edna Barath';
-~~~
-~~~
-+-------------+---------+
-|    name     | balance |
-+-------------+---------+
-| Edna Barath |     750 |
-| Edna Barath |    2200 |
-+-------------+---------+
-~~~
-
-We could instead retrieve the values as they were on October 3, 2016 at 12:45 UTC.
-
-~~~ sql
-> SELECT name, balance
-FROM accounts
-AS OF SYSTEM TIME '2016-10-03 12:45:00'
-WHERE name = 'Edna Barath';
-~~~
-~~~
-+-------------+---------+
-|    name     | balance |
-+-------------+---------+
-| Edna Barath |     450 |
-| Edna Barath |    2000 |
-+-------------+---------+
-~~~
-
-Note that time-travel queries are not supported in the following scenarios:
-
-- In [transactions](transactions.html)
-- In subqueries, unless the parameter is also specified at the top-level of the query with the same timestamp.
-
-For example, the following query works:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
-    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
-      WHERE name ~ 'Vain' LIMIT 1);
-~~~
-
-~~~
-+----------------------------------+
-|               name               |
-+----------------------------------+
-| Vainglorious K. Snerptwiddle III |
-+----------------------------------+
-(1 row)
-~~~
-
-These queries do not:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT name FROM customers
-    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
-      WHERE name ~ 'Vain' LIMIT 1);
-~~~
-
-~~~
-ERROR:  AS OF SYSTEM TIME must be provided on a top-level statement
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:30:00'
-    WHERE name = (SELECT name FROM customers AS OF SYSTEM TIME '2018-04-05 16:00:00'
-      WHERE name ~ 'Vain' LIMIT 1);
-~~~
-
-~~~
-ERROR:  cannot specify AS OF SYSTEM TIME with different timestamps
-~~~
+CockroachDB lets you find data as it was stored at a given point in
+time using `AS OF SYSTEM TIME` with various [supported
+formats](as-of-system-time.html). This can be also advantageous for
+performance. For more details, see [`AS OF SYSTEM
+TIME`](as-of-system-time.html).
 
 ## See Also
 
