@@ -11,7 +11,7 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-you
   <a href="deploy-cockroachdb-on-digital-ocean-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
-This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
+This page shows you how to deploy a secure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
@@ -79,7 +79,25 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 6. Start nodes
 
+You can start the nodes manually or automate the process using [systemd](https://www.freedesktop.org/wiki/Software/systemd/).
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="manual">Manual</button>
+  <button style="width: 15%" class="filter-button" data-scope="systemd">systemd</button>
+</div>
+<p></p>
+
+<section class="filter-content" markdown="1" data-scope="manual">
+
 {% include prod_deployment/secure-start-nodes.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="systemd">
+
+{% include prod_deployment/systemd-secure-start-nodes.md %}
+
+</section>
 
 ## Step 7. Initialize the cluster
 
