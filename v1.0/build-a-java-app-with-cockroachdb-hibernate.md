@@ -42,7 +42,7 @@ For other ways to install Gradle, see the [official documentation](https://gradl
 
 ## Step 5. Run the Java code
 
-[Downlod and extract this tarball](https://github.com/cockroachdb/docs/raw/master/_includes/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which includes three files that work together:
+[Download and extract this tarball](https://github.com/cockroachdb/docs/raw/master/_includes/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which includes three files that work together:
 
 File | Description
 -----|------------
