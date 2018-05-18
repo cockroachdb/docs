@@ -143,7 +143,13 @@
 
           var lis = items.map(function (item) {
             var urls = (item.urls || []).map(function (url) {
-                return baseUrl + url.replace("${VERSION}", pageVersion);
+              var url = url.replace("${VERSION}", pageVersion);
+              // This condition makes it possible to use external
+              // urls in the sidebar.
+              if (!/^https?:/.test(url)) {
+                url = baseUrl + url;
+              }
+              return url;
             });
 
             var active = (urls.indexOf(location.pathname) !== -1);
