@@ -8,6 +8,112 @@ toc: false
 
 ## Access the Admin UI
 
+By default, CockroachDB allows all users to access and view the Admin UI. For added security, you can choose to enable user authentication so that only authorized users can access and view the Admin UI.
+
+<div class="filters filters-big clearfix">
+  <button class="filter-button" data-scope="with-user-auth"><strong>Enable user authentication</strong></button>
+  <button class="filter-button" data-scope="without-user-auth"><strong>Ignore user authentication</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="with-user-auth">
+
+You can enable user authentication only for secure clusters. To enable user authentication:
+
+### Step 1. Create security certificates
+
+You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
+
+~~~ shell
+# Create a certs directory and safe directory for the CA key.
+# If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
+$ mkdir certs
+$ mkdir my-safe-directory
+
+# Create the CA key pair:
+$ cockroach cert create-ca \
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
+
+# Create a client key pair for the root user:
+$ cockroach cert create-client \
+root \
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
+
+# Create a key pair for the nodes:
+$ cockroach cert create-node \
+localhost \
+$(hostname) \
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
+~~~
+
+- The first command makes a new directory for the certificates.
+- The second command creates the Certificate Authority (CA) certificate and key: `ca.crt` and `ca.key`.
+- The third command creates the client certificate and key, in this case for the `root` user: `client.root.crt` and `client.root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 4).
+- The fourth command creates the node certificate and key: `node.crt` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+
+### Step 2. Set the environment variable for user authentication and start the first node
+
+~~~ shell
+$ COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE \
+  ./cockroach start --host=<node1 hostname> --certs-dir=certs
+~~~
+
+### Step 3. Add nodes to the cluster
+
+In a new terminal, add the second node:
+
+~~~ shell
+$ cockroach start \
+--certs-dir=certs \
+--store=node2 \
+--host=<node2 hostname \
+--join=<node1 hostname>:26257
+~~~
+
+In a new terminal, add the third node:
+
+~~~ shell
+$ cockroach start \
+--certs-dir=certs \
+--store=node3 \
+--host=<node3 hostname \
+--join=<node1 hostname>:26257
+~~~
+
+### Step 4. Initialize the cluster
+
+Run the [`cockroach init`](initialize-a-cluster.html) command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the root user, and with the `--host` flag set to the address of any node:
+
+~~~ shell
+$ cockroach init --certs-dir=certs --host=<address of any node>
+~~~
+
+### Step 5. Create a user with a password
+
+Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+
+~~~ sql
+> CREATE USER <username> WITH PASSWORD '<password>';
+~~~
+
+For secure clusters, you must also [create their client certificates](create-security-certificates.html).
+
+
+### Step 6. Access the Admin UI using the user credentials
+You can access the Admin UI from any node in the cluster.
+
+By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `https://<any node host>:8080`.
+
+You can also set the CockroachDB Admin UI to a custom port using `--http-port` or a custom hostname using `--http-host` when [starting each node](start-a-node.html). For example, if you set both a custom port and hostname, `https://<http-host value>:<http-port value>`.
+
+On accessing the Admin UI, the Login screen is displayed. Enter the username and password for the user created in Step 5.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="without-user-auth">
+
 You can access the Admin UI from any node in the cluster.
 
 By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
@@ -15,6 +121,8 @@ By default, you can access it via HTTP on port `8080` of the hostname or IP addr
 You can also set the CockroachDB Admin UI to a custom port using `--http-port` or a custom hostname using `--http-host` when [starting each node](start-a-node.html). For example, if you set both a custom port and hostname, `http://<http-host value>:<http-port value>`. For a secure cluster, `https://<http-host value>:<http-port value>`.
 
 For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
+
+</section>
 
 ## Navigate the Admin UI
 
