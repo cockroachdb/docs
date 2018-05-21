@@ -5,8 +5,8 @@
 Before running, add {% comment %}doc{% endcomment %} to the end of each bullet
 in the release notes file that needs a docs issue.
 
-Help: ./issues-from-release-notes.py --help
-Example use: ./issues-from-release-notes.py --release_notes=v2.0.1.md --milestone=2.0.x
+Help: python3 ./issues-from-release-notes.py --help
+Example use: python3 ./issues-from-release-notes.py --release_notes=v2.0.1.md --milestone=2.0.x
 
 Requirements:
   - Requests: http://docs.python-requests.org/en/master/
@@ -63,7 +63,7 @@ with open("../releases/" + release_notes) as file:
                 issue = {"title": title,
                          "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
                          "labels": ["product", "ready"],
-                         "milestone": 10}
+                         "milestone": milestone}
                 url = "https://api.github.com/repos/cockroachdb/docs/issues"
                 access_token = os.getenv("GITHUB_ACCESS_TOKEN")
                 headers = {"Authorization": "token " + access_token}
@@ -79,5 +79,5 @@ with open("../releases/" + release_notes) as file:
                 print("Exception:", e, "\n")
                 continue
 
-print("Bullets with doc comments", bullets_with_comments)
+print("Bullets with doc comments:", bullets_with_comments)
 print("Docs issues created:", issues_created)

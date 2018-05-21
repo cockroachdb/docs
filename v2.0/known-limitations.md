@@ -10,6 +10,16 @@ This page describes newly identified limitations in the CockroachDB v2.0 release
 
 ## New Limitations
 
+### Silent validation error with `DECIMAL` values
+
+Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:
+
+1. A query uses placeholders (e.g., `$1`) to pass values to the server.
+2. A value of type [`DECIMAL`](decimal.html) is passed.
+3. The decimal value is encoded using the binary format.
+
+Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
+
 ### Enterprise backup/restore during rolling upgrades
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.1.html">v2.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24515">#24515</a>.{{site.data.alerts.end}}
