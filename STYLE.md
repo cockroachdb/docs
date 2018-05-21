@@ -35,8 +35,6 @@ Included in this guide:
 
 CockroachDB docs should be helpful, humble, positive, and friendly. To achieve this, all docs should be factual and free from hyperbolic language.
 
-To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
-
 Other general guidance about language and tone:
 
 - For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)." These docs should be straightforward and conventional.
@@ -54,11 +52,13 @@ Other general guidance about language and tone:
 
     **Example:** `table name`: The name of the table you want to create audit logs for.
 
-- Use contractions to simplify language.
+- To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
 
-    **Example:** A primary key can't be changed using `ALTER TABLE`.
+- Use contractions to simplify language, but not in cases where a clear directive or prohibition is being given (e.g., `do not` / `cannot` / `should not` instead of `don't` / `can't` / `shouldn't`).
 
-    **Example:** If you leave versioned binaries on your servers, you don't need to do anything.
+    **Example:** A primary key cannot be changed using `ALTER TABLE`.
+
+    **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
 
 ## Capitalization and Punctuation
 
@@ -172,6 +172,8 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 ### Links
 
 Whenever a CockroachDB feature is referenced, a link to the relevant documentation should be provided. Links to external resources can also be provided, but only if the resource is vetted and no CockroachDB documentation covers the topic.
+
+Use Markdown's reference-style links when several parts of the same page refer to the same target URLs (e.g., [Release Notes](https://raw.githubusercontent.com/cockroachdb/docs/master/releases/v2.1.0-alpha.20180507.md)).
 
 Link capitalization can be either title- or sentence-case:
 
@@ -316,7 +318,11 @@ Examples:
 
 ### Tables
 
-Use tables to display structured information in an easy-to-read format.
+Use tables to display structured information in an easy-to-read format. There are two types of tables we use: [Markdown](#markdown) and [HTML](#html).
+
+#### Markdown
+
+If table formatting can be kept simple (e.g., basic text formatting and using `<br>` tags for paragraph breaks), create a table using Markdown. This is the preferred table format.
 
 To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
 
@@ -331,22 +337,39 @@ Example:
  `term_2` | This is also a description. | `"lola mcdog"`
 ~~~
 
-The following Markdown formatting can be used within a table:
+The following Markdown formatting can be used within a Markdown table:
 
 - [Bold](#bold)
 - [Italics](#italics)
 - [Inline code](#inline-code)
 - [Links](#links)
 
-The following formatting needs to be in HTML to be used within a table:
+The following formatting needs to be in HTML to be used within a Markdown table:
 
 - Paragraph breaks (`<br>`)
 - Lists (`ol` / `ul` / `<li>`)
 
-The following formatting is not supported within a table:
+Note that if the formatting becomes too complex, create an [HTML table](#html).
+
+The following formatting is not supported within a Markdown table:
 
 - [Liquid tags](https://shopify.github.io/liquid/)
 - [Code blocks](#code-blocks)
+
+#### HTML
+
+If it's necessary to include more complex table formatting or if a [Markdown table](#markdown) becomes too unwieldy, create a table using HTML. This formatting is not recommended unless necessary, since it is hard for other writers to parse and maintain.
+
+The following HTML formatting can be used within an HTML table:
+
+- Bold (`<strong>`)
+- Italics (`<em>`)
+- Inline code (`<code>`)
+- Links (`<a href`)
+- Paragraph breaks (`<p>`)
+- Lists (`<ol>` / `<ul>` / `<li>`)
+
+**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
 
 ### Lists
 
