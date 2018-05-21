@@ -3,9 +3,9 @@ Description=Cockroach Database cluster node
 Requires=network.target
 
 [Service]
-Type=simple
+Type=notify
 WorkingDirectory=/var/lib/cockroach
-ExecStart=/usr/local/bin/cockroach start --certs-dir=certs --host=<node1 address> --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 --cache=25%% --max-sql-memory=25%%
+ExecStart=/usr/local/bin/cockroach start --certs-dir=certs --host=<node1 address> --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 --cache=.25 --max-sql-memory=.25
 ExecStop=/usr/local/bin/cockroach quit --certs-dir=certs --host=<node1 address>
 
 # Restart after 10 seconds of node failure
