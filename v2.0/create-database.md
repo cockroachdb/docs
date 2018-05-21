@@ -75,6 +75,9 @@ pq: database "bank" already exists
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
+~~~
+
+~~~
 +----------+
 | Database |
 +----------+
