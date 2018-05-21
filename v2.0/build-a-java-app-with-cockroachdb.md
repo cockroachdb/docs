@@ -14,6 +14,10 @@ This tutorial shows you how build a simple Java application with CockroachDB usi
 
 We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
+{{site.data.alerts.callout_danger}}
+The examples on this page assume you are using a Java version <= 9. They don't work with Java 10.
+{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Before You Begin

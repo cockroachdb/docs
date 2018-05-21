@@ -16,6 +16,10 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 
 {{site.data.alerts.callout_success}}For a more realistic use of Hibernate with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+The examples on this page assume you are using a Java version <= 9. They don't work with Java 10.
+{{site.data.alerts.end}}
+
 <div id="toc"></div>
 
 ## Before You Begin
