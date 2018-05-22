@@ -57,9 +57,11 @@ In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL SESSION (SELECT session_id FROM [SHOW SESSIONS]
+> CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
       WHERE username = 'maxroach');
 ~~~
+
+{{site.data.alerts.callout_info}}<code>CANCEL SESSION</code> accepts a single query ID. If a subquery is used and returns multiple IDs, the <code>CANCEL SESSIONS</code> statement will fail. To cancel multiple sessions, use the <code>CANCEL SESSIONS</code> syntax.{{site.data.alerts.end}}
 
 ## See Also
 
