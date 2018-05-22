@@ -26,6 +26,7 @@ The `root` user can cancel any currently active queries, whereas non-`root` user
 Parameter | Description
 ----------|------------
 `query_id` | A [scalar expression](scalar-expressions.html) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will therefore fail.
+`select_stmt` | A [selection query](selection-queries.html) whose result you want to cancel.
 
 ## Response
 
