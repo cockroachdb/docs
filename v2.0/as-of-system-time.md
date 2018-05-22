@@ -97,16 +97,6 @@ Assuming the following statements are run at `2016-01-01 12:00:00`, they would e
 > SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000'
 ~~~
 
-{% include copy-clipboard.html %}
-~~~sql
-> SELECT * FROM t AS OF SYSTEM TIME '-4h'
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME INTERVAL '-4h'
-~~~
-
 ### Selecting from Multiple Tables
 
 {{site.data.alerts.callout_info}}It is not yet possible to select from multiple tables at different timestamps. The entire query runs at the specified time in the past.{{site.data.alerts.end}}
