@@ -2,7 +2,7 @@
 title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
 toc: false
-toc_not_nested: true 
+toc_not_nested: true
 ---
 
 <div id="toc"></div>
@@ -50,17 +50,6 @@ cashier at a store.
 For more information about contention, see [Understanding and Avoiding
 Transaction
 Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-
-## Why would increasing the number of nodes not result in more operations per second?
-
-If queries operate on different data, then increasing the number
-of nodes should improve the overall throughput (transactions/second or QPS).
-
-However, if your queries operate on the same data, you may be
-observing transaction contention. See [Understanding and Avoiding
-Transaction
-Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
-for more details.
 
 ## Does CockroachDB support `JOIN`?
 

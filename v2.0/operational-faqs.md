@@ -99,6 +99,17 @@ If you want all existing timeseries data to be deleted, change the `timeseries.r
 > SET CLUSTER SETTING timeseries.resolution_10s.storage_duration = '0s';
 ~~~
 
+## Why would increasing the number of nodes not result in more operations per second?
+
+If queries operate on different data, then increasing the number
+of nodes should improve the overall throughput (transactions/second or QPS).
+
+However, if your queries operate on the same data, you may be
+observing transaction contention. See [Understanding and Avoiding
+Transaction
+Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+for more details.
+
 ## Why does CockroachDB collect anonymized cluster usage details by default?
 
 Collecting information about CockroachDB's real world usage helps us prioritize the development of product features. We choose our default as "opt-in" to strengthen the information we receive from our collection efforts, but we also make a careful effort to send only anonymous, aggregate usage statistics. See [Diagnostics Reporting](diagnostics-reporting.html) for a detailed look at what information is sent and how to opt-out.
