@@ -13,7 +13,7 @@ toc: false
 
 ## Required Privileges
 
-By default, only the `root` user can cancel a session.
+Only the `root` user and the user that the session belongs to can cancel a session.
 
 ## Synopsis
 
@@ -23,7 +23,7 @@ By default, only the `root` user can cancel a session.
 
 Parameter | Description
 ----------|------------
-`session_id` | The ID of the session you want to cancel, which can be found with [`SHOW SESSIONS`](show-sessions.html).
+`session_id` | The ID of the session you want to cancel, which can be found with [`SHOW SESSIONS`](show-sessions.html).<br><br>`CANCEL SESSION` accepts a single session ID. If a subquery is used and returns multiple IDs, the `CANCEL SESSION` statement will fail. To cancel multiple sessions, use `CANCEL SESSIONS`.
 `select_stmt` | A [selection query](selection-queries.html) whose result you want to cancel.
 
 ## Example
@@ -61,7 +61,7 @@ In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves 
       WHERE username = 'maxroach');
 ~~~
 
-{{site.data.alerts.callout_info}}<code>CANCEL SESSION</code> accepts a single query ID. If a subquery is used and returns multiple IDs, the <code>CANCEL SESSIONS</code> statement will fail. To cancel multiple sessions, use the <code>CANCEL SESSIONS</code> syntax.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}<code>CANCEL SESSION</code> accepts a single session ID. If a subquery is used and returns multiple IDs, the <code>CANCEL SESSION</code> statement will fail. To cancel multiple sessions, use <code>CANCEL SESSIONS</code>.{{site.data.alerts.end}}
 
 ## See Also
 
