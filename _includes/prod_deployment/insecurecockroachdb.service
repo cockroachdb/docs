@@ -1,24 +1,16 @@
 [Unit]
 Description=Cockroach Database cluster node
 Requires=network.target
-
 [Service]
 Type=notify
 WorkingDirectory=/var/lib/cockroach
 ExecStart=/usr/local/bin/cockroach start --insecure --host=<node1 address> --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 --cache=.25 --max-sql-memory=.25
-ExecStop=/usr/local/bin/cockroach quit --insecure --host=<node1 address>
-
-# Restart after 10 seconds of node failure
+TimeoutStopSec=60
 Restart=always
 RestartSec=10
-
-# Allow user to stop node using systemctl stop cockroach (Prevent automatic restarts if node stopped manually)
-RestartPreventExitStatus=0
-
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=cockroach
 User=cockroach
-
 [Install]
 WantedBy=default.target
