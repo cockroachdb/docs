@@ -8,9 +8,6 @@ toc: false
 
 <div id="toc"></div>
 
-## Considerations
-
-
 ## Required Privileges
 
 Only the `root` user and the user that the session belongs to can cancel a session.
