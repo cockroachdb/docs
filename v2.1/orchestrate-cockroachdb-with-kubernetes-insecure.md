@@ -74,18 +74,7 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 ## Step 9. Upgrade the cluster
 
-{% include orchestration/kubernetes-upgrade-cluster.md %}
-
-4. If this was an upgrade between minor or major versions (e.g., between v1.0.x and v1.1.y or between v1.1.y and v2.0.z), then you'll want to [finalize the upgrade](upgrade-cockroach-version.html#finalize-the-upgrade) if you're happy with the new version. Assuming you upgraded to the v2.0 minor version, you'd run:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl exec -it cockroachdb-0 -- ./cockroach sql --insecure -e "SET CLUSTER SETTING version = crdb_internal.node_executable_version();"
-    ~~~
-
-    ~~~
-    SET CLUSTER SETTING
-    ~~~
+{% include orchestration/kubernetes-upgrade-cluster_v2.1.md %}
 
 ## Step 10. Stop the cluster
 
