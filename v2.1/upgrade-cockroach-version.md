@@ -39,6 +39,25 @@ Before starting the upgrade, complete the following steps.
 
 4. [Back up the cluster](back-up-data.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
+## Step 3. Decide how the upgrade will be finalized
+
+{{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
+
+By default, as soon as all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.1. After finalization, however, it will no longer be possible to perform a rolling downgrade to v2.0. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.1, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
+
+If you want to preserve the ability to perform a rolling downgrade to v2.0 after upgrading all nodes to v2.1, turn off auto-finalization:
+
+1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+
+2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = crdb_internal.node_executable_version();
+    ~~~
+
+    The `crdb_internal.node_executable_version()` built-in function will set this setting to the current version running on the node, in this case v2.0.
+
 ## Step 3. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
@@ -158,51 +177,45 @@ For each node in your cluster, complete the following steps.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
-## Step 4. Monitor the upgraded cluster
+## Step 4. Finish the upgrade
 
-After upgrading all nodes in the cluster, monitor the cluster's stability and performance for at least one day.
+{{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}During this phase, avoid using any new v2.1 features. Doing so may prevent you from being able to perform a rolling downgrade to v2.0, if necessary. Also, it is not recommended to run enterprise <a href="backup.html"><code>BACKUP</code></a> and <a href="restore.html"><code>RESTORE</code></a> jobs during this phase, as some features like detecting schema changes or ensuring correct target expansion may behave differently in mixed version clusters.{{site.data.alerts.end}}
+After upgrading all nodes in the cluster, monitor the cluster's stability and performance and consider your next steps.
 
-## Step 5. Finalize or revert the upgrade
+### If you let the upgrade process auto-finalize
 
-Once you have monitored the upgraded cluster for at least one day:
+- If you are satisfied with the new version, no further action is required.
 
-- If you are satisfied with the new version, complete the steps under [Finalize the upgrade](#finalize-the-upgrade).
+- If you are experiencing problems:
+    1. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state.
+    2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
-- If you are experiencing problems, follow the steps under [Revert the upgrade](#revert-the-upgrade).
+        In this case, it is not possible to perform a rolling downgrade to v2.0. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.1, Cockroach Labs will help you start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.
 
-### Finalize the upgrade
+### If you preserved the ability to downgrade to v2.0
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+-  If you are satisfied with the new version, finalize the upgrade:
+    1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+    2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
-1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+        {% include copy-clipboard.html %}
+        ~~~ sql
+        > SELECT crdb_internal.node_executable_version();
+        ~~~
 
-2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
+        Make sure the version matches your expectations. Since you upgraded each node, this version should be running on all other nodes as well.
+    3. Re-enable auto-finalization:
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT crdb_internal.node_executable_version();
-    ~~~
+        {% include copy-clipboard.html %}
+        ~~~ sql
+        > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+        ~~~
 
-    Make sure the version matches your expectations. Since you upgraded each node, this version should be running on all other nodes as well.
-
-3. Use the same function to finalize the upgrade:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
-    ~~~
-
-    This step enables certain performance improvements and bug fixes that were introduced in v2.1. Note, however, that after completing this step, it will no longer be possible to perform a rolling downgrade to v2.0. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.1, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.
-
-### Revert the upgrade
-
-1. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state.
-
-2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
-
-3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-3-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
+- If you are experiencing problems:
+    1. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state.
+    2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+    3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-3-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
 
 ## See Also
 
