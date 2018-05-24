@@ -117,7 +117,7 @@ Statement | Usage
 [`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
-[`CANCEL SESSION`](cancel-session.html) | Cancel a long-running session.
+[`CANCEL SESSION`](cancel-session.html) | <span class="version-tag">New in v2.1:</span> Cancel a long-running session.
 
 ## Query Management Statements
 

@@ -21,11 +21,11 @@ Only the `root` user and the user that the session belongs to can cancel a sessi
 Parameter | Description
 ----------|------------
 `session_id` | The ID of the session you want to cancel, which can be found with [`SHOW SESSIONS`](show-sessions.html).<br><br>`CANCEL SESSION` accepts a single session ID. If a subquery is used and returns multiple IDs, the `CANCEL SESSION` statement will fail. To cancel multiple sessions, use `CANCEL SESSIONS`.
-`select_stmt` | A [selection query](selection-queries.html) whose result you want to cancel.
+`select_stmt` | A [selection query](selection-queries.html) that returns `session_id`(s) to cancel.
 
 ## Example
 
-### Cancel a Query via the Session ID
+### Cancel a Single Session
 
 In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
 
@@ -48,15 +48,43 @@ In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to g
 > CANCEL SESSION '1530fe0e46d2692e0000000000000001';
 ~~~
 
-### Cancel a Session via a Subquery
+You can also cancel a session using a subquery that returns a single session ID:
 
-In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a session inside the `CANCEL SESSION` statement:
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
+      WHERE username = 'root');
+~~~
+
+### Cancel Multiple Sessions
+
+Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SESSIONS;
+~~~
+~~~
++---------+----------------------------------+----------+...
+| node_id |            session_id            | username |...
++---------+----------------------------------+----------+...
+|       1 | 1530c309b1d8d5f00000000000000001 | root     |...
++---------+----------------------------------+----------+...
+|       1 | 1530fe0e46d2692e0000000000000001 | maxroach |...
++---------+----------------------------------+----------+...
+|       1 | 15310cc79671fc6a0000000000000001 | maxroach |...
++---------+----------------------------------+----------+...
+~~~
+
+ To cancel multiple sessions, nest a [`SELECT` clause](select-clause.html) that retrieves `session_id`(s) inside the `CANCEL SESSION` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
       WHERE username = 'maxroach');
 ~~~
+
+All sessions created by 'maxroach' will be cancelled.
 
 {{site.data.alerts.callout_info}}<code>CANCEL SESSION</code> accepts a single session ID. If a subquery is used and returns multiple IDs, the <code>CANCEL SESSION</code> statement will fail. To cancel multiple sessions, use <code>CANCEL SESSIONS</code>.{{site.data.alerts.end}}
 
