@@ -4,11 +4,37 @@ summary: CockroachDB supports many built-in functions, aggregate functions, and 
 toc: false
 ---
 
-CockroachDB supports the following SQL functions and operators.
+CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
 <div id="toc"></div>
+
+## Special Syntax Forms
+
+The following syntax forms are recognized for compatibility with the
+SQL standard and PostgreSQL, but are equivalent to regular built-in
+functions:
+
+{% include sql/{{ page.version.version }}/function-special-forms.md %}
+
+## Conditional And Function-Like Operators
+
+The following table lists the operators that look like built-in
+functions but have special evaluation rules.
+
+| Operator | Description |
+|----------|-------------|
+| `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions) |
+| `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array) |
+| `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors) |
+| `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions) |
+| `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions) |
+| `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries) |
+| `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions) |
+| `IFNULL(...)` | Alias for `COALESCE` restricted to two operands |
+| `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) |
+| `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) |
 
 ## Built-in Functions
 
@@ -25,7 +51,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | Order of Precedence | Operator | Name | Operator Arity |
 | ------------------- | -------- | ---- | -------------- |
 | 1 | `.` | Member field access operator | binary |
-| 2 | `::` | Type cast | binary |
+| 2 | `::` | [Type cast](scalar-expressions.html#explicit-type-coercions) | binary |
 | 3 | `-` | Unary minus | unary |
 |  | `~` | Bitwise not | unary |
 | 4 | `^` | Exponentiation | binary |
@@ -59,8 +85,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `!=`, `<>` | Not equal | binary |
 | 14 | `IS` | Value identity | binary |
 | 15 | `NOT` | Logical NOT | unary |
-| 16 | `AND` | Logical AND | binary |
-| 17 | `OR` | Logical OR | binary |
+| 16 | `AND` | [Logical AND with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
+| 17 | `OR` | [Logical OR with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
 
 ### Supported Operations
 

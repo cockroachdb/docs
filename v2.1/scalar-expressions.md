@@ -251,26 +251,7 @@ See also [the separate section on supported built-in functions](functions-and-op
 
 In addition, the following SQL special forms are also supported:
 
-| Special form                                               | Equivalent to |
-|------------------------------------------------------------|---------------|
-| `EXTRACT(<part> FROM <value>)`                             | `extract("<part>", <value>)` |
-| `EXTRACT_DURATION(<part> FROM <value>)`                    | `extract_duration("<part>", <value>)` |
-| `OVERLAY(<text1> PLACING <text2> FROM <int1> FOR <int2>)`  | `overlay(<text1>, <text2>, <int1>, <int2>)` |
-| `OVERLAY(<text1> PLACING <text2> FROM <int>)`              | `overlay(<text1>, <text2>, <int>)` |
-| `POSITION(<text1> IN <text2>)`                             | `strpos(<text2>, <text1>)` |
-| `SUBSTRING(<text> FROM <int1> FOR <int2>)`                 | `substring(<text>, <int1>, <int2>)` |
-| `SUBSTRING(<text> FOR <int1> FROM <int2>)`                 | `substring(<text>, <int2>, <int1>)` |
-| `SUBSTRING(<text> FOR <int>)`                              | `substring(<text>, 1, <int>)` |
-| `SUBSTRING(<text> FROM <int>)`                             | `substring(<text>, <int>)` |
-| `TRIM(<text1> FROM <text2>)`                               | `btrim(<text2>, <text1>)` |
-| `TRIM(FROM <text>)`                                        | `btrim(<text>)` |
-| `TRIM(<text1>, <text2>)`                                   | `btrim(<text1>, <text2>)` |
-| `TRIM(LEADING <text1> FROM <text2>)`                       | `ltrim(<text2>, <text1>)` |
-| `TRIM(LEADING FROM <text>)`                                | `ltrim(<text>)` |
-| `TRIM(TRAILING <text1> FROM <text2>)`                      | `rtrim(<text2>, <text1>)` |
-| `TRIM(TRAILING FROM <text>)`                               | `rtrim(<text>)` |
-| `CURRENT_DATE`                                             | `current_date()` |
-| `CURRENT_TIMESTAMP`                                        | `current_timestamp()` |
+{% include sql/{{ page.version.version }}/function-special-forms.md %}
 
 #### Typing rule
 
@@ -515,54 +496,6 @@ For example: `'a' COLLATE de`
 
 The operand must have type `STRING`. The result has type `COLLATEDSTRING`.
 
-## Existence Test on the Result of Subqueries
-
-Syntax:
-
-~~~
-EXISTS ( ... subquery ... )
-NOT EXISTS ( ... subquery ... )
-~~~
-
-Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
-whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`). Any [selection query](selection-queries.html)
-can be used as subquery.
-
-{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
-
-#### Typing rule
-
-The operand can have any table type. The result has type `BOOL`.
-
-## Scalar Subqueries
-
-Syntax:
-
-~~~
-( ... subquery ... )
-~~~
-
-Evaluates the subquery, asserts that it returns a single row and single column,
-and then evaluates to the value of that single cell. Any [selection query](selection-queries.html)
-can be used as subquery.
-
-For example:
-
-~~~sql
-> SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
-~~~
-
-returns `TRUE` if there are more rows in table `users` than in table
-`admins`.
-
-{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
-
-#### Typing rule
-
-The operand must have a table type with only one column.
-The result has the type of that single column.
-
 ## Array Constructors
 
 Syntax:
@@ -596,6 +529,8 @@ specified explicitly using a type annotation. For example:
 ~~~sql
 > SELECT ARRAY[]:::int[];
 ~~~
+
+{{site.data.alerts.callout_info}}To convert the results of a subquery to an array, use <a href="#conversion-of-subquery-results-to-an-array"><code>ARRAY(...)</code></a> instead.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -669,6 +604,71 @@ Check our blog for
 
 The operand must be implicitly coercible to the given type.
 The result has the given type.
+
+## Subquery Expressions
+
+### Scalar Subqueries
+
+Syntax:
+
+~~~
+( ... subquery ... )
+~~~
+
+Evaluates the subquery, asserts that it returns a single row and single column,
+and then evaluates to the value of that single cell. Any [selection query](selection-queries.html)
+can be used as subquery.
+
+For example:
+
+~~~sql
+> SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
+~~~
+
+returns `TRUE` if there are more rows in table `users` than in table
+`admins`.
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+
+#### Typing rule
+
+The operand must have a table type with only one column.
+The result has the type of that single column.
+
+### Existence Test on the Result of Subqueries
+
+Syntax:
+
+~~~
+EXISTS ( ... subquery ... )
+NOT EXISTS ( ... subquery ... )
+~~~
+
+Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
+whether the subquery returned any row (for `EXISTS`) or didn't return
+any row (for `NOT EXISTS`). Any [selection query](selection-queries.html)
+can be used as subquery.
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+
+#### Typing rule
+
+The operand can have any table type. The result has type `BOOL`.
+
+### Conversion of Subquery Results to an Array
+
+Syntax:
+
+~~~
+ARRAY( ... subquery ... )
+~~~
+
+Evaluates the subquery and converts its results to an array. Any
+[selection query](selection-queries.html) can be used as subquery.
+
+{{site.data.alerts.callout_info}}See also <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}To convert a list of scalar expressions to an array, use <a href="#array-constructors"><code>ARRAY[...]</code></a> instead.{{site.data.alerts.end}}
 
 ## See Also
 
