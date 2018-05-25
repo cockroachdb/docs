@@ -4,11 +4,37 @@ summary: CockroachDB supports many built-in functions, aggregate functions, and 
 toc: false
 ---
 
-CockroachDB supports the following SQL functions and operators.
+CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
 <div id="toc"></div>
+
+## Special Syntax Forms
+
+The following syntax forms are recognized for compatibility with the
+SQL standard and PostgreSQL, but are equivalent to regular built-in
+functions:
+
+{% include sql/{{ page.version.version }}/function-special-forms.md %}
+
+## Conditional and Function-Like Operators
+
+The following table lists the operators that look like built-in
+functions but have special evaluation rules:
+
+| Operator | Description |
+|----------|-------------|
+| `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions) |
+| `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array) |
+| `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors) |
+| `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions) |
+| `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions) |
+| `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries) |
+| `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions) |
+| `IFNULL(...)` | Alias for `COALESCE` restricted to two operands |
+| `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) |
+| `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) |
 
 ## Built-in Functions
 
@@ -25,9 +51,9 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | Order of Precedence | Operator | Name | Operator Arity |
 | ------------------- | -------- | ---- | -------------- |
 | 1 | `.` | Member field access operator | binary |
-| 2 | `::` | Type cast | binary |
-| 3 | `-` | Unary minus | unary |
-|  | `~` | Bitwise not | unary |
+| 2 | `::` | [Type cast](scalar-expressions.html#explicit-type-coercions) | binary |
+| 3 | `-` | Unary minus | unary (prefix) |
+|  | `~` | Bitwise not | unary (prefix) |
 | 4 | `^` | Exponentiation | binary |
 | 5 | `*` | Multiplication | binary |
 |  | `/` | Division | binary |
@@ -37,10 +63,18 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
 |  | `>>` | Bitwise right-shift | binary |
-| 8 | `&` | Bitwise and | binary |
-| 9 | `#` | Bitwise xor | binary |
-| 10 | <code>&#124;</code> | Bitwise or | binary |
+| 8 | `&` | Bitwise AND | binary |
+| 9 | `#` | Bitwise XOR | binary |
+| 10 | <code>&#124;</code> | Bitwise OR | binary |
 | 11 | <code>&#124;&#124;</code> | Concatenation | binary |
+|    | `< ANY`, ` SOME`, ` ALL` | [Multi-valued] "less than" comparison | binary |
+|    | `> ANY`, ` SOME`, ` ALL` | [Multi-valued] "greater than" comparison | binary |
+|    | `= ANY`, ` SOME`, ` ALL` | [Multi-valued] "equal" comparison | binary |
+|    | `<= ANY`, ` SOME`, ` ALL` | [Multi-valued] "less than or equal" comparison | binary |
+|    | `>= ANY`, ` SOME`, ` ALL` | [Multi-valued] "greater than or equal" comparison | binary |
+|    | `<> ANY` / `!= ANY`, `<> SOME` / `!= SOME`, `<> ALL` / `!= ALL` | [Multi-valued] "not equal" comparison | binary |
+|    | `[NOT] LIKE ANY`, `[NOT] LIKE SOME`, `[NOT] LIKE ALL` | [Multi-valued] `LIKE` comparison | binary |
+|    | `[NOT] ILIKE ANY`, `[NOT] ILIKE SOME`, `[NOT] ILIKE ALL` | [Multi-valued] `ILIKE` comparison | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
 |  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary | 
 |  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
@@ -57,10 +91,16 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `<=` | Less than or equal to | binary |
 |  | `>=` | Greater than or equal to | binary |
 |  | `!=`, `<>` | Not equal | binary |
-| 14 | `IS` | Value identity | binary |
+| 14 | `IS [DISTINCT FROM]` | Equal, considering `NULL` as value | binary |
+|  | `IS NOT [DISTINCT FROM]` | `a IS NOT b` equivalent to `NOT (a IS b)` | binary |
+|  | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
+|  | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value](scalar-expressions.html#comparison-with-nan) | unary (postfix) |
+|  | `IS OF(...)` | Type predicate | unary (postfix)
 | 15 | `NOT` | Logical NOT | unary |
-| 16 | `AND` | Logical AND | binary |
-| 17 | `OR` | Logical OR | binary |
+| 16 | `AND` | [Logical AND with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
+| 17 | `OR` | [Logical OR with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
+
+[Multi-valued]: scalar-expressions.html#multi-valued-comparisons
 
 ### Supported Operations
 
