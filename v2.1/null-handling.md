@@ -4,15 +4,20 @@ summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: false
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](use-the-built-in-sql-client.html), using the table data in the first section, [NULLs and Logic](#nulls-and-logic).
+This page summarizes how `NULL` values are handled in CockroachDB
+SQL. Each topic is demonstrated via the [built-in SQL
+client](use-the-built-in-sql-client.html).
 
 {{site.data.alerts.callout_info}}When using the built-in client, <code>NULL</code> values are displayed using the word <code>NULL</code>. This distinguishes them from a character field that contains an empty string ("").{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## NULLs and Logic
+## NULLs and Simple Comparisons
 
-Any comparison between a value and `NULL` results in `NULL`. This behavior is consistent with PostgresSQL as well as all other major RDBMS's.
+Any simple comparison between a value and `NULL` results in
+`NULL`. The remaining cases are described in the next question.
+
+This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
 ~~~ sql
 > CREATE TABLE t1(
@@ -133,6 +138,57 @@ Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 | 6 | NULL | 1 |
 +---+------+---+
 ~~~
+
+## NULLs and Conditional Operators
+
+The [conditional
+operators](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations)
+(including `IF`, `COALESCE`, `IFNULL`) only evaluate some
+operands depending on the value of a condition operand, so their
+result is not always `NULL` depending on the given operands.
+
+For example, `COALESCE(1, NULL)` will always return `1` even though
+the second operand is `NULL`.
+
+## NULLs and Ternary Logic
+
+`AND`, `OR` and `IS` implement ternary logic, as follows.
+
+| Expression        | Result  |
+|-------------------|---------|
+| `FALSE AND FALSE` | `FALSE` |
+| `FALSE AND TRUE`  | `FALSE` |
+| `FALSE AND NULL`  | `FALSE` |
+| `TRUE AND FALSE`  | `FALSE` |
+| `TRUE AND TRUE`   | `TRUE`  |
+| `TRUE AND NULL`   | `NULL`  |
+| `NULL AND FALSE`  | `FALSE` |
+| `NULL AND TRUE`   | `NULL`  |
+| `NULL AND NULL`   | `NULL`  |
+
+| Expression       | Result  |
+|------------------|---------|
+| `FALSE OR FALSE` | `FALSE` |
+| `FALSE OR TRUE`  | `TRUE`  |
+| `FALSE OR NULL`  | `NULL`  |
+| `TRUE OR FALSE`  | `TRUE`  |
+| `TRUE OR TRUE`   | `TRUE`  |
+| `TRUE OR NULL`   | `TRUE`  |
+| `NULL OR FALSE`  | `NULL`  |
+| `NULL OR TRUE`   | `TRUE`  |
+| `NULL OR NULL`   | `NULL`  |
+
+| Expression       | Result  |
+|------------------|---------|
+| `FALSE IS FALSE` | `TRUE`  |
+| `FALSE IS TRUE`  | `FALSE` |
+| `FALSE IS NULL`  | `FALSE` |
+| `TRUE IS FALSE`  | `FALSE` |
+| `TRUE IS TRUE`   | `TRUE`  |
+| `TRUE IS NULL`   | `FALSE` |
+| `NULL IS FALSE`  | `FALSE` |
+| `NULL IS TRUE`   | `FALSE` |
+| `NULL IS NULL`   | `TRUE`  |
 
 ## NULLs and Arithmetic
 

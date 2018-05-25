@@ -24,11 +24,21 @@ A constant value of type `FLOAT` can be entered as a [numeric literal](sql-const
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
-and Not A Number (NaN) cannot be entered using numeric literals
-directly and must be converted using an
+and [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) cannot be
+entered using numeric literals directly and must be converted using an
 [interpreted literal](sql-constants.html#interpreted-literals) or an
-[explicit conversion](scalar-expressions.html#explicit-type-coercions) from
-a string literal instead. For example:
+[explicit conversion](scalar-expressions.html#explicit-type-coercions)
+from a string literal instead.
+
+The following values are recognized:
+
+| Syntax                                 | Value                                                   |
+|----------------------------------------|---------------------------------------------------------|
+| `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;                                                |
+| `-inf`, `-infinity`                    | -&#8734;                                                |
+| `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) |
+
+For example:
 
 - `FLOAT '+Inf'`
 - `'-Inf'::FLOAT`
