@@ -128,14 +128,14 @@ Examples:
 
 Use headings to demarcate content into a hierarchy to help readers find information easier.
 
-Headings should be title-case, and are denoted by number signs (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
+Headings should be sentence-case, and are denoted by number signs (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
 
 Heading 1 is reserved for page titles and anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
 
 Examples:
 
-- `## This is Heading 2`
-- `### And This is Heading 3`
+- `## This is heading 2`
+- `### And this is heading 3`
 
 ### Text Format
 
