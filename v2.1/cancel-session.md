@@ -4,7 +4,7 @@ summary: The CANCEL SESSION statement stops long-running sessions.
 toc: false
 ---
 
-<span class="version-tag">New in v2.1:</span> The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running sessions. `CANCEL SESSION` will cancel the currently active query and end the session.
+<span class="version-tag">New in v2.1:</span> The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.
 
 <div id="toc"></div>
 
