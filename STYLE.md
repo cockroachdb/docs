@@ -12,26 +12,26 @@ The following guidance is provided to ensure consistency.
 
 Included in this guide:
 
-- [Language and Tone](#language-and-tone)
-- [Capitalization and Punctuation](#capitalization-and-punctuation)
-- [File Conventions](#file-conventions)
-- [Documentation Types](#documentation-types)
-    - [Reference and Task-Based Docs](#reference-and-task-based-docs)
-    - [Tutorials, Training, and Examples](#tutorials-training-and-examples)
-    - [Concept Docs](#concept-docs)
+- [Language and tone](#language-and-tone)
+- [Capitalization and punctuation](#capitalization-and-punctuation)
+- [File conventions](#file-conventions)
+- [Documentation types](#documentation-types)
+    - [Reference and task-based docs](#reference-and-task-based-docs)
+    - [Tutorials, training, and examples](#tutorials-training-and-examples)
+    - [Concept docs](#concept-docs)
 - [Components](#components)
     - [Headings](#headings)
-    - [Text Format](#text-format)
+    - [Text format](#text-format)
     - [Links](#links)
-    - [Tips, Notes, and Warnings](#tips-notes-and-warnings)  
+    - [Tips, notes, and warnings](#tips-notes-and-warnings)  
     - [Code](#code)
     - [Examples](#examples)
-    - [Version Tags](#version-tags)      
+    - [Version tags](#version-tags)      
     - [Tables](#tables)
     - [Lists](#lists)
     - [Images](#images)
 
-## Language and Tone
+## Language and tone
 
 CockroachDB docs should be helpful, humble, positive, and friendly. To achieve this, all docs should be factual and free from hyperbolic language.
 
@@ -60,11 +60,11 @@ Other general guidance about language and tone:
 
     **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
 
-## Capitalization and Punctuation
+## Capitalization and punctuation
 
 Capitalization rules:
 
-- Use title-case instead of sentence-case for all [headings](#headings).
+- Use sentence-case instead of title-case for all [headings](#headings).
 - Depending on the context, use title-case or sentence-case for [links](#links).
 - Capitalize proper nouns, CockroachDB specific terms, and the names of UI features:
 
@@ -77,10 +77,11 @@ Punctuation rules:
 - Limit semicolon usage. Instead, try two simple sentences.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if it is a sentence or completes a sentence.
+- Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 
 For more detail about how to format text, see [Componenets](#components).
 
-## File Conventions
+## File conventions
 
 CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.gif`). File names are lowercase with a dash between words, and should be brief but descriptive.
 
@@ -93,9 +94,9 @@ Each version's pages are found in a directory named for the version. For example
 
 Each version's images are found in a directory named for the version under the `images` directory. For example, images for CockroachDB v1.0 are in the `docs > images > v1.0` directory. For more information, see [Images](#images).
 
-## Documentation Types
+## Documentation types
 
-### Reference and Task-Based Docs
+### Reference and task-based docs
 
 Reference docs are informational and provide a comprehensive description of a CockroachDB function or feature, while task-based docs are instructional and provide prescriptive, step-by-step guidance to help a user complete a specific task.
 
@@ -105,15 +106,17 @@ Examples:
 - **CLI reference doc example:** [Use the Built-in SQL Client](https://www.cockroachlabs.com/docs/stable/use-the-built-in-sql-client.html)
 - **Task-based doc example:** [Orchestrate CockroachDB with Kubernetes](https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-kubernetes.html)
 
-### Tutorials, Training, and Examples
+### Tutorials, training, and examples
 
 Tutorials, training, and examples are educational docs or sections meant to acquaint users with CockroachDB and its features. These docs should be written in a more conversational [tone](#language-and-tone), as if they are teaching the user.
+
+Headings in tutorials and training docs should include `Step N.` to denote the sequence of steps to follow.
 
 - **Tutorial example:** [JSON Support](https://www.cockroachlabs.com/docs/stable/demo-json-support)
 - **Training example:** [Cluster Startup and Scaling](https://www.cockroachlabs.com/docs/stable/training/cluster-startup-and-scaling.html)
 - **Example examples:** [Define Table Partitions](https://www.cockroachlabs.com/docs/stable/partitioning.html#examples), [Manage Roles](https://www.cockroachlabs.com/docs/stable/roles.html#example)
 
-### Concept Docs
+### Concept docs
 
 Concept docs are guides that detail how CockroachDB is built, but does not explain how you should architect an application using CockroachDB.
 
@@ -128,16 +131,17 @@ Examples:
 
 Use headings to demarcate content into a hierarchy to help readers find information easier.
 
-Headings should be title-case, and are denoted by number signs (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
+Headings should be sentence-case, and are denoted by number signs (`#`) followed by one space. Enter a line break between a heading and its content. CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). We try to use Heading 4 sparingly.
 
-Heading 1 is reserved for page titles and anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
+Heading 1 is reserved for page titles and should be title-case. Anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
 
 Examples:
 
-- `## This is Heading 2`
-- `### And This is Heading 3`
+- `## This is heading 2`
+- `### And this is heading 3`
+- `## Step 2. This is a step in a tutorial`
 
-### Text Format
+### Text format
 
 #### Bold
 
@@ -155,7 +159,7 @@ To bold a word or phrase, surround the text with two asterisks (`**`).
 
 See [Inline Code](#inline-code).
 
-#### Quotation Marks
+#### Quotation marks
 
 Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
 
@@ -194,7 +198,7 @@ Links are marked with inline text surrounded by square brackets followed by the 
 
     **Example:** `[xyz](#heading-on-page)`
 
-### Tips, Notes, and Warnings
+### Tips, notes, and warnings
 
 Our docs use three classes of highlighted text:
 
@@ -244,21 +248,21 @@ To insert a warning, use the following code:
 
 Code can be shown [inline](#inline-code) or as a [code block](#code-blocks).
 
-#### Inline Code
+#### Inline code
 
 Inline `code` has `back-ticks (``) around` it and is used when referring to code, commands, or other technical syntax within a sentence.
 
 Example: The `CREATE TABLE` statement creates a new table in a database.
 
-#### Code Blocks
+#### Code blocks
 
 Code blocks are used to provide executable code samples, marked with an opening and closing set of 3 tildes (`~~~`). Code blocks can support syntax highlighting if you add the language name immediately after the first line of back-ticks. Shell and SQL commands should be syntax highlighted where appropriate using the following info:
 
-**Shell Code Samples**
+**Shell code samples**
 
 Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`.
 
-**SQL Code Samples**
+**SQL code samples**
 
 SQL code samples are broken into two sections: commands and responses.
 
@@ -267,7 +271,7 @@ SQL code samples are broken into two sections: commands and responses.
 
   Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
 
-**Copy to Clipboard**
+**Copy to Clipboard Button**
 
 Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include copy-clipboard.html %}` on the line directly preceding the code block, for example:
 
@@ -302,7 +306,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
     When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](https://www.cockroachlabs.com/docs/stable/create-table.html#create-a-table-that-mirrors-key-value-storage)
 
-### Version Tags
+### Version tags
 
 Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
 
@@ -389,7 +393,7 @@ For each item of a **numbered list**, use the step number followed by a period a
 
 For each item of a **bulleted list**, use one dash followed by one space to denote a list item, e.g., `- This is a bulleted list`.
 
-#### Nesting Lists
+#### Nesting lists
 
 To nest a list under a list item, start the list on the next line (no empty line), and indent the new list four spaces, for example:
 
@@ -402,7 +406,7 @@ To nest a list under a list item, start the list on the next line (no empty line
 2. This is a step.
 ```
 
-#### Nesting Paragraphs or Code Blocks
+#### Nesting paragraphs or code blocks
 
 To nest a paragraph or code block under a list item, insert an empty line and then indent the paragraph or code block 4 spaces, for example:
 

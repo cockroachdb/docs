@@ -91,7 +91,7 @@ summary: Short description of page for SEO
 
 Field | Description | Default
 ------|-------------|--------
-`title`| Used as the h1 header. | Nothing
+`title`| Used as the h1 header and written in title-case. | Nothing
 `summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. | Nothing
 
 Optionally, you can specify other fields in the front-matter:
