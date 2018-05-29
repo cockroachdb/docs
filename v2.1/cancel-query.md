@@ -25,7 +25,8 @@ The `root` user can cancel any currently active queries, whereas non-`root` user
 
 Parameter | Description
 ----------|------------
-`query_id` | A [scalar expression](scalar-expressions.html) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will therefore fail.
+`query_id` | A [scalar expression](scalar-expressions.html) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will fail. To cancel multiple queries, use `CANCEL QUERIES`.
+`select_stmt` | A [selection query](selection-queries.html) whose result you want to cancel.
 
 ## Response
 
@@ -69,10 +70,11 @@ In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves 
           AND query = 'SELECT * FROM test.kv ORDER BY k');
 ~~~
 
-{{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If subquery is used and returns multiple IDs, the <code>CANCEL QUERY</code> statement will therefore fail.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If a subquery is used and returns multiple IDs, the <code>CANCEL QUERY</code> statement will fail. To cancel multiple queries, use <code>CANCEL QUERIES</code>.{{site.data.alerts.end}}
 
 ## See Also
 
 - [Manage Long-Running Queries](manage-long-running-queries.html)
 - [`SHOW QUERIES`](show-queries.html)
+- [`CANCEL SESSION`](cancel-session.html)
 - [SQL Statements](sql-statements.html)

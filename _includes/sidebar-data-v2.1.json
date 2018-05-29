@@ -763,6 +763,12 @@
                 ]
               },
               {
+                "title": "<code>CANCEL SESSION</code>",
+                "urls": [
+                  "/${VERSION}/cancel-session.html"
+                ]
+              },
+              {
                 "title": "<code>COMMIT</code>",
                 "urls": [
                   "/${VERSION}/commit-transaction.html"
