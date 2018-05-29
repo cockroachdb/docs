@@ -32,7 +32,7 @@ the key size has changed, or the data key is too old (default lifetime is one we
 
 Any new file created by the store uses the currently-active data key. All data keys (both active and previous) are stored in a key registry file and encrypted with the active store key.
 
-CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all files with the desired encryption.
+CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all data with the desired encryption.
 
 TODO(mberhault): flesh out key rotation description.
 
@@ -50,8 +50,14 @@ bytes depending on the encryption algorithm).
 | AES-192 | 192 bits (24 bytes) | 56 bytes |
 | AES-256 | 256 bits (32 bytes) | 64 bytes |
 
-Generating a key file can be done using [openssl](https://www.openssl.org/docs/man1.0.2/apps/openssl.html)
-command line tool. For example, we can create an AES-128 key using:
+Generating a key file can be done using the `cockroach` CLI::
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
+~~~
+
+Or the equivalent [openssl](https://www.openssl.org/docs/man1.0.2/apps/openssl.html) CLI command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
