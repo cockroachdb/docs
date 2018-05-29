@@ -1,0 +1,5 @@
+extends: existence
+message: 'Use the Oxford comma in a list of three or more items.'
+level: warning
+tokens:
+  - '(?:[^,]+,){1,}\s\w+\sand'

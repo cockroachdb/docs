@@ -1,0 +1,6 @@
+extends: existence
+message: Do not use end punctuation (%s) in headings
+scope: heading
+level: warning
+raw:
+  - '(?:[^a-zA-Z])$'
