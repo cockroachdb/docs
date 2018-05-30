@@ -148,7 +148,7 @@ You can use secondary indexes to improve the performance of queries using column
 
 To create the most useful secondary indexes, check out our [best practices](indexes.html#best-practices).
 
-### Use Indexes for Faster `JOIN`s
+### Use Indexes for Faster Joins
 
 CockroachDB supports both [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) and [hash joins](https://en.wikipedia.org/wiki/Hash_join). CockroachDB uses merge joins whenever possible because they are more performant than hash joins computationally and in terms of memory. However, merge joins are possible only when the tables being joined are indexed on the relevant columns; when this condition is not met, CockroachDB resorts to the slower hash joins.
 
@@ -169,7 +169,7 @@ In contrast, hash joins are computationally expensive and require additional mem
 
 A merge join requires both tables to be indexed on the merge columns. In case this condition is not met, CockroachDB resorts to the slower hash joins. So while using `JOIN` on two tables, first create indexes on the tables and then use the `JOIN` operator.
 
-Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
+Also note that merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 ### Drop Unused Indexes
 
