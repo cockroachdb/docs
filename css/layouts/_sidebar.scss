@@ -20,6 +20,7 @@ body.sidenav-open {
 .col-sidebar {
   background-color: $cl_gray_light;
   position: relative;
+  padding: 0 0 0 15px;
 
   @include at-query($max, $screen-md) {
     position: fixed;
@@ -33,6 +34,8 @@ body.sidenav-open {
 
   @include at-query($min, $screen-md) {
     top: 70px;
+    min-width: 290px;
+    padding: 0;
   }
 
   @include at-query($min, $screen-md){
@@ -293,8 +296,10 @@ a:not([href]) {
   border-radius: 0px;
   padding-bottom: 5px;
 
-  @include at-query($min, $screen-md) { padding: 0; }
-  @include at-query($min, $screen-lg) { width: 260px; }
+  @include at-query($min, $screen-md) { 
+    width: 260px;
+    padding: 0; 
+  }
 
   li.tier-1 {
     margin-top: 5px;
@@ -350,7 +355,7 @@ a:not([href]) {
     left: auto;
   }
 
-  @include at-query($min, $screen-lg) {width: 260px; }
+  @include at-query($min, $screen-md) {width: 260px; }
 
   &.open {
     border-bottom: 1px solid $cl_gray_medium;

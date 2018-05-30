@@ -25,7 +25,9 @@
 
 	@include at-query($min, $screen-md){
 		#main-content {
+			max-width: 100%;
 			min-height: 625px;
+			padding: 0 30px 0 45px;
 
 			.content-col {
 				min-height: 625px;
