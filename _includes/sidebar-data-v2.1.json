@@ -1545,6 +1545,12 @@
             ]
           },
           {
+            "title": "Enable User Authentication",
+            "urls": [
+              "/${VERSION}/admin-ui-user-authentication.html"
+            ]
+          },
+          {
             "title": "Overview Dashboard",
             "urls": [
               "/${VERSION}/admin-ui-overview-dashboard.html"
