@@ -191,7 +191,7 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 +-------+
 ~~~
 
-Now, retrieve all the current entries where the link is pointing to somewhere on YouTube (i.e., where `object.data.domain` is `"youtube.com"`):
+Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
 
 {% include copy-clipboard.html %}
 ~~~ sql
