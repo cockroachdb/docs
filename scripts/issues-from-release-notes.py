@@ -34,7 +34,7 @@ milestone = args.milestone
 # Map milestones to their internal IDs.
 if milestone == "2.1":
     milestone = 8
-if milestone == "2.O.x":
+if milestone == "2.0.x":
     milestone = 10
 
 bullets_with_comments = 0
