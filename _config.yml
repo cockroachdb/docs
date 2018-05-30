@@ -44,10 +44,10 @@ release_info:
     start_time: 2018-05-21 15:10:52.34274101 +0000 UTC
   v2.1:
     name: v2.1.0
-    version: v2.1.0-alpha.20180507
+    version: v2.1.0-alpha.20180604
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2018/05/07 14:48:26 (go1.10)
-    start_time: 2018-05-07 15:10:52.34274101 +0000 UTC
+    build_time: 2018/06/04 14:48:26 (go1.10)
+    start_time: 2018-06-04 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
