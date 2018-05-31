@@ -17,7 +17,7 @@ Encryption at rest allows encryption of all files on disk using AES in counter m
 sizes allowed.
 
 Encryption is performed in the [storage layer](architecture/storage-layer.html) and configured per store.
-All files used by the store, regarless of contents, are encrypted with the desired algorithm.
+All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 
 To allow arbitrary rotation schedules and ensure security of the keys, we use two layers of keys:
 
@@ -39,6 +39,7 @@ CockroachDB does not currently force re-encryption of older files but instead re
 ## Key rotation
 
 Key rotation is necessary for encryption at rest for multiple reasons:
+
 * prevent key reuse with the same encryption parameters (after many files)
 * reduce the risk of key exposure
 
@@ -47,6 +48,7 @@ This is done by setting the `key` parameter of the `--enterprise-encryption` fla
 and `old-key` to the previously-used key.
 
 Data keys will automatically be rotated at startup if any of the following conditions are met:
+
 * the active store key changed
 * the encryption type changed (different key size, or plaintext to/from encryption)
 * the current data key is `rotation-period` old or more.
@@ -69,15 +71,17 @@ and encrypted.
 
 ## Recommendations
 
-There are a number of considerations to keep in mind when running with encryption:
+There are a number of considerations to keep in mind when running with encryption.
 
 Key management is the most dangerous aspect of encryption. The following rules should be kept in mind:
+
 * make sure only the unix user running the `cockroach` process has access to the keys
 * do not store the keys on the same partition/drive as the cockroach data. It is best to load keys at run time from a separate system (eg: keywhiz, vault)
 * rotate store keys frequently (every few weeks to months)
 * keep the data key rotation period low (default is one week)
 
 A few other recommendations apply for best security practices:
+
 * do not switch from encrypted to plaintext, this leaks data keys. Once transitioned to plaintext, all data must be considered reachable.
 * do not copy the encrypted files as the data keys are not easily available.
 * if encryption is desired, start a node with it enabled from first run without ever running in plaintext.
@@ -130,7 +134,7 @@ The allowed components in the flag are:
 The `key` and `old-key` components must **always** be specified. They allow for transitions between
 encryption algorithms, and between plaintext and encrypted.
 
-Starting node for the first time using AES-128 encryption can be done using:
+Starting a node for the first time using AES-128 encryption can be done using:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-128.key,old-key=plain
@@ -165,9 +169,10 @@ The new key can be seen as active in the admin UI under the stores report page.
 
 To disable encryption, specify `key=plain`. The data keys will be stored in plaintext and new data will not be encrypted.
 
-To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `key=/path/to/my/old-aes-128.key`. The data keys
+To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key then encrypted using the new key. A new data key will also be generated.
 
 ## See Also
 
-TODO(mberhault): links to external resources, report page details, flag descriptions.
++ [Enterprise Licensing](enterprise-licensing.html)
++ [`BACKUP`](backup.html)
