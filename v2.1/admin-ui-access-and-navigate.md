@@ -10,7 +10,7 @@ toc: false
 
 You can access the Admin UI from any node in the cluster.
 
-{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For added security, you can choose to <a href="admin-ui-user-authentication.html">enable user authentication</a> for secure clusters so that only authorized users can access and view the Admin UI. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to <a href="admin-ui-user-authentication.html">enable user authentication</a> to restrict access to the Admin UI to authorized users. {{site.data.alerts.end}}
 
 By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
 

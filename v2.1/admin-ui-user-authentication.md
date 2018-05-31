@@ -8,7 +8,7 @@ By default, CockroachDB allows all users to access and view the Admin UI. Howeve
 
 <div id="toc"></div>
 
-1. Start a secure cluster as described in our [deployment tutorials](secure-a-cluster.html#step-1-create-security-certificates).
+1. Start a secure cluster as described in our [deployment tutorials](manual-deployment.html).
 
     However, when starting each node, be sure to set the `COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE` environment variable, for example:
 
