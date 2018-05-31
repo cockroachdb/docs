@@ -1,5 +1,6 @@
 extends: substitution
 message: Use '%s' instead of '%s'
+link: https://github.com/cockroachdb/docs/blob/master/STYLE.md#language-and-tone
 ignorecase: false
 level: warning
 swap:
