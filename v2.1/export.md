@@ -80,7 +80,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 
 #### `nullas`
 
-Convert SQL *NULL* values to they match the specified string.
+Convert SQL *NULL* values so they match the specified string.
 
 <table>
 	<tbody>
@@ -94,7 +94,7 @@ Convert SQL *NULL* values to they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The string that should be converted to <em>NULL</em></td>
+			<td>The string that should be used to represent <em>NULL</em> values</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
