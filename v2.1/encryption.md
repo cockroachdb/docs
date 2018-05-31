@@ -86,6 +86,8 @@ A few other recommendations apply for best security practices:
 * do not copy the encrypted files as the data keys are not easily available.
 * if encryption is desired, start a node with it enabled from first run without ever running in plaintext.
 
+Note that backups taken with the [`BACKUP`](backup.html) statement are not encrypted (whether you are using this feature or not). If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
+
 ## Example
 
 ### Generating key files
