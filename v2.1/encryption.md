@@ -11,7 +11,7 @@ Encryption At Rest provides transparent encryption for node data on local disk.
 
 <div id="toc"></div>
 
-## Background
+## Overview
 
 Encryption at rest allows encryption of all files on disk using AES in counter mode, with all key
 sizes allowed.
@@ -36,7 +36,7 @@ Any new file created by the store uses the currently-active data key. All data k
 
 CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all data with the desired encryption.
 
-## Key rotation
+## Rotating Keys
 
 Key rotation is necessary for encryption at rest for multiple reasons:
 
@@ -102,7 +102,7 @@ bytes depending on the encryption algorithm).
 | AES-192 | 192 bits (24 bytes) | 56 bytes |
 | AES-256 | 256 bits (32 bytes) | 64 bytes |
 
-Generating a key file can be done using the `cockroach` CLI::
+Generating a key file can be done using the `cockroach` CLI:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -142,7 +142,9 @@ Starting a node for the first time using AES-128 encryption can be done using:
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-128.key,old-key=plain
 ~~~
 
-**WARNING**: once specified for a given store, the `--enterprise-encryption` flag must always be present.
+{{site.data.alerts.callout_danger}}
+Once specified for a given store, the `--enterprise-encryption` flag must always be present.
+{{site.data.alerts.end}}
 
 ### Checking encryption status
 
