@@ -4,7 +4,7 @@ summary: The CANCEL JOB statement stops long-running jobs.
 toc: false
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include schema changes, [`IMPORT`](import.html) jobs, and enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) tasks.
+The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and as of v2.1, schema changes.
 
 <div id="toc"></div>
 
