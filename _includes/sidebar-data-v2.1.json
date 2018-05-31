@@ -1545,7 +1545,7 @@
             ]
           },
           {
-            "title": "Enable User Authentication",
+            "title": "Secure the Admin UI",
             "urls": [
               "/${VERSION}/admin-ui-user-authentication.html"
             ]
