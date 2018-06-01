@@ -4,7 +4,7 @@ summary: Learn how to create a simple file server for use with CockroachDB IMPOR
 toc: false
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB enterprise backups](backup.html), but don't have access to (or simply can't use) cloud storage providers, you can easily create your own file server. You can then use this file server by leveraging support for our HTTP Export Storage API.
+If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB enterprise backups](backup.html), but do not have access to (or simply cannot use) cloud storage providers, you can easily create your own file server. You can then use this file server by leveraging support for our HTTP Export Storage API.
 
 This is especially useful for:
 

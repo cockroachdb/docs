@@ -3,7 +3,6 @@ message: Prefer '%s' over '%s'
 ignorecase: false
 level: warning
 swap:
-  cockroachdb: CockroachDB
   raft: Raft
   admin UI: Admin UI
   admin ui: Admin UI

@@ -18,7 +18,7 @@ the right place.
 
 In order to keep your data consistent, CockroachDB only works when at least a
 majority of its nodes are running. This means that if only one node of a three
-node cluster is running, that one node won't be able to do anything. The
+node cluster is running, that one node will not be able to do anything. The
 `--background` flag of [`cockroach start`](start-a-node.html) causes the start
 command to wait until the node has fully initialized and is able to start
 serving queries.
@@ -36,7 +36,7 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 ## Why is disk usage increasing despite lack of writes?
 
-The timeseries data used to power the graphs in the admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
+The timeseries data used to power the graphs in the Admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
 ## Can I reduce or disable the storage of timeseries data? <span class="version-tag">New in v2.0</span>
 

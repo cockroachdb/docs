@@ -23,7 +23,7 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 {{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They don't work with Java 10.
+The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
 {{site.data.alerts.end}}
 
 ## Step 1. Install the Gradle build tool

@@ -92,7 +92,7 @@ All of the examples below assume you've already created a table `accounts`:
 +----+---------+
 ~~~
 
-If you don't list column names, the statement will use the columns of the table in their declared order:
+If you do not list column names, the statement will use the columns of the table in their declared order:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -255,7 +255,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that do not (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
 <div class="filters clearfix">
     <button class="filter-button" data-scope="shell">Shell</button>

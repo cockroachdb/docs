@@ -42,7 +42,7 @@ Before getting started, it's important to review some limitations and requiremen
 
     You may also want to:
     - Change the **AWS region** where the cluster will run. The default region is **US West**. Note that some instance types may not be available in some regions.
-    - Add an **IP Address Whitelist** to restrict user access to the CockroachDB admin UI and SQL client access to the cluster. By default, all locations have access.
+    - Add an **IP Address Whitelist** to restrict user access to the CockroachDB Admin UI and SQL client access to the cluster. By default, all locations have access.
     - Increase the initial **Cluster Size**. The default is **3** nodes.
 
 3. In the **Load Generators** section, select the type of **Workload** you would like to run against the cluster.
@@ -175,7 +175,7 @@ To see this in action:
 
 ## Step 6. Stop the cluster
 
-In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you don't delete these resources, AWS will continue to charge you for them.
+In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you do not delete these resources, AWS will continue to charge you for them.
 
 ## See Also
 

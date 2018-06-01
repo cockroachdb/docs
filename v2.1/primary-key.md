@@ -8,7 +8,7 @@ The Primary Key [constraint](constraints.html) specifies that the constrained co
 
 Unlike other constraints which have very specific uses, the Primary Key constraint *should be used for every table* because it provides an intrinsic structure to the table's data. This both makes it easier to understand, as well as improving query performance.
 
-{{site.data.alerts.callout_info}}A table's primary key can only be specified in the <a href="create-table.html"><code>CREATE TABLE</code></a> statement. It can't be changed later using <code>ALTER TABLE</code>, though it is possible to <a href="constraints.html#change-constraints">go through a process</a> to create a new table with the new primary key you want and then migrate the data.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}A table's primary key can only be specified in the <a href="create-table.html"><code>CREATE TABLE</code></a> statement. It cannot be changed later using <code>ALTER TABLE</code>, though it is possible to <a href="constraints.html#change-constraints">go through a process</a> to create a new table with the new primary key you want and then migrate the data.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

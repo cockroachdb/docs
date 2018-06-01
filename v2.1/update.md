@@ -152,7 +152,7 @@ Parameter | Description
 
 ### Update All Rows
 
-{{site.data.alerts.callout_danger}}If you don't use the <code>WHERE</code> clause to specify the rows to be updated, the values for all rows will be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}If you do not use the <code>WHERE</code> clause to specify the rows to be updated, the values for all rows will be updated.{{site.data.alerts.end}}
 
 ~~~ sql
 > UPDATE accounts SET balance = 5000.0;
@@ -177,7 +177,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>UPDATE</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that do not (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>UPDATE</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
 <section class="filters clearfix">
     <button class="filter-button" data-scope="shell">Shell</button>

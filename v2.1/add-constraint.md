@@ -57,7 +57,7 @@ Adding the [Check constraint](check.html) requires that all of a column's values
 
 Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
-For example, let's say you have two simple tables, `orders` and `customers`:
+For example, let's say you have two tables, `orders` and `customers`:
 
 ~~~ sql
 > SHOW CREATE TABLE customers;

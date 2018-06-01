@@ -532,7 +532,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 ### Allow potentially unsafe SQL statements
 
-The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
+The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"

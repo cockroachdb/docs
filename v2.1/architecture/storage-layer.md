@@ -1,6 +1,6 @@
 ---
 title: Storage Layer
-summary: 
+summary:
 toc: false
 ---
 
@@ -36,7 +36,7 @@ CockroachDB uses RocksDB––an embedded key-value store––to read and write
 
 RocksDB integrates really well with CockroachDB for a number of reasons:
 
-- Key-value store, which makes mapping to our key-value layer very simple
+- Key-value store, which makes mapping to our key-value layer simple
 - Atomic write batches and snapshots, which give us a subset of transactions
 
 Efficient storage for the keys is guaranteed by the underlying RocksDB engine by means of prefix compression.
@@ -51,7 +51,7 @@ Despite being implemented in the Storage Layer, MVCC values are widely used to e
 
 As described in the [SQL:2011 standard](https://en.wikipedia.org/wiki/SQL:2011#Temporal_support), CockroachDB supports time travel queries (enabled by MVCC).
 
-To do this, all of the schema information also has an MVCC-like model behind it. This lets you perform `SELECT...AS OF SYSTEM TIME`, and CockroachDB actually uses the schema information as of that time to formulate the queries.
+To do this, all of the schema information also has an MVCC-like model behind it. This lets you perform `SELECT...AS OF SYSTEM TIME`, and CockroachDB uses the schema information as of that time to formulate the queries.
 
 Using these tools, you can get consistent data from your database as far back as your garbage collection period.
 

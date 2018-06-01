@@ -72,7 +72,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 ## Step 2. Increase the time until a node is considered dead
 
-Let's say you need to perform some maintenance on each of your nodes, e.g., upgrade system software. For each node, you expect the maintenance and restart process to take no more than 15 minutes, and you don't want the cluster to consider a node dead and rebalance its data during this process.
+Let's say you need to perform some maintenance on each of your nodes, e.g., upgrade system software. For each node, you expect the maintenance and restart process to take no more than 15 minutes, and you do not want the cluster to consider a node dead and rebalance its data during this process.
 
 1. In the same terminal, increase the `server.time_until_store_dead` cluster setting:
 

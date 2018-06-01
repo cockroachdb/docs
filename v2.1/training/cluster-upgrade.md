@@ -269,7 +269,7 @@ $ ./cockroach sql \
 --execute="SET CLUSTER SETTING version = crdb_internal.node_executable_version();"
 ~~~
 
-{{site.data.alerts.callout_info}}This final step is required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you don't need to take any further action. Note that, after completing this step, it will no longer be possible to perform a rolling downgrade to v1.1. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.0, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This final step is required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you do not need to take any further action. Note that, after completing this step, it will no longer be possible to perform a rolling downgrade to v1.1. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.0, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.{{site.data.alerts.end}}
 
 ## Step 7. Clean up
 

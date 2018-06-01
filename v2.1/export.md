@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.1:</span> The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
 
-Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you don't need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 {{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature is currently under development and is slated for full release in CockroachDB 2.1. The feature flags and behavior are subject to change. {{site.data.alerts.end}}
 

@@ -81,7 +81,7 @@ These projects involve fundamental changes to the way CockroachDB works. What’
 That being said, if you’re up for the challenge there are a few prerequisites. You should:
 
 1. Convince the CockroachDB team of your ability to drive a larger project. For this, you can either work with the CockroachDB team on mid-sized projects first, or provide some other evidence that you are an expert at building high quality distributed systems.
-    {{site.data.alerts.callout_info}}The engineering team may not support further exploration if they think the project is too complex for an external contributor or if we already have a schedule for this work and you can't guarantee delivery on that schedule.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}The engineering team may not support further exploration if they think the project is too complex for an external contributor or if we already have a schedule for this work and you cannot guarantee delivery on that schedule.{{site.data.alerts.end}}
 2. Make a high-level proposal for your project, declaring your intention, the area of functionality, and how much time (and, if applicable, people) you have available to work on the project. You should do this via a GitHub issue.
 3. Engineers and product managers will review your plans to understand how it fits into our roadmap from a technical and business point of view. This will inform how much support we will be able to provide.
     {{site.data.alerts.callout_info}}This review may take a few days to a few weeks, depending on our team’s availability and the complexity of the project.{{site.data.alerts.end}}

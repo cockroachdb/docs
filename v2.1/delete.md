@@ -46,7 +46,7 @@ Successful `DELETE` statements return one of the following:
 
 | Response | Description |
 |-----------|-------------|
-|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that don't delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
+|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
 |Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)|
 
 ## Disk Space Usage After Deletes

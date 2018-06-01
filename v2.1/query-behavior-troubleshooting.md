@@ -42,7 +42,7 @@ Because this kind of behavior is entirely unexpected, you should [file an issue]
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
