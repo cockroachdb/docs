@@ -14,7 +14,7 @@ This page explains available monitoring tools and critical events and metrics to
 
 ### Admin UI
 
-The [built-in Admin UI](admin-ui-overview.html) gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster. It is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+The [built-in Admin UI](admin-ui-access-and-navigate.html) gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster. It is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
 {{site.data.alerts.callout_danger}}Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.{{site.data.alerts.end}}
 
