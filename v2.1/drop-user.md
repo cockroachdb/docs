@@ -4,7 +4,7 @@ summary: The DROP USER statement removes one or more SQL users.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
+The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user rm</code></a> command to remove users.{{site.data.alerts.end}}
 
@@ -26,7 +26,7 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Example
 
-<span class="version-tag">New in v2.0:</span> All of a user's privileges must be revoked before the user can be dropped.
+All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 

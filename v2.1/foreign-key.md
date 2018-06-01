@@ -26,7 +26,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
 - Cannot be a [computed column](computed-columns.html).
 - Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
     - To meet this requirement when creating a new table, there are a few options:
-        - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0) clause of `CREATE TABLE`.
+        - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
         - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
         - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
         - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
@@ -50,7 +50,7 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
-### Foreign Key Actions <span class="version-tag">New in v2.0</span>
+### Foreign Key Actions 
 
 When you set a foreign key constraint, you can control what happens to the constrained column when the column it's referencing (the foreign key) is deleted or updated.
 
@@ -138,7 +138,7 @@ CREATE TABLE packages (
 
 ### Use a Foreign Key Constraint with Default Actions
 
-In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions-new-in-v2-0) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
+In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
 
 First, create the referenced table:
 
@@ -191,7 +191,7 @@ Let's insert a record into the referencing table and try to update the reference
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
-The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON UPDATE NO ACTION`). However, `id = 1234` is not referenced and can be updated:
+The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON UPDATE NO ACTION`). However, `id = 1234` is not referenced and can be updated:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -221,7 +221,7 @@ Now let's try to delete a referenced row:
 pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
 ~~~
 
-Similarly, the deletion returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON DELETE NO ACTION`). However, `id = 1111` is not referenced and can be deleted:
+Similarly, the deletion returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON DELETE NO ACTION`). However, `id = 1111` is not referenced and can be deleted:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -240,9 +240,9 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 +------+----------+
 ~~~
 
-### Use a Foreign Key Constraint with `CASCADE` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `CASCADE` 
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
 First, create the referenced table:
 
@@ -350,9 +350,9 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 +-----+--------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET NULL` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `SET NULL` 
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
 First, create the referenced table:
 
@@ -477,9 +477,9 @@ Let's check to make sure the row in `orders_3` where `customers_id = 2` was upda
 +-----+-------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET DEFAULT` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `SET DEFAULT` 
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
 
 First, create the referenced table:
 

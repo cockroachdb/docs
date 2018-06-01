@@ -96,7 +96,7 @@ Type | Details
 `DECIMAL` | Converts to number of seconds (nanosecond precision)
 `FLOAT` | Converts to number of picoseconds
 `STRING` | Converts to `h-m-s` format (nanosecond precision)
-`TIME` | <span class="version-tag">New in v2.0:</span> Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
+`TIME` | Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
 
 ## See Also
 

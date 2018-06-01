@@ -50,10 +50,10 @@ Proceed through the following steps until you locate the source of the issue wit
 
     Errors at this stage potentially include:
     - CPU incompatibility
-    - Other services running on port `26257` or `8080` (CockroachDB's default `port` and `http-port` respectively). You can either stop those services or start your node with different ports, specified with the [`--port` and   `--http-port`](start-a-node.html#flags-changed-in-v2-0).
+    - Other services running on port `26257` or `8080` (CockroachDB's default `port` and `http-port` respectively). You can either stop those services or start your node with different ports, specified with the [`--port` and   `--http-port`](start-a-node.html#flags).
 
         If you change the port, you will need to include the `--port=[specified port]` flag in each subsequent `cockroach` command or change the `COCKROACH_PORT` environment variable.
-    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--host` flag](start-a-node.html#flags-changed-in-v2-0).
+    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--host` flag](start-a-node.html#flags).
 
         If you change the host, you will need to include `--host=[specified host]` in each subsequent `cockroach` command.
 
@@ -129,7 +129,7 @@ Most networking-related issues are caused by one of two issues:
 
 - Firewall rules, which require your network administrator to investigate
 
-- Inaccessible hostnames on your nodes, which can be controlled with the `--host` and `--advertise-host` flags on [`cockroach start`](start-a-node.html#flags-changed-in-v2-0)
+- Inaccessible hostnames on your nodes, which can be controlled with the `--host` and `--advertise-host` flags on [`cockroach start`](start-a-node.html#flags)
 
 However, to efficiently troubleshoot the issue, it's important to understand where and why it's occurring. We recommend checking the following network-related issues:
 

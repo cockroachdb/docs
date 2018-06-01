@@ -211,7 +211,7 @@ When executing an [`ALTER TABLE ADD COLUMN`](add-column.html) statement with a [
 
 ### Load-based lease rebalancing in uneven latency deployments
 
-When nodes are started with the [`--locality`](start-a-node.html#flags-changed-in-v2-0) flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
+When nodes are started with the [`--locality`](start-a-node.html#flags) flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
 
 However, you might see increased latency caused by a consistently high rate of lease transfers between datacenters in the following case:
 

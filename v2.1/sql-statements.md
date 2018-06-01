@@ -37,13 +37,13 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER SEQUENCE`](alter-sequence.html) | <span class="version-tag">New in v2.0:</span> Apply a schema change to a sequence.
+[`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER USER`](alter-user.html) | <span class="version-tag">New in v2.0:</span> Add or change a user's password.
+[`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
-[`CREATE SEQUENCE`](create-sequence.html) | <span class="version-tag">New in v2.0:</span> Create a new sequence.
+[`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
@@ -51,7 +51,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
-[`DROP SEQUENCE`](drop-sequence.html) | <span class="version-tag">New in v2.0:</span> Remove a sequence.
+[`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
@@ -62,12 +62,12 @@ Statement | Usage
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE SEQUENCE`](show-create-sequence.html) | <span class="version-tag">New in v2.0:</span> View the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
+[`SHOW CREATE SEQUENCE`](show-create-sequence.html) | View the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
 [`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a copy of the specified table.
 [`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
-[`SHOW SCHEMAS`](show-schemas.html) | <span class="version-tag">New in v2.0:</span> List the schemas in a database.
+[`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
@@ -88,14 +88,14 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE ROLE`](create-role.html) | <span class="version-tag">New in v2.0:</span> Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
+[`CREATE ROLE`](create-role.html) | Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
-[`DROP ROLE`](drop-role.html) | <span class="version-tag">New in v2.0:</span> Remove one or more SQL [roles](roles.html).
+[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](roles.html).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
 [`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](roles.html).
-[`GRANT <roles>`](grant-roles.html) | <span class="version-tag">New in v2.0:</span> Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
+[`GRANT <roles>`](grant-roles.html) | Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
 [`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](roles.html).
-[`REVOKE <roles>`](revoke-roles.html) | <span class="version-tag">New in v2.0:</span> Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
+[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.

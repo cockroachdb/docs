@@ -6,7 +6,7 @@ toc: false
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
-{{site.data.alerts.callout_danger}}If you update a row that contains a column referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions-new-in-v2-0"><code>ON UPDATE</code> action</a>, all of the dependent rows will also be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}If you update a row that contains a column referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions"><code>ON UPDATE</code> action</a>, all of the dependent rows will also be updated.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 

@@ -28,7 +28,7 @@ Parameter | Description
 
 ## Examples
 
-### Show All Grants <span class="version-tag">New in v2.0</span>
+### Show All Grants 
 
 To list all grants for all users and roles on all databases and tables:
 
@@ -49,7 +49,7 @@ To list all grants for all users and roles on all databases and tables:
 (167 rows)
 ~~~
 
-### Show a Specific User or Role's Grants <span class="version-tag">New in v2.0</span>
+### Show a Specific User or Role's Grants 
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -175,7 +175,7 @@ To list all grants for all users and roles on all databases and tables:
 +------------+--------+-----------+------------+------------+
 ~~~
 
-### Show Role Memberships <span class="version-tag">New in v2.0</span>
+### Show Role Memberships 
 
 **All members of all roles:**
 

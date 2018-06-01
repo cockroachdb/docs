@@ -4,7 +4,7 @@ summary: The SHOW QUERIES statement lists all currently active queries across th
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:
+The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:
 
 - The internal ID of the query
 - The node executing the query

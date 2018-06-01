@@ -4,7 +4,7 @@ summary: The SHOW JOBS statement lists all currently active schema changes and b
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
+The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
 
 - Schema changes through `ALTER TABLE`
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html)

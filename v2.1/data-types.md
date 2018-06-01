@@ -17,13 +17,13 @@ Type | Description | Example
 [`DATE`](date.html) | A date. | `DATE '2016-01-25'`
 [`DECIMAL`](decimal.html) | An exact, fixed-point number. | `1.2345`
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number. | `1.2345`
-[`INET`](inet.html) | <span class="version-tag">New in v2.0:</span> An IPv4 or IPv6 address. | `192.168.0.1`
+[`INET`](inet.html) | An IPv4 or IPv6 address. | `192.168.0.1`
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
-[`JSONB`](jsonb.html) | <span class="version-tag">New in v2.0:</span> JSON (JavaScript Object Notation) data. | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
+[`JSONB`](jsonb.html) | JSON (JavaScript Object Notation) data. | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
-[`TIME`](time.html) | <span class="version-tag">New in v2.0:</span> A time of day in UTC. | `TIME '01:23:45.123456'`
+[`TIME`](time.html) | A time of day in UTC. | `TIME '01:23:45.123456'`
 [`TIMETZ`](time.html) | <span class="version-tag">New in v2.1:</span> A time of day with a time zone offset from UTC. | `TIMETZ '01:23:45.123456-5:00'`
 [`TIMESTAMP`](timestamp.html) | A date and time pairing in UTC. | `TIMESTAMP '2016-01-25 10:10:10'`
 [`TIMESTAMPTZ`](timestamp.html) | A date and time pairing with a time zone offset from UTC. | `TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`

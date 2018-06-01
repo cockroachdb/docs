@@ -4,7 +4,7 @@ summary: The DROP ROLE statement removes one or more SQL roles.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
+The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 {{site.data.alerts.callout_info}}<code>DROP ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
