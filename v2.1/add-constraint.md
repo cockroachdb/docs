@@ -106,7 +106,7 @@ To ensure that each value in the `orders.customer_id` column matches a unique va
 
 Then you add the Foreign Key constraint.
 
-You can include a [foreign key action](foreign-key.html#foreign-key-actions-new-in-v2-0) to specify what happens when a foreign key is updated or deleted.
+You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
 In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
 

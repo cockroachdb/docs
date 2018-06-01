@@ -134,7 +134,7 @@ By default, each node's cache size and temporary SQL memory size is `128MiB` res
 - Increasing a node's **cache size** will improve the node's read performance.
 - Increasing a node's **SQL memory size** will increase the number of simultaneous client connections it allows (the `128MiB` default allows a maximum of 6200 simultaneous connections) as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions.
 
-To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](start-a-node.html#flags-changed-in-v2-0) and [`--max-sql-memory`](start-a-node.html#flags-changed-in-v2-0) flags:
+To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](start-a-node.html#flags) and [`--max-sql-memory`](start-a-node.html#flags) flags:
 
 {% include copy-clipboard.html %}
 ~~~ shell

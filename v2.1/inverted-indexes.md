@@ -55,7 +55,7 @@ This lets you to search based on subcomponents.
 
 You can use inverted indexes to improve the performance of queries using `JSONB` columns. You can create them:
 
-- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0).
+- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes).
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
 - Using the following PostgreSQL-compatible syntax:
 
