@@ -4,7 +4,7 @@ summary: The Overview dashboard lets you monitor important SQL performance, repl
 toc: false
 ---
 
-The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default. 
+The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
 <div id="toc"></div>
 
@@ -40,7 +40,7 @@ Ranges are subsets of your data, which are replicated to ensure survivability. R
 
 For details about how to control the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
 
-{{site.data.alerts.callout_info}}The timeseries data used to power the graphs in the admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself. For more details, see this <a href="operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes">FAQ</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The timeseries data used to power the graphs in the Admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself. For more details, see this <a href="operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes">FAQ</a>.{{site.data.alerts.end}}
 
 ## Capacity
 

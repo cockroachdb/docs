@@ -85,7 +85,7 @@ For example:
 (1 row)
 ~~~
 
-The example illustrates that the primary key, unique and "not null"
+The example illustrates that the primary key, unique, and "not null"
 constraints are not propagated to the copy.
 
 It is however possible to

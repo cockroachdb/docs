@@ -155,7 +155,7 @@ CockroachDB proceeds through the following steps until one of the transactions i
 
 3. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
-Additionally, the following types of conflicts that don't involve running into intents can arise:
+Additionally, the following types of conflicts that do not involve running into intents can arise:
 
 - **Write after read**, when a write with a lower timestamp encounters a later read. This is handled through the [Timestamp Cache](#timestamp-cache).
 - **Read within uncertainty window**, when a read encounters a value with a higher timestamp but it's ambiguous whether the value should be considered to be in the future or in the past of the transaction because of possible *clock skew*. This is handled by attempting to push the transaction's timestamp beyond the uncertain value (see [read refreshing](#read-refreshing)). Note that, if the transaction has to be retried, reads will never encounter uncertainty issues on any node which was previously visited, and that there's never any uncertainty on values read from the transaction's gateway node.

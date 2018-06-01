@@ -172,7 +172,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
-2. Then use the the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
+2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -274,7 +274,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 8. Simulate two simultaneous node failures
 
-1. Use the the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
+1. Use the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell

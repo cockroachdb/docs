@@ -97,7 +97,7 @@ $ cockroach gen haproxy \
 --port=26257
 ~~~
 
-This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that won't be used by the nodes you'll add later.
+This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that will not be used by the nodes you'll add later.
 
 ~~~
 global
@@ -230,7 +230,7 @@ Once you're done with your cluster, stop YCSB by switching into its terminal and
 
 {{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 
 {% include copy-clipboard.html %}
 ~~~ shell

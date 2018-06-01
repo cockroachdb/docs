@@ -14,7 +14,7 @@ toc: false
 
 The [primary key required for partitioning](partitioning.html#partition-using-primary-key) is different from the conventional primary key: The unique identifier in the primary key requires to be prefixed with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
 
-As of CockroachDB v2.0, you cannot alter the primary key after it has been defined while [creating the table](create-table.html#create-a-table-with-partitions-new-in-v2-0). If the primary key in your existing table does not meet the requirements, you won't be able to use the `ALTER TABLE` statement to define partitions or subpartitions on the existing table. Allowing users to alter the primary key after table creation is on the roadmap for CockroachDB v2.1.
+As of CockroachDB v2.0, you cannot alter the primary key after it has been defined while [creating the table](create-table.html#create-a-table-with-partitions-new-in-v2-0). If the primary key in your existing table does not meet the requirements, you will not be able to use the `ALTER TABLE` statement to define partitions or subpartitions on the existing table. Allowing users to alter the primary key after table creation is on the roadmap for CockroachDB v2.1.
 
 ## Synopsis
 

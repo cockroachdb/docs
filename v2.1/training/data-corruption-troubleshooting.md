@@ -153,7 +153,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     Failed running "start"
     ~~~
 
-    The error tells you that the failure has to do with RocksDB-level (i.e., storage-level) corruption. Because the node's data is corrupt, the node won't restart.
+    The error tells you that the failure has to do with RocksDB-level (i.e., storage-level) corruption. Because the node's data is corrupt, the node will not restart.
 
 ## Step 3. Resolve the problem
 

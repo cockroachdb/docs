@@ -7,7 +7,7 @@ block_search: true
 redirect_from: /training/how-to-get-support.html
 ---
 
-When you encounter a problem that you can't troubleshoot yourself (e.g., data corruption or software panic), [file an issue in the `cockroach` GitHub repository](https://github.com/cockroachdb/cockroach/issues/new) and include the following details.
+When you encounter a problem that you cannot troubleshoot yourself (e.g., data corruption or software panic), [file an issue in the `cockroach` GitHub repository](https://github.com/cockroachdb/cockroach/issues/new) and include the following details.
 
 ## Description of the problem
 
