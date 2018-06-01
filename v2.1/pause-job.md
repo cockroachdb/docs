@@ -12,7 +12,7 @@ After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can control a job.
 
@@ -44,7 +44,7 @@ Parameter | Description
 > PAUSE JOB 27536791415282;
 ~~~
 
-## See Also
+## See also
 
 - [`RESUME JOB`](resume-job.html)
 - [`SHOW JOBS`](show-jobs.html)

@@ -293,6 +293,6 @@ Another way to observe this is to click **Metrics** in the upper left and scroll
 
 <img src="{{ 'images/v2.0/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## What's Next?
+## What's next?
 
 - [Fault Tolerance and Automated Repair](fault-tolerance-and-automated-repair.html)

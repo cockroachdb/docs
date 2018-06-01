@@ -16,7 +16,6 @@ The `ARRAY` data type is useful for ensuring compatibility with ORMs and other t
 
 A value of data type `ARRAY` can be expressed in the following ways:
 
-
 - Appending square brackets (`[]`) to any non-array [data type](data-types.html).
 - Adding the term `ARRAY` to any non-array [data type](data-types.html).
 
@@ -181,7 +180,7 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 (1 row)
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 [Casting](data-types.html#data-type-conversions-casts) between `ARRAY` values is supported when the data types of the arrays support casting. For example, it is possible to cast from a `BOOL` array to an `INT` array but not from a `BOOL` array to a `TIMESTAMP` array:
 
@@ -209,6 +208,6 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 pq: invalid cast: bool[] -> TIMESTAMP[]
 ~~~
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

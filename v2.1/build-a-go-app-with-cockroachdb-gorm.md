@@ -18,7 +18,7 @@ We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -91,7 +91,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [GORM ORM](http://jinzhu.me/gorm/), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 

@@ -24,7 +24,7 @@ $ cockroach init --help
 
 The `cockroach init` command supports the following [client connection](#client-connection) and [logging](#logging) flags.
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters.md %}
 
@@ -110,7 +110,7 @@ These examples assume that nodes have already been started with [`cockroach star
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
-## See Also
+## See also
 
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)

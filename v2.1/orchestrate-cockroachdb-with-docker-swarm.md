@@ -15,7 +15,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before you begin, it's helpful to review some terminology:
 
@@ -549,6 +549,6 @@ cockroachdb-1-key
 $ sudo docker secret rm ca-crt cockroachdb-1-crt cockroachdb-1-key
 ~~~
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

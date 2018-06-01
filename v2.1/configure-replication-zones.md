@@ -15,7 +15,7 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 ## Overview
 
-### Replication Zones Levels
+### Replication zone levels
 
 There are four replication zone levels for **table data** in a cluster, listed from least to most granular:
 
@@ -42,7 +42,7 @@ When replicating data, whether table or system, CockroachDB always uses the most
 
 {{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other existing replication zones. If you increase the replication factor for <code>.default</code>, for example, you may also want to increase the replication factor for <a href="#create-a-replication-zone-for-a-system-range">important internal data</a> as well.{{site.data.alerts.end}}
 
-### Replication Zone Format
+### Replication zone format
 
 A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
 
@@ -63,13 +63,13 @@ Field | Description
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3`
 `constraints` | A JSON object or array of required and/or prohibited constraints influencing the location of replicas. See [Types of Constraints](#types-of-constraints) and [Scope of Constraints](#scope-of-constraints) for more details.<br><br>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
 
-### Replication Constraints
+### Replication constraints
 
 The location of replicas, both when they are first added and when they are rebalanced to maintain cluster equilibrium, is based on the interplay between descriptive attributes assigned to nodes and constraints set in zone configurations.
 
 {{site.data.alerts.callout_success}}For demonstrations of how to set node attributes and replication constraints in different scenarios, see <a href="#scenario-based-examples">Scenario-based Examples</a> below.{{site.data.alerts.end}}
 
-#### Descriptive Attributes Assigned to Nodes
+#### Descriptive attributes assigned to nodes
 
 When starting a node with the [`cockroach start`](start-a-node.html) command, you can assign the following types of descriptive attributes:
 
@@ -79,7 +79,7 @@ Attribute Type | Description
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
-#### Types of Constraints
+#### Types of constraints
 
 The node-level and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance:
 
@@ -91,7 +91,7 @@ Constraint Type | Description | Syntax
 **Required** | When placing replicas, the cluster will consider only nodes/stores with matching attributes or localities. When there are no matching nodes/stores, new replicas will not be added. | `+ssd`
 **Prohibited** | When placing replicas, the cluster will ignore nodes/stores with matching attributes or localities. When there are no alternate nodes/stores, new replicas will not be added. | `-ssd`
 
-#### Scope of Constraints
+#### Scope of constraints
 
 Constraints can be specified such that they apply to all replicas in a zone or such that different constraints apply to different replicas, meaning you can effectively pick the exact location of each replica.
 
@@ -100,7 +100,7 @@ Constraint Scope | Description | Syntax
 **All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints: [+ssd, -region=west]`
 **Per-Replica** | Multiple lists of constraints can be provided in a JSON object mapping the list of constraints to an integer number of replicas in each range that the constraints should apply to. The total number of replicas constrained cannot be greater than the configured number of replicas for the zone. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
 
-### Node/Replica Recommendations
+### Node/replica recommendations
 
 See [Cluster Topography](recommended-production-settings.html#cluster-topology) recommendations for production deployments.
 
@@ -166,7 +166,7 @@ Flag | Description
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
 
@@ -180,11 +180,11 @@ By default, the `zone` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## Basic Examples
+## Basic examples
 
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based Examples](#scenario-based-examples).
 
-###  List the Pre-Configured Replication Zones
+###  List the pre-configured replication zones
 
 Newly created CockroachDB clusters start with some special pre-configured replication zones:
 
@@ -200,7 +200,7 @@ $ cockroach zone ls --insecure
 system.jobs
 ~~~
 
-###  View the Default Replication Zone
+###  View the default replication zone
 
 The cluster-wide replication zone (`.default`) is initially set to replicate data to any three nodes in your cluster, with ranges in each replica splitting once they get larger than 67108864 bytes.
 
@@ -221,7 +221,7 @@ num_replicas: 3
 constraints: []
 ~~~
 
-### Edit the Default Replication Zone
+### Edit the default replication zone
 
 {{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other existing replication zones. If you increase the replication factor for <code>.default</code>, for example, you may also want to increase the replication factor for <a href="#create-a-replication-zone-for-a-system-range">important internal data</a> as well.{{site.data.alerts.end}}
 
@@ -257,7 +257,7 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 ~~~
 
-### Create a Replication Zone for a Database
+### Create a replication zone for a database
 
 To control replication for a specific database, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags:
 
@@ -291,7 +291,7 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 5' | cockroach zone set db1 --insecure -f -
 ~~~
 
-### Create a Replication Zone for a Table
+### Create a replication zone for a table
 
 To control replication for a specific table, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags:
 
@@ -325,7 +325,7 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
 
-### Create a Replication Zone for a Table Partition
+### Create a replication zone for a table partition
 
 {{site.data.alerts.callout_info}}This is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -347,7 +347,7 @@ Apply zone configurations to corresponding partitions:
 $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
 ~~~
 
-### Create a Replication Zone for a System Range
+### Create a replication zone for a system range
 
 In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. CockroachDB comes with pre-configured replication zones for some of these ranges:
 
@@ -414,9 +414,9 @@ constraints: []
 > COMMIT
 ~~~
 
-## Scenario-based Examples
+## Scenario-based examples
 
-### Even Replication Across Datacenters
+### Even replication across datacenters
 
 **Scenario:**
 
@@ -448,7 +448,7 @@ $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-3 
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
 
-### Per-Replica Constraints to Specific Datacenters
+### Per-replica constraints to specific datacenters
 
 **Scenario:**
 
@@ -503,7 +503,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 3. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
 
-### Multiple Applications Writing to Different Databases
+### Multiple applications writing to different databases
 
 **Scenario:**
 
@@ -589,7 +589,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
     The required constraint will force application 2's data to be replicated only within the `us-2` datacenter.
 
-### Stricter Replication for a Specific Table
+### Stricter replication for a specific table
 
 **Scenario:**
 
@@ -650,7 +650,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
     Data in the table will be replicated 5 times, and the required constraint will place data in the table on nodes with `ssd` drives.
 
-### Tweaking the Replication of System Ranges
+### Tweaking the replication of system ranges
 
 **Scenario:**
 
@@ -733,7 +733,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
    The timeseries data will only be replicated 3 times without affecting the configuration of all other data.
 
-## See Also
+## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Table Partitioning](partitioning.html)

@@ -75,7 +75,7 @@ To successfully decommission a node, you need to first add a 6th node:
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before You Begin
+### Before you begin
 
 Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
 
@@ -221,7 +221,7 @@ Also, if the node is ever restarted, it will not accept any client connections, 
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before You Begin
+### Before you begin
 
 Confirm that there are enough nodes to take over the replicas from the nodes you want to remove. See some [Example scenarios](#examples) above.
 
@@ -426,6 +426,6 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 (5 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Temporarily Stop a Node](stop-a-node.html)

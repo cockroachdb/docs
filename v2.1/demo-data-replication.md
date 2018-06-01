@@ -8,7 +8,7 @@ This page walks you through a simple demonstration of how CockroachDB replicates
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -224,7 +224,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 $ rm -rf repdemo-node1 repdemo-node2 repdemo-node3 repdemo-node4 repdemo-node5
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

@@ -87,7 +87,7 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 > CREATE INDEX ON tbl (col1, col2) STORING (col3);
 ~~~
 
-## See Also
+## See also
 
 - [Inverted Indexes](inverted-indexes.html)
 - [`CREATE INDEX`](create-index.html)

@@ -12,7 +12,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 {% include sql/{{ page.version.version }}/diagrams/drop_index.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on each specified table.
 

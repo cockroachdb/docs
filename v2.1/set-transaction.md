@@ -14,7 +14,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction isol
 
 <section>{% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to set the transaction isolation level or priority. However, privileges are required for each statement within a transaction.
 
@@ -104,7 +104,7 @@ SET
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`SET`](set-vars.html)
 - [Transaction parameters](transactions.html#transaction-parameters)

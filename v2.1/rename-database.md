@@ -14,7 +14,7 @@ The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a dat
 
 {% include sql/{{ page.version.version }}/diagrams/rename_database.html %}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can rename databases.
 
@@ -80,7 +80,7 @@ RENAME DATABASE
 pq: the new database name "db3" already exists
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE DATABASE`](create-database.html)
 - [`SHOW DATABASES`](show-databases.html)

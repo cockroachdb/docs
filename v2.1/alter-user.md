@@ -14,7 +14,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add or change a
 
 - Password creation and alteration is supported only in secure clusters for non-`root` users.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
 
@@ -37,7 +37,7 @@ Parameter | Description
 
 ## Examples
 
-### Change Password Using a String Literal
+### Change password using a string literal
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -47,7 +47,7 @@ Parameter | Description
 ALTER USER 1
 ~~~
 
-### Change Password Using an Identifier
+### Change password using an identifier
 
 The following statement changes the password to `ilov3beefjerky`, as above:
 
@@ -72,7 +72,7 @@ To preserve case in a password specified using identifier syntax, use double quo
 > ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
 ~~~
 
-## See Also
+## See also
 
 - [`cockroach user` command](create-and-manage-users.html)
 - [`DROP USER`](drop-user.html)

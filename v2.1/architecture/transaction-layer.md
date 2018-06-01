@@ -200,6 +200,6 @@ The Transaction Layer receives KV operations from `planNodes` executed in the SQ
 
 The `TxnCoordSender` sends its KV requests to `DistSender` in the Distribution Layer.
 
-## What's Next?
+## What's next?
 
 Learn how CockroachDB presents a unified view of your cluster's data in the [Distribution Layer](distribution-layer.html).

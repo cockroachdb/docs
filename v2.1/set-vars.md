@@ -14,7 +14,7 @@ The `SET` [statement](sql-statements.html) can modify one of the session configu
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to modify the session settings.
 
@@ -214,7 +214,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 `kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE`](show-trace.html).
 `local` | Trace recording is enabled; only trace messages issued by the local node are collected.
 
-## See Also
+## See also
 
 - [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)

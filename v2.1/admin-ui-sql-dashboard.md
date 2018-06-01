@@ -56,7 +56,7 @@ Service latency is calculated as the time between when the cluster receives a qu
 
 - In the cluster view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for each node in the cluster.
 
-## Other Graphs
+## Other graphs
 
 The **SQL** dashboard shows other time series graphs that are important for CockroachDB developers:
 

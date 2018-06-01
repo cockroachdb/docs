@@ -58,7 +58,7 @@ You can only apply the Default Value constraint to individual columns.
 
 If the Default Value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`ALTER COLUMN`](alter-column.html)

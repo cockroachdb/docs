@@ -7,7 +7,7 @@ The **Databases** page of the Admin UI provides details of the databases configu
 
 <div id="toc"></div>
 
-## Tables View
+## Tables view
 
 The **Tables** view shows details of the system table as well as the tables in your databases. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Databases** from the left-hand navigation bar.
 
@@ -23,7 +23,7 @@ Ranges | The number of ranges in the table.
 \# of Columns | The number of columns in the table.
 \# of Indices | The number of indices for the table.
 
-## Grants View
+## Grants view
 
 The **Grants** view shows the [privileges](privileges.html) granted to users for each database. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Databases** from the left-hand navigation bar, select **Databases** from the left-hand navigation bar, and then select **Grants** from the **View** menu.
 

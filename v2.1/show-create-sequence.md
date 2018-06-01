@@ -8,7 +8,7 @@ The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SE
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target sequence.
 
@@ -47,7 +47,7 @@ Field | Description
 +--------------------+----------------------------------------------------------------------------------------------------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)

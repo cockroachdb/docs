@@ -10,7 +10,7 @@ The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on the table.
 
@@ -411,7 +411,7 @@ ID:
 
 </section>
 
-## See Also
+## See also
 
 - [`DELETE`](delete.html)
 - [`INSERT`](insert.html)

@@ -12,7 +12,7 @@ The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](a
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -122,7 +122,7 @@ RENAME SEQUENCE
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)

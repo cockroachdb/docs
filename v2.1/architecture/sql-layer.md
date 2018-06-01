@@ -97,6 +97,6 @@ You can find much greater detail in the [DistSQL RFC](https://github.com/cockroa
 
 KV operations from executed `planNodes` are sent to the Transaction Layer.
 
-## What's Next?
+## What's next?
 
 Learn how CockroachDB handles concurrent requests in the [Transaction Layer](transaction-layer.html).

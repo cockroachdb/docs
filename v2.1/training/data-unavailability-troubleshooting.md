@@ -16,7 +16,7 @@ redirect_from: /training/data-unavailability-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -309,6 +309,6 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
     $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9
     ~~~
 
-## What's Next?
+## What's next?
 
 [Data Corruption Troubleshooting](data-corruption-troubleshooting.html)

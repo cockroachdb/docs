@@ -16,7 +16,7 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 - A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the table.
 
@@ -196,7 +196,7 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 +---+---+
 ~~~
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [`DELETE`](delete.html)

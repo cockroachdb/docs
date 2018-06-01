@@ -144,7 +144,7 @@ To overcome the issue, we take advantage of the fact that multiple CA certificat
 
 On rotating node and client certificates after rotating the CA certificate, the node and client certificates are signed using new CA certificates. The nodes use the new node and CA certificates as soon as the certs directory on the node is rescanned. However, the clients use the new CA and client certificates only when the clients are restarted. Thus node certificates signed by the new CA certificate are not accepted by clients that do not have the new CA certificate yet. To ensure all nodes and clients have the latest CA certificate, rotate CA certificates on a completely different schedule; ideally, months before changing the node and client certificates.
 
-## See Also
+## See also
 
 - [Create Security Certificates](create-security-certificates.html)
 - [Manual Deployment](manual-deployment.html)

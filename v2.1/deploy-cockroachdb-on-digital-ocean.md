@@ -105,6 +105,6 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 {% include prod_deployment/use-cluster.md %}
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

@@ -10,7 +10,7 @@ toc: false
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can control a job.
 
@@ -48,7 +48,7 @@ Once you're ready for the restore to resume:
 > RESUME JOB 27536791415282;
 ~~~
 
-## See Also
+## See also
 
 - [`PAUSE JOB`](pause-job.html)
 - [`SHOW JOBS`](show-jobs.html)

@@ -8,7 +8,7 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -69,11 +69,11 @@ Parameter | Description
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 
-## Table-Level Replication
+## Table-level replication
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
-## Row-Level Replication 
+## Row-l;evel replication
 
 CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition) for more information.
 
@@ -81,7 +81,7 @@ CockroachDB allows [enterprise users](enterprise-licensing.html) to [define tabl
 
 ## Examples
 
-### Create a Table (No Primary Key Defined)
+### Create a table (no primary key defined)
 
 In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
@@ -119,7 +119,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 (1 row)
 ~~~
 
-### Create a Table (Primary Key Defined)
+### Create a table (primary key defined)
 
 In this example, we create a table with three columns. One column is the [primary key](primary-key.html), another is given the [Unique constraint](unique.html), and the third has no constraints. The primary key and column with the Unique constraint are automatically indexed.
 
@@ -159,7 +159,7 @@ In this example, we create a table with three columns. One column is the [primar
 (3 rows)
 ~~~
 
-### Create a Table with Secondary and Inverted Indexes 
+### Create a table with secondary and inverted indexes
 
 In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
@@ -217,11 +217,11 @@ We also have other resources on indexes:
 - Create indexes for existing tables using [`CREATE INDEX`](create-index.html).
 - [Learn more about indexes](indexes.html).
 
-### Create a Table with Auto-Generated Unique Row IDs
+### Create a table with auto-generated unique row IDs
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
-### Create a Table with a Foreign Key Constraint
+### Create a table with a foreign key constraint
 
 [Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
@@ -296,11 +296,11 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 +----+-------------+
 ```
 
-### Create a Table that Mirrors Key-Value Storage
+### Create a table that mirrors key-value storage
 
 {% include faq/simulate-key-value-store.html %}
 
-### Create a Table from a `SELECT` Statement
+### Create a table from a `SELECT` statement
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
 
@@ -332,15 +332,15 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 +----+---------+-------+
 ~~~
 
-### Create a Table with a Computed Column 
+### Create a table with a computed column
 
 {% include computed-columns/simple.md %}
 
-### Create a Table with Partitions 
+### Create a table with partitions
 
 {{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
-#### Create a Table with Partitions by List
+#### Create a table with partitions by list
 
 In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
 
@@ -359,7 +359,7 @@ In this example, we create a table and [define partitions by list](partitioning.
       PARTITION DEFAULT VALUES IN (default));
 ~~~
 
-#### Create a Table with Partitions by Range
+#### Create a table with partitions by range
 
 In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
 
@@ -377,7 +377,7 @@ In this example, we create a table and [define partitions by range](partitioning
       PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
 ~~~
 
-### Show the Definition of a Table
+### Show the definition of a table
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
@@ -402,7 +402,7 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`INSERT`](insert.html)
 - [`ALTER TABLE`](alter-table.html)

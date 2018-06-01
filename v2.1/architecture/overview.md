@@ -91,6 +91,6 @@ Layer | Order | Purpose
 [Replication](replication-layer.html)  | 4  | Consistently and synchronously replicate KV ranges across many nodes. This layer also enables consistent reads via leases.
 [Storage](storage-layer.html)  | 5  | Write and read KV data on disk.
 
-## What's Next?
+## What's next?
 
 Begin understanding our architecture by learning how CockroachDB works with applications in the [SQL Layer](sql-layer.html).

@@ -89,7 +89,7 @@ Flag | Description
 -----|------------
 `--wait` | When to return to the client. Possible values: `all`, `live`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `live`, the command returns to the client after all online nodes are fully decommissioned. Any specified nodes that are offline will automatically will be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
 
@@ -220,7 +220,7 @@ See [Remove Nodes](remove-nodes.html)
 
 See [Recommission Nodes](remove-nodes.html#recommission-nodes)
 
-## See Also
+## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Remove Nodes](remove-nodes.html)

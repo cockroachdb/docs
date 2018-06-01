@@ -16,7 +16,7 @@ redirect_from: /training/software-panic-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Data Corruption Troubleshooting](data-corruption-troubleshooting.html) and have a cluster of 3 nodes running.
 
@@ -95,6 +95,6 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
     $ rm -rf node1 node2 node3
     ~~~
 
-## What's Next?
+## What's next?
 
 [Network Partition Troubleshooting](network-partition-troubleshooting.html)

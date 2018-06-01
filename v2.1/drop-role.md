@@ -15,7 +15,7 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 - The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
 - A role cannot be dropped if it has privileges. Use [`REVOKE`](revoke.html) to remove privileges.
 
-## Required Privileges
+## Required privileges
 
 Roles can only be dropped by super users, i.e., members of the `admin` role.
 
@@ -61,7 +61,7 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 DROP ROLE 1
 ~~~
 
-## See Also
+## See also
 
 - [Manage Roles](roles.html)
 - [`CREATE ROLE` (Enterprise)](create-role.html)

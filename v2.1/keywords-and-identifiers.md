@@ -41,7 +41,7 @@ To bypass either of these rules, simply surround the identifier with double-quot
 
 {{site.data.alerts.callout_info}}Some statements have additional requirements for identifiers. For example, each table in a database must have a unique name. These requirements are documented on <a href="sql-statements.html">each statement's page</a>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [SQL Statements](sql-statements.html)
 - [Full SQL Grammar](sql-grammar.html)

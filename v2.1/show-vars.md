@@ -13,7 +13,7 @@ the session setting variables. Some of these can also be configured via [`SET`](
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to display the session settings.
 
@@ -116,7 +116,7 @@ Special syntax cases supported for compatibility:
 (16 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`SET` (session variable)](set-vars.html)
 - [Transactions](transactions.html) and [Transaction parameters](transactions.html#transaction-parameters)

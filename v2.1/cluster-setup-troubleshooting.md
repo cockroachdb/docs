@@ -8,7 +8,7 @@ If you're having trouble starting or scaling your cluster, this page will help y
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 ### Terminology
 
@@ -17,17 +17,17 @@ To use this guide, it's important to understand some of CockroachDB's terminolog
   - A **Cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
   - **Nodes** are single instances of the `cockroach` binary running on a machine. It's possible (though atypical) to have multiple nodes running on a single machine.
 
-### Using This Guide
+### Using this guide
 
 To diagnose issues, we recommend beginning with the simplest scenario and then increasing its complexity until you discover the problem. With that strategy in mind, you should proceed through these troubleshooting steps sequentially.
 
 We also recommend executing these steps in the environment where you want to deploy your CockroachDB cluster. However, if you run into issues you cannot solve, try the same steps in a simpler environment. For example, if you cannot successfully start a cluster using Docker, try deploying CockroachDB in the same environment without using containers.
 
-## Locate Your Issue
+## Locate your issue
 
 Proceed through the following steps until you locate the source of the issue with starting or scaling your CockroachDB cluster.
 
-### 1. Start a Single-Node Cluster
+### 1. Start a single-node cluster
 
 1. Stop any running `cockroach` processes and remove any old data:
 
@@ -80,7 +80,7 @@ Proceed through the following steps until you locate the source of the issue wit
 
 **Next step**: If you successfully completed these steps, try starting a multi-node cluster.
 
-### 2. Start a Multi-Node Cluster
+### 2. Start a multi-node cluster
 
 1. Stop any running `cockroach` processes and remove any old data on the additional machines::
 
@@ -200,7 +200,7 @@ If data is not being replicated to some nodes in the cluster, we recommend check
   - `connection refused`: [Troubleshoot your network](#networking-troubleshooting).
   - `not connected to cluster` or `node [id] belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
 
-## Something Else?
+## Something else?
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 

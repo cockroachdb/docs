@@ -65,6 +65,6 @@ CockroachDB regularly garbage collects MVCC values to reduce the size of data st
 
 The Storage Layer commits writes from the Raft log to disk, as well as returns requested data (i.e., reads) to the Replication Layer.
 
-## What's Next?
+## What's next?
 
 Now that you've learned about our architecture, [start a local cluster](../install-cockroachdb.html) and start [building an app with CockroachDB](../build-an-app-with-cockroachdb.html).

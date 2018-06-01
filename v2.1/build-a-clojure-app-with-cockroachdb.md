@@ -11,7 +11,7 @@ We have tested the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ec
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -49,7 +49,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 3. Create a file `myapp/src/test/util.clj` and populate it with the code from <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/util.clj" download>this file</a>. Be sure to place the file in the subdirectory `src/test` in your project.
 
-### Basic Statements
+### Basic statements
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, inserting rows and reading and printing the rows.
 
@@ -105,7 +105,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
 

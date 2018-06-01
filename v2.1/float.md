@@ -91,7 +91,7 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 # Note that the value in "b" has been limited to 17 digits.
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `FLOAT` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -102,6 +102,6 @@ Type | Details
 `BOOL` |  **0** converts to `false`; all other values convert to `true`
 `STRING` | --
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

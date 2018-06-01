@@ -14,7 +14,7 @@ For privileges required by specific statements, see the documentation for the re
 
 <section>{% include sql/{{ page.version.version }}/diagrams/grant_privileges.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user granting privileges must have the `GRANT` privilege on the target databases or tables.
 
@@ -122,7 +122,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Privileges](privileges.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)

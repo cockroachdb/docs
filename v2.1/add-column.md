@@ -12,7 +12,7 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 
 {% include sql/{{ page.version.version }}/diagrams/add_column.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -25,13 +25,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `typename` | The [data type](data-types.html) of the new column. |
 | `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>Note that it is not possible to add a column with the [Foreign Key](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the Foreign Key constraint to the column. |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
 ## Examples
 
-### Add a Single Column
+### Add a single column
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
@@ -51,7 +51,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 +-----------+-------------------+-------+---------+-----------+
 ~~~
 
-### Add Multiple Columns
+### Add multiple columns
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING, ADD COLUMN amount DECIMAL;
@@ -74,7 +74,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ~~~
 
-### Add a Non-Null Column with a Default Value
+### Add a non-NULL column with a default value
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
@@ -96,37 +96,36 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 +-----------+-------------------+-------+---------------------------+-----------+
 ~~~
 
-### Add a Non-Null Column with Unique Values
+### Add a non-NULL column with unique values
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
 ~~~
 
-### Add a Column with Collation
+### Add a column with collation
 
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
 ~~~
 
-### Add a Column and Assign it to a Column Family
+### Add a column and assign it to a column family
 
-#### Add a Column and Assign it to a New Column Family
+#### Add a column and assign it to a new column family
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
 ~~~
 
-#### Add a Column and Assign it to an Existing Column Family
+#### Add a column and assign it to an existing column family
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
-#### Add a Column and Create a New Column Family if Column Family Does Not Exist
+#### Add a column and create a new column family if column family does not exist
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f1;
 ~~~
 
-
-## See Also
+## See also
 - [`ALTER TABLE`](alter-table.html)
 - [Column-level Constraints](constraints.html)
 - [Collation](collate.html)

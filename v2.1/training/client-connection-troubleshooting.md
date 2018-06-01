@@ -16,7 +16,7 @@ redirect_from: /training/client-connection-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Node Startup Troubleshooting](node-startup-troubleshooting.html) and have 6 nodes running securely.
 
@@ -165,6 +165,6 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ rm -rf node1 node2 node3 node4 node5 node6
     ~~~
 
-## What's Next?
+## What's next?
 
 [Under-Replication Troubleshooting](under-replication-troubleshooting.html)

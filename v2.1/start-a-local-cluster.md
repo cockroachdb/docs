@@ -17,7 +17,7 @@ Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple t
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -270,7 +270,7 @@ $ cockroach start \
 --join=localhost:26257
 ~~~
 
-## What's Next?
+## What's next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language

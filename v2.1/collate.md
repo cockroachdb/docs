@@ -21,11 +21,11 @@ Collated strings are important because different languages have [different rules
 
 - Collated strings that are indexed require additional disk space as compared to uncollated strings. In case of indexed collated strings, collation keys must be stored in addition to the strings from which they are derived, creating a constant factor overhead.
 
-## Supported Collations
+## Supported collations
 
 CockroachDB supports the collations provided by Go's [language package](https://godoc.org/golang.org/x/text/language#Tag). The `<collation>` argument is the BCP 47 language tag at the end of each line, immediately preceded by `//`. For example, Afrikaans is supported as the `af` collation.
 
-## SQL Syntax
+## SQL syntax
 
 Collated strings are used as normal strings in SQL, but have a `COLLATE` clause appended to them.
 
@@ -45,7 +45,7 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 
 ## Examples
 
-### Specify Collation for a Column
+### Specify collation for a column
 
 You can set a default collation for all values in a `STRING` column.
 
@@ -76,7 +76,7 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
 +----------+
 ~~~
 
-### Order by Non-Default Collation
+### Order by non-default collation
 
 You can sort a column using a specific collation instead of its default.
 
@@ -95,7 +95,7 @@ For example, you receive different results if you order results by German (`de`)
 +----------+
 ~~~
 
-### Ad-Hoc Collation Casting
+### Ad-hoc collation casting
 
 You can cast any string into a collation on the fly.
 
@@ -121,6 +121,6 @@ You can also use casting to remove collations from values.
 > SELECT CAST(name AS STRING) FROM de_names ORDER BY name;
 ~~~
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

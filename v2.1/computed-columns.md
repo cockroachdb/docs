@@ -45,23 +45,23 @@ Parameter | Description
 
 ## Examples
 
-### Create a Table with a Computed Column
+### Create a table with a computed column
 
 {% include computed-columns/simple.md %}
 
-### Create a Table with Geo-partitions and a Computed Column
+### Create a table with geo-partitions and a computed column
 
 {% include computed-columns/partitioning.md %} The `locality` values can then be used for geo-partitioning.
 
-### Create a Table with a `JSONB` Column and a Computed Column
+### Create a table with a `JSONB` column and a computed column
 
 {% include computed-columns/jsonb.md %}
 
-### Create a Table with a Secondary Index on a Computed Column
+### Create a table with a secondary index on a computed column
 
 {% include computed-columns/secondary-index.md %}
 
-## See Also
+## See also
 
 - [Scalar Expressions](scalar-expressions.html)
 - [Information Schema](information-schema.html)

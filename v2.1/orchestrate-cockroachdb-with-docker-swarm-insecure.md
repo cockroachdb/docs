@@ -15,7 +15,7 @@ If you plan to use CockroachDB in production, we recommend using a secure cluste
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before you begin, it's helpful to review some terminology:
 
@@ -318,6 +318,6 @@ cockroachdb-0
 $ sudo docker volume rm cockroachdb-0
 ~~~
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

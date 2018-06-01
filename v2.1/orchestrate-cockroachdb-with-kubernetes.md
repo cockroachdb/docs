@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
@@ -462,7 +462,7 @@ To shut down the CockroachDB cluster:
 
 {% include orchestration/stop-kubernetes.md %}
 
-## See Also
+## See also
 
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include prod_deployment/prod-see-also.md %}

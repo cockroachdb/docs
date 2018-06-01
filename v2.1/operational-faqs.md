@@ -128,7 +128,7 @@ You can also see these metrics in [the Clock Offset graph](admin-ui-runtime-dash
 
 {% include faq/planned-maintenance.md %}
 
-## See Also
+## See also
 
 - [Product FAQs](frequently-asked-questions.html)
 - [SQL FAQs](sql-faqs.html)

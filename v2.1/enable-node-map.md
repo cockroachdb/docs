@@ -183,7 +183,7 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 [Assign latitude/longitude coordinates](#step-4-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
 
-## Known Limitations
+## Known limitations
 
 ### Unable to Assign Latitude/Longitude Coordinates to Localities
 

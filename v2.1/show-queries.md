@@ -18,7 +18,7 @@ These details let you monitor the progress of active queries and, if necessary, 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to execute this statement. However, note that non-`root` users see only their own currently active queries, whereas the `root` user sees all users' currently active queries.
 
@@ -201,7 +201,7 @@ To cancel this long-running query, and stop it from consuming resources, you not
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-## See Also
+## See also
 
 - [Manage Long-Running Queries](manage-long-running-queries.html)
 - [`CANCEL QUERY`](cancel-query.html)

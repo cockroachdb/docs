@@ -26,6 +26,6 @@ Watch the rest of Alex Robinson's talk, where he explains the CockroachDB archit
 
 </div>
 
-## What's Next?
+## What's next?
 
 - [Cluster Startup and Scaling](cluster-startup-and-scaling.html)

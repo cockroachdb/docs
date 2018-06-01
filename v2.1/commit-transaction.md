@@ -16,7 +16,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 {% include sql/{{ page.version.version }}/diagrams/commit_transaction.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to commit a transaction. However, privileges are required for each statement within a transaction.
 
@@ -26,11 +26,11 @@ In CockroachDB, `END` is an alias for the `COMMIT` statement.
 
 ## Example
 
-### Commit a Transaction
+### Commit a transaction
 
 How you commit transactions depends on how your application handles [transaction retries](transactions.html#transaction-retries).
 
-#### Client-Side Retryable Transactions
+#### Client-side retryable transactions
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), statements are committed by [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html). `COMMIT` itself only clears the connection for the next transaction.
 
@@ -50,7 +50,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-#### Automatically Retried Transactions
+#### Automatically retried transactions
 
 If you are using transactions that CockroachDB will [automatically retry](transactions.html#automatic-retries) (i.e., all statements sent in a single batch), commit the transaction with `COMMIT`.
 
@@ -58,7 +58,7 @@ If you are using transactions that CockroachDB will [automatically retry](transa
 > BEGIN; UPDATE products SET inventory = 100 WHERE = '8675309'; UPDATE products SET inventory = 100 WHERE = '8675310'; COMMIT;
 ~~~
 
-## See Also
+## See also
 
 - [Transactions](transactions.html)
 - [`BEGIN`](begin-transaction.html)

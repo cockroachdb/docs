@@ -10,7 +10,7 @@ The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
@@ -26,7 +26,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 | `current_name` | The current name of the table. |
 | `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
@@ -126,7 +126,7 @@ To move a table from one database to another, use the above syntax but specify t
 +--------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)  
 - [`ALTER TABLE`](alter-table.html)  

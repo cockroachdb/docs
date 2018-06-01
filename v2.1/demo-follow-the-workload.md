@@ -286,7 +286,7 @@ Once you're done with this tutorial, you will not want a 100 millisecond delay f
 $ comcast --device lo0 --stop
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB benefits
 

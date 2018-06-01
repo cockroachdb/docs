@@ -43,7 +43,7 @@ To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statem
 > REVOKE INSERT ON bank.accounts FROM maxroach;
 ~~~
 
-## See Also
+## See also
 
 - [Manage Users](create-and-manage-users.html)
 - [Manage Roles](roles.html)

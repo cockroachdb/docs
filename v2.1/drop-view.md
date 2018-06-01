@@ -8,7 +8,7 @@ The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) fr
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
 
@@ -115,7 +115,7 @@ DROP VIEW
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)

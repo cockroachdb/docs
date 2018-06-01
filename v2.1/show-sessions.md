@@ -16,7 +16,7 @@ These details let you monitor the overall state of client connections and identi
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to execute this statement. However, note that non-`root` users see only their own currently active sessions, wherease the `root` user sees all users' currently active sessions.
 
@@ -188,7 +188,7 @@ Alternatively, if you know that you want to cancel the query based on the detail
           AND query = 'SELECT * FROM test.kv ORDER BY k');
 ~~~
 
-## See Also
+## See also
 
 - [`SHOW QUERIES`](show-queries.html)
 - [`CANCEL QUERY`](cancel-query.html)

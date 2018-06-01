@@ -10,7 +10,7 @@ The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constra
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target table.
 
@@ -70,7 +70,7 @@ Field | Description
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`CREATE TABLE`](create-table.html)

@@ -127,7 +127,7 @@ parseInt(idString, 10) + 1; // WRONG: returns 235191684988928000
 require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191684988928002'
 ~~~
 
-## See Also
+## See also
 
 - [Product FAQs](frequently-asked-questions.html)
 - [Operational FAQS](operational-faqs.html)

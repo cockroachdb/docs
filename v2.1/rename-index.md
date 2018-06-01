@@ -14,7 +14,7 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 
 {% include sql/{{ page.version.version }}/diagrams/rename_index.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -64,7 +64,7 @@ RENAME INDEX
 (3 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Indexes](indexes.html)
 - [`CREATE INDEX`](create-index.html)

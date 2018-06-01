@@ -27,7 +27,7 @@ This information is useful for verifying that:
   {% include sql/{{ page.version.version }}/diagrams/show_ranges.html %}
 </div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `SELECT` [privilege](privileges.html) on the target table.
 
@@ -116,7 +116,7 @@ A `NULL` in the *End Key* column means "end of table".
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`SPLIT AT`](split-at.html)
 - [`CREATE TABLE`](create-table.html)
