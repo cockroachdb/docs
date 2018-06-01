@@ -4,7 +4,7 @@ summary: Learn the commands for configuring, starting, and managing a CockroachD
 toc: false
 ---
 
-This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as logging flags that can be set on any command and environment variables that can be used in place of certain flags.
+This page introduces the `cockroach` commands for configuring, starting, and managing a CockroachDB cluster, as well as environment variables that can be used in place of certain flags.
 
 You can run `cockroach help` in your shell to get similar guidance.
 
@@ -14,18 +14,18 @@ You can run `cockroach help` in your shell to get similar guidance.
 
 Command | Usage
 --------|----
-[`start`](start-a-node.html) | Start a node.
-[`init`](initialize-a-cluster.html) | Initialize a cluster.
-[`cert`](create-security-certificates.html) | Create CA, node, and client certificates.
-[`quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
-[`sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
-[`user`](create-and-manage-users.html) | Get, set, list, and remove users.
-[`zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
-[`node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
-[`dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
-[`debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
-[`gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
-[`version`](view-version-details.html) | Output CockroachDB version details.
+[`cockroach start`](start-a-node.html) | Start a node.
+[`cockroach init`](initialize-a-cluster.html) | Initialize a cluster.
+[`cockroach cert`](create-security-certificates.html) | Create CA, node, and client certificates.
+[`cockroach quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
+[`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
+[`cockroach user`](create-and-manage-users.html) | Get, set, list, and remove users.
+[`cockroach zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
+[`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
+[`cockroach dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
+[`cockroach debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
+[`cockroach gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
+[`cockroach version`](view-version-details.html) | Output CockroachDB version details.
 
 ## Environment Variables
 

@@ -1,8 +1,10 @@
 ---
-title: Access and Navigate the CockroachDB Admin UI
+title: Use the CockroachDB Admin UI
 summary: Learn how to access and navigate the Admin UI.
 toc: false
 ---
+
+The built-in Admin UI gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 
 <div id="toc"></div>
 
@@ -10,7 +12,7 @@ toc: false
 
 You can access the Admin UI from any node in the cluster.
 
-{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to <a href="admin-ui-user-authentication.html">enable user authentication</a> to restrict access to the Admin UI to authorized users. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to <a href="#secure-the-admin-ui">enable user authentication</a> to restrict access to the Admin UI to authorized users. {{site.data.alerts.end}}
 
 By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
 
@@ -168,3 +170,23 @@ The following types of events are listed:
 - Node decommissioned
 - Node restarted
 - Cluster setting changed
+
+## Secure the Admin UI
+
+By default, CockroachDB allows all users to access and view the Admin UI. However, for secure clusters, you can choose to enable user authentication</a> to restrict access to authorized users.
+
+{{site.data.alerts.callout_danger}}<strong>This feature is a work in progress</strong>. It will change leading up to the v2.1 release.{{site.data.alerts.end}}
+
+1. Start a secure cluster as described in our [deployment tutorials](manual-deployment.html).
+
+    However, when starting each node, be sure to set the `COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE` environment variable, for example:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE \
+      ./cockroach start --host=<node1 hostname> --certs-dir=certs
+    ~~~
+
+2. For each user who should have access to the Admin UI, [create a user with a password](create-user.html).
+
+    On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
