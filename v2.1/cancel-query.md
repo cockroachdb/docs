@@ -10,8 +10,7 @@ toc: false
 
 ## Considerations
 
-- Schema changes (statements beginning with <code>ALTER</code>) cannot currently be cancelled. However, to monitor the progress of schema changes, you can use <a href="show-jobs.html"><code>SHOW JOBS</code></a>.
-- In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
+In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
 
 ## Required Privileges
 
