@@ -8,7 +8,7 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the database and on all tables in the database.
 
@@ -85,7 +85,7 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 pq: database "db2" is not empty and CASCADE was not specified
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE DATABASE`](create-database.html)
 - [`SHOW DATABASES`](show-databases.html)

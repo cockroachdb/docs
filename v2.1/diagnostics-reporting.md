@@ -319,7 +319,7 @@ To check the state of diagnostics reporting, [use the built-in SQL client](use-t
 
 If the setting is `false`, diagnostics reporting is off; if the setting is `true`, diagnostics reporting is on.
 
-## See Also
+## See also
 
 - [Cluster Settings](cluster-settings.html)
 - [Start a Node](start-a-node.html)

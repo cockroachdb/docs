@@ -33,7 +33,7 @@ Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
-### Cluster Overview Panel
+### Cluster Overview panel
 
 <img src="{{ 'images/v2.1/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -102,7 +102,7 @@ The Node Map consists of the following components:
 
 For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
 
-### Time Series Graphs
+### Time series graphs
 
 The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left-hand navigation bar.
 
@@ -125,7 +125,7 @@ You can change the time range by clicking on the time window.
 By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
 <img src="{{ 'images/v2.1/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Summary Panel
+### Summary panel
 
 The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left-hand navigation bar.
 
@@ -147,7 +147,7 @@ P99 Latency | The 99th percentile of service latency.
 {% include available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
-### Events Panel
+### Events panel
 
 The **Cluster Metrics** dashboards display the **Events** panel that lists the 10 most recent events logged for the all nodes across the cluster. To view the **Events** panel, click **Metrics** on the left-hand navigation bar. To see the list of all events, click **View all events** in the **Events** panel.
 

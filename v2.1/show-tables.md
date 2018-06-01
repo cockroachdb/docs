@@ -15,7 +15,7 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](v
 
 {% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to list the tables in a schema or database.
 
@@ -100,7 +100,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 (3 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW SCHEMAS`](show-schemas.html)

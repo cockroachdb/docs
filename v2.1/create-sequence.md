@@ -13,7 +13,7 @@ The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in
 - Using a sequence is slower than [auto-generating unique IDs with the `UUID`, `BYTES`, or `SERIAL` data type](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required.
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -41,7 +41,7 @@ table td:first-child {
 <!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
 `CACHE <seq_value>` | The number of sequence values to allocate in memory for faster access. Currently, you can only `CACHE 1` or leave unspecified.-->
 
-## Sequence Functions
+## Sequence functions
 
 We support the following [SQL sequence functions](functions-and-operators.html):
 
@@ -53,7 +53,7 @@ We support the following [SQL sequence functions](functions-and-operators.html):
 
 ## Examples
 
-### List All Sequences
+### List all sequences
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -71,7 +71,7 @@ We support the following [SQL sequence functions](functions-and-operators.html):
 (4 rows)
 ~~~
 
-### Create a Sequence with Default Settings
+### Create a sequence with default settings
 
 In this example, we create a sequence with default settings.
 
@@ -92,7 +92,7 @@ In this example, we create a sequence with default settings.
 +--------------+------------------------------------------------------------------------------------------+
 ~~~
 
-### Create a Sequence with User-Defined Settings
+### Create a sequence with user-defined settings
 
 In this example, we create a sequence that starts at -1 and descends in increments of 2.
 
@@ -114,7 +114,7 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 +--------------------+----------------------------------------------------------------------------------------------------+
 ~~~
 
-### Create a Table with a Sequence
+### Create a table with a sequence
 
 In this example, we create a table using the sequence we created in the first example as the table's primary key.
 
@@ -152,7 +152,7 @@ Insert a few records to see the sequence.
 +----+----------+--------------------+
 ~~~
 
-### View the Current Value of a Sequence
+### View the current value of a sequence
 
 To view the current value without incrementing the sequence, use:
 
@@ -183,7 +183,7 @@ If a value has been obtained from the sequence in the current session, you can a
 +---------+
 ~~~
 
-## See Also
+## See also
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)

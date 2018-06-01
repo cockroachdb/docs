@@ -16,7 +16,7 @@ redirect_from: /training/users-and-privileges.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Data Import](data-import.html).
 
@@ -285,6 +285,6 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     Failed running "sql"
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Security](security.html)

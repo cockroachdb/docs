@@ -10,7 +10,7 @@ This page shows you the easiest way to test an insecure, multi-node CockroachDB 
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's important to review some limitations and requirements.
 
@@ -177,6 +177,6 @@ To see this in action:
 
 In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you do not delete these resources, AWS will continue to charge you for them.
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

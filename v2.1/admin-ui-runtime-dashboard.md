@@ -59,7 +59,7 @@ Sys CPU Time | Total CPU seconds per second used by the system calls made by Coc
 - In the node view, the graph shows the mean clock offset of the node against the rest of the cluster.
 - In the cluster view, the graph shows the mean clock offset of each node against the rest of the cluster.
 
-## Other Graphs
+## Other graphs
 
 The **Runtime** dashboard shows other time series graphs that are important for CockroachDB developers:
 

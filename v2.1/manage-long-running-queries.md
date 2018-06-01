@@ -64,7 +64,7 @@ After cancelling a long-running query, use the [`EXPLAIN`](explain.html) stateme
 
 *(More guidance around query performance optimization forthcoming.)*
 
-## See Also
+## See also
 
 - [`SHOW QUERIES`](show-queries.html)
 - [`CANCEL QUERY`](cancel-query.html)

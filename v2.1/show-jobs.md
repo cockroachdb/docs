@@ -15,7 +15,7 @@ These details can help you understand the status of crucial tasks that can impac
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can execute `SHOW JOBS`.
 
@@ -72,7 +72,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 
-## See Also
+## See also
 
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)

@@ -12,7 +12,7 @@ To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -43,14 +43,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
-### Create Standard Indexes
+### Create standard indexes
 
 To create the most efficient indexes, we recommend reviewing:
 
 - [Indexes: Best Practices](indexes.html#best-practices)
 - [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
 
-#### Single-Column Indexes
+#### Single-column indexes
 
 Single-column indexes sort the values of a single column.
 
@@ -60,7 +60,7 @@ Single-column indexes sort the values of a single column.
 
 Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
 
-#### Multiple-Column Indexes
+#### Multiple-column indexes
 
 Multiple-column indexes sort columns in the order you list them.
 
@@ -70,7 +70,7 @@ Multiple-column indexes sort columns in the order you list them.
 
 To create the most useful multiple-column indexes, we recommend reviewing our [best practices](indexes.html#indexing-columns).
 
-#### Unique Indexes
+#### Unique indexes
 
 Unique indexes do not allow duplicate values among their columns.
 
@@ -84,7 +84,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
-### Create Inverted Indexes 
+### Create inverted indexes
 
 [Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 
@@ -98,7 +98,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 > CREATE INDEX ON users USING GIN (profile);
 ~~~
 
-### Store Columns
+### Store columns
 
 Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
 
@@ -108,7 +108,7 @@ Storing a column improves the performance of queries that retrieve (but don’t 
 
 However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
 
-### Change Column Sort Order
+### Change column sort order
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
@@ -118,7 +118,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 
 How columns are sorted impacts the order of rows returned by queries using the index, which particularly affects queries using `LIMIT`.
 
-### Query Specific Indexes
+### Query specific indexes
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
 
@@ -139,7 +139,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 > SELECT name FROM products@products_price_idx WHERE price > 10;
 ~~~
 
-## See Also
+## See also
 
 - [Indexes](indexes.html)
 - [`SHOW INDEX`](show-index.html)

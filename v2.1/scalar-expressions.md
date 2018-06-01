@@ -759,7 +759,7 @@ Evaluates the subquery and converts its results to an array. Any
 
 {{site.data.alerts.callout_info}}To convert a list of scalar expressions to an array, use <a href="#array-constructors"><code>ARRAY[...]</code></a> instead.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [Constants](sql-constants.html)
 - [Selection Queries](selection-queries.html)

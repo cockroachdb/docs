@@ -14,7 +14,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 {% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
 
@@ -67,7 +67,7 @@ To use [client-side transaction retries](transactions.html#client-side-transacti
 
 For examples of retrying transactions in your application, check out the transaction code samples in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.
 
-## See Also
+## See also
 
 - [Transactions](transactions.html)
 - [`BEGIN`](begin-transaction.html)

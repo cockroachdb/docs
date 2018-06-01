@@ -340,7 +340,7 @@ To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 DROP VIEW
 ~~~
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Simple `SELECT` Clauses](select-clause.html)

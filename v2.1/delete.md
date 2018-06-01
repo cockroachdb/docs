@@ -12,7 +12,7 @@ The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on the table.
 
@@ -184,7 +184,7 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 +------------+---------------+
 ~~~
 
-## See Also
+## See also
 
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)

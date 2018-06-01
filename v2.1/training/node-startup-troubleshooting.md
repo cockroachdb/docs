@@ -306,6 +306,6 @@ clusterID:  5007b180-9b08-4a08-a882-53915fb459a1
 nodeID:     6    
 ~~~
 
-## What's Next?
+## What's next?
 
 [Client Connection Troubleshooting](client-connection-troubleshooting.html)

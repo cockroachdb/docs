@@ -249,7 +249,7 @@ fully qualified name, as follows:
 > CREATE TABLE public.public.mypublictable (x INT);
 ~~~
 
-## See Also
+## See also
 
 - [`SET`](set-vars.html)
 - [`SHOW`](show-vars.html)

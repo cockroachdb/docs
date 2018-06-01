@@ -6,7 +6,7 @@ toc: false
 
 {% include orchestration/kubernetes-performance.md %}
 
-## See Also
+## See also
 
 - [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
 - [Production Checklist](recommended-production-settings.html)

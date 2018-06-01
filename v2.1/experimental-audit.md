@@ -25,7 +25,7 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 {% include sql/{{page.version.version}}/diagrams/experimental_audit.html %}
 </div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can enable audit logs on a table.
 
@@ -116,7 +116,7 @@ To turn off logging, issue the following command:
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
 
-## See Also
+## See also
 
 - [SQL Audit Logging](sql-audit-logging.html)
 - [`ALTER TABLE`](alter-table.html)

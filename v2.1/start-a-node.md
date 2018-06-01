@@ -312,7 +312,7 @@ $ cockroach start \
 ~~~
 </div>
 
-## See Also
+## See also
 
 - [Initialize a Cluster](initialize-a-cluster.html)
 - [Manual Deployment](manual-deployment.html)

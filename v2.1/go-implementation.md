@@ -13,7 +13,7 @@ The choice of language matters. Speed, stability, maintainability: each of these
 
 <img src="{{ 'images/v2.1/2go-implementation.png' | relative_url }}" alt="CockroachDB is built in Go" style="width: 400px" />
 
-## See Also
+## See also
 
 - [Why Go Was the Right Choice for CockroachDB](https://www.cockroachlabs.com/blog/why-go-was-the-right-choice-for-cockroachdb/)
 - [How to Optimize Garbage Collection in Go](https://www.cockroachlabs.com/blog/how-to-optimize-garbage-collection-in-go/)

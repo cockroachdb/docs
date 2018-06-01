@@ -10,7 +10,7 @@ The `ALTER VIEW` [statement](sql-statements.html) changes the name of a [view](v
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the view and the `CREATE` privilege on the parent database.
 
@@ -64,7 +64,7 @@ RENAME VIEW
 (2 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)

@@ -13,7 +13,7 @@ Backup Type | Restore using...
 
 If you created a back up from another database and want to import it into CockroachDB, see [Import data](import-data.html).
 
-## See Also
+## See also
 
 - [Back up Data](back-up-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)

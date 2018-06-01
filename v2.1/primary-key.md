@@ -105,7 +105,7 @@ pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constrai
 pq: null value in column "warehouse_id" violates not-null constraint
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [Check constraint](check.html)

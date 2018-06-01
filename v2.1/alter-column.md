@@ -14,7 +14,7 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 
 {% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -26,13 +26,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `column_name` | The name of the column you want to modify. |
 | `a_expr` | The new [Default Value](default-value.html) you want to use. |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
 ## Examples
 
-### Set or Change a Default Value
+### Set or change a Default value
 
 Setting the [Default Value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a Default Value set, you can use this statement to change it.
 
@@ -42,7 +42,7 @@ The below example inserts the Boolean value `true` whenever you inserted data to
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
 ~~~
 
-### Remove Default Constraint
+### Remove Default constraint
 
 If the column has a defined [Default Value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
@@ -50,7 +50,7 @@ If the column has a defined [Default Value](default-value.html), you can remove 
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
 ~~~
 
-### Remove Not Null Constraint
+### Remove Not Null constraint
 
 If the column has the [Not Null constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
 
@@ -58,7 +58,7 @@ If the column has the [Not Null constraint](not-null.html) applied to it, you ca
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`ADD CONSTRAINT`](add-constraint.html)

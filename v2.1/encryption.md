@@ -176,7 +176,7 @@ To disable encryption, specify `key=plain`. The data keys will be stored in plai
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key then encrypted using the new key. A new data key will also be generated.
 
-## See Also
+## See also
 
 + [Enterprise Licensing](enterprise-licensing.html)
 + [`BACKUP`](backup.html)

@@ -8,7 +8,7 @@ This page walks you through a simple demonstration of how CockroachDB automatica
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this tutorial, you'll use an example Go program to quickly insert data into a CockroachDB cluster. To run the example program, you must have a [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.7.1.
 
@@ -198,7 +198,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 $ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

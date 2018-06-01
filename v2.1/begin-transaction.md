@@ -14,7 +14,7 @@ The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transacti
 
 {% include sql/{{ page.version.version }}/diagrams/begin_transaction.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
 
@@ -40,9 +40,9 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 
 ## Examples
 
-### Begin a Transaction
+### Begin a transaction
 
-#### Use Default Settings
+#### Use default settings
 
 Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` isolation and `NORMAL` priority.
 
@@ -62,7 +62,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-#### Change Isolation Level & Priority
+#### Change isolation level and priority
 
 You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
 
@@ -84,7 +84,7 @@ You can also set a transaction's isolation level and priority with [`SET TRANSAC
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-### Begin a Transaction with Automatic Retries
+### Begin a transaction with automatic retries
 
 CockroachDB will [automatically retry](transactions.html#transaction-retries) all transactions that contain both `BEGIN` and `COMMIT` in the same batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests.
 
@@ -110,7 +110,7 @@ db.Exec(
 
 Issuing statements this way signals to CockroachDB that you do not need to change any of the statement's values if the transaction doesn't immediately succeed, so it can continually retry the transaction until it's accepted.
 
-## See Also
+## See also
 
 - [Transactions](transactions.html)
 - [`COMMIT`](commit-transaction.html)

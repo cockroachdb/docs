@@ -15,7 +15,7 @@ redirect_from: /training/locality-and-replication-zones.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -417,7 +417,7 @@ Take a moment to clean things up.
     $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Give us feedback on this training](https://www.surveymonkey.com/r/5TGPWRJ) and let us know if you'd like more
 - [Read our docs](../)

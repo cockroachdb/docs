@@ -61,7 +61,7 @@ Flag | Description
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br>Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility.
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
 
@@ -349,7 +349,7 @@ INSERT INTO dump_test (id, name) VALUES
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
 
-## See Also
+## See also
 
 - [Import Data](import-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)

@@ -8,7 +8,7 @@ The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-clus
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can modify cluster settings.
 
@@ -60,7 +60,7 @@ Only the `root` user can modify cluster settings.
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)

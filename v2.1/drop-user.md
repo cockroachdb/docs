@@ -10,7 +10,7 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DELETE` [privilege](privileges.html) on the `system.users` table.
 
@@ -56,7 +56,7 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 > DROP USER mroach;
 ~~~
 
-## See Also
+## See also
 
 - [`cockroach user` command](create-and-manage-users.html)
 - [`CREATE USER`](create-user.html)

@@ -136,6 +136,6 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 {% include prod_deployment/use-cluster.md %}
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

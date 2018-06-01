@@ -51,7 +51,7 @@ CockroachDB-specific requirements:
 
 - If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
-### Object Dependencies
+### Object dependencies
 
 When importing tables, you must be mindful of the following rules because [`IMPORT`](import.html) only creates single tables which must not already exist:
 
@@ -92,7 +92,7 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run [`IMPORT`](import.html).
 
@@ -264,7 +264,7 @@ WITH
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-## See Also
+## See also
 
 - [Create a File Server](create-a-file-server.html)
 - [Importing Data](import-data.html)

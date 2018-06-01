@@ -27,6 +27,6 @@ Subcommand | Description
 [`PARTITION BY`](partition-by.html)  | Repartition or unpartition a table with partitions ([Enterprise-only](enterprise-licensing.html)).
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs.
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}

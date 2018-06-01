@@ -1,6 +1,6 @@
 ---
 title: Constraints
-summary: Constraints offer additional data integrity by enforcing conditions on the data within a column. 
+summary: Constraints offer additional data integrity by enforcing conditions on the data within a column.
 toc: false
 ---
 
@@ -10,7 +10,7 @@ For example, the Unique constraint requires that all values in a column be uniqu
 
 <div id="toc"></div>
 
-## Supported Constraints
+## Supported constraints
 
 | Constraint | Description |
 |------------|-------------|
@@ -21,9 +21,9 @@ For example, the Unique constraint requires that all values in a column be uniqu
 | [Primary Key](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the Not Null and Unique constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns. |
 | [Unique](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns. |
 
-## Using Constraints
+## Using constraints
 
-### Add Constraints
+### Add constraints
 
 How you add constraints depends on the number of columns you want to constrain, as well as whether or not the table is new.
 
@@ -55,11 +55,11 @@ How you add constraints depends on the number of columns you want to constrain, 
 
   - **Primary Key** and **Not Null** constraints cannot be added or changed. However, you can go through [this process](#table-migrations-to-add-or-change-immutable-constraints) to migrate data from your current table to a new table with the constraints you want to apply.
 
-#### Order of Constraints
+#### Order of constraints
 
 The order in which you list constraints is not important because constraints are applied to every modification of their respective tables or columns.
 
-#### Name Constraints on New Tables
+#### Name constraints on new tables
 
 You can name constraints applied to new tables using the `CONSTRAINT` clause before defining the constraint:
 
@@ -69,11 +69,11 @@ You can name constraints applied to new tables using the `CONSTRAINT` clause bef
 > CREATE TABLE bar (a INT, b INT, CONSTRAINT yet_another_name PRIMARY KEY (a,b));
 ```
 
-### View Constraints
+### View constraints
 
 To view a table's constraints, use [`SHOW CONSTRAINTS`](show-constraints.html) or [`SHOW CREATE TABLE`](show-create-table.html).
 
-### Remove Constraints
+### Remove constraints
 
 The procedure for removing a constraint depends on its type:
 
@@ -81,12 +81,12 @@ The procedure for removing a constraint depends on its type:
 |-----------------|-----------|
 | [Check](check.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) |
 | [Default Value](default-value.html) | Use [`ALTER COLUMN`](alter-column.html#remove-default-constraint) |
-| [Foreign Keys](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) | 
-| [Not Null](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint) | 
-| [Primary Key](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
+| [Foreign Keys](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html) |
+| [Not Null](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint) |
+| [Primary Key](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
 | [Unique](unique.html) | The Unique constraint cannot be dropped directly. However, you can use [`DROP INDEX`](drop-index.html) to remove the index automatically created by the Unique constraint (whose name ends in `_key`) to remove the constraint. |
 
-### Change Constraints
+### Change constraints
 
 The procedure for changing a constraint depends on its type:
 
@@ -94,12 +94,12 @@ The procedure for changing a constraint depends on its type:
 |-----------------|-----------|
 | [Check](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new Check constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 | [Default Value](default-value.html) | The Default Value can be changed through [`ALTER COLUMN`](alter-column.html). |
-| [Foreign Keys](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new Foreign Key constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). | 
-| [Not Null](not-null.html) | The Not Null constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
-| [Primary Key](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). | 
+| [Foreign Keys](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new Foreign Key constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
+| [Not Null](not-null.html) | The Not Null constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
+| [Primary Key](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |
 | [Unique](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new Unique constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 
-#### Table Migrations to Add or Change Immutable Constraints
+#### Table migrations to add or change immutable constraints
 
 If you want to make a change to an immutable constraint, you can use the following process:
 
@@ -107,7 +107,7 @@ If you want to make a change to an immutable constraint, you can use the followi
 2. Move the data from the old table to the new one using [`INSERT` from a `SELECT` statement](insert.html#insert-from-a-select-statement).
 3. [Drop the old table](drop-table.html), and then [rename the new table to the old name](rename-table.html). This cannot be done transactionally.
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [`ADD CONSTRAINT`](add-constraint.html)

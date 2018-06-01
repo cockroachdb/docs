@@ -10,7 +10,7 @@ The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-w
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can modify cluster settings.
 
@@ -102,7 +102,7 @@ data to Cockroach Labs using the following:
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`SET` (session variable)](set-vars.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)

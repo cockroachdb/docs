@@ -46,7 +46,7 @@ Flag | Description
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for [interactive sessions](#interactive-sessions), `tsv` for non-interactive sessions<br /><br />Corresponds to the [`display_format`](#sql-option-display-format) SQL shell option for use in interactive sessions.
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#interactive-sessions), `false` otherwise.<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
 
@@ -630,7 +630,7 @@ Time: 2.426534ms
 > SHOW DATABASE
 ~~~
 
-## See Also
+## See also
 
 - [Client Connection Parameters](connection-parameters.html)
 - [Other Cockroach Commands](cockroach-commands.html)

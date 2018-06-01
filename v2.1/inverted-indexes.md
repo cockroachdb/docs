@@ -158,7 +158,7 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`JSONB`](jsonb.html)
 - [JSON tutorial](demo-json-support.html)

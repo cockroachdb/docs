@@ -101,7 +101,7 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-windows">
-## Before You Begin
+## Before you begin
 
 If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 
@@ -261,7 +261,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 
 </div>
 
-## What's Next?
+## What's next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language

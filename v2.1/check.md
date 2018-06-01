@@ -31,7 +31,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 {{site.data.alerts.callout_info}}You can also add the <code>CHECK</code> constraint to existing tables through <a href="add-constraint.html#add-the-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
-### Column Level
+### Column level
 
 {% include sql/{{ page.version.version }}/diagrams/check_column_level.html %}
 
@@ -56,7 +56,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
   );
 ~~~
 
-### Table Level
+### Table level
 
 {% include sql/{{ page.version.version }}/diagrams/check_table_level.html %}
 
@@ -80,7 +80,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
   );
 ~~~
 
-## Usage Example
+## Usage example
 
 `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled in a consistent fashion.
 
@@ -98,7 +98,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)

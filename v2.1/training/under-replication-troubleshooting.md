@@ -16,7 +16,7 @@ redirect_from: /training/under-replication-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -116,6 +116,6 @@ To bring the cluster back to a safe state, you need to either restart the down n
 
     Soon, you'll see that there no longer any under-replicated ranges.
 
-## What's Next?
+## What's next?
 
 [Cluster Unavailability Troubleshooting](cluster-unavailability-troubleshooting.html)

@@ -105,6 +105,6 @@ Committed Raft commands are written to the Raft log and ultimately stored on dis
 
 The Leaseholder serves reads from its RocksDB instance, which is in the Storage Layer.
 
-## What's Next?
+## What's next?
 
 Learn how CockroachDB reads and writes data from disk in the [Storage Layer](storage-layer.html).

@@ -18,11 +18,11 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {% include settings/v2.1/settings.md %}
 
-## View Current Cluster Settings
+## View current cluster settings
 
 Use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement.
 
-## Change a Cluster Setting
+## Change a cluster setting
 
 Use the [`SET CLUSTER SETTING`](set-cluster-setting.html) statement.
 
@@ -32,7 +32,7 @@ Before changing a cluster setting, please note the following:
 
 - 	It's not recommended to change cluster settings [upgrading to a new version of CockroachDB](upgrade-cockroach-version.html); wait until all nodes have been upgraded and then make the change.
 
-## See Also
+## See also
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)

@@ -10,7 +10,7 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's important to review some current requirements and limitations.
 
@@ -390,6 +390,6 @@ To shut down the CockroachDB cluster:
 
 3. Uninstall DC/OS. If you used AWS CloudFormation, see [Uninstalling DC/OS on AWS EC2](https://docs.mesosphere.com/1.10/installing/oss/cloud/aws/removeaws/).
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

@@ -16,7 +16,7 @@ redirect_from: /training/network-partition-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have Docker Compose on your local machine, so you may just want to observe this one.
 
@@ -178,6 +178,6 @@ You will not be using this Docker cluster in any other labs, so take a moment to
     $ docker-compose down
     ~~~
 
-## What's Next?
+## What's next?
 
 [How Cockroach Labs Debugs](how-cockroach-labs-debugs.html)

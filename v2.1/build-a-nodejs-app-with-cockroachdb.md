@@ -16,7 +16,7 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) and the
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -42,7 +42,7 @@ $ npm install async
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
-### Basic Statements
+### Basic statements
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
@@ -113,7 +113,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Node.js pg driver](https://www.npmjs.com/package/pg).
 

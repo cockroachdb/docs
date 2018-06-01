@@ -12,7 +12,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 {% include sql/{{ page.version.version }}/diagrams/show_users.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
 
@@ -32,7 +32,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 +------------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE USER`](create-user.html)
 - [Manage Users](create-and-manage-users.html)

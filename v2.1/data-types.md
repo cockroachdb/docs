@@ -49,4 +49,4 @@ CockroachDB supports explicit type conversions using the following methods:
 
 
 You can find each data type's supported conversion and casting on its
-respective page in its section **Supported Casting & Conversion**.
+respective page in its section **Supported casting & conversion**.

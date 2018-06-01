@@ -128,6 +128,6 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include prod_deployment/use-cluster.md %}
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

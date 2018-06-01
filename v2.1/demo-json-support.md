@@ -251,7 +251,7 @@ Time: 28.646769ms
 
 Instead of 105.877736ms, the query now takes 28.646769ms.
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

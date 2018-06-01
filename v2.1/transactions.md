@@ -244,7 +244,7 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
-## See Also
+## See also
 
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)

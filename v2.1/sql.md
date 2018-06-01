@@ -6,7 +6,7 @@ toc: false
 
 At the lowest level, CockroachDB is a distributed, strongly-consistent, transactional key-value store, but the external API is [Standard SQL with extensions](sql-feature-support.html). This provides developers familiar relational concepts such as schemas, tables, columns, and indexes and the ability to structure, manipulate, and query data using well-established and time-proven tools and processes. Also, since CockroachDB supports the PostgreSQL wire protocol, it’s simple to get your application talking to Cockroach; just find your [PostgreSQL language-specific driver](install-client-drivers.html) and start building.  
 
-## See Also
+## See also
 
 - [SQL Feature Support](sql-feature-support.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

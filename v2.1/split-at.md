@@ -14,7 +14,7 @@ The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range s
 
 <section>{% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` [privilege](privileges.html) on the table or index.
 
@@ -238,7 +238,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Distribution Layer](architecture/distribution-layer.html)

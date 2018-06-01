@@ -51,7 +51,7 @@ This use of `SHOW TRACE` returns messages and timing information for all stateme
 
 - `SHOW TRACE FOR <stmt>` overwrites the last recorded trace. This means that if you enable session recording, disable session recording, execute `SHOW TRACE FOR <stmt>`, and then execute `SHOW TRACE FOR SESSION`, the response will be the trace for `SHOW TRACE FOR <stmt>`, not for the previously recorded session.
 
-## Required Privileges
+## Required privileges
 
 For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](privileges.html) for the statement being traced. For `SHOW TRACE FOR SESSION`, no privileges are required.
 
@@ -402,7 +402,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 	+--------------------+---------------------------------------------------------------------------------------------------------------+
 	~~~
 
-## See Also
+## See also
 
 - [`EXPLAIN`](explain.html)
 - [`SET (session settings)`](set-vars.html)

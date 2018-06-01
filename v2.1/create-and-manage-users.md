@@ -58,7 +58,7 @@ Flag | Description
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
 
@@ -76,7 +76,7 @@ By default, the `user` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## User Authentication
+## User authentication
 
 Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
 
@@ -90,7 +90,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 ## Examples
 
-### Create a User
+### Create a user
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -127,7 +127,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 </div>
 
-### Authenticate as a Specific User
+### Authenticate as a specific user
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -137,7 +137,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 <div class="filter-content" markdown="1" data-scope="secure">
 
-#### Secure Clusters with Client Certificates
+#### Secure clusters with client certificates
 
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
@@ -146,7 +146,7 @@ All users can authenticate their access to a secure cluster using [a client cert
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
 
-#### Secure Clusters with Passwords
+#### Secure clusters with passwords
 
 Users with passwords can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
 
@@ -168,7 +168,7 @@ $ cockroach sql --insecure --user=jpointsman
 
 </div>
 
-### Update a User's Password
+### Update a user's password
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -179,7 +179,7 @@ After issuing this command, enter and confirm the user's new password at the com
 
 Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
-### List All Users
+### List all users
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -194,7 +194,7 @@ $ cockroach user ls --insecure
 +------------+
 ~~~
 
-### Find a Specific User
+### Find a specific user
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -209,7 +209,7 @@ $ cockroach user get jpointsman --insecure
 +------------+--------------------------------------------------------------+
 ~~~
 
-### Remove a User
+### Remove a user
 
 {{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
 
@@ -220,7 +220,7 @@ $ cockroach user rm jpointsman --insecure
 
 {{site.data.alerts.callout_success}}You can also use the <a href="drop-user.html"><code>DROP USER</code></a> SQL statement to remove users.{{site.data.alerts.end}}
 
-### Reveal the SQL Statements Sent Implicitly by the Command-line Utility
+### Reveal the SQL statements sent implicitly by the command-line utility
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 
@@ -234,7 +234,7 @@ $ cockroach user rm jpointsman --insecure --echo-sql
 DELETE 1
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)

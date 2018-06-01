@@ -8,7 +8,7 @@ The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to list the schemas in a database.
 
@@ -44,7 +44,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Logical Schemas and Namespaces](sql-name-resolution.html)
 - [`SHOW DATABASES`](show-databases.html)

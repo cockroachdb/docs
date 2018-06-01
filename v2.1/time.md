@@ -121,7 +121,7 @@ Comparing `TIME` values:
 (1 row)
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `TIME` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -130,7 +130,7 @@ Type | Details
 `INTERVAL` | Converts to the span of time since midnight (00:00)
 `STRING` | Converts to format `'HH:MM:SS.SSSSSS'` (microsecond precision)
 
-## See Also
+## See also
 
 - [Data Types](data-types.html)
 - [SQL Feature Support](sql-feature-support.html)
