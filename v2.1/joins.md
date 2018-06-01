@@ -4,7 +4,7 @@ summary: Join expressions combine data from two or more table expressions.
 toc: false
 ---
 
-Join expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns.
+Join expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
 
 Join expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
 
@@ -102,14 +102,23 @@ CockroachDB supports the following algorithms for performing a join:
 
 ### Merge joins
 
-By default, CockroachDB uses [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) whenever possible because they are more performant than [hash joins](#hash-joins), computationally and in terms of memory. A merge join requires both tables to be indexed on the equality columns; when this condition is not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
+By default, CockroachDB uses [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) whenever possible because they are more performant than [hash joins](#hash-joins), computationally and in terms of memory. A merge join requires both tables to be indexed on the equality columns and the indexes must have the same ordering. When these conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
 2. CockroachDB takes one row from each table and compares them.
+
+    For inner joins:
     - If the rows are equal, CockroachDB returns the rows.
+    - If there are multiple matches, the cartesian product of the matches is returned.
     - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
+
+
+    For outer joins:
+    - If the rows are equal, CockroachDB returns the rows.
+    - If there are multiple matches, the cartesian product of the matches is returned.
+    - If the rows are not equal, CockroachDB returns `NULL` for the non-matching column and repeats the process with the next row until all rows are processed.
 
 ### Hash joins
 
@@ -118,27 +127,35 @@ If a merge join cannot be used, CockroachDB uses a [hash join](https://en.wikipe
 Hash joins are performed on two tables as follows:
 
 1. CockroachDB reads both tables and attempts to pick the smaller table.
-2. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table.
-3. CockroachDB then uses the hash table and scans the larger table to find matching rows from the smaller table.
+2. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
+3. CockroachDB then scans the large table, looking up each row in the hash table.
 
 ### Lookup joins
 
 {% include experimental-warning.md %}
 
-Lookup joins are beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires both tables to be indexed on the equality columns.
+A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires both tables to be indexed on the equality columns.
 
-Lookup joins are performed on two tables as follows:
+To use a lookup join:
 
-1. Manually set the lookup join flag:
+1. Manually set the flag:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET experimental_force_lookup_join = true;
     ~~~
 
-2. Specify the indexes to use if not the default index.
-4. CockroachDB reads each row in the small table.
-5. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+2. Specify the indexes to use if not the default index. For example:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM weather USE INDEX (index_1) RIGHT OUTER JOIN cities ON (weather.city = cities.name);
+    ~~~
+
+Lookup joins are performed on two tables as follows:
+
+1. CockroachDB reads each row in the small table.
+2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
 
 ## Performance best practices
 
