@@ -23,7 +23,7 @@ No [privileges](privileges.html) are required to list the tables in a schema or 
 
 Parameter | Description
 ----------|------------
-`name` | <span class="version-tag">Changed in v2.0:</span> The name of the schema or database for which to show tables. When omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
+`name` | The name of the schema or database for which to show tables. When omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
 
 `SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution](sql-name-resolution.html).
 

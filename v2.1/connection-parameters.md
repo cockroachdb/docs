@@ -202,7 +202,7 @@ instead.{{site.data.alerts.end}}
 
 ## Using Both URL and Client Parameters
 
-<span class="version-tag">Changed in v2.0</span>
+
 
 Several [`cockroach` commands](cockroach-commands.html) support both a
 [connection URL](#connect-using-a-url) with `--url` (or `COCKROACH_URL`) and [discrete connection

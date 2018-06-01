@@ -70,7 +70,7 @@ A single SQL identifier in a table expression context designates
 the contents of the table, [view](views.html), or sequence with that name
 in the current database, as configured by [`SET DATABASE`](set-vars.html).
 
-<span class="version-tag">Changed in v2.0:</span> If the name is composed of two or more identifiers, [name resolution](sql-name-resolution.html) rules apply.
+If the name is composed of two or more identifiers, [name resolution](sql-name-resolution.html) rules apply.
 
 For example:
 
@@ -150,8 +150,6 @@ resolution of table names. See [Name
 Resolution](sql-name-resolution.html) for more details.
 
 #### Scalar Function as Data Source
-
-<span class="version-tag">New in v2.0</span>
 
 When a [function returning a single
 value](scalar-expressions.html#function-calls-and-sql-special-forms) is

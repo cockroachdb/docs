@@ -6,7 +6,7 @@ toc: false
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-<span class="version-tag">New in v2.0:</span> To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
 
 {{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="primary-key.html"><code>PRIMARY KEY</code></a> and <a href="unique.html"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest index. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
 
@@ -31,7 +31,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | Parameter | Description |
 |-----------|-------------|
 |`UNIQUE` | Apply the [Unique constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the Unique constraint at the table level, so the system checks for duplicate values when inserting or updating data.|
-| `INVERTED` | <span class="version-tag">New in v2.0:</span> Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).|
+| `INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).|
 |`IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.|
 |`opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the Unique constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
 |`table_name` | The name of the table you want to create the index on. |
@@ -84,7 +84,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
-### Create Inverted Indexes <span class="version-tag">New in v2.0</span>
+### Create Inverted Indexes 
 
 [Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 

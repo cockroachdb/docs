@@ -54,8 +54,8 @@ The `user` command and subcommands support the following [general-use](#general)
 
 Flag | Description
 -----|------------
-`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
-`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
+`--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
+`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
 
 ### Client Connection
@@ -67,7 +67,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 Currently, only the `root` user can create users.
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.
+Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.
 {{site.data.alerts.end}}
 
 ### Logging
@@ -86,7 +86,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
-    <span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters.
+    Password creation is supported only in secure clusters.
 
 ## Examples
 
@@ -177,7 +177,7 @@ $ cockroach user set jpointsman --certs-dir=certs --password
 
 After issuing this command, enter and confirm the user's new password at the command prompt.
 
-<span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
+Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
 ### List All Users
 

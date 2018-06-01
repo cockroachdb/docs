@@ -5,7 +5,7 @@ toc: false
 toc_not_nested: true
 ---
 
-<span class="version-tag">New in v1.1:</span> CockroachDB allows you to rotate security certificates without restarting nodes.
+CockroachDB allows you to rotate security certificates without restarting nodes.
 
 {{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="create-security-certificates.html">Create Security Certificates</a>.{{site.data.alerts.end}}
 

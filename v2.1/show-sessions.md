@@ -4,7 +4,7 @@ summary: The SHOW SESSIONS statement lists all currently active sessions across 
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
+The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
 
 - The address of the client that opened the session
 - The node connected to

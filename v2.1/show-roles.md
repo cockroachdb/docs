@@ -4,7 +4,7 @@ summary: The SHOW ROLES statement lists the roles for all databases.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
+The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
 <div id="toc"></div>
 

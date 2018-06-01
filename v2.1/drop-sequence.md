@@ -4,7 +4,7 @@ summary:
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
+The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
 
 <div id="toc"></div>
 

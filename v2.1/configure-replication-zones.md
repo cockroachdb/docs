@@ -98,7 +98,7 @@ Constraints can be specified such that they apply to all replicas in a zone or s
 Constraint Scope | Description | Syntax
 -----------------|-------------|-------
 **All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints: [+ssd, -region=west]`
-**Per-Replica** | <span class="version-tag">New in v2.0:</span> Multiple lists of constraints can be provided in a JSON object mapping the list of constraints to an integer number of replicas in each range that the constraints should apply to. The total number of replicas constrained cannot be greater than the configured number of replicas for the zone. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
+**Per-Replica** | Multiple lists of constraints can be provided in a JSON object mapping the list of constraints to an integer number of replicas in each range that the constraints should apply to. The total number of replicas constrained cannot be greater than the configured number of replicas for the zone. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
 
 ### Node/Replica Recommendations
 
@@ -163,7 +163,7 @@ The `zone` command and subcommands support the following [general-use](#general)
 Flag | Description
 -----|------------
 `--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
-`--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
+`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 `--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
 
 ### Client Connection
@@ -186,7 +186,7 @@ These examples focus on the basic approach and syntax for working with zone conf
 
 ###  List the Pre-Configured Replication Zones
 
-<span class="version-tag">New in v2.0:</span> Newly created CockroachDB clusters start with some special pre-configured replication zones:
+Newly created CockroachDB clusters start with some special pre-configured replication zones:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -325,7 +325,7 @@ Alternately, you can pass the YAML content via the standard input:
 $ echo 'num_replicas: 7' | cockroach zone set db1.t1 --insecure -f -
 ~~~
 
-### Create a Replication Zone for a Table Partition <span class="version-tag">New in v2.0</span>
+### Create a Replication Zone for a Table Partition
 
 {{site.data.alerts.callout_info}}This is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -354,8 +354,8 @@ In addition to the databases and tables that are visible via the SQL interface, 
 Zone Name | Description
 ----------|-----------------|------------
 `.meta` | The "meta" ranges contain the authoritative information about the location of all data in the cluster.<br><br>Because historical queries are never run on meta ranges and it is advantageous to keep these ranges smaller for reliable performance, CockroachDB comes with a **pre-configured** `.meta` replication zone giving these ranges a lower-than-default `ttlseconds`.<br><br>If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.
-`.liveness` | <span class="version-tag">New in v2.0:</span> The "liveness" range contains the authoritative information about which nodes are live at any given time.<br><br>Just as for "meta" ranges, historical queries are never run on the liveness range, so CockroachDB comes with a **pre-configured** `.liveness` replication zone giving this range a lower-than-default `ttlseconds`.<br><br>If this range is unavailable, the entire cluster will be unavailable, so giving it a high replication factor is strongly recommended.
-`.timeseries` | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's Admin UI. If necessary, you can add a `.timeseries` replication zone to control the replication of this data.
+`.liveness` | The "liveness" range contains the authoritative information about which nodes are live at any given time.<br><br>Just as for "meta" ranges, historical queries are never run on the liveness range, so CockroachDB comes with a **pre-configured** `.liveness` replication zone giving this range a lower-than-default `ttlseconds`.<br><br>If this range is unavailable, the entire cluster will be unavailable, so giving it a high replication factor is strongly recommended.
+`.timeseries` | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's admin UI. If necessary, you can add a `.timeseries` replication zone to control the replication of this data.
 `.system` | There are system ranges for a variety of other important internal data, including information needed to allocate new table IDs and track the status of a cluster's nodes. If necessary, you can add a `.system` replication zone to control the replication of this data.
 
 To control replication for one of the above sets of system ranges, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
@@ -448,7 +448,7 @@ $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-3 
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
 
-### Per-Replica Constraints to Specific Datacenters <span class="version-tag">New in v2.0</span>
+### Per-Replica Constraints to Specific Datacenters
 
 **Scenario:**
 

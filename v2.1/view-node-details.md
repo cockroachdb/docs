@@ -6,7 +6,7 @@ toc: false
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
-<span class="version-tag">New in v1.1:</span> The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
+The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 
 <div id="toc"></div>
 
@@ -16,8 +16,8 @@ Subcommand | Usage
 -----------|------
 `ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
-`decommission` | <span class="version-tag">New in v1.1:</span> Decommission nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
-`recommission` | <span class="version-tag">New in v1.1:</span> Recommission nodes that were accidentally decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
+`decommission` | Decommission nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
+`recommission` | Recommission nodes that were accidentally decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
 
 ## Synopsis
 
@@ -71,7 +71,7 @@ The `node ls` subcommand also supports the following general flags:
 
 Flag | Description
 -----|------------
-`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
+`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
 The `node status` subcommand also supports the following general flags:
 
@@ -81,7 +81,7 @@ Flag | Description
 `--decommission` | Show node decommissioning details.
 `--ranges` | Show node details for ranges and replicas.
 `--stats` | Show node disk usage details.
-`--timeout` | <span class="version-tag">New in v2.0:</span> Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
+`--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
 The `node decommission` subcommand also supports the following general flag:
 

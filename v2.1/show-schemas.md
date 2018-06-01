@@ -4,7 +4,7 @@ summary: The SHOW SCHEMAS statement lists the schemas in a database.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
+The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
 
 <div id="toc"></div>
 

@@ -50,7 +50,7 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
-### Foreign Key Actions <span class="version-tag">New in v2.0</span>
+### Foreign Key Actions 
 
 When you set a foreign key constraint, you can control what happens to the constrained column when the column it's referencing (the foreign key) is deleted or updated.
 
@@ -240,7 +240,7 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 +------+----------+
 ~~~
 
-### Use a Foreign Key Constraint with `CASCADE` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `CASCADE` 
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
@@ -350,7 +350,7 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 +-----+--------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET NULL` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `SET NULL` 
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
@@ -477,7 +477,7 @@ Let's check to make sure the row in `orders_3` where `customers_id = 2` was upda
 +-----+-------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET DEFAULT` <span class="version-tag">New in v2.0</span>
+### Use a Foreign Key Constraint with `SET DEFAULT` 
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions-new-in-v2-0) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
 

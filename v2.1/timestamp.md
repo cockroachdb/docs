@@ -105,7 +105,7 @@ Type | Details
 `SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
 `DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
 `FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`TIME` | <span class="version-tag">New in v2.0:</span> Converts to the time portion (HH:MM:SS) of the timestamp
+`TIME` | Converts to the time portion (HH:MM:SS) of the timestamp
 `DATE` | ––
 `STRING` | ––
 

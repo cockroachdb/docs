@@ -5,8 +5,6 @@ toc: false
 toc_not_nested: true
 ---
 
-
-<span class="version-tag">New in v2.0:</span>
 Common Table Expressions, or CTEs, provide a shorthand name to a
 possibly complex [subquery](subqueries.html) before it is used in a
 larger query context. This improves readability of the SQL code.
