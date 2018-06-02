@@ -616,7 +616,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     # Start the 2 nodes with HDD storage:
     $ cockroach start --insecure --host=<node6 hostname> --store=path=node6,attrs=hdd \
     --join=<node1 hostname>:27257
-    $ cockroach start --insecure --host=<node7 hostname> --store=path=node2,attrs=hdd \
+    $ cockroach start --insecure --host=<node7 hostname> --store=path=node7,attrs=hdd \
     --join=<node1 hostname>:27257
     ~~~
 
@@ -727,7 +727,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
    range_max_bytes: 67108864
    gc:
      ttlseconds: 86400
-   num_replicas: 7
+   num_replicas: 3
    constraints: []
    ~~~
 
