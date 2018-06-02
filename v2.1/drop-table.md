@@ -8,7 +8,7 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well. 
 
@@ -116,7 +116,7 @@ DROP TABLE
 (0 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`ALTER TABLE`](alter-table.html)
 - [`CREATE TABLE`](create-table.html)

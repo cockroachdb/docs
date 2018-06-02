@@ -24,7 +24,7 @@ with other constructs to form more complex [selection queries](selection-queries
 
 {{site.data.alerts.callout_success}}The simple <code>SELECT</code> clause also has other applications not covered here, such as executing <a href="functions-and-operators.html">functions</a> like <code>SELECT current_timestamp();</code>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `SELECT` [privilege](privileges.html) on the tables used as operands.
 
@@ -430,7 +430,7 @@ Results from two or more queries can be combined together as follows:
 - Using [set operations](selection-queries.html#set-operations) to combine rows
   using inclusion/exclusion rules.
 
-## See Also
+## See also
 
 - [Scalar Expressions](scalar-expressions.html)
 - [Selection Queries](selection-queries.html)

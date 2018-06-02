@@ -75,7 +75,7 @@ following query is equivalent to the two examples above:
 In this example, the second CTE `results` refers to the first CTE `o`
 by name. The final query refers to the CTE `results`.
 
-## Nested `WITH` Clauses
+## Nested `WITH` clauses
 
 It is possible to use a `WITH` clause in a subquery, or even a `WITH` clause within another `WITH` clause. For example:
 
@@ -101,7 +101,7 @@ closest to the table expression. For example:
 In this example, the inner subquery `SELECT * FROM a` will select from
 table `y` (closest `WITH` clause), not from table `x`.
 
-## Data Modifying Statements
+## Data modifying statements
 
 It is possible to use a data-modifying statement (`INSERT`, `DELETE`,
 etc.) as a common table expression.
@@ -140,7 +140,7 @@ Writes in Subqueries</a> for details.
 
 <div markdown="1"></div>
 
-## Known Limitations
+## Known limitations
 
 {{site.data.alerts.callout_info}}
 The following limitations may be lifted

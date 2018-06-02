@@ -35,7 +35,7 @@ Field | Description
 `Build SHA-1` | The SHA-1 hash of the commit used to build the binary.
 `Build Type` | The type of release. If `release`, `release-gnu`, or `release-musl`, the binary is for a [production release](../releases/#production-releases). If `development`, the binary is for a [testing release](../releases/#testing-releases).
 
-## See Also
+## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
 - [Other Cockroach Commands](cockroach-commands.html)

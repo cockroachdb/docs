@@ -12,7 +12,7 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 <div id="toc"></div>
 
-## Functional Details
+## Functional details
 
 ### Restore Targets
 
@@ -27,7 +27,7 @@ Because this process is designed for disaster recovery, CockroachDB expects that
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
-### Object Dependencies
+### Object dependencies
 
 Dependent objects must be restored at the same time as the objects they depend on.
 
@@ -47,7 +47,7 @@ By default, tables and views are restored into a database with the name of the d
 
 The target database must have not have tables or views with the same name as the tables or views you're restoring.
 
-### Users and Privileges
+### Users and privileges
 
 Table and view users/privileges are not restored. Restored tables and views instead inherit the privileges of the database into which they're restored.
 
@@ -90,7 +90,7 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 
 {{site.data.alerts.callout_info}}The <code>RESTORE</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run `RESTORE`.
 
@@ -218,7 +218,7 @@ WITH into_db = 'newdb';
 > DROP TABLE newdb.users;
 ~~~
 
-## See Also
+## See also
 
 - [`BACKUP`](backup.html)
 - [Configure Replication Zones](configure-replication-zones.html)

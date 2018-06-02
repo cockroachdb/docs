@@ -204,7 +204,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-3-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
 
-## See Also
+## See also
 
 - [View Node Details](view-node-details.html)
 - [Collect Debug Information](debug-zip.html)

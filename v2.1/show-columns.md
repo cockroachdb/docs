@@ -8,7 +8,7 @@ The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target table.
 
@@ -64,7 +64,7 @@ Field | Description
 (5 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)

@@ -12,7 +12,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 
 When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can cancel a job.
 
@@ -28,7 +28,7 @@ Parameter | Description
 
 ## Examples
 
-### Cancel a Restore
+### Cancel a restore
 
 ~~~ sql
 > SHOW JOBS;
@@ -44,7 +44,7 @@ Parameter | Description
 > CANCEL JOB 27536791415282;
 ~~~
 
-## See Also
+## See also
 
 - [`SHOW JOBS`](show-jobs.html)
 - [`BACKUP`](backup.html)

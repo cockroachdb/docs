@@ -31,7 +31,7 @@ To create the most useful secondary indexes, you should also check out our [best
 
 ### Selection
 
-Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e. the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
 
@@ -87,7 +87,7 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 > CREATE INDEX ON tbl (col1, col2) STORING (col3);
 ~~~
 
-## See Also
+## See also
 
 - [Inverted Indexes](inverted-indexes.html)
 - [`CREATE INDEX`](create-index.html)

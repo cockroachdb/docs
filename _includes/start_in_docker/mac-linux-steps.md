@@ -1,4 +1,4 @@
-## Before You Begin
+## Before you begin
 
 If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 

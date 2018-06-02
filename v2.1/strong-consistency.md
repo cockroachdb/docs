@@ -38,7 +38,7 @@ How does this work?
 
 <img src="{{ 'images/v2.1/2strong-consistency.png' | relative_url }}" alt="Strong consistency in CockroachDB" style="width: 400px" />
 
-## See Also
+## See also
 
 - [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/)
 - [Consensus, Made Thrive](https://www.cockroachlabs.com/blog/consensus-made-thrive/)

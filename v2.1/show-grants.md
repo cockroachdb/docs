@@ -13,7 +13,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 <section>{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
 
@@ -228,7 +228,7 @@ SHOW GRANTS ON ROLE FOR carl;
 +------+--------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)

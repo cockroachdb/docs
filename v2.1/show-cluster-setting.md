@@ -11,7 +11,7 @@ via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
 <div id="toc"></div>
 
-## Required Privileges 
+## Required privileges 
 
 Only the `root` user can display cluster settings.
 
@@ -73,7 +73,7 @@ Only the `root` user can display cluster settings.
 (24 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)

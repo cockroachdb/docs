@@ -14,7 +14,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 - The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` [privilege](privileges.html) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
 
@@ -647,7 +647,7 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 +----+---------+
 ~~~
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [`DELETE`](delete.html)

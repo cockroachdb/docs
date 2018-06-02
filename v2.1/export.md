@@ -28,7 +28,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 {{site.data.alerts.callout_info}}The <code>EXPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run [`EXPORT`](export.html).
 
@@ -47,7 +47,7 @@ URLs for the file directory location you want to export to must use the followin
 
 {% include external-urls-v2.0.md %}
 
-You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g. n1.1.csv, n1.2.csv, n2.1.csv, ...).
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
 ### Export Options
 
@@ -134,6 +134,6 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
-## See Also
+## See also
 
 - [Create a File Server](create-a-file-server.html)

@@ -8,7 +8,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of an ente
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run `SHOW BACKUP`.
 
@@ -58,7 +58,7 @@ Field | Description
 Time: 32.540353ms
 ~~~
 
-## See Also
+## See also
 
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)

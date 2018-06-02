@@ -99,7 +99,7 @@ $ cockroach debug zip ./crdb-debug.zip --host=200.100.50.25
 
 {{site.data.alerts.callout_info}}Secure examples assume you have the appropriate certificates in the default certificate directory, <code>${HOME}/.cockroach-certs/</code>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [File an Issue](file-an-issue.html)
 - [Other Cockroach Commands](cockroach-commands.html)

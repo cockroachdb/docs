@@ -27,7 +27,7 @@ Command | Usage
 [`cockroach gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](view-version-details.html) | Output CockroachDB version details.
 
-## Environment Variables
+## Environment variables
 
 For many common `cockroach` flags, such as `--port` and `--user`, you can set environment variables once instead of manually passing the flags each time you execute commands.
 

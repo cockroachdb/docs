@@ -172,7 +172,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
 
-## See Also
+## See also
 
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)

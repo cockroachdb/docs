@@ -11,7 +11,7 @@ We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim 
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the [.NET SDK](https://www.microsoft.com/net/download/) for your OS.
 
@@ -79,7 +79,7 @@ $ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
-### Basic Statements
+### Basic statements
 
 Replace the contents of `cockraochdb-test-app/Program.cs` with the following code:
 
@@ -149,7 +149,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [.NET Npgsql driver](http://www.npgsql.org/).
 

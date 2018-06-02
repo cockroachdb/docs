@@ -242,7 +242,7 @@ deterministic.
 This is a [known limitation](https://github.com/cockroachdb/cockroach/issues/23620)
 that may be lifted in the future.
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Scalar Expressions](scalar-expressions.html)

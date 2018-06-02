@@ -15,7 +15,7 @@ redirect_from: /training/fault-tolerance-and-automated-repair.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Cluster Startup and Scaling](cluster-startup-and-scaling.html) and have 5 nodes running locally.
 
@@ -348,6 +348,6 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ rm -rf node1 node2 node3 node4 node5
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Locality and Replication Zones](locality-and-replication-zones.html)

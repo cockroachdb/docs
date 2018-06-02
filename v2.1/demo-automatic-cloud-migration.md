@@ -237,7 +237,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6 haproxy.cfg
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

@@ -18,7 +18,7 @@ The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/)
 
-## Replication Dashboard
+## Replication dashboard
 
 The **Replication** dashboard displays the following time series graphs:
 
@@ -81,7 +81,7 @@ Applied (Raft-initiated) | The number of snapshots applied to nodes per second t
 Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
 
-### Other Graphs
+### Other graphs
 
 The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
 

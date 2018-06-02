@@ -18,7 +18,7 @@ Despite committing the transaction, you must still issue a [`COMMIT`](commit-tra
 
 {% include sql/{{ page.version.version }}/diagrams/release_savepoint.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to release a savepoint. However, privileges are required for each statement within a transaction.
 
@@ -44,7 +44,7 @@ After declaring `SAVEPOINT cockroach_restart`, commit the transaction with `RELE
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [Transactions](transactions.html)
 - [`SAVEPOINT`](savepoint.html)

@@ -12,15 +12,15 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 
 <div id="toc"></div>
 
-## Functional Details
+## Functional details
 
-### Backup Targets
+### Backup targets
 
 You can backup entire tables (which automatically includes their indexes) or [views](views.html). Backing up a database simply backs up all of its tables and views.
 
 {{site.data.alerts.callout_info}}<code>BACKUP</code> only offers table-level granularity; it <em>does not</em> support backing up subsets of a table.{{site.data.alerts.end}}
 
-### Object Dependencies
+### Object dependencies
 
 Dependent objects must be backed up at the same time as the objects they depend on.
 
@@ -31,7 +31,7 @@ Table with a [sequence](create-sequence.html) | The sequence it uses; however, t
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
-### Users and Privileges
+### Users and privileges
 
 Every backup you create includes `system.users`, which stores your users and their passwords. To restore your users, you must use [this procedure](restore.html#restoring-users-from-system-users-backup).
 
@@ -39,15 +39,15 @@ Restored tables inherit privilege grants from the target database; they do not p
 
 Table-level privileges must be [granted to users](grant.html) after the restore is complete.
 
-### Backup Types
+### Backup types
 
 CockroachDB offers two types of backups: full and incremental.
 
-#### Full Backups
+#### Full backups
 
 Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](backup.html#backups-with-revision-history).
 
-#### Incremental Backups
+#### Incremental backups
 
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](backup.html#backups-with-revision-history).
 
@@ -59,7 +59,7 @@ Note the following restrictions:
 
 - It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups).
 
-### Backups with Revision History 
+### Backups with revision history
 
 {% include beta-warning.md %}
 
@@ -82,7 +82,7 @@ For best performance, we also recommend always starting backups with a specific 
 
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-## Automating Backups
+## Automating backups
 
 We recommend automating daily backups of your cluster.
 
@@ -90,7 +90,7 @@ To automate backups, you must have a client send the `BACKUP` statement to the c
 
 Once the backup is complete, your client will receive a `BACKUP` response.
 
-## Viewing and Controlling Backups Jobs
+## Viewing and controlling backups jobs
 
 Whenever you initiate a backup, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -102,7 +102,7 @@ After the backup has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {{site.data.alerts.callout_info}}The <code>BACKUP</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run `BACKUP`.
 
@@ -118,7 +118,7 @@ Only the `root` user can run `BACKUP`.
 | `INCREMENTAL FROM full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups). |
 | `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
 
-### Backup File URLs
+### Backup file URLs
 
 The path to each backup must be unique. The URL for your backup's destination/locations must use the following format:
 
@@ -128,7 +128,7 @@ The path to each backup must be unique. The URL for your backup's destination/lo
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
-### Backup a Single Table or View
+### Backup a single table or view
 
 ~~~ sql
 > BACKUP bank.customers \
@@ -136,7 +136,7 @@ TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup Multiple Tables
+### Backup multiple tables
 
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
@@ -144,7 +144,7 @@ TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup an Entire Database
+### Backup an entire database
 
 ~~~ sql
 > BACKUP DATABASE bank \
@@ -152,7 +152,7 @@ TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup with Revision History
+### Backup with revision history
 
 ~~~ sql
 > BACKUP DATABASE bank \
@@ -160,7 +160,7 @@ TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
-### Create Incremental Backups
+### Create incremental backups
 
 Incremental backups must be based off of full backups you've already created.
 
@@ -171,7 +171,7 @@ AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly';
 ~~~
 
-### Create Incremental Backups with Revision History
+### Create incremental backups with revision history
 
 ~~~ sql
 > BACKUP DATABASE bank \
@@ -180,7 +180,7 @@ AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
-## See Also
+## See also
 
 - [`RESTORE`](restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)

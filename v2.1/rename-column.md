@@ -14,7 +14,7 @@ The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a colum
 
 {% include sql/{{ page.version.version }}/diagrams/rename_column.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -27,7 +27,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `current_name` | The current name of the column. |
 | `name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
@@ -61,7 +61,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 +----+-------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)

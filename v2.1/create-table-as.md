@@ -8,7 +8,7 @@ The `CREATE TABLE ... AS` statement creates a new table from a [selection query]
 
 <div id="toc"></div>
 
-## Intended Use
+## Intended use
 
 Tables created with `CREATE TABLE ... AS` are intended to persist the
 result of a query for later reuse.
@@ -28,7 +28,7 @@ A view is also advisable when the results must be up-to-date; a view
 always retrieves the current data from the tables that the view query
 mentions.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -120,7 +120,7 @@ results.
 
 ## Examples
 
-### Create a Table from a `SELECT` Query
+### Create a table from a `SELECT` query
 
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
@@ -147,12 +147,9 @@ results.
 +----+---------+-------+
 ~~~
 
-### Change Column Names
-
-
+### Change column names
 
 This statement creates a copy of an existing table but with changed column names.
-
 
 ~~~ sql
 > CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
@@ -168,7 +165,7 @@ This statement creates a copy of an existing table but with changed column names
 +----+------------+
 ~~~
 
-### Create a Table from a `VALUES` Clause
+### Create a table from a `VALUES` clause
 
 ~~~ sql
 > CREATE TABLE tech_states AS VALUES ('CA'), ('NY'), ('WA');
@@ -187,7 +184,7 @@ This statement creates a copy of an existing table but with changed column names
 ~~~
 
 
-### Create a Copy of an Existing Table
+### Create a copy of an existing table
 
 ~~~ sql
 > CREATE TABLE customers_ny_copy AS TABLE customers_ny;
@@ -207,7 +204,7 @@ When a table copy is created this way, the copy is not associated to
 any primary key, secondary index or constraint that was present on the
 original table.
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Simple `SELECT` Clause](select-clause.html)

@@ -16,7 +16,7 @@ redirect_from: /training/planned-maintenance.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -193,6 +193,6 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
     (1 row)
     ~~~
 
-## What's Next?
+## What's next?
 
 [Node Decommissioning](node-decommissioning.html)

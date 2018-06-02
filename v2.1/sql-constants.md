@@ -232,7 +232,7 @@ CockroachDB recognizes the following SQL named constants:
 Note that `NULL` is a valid constant for any type: its actual data
 type during expression evaluation is determined based on context.
 
-## See Also
+## See also
 
 - [Scalar Expressions](scalar-expressions.html)
 - [Data Types](data-types.html)

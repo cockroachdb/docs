@@ -10,10 +10,10 @@ The `BYTES` [data type](data-types.html) stores binary strings of variable lengt
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `BYTES`: 
+In CockroachDB, the following are aliases for `BYTES`:
 
-- `BYTEA` 
-- `BLOB` 
+- `BYTEA`
+- `BLOB`
 
 ## Syntax
 
@@ -57,7 +57,7 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 (4 rows)
 ~~~
 
-## Supported Conversions
+## Supported conversions
 
 `BYTES` values can be
 [cast](data-types.html#data-type-conversions-casts) explicitly to
@@ -67,6 +67,6 @@ valid UTF-8 byte sequences; an error is reported otherwise.
 `STRING` values can be cast explicitly to `BYTES`. This conversion
 always succeeds.
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

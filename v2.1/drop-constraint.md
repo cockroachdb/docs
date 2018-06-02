@@ -14,7 +14,7 @@ The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` 
 
 {% include sql/{{ page.version.version }}/diagrams/drop_constraint.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -25,7 +25,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `table_name` | The name of the table with the constraint you want to drop. |
 | `name` | The name of the constraint you want to drop. |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
@@ -61,7 +61,7 @@ ALTER TABLE
 
 {{site.data.alerts.callout_info}}You cannot drop the <code>primary</code> constraint, which indicates your table's <a href="primary-key.html">Primary Key</a>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [`DROP COLUMN`](drop-column.html)
 - [`DROP INDEX`](drop-index.html)

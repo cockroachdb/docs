@@ -117,7 +117,7 @@ The following pairs of statements are dependent since reordering them will affec
 
 {{site.data.alerts.callout_info}}Parallel statement execution in CockroachDB is different than parallel query execution in PostgreSQL. For PostgreSQL, parallel query execution refers to “creating multiple query processes that divide the workload of a single SQL statement and executing them in parallel”. For CockroachDB’s parallel statement execution, an individual SQL statement is not divided into processes. Instead, multiple independent SQL statements within a single <a href='transactions.html'>transaction</a> are executed in parallel.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)

@@ -379,7 +379,7 @@ a selection clause is possible. For example:
 
 For more options to compose query results, see [Selection Queries](selection-queries.html).
 
-## See Also
+## See also
 
 - [Constants](sql-constants.html)
 - [Selection Queries](selection-queries.html)

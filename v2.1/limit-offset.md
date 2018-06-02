@@ -32,7 +32,7 @@ for `LIMIT`. If `limit_val` is omitted, then one row is fetched.
 For example uses with `SELECT`, see [Limiting Row Count and
 Pagination](selection-queries.html#limiting-row-count-and-pagination).
 
-## See Also
+## See also
 
 - [`DELETE`](delete.html)
 - [`UPDATE`](delete.html)

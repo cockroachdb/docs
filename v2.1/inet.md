@@ -78,13 +78,13 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 +--------------------------------------+--------------------------+---------------------------+
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `INET` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
 
 - `STRING` - Converts to format `'Address/subnet'`.
 
-## See Also
+## See also
 
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)

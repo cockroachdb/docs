@@ -8,7 +8,7 @@ toc: false
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user and the user that the session belongs to can cancel a session.
 
@@ -25,7 +25,7 @@ Parameter | Description
 
 ## Example
 
-### Cancel a Single Session
+### Cancel a single session
 
 In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
 
@@ -56,7 +56,7 @@ You can also cancel a session using a subquery that returns a single session ID:
       WHERE username = 'root');
 ~~~
 
-### Cancel Multiple Sessions
+### Cancel multiple sessions
 
 Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessions:
 
@@ -86,7 +86,7 @@ To cancel multiple sessions, nest a [`SELECT` clause](select-clause.html) that r
 
 All sessions created by `maxroach` will be cancelled.
 
-## See Also
+## See also
 
 - [`SHOW SESSIONS`](show-sessions.html)
 - [`SET` (session variable)](set-vars.html)

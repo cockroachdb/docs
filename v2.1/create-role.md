@@ -25,7 +25,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](roles.htm
 - Roles cannot log in. They do not have a password and cannot use certificates.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
-## Required Privileges
+## Required privileges
 
 Roles can only be created by superusers, i.e., members of the `admin` role. The `admin` role exists by default with `root` as the member.
 
@@ -51,7 +51,7 @@ CREATE ROLE 1
 
 After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
 
-## See Also
+## See also
 
 - [Manage Roles](roles.html)
 - [`DROP ROLE` (Enterprise)](drop-user.html)

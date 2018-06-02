@@ -77,7 +77,7 @@ For reference, CockroachDB uses these defaults:
 - `[port]`: **26257**
 - `[user]`: **root**
 
-## See Also
+## See also
 
 - [SQL Dump (Export)](sql-dump.html)
 - [Back up Data](back-up-data.html)

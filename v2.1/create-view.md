@@ -8,7 +8,7 @@ The `CREATE VIEW` statement creates a new [view](views.html), which is a stored 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
 
@@ -98,14 +98,14 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 (3 rows)
 ~~~
 
-## Known Limitations
+## Known limitations
 
 {{site.data.alerts.callout_info}} The following limitations may be lifted
 in a future version of CockroachDB.{{site.data.alerts.end}}
 
 {% include known_limitations/cte-with-view.md %}
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Views](views.html)

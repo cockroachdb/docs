@@ -144,6 +144,6 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 {% include prod_deployment/use-cluster.md %}
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

@@ -20,7 +20,7 @@ We separate three levels of complexity for projects:
 
 Below you’ll find steps for contributing to the codebase; we’ve broken these down by complexity.
 
-## How Complex is Your Project?
+## How complex is your project?
 
 A project is likely to be **low complexity** if all the following conditions apply:
 
@@ -42,7 +42,7 @@ A project is likely **high complexity** if _any_ of the following conditions app
 
 Projects that are neither definitely simple nor complex can be considered **medium complexity**.
 
-## How to Contribute
+## How to contribute
 
 ### Prerequisites
 
@@ -52,7 +52,7 @@ Before you start a project:
 2. Follow a few [code reviews](https://github.com/cockroachdb/cockroach/pulls).
 3. See [style.md](https://github.com/cockroachdb/cockroach/blob/master/docs/style.md) to learn about our code style and conventions.
 
-### Low Complexity Projects
+### Low-complexity projects
 
 These cover things like bug fixes and small enhancements that don’t involve any major architectural or design decisions. You should feel free to submit these for review as you come across them.
 
@@ -62,7 +62,7 @@ These cover things like bug fixes and small enhancements that don’t involve an
 
 A good place to find these types of projects are open issues with the label ["easy"](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+is%3Aissue+label%3Aeasy+label%3Ahelpwanted).
 
-### Medium Complexity Projects
+### Medium-complexity projects
 
 For these projects, you should:
 
@@ -74,7 +74,7 @@ For these projects, you should:
 
 Here’s a great example of a contributor [building support for outer joins](https://github.com/cockroachdb/cockroach/issues/13342) in partnership with our engineering team.
 
-### High Complexity Projects
+### High-complexity projects
 
 These projects involve fundamental changes to the way CockroachDB works. What’s important to remember here is that supporting external development of these projects will take a non-trivial amount of time from the Cockroach team that would otherwise be spent building the product, so we really need to make sure it’s worth it. In practice, we’ve found even strong developers have little success with these types of projects and, in most cases, it is faster for our team to build these features ourselves.
 

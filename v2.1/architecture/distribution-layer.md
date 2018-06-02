@@ -179,6 +179,6 @@ The Distribution Layer's `DistSender` receives `BatchRequests` from its own node
 
 The Distribution Layer routes `BatchRequests` to nodes containing ranges of data, which is ultimately routed to the Raft group leader or Leaseholder, which are handled in the Replication Layer.
 
-## What's Next?
+## What's next?
 
 Learn how CockroachDB copies data and ensures consistency in the [Replication Layer](replication-layer.html).

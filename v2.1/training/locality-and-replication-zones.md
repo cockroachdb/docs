@@ -15,7 +15,7 @@ redirect_from: /training/locality-and-replication-zones.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -298,7 +298,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
 ## Step 6. Add EU-specific data
 
-Now imagine that that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
+Now imagine that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
 
 1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
@@ -417,7 +417,7 @@ Take a moment to clean things up.
     $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Give us feedback on this training](https://www.surveymonkey.com/r/5TGPWRJ) and let us know if you'd like more
 - [Read our docs](../)

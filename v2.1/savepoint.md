@@ -14,7 +14,7 @@ The `SAVEPOINT cockroach_restart` statement defines the intent to retry [transac
 
 {% include sql/{{ page.version.version }}/diagrams/savepoint.html %}
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to create a savepoint. However, privileges are required for each statement within a transaction.
 
@@ -40,7 +40,7 @@ After you `BEGIN` the transaction, you must create the savepoint to identify tha
 
 When using `SAVEPOINT`, your application must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction).
 
-## See Also
+## See also
 
 - [Transactions](transactions.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)

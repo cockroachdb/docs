@@ -18,7 +18,7 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -108,7 +108,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 

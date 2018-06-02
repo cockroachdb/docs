@@ -139,6 +139,6 @@ Now that your deployment is working, you can:
 2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Azure load balancer, not to a CockroachDB node.
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

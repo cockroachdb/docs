@@ -601,7 +601,7 @@ Let's check to make sure the corresponding `customer_id` value to `id = 101`, wa
 +-----+-------------+
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)

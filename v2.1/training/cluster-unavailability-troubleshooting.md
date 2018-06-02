@@ -16,7 +16,7 @@ redirect_from: /training/cluster-unavailability-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Under-Replication Troubleshooting](under-replication-troubleshooting.html) and have a cluster of 3 nodes running.
 
@@ -109,6 +109,6 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ rm -rf node1 node2 node3
     ~~~
 
-## What's Next?
+## What's next?
 
 [Data Unavailability Troubleshooting](data-unavailability-troubleshooting.html)

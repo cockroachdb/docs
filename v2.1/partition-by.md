@@ -31,7 +31,7 @@ Parameter | Description |
 `list_partitions` | Name of list partition followed by the list of values to be included in the partition.
 `range_partitions` | Name of range partition followed by the range of values to be included in the partition.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -88,7 +88,7 @@ Suppose we have an yet another existing table named `students` with the primary 
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)

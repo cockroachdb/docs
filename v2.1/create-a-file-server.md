@@ -13,7 +13,7 @@ This is especially useful for:
 
 <div id="toc"></div>
 
-## HTTP Export Storage API
+## HTTP export storage API
 
 CockroachDB tasks that require reading or writing external files (such as [`IMPORT`](import.html) and [`BACKUP`](backup.html)) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
@@ -28,13 +28,13 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 {{site.data.alerts.callout_info}}We do not recommend using any machines running <code>cockroach</code> as file servers. Using machines that are running cockroach as file servers could negatively impact performance if I/O operations exceed capacity.{{site.data.alerts.end}}
 
-### Using Caddy as a File Server
+### Using caddy as a file server
 
 1. [Download a `caddy` binary](https://caddyserver.com/download) that includes the `http.upload` plugin.
 
 2. Run `caddy` with an [`upload` directive](https://caddyserver.com/docs/http.upload), either in the command line or via [`Caddyfile`](https://caddyserver.com/docs/caddyfile).
     - Command line example (with no TLS):
-    		
+
         {% include copy-clipboard.html %}
         ~~~ shell
         $ caddy -root /mnt/cockroach-exports "upload / {" 'to "/mnt/cockroach-exports"' 'yes_without_tls' "}"
@@ -50,9 +50,9 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
         }
         ~~~
 
-### Using nginx as a File Server
+### Using nginx as a file server
 
-1. Install `nginx` with the `webdav` module (often included in `-full` or similarly named packages in various distributions). 
+1. Install `nginx` with the `webdav` module (often included in `-full` or similarly named packages in various distributions).
 
 2. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
 
@@ -74,7 +74,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
     }
     ~~~
 
-## See Also
+## See also
 
 - [`IMPORT`](import.html)
 - [`BACKUP`](backup.html) (*Enterprise only*)

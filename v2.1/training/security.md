@@ -16,7 +16,7 @@ redirect_from: /training/security.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Users and Privileges](users-and-privileges.html) and have 3 insecure nodes running locally.
 
@@ -206,6 +206,6 @@ Although we recommend always using TLS certificates to authenticate users, it's 
     (2 rows)
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Production Deployment](production-deployment.html)

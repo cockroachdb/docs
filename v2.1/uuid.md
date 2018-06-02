@@ -107,7 +107,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `UUID` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
 
@@ -115,6 +115,6 @@ Type | Details
 -----|--------
 `BYTES` | Requires supported [`BYTES`](bytes.html) string format, e.g., `b'\141\061\142\062\143\063'`.
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

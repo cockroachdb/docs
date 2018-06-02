@@ -14,7 +14,7 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles
 
 <section>{% include sql/{{ page.version.version }}/diagrams/grant_roles.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user granting role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
 
@@ -78,7 +78,7 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [Privileges](privileges.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)

@@ -12,7 +12,7 @@ The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databa
 
 <section>{% include sql/{{ page.version.version }}/diagrams/show_roles.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
 
@@ -31,7 +31,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 +----------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)

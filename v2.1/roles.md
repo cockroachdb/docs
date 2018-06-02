@@ -241,7 +241,7 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 > DROP ROLE system_ops;
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)

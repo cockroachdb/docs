@@ -18,7 +18,7 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) and the
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -90,7 +90,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
