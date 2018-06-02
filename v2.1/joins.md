@@ -134,7 +134,9 @@ Hash joins are performed on two tables as follows:
 
 {% include experimental-warning.md %}
 
-A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires both tables to be indexed on the equality columns.
+A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
+
+{{site.data.alerts.callout_info}}Lookup joins are only valid on inner or left outer joins.{{site.data.alerts.end}}
 
 To use a lookup join:
 
@@ -149,7 +151,7 @@ To use a lookup join:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM weather USE INDEX (index_1) RIGHT OUTER JOIN cities ON (weather.city = cities.name);
+    > SELECT * FROM weather@index_1 LEFT OUTER JOIN cities ON (weather.city = cities.name);
     ~~~
 
 Lookup joins are performed on two tables as follows:
