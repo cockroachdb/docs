@@ -298,7 +298,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
 ## Step 6. Add EU-specific data
 
-Now imagine that that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
+Now imagine that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
 
 1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 

@@ -22,7 +22,7 @@ Make sure you have already completed [Node Startup Troubleshooting](node-startup
 
 ## Problem 1: SSL required
 
-In this scenario, you try to connect a user without without providing a client certificate.
+In this scenario, you try to connect a user without providing a client certificate.
 
 ### Step 1. Simulate the problem
 

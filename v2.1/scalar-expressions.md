@@ -102,7 +102,7 @@ There are two exceptions however, made for compatibility with PostgreSQL:
   specifies that `NaN` is different from itself.
 - `NaN` is considered to be smaller than every other value, including
   `-INFINITY`. IEEE 754 specifies that `NaN` does not order with any
-  other value, i.e. `x <= NaN` and `x >= NaN` are both false for every
+  other value, i.e., `x <= NaN` and `x >= NaN` are both false for every
   value of `x` including infinities.
 
 These exceptions exist so that the value `NaN` can be used in `WHERE`

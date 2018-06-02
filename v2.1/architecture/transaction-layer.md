@@ -147,7 +147,7 @@ To make this simpler to understand, we'll call the first transaction `TxnA` and 
 
 CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `TxnWaitQueue`.
 
-1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
+1. If the transaction has an explicit priority set (i.e., `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
 
 2. `TxnB` tries to push `TxnA`'s timestamp forward.
 

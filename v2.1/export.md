@@ -47,7 +47,7 @@ URLs for the file directory location you want to export to must use the followin
 
 {% include external-urls-v2.0.md %}
 
-You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g. n1.1.csv, n1.2.csv, n2.1.csv, ...).
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
 ### Export Options
 
