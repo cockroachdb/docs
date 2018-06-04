@@ -107,18 +107,15 @@ By default, CockroachDB uses [merge joins](https://en.wikipedia.org/wiki/Sort-me
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
-2. CockroachDB takes one row from each table and compares them.
-
-    For inner joins:
-    - If the rows are equal, CockroachDB returns the rows.
-    - If there are multiple matches, the cartesian product of the matches is returned.
-    - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
-
-
-    For outer joins:
-    - If the rows are equal, CockroachDB returns the rows.
-    - If there are multiple matches, the cartesian product of the matches is returned.
-    - If the rows are not equal, CockroachDB returns `NULL` for the non-matching column and repeats the process with the next row until all rows are processed.
+2. CockroachDB takes one row from each table and compares them.  
+    - For inner joins:  
+        - If the rows are equal, CockroachDB returns the rows.
+        - If there are multiple matches, the cartesian product of the matches is returned.
+        - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
+    - For outer joins:
+        - If the rows are equal, CockroachDB returns the rows.
+        - If there are multiple matches, the cartesian product of the matches is returned.
+        - If the rows are not equal, CockroachDB returns `NULL` for the non-matching column and repeats the process with the next row until all rows are processed.
 
 ### Hash joins
 
@@ -136,18 +133,18 @@ Hash joins are performed on two tables as follows:
 
 A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
 
-{{site.data.alerts.callout_info}}Lookup joins are only valid on inner or left outer joins.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Lookup joins are only valid on inner joins and left outer joins.{{site.data.alerts.end}}
 
 To use a lookup join:
 
-1. Manually set the flag:
+1. Open the [built-in SQL shell](use-the-built-in-sql-client.html) and enable the feature:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET experimental_force_lookup_join = true;
     ~~~
 
-2. Specify the indexes to use if not the default index. For example:
+2. In your query, specify the indexes to use if not the default index. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -165,7 +162,7 @@ Lookup joins are performed on two tables as follows:
 
 - Joins over [interleaved tables](interleave-in-parent.html) are usually (but not always) processed more effectively than over non-interleaved tables.
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
-- Outer joins are generally processed less efficiently than inner joins. Prefer using inner joins whenever possible. Full outer joins are the least optimized.
+- Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins) are generally processed less efficiently than [inner joins](#inner-joins). Prefer using inner joins whenever possible. Full outer joins are the least optimized.
 - Use [`EXPLAIN`](explain.html) over queries containing joins to verify that indexes are used.
 - Use [indexes](indexes.html) for faster joins.
 
