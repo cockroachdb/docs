@@ -162,7 +162,7 @@ Lookup joins are performed on two tables as follows:
 
 - Joins over [interleaved tables](interleave-in-parent.html) are usually (but not always) processed more effectively than over non-interleaved tables.
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
-- Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins) are generally processed less efficiently than [inner joins](#inner-joins). Prefer using inner joins whenever possible. Full outer joins are the least optimized.
+- Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins)) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
 - Use [`EXPLAIN`](explain.html) over queries containing joins to verify that indexes are used.
 - Use [indexes](indexes.html) for faster joins.
 
