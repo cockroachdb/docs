@@ -121,7 +121,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 In the same terminal, try to add another node, but leave out the `--certs-dir` flag:
 
-{{site.data.alerts.callout_info}}The <code>--logtostderr=WARNING</code> flag will make warnings and errors print to <code>stderr</code> so you don't have to manually look in the logs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <code>--logtostderr=WARNING</code> flag will make warnings and errors print to <code>stderr</code> so you do not have to manually look in the logs.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -194,7 +194,7 @@ W180208 16:13:57.809502 20 gossip/gossip.go:1241  [n?] no incoming or outgoing c
 W180208 16:13:57.812632 13 gossip/client.go:123  [n?] failed to start gossip client to localhost:20000: rpc error: code = Unavailable desc = grpc: the connection is unavailable
 ~~~
 
-The last warning tells you that the node can't establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node can't join.
+The last warning tells you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
 
 ### Step 2. Resolve the problem
 
@@ -306,6 +306,6 @@ clusterID:  5007b180-9b08-4a08-a882-53915fb459a1
 nodeID:     6    
 ~~~
 
-## What's Next?
+## What's next?
 
 [Client Connection Troubleshooting](client-connection-troubleshooting.html)

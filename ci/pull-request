@@ -29,5 +29,8 @@ curl \
   --data "{\"body\": \"http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/\"}" \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
-# Step 4. Run htmltest, but skip checking external links to speed things up.
+# Step 4. Run vale, but don't fail the build if it reports errors.
+run vale --no-wrap v2.1 || true
+
+# Step 5. Run htmltest, but skip checking external links to speed things up.
 run htmltest --skip-external

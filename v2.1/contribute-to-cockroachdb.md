@@ -20,7 +20,7 @@ We separate three levels of complexity for projects:
 
 Below you’ll find steps for contributing to the codebase; we’ve broken these down by complexity.
 
-## How Complex is Your Project?
+## How complex is your project?
 
 A project is likely to be **low complexity** if all the following conditions apply:
 
@@ -42,7 +42,7 @@ A project is likely **high complexity** if _any_ of the following conditions app
 
 Projects that are neither definitely simple nor complex can be considered **medium complexity**.
 
-## How to Contribute
+## How to contribute
 
 ### Prerequisites
 
@@ -52,7 +52,7 @@ Before you start a project:
 2. Follow a few [code reviews](https://github.com/cockroachdb/cockroach/pulls).
 3. See [style.md](https://github.com/cockroachdb/cockroach/blob/master/docs/style.md) to learn about our code style and conventions.
 
-### Low Complexity Projects
+### Low-complexity projects
 
 These cover things like bug fixes and small enhancements that don’t involve any major architectural or design decisions. You should feel free to submit these for review as you come across them.
 
@@ -62,7 +62,7 @@ These cover things like bug fixes and small enhancements that don’t involve an
 
 A good place to find these types of projects are open issues with the label ["easy"](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+is%3Aissue+label%3Aeasy+label%3Ahelpwanted).
 
-### Medium Complexity Projects
+### Medium-complexity projects
 
 For these projects, you should:
 
@@ -74,14 +74,14 @@ For these projects, you should:
 
 Here’s a great example of a contributor [building support for outer joins](https://github.com/cockroachdb/cockroach/issues/13342) in partnership with our engineering team.
 
-### High Complexity Projects
+### High-complexity projects
 
 These projects involve fundamental changes to the way CockroachDB works. What’s important to remember here is that supporting external development of these projects will take a non-trivial amount of time from the Cockroach team that would otherwise be spent building the product, so we really need to make sure it’s worth it. In practice, we’ve found even strong developers have little success with these types of projects and, in most cases, it is faster for our team to build these features ourselves.
 
 That being said, if you’re up for the challenge there are a few prerequisites. You should:
 
 1. Convince the CockroachDB team of your ability to drive a larger project. For this, you can either work with the CockroachDB team on mid-sized projects first, or provide some other evidence that you are an expert at building high quality distributed systems.
-    {{site.data.alerts.callout_info}}The engineering team may not support further exploration if they think the project is too complex for an external contributor or if we already have a schedule for this work and you can't guarantee delivery on that schedule.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}The engineering team may not support further exploration if they think the project is too complex for an external contributor or if we already have a schedule for this work and you cannot guarantee delivery on that schedule.{{site.data.alerts.end}}
 2. Make a high-level proposal for your project, declaring your intention, the area of functionality, and how much time (and, if applicable, people) you have available to work on the project. You should do this via a GitHub issue.
 3. Engineers and product managers will review your plans to understand how it fits into our roadmap from a technical and business point of view. This will inform how much support we will be able to provide.
     {{site.data.alerts.callout_info}}This review may take a few days to a few weeks, depending on our team’s availability and the complexity of the project.{{site.data.alerts.end}}

@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.1:</span> The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
 
-Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you don't need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 {{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature is currently under development and is slated for full release in CockroachDB 2.1. The feature flags and behavior are subject to change. {{site.data.alerts.end}}
 
@@ -28,7 +28,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 {{site.data.alerts.callout_info}}The <code>EXPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run [`EXPORT`](export.html).
 
@@ -47,7 +47,7 @@ URLs for the file directory location you want to export to must use the followin
 
 {% include external-urls-v2.0.md %}
 
-You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g. n1.1.csv, n1.2.csv, n2.1.csv, ...).
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
 ### Export Options
 
@@ -80,7 +80,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 
 #### `nullas`
 
-Convert SQL *NULL* values to they match the specified string.
+Convert SQL *NULL* values so they match the specified string.
 
 <table>
 	<tbody>
@@ -94,7 +94,7 @@ Convert SQL *NULL* values to they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The string that should be converted to <em>NULL</em></td>
+			<td>The string that should be used to represent <em>NULL</em> values</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -134,6 +134,6 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
-## See Also
+## See also
 
 - [Create a File Server](create-a-file-server.html)

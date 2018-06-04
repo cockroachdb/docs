@@ -4,7 +4,7 @@ summary: The CANCEL QUERY statement cancels a running SQL query.
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
+The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
 
 <div id="toc"></div>
 
@@ -13,7 +13,7 @@ toc: false
 - Schema changes (statements beginning with <code>ALTER</code>) cannot currently be cancelled. However, to monitor the progress of schema changes, you can use <a href="show-jobs.html"><code>SHOW JOBS</code></a>.
 - In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
 
-## Required Privileges
+## Required privileges
 
 The `root` user can cancel any currently active queries, whereas non-`root` users cancel only their own currently active queries.
 
@@ -37,7 +37,7 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 
 ## Examples
 
-### Cancel a Query via the Query ID
+### Cancel a query via the query ID
 
 In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
 
@@ -59,7 +59,7 @@ In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-### Cancel a Query via a Subquery
+### Cancel a query via a subquery
 
 In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
@@ -72,7 +72,7 @@ In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves 
 
 {{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If a subquery is used and returns multiple IDs, the <code>CANCEL QUERY</code> statement will fail. To cancel multiple queries, use <code>CANCEL QUERIES</code>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [Manage Long-Running Queries](manage-long-running-queries.html)
 - [`SHOW QUERIES`](show-queries.html)

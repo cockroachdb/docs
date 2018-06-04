@@ -10,7 +10,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 - Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](manual-deployment.html).
 
@@ -184,6 +184,6 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 5. [Add the dashboards to Grafana](http://docs.grafana.org/reference/export_import/#importing-a-dashboard).
 
-## See Also
+## See also
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)

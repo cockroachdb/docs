@@ -71,7 +71,7 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. When the node disconnects, the epoch is considered changed, and the node immediately loses all of its leases.
 
-This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases don't expire until a node loses connection.
+This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases do not expire until a node loses connection.
 
 #### Expiration-Based Leases (Meta & System Ranges)
 
@@ -105,6 +105,6 @@ Committed Raft commands are written to the Raft log and ultimately stored on dis
 
 The Leaseholder serves reads from its RocksDB instance, which is in the Storage Layer.
 
-## What's Next?
+## What's next?
 
 Learn how CockroachDB reads and writes data from disk in the [Storage Layer](storage-layer.html).

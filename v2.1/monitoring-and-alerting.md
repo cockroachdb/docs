@@ -14,7 +14,7 @@ This page explains available monitoring tools and critical events and metrics to
 
 ### Admin UI
 
-The [built-in Admin UI](admin-ui-overview.html) gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster. It is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+The [built-in Admin UI](admin-ui-access-and-navigate.html) gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster. It is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
 {{site.data.alerts.callout_danger}}Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.{{site.data.alerts.end}}
 
@@ -89,9 +89,9 @@ Otherwise, it returns an HTTP `200 OK` status response code with details about t
 
 #### /health?ready=1
 
-<span class="version-tag">New in v2.0:</span> The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
+The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](stop-a-node.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers don't direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](stop-a-node.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
     {{site.data.alerts.callout_success}}If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the <code>server.shutdown.drain_wait</code> <a href="cluster-settings.html">cluster setting</a> to cause a node to return <code>503 Service Unavailable</code> even before it has started shutting down.{{site.data.alerts.end}}
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
@@ -158,7 +158,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
 
-- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
+- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
 
 ### CA certificate expires soon
 
@@ -172,7 +172,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
 
-## See Also
+## See also
 
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)

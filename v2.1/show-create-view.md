@@ -8,7 +8,7 @@ The `SHOW CREATE VIEW` [statement](sql-statements.html) shows the `CREATE VIEW` 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target view.
 
@@ -65,7 +65,7 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)

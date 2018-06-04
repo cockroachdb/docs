@@ -40,7 +40,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 <img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows separately the current moving average, over the last 10 seconds, of the number of opened, committed, aborted and rolled back transactions per second issued by SQL clients on the node.
+- In the node view, the graph shows separately the current moving average, over the last 10 seconds, of the number of opened, committed, aborted, and rolled back transactions per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current transactions load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
@@ -56,7 +56,7 @@ Service latency is calculated as the time between when the cluster receives a qu
 
 - In the cluster view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for each node in the cluster.
 
-## Other Graphs
+## Other graphs
 
 The **SQL** dashboard shows other time series graphs that are important for CockroachDB developers:
 

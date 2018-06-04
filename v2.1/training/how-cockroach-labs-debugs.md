@@ -9,6 +9,6 @@ redirect_from: /training/how-cockroach-labs-debugs.html
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQZT9lOVasQ7iDjOQ4Bm1zi4WsfU-uSujbneZXz4ZOd2ftakbPTkW3w5dnOo39JYA96BSml5ruSWXqM/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
-## What's Next?
+## What's next?
 
 [How to Get Support](how-to-get-support.html)

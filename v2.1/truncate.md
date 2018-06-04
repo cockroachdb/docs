@@ -14,7 +14,7 @@ The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified 
 
 <section>{% include sql/{{ page.version.version }}/diagrams/truncate.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the table.
 
@@ -128,7 +128,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 (0 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`DELETE](delete.html)
 - [Foreign Key constraint](foreign-key.html)

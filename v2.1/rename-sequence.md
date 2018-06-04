@@ -4,7 +4,7 @@ summary: The RENAME SEQUENCE statement changes the name of a sequence.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.
+The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.
 
 {{site.data.alerts.callout_danger}}You cannot rename a sequence that's being used in a table. To rename the sequence, <a href="alter-column.html#remove-default-constraint">drop the <code>DEFAULT</code> expressions</a> that reference the sequence, rename the sequence, and <a href="alter-column.html#set-or-change-a-default-value">add the <code>DEFAULT</code> expressions</a> back.{{site.data.alerts.end}}
 
@@ -12,7 +12,7 @@ toc: false
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -122,7 +122,7 @@ RENAME SEQUENCE
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)

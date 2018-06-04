@@ -1,14 +1,18 @@
 ---
-title: Access and Navigate the CockroachDB Admin UI
+title: Use the CockroachDB Admin UI
 summary: Learn how to access and navigate the Admin UI.
 toc: false
 ---
+
+The built-in Admin UI gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 
 <div id="toc"></div>
 
 ## Access the Admin UI
 
 You can access the Admin UI from any node in the cluster.
+
+{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to <a href="#secure-the-admin-ui">enable user authentication</a> to restrict access to the Admin UI to authorized users. {{site.data.alerts.end}}
 
 By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
 
@@ -29,7 +33,7 @@ Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
-### Cluster Overview Panel
+### Cluster Overview panel
 
 <img src="{{ 'images/v2.1/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -76,13 +80,13 @@ Down Since | How long the node has been down.
 
 #### Decommissioned Nodes
 
-<span class="version-tag">New in v1.1:</span> Nodes that have been decommissioned for permanent removal from the cluster are listed in the **Decommissioned Nodes** table.
+Nodes that have been decommissioned for permanent removal from the cluster are listed in the **Decommissioned Nodes** table.
 
 When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down. See [Remove Nodes](remove-nodes.html) for more information.
 
 ### Node Map (Enterprise)
 
-<span class="version-tag">New in v2.0:</span> The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster.
+The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster.
 
 <img src="{{ 'images/v2.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
@@ -98,7 +102,7 @@ The Node Map consists of the following components:
 
 For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
 
-### Time Series Graphs
+### Time series graphs
 
 The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left-hand navigation bar.
 
@@ -106,7 +110,7 @@ You can hover over each graph to see actual point-in-time values.
 
 <img src="{{ 'images/v2.1/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-{{site.data.alerts.callout_info}}By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this <a href="operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data-new-in-v2-0">FAQ</a>.
+{{site.data.alerts.callout_info}}By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this <a href="operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data">FAQ</a>.
 {{site.data.alerts.end}}
 
 #### Change time range
@@ -121,7 +125,7 @@ You can change the time range by clicking on the time window.
 By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
 <img src="{{ 'images/v2.1/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Summary Panel
+### Summary panel
 
 The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left-hand navigation bar.
 
@@ -143,7 +147,7 @@ P99 Latency | The 99th percentile of service latency.
 {% include available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
-### Events Panel
+### Events panel
 
 The **Cluster Metrics** dashboards display the **Events** panel that lists the 10 most recent events logged for the all nodes across the cluster. To view the **Events** panel, click **Metrics** on the left-hand navigation bar. To see the list of all events, click **View all events** in the **Events** panel.
 
@@ -166,3 +170,23 @@ The following types of events are listed:
 - Node decommissioned
 - Node restarted
 - Cluster setting changed
+
+## Secure the Admin UI
+
+By default, CockroachDB allows all users to access and view the Admin UI. However, for secure clusters, you can choose to enable user authentication</a> to restrict access to authorized users.
+
+{{site.data.alerts.callout_danger}}<strong>This feature is a work in progress</strong>. It will change leading up to the v2.1 release.{{site.data.alerts.end}}
+
+1. Start a secure cluster as described in our [deployment tutorials](manual-deployment.html).
+
+    However, when starting each node, be sure to set the `COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE` environment variable, for example:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE \
+      ./cockroach start --host=<node1 hostname> --certs-dir=certs
+    ~~~
+
+2. For each user who should have access to the Admin UI, [create a user with a password](create-user.html).
+
+    On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.

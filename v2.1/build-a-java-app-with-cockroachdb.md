@@ -16,12 +16,12 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 {{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They don't work with Java 10.
+The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
 {{site.data.alerts.end}}
 
 ## Step 1. Install the Java jdbc driver
@@ -34,7 +34,7 @@ Download and set up the Java jdbc driver as described in the [official documenta
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
-### Basic Statements
+### Basic statements
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
@@ -77,7 +77,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Java jdbc driver](https://jdbc.postgresql.org/).
 

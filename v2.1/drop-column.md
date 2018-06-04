@@ -12,7 +12,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 {% include sql/{{ page.version.version }}/diagrams/drop_column.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -22,10 +22,10 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 |-----------|-------------|
 | `table_name` | The name of the table with the column you want to drop. |
 | `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped. |
-| `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br><span class="version-tag">New in v2.0:</span> `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. |
+| `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br>`CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. |
 | `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it. |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
@@ -74,7 +74,7 @@ If you want to drop the column and all of its dependent options, include the `CA
 pq: view "customer_view" does not exist
 ```
 
-## See Also
+## See also
 
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`DROP INDEX`](drop-index.html)

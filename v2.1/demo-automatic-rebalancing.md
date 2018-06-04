@@ -8,7 +8,7 @@ This page walks you through a simple demonstration of how CockroachDB automatica
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this tutorial, you'll use an example Go program to quickly insert data into a CockroachDB cluster. To run the example program, you must have a [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.7.1.
 
@@ -191,14 +191,14 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 {{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

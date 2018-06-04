@@ -15,7 +15,7 @@ redirect_from: /training/fault-tolerance-and-automated-repair.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Cluster Startup and Scaling](cluster-startup-and-scaling.html) and have 5 nodes running locally.
 
@@ -172,7 +172,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
-2. Then use the the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
+2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -274,7 +274,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 8. Simulate two simultaneous node failures
 
-1. Use the the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
+1. Use the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -348,6 +348,6 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ rm -rf node1 node2 node3 node4 node5
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Locality and Replication Zones](locality-and-replication-zones.html)

@@ -20,7 +20,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
 
@@ -39,9 +39,9 @@ table td:first-child {
 | Parameter | Description |
 |-----------|-------------|
 |`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
-|`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br><span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.|
+|`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.|
 
-## User Authentication
+## User authentication
 
 Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
 
@@ -51,7 +51,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
-    <span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters.
+    Password creation is supported only in secure clusters.
 
 ## Examples
 
@@ -74,7 +74,7 @@ After creating users, you must:
 > CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
-<span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
+Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
 ### Manage Users
 
@@ -118,7 +118,7 @@ $ cockroach sql --insecure --user=jpointsman
 
 </div>
 
-## See Also
+## See also
 
 - [`cockroach user` command](create-and-manage-users.html)
 - [`DROP USER`](drop-user.html)

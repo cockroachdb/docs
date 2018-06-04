@@ -4,7 +4,7 @@ summary: The CREATE ROLE statement creates SQL roles, which are groups containin
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](roles.html), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
+The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](roles.html), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
 {{site.data.alerts.callout_info}}<code>CREATE ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -25,7 +25,7 @@ toc: false
 - Roles cannot log in. They do not have a password and cannot use certificates.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
-## Required Privileges
+## Required privileges
 
 Roles can only be created by superusers, i.e., members of the `admin` role. The `admin` role exists by default with `root` as the member.
 
@@ -51,7 +51,7 @@ CREATE ROLE 1
 
 After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
 
-## See Also
+## See also
 
 - [Manage Roles](roles.html)
 - [`DROP ROLE` (Enterprise)](drop-user.html)

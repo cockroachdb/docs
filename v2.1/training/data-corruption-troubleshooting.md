@@ -16,7 +16,7 @@ redirect_from: /training/data-corruption-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
@@ -153,7 +153,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     Failed running "start"
     ~~~
 
-    The error tells you that the failure has to do with RocksDB-level (i.e., storage-level) corruption. Because the node's data is corrupt, the node won't restart.
+    The error tells you that the failure has to do with RocksDB-level (i.e., storage-level) corruption. Because the node's data is corrupt, the node will not restart.
 
 ## Step 3. Resolve the problem
 
@@ -184,6 +184,6 @@ In this case, the cluster repairs the node using data from the other nodes. In m
 
 {{site.data.alerts.callout_danger}}In all cases of data corruption, you should <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
 
-## What's Next?
+## What's next?
 
 [Software Panic Troubleshooting](software-panic-troubleshooting.html)

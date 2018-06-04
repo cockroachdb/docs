@@ -105,7 +105,7 @@ As mentioned in the [details](#details) above, it is possible when using the Uni
 +-------------+----------+
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)

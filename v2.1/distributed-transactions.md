@@ -12,7 +12,7 @@ CockroachDB distributes [transactions](transactions.html) across your cluster, w
 
 <img src="{{ 'images/v2.1/2distributed-transactions.png' | relative_url }}" alt="Distributed transactions in CockroachDB" style="width: 400px" />
 
-## See Also
+## See also
 
 - [How CockroachDB Does Distributed, Atomic Transactions](https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/)
 - [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/)

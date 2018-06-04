@@ -16,7 +16,7 @@ redirect_from: /training/node-decommissioning.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already completed [Planned Maintenance](planned-maintenance.html) and have 3 nodes running locally.
 
@@ -126,6 +126,6 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ rm -rf node1 node2 node3 node4
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Backup and Restore](backup-and-restore.html)

@@ -55,7 +55,7 @@ Flag | Description
 -----|------------
 `--decommission` | If specified, the node will be permanently removed instead of temporarily stopped. See [Remove Nodes](remove-nodes.html) for more details.
 
-### Client Connection
+### Client connection
 
 {% include sql/{{ page.version.version }}/connection-parameters.md %}
 
@@ -124,7 +124,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     ~~~
 </section>
 
-## See Also
+## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Permanently Remove Nodes from a Cluster](remove-nodes.html)

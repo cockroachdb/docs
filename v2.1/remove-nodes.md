@@ -36,7 +36,7 @@ In this scenario, each range is replicated 3 times, with each replica on a diffe
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the process will hang indefinitely because the cluster can't move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
+If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -60,7 +60,7 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB won't allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
+If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -75,7 +75,7 @@ To successfully decommission a node, you need to first add a 6th node:
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before You Begin
+### Before you begin
 
 Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
 
@@ -157,7 +157,7 @@ In about 5 minutes, you'll see the removed node listed under **Decommissioned No
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-<span class="version-tag">New in v2.0:</span> At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
 
 Also, if the node is restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
 
@@ -208,7 +208,7 @@ $ cockroach node decommission 4 --wait=live --insecure --host=<address of live n
 Decommissioning finished. Please verify cluster health before removing the nodes.
 ~~~
 
-<span class="version-tag">New in v2.0:</span> If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -221,7 +221,7 @@ Also, if the node is ever restarted, it will not accept any client connections, 
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before You Begin
+### Before you begin
 
 Confirm that there are enough nodes to take over the replicas from the nodes you want to remove. See some [Example scenarios](#examples) above.
 
@@ -303,7 +303,7 @@ Then click **View nodes list** in the **Summary** area and make sure all nodes a
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-<span class="version-tag">New in v2.0:</span> In about 5 minutes, you'll see the node move to the **Decommissioned Nodes** list, and the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+In about 5 minutes, you'll see the node move to the **Decommissioned Nodes** list, and the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -426,6 +426,6 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 (5 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Temporarily Stop a Node](stop-a-node.html)

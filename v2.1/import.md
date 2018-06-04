@@ -4,7 +4,7 @@ summary: Import CSV data into your CockroachDB cluster.
 toc: false
 ---
 
-The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) into a single table.
+The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g., CSVs) into a single table.
 
 {{site.data.alerts.callout_info}}For details about importing SQL dumps, see <a href="import-data.html">Import Data</a>.{{site.data.alerts.end}}
 
@@ -36,7 +36,7 @@ Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (
 - A reference to a file that contains a `CREATE TABLE` statement
 - An inline `CREATE TABLE` statement
 
-We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
+We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
 
 ### CSV Data
 
@@ -51,7 +51,7 @@ CockroachDB-specific requirements:
 
 - If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
-### Object Dependencies
+### Object dependencies
 
 When importing tables, you must be mindful of the following rules because [`IMPORT`](import.html) only creates single tables which must not already exist:
 
@@ -92,7 +92,7 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run [`IMPORT`](import.html).
 
@@ -264,7 +264,7 @@ WITH
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-## See Also
+## See also
 
 - [Create a File Server](create-a-file-server.html)
 - [Importing Data](import-data.html)

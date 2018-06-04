@@ -19,7 +19,7 @@ The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not N
 
 {% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -31,13 +31,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
 | `constraint_elem` | The [Check](check.html), [Foreign Keys](foreign-key.html), [Unique](unique.html) constraint you want to add. <br/><br/>Adding/changing a Default constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's Primary Key is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). |
 
-## Viewing Schema Changes
+## Viewing schema changes
 
 {% include custom/schema-change-view-job.md %}
 
 ## Examples
 
-### Add the Unique Constraint
+### Add the `UNIQUE` constraint
 
 Adding the [Unique constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
@@ -45,7 +45,7 @@ Adding the [Unique constraint](unique.html) requires that all of a column's valu
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
 
-### Add the Check Constraint
+### Add the `CHECK` constraint
 
 Adding the [Check constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
@@ -53,11 +53,11 @@ Adding the [Check constraint](check.html) requires that all of a column's values
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
 ~~~
 
-### Add the Foreign Key Constraint with `CASCADE`
+### Add the `FOREIGN KEY` constraint with `CASCADE`
 
 Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
-For example, let's say you have two simple tables, `orders` and `customers`:
+For example, let's say you have two tables, `orders` and `customers`:
 
 ~~~ sql
 > SHOW CREATE TABLE customers;
@@ -106,7 +106,7 @@ To ensure that each value in the `orders.customer_id` column matches a unique va
 
 Then you add the Foreign Key constraint.
 
-<span class="version-tag">New in v2.0:</span> You can include a [foreign key action](foreign-key.html#foreign-key-actions-new-in-v2-0) to specify what happens when a foreign key is updated or deleted.
+You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
 In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
 
@@ -122,7 +122,7 @@ If you had tried to add the constraint before indexing the column, you would hav
 pq: foreign key requires an existing index on columns ("customer_id")
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [Foreign Key Constraint](foreign-key.html)

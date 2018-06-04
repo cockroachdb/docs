@@ -32,19 +32,8 @@
           },
           {
             "title": "Learn CockroachDB SQL",
-            "items": [
-              {
-                "title": "Essential SQL Statements",
-                "urls": [
-                  "/${VERSION}/learn-cockroachdb-sql.html"
-                ]
-              },
-              {
-                "title": "Use the Built-in SQL Client",
-                "urls": [
-                  "/${VERSION}/use-the-built-in-sql-client.html"
-                ]
-              }
+            "urls": [
+              "/${VERSION}/learn-cockroachdb-sql.html"
             ]
           },
           {
@@ -280,6 +269,12 @@
                 ]
               },
               {
+                "title": "Use the Admin UI",
+                "urls": [
+                  "/${VERSION}/admin-ui-access-and-navigate.html"
+                ]
+              },
+              {
                 "title": "Use Prometheus and Alertmanager",
                 "urls": [
                   "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
@@ -320,7 +315,7 @@
                 ]
               },
               {
-                "title": "Cluster Visualization",
+                "title": "Node Map",
                 "urls": [
                   "/${VERSION}/enable-node-map.html"
                 ]
@@ -331,31 +326,6 @@
                   "/${VERSION}/roles.html"
                 ]
               }
-            ]
-          },
-          {
-            "title": "Start a Node",
-            "urls": [
-              "/${VERSION}/start-a-node.html"
-            ]
-          },
-          {
-            "title": "Initialize a Cluster",
-            "urls": [
-              "/${VERSION}/initialize-a-cluster.html"
-            ]
-          },
-          {
-            "title": "Create Security Certificates",
-            "urls": [
-              "/${VERSION}/create-security-certificates.html",
-              "/${VERSION}/create-security-certificates-openssl.html"
-            ]
-          },
-          {
-            "title": "Configure Replication Zones",
-            "urls": [
-              "/${VERSION}/configure-replication-zones.html"
             ]
           }
         ]
@@ -373,12 +343,6 @@
             "title": "Manage Long-Running Queries",
             "urls": [
               "/${VERSION}/manage-long-running-queries.html"
-            ]
-          },
-          {
-            "title": "Stop a Node",
-            "urls": [
-              "/${VERSION}/stop-a-node.html"
             ]
           },
           {
@@ -406,12 +370,6 @@
             ]
           },
           {
-            "title": "Dump/Export Schema or Data",
-            "urls": [
-              "/${VERSION}/sql-dump.html"
-            ]
-          },
-          {
             "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
             "urls": [
               "/${VERSION}/create-a-file-server.html"
@@ -421,24 +379,6 @@
             "title": "Rotate Security Certificates",
             "urls": [
               "/${VERSION}/rotate-certificates.html"
-            ]
-          },
-          {
-            "title": "Generate CockroachDB Resources",
-            "urls": [
-              "/${VERSION}/generate-cockroachdb-resources.html"
-            ]
-          },
-          {
-            "title": "View Node Details",
-            "urls": [
-              "/${VERSION}/view-node-details.html"
-            ]
-          },
-          {
-            "title": "View Version Details",
-            "urls": [
-              "/${VERSION}/view-version-details.html"
             ]
           },
           {
@@ -489,12 +429,6 @@
             ]
           },
           {
-            "title": "Collect Cluster Debug Info",
-            "urls": [
-              "/${VERSION}/debug-zip.html"
-            ]
-          },
-          {
             "title": "Support Resources",
             "urls": [
               "/${VERSION}/support-resources.html"
@@ -521,112 +455,6 @@
             "title": "Improve the Docs",
             "urls": [
               "/${VERSION}/improve-the-docs.html"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Concepts",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "Architecture",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/architecture/overview.html"
-            ]
-          },
-          {
-            "title": "SQL Layer",
-            "urls": [
-              "/${VERSION}/architecture/sql-layer.html"
-            ]
-          },
-          {
-            "title": "Transaction Layer",
-            "urls": [
-              "/${VERSION}/architecture/transaction-layer.html"
-            ]
-          },
-          {
-            "title": "Distribution Layer",
-            "urls": [
-              "/${VERSION}/architecture/distribution-layer.html"
-            ]
-          },
-          {
-            "title": "Replication Layer",
-            "urls": [
-              "/${VERSION}/architecture/replication-layer.html"
-            ]
-          },
-          {
-            "title": "Storage Layer",
-            "urls": [
-              "/${VERSION}/architecture/storage-layer.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Features",
-        "items": [
-          {
-            "title": "Multi-Active Availability",
-            "urls": [
-              "/${VERSION}/multi-active-availability.html"
-            ]
-          },
-          {
-            "title": "Simplified Deployment",
-            "urls": [
-              "/${VERSION}/simplified-deployment.html"
-            ]
-          },
-          {
-            "title": "Strong Consistency",
-            "urls": [
-              "/${VERSION}/strong-consistency.html"
-            ]
-          },
-          {
-            "title": "SQL",
-            "urls": [
-              "/${VERSION}/sql.html"
-            ]
-          },
-          {
-            "title": "Distributed Transactions",
-            "urls": [
-              "/${VERSION}/distributed-transactions.html"
-            ]
-          },
-          {
-            "title": "Automated Scaling & Repair",
-            "urls": [
-              "/${VERSION}/automated-scaling-and-repair.html"
-            ]
-          },
-          {
-            "title": "High Availability",
-            "urls": [
-              "/${VERSION}/high-availability.html"
-            ]
-          },
-          {
-            "title": "Open Source",
-            "urls": [
-              "/${VERSION}/open-source.html"
-            ]
-          },
-          {
-            "title": "Go Implementation",
-            "urls": [
-              "/${VERSION}/go-implementation.html"
             ]
           }
         ]
@@ -1519,8 +1347,85 @@
       },
       {
         "title": "CLI",
-        "urls": [
-          "/${VERSION}/cockroach-commands.html"
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/cockroach-commands.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach start</code>",
+            "urls": [
+              "/${VERSION}/start-a-node.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach init</code>",
+            "urls": [
+              "/${VERSION}/initialize-a-cluster.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach cert</code>",
+            "urls": [
+              "/${VERSION}/create-security-certificates.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach quit</code>",
+            "urls": [
+              "/${VERSION}/stop-a-node.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach sql</code>",
+            "urls": [
+              "/${VERSION}/use-the-built-in-sql-client.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach user</code>",
+            "urls": [
+              "/${VERSION}/create-and-manage-users.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach zone</code>",
+            "urls": [
+              "/${VERSION}/configure-replication-zones.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach node</code>",
+            "urls": [
+              "/${VERSION}/view-node-details.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach dump</code>",
+            "urls": [
+              "/${VERSION}/sql-dump.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug zip</code>",
+            "urls": [
+              "/${VERSION}/debug-zip.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach gen</code>",
+            "urls": [
+              "/${VERSION}/generate-cockroachdb-resources.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach version</code>",
+            "urls": [
+              "/${VERSION}/view-version-details.html"
+            ]
+          }
         ]
       },
       {
@@ -1536,12 +1441,6 @@
             "title": "Overview",
             "urls": [
               "/${VERSION}/admin-ui-overview.html"
-            ]
-          },
-          {
-            "title": "Access and Navigate the Admin UI",
-            "urls": [
-              "/${VERSION}/admin-ui-access-and-navigate.html"
             ]
           },
           {
@@ -1596,7 +1495,112 @@
       }
     ]
   },
-  {% include sidebar-releases.json %},
+  {
+    "title": "Concepts",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Architecture",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
+          {
+            "title": "SQL Layer",
+            "urls": [
+              "/${VERSION}/architecture/sql-layer.html"
+            ]
+          },
+          {
+            "title": "Transaction Layer",
+            "urls": [
+              "/${VERSION}/architecture/transaction-layer.html"
+            ]
+          },
+          {
+            "title": "Distribution Layer",
+            "urls": [
+              "/${VERSION}/architecture/distribution-layer.html"
+            ]
+          },
+          {
+            "title": "Replication Layer",
+            "urls": [
+              "/${VERSION}/architecture/replication-layer.html"
+            ]
+          },
+          {
+            "title": "Storage Layer",
+            "urls": [
+              "/${VERSION}/architecture/storage-layer.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Features",
+        "items": [
+          {
+            "title": "Multi-Active Availability",
+            "urls": [
+              "/${VERSION}/multi-active-availability.html"
+            ]
+          },
+          {
+            "title": "Simplified Deployment",
+            "urls": [
+              "/${VERSION}/simplified-deployment.html"
+            ]
+          },
+          {
+            "title": "Strong Consistency",
+            "urls": [
+              "/${VERSION}/strong-consistency.html"
+            ]
+          },
+          {
+            "title": "SQL",
+            "urls": [
+              "/${VERSION}/sql.html"
+            ]
+          },
+          {
+            "title": "Distributed Transactions",
+            "urls": [
+              "/${VERSION}/distributed-transactions.html"
+            ]
+          },
+          {
+            "title": "Automated Scaling & Repair",
+            "urls": [
+              "/${VERSION}/automated-scaling-and-repair.html"
+            ]
+          },
+          {
+            "title": "High Availability",
+            "urls": [
+              "/${VERSION}/high-availability.html"
+            ]
+          },
+          {
+            "title": "Open Source",
+            "urls": [
+              "/${VERSION}/open-source.html"
+            ]
+          },
+          {
+            "title": "Go Implementation",
+            "urls": [
+              "/${VERSION}/go-implementation.html"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   {
     "title": "FAQs",
     "is_top_level": true,
@@ -1626,5 +1630,6 @@
         ]
       }
     ]
-  }
+  },
+  {% include sidebar-releases.json %}
 ]

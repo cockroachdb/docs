@@ -12,7 +12,7 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 <div id="toc"></div>
 
-## Functional Details
+## Functional details
 
 ### Restore Targets
 
@@ -27,7 +27,7 @@ Because this process is designed for disaster recovery, CockroachDB expects that
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
-### Object Dependencies
+### Object dependencies
 
 Dependent objects must be restored at the same time as the objects they depend on.
 
@@ -47,7 +47,7 @@ By default, tables and views are restored into a database with the name of the d
 
 The target database must have not have tables or views with the same name as the tables or views you're restoring.
 
-### Users and Privileges
+### Users and privileges
 
 Table and view users/privileges are not restored. Restored tables and views instead inherit the privileges of the database into which they're restored.
 
@@ -64,11 +64,11 @@ Restore Type | Parameters
 **Full backup** | Include only the path to the full backup.
 **Full backup + <br/>incremental backups** | Include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments.
 
-### Point-in-time Restore <span class="version-tag">New in v2.0</span>
+### Point-in-time Restore 
 
 {% include beta-warning.md %}
 
-If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history-new-in-v2-0), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup.
+If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup.
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
@@ -90,7 +90,7 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 
 {{site.data.alerts.callout_info}}The <code>RESTORE</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can run `RESTORE`.
 
@@ -102,7 +102,7 @@ Only the `root` user can run `RESTORE`.
 | `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database. |
 | `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
 | `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
-| `AS OF SYSTEM TIME timestamp` | <span class="version-tag">New in v2.0:</span> Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history-new-in-v2-0). |
+| `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history). |
 | `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list). |
 
 ### Backup File URLs
@@ -117,23 +117,23 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 #### `into_db`
 
-- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but don't want to drop it.
+- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.
 - **Key**: `into_db`
 - **Value**: The name of the database you want to use
 - **Example**: `WITH into_db = 'newdb'`
 
 #### `skip_missing_foreign_keys`
 
-- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
+- **Description**: If you want to restore a table with a foreign key but do not want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_foreign_keys`
 
 #### `skip_missing_sequences`
 
-<span class="version-tag">New in v2.0</span>
 
-- **Description**: If you want to restore a table that depends on a sequence but don't want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
+
+- **Description**: If you want to restore a table that depends on a sequence but do not want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
 - **Key**: `skip_missing_sequences`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_sequences`
@@ -160,7 +160,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 {{site.data.alerts.callout_info}}<code>RESTORE DATABASE</code> can only be used if the entire database was backed up.{{site.data.alerts.end}}
 
-### Point-in-time Restore<span class="version-tag">New in v2.0</span>
+### Point-in-time Restore
 
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -174,7 +174,7 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
-### Point-in-time Restore from Incremental Backups<span class="version-tag">New in v2.0</span>
+### Point-in-time Restore from Incremental Backups
 
 ~~~ sql
 > RESTORE bank.customers \
@@ -218,7 +218,7 @@ WITH into_db = 'newdb';
 > DROP TABLE newdb.users;
 ~~~
 
-## See Also
+## See also
 
 - [`BACKUP`](backup.html)
 - [Configure Replication Zones](configure-replication-zones.html)

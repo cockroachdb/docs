@@ -1,0 +1,6 @@
+extends: capitalization
+message: "'%s' should be in sentence case"
+link: https://github.com/cockroachdb/docs/blob/master/STYLE.md#capitalization-and-punctuation
+level: warning
+scope: heading
+match: $sentence

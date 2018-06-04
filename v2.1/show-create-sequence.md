@@ -4,11 +4,11 @@ summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement 
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
+The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target sequence.
 
@@ -47,7 +47,7 @@ Field | Description
 +--------------------+----------------------------------------------------------------------------------------------------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)

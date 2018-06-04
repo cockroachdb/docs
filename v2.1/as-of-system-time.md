@@ -41,7 +41,7 @@ negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thu
 
 ## Examples
 
-### Select Historical Data (Time-Travel)
+### Select historical data (time-travel)
 
 Imagine this example represents the database's current data:
 
@@ -79,7 +79,7 @@ We could instead retrieve the values as they were on October 3, 2016 at 12:45 UT
 ~~~
 
 
-### Using Different Timestamp Formats
+### Using different timestamp formats
 
 Assuming the following statements are run at `2016-01-01 12:00:00`, they would execute as of `2016-01-01 08:00:00`:
 
@@ -108,7 +108,7 @@ Assuming the following statements are run at `2016-01-01 12:00:00`, they would e
 > SELECT * FROM t AS OF SYSTEM TIME INTERVAL '-4h'
 ~~~
 
-### Selecting from Multiple Tables
+### Selecting from multiple tables
 
 {{site.data.alerts.callout_info}}It is not yet possible to select from multiple tables at different timestamps. The entire query runs at the specified time in the past.{{site.data.alerts.end}}
 
@@ -133,7 +133,7 @@ For example:
 > SELECT * FROM (SELECT * FROM t), (SELECT * FROM u) AS OF SYSTEM TIME '-4h';
 ~~~
 
-### Using `AS OF SYSTEM TIME` in Subqueries
+### Using `AS OF SYSTEM TIME` in subqueries
 
 To enable time travel, the `AS OF SYSTEM TIME` clause must appear in
 at least the top-level statement. It is not valid to use it only in a
@@ -162,12 +162,12 @@ For example:
      WHERE x < 123;
 ~~~
 
-## See Also
+## See also
 
 - [Select Historical Data](select-clause.html#select-historical-data-time-travel)
 - [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)
 
-## Tech Note
+## Tech note
 
 {{site.data.alerts.callout_info}}Although the following format is supported, it is not intended to be used by most users.{{site.data.alerts.end}}
 

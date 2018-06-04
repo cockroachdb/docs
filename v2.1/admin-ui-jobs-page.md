@@ -3,11 +3,11 @@ title: Jobs Page
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The **Jobs** page of the Admin UI provides details about the backup/restore jobs as well as schema changes performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
+The **Jobs** page of the Admin UI provides details about the backup/restore jobs as well as schema changes performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
 
 <div id="toc"></div>
 
-## Job Details
+## Job details
 
 The **Jobs** table displays the user, description, creation time, and status of each backup and restore job, as well as schema changes performed across all nodes in the cluster.
 
@@ -15,7 +15,7 @@ The **Jobs** table displays the user, description, creation time, and status of 
 
 If a description is truncated, click the ellipsis to view the job's the full description.
 
-## Filter Results
+## Filtering results
 
 You can filter the results based on the status of the jobs or the type of jobs (backups, restores, or schema changes). You can also choose to view either the latest 50 jobs or all the jobs across all nodes.
 

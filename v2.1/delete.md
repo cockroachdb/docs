@@ -6,13 +6,13 @@ toc: false
 
 The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
-{{site.data.alerts.callout_danger}}If you delete a row that is referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions-new-in-v2-0"><code>ON DELETE</code> action</a>, all of the dependent rows will also be deleted or updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}If you delete a row that is referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions"><code>ON DELETE</code> action</a>, all of the dependent rows will also be deleted or updated.{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}To delete columns, see <a href="drop-column.html"><code>DROP COLUMN</code></a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on the table.
 
@@ -35,7 +35,7 @@ table td:first-child {
 | `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 | `table_name` | The name of the table that contains the rows you want to update.
 | `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-|`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__|
+|`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__|
 | `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
 | `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
 | `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`. |
@@ -46,7 +46,7 @@ Successful `DELETE` statements return one of the following:
 
 | Response | Description |
 |-----------|-------------|
-|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that don't delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
+|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
 |Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)|
 
 ## Disk Space Usage After Deletes
@@ -184,7 +184,7 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 +------------+---------------+
 ~~~
 
-## See Also
+## See also
 
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)

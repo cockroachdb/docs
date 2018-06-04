@@ -4,7 +4,7 @@ summary: Partitioning is an enterprise feature that gives you row-level control 
 toc: false
 ---
 
-<span class="version-tag">New in v2.0</span> CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
+CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {{site.data.alerts.callout_info}}Table partitioning is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -40,7 +40,7 @@ For more details about these flags, see the [`cockroach start`](start-a-node.htm
 
 You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-Note that the following features don't work with an **expired license**:
+Note that the following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
@@ -541,11 +541,11 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
 
-## Known Limitations
+## Known limitations
 
 {% include known_limitations/partitioning-with-placeholders.md %}
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)

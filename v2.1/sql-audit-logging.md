@@ -178,7 +178,7 @@ I180321 21:04:08.730379 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user
 For reference documentation of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 {{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`cockroach start` logging flags](start-a-node.html#logging)

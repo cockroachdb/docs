@@ -88,7 +88,7 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 # The value in "c" is handled like "a" because NUMERIC is an alias.
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `DECIMAL` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -99,6 +99,6 @@ Type | Details
 `BOOL` |  **0** converts to `false`; all other values convert to `true`
 `STRING` | ––
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

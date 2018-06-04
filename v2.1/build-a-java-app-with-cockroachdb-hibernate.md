@@ -18,12 +18,12 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 {{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They don't work with Java 10.
+The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
 {{site.data.alerts.end}}
 
 ## Step 1. Install the Gradle build tool
@@ -108,7 +108,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
-## What's Next?
+## What's next?
 
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 

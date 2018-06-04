@@ -77,7 +77,6 @@ For reference, CockroachDB uses these defaults:
 - `[port]`: **26257**
 - `[user]`: **root**
 
-
 ## Import from MySQL Dump
 
 {% include experimental-warning.md %}

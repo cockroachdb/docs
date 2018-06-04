@@ -13,7 +13,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 <section>{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
 
@@ -28,7 +28,7 @@ Parameter | Description
 
 ## Examples
 
-### Show All Grants <span class="version-tag">New in v2.0</span>
+### Show All Grants 
 
 To list all grants for all users and roles on all databases and tables:
 
@@ -49,7 +49,7 @@ To list all grants for all users and roles on all databases and tables:
 (167 rows)
 ~~~
 
-### Show a Specific User or Role's Grants <span class="version-tag">New in v2.0</span>
+### Show a Specific User or Role's Grants 
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -175,7 +175,7 @@ To list all grants for all users and roles on all databases and tables:
 +------------+--------+-----------+------------+------------+
 ~~~
 
-### Show Role Memberships <span class="version-tag">New in v2.0</span>
+### Show Role Memberships 
 
 **All members of all roles:**
 
@@ -228,7 +228,7 @@ SHOW GRANTS ON ROLE FOR carl;
 +------+--------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)

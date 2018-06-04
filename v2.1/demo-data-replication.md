@@ -8,7 +8,7 @@ This page walks you through a simple demonstration of how CockroachDB replicates
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
@@ -217,14 +217,14 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 {{site.data.alerts.callout_success}}For the last 2 nodes, the shutdown process will take longer (about a minute) and will eventually force kill the nodes. This is because, with only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time in the nodes' terminals.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf repdemo-node1 repdemo-node2 repdemo-node3 repdemo-node4 repdemo-node5
 ~~~
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

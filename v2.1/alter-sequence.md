@@ -4,13 +4,13 @@ summary: Use the ALTER SEQUENCE statement to change the name, increment values, 
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.
+The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.
 
 {{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the parent database.
 
@@ -38,7 +38,7 @@ table td:first-child {
 
 ## Examples
 
-### Change the Increment Value of a Sequence
+### Change the increment value of a sequence
 
 In this example, we're going to change the increment value of a sequence from its current state (i.e., `1`) to `2`.
 
@@ -69,7 +69,7 @@ Next, we'll add another record to the table and check that the new record adhere
 +----+----------+--------------------+
 ~~~
 
-### Set the Next Value of a Sequence
+### Set the next value of a sequence
 
 In this example, we're going to change the next value of the example sequence (`customer_seq`). Currently, the next value will be `7` (i.e., `5` + `INCREMENT 2`). We will change the next value to `20`.
 
@@ -107,7 +107,7 @@ Let's add another record to the table to check that the new record adheres to th
 ~~~
 
 
-## See Also
+## See also
 
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [`CREATE SEQUENCE`](create-sequence.html)

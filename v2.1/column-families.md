@@ -10,15 +10,15 @@ This page explains how CockroachDB organizes columns into families as well as ca
 
 <div id="toc"></div>
 
-## Default Behavior
+## Default behavior
 
 When a table is created, all columns are stored as a single column family.  
 
 This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family.
 
-## Manual Override
+## Manual override
 
-### Assign Column Families on Table Creation
+### Assign column families on table creation
 
 To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
 
@@ -26,7 +26,7 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 ~~~ sql
 > CREATE TABLE test (
-    id INT PRIMARY KEY, 
+    id INT PRIMARY KEY,
     last_accessed TIMESTAMP,
     data BYTES,
     FAMILY f1 (id, last_accessed),
@@ -52,13 +52,13 @@ For example, let's say we want to create a table to store an immutable blob of d
 (1 row)
 ~~~
 
-{{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}} 
+{{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}}
 
-### Assign Column Families When Adding Columns
+### Assign column families when adding columns
 
-When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family. 
+When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family.
 
-- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family: 
+- Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family:
 
   ~~~ sql
   > ALTER TABLE test ADD COLUMN data2 BYTES CREATE FAMILY f3;
@@ -76,11 +76,11 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
   > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
-## Compatibility with Past Releases
+## Compatibility with past releases
 
-Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release. 
+Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release.
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [`ADD COLUMN`](add-column.html)

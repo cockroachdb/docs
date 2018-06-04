@@ -14,7 +14,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 - The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
-## Required Privileges
+## Required privileges
 
 The user must have the `INSERT` [privilege](privileges.html) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
 
@@ -92,7 +92,7 @@ All of the examples below assume you've already created a table `accounts`:
 +----+---------+
 ~~~
 
-If you don't list column names, the statement will use the columns of the table in their declared order:
+If you do not list column names, the statement will use the columns of the table in their declared order:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -255,7 +255,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that do not (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>INSERT</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
 <div class="filters clearfix">
     <button class="filter-button" data-scope="shell">Shell</button>
@@ -647,7 +647,7 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 +----+---------+
 ~~~
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [`DELETE`](delete.html)

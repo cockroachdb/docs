@@ -14,7 +14,7 @@ For the list of privileges that can be granted to and revoked from users and rol
 
 <section>{% include sql/{{ page.version.version }}/diagrams/revoke_privileges.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user revoking privileges must have the [`GRANT`](grant.html) privilege on the target databases or tables.
 
@@ -145,7 +145,7 @@ Parameter | Description
 (2 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Privileges](privileges.html)
 - [`GRANT <privileges>`](grant.html)

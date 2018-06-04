@@ -8,7 +8,7 @@ The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 Only the `root` user can create databases.
 
@@ -26,7 +26,7 @@ Parameter | Description
 
 ## Example
 
-### Create a Database
+### Create a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -47,7 +47,7 @@ Parameter | Description
 +----------+
 ~~~
 
-### Create Fails (Name Already In Use)
+### Create fails (name already in use)
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -107,7 +107,7 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 +----------+
 ~~~
 
-## See Also
+## See also
 
 - [`SHOW DATABASES`](show-databases.html)
 - [`RENAME DATABASE`](rename-database.html)

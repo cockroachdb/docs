@@ -46,7 +46,7 @@ If the Open count is almost equal to the Limit count, increase [File Descriptors
 
 For Windows systems, you can ignore the File Descriptors graph because the concept of file descriptors is not applicable to Windows.
 
-## Other Graphs
+## Other graphs
 
 The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
 

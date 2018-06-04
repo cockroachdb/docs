@@ -6,13 +6,13 @@ toc: false
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-<span class="version-tag">New in v2.0:</span> To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
 
 {{site.data.alerts.callout_info}}Indexes are automatically created for a table's <a href="primary-key.html"><code>PRIMARY KEY</code></a> and <a href="unique.html"><code>UNIQUE</code></a> columns.<br><br>When querying a table, CockroachDB uses the fastest index. For more information about that process, see <a href="https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/">Index Selection in CockroachDB</a>.{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
@@ -31,9 +31,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | Parameter | Description |
 |-----------|-------------|
 |`UNIQUE` | Apply the [Unique constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the Unique constraint at the table level, so the system checks for duplicate values when inserting or updating data.|
-| `INVERTED` | <span class="version-tag">New in v2.0:</span> Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).|
+| `INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).|
 |`IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.|
-|`opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you don't specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the Unique constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
+|`opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the Unique constraint; `idx` indicates it does not. Example: `accounts_balance_idx`|
 |`table_name` | The name of the table you want to create the index on. |
 |`column_name` | The name of the column you want to index.|
 |`ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`|
@@ -43,14 +43,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
-### Create Standard Indexes
+### Create standard indexes
 
 To create the most efficient indexes, we recommend reviewing:
 
 - [Indexes: Best Practices](indexes.html#best-practices)
 - [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
 
-#### Single-Column Indexes
+#### Single-column indexes
 
 Single-column indexes sort the values of a single column.
 
@@ -60,7 +60,7 @@ Single-column indexes sort the values of a single column.
 
 Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
 
-#### Multiple-Column Indexes
+#### Multiple-column indexes
 
 Multiple-column indexes sort columns in the order you list them.
 
@@ -70,7 +70,7 @@ Multiple-column indexes sort columns in the order you list them.
 
 To create the most useful multiple-column indexes, we recommend reviewing our [best practices](indexes.html#indexing-columns).
 
-#### Unique Indexes
+#### Unique indexes
 
 Unique indexes do not allow duplicate values among their columns.
 
@@ -84,7 +84,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 > ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
 ~~~
 
-### Create Inverted Indexes <span class="version-tag">New in v2.0</span>
+### Create inverted indexes
 
 [Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 
@@ -98,7 +98,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 > CREATE INDEX ON users USING GIN (profile);
 ~~~
 
-### Store Columns
+### Store columns
 
 Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
 
@@ -108,7 +108,7 @@ Storing a column improves the performance of queries that retrieve (but don’t 
 
 However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
 
-### Change Column Sort Order
+### Change column sort order
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
@@ -118,7 +118,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 
 How columns are sorted impacts the order of rows returned by queries using the index, which particularly affects queries using `LIMIT`.
 
-### Query Specific Indexes
+### Query specific indexes
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
 
@@ -139,7 +139,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 > SELECT name FROM products@products_price_idx WHERE price > 10;
 ~~~
 
-## See Also
+## See also
 
 - [Indexes](indexes.html)
 - [`SHOW INDEX`](show-index.html)

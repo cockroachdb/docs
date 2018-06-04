@@ -152,7 +152,7 @@ It is also possible to sort using an arbitrary scalar expression computed for ea
 ## Sorting Using Multiple Columns
 
 When more than one ordering specification is given, the later specifications are used
-to order rows that are equal over the the earlier specifications, for example:
+to order rows that are equal over the earlier specifications, for example:
 
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
@@ -242,7 +242,7 @@ deterministic.
 This is a [known limitation](https://github.com/cockroachdb/cockroach/issues/23620)
 that may be lifted in the future.
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Scalar Expressions](scalar-expressions.html)

@@ -4,7 +4,7 @@ summary: Inverted indexes improve your database's performance and usefulness by 
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
+Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -55,7 +55,7 @@ This lets you to search based on subcomponents.
 
 You can use inverted indexes to improve the performance of queries using `JSONB` columns. You can create them:
 
-- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes-new-in-v2-0).
+- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes).
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
 - Using the following PostgreSQL-compatible syntax:
 
@@ -158,7 +158,7 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`JSONB`](jsonb.html)
 - [JSON tutorial](demo-json-support.html)

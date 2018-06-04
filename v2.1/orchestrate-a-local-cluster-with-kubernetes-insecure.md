@@ -12,7 +12,7 @@ This page walks you through a simple demonstration, using the open-source Kubern
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology:
 
@@ -165,7 +165,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
     {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 Use a local cluster to explore these other core CockroachDB features:
 

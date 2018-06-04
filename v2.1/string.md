@@ -85,7 +85,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 +----------+------+--------+
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `STRING` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -99,9 +99,9 @@ Type | Details
 `INET` | Requires supported [`INET`](inet.html) string format, e.g, `'192.168.0.1'`.
 `INT` | Requires supported [`INT`](int.html) string format, e.g., `'10'`.
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
-`TIME` | <span class="version-tag">New in v2.0:</span> Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
+`TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

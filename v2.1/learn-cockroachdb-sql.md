@@ -6,6 +6,8 @@ toc: false
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
+{{site.data.alerts.callout_success}}The easiest way to try out these statements is to use the <a href="use-the-built-in-sql-client.html">built-in interactive SQL shell</a>.{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
 
 <div id="toc"></div>
@@ -61,7 +63,7 @@ To set the default database, use the [`SET`](set-vars.html#examples) statement:
 > SET DATABASE = bank;
 ~~~
 
-When working with the default database, you don't need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
+When working with the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -89,7 +91,7 @@ To create a table, use [`CREATE TABLE`](create-table.html) followed by a table n
 );
 ~~~
 
-Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you don't explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -402,7 +404,7 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
-## What's Next?
+## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line

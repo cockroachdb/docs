@@ -296,7 +296,7 @@ Column | Description
 +-------------+-----------------+
 ~~~
 
-## See Also
+## See also
 
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)

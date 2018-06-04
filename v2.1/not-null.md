@@ -61,7 +61,7 @@ pq: null value in column "cust_email" violates not-null constraint
 pq: null value in column "cust_email" violates not-null constraint
 ~~~
 
-## See Also
+## See also
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)

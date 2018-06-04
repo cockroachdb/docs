@@ -49,7 +49,7 @@ To resolve this issue, use the [`cockroach cert client-create`](create-security-
 
 ## retry transaction
 
-Messages with the error code `40001` and the string `retry transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+Messages with the error code `40001` and the string `retry transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 

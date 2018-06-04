@@ -4,7 +4,7 @@ summary: The PAUSE JOB statement lets you temporarily halt the process of potent
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html) jobs.
+The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html) jobs.
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
@@ -12,7 +12,7 @@ After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can control a job.
 
@@ -44,7 +44,7 @@ Parameter | Description
 > PAUSE JOB 27536791415282;
 ~~~
 
-## See Also
+## See also
 
 - [`RESUME JOB`](resume-job.html)
 - [`SHOW JOBS`](show-jobs.html)

@@ -53,7 +53,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -92,7 +92,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -101,7 +101,7 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-windows">
-## Before You Begin
+## Before you begin
 
 If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 
@@ -255,13 +255,13 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 <span class="c1"># Remove the containers:</span>
 <span class="nb">PS </span>C:\Users\username&gt; docker rm roach1 roach2 roach3</code></pre></div>
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 <div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; rm -rf cockroach-data</span></code></pre></div>
 
 </div>
 
-## What's Next?
+## What's next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language

@@ -12,8 +12,7 @@ establish this network connection.
 
 <div id="toc"></div>
 
-
-## Supported Connection Parameters
+## Supported connection parameters
 
 There are two principal ways a client can connect to CockroachDB:
 
@@ -40,7 +39,7 @@ Client apps using a PostgreSQL driver | ✓ | Application-dependent
 [`cockroach dump`](sql-dump.html) | ✓ | ✓
 [`cockroach debug zip`](debug-zip.html) | ✗ | ✓
 
-## Connect Using a URL
+## Connect using a URL
 
 SQL clients, including some [`cockroach` commands](cockroach-commands.html) can connect using a URL.
 
@@ -74,7 +73,7 @@ href="cockroach-commands.html"><code>cockroach</code> command</a>
 other than <a href="use-the-built-in-sql-client.html"><code>cockroach
 sql</code></a>.{{site.data.alerts.end}}
 
-### Additional Connection Parameters
+### Additional connection parameters
 
 The following additional parameters can be passed after the `?` character in the URL:
 
@@ -86,7 +85,7 @@ Parameter | Description | Default value
 `sslcert` | Path to the [client certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
 `sslkey` | Path to the [client private key](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
 
-### Secure Connections With URLs
+### Secure connections with URLs
 
 The following values are supported for `sslmode`, although only the first and the last are recommended for use.
 
@@ -105,7 +104,7 @@ Parameter | Description | Recommended for use
 documentation of your SQL driver to determine whether these options
 are supported.{{site.data.alerts.end}}
 
-### Example URL for an Insecure Connection
+### Example URL for an insecure connection
 
 The following URL is suitable to connect to a CockroachDB node using an insecure connection:
 
@@ -117,7 +116,7 @@ This specifies a connection for the `root` user to server `servername`
 on port 26257 (the default CockroachDB SQL port), with `mydb` set as
 current database. `sslmode=disable` makes the connection insecure.
 
-### Example URL for a Secure Connection
+### Example URL for a secure connection
 
 The following URL is suitable to connect to a CockroachDB node using a secure connection:
 
@@ -139,7 +138,7 @@ For details about how to create and manage SSL/TLS certificates, see
 [Create Security Certificates](create-security-certificates.html) and
 [Rotate Certificates](rotate-certificates.html).
 
-## Connect Using Discrete Parameters
+## Connect using discrete parameters
 
 Most [`cockroach` commands](cockroach-commands.html) accept connection
 parameters as separate, discrete command-line flags, in addition (or
@@ -158,7 +157,7 @@ commands that use a SQL connection. See <a
 href="#supported-connection-parameters">Supported Connection
 Parameters</a> for details.{{site.data.alerts.end}}
 
-### Example Command-Line Flags for an Insecure Connection
+### Example command-line flags for an insecure connection
 
 The following command-line flags establish an insecure connection:
 
@@ -173,7 +172,7 @@ This specifies a connection for the `root` user to server `servername`
 on port 26257 (the default CockroachDB SQL port). `--insecure` makes
 the connection insecure.
 
-### Example Command-Line Flags for a Secure Connection
+### Example command-line flags for a secure sonnection
 
 The following command-line flags establish a secure connection:
 
@@ -200,9 +199,7 @@ and cannot be customized. To use customized file names, use a <a
 href="#connect-using-a-url">connection URL</a>
 instead.{{site.data.alerts.end}}
 
-## Using Both URL and Client Parameters
-
-<span class="version-tag">Changed in v2.0</span>
+## Using both URL and client parameters
 
 Several [`cockroach` commands](cockroach-commands.html) support both a
 [connection URL](#connect-using-a-url) with `--url` (or `COCKROACH_URL`) and [discrete connection
@@ -227,7 +224,7 @@ In other words:
 - If no URL is specified, the discrete parameters are used. For every
   component not specified, the default value is used.
 
-### Example Override of the Current Database
+### Example override of the current database
 
 For example, the `cockroach start` command prints out the following connection URL:
 
@@ -250,7 +247,7 @@ This is equivalent to:
 cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 ~~~
 
-## See Also
+## See also
 
 - [`cockroach` commands](cockroach-commands.html)
 - [Create Security Certificates](create-security-certificates.html)

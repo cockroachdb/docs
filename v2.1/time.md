@@ -3,7 +3,7 @@ title: TIME
 summary: The TIME data type stores a time of day in UTC, whereas TIMETZ stores a time of day with a time zone offset from UTC.
 toc: false
 ---
-<span class="version-tag">New in v2.0:</span> The `TIME` [data type](data-types.html) stores the time of day in UTC, whereas `TIMETZ` stores a time of day with a time zone offset from UTC.
+The `TIME` [data type](data-types.html) stores the time of day in UTC, whereas `TIMETZ` stores a time of day with a time zone offset from UTC.
 
 <div id="toc"></div>
 
@@ -121,7 +121,7 @@ Comparing `TIME` values:
 (1 row)
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `TIME` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -130,7 +130,7 @@ Type | Details
 `INTERVAL` | Converts to the span of time since midnight (00:00)
 `STRING` | Converts to format `'HH:MM:SS.SSSSSS'` (microsecond precision)
 
-## See Also
+## See also
 
 - [Data Types](data-types.html)
 - [SQL Feature Support](sql-feature-support.html)

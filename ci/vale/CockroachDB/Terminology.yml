@@ -1,0 +1,9 @@
+extends: substitution
+message: Prefer '%s' over '%s'
+ignorecase: false
+level: warning
+swap:
+  raft: Raft
+  admin UI: Admin UI
+  admin ui: Admin UI
+  ui: UI

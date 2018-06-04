@@ -16,7 +16,7 @@ redirect_from: /training/network-partition-troubleshooting.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have Docker Compose on your local machine, so you may just want to observe this one.
 
@@ -167,7 +167,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 ## Step 5. Clean up
 
-You won't be using this Docker cluster in any other labs, so take a moment to clean things up.
+You will not be using this Docker cluster in any other labs, so take a moment to clean things up.
 
 1. In the terminal where you ran `docker-compose up`, press **CTRL-C** to stop all the CockroachDB nodes.
 
@@ -178,6 +178,6 @@ You won't be using this Docker cluster in any other labs, so take a moment to cl
     $ docker-compose down
     ~~~
 
-## What's Next?
+## What's next?
 
 [How Cockroach Labs Debugs](how-cockroach-labs-debugs.html)

@@ -4,7 +4,7 @@ summary: Roles are SQL groups that contain any number of users and roles as memb
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:
+Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
@@ -241,7 +241,7 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 > DROP ROLE system_ops;
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)

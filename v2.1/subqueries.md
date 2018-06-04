@@ -76,7 +76,7 @@ See also [this question on Stack Overflow: Procedurally transform subquery into 
 
 - The results of scalar subqueries are currently loaded entirely into memory when the execution of the surrounding query starts. To prevent execution errors due to memory exhaustion, ensure that subqueries return as few results as possible.
 
-## See Also
+## See also
 
 - [Selection Queries](selection-queries.html)
 - [Scalar Expressions](scalar-expressions.html)

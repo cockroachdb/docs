@@ -53,7 +53,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 <section>{% include sql/{{ page.version.version }}/diagrams/explain.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user requires the appropriate [privileges](privileges.html) for the statement being explained.
 
@@ -369,7 +369,7 @@ entire table:
 Now, only part of the index `v` is getting scanned, specifically the key range starting
 at (and including) 4 and stopping before 6.
 
-## See Also
+## See also
 
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)

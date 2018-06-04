@@ -4,7 +4,7 @@ summary: Use a local cluster to explore how CockroachDB can store and query unst
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
+This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
 
 <div id="toc"></div>
 
@@ -191,7 +191,7 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 +-------+
 ~~~
 
-Now, retrieve all the current entries where the link is pointing to somewhere on YouTube (i.e., where `object.data.domain` is `"youtube.com"`):
+Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -251,7 +251,7 @@ Time: 28.646769ms
 
 Instead of 105.877736ms, the query now takes 28.646769ms.
 
-## What's Next?
+## What's next?
 
 Use a local cluster to explore these other core CockroachDB features:
 

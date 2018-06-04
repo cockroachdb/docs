@@ -145,7 +145,7 @@ For each node in your cluster, complete the following steps.
     ~~~
     `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it `--host`.
 
-6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](admin-ui-access-and-navigate.html).
+6. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-access-and-navigate.html).
 
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
@@ -154,7 +154,7 @@ For each node in your cluster, complete the following steps.
     $ rm /usr/local/bin/cockroach_old
     ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    If you leave versioned binaries on your servers, you do not need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
@@ -174,7 +174,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, you do not need to take any further action.{{site.data.alerts.end}}
 
 1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 
@@ -204,7 +204,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 3. If necessary, downgrade the cluster by repeating the [rolling upgrade process](#step-3-perform-the-rolling-upgrade), but this time switching each node back to the previous version.
 
-## See Also
+## See also
 
 - [View Node Details](view-node-details.html)
 - [Collect Debug Information](debug-zip.html)

@@ -16,7 +16,7 @@ redirect_from: /training/data-import.html
 </style>
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous lab.
 
@@ -385,6 +385,6 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     (5 rows)    
     ~~~
 
-## What's Next?
+## What's next?
 
 - [Users and Privileges](users-and-privileges.html)

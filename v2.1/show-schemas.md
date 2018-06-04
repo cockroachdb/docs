@@ -4,11 +4,11 @@ summary: The SHOW SCHEMAS statement lists the schemas in a database.
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
+The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to list the schemas in a database.
 
@@ -44,7 +44,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Logical Schemas and Namespaces](sql-name-resolution.html)
 - [`SHOW DATABASES`](show-databases.html)

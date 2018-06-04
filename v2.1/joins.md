@@ -107,7 +107,7 @@ operands.{{site.data.alerts.end}}
 
 - See [Index Best Practices](performance-best-practices-overview.html#indexes-best-practices).
 
-## See Also
+## See also
 
 - [Scalar Expressions](scalar-expressions.html)
 - [Table Expressions](table-expressions.html)

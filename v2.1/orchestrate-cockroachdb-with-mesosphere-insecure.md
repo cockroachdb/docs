@@ -10,7 +10,7 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's important to review some current requirements and limitations.
 
@@ -113,7 +113,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
     $ dcos node ssh --master-proxy --leader
     ~~~
 
-3. Start a temporary container and open the [built-in SQL shell](use-the-built-in-sql-client.html) inside it, using the the `vip` endpoint as the `--host`:
+3. Start a temporary container and open the [built-in SQL shell](use-the-built-in-sql-client.html) inside it, using the `vip` endpoint as the `--host`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -196,7 +196,7 @@ The default `cockroachdb` service creates a 3-node CockroachDB cluster. You can 
 
 The Scheduler process will restart with the new configuration and will validate any detected changes. To check that nodes were successfully added to the cluster, go back to the Admin UI, view **Node List**, and check for the new nodes.
 
-Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](view-node-details.html) command in a temporary container, again using the the `vip` endpoint as the `--host`:
+Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](view-node-details.html) command in a temporary container, again using the `vip` endpoint as the `--host`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -390,6 +390,6 @@ To shut down the CockroachDB cluster:
 
 3. Uninstall DC/OS. If you used AWS CloudFormation, see [Uninstalling DC/OS on AWS EC2](https://docs.mesosphere.com/1.10/installing/oss/cloud/aws/removeaws/).
 
-## See Also
+## See also
 
 {% include prod_deployment/prod-see-also.md %}

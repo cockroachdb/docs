@@ -8,7 +8,7 @@ The `SHOW INDEX` [statement](sql-statements.html) returns index information for 
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target table.
 
@@ -72,7 +72,7 @@ Field | Description
 (5 rows)
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)

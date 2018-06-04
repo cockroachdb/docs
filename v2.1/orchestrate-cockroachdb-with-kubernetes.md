@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
@@ -60,7 +60,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   5m        kubelet                                 Approved,Issued
     ~~~
 
-    If you don't see a `Pending` CSR, wait a minute and try again.
+    If you do not see a `Pending` CSR, wait a minute and try again.
 
 2. Examine the CSR for pod 1:
 
@@ -276,7 +276,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
     ~~~
 
-    If you don't see a `Pending` CSR, wait a minute and try again.
+    If you do not see a `Pending` CSR, wait a minute and try again.
 
 4. Examine the CSR for the new pod:
 
@@ -462,7 +462,7 @@ To shut down the CockroachDB cluster:
 
 {% include orchestration/stop-kubernetes.md %}
 
-## See Also
+## See also
 
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include prod_deployment/prod-see-also.md %}

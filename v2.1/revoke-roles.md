@@ -4,7 +4,7 @@ summary: The REVOKE <roles> statement revokes privileges from users and/or roles
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
+The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
 
 {{site.data.alerts.callout_info}}<code>REVOKE &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -14,7 +14,7 @@ toc: false
 
 <section>{% include sql/{{ page.version.version }}/diagrams/revoke_roles.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user revoking role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
 
@@ -85,7 +85,7 @@ To revoke a user or role's admin option from a role (without revoking the member
 +--------+---------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [Privileges](privileges.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)

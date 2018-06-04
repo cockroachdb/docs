@@ -86,7 +86,7 @@ INSERT 3
 (3 rows)
 ~~~
 
-## Supported Casting & Conversion
+## Supported casting & conversion
 
 `INTERVAL` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
@@ -96,8 +96,8 @@ Type | Details
 `DECIMAL` | Converts to number of seconds (nanosecond precision)
 `FLOAT` | Converts to number of picoseconds
 `STRING` | Converts to `h-m-s` format (nanosecond precision)
-`TIME` | <span class="version-tag">New in v2.0:</span> Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
+`TIME` | Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
 
-## See Also
+## See also
 
 [Data Types](data-types.html)

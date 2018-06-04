@@ -253,7 +253,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 9. Scale the cluster
 
-Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--port`, and `--http-port` flags for each new node. But this time, you don't have to follow-up with the `cockroach init` command or any other commands.
+Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--port`, and `--http-port` flags for each new node. But this time, you do not have to follow-up with the `cockroach init` command or any other commands.
 
 1. In another terminal, start the fourth node:
 
@@ -293,6 +293,6 @@ Another way to observe this is to click **Metrics** in the upper left and scroll
 
 <img src="{{ 'images/v2.0/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## What's Next?
+## What's next?
 
 - [Fault Tolerance and Automated Repair](fault-tolerance-and-automated-repair.html)

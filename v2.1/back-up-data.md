@@ -19,7 +19,7 @@ However, because CockroachDB is designed with high fault tolerance, backups are 
 
 For information about restoring your backed up data, see [Restoring Data](restore-data.html).
 
-## See Also
+## See also
 
 - [Restore Data](restore-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)

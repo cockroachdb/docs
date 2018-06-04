@@ -13,7 +13,7 @@
 
 #### Considerations
 
-- <sup>1</sup> If the `AUTH` parameter is empty or `default`, all GCS connections use Google's [default authentication strategy](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application). The `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) can be set to the contents of a service account file which will be used during authentication. The `AUTH` parameter can be set to `implicit` to ignore `cloudstorage.gs.default.key` and always use the default strategy.
+- <sup>1</sup> If the `AUTH` parameter is `implicit`, all GCS connections use Google's [default authentication strategy](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application). If the `AUTH` parameter is `default`, the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) must be set to the contents of a [service account file](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) which will be used during authentication. If the `AUTH` parameter is not specified, the `cloudstorage.gs.default.key` setting will be used if it is non-empty, otherwise the `implicit` behavior is used.
 
 - <sup>2</sup> You can easily create your own HTTP server with [Caddy or nginx](create-a-file-server.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 

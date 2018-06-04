@@ -8,7 +8,7 @@ If you're having trouble starting or scaling your cluster, this page will help y
 
 <div id="toc"></div>
 
-## Before You Begin
+## Before you begin
 
 ### Terminology
 
@@ -17,17 +17,17 @@ To use this guide, it's important to understand some of CockroachDB's terminolog
   - A **Cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
   - **Nodes** are single instances of the `cockroach` binary running on a machine. It's possible (though atypical) to have multiple nodes running on a single machine.
 
-### Using This Guide
+### Using this guide
 
 To diagnose issues, we recommend beginning with the simplest scenario and then increasing its complexity until you discover the problem. With that strategy in mind, you should proceed through these troubleshooting steps sequentially.
 
 We also recommend executing these steps in the environment where you want to deploy your CockroachDB cluster. However, if you run into issues you cannot solve, try the same steps in a simpler environment. For example, if you cannot successfully start a cluster using Docker, try deploying CockroachDB in the same environment without using containers.
 
-## Locate Your Issue
+## Locate your issue
 
 Proceed through the following steps until you locate the source of the issue with starting or scaling your CockroachDB cluster.
 
-### 1. Start a Single-Node Cluster
+### 1. Start a single-node cluster
 
 1. Stop any running `cockroach` processes and remove any old data:
 
@@ -50,10 +50,10 @@ Proceed through the following steps until you locate the source of the issue wit
 
     Errors at this stage potentially include:
     - CPU incompatibility
-    - Other services running on port `26257` or `8080` (CockroachDB's default `port` and `http-port` respectively). You can either stop those services or start your node with different ports, specified with the [`--port` and   `--http-port`](start-a-node.html#flags-changed-in-v2-0).
+    - Other services running on port `26257` or `8080` (CockroachDB's default `port` and `http-port` respectively). You can either stop those services or start your node with different ports, specified with the [`--port` and   `--http-port`](start-a-node.html#flags).
 
         If you change the port, you will need to include the `--port=[specified port]` flag in each subsequent `cockroach` command or change the `COCKROACH_PORT` environment variable.
-    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--host` flag](start-a-node.html#flags-changed-in-v2-0).
+    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--host` flag](start-a-node.html#flags).
 
         If you change the host, you will need to include `--host=[specified host]` in each subsequent `cockroach` command.
 
@@ -80,7 +80,7 @@ Proceed through the following steps until you locate the source of the issue wit
 
 **Next step**: If you successfully completed these steps, try starting a multi-node cluster.
 
-### 2. Start a Multi-Node Cluster
+### 2. Start a multi-node cluster
 
 1. Stop any running `cockroach` processes and remove any old data on the additional machines::
 
@@ -129,7 +129,7 @@ Most networking-related issues are caused by one of two issues:
 
 - Firewall rules, which require your network administrator to investigate
 
-- Inaccessible hostnames on your nodes, which can be controlled with the `--host` and `--advertise-host` flags on [`cockroach start`](start-a-node.html#flags-changed-in-v2-0)
+- Inaccessible hostnames on your nodes, which can be controlled with the `--host` and `--advertise-host` flags on [`cockroach start`](start-a-node.html#flags)
 
 However, to efficiently troubleshoot the issue, it's important to understand where and why it's occurring. We recommend checking the following network-related issues:
 
@@ -200,9 +200,9 @@ If data is not being replicated to some nodes in the cluster, we recommend check
   - `connection refused`: [Troubleshoot your network](#networking-troubleshooting).
   - `not connected to cluster` or `node [id] belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
 
-## Something Else?
+## Something else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)

@@ -4,11 +4,11 @@ summary:
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
+The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the specified sequence(s).
 
@@ -92,7 +92,7 @@ In this example, a table depends on the sequence that's being dropped. Therefore
 DROP SEQUENCE
 ~~~ -->
 
-## See Also
+## See also
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`RENAME SEQUENCE`](rename-sequence.html)

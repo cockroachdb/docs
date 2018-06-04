@@ -8,7 +8,7 @@ The `SHOW CREATE TABLE` [statement](sql-statements.html) shows the `CREATE TABLE
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 The user must have any [privilege](privileges.html) on the target table.
 
@@ -114,7 +114,7 @@ Field | Description
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)

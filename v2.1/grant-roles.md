@@ -4,7 +4,7 @@ summary: The GRANT <roles> statement grants user privileges for interacting with
 toc: false
 ---
 
-<span class="version-tag">New in v2.0:</span> The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
+The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
 
 {{site.data.alerts.callout_info}}<code>GRANT &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -14,7 +14,7 @@ toc: false
 
 <section>{% include sql/{{ page.version.version }}/diagrams/grant_roles.html %}</section>
 
-## Required Privileges
+## Required privileges
 
 The user granting role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
 
@@ -78,7 +78,7 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-## See Also
+## See also
 
 - [Privileges](privileges.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)

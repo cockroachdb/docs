@@ -4,7 +4,7 @@ summary: The SHOW JOBS statement lists all currently active schema changes and b
 toc: false
 ---
 
-<span class="version-tag">New in v1.1:</span> The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
+The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
 
 - Schema changes through `ALTER TABLE`
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html)
@@ -15,7 +15,7 @@ These details can help you understand the status of crucial tasks that can impac
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 By default, only the `root` user can execute `SHOW JOBS`.
 
@@ -72,7 +72,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 
-## See Also
+## See also
 
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)

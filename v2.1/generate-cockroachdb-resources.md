@@ -307,7 +307,7 @@ Field | Description
 
 {{site.data.alerts.callout_info}}For full details on these and other configuration settings, see the <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html">HAProxy Configuration Manual</a>.{{site.data.alerts.end}}
 
-## See Also
+## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Deploy CockroachDB On-Premises](deploy-cockroachdb-on-premises.html) (using HAProxy for load balancing)

@@ -8,7 +8,7 @@ The `RESET` [statement](sql-statements.html) resets a [session variable](set-var
 
 <div id="toc"></div>
 
-## Required Privileges
+## Required privileges
 
 No [privileges](privileges.html) are required to reset a session setting.
 
@@ -60,7 +60,7 @@ No [privileges](privileges.html) are required to reset a session setting.
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [`SET` (session variable)](set-vars.html)
 - [`SHOW` (session variables)](show-vars.html)
