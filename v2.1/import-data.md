@@ -97,7 +97,7 @@ $ mysqldump -uroot employees employees > employees.sql
 
 To import the MySQL dump file for a table, issue an `IMPORT` statement like the one shown below.
 
-You will need to look at the dump file and translate the MySQL `CREATE TABLE` statement there into something CockroachDB understands.
+You will need to look at the dump file and translate the MySQL [`CREATE TABLE`](create-table.html) statement there into something CockroachDB understands.
 
 This example uses S3. For a complete list of the types of cloud storage `IMPORT` can pull from, see [Import File URLs](import.html#import-file-urls).
 
