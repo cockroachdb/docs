@@ -8,9 +8,9 @@ This page provides best practices for optimizing SQL performance in CockroachDB.
 
 <div id="toc"></div>
 
-## Multi-Row DML Best Practices
+## Multi-row DML best practices
 
-### Use Multi-Row DML instead of Multiple Single-Row DMLs
+### Use multi-row DML instead of multiple single-row DMLs
 
 For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs.
 
@@ -21,35 +21,35 @@ For more information, see:
 - [Delete Multiple Rows](delete.html#delete-specific-rows)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
-### Use `TRUNCATE` instead of `DELETE` to Delete All Rows in a Table
+### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
 
 The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
-## Bulk Insert Best Practices
+## Bulk insert best tractices
 
-### Use Multi-Row `INSERT` Statements for Bulk Inserts into Existing Tables
+### Use multi-row `INSERT` statements for bulk inserts into existing tables
 
 To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
 
-### Use `IMPORT` instead of `INSERT` for Bulk Inserts into New Tables
+### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Execute Statements in Parallel
+## Execute statements in parallel
 
 CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. To execute statements in parallel, append the `RETURNING NOTHING` clause to the statements in a transaction. For more information, see [Parallel Statement Execution](parallel-statement-execution.html).
 
-## Assign Column Families
+## Assign column families
 
 A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
 
 When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
-## Interleave Tables
+## Interleave tables
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
 
-## Unique ID Best Practices
+## Unique ID best practices
 
 The common approach for generating unique IDs is one of the following:
 
@@ -60,15 +60,15 @@ The first approach does not take advantage of the parallelization possible in a 
 
 The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
-### Use `UUID` to Generate Unique IDs
+### Use `UUID` to generate unique IDs
 
 {% include faq/auto-generate-unique-ids_v1.1.html %}
 
-### Use `INSERT` with the `RETURNING` Clause to Generate Unique IDs
+### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
 If something prevents you from using `UUID` to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) for improved performance.
 
-#### Generate Monotonically-Increasing Unique IDs
+#### Generate monotonically-increasing unique IDs
 
 Suppose the table schema is as follows:
 
@@ -104,7 +104,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 	RETURNING ID1,ID2,ID3;
 ~~~
 
-#### Generate Random Unique IDs
+#### Generate random unique IDs
 
 Suppose the table schema is as follows:
 
@@ -136,9 +136,9 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 	RETURNING ID1,ID2,ID3;
 ~~~
 
-## Indexes Best Practices
+## Indexes best practices
 
-### Use Secondary Indexes
+### Use secondary indexes
 
 You can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
@@ -148,44 +148,25 @@ You can use secondary indexes to improve the performance of queries using column
 
 To create the most useful secondary indexes, check out our [best practices](indexes.html#best-practices).
 
-### Use Indexes for Faster `JOIN`s
-
-CockroachDB supports both [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) and [hash joins](https://en.wikipedia.org/wiki/Hash_join). CockroachDB uses merge joins whenever possible because they are more performant than hash joins computationally and in terms of memory. However, merge joins are possible only when the tables being joined are indexed on the relevant columns; when this condition is not met, CockroachDB resorts to the slower hash joins.
-
-#### Why are merge joins faster than hash joins?
-
-Merge joins are computationally less expensive and do not require additional memory. They are performed on the indexed columns of two tables as follows:
-
-- CockroachDB takes one row from each table and compares them.
-- If the rows are equal, CockroachDB returns the rows.
-- If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
-
-In contrast, hash joins are computationally expensive and require additional memory. They are performed on two tables as follows:
-
-- CockroachDB creates an in-memory hash table on the smaller table.
-- CockroachDB then uses the hash table and scans the larger table to find matching rows from the smaller table.
-
-#### Why create indexes to perform merge joins?
-
-A merge join requires both tables to be indexed on the merge columns. In case this condition is not met, CockroachDB resorts to the slower hash joins. So while using `JOIN` on two tables, first create indexes on the tables and then use the `JOIN` operator.
-
-Also note that merge `JOIN`s can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
-
-### Drop Unused Indexes
-
-Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
-
-## Join Best Practices
+### Use indexes for faster joins
 
 See [Join Performance Best Practices](joins.html#performance-best-practices).
 
-## Subquery Best Practices
+### Drop unused indexes
+
+Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
+
+## Join best practices
+
+See [Join Performance Best Practices](joins.html#performance-best-practices).
+
+## Subquery best practices
 
 See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
 
-## Table Scans Best Practices
+## Table scans best practices
 
-### Avoid `SELECT *` for Large Tables
+### Avoid `SELECT *` for large tables
 
 For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
 
@@ -217,17 +198,17 @@ This query retrieves all data stored in the table. A more efficient query would 
 
 This query returns the account balances of the customers.
 
-### Avoid `SELECT DISTINCT` for Large Tables
+### Avoid `SELECT DISTINCT` for large tables
 
 `SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select-clause.html#filter-rows) instead.
 
-### Use `AS OF SYSTEM TIME` to Decrease Conflicts with Long-Running Queries
+### Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries
 
 If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause](select-clause.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-## Understanding and Avoiding Transaction Contention
+## Understanding and avoiding transaction contention
 
 Transaction contention occurs when the following three conditions are met:
 
