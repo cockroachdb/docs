@@ -36,8 +36,8 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     ~~~
 
     ~~~
-    cockroachdb-0	cockroachdb/cockroach:v1.1.5
-    cockroachdb-1	cockroachdb/cockroach:v1.1.5
-    cockroachdb-2	cockroachdb/cockroach:v1.1.5
-    cockroachdb-3	cockroachdb/cockroach:v1.1.5
+    cockroachdb-0	cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-1	cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-2	cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-3	cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
