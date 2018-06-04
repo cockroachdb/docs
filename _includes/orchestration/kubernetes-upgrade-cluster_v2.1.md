@@ -8,7 +8,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.1. After finalization, however, it will no longer be possible to perform a downgrade to v2.0. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
-    If you prefer to observe the upgraded cluster before finalizing the upgrade:
+    We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade:
 
     {% if page.secure == true %}
 
