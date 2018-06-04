@@ -6,7 +6,7 @@ toc: false
 
 This page shows you how to identify and, if necessary, cancel SQL queries that are taking longer than expected to process.
 
-{{site.data.alerts.callout_info}}Schema changes (statements beginning with <code>ALTER</code>) cannot currently be cancelled. However, to monitor the progress of schema changes, you can use <a href="show-jobs.html"><code>SHOW JOBS</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}<span class="version-tag">New in v2.1:</span> Schema changes can now be cancelled using <a href="cancel-job.html"><code>CANCEL JOB</code></a>. You can also monitor the progress of schema changes using <a href="show-jobs.html"><code>SHOW JOBS</code></a>.</span>{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
