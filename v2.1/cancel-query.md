@@ -10,7 +10,8 @@ toc: false
 
 ## Considerations
 
-In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
+- **New in v2.1:** Schema changes can now be cancelled using [`CANCEL JOB`](cancel-job.html). You can also monitor the progress of schema changes using [`SHOW JOBS`](show-jobs.html).   
+- In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
 
 ## Required Privileges
 
