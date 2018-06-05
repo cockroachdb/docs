@@ -15,6 +15,12 @@ The `TIME` [data type](data-types.html) stores the time of day in UTC, whereas `
 
 - `TIMETZ` converts `TIME` values from UTC to the client's session time zone (unless another time zone is specified for the value). However, it is conceptually important to note that `TIMETZ` **does not** store any time zone data.
 
+<a name="timetz-warning"></a>
+
+{{site.data.alerts.callout_danger}}
+Use of `TIMETZ` is not recommended at this time. The current implementation is incomplete.  The feature will be retracted or corrected in a future release.  If corrected, the fix will be backwards-incompatible.  For details, see [cockroachdb#25224](https://github.com/cockroachdb/cockroach/issues/25224).
+{{site.data.alerts.end}}
+
     {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default <code>TIMETZ</code> values display in UTC.{{site.data.alerts.end}}
 
 The difference between these two variants is that `TIMETZ` uses the client's session time zone, while `TIME` does not. This behavior extends to [functions like `now()` and `extract()`](functions-and-operators.html#date-and-time-functions) on `TIMETZ` values.

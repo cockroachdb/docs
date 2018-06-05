@@ -24,7 +24,7 @@ Type | Description | Example
 [`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`TIME`](time.html) | A time of day in UTC. | `TIME '01:23:45.123456'`
-[`TIMETZ`](time.html) | <span class="version-tag">New in v2.1:</span> A time of day with a time zone offset from UTC. | `TIMETZ '01:23:45.123456-5:00'`
+[`TIMETZ`](time.html) | A time of day with a time zone offset from UTC.  **Not recommended for use at this time. For details, see [`TIMETZ`](time.html#timetz-warning).** | `TIMETZ '01:23:45.123456-5:00'`
 [`TIMESTAMP`](timestamp.html) | A date and time pairing in UTC. | `TIMESTAMP '2016-01-25 10:10:10'`
 [`TIMESTAMPTZ`](timestamp.html) | A date and time pairing with a time zone offset from UTC. | `TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`
 [`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
