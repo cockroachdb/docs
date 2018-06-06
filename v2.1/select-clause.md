@@ -176,7 +176,7 @@ WHERE state_opened = 'VT';
 +----------------+
 ~~~
 
-#### Filter Values with a List
+#### Filter Values with `IN (list)`
 
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
 
@@ -184,7 +184,8 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 ~~~ sql
 > SELECT name, balance, state_opened
 FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA');
+WHERE state_opened
+IN ('AZ', 'NY', 'WA');
 ~~~
 ~~~
 +-----------------+---------+--------------+
@@ -196,6 +197,36 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 | Edna Barath     |     750 | WA           |
 | Edna Barath     |    2200 | WA           |
 +-----------------+---------+--------------+
+~~~
+
+You can also use tuples to perform an `OR` search for a combination of values from different columns:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name, balance, state_opened
+FROM accounts
+WHERE (state_opened, type)
+IN (('AZ', 'savings'), ('NY', 'savings'), ('WA', 'savings'));
+~~~
+~~~
++-----------------+---------+--------------+
+|      name       | balance | state_opened |
++-----------------+---------+--------------+
+| Naseem Joossens |     300 | AZ           |
+| Aygün Sanna     |     900 | NY           |
+| Edna Barath     |    2200 | WA           |
++-----------------+---------+--------------+
+~~~
+
+This is significantly simpler than the alternative:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name, balance, state_opened
+FROM accounts
+WHERE (state_opened = 'AZ' and type = 'savings')
+   OR (state_opened = 'NY' and type = 'savings')
+   OR (state_opened = 'WA' and type = 'savings');
 ~~~
 
 ### Rename Columns in Output
