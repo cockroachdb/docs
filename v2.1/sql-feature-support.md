@@ -24,7 +24,7 @@ table tr td:nth-child(2) {
 
 ## Features
 
-### Row Values
+### Row values
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
@@ -85,7 +85,7 @@ table tr td:nth-child(2) {
 | Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values |
 | Partial indexes | ✗ | Common Extension | Only index specific rows from indexed columns |
 
-### Schema Changes
+### Schema changes
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
@@ -119,7 +119,7 @@ table tr td:nth-child(2) {
 | `LIMIT` with `OFFSET` | ✓ | Common Extension | Skip a number of rows, and then limit the size of the return set. |
 | `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect. |
 
-### Table Expressions
+### Table expressions
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
@@ -130,7 +130,7 @@ table tr td:nth-child(2) {
 | Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions) |
 | `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation) |
 
-### Scalar Expressions and Boolean Formulas
+### Scalar expressions and boolean formulas
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|

@@ -14,7 +14,9 @@ The user must have any [privilege](privileges.html) on the target view.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_create_view.html %}
+</div>
 
 ## Parameters
 
@@ -27,12 +29,13 @@ Parameter | Description
 Field | Description
 ------|------------
 `View` | The name of the view.
-`CreateView` | The [`CREATE VIEW`](create-view.html) statement for creating a copy of the specified view. 
+`CreateView` | The [`CREATE VIEW`](create-view.html) statement for creating a copy of the specified view.
 
 ## Examples
 
 ### Show the `CREATE VIEW` statement for a view
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE VIEW bank.user_accounts;
 ~~~
@@ -50,6 +53,7 @@ Field | Description
 
 To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition
   FROM information_schema.views

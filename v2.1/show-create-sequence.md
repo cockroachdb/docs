@@ -14,7 +14,9 @@ The user must have any [privilege](privileges.html) on the target sequence.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_create_sequence.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/show_create_sequence.html %}
+</div>
 
 ## Parameters
 
@@ -31,10 +33,12 @@ Field | Description
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE SEQUENCE desc_customer_list;
 ~~~

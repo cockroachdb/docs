@@ -12,7 +12,9 @@ The `SAVEPOINT cockroach_restart` statement defines the intent to retry [transac
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/savepoint.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/savepoint.html %}
+</div>
 
 ## Required privileges
 
@@ -20,25 +22,39 @@ No [privileges](privileges.html) are required to create a savepoint. However, pr
 
 ## Example
 
-### Create Savepoint
+After we `BEGIN` the transaction, we must create the savepoint to identify that if the transaction contends with another transaction for resources and "loses", we intend to use [the function for client-side transaction retries](transactions.html#transaction-retries):
 
-After you `BEGIN` the transaction, you must create the savepoint to identify that if the transaction contends with another transaction for resources and "loses", you intend to use [the function for client-side transaction retries](transactions.html#transaction-retries).
-
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
-When using `SAVEPOINT`, your application must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction).
+When using `SAVEPOINT`, an application must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html#retry-a-transaction).
 
 ## See also
 

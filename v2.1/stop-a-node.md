@@ -12,7 +12,7 @@ For information about permanently removing nodes to downsize a cluster or react 
 
 ## Overview
 
-### How It Works
+### How it works
 
 When you stop a node, it performs the following steps:
 
@@ -69,7 +69,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-### Stop a Node from the Machine Where It's Running
+### Stop a node from the machine where it's running
 
 1. SSH to the machine where the node is running.
 
@@ -93,7 +93,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
 
-### Stop a Node from Another Machine
+### Stop a node from another machine
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>

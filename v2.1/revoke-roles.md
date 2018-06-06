@@ -12,7 +12,9 @@ The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](r
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/revoke_roles.html %}</section>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/revoke_roles.html %}
+</div>
 
 ## Required privileges
 
@@ -32,12 +34,13 @@ Parameter | Description
 
 ## Examples
 
-### Revoke Role Membership
+### Revoke role membership
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
+
 ~~~
 +--------+---------+---------+
 |  role  | member  | isAdmin |
@@ -58,6 +61,7 @@ Parameter | Description
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
+
 ~~~
 +--------+---------+---------+
 |  role  | member  | isAdmin |
@@ -68,13 +72,15 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-### Revoke the Admin Option
+### Revoke the admin option
 
 To revoke a user or role's admin option from a role (without revoking the membership):
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > REVOKE ADMIN OPTION FOR design FROM ernie;
 ~~~
+
 ~~~
 +--------+---------+---------+
 |  role  | member  | isAdmin |

@@ -22,7 +22,9 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_sessions.html %}</section>
+<div>
+{% include sql/{{ page.version.version }}/diagrams/show_sessions.html %}
+</div>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.
 - To list the active sessions just on the local node, use `SHOW LOCAL SESSIONS`.
@@ -46,7 +48,7 @@ Field | Description
 
 ## Examples
 
-### List Active Sessions Across the Cluster
+### List active sessions across the cluster
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -72,7 +74,7 @@ Field | Description
 
 Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
-### List Active Sessions on the Local Node
+### List active sessions on the local node
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -91,7 +93,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 (4 rows)
 ~~~
 
-### Filter for Specific Sessions
+### Filter for specific sessions
 
 You can use a [`SELECT`](select-clause.html) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
 
@@ -139,7 +141,7 @@ To exclude sessions from the [built-in SQL client](use-the-built-in-sql-client.h
 (8 rows)
 ~~~
 
-### Identify and Cancel a Problematic Query
+### Identify and cancel a problematic query
 
 If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW QUERIES`](show-queries.html) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`](cancel-query.html) statement to cancel it.
 

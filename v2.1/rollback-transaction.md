@@ -12,7 +12,9 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
+</div>
 
 ## Required privileges
 
@@ -26,13 +28,15 @@ No [privileges](privileges.html) are required to rollback a transaction. However
 
 ## Example
 
-### Rollback a Transaction
+### Rollback a transaction
 
-Typically, your application conditionally executes rollbacks, but you can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL.
+Typically, an application conditionally executes rollbacks, but we can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----------+---------+
 |   name   | balance |
@@ -40,15 +44,27 @@ Typically, your application conditionally executes rollbacks, but you can see th
 | Marciela |    1000 |
 +----------+---------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE accounts SET balance = 2500 WHERE name = 'Marciela';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > ROLLBACK;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----------+---------+
 |   name   | balance |
@@ -57,15 +73,16 @@ Typically, your application conditionally executes rollbacks, but you can see th
 +----------+---------+
 ~~~
 
-### Retry a Transaction
+### Retry a transaction
 
-To use [client-side transaction retries](transactions.html#client-side-transaction-retries), your application must execute `ROLLBACK TO SAVEPOINT cockroach_restart` after detecting a `40001` / `retry transaction` error.
+To use [client-side transaction retries](transactions.html#client-side-transaction-retries), an application must execute `ROLLBACK TO SAVEPOINT cockroach_restart` after detecting a `40001` / `retry transaction` error:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~
 
-For examples of retrying transactions in your application, check out the transaction code samples in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.
+For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.
 
 ## See also
 

@@ -20,7 +20,9 @@ No [privileges](privileges.html) are required to modify the session settings.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/set_var.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/set_var.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>SET</code> statement for session settings is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.{{site.data.alerts.end}}
 
@@ -31,7 +33,7 @@ variable name and the value to use to modify the variable.
 
 The variable name is case insensitive. The value can be a list of one or more items. For example, the variable `search_path` is multi-valued.
 
-### Supported Variables
+### Supported variables
 
 | Variable name | Description  | Initial value | Can be viewed with [`SHOW`](show-vars.html)? |
 |---------------|--------------|---------------|----------------------------------------------|
@@ -65,13 +67,18 @@ Special syntax cases:
 
 ## Examples
 
-### Set Simple Variables
+### Set simple variables
 
 The following demonstrates how `SET` can be used to configure the
 default database for the current session:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET database = bank;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW database;
 ~~~
 
@@ -84,12 +91,17 @@ default database for the current session:
 (1 row)
 ~~~
 
-### Set Variables to Values Containing Spaces
+### Set variables to values containing spaces
 
 The following demonstrates how to use quoting to use values containing spaces:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET database = "database name with spaces";
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW database;
 ~~~
 
@@ -102,12 +114,17 @@ The following demonstrates how to use quoting to use values containing spaces:
 (1 row)
 ~~~
 
-### Set Variables to a List of Values
+### Set variables to a list of values
 
 The following demonstrates how to assign a list of values:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET search_path = pg_catalog,public;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW search_path;
 ~~~
 
@@ -120,14 +137,16 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-### Reset a Variable to Its Default Value
+### Reset a variable to its default value
 
 {{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET default_transaction_isolation = SNAPSHOT;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW default_transaction_isolation;
 ~~~
@@ -141,10 +160,12 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET default_transaction_isolation = DEFAULT;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW default_transaction_isolation;
 ~~~
@@ -175,13 +196,19 @@ time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
 negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 `LOCAL`, or `0` sets the session time zone to `UTC`.
 
-### Example: Set the Default Time Zone via `SET TIME ZONE`
+### Example: Set the default time zone via `SET TIME ZONE`
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW TIME ZONE;
 ~~~
-~~~ shell
+
+~~~
 +-----------+
 | time zone |
 +-----------+
@@ -189,11 +216,18 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 +-----------+
 (1 row)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW TIME ZONE;
 ~~~
-~~~ shell
+
+~~~
 +-----------+
 | time zone |
 +-----------+

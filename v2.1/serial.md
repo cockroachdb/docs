@@ -34,16 +34,18 @@ Any `INT` value is a valid `SERIAL` value; in particular constant `SERIAL` value
 
 ## Examples
 
-### Use `SERIAL` to Auto-Generate Primary Keys
+### Use `SERIAL` to auto-generate primary keys
 
 In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING, c BOOL);
 ~~~
 
 The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM serial;
 ~~~
@@ -60,9 +62,18 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM serial;
 ~~~
 
@@ -77,32 +88,48 @@ When we insert rows without values in column `a` and display the new rows, we se
 +--------------------+--------+-------+
 ~~~
 
-### Auto-Incrementing Is Not Always Sequential
+### Auto-incrementing is not always sequential
 
 It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence.
 
 To experience this for yourself, run through the following example in PostgreSQL:
 
-1. Create a table with a `SERIAL` column.
+1. Create a table with a `SERIAL` column:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE increment (a SERIAL PRIMARY KEY);
     ~~~
 
-2. Run four transactions for inserting rows.
+2. Run four transactions for inserting rows:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
-    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
-    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
     > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
     ~~~
 
-3. View the rows created.
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
+    ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
+    ~~~
+
+3. View the rows created:
+
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT * from increment;
     ~~~
+
     ~~~
     +---+
     | a |

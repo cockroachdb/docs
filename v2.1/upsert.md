@@ -22,9 +22,9 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/upsert.html %}
-
-<div markdown="1"></div>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/upsert.html %}
+</div>
 
 ## Parameters
 
@@ -38,13 +38,17 @@ Parameter | Description
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
 `RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html).<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
-## How `UPSERT` Transforms into `INSERT ON CONFLICT`
+## How `UPSERT` transforms into `INSERT ON CONFLICT`
 
 `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO t (a, b, c)
     VALUES (1, 2, 3)
     ON CONFLICT (a, b)
@@ -55,13 +59,15 @@ Parameter | Description
 
 ## Examples
 
-### Upsert a Row (No Conflict)
+### Upsert a row (no conflict)
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -70,11 +76,17 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 |  2 | 20000.75 |
 +----+----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -85,13 +97,15 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert Multiple Rows
+### Upsert multiple rows
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -101,11 +115,17 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 |  3 |   6325.2 |
 +----+----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4), (5, 2532.9), (6, 4473.0);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -119,13 +139,15 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 +----+----------+
 ~~~
 
-### Upsert that Updates a Row (Conflict on Primary Key)
+### Upsert that updates a row (conflict on primary key)
 
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -138,11 +160,17 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 |  6 |   4473.0 |
 +----+----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+
 | id | balance  |
@@ -156,13 +184,15 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-### Upsert that Fails (Conflict on Non-Primary Key)
+### Upsert that fails (conflict on non-primary key)
 
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
+
 ~~~
 +---+---+
 | a | b |
@@ -172,20 +202,28 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 | 3 | 3 |
 +---+---+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO unique_test VALUES (4, 1);
 ~~~
+
 ~~~
 pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 ~~~
 
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the Unique constraint.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM unique_test;
 ~~~
+
 ~~~
 +---+---+
 | a | b |
