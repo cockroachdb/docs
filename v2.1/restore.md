@@ -14,7 +14,7 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 ## Functional details
 
-### Restore Targets
+### Restore targets
 
 You can restore entire tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the [target database](#target-database).
 
@@ -38,7 +38,7 @@ Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
-### Target Database
+### Target database
 
 By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
 
@@ -55,7 +55,7 @@ However, every backup includes `system.users`, so you can [restore users and the
 
 Table-level privileges must be [granted to users](grant.html) after the restore is complete.
 
-### Restore Types
+### Restore types
 
 You can either restore from a full backup or from a full backup with incremental backups, based on the backup files you include.
 
@@ -64,7 +64,7 @@ Restore Type | Parameters
 **Full backup** | Include only the path to the full backup.
 **Full backup + <br/>incremental backups** | Include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments.
 
-### Point-in-time Restore 
+### Point-in-time restore
 
 {% include beta-warning.md %}
 
@@ -78,7 +78,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 {{site.data.alerts.callout_info}}When a <code>RESTORE</code> fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.{{site.data.alerts.end}}
 
-## Viewing and Controlling Restore Jobs
+## Viewing and controlling restore jobs
 
 Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -86,7 +86,9 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/restore.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>RESTORE</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
@@ -105,13 +107,13 @@ Only the `root` user can run `RESTORE`.
 | `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history). |
 | `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list). |
 
-### Backup File URLs
+### Backup file URLs
 
 The URL for your backup's locations must use the following format:
 
 {% include external-urls-v2.0.md %}
 
-### Restore Option List
+### Restore option list
 
 You can include the following options as key-value pairs in the `kv_option_list` to control the restore process's behavior.
 
@@ -140,81 +142,96 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 ## Examples
 
-### Restore a Single Table
+### Restore a single table
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
-### Restore Multiple Tables
+### Restore multiple tables
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
-### Restore an Entire Database
+### Restore an entire database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE bank FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 {{site.data.alerts.callout_info}}<code>RESTORE DATABASE</code> can only be used if the entire database was backed up.{{site.data.alerts.end}}
 
-### Point-in-time Restore
+### Point-in-time restore
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '2017-02-26 10:00:00';
 ~~~
 
-### Restore from Incremental Backups
+### Restore from incremental backups
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
-### Point-in-time Restore from Incremental Backups
+### Point-in-time restore from incremental backups
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-02-28 10:00:00';
 ~~~
 
-### Restore into a Different Database
+### Restore into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](#into_db) option, you can control the target database.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 WITH into_db = 'newdb';
 ~~~
 
-### Remove the Foreign Key Before Restore
+### Remove the foreign key before restore
 
 By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.accounts \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 WITH skip_missing_foreign_keys;
 ~~~
 
-### Restoring Users from `system.users` Backup
+### Restoring users from `system.users` backup
 
 Every full backup contains the `system.users` table, which you can use to restore your cluster's usernames and their hashed passwords. However, to restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE system.users \
 FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
 WITH into_db = 'newdb';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO system.users SELECT * FROM newdb.users;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > DROP TABLE newdb.users;
 ~~~
 

@@ -231,7 +231,7 @@ Choose the relevant maintenance task:
 - [Troubleshoot (Access Logs)](#troubleshoot-access-logs)
 - [Backup and Restore](#backup-and-restore)
 
-### Update Configurations
+### Update configurations
 
 In addition to adding nodes, you can change the [CPU and Memory requirements](https://github.com/cockroachdb/dcos-cockroachdb-service#resizing-a-node) for nodes, update [placement constraints](https://github.com/cockroachdb/dcos-cockroachdb-service#resizing-a-node), and make changes to [other service settings](https://github.com/cockroachdb/dcos-cockroachdb-service#service-settings). Just follow the instructions in the previous step, but change the environment variable for the update you want to make.
 
@@ -296,7 +296,7 @@ You can move a node to a new system and discard the persistent volumes at the pr
     $ dcos cockroachdb pods replace cockroachdb-<NUM>
     ~~~
 
-### Troubleshoot (Access Logs)
+### Troubleshoot (access logs)
 
 Logs for the Scheduler and service (i.e., CockroachDB) can be viewed from the DC/OS web interface.
 
@@ -312,7 +312,7 @@ To view logs for a given node:
 3. In the list of tasks for the service, select the task to be examined. The Scheduler is named after the service, and nodes are `cockroachdb-0-node-init` or `cockroachdb-#-node-join`.
 4. In the task details, go to the **Logs** tab.
 
-### Backup and Restore
+### Backup and restore
 
 The `cockroachdb` DC/OS service provides an easy way use CockroachDB's open source [`cockroach dump`](sql-dump.html) command to back up data on a per-database basis to an S3 bucket and to restore data from such a backup. Note that using datastores other than S3 is not yet supported.
 

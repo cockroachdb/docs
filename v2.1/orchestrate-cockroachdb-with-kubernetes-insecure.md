@@ -21,7 +21,7 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
-### Kubernetes Terminology
+### Kubernetes terminology
 
 Feature | Description
 --------|------------

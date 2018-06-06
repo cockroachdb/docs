@@ -35,7 +35,7 @@ When you no longer need a database, use [`DROP DATABASE`](drop-database.html) fo
 > DROP DATABASE bank;
 ~~~
 
-## Show Databases
+## Show databases
 
 To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 
@@ -54,7 +54,7 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 (2 rows)
 ~~~
 
-## Set the Default Database
+## Set the default database
 
 To set the default database, use the [`SET`](set-vars.html#examples) statement:
 
@@ -79,7 +79,7 @@ When working with the default database, you do not need to reference it explicit
 (1 row)
 ~~~
 
-## Create a Table
+## Create a table
 
 To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
 
@@ -127,7 +127,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 > DROP TABLE accounts;
 ~~~
 
-## Show Tables
+## Show tables
 
 To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
 
@@ -167,7 +167,7 @@ To view tables in a database that's not active, use `SHOW TABLES FROM` followed 
 (6 rows)
 ~~~
 
-## Insert Rows into a Table
+## Insert rows into a table
 
 To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
@@ -222,7 +222,8 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 (2 rows)
 ~~~
 
-## Create an Index
+## Create an index
+
 [Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](primary-key.html) of a table and any columns with a [Unique constraint](unique.html).
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
@@ -243,7 +244,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 );
 ~~~
 
-## Show Indexes on a Table
+## Show indexes on a table
 
 To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
 
@@ -263,7 +264,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 (3 rows)
 ~~~
 
-## Query a Table
+## Query a table
 
 To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
@@ -346,7 +347,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 (6 rows)
 ~~~
 
-## Update Rows in a Table
+## Update rows in a table
 
 To update rows in a table, use [`UPDATE`](update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
@@ -376,7 +377,7 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 
 If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated.
 
-## Delete Rows in a Table
+## Delete rows in a table
 
 To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 

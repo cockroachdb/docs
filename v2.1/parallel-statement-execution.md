@@ -8,7 +8,7 @@ CockroachDB supports parallel execution of [independent](parallel-statement-exec
 
 <div id="toc"></div>
 
-## Why Use Parallel Statement Execution
+## Why use parallel statement execution
 
 SQL engines traditionally execute the SQL statements in a transaction sequentially. The server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed. 
 
@@ -16,7 +16,7 @@ In the case of a traditional single-node SQL database, statements are executed o
 
 With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency. 
 
-## How Parallel Statement Execution Works
+## How parallel statement execution works
 
 Let's understand how sequential and parallel execution works in the following scenario:
 
@@ -26,6 +26,7 @@ Let's understand how sequential and parallel execution works in the following sc
 
 Then the traditional transaction to update the user's information is as follows:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1;
@@ -42,6 +43,7 @@ The SQL statements in our sample scenario can be executed in parallel since they
 
 In our sample scenario, the transaction would be as follows:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1 RETURNING NOTHING;
@@ -74,6 +76,7 @@ If two consecutive statements are not independent, and yet a `RETURNING NOTHING`
 
 Revising our sample scenario, suppose we want to create a new user on the social networking app. We need to create entries for the last name of the user, their favorite movie, and favorite song. We need to insert entries into three tables: `users`, `favorite_movies`, and `favorite_songs`. The transaction would be as follows:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > INSERT INTO users VALUES last_name = 'Pavlo' WHERE id = 2 RETURNING NOTHING;
@@ -86,17 +89,19 @@ In this case, the second and third `INSERT` statements are dependent on the firs
 
 <img src="{{ 'images/v2.1/Parallel_Statement_Hybrid_Execution.png' | relative_url }}" alt="CockroachDB Parallel Statement Hybrid Execution" style="border:1px solid #eee;max-width:100%" />
 
-## When to Use Parallel Statement Execution
+## When to use parallel statement execution
 
 SQL statements within a single transaction can be executed in parallel if the statements are independent. CockroachDB considers SQL statements within a single transaction to be independent if their execution can be safely reordered without affecting their results. 
 
 For example, the following statements are considered independent since reordering the statements does not affect the results:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a VALUES (100);
 > INSERT INTO b VALUES (100);
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a VALUES (100);
 > INSERT INTO a VALUES (200);
@@ -104,11 +109,13 @@ For example, the following statements are considered independent since reorderin
 
 The following pairs of statements are dependent since reordering them will affect their results:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE a SET b = 2 WHERE y = 1;
 > UPDATE a SET b = 3 WHERE y = 1;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE a SET y = true  WHERE y = false;
 > UPDATE a SET y = false WHERE y = true;

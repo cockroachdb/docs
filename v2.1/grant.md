@@ -18,7 +18,7 @@ For privileges required by specific statements, see the documentation for the re
 
 The user granting privileges must have the `GRANT` privilege on the target databases or tables.
 
-## Supported Privileges
+## Supported privileges
 
 Roles and users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below).
 
@@ -48,7 +48,7 @@ Parameter | Description
 
 ## Examples
 
-### Grant Privileges on Databases
+### Grant privileges on databases
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -60,7 +60,7 @@ Parameter | Description
 > SHOW GRANTS ON DATABASE db1, db2;
 ~~~
 
-~~~ shell
+~~~
 +----------+------------+------------+
 | Database |    User    | Privileges |
 +----------+------------+------------+
@@ -74,7 +74,7 @@ Parameter | Description
 (6 rows)
 ~~~
 
-### Grant Privileges on Specific Tables in a Database
+### Grant privileges on specific tables in a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -86,7 +86,7 @@ Parameter | Description
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
 
-~~~ shell
+~~~
 +-------+------------+------------+
 | Table |    User    | Privileges |
 +-------+------------+------------+
@@ -98,7 +98,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Grant Privileges on All Tables in a Database
+### Grant privileges on all tables in a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -110,7 +110,7 @@ Parameter | Description
 > SHOW GRANTS ON TABLE db2.*;
 ~~~
 
-~~~ shell
+~~~
 +-------+------------+------------+
 | Table |    User    | Privileges |
 +-------+------------+------------+

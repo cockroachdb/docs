@@ -13,7 +13,7 @@ For information about temporarily stopping a node (e.g., for planned maintenance
 
 ## Overview
 
-### How It Works
+### How it works
 
 When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all **range replicas** and **range leases** off the node so that it can be safely shut down.
 
@@ -68,7 +68,7 @@ To successfully decommission a node, you need to first add a 6th node:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.1/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-## Remove a Single Node (Live)
+## Remove a single node (live)
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -161,7 +161,7 @@ At this point, the node will no longer appear in timeseries graphs unless you ar
 
 Also, if the node is restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
 
-## Remove a Single Node (Dead)
+## Remove a single node (dead)
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -214,7 +214,7 @@ If you go back to the **Nodes List** page, in about 5 minutes, you'll see the no
 
 Also, if the node is ever restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
 
-## Remove Multiple Nodes
+## Remove multiple nodes
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -327,7 +327,7 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
 ~~~
 </div>
 
-## Recommission Nodes
+## Recommission nodes
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -390,7 +390,7 @@ $ cockroach start --insecure --host=<address of node to restart> --join=<address
 
 On the **Nodes List** page, you should very soon see the recommissioned nodes listed under **Live Nodes** and, after a few minutes, you should see replicas rebalanced to it.
 
-## Check the Status of Decommissioning Nodes
+## Check the status of decommissioning nodes
 
 To check the progress of decommissioning nodes, you can run the `cockroach node status` command with the `--decommission` flag:
 

@@ -8,7 +8,7 @@ This page provides important recommendations for production deployments of Cockr
 
 <div id="toc"></div>
 
-## Cluster Topology
+## Cluster topology
 
 ### Terminology
 
@@ -22,7 +22,7 @@ Term | Definition
 **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 **Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 
-### Basic Topology Recommendations
+### Basic topology recommendations
 
 - Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](start-a-node.html).
 
@@ -41,7 +41,7 @@ Term | Definition
 
 ## Hardware
 
-### Basic Hardware Recommendations
+### Basic hardware recommendations
 
 - Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
@@ -56,7 +56,7 @@ Term | Definition
     - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
     - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
 
-### Cloud-Specific Recommendations
+### Cloud-specific recommendations
 
 Cockroach Labs recommends the following cloud-specific configurations based on our own internal testing. Before using configurations not recommended here, be sure to test them exhaustively.
 
@@ -100,7 +100,7 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
     Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
 
-## Load Balancing
+## Load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
@@ -119,15 +119,15 @@ Environment | Featured Approach
 [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
 [GCE](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCE's managed TCP proxy load balancing service.
 
-## Monitoring and Alerting
+## Monitoring and alerting
 
 {% include prod_deployment/monitor-cluster.md %}
 
-## Clock Synchronization
+## Clock synchronization
 
 {% include faq/clock-synchronization-effects.html %}
 
-## Cache and SQL Memory Size
+## Cache and SQL memory size
 
 By default, each node's cache size and temporary SQL memory size is `128MiB` respectively. These defaults were chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single computer. When running a production cluster with one node per host, however, it's recommended to increase these values:
 
@@ -141,7 +141,7 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
 
-## File Descriptors Limit
+## File descriptors limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
 
@@ -151,7 +151,7 @@ For each CockroachDB node:
 - It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth.
 - When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 10000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores.
 
-### Increase the File Descriptors Limit
+### Increase the file descriptors limit
 
 <script>
 $(document).ready(function(){

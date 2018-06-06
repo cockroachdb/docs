@@ -19,7 +19,7 @@ Keywords make up SQL's vocabulary and can have specific meaning in statements. E
 
 Reserved keywords have fixed meanings and are not typically allowed as identifiers. All other types of keywords are considered non-reserved; they have special meanings in certain contexts and can be used as identifiers in other contexts.
 
-### Keyword Uses
+### Keyword uses
 
 Most users asking about keywords want to know more about them in terms of:
 

@@ -8,11 +8,11 @@ This page describes newly identified limitations in the CockroachDB v2.1 release
 
 <div id="toc"></div>
 
-## New Limitations
+## New limitations
 
 None identified yet.
 
-## Unresolved Limitations
+## Unresolved limitations
 
 ### Silent validation error with `DECIMAL` values
 
@@ -42,6 +42,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
@@ -50,12 +51,14 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 
 [`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
 ~~~
 
 A simple `INSERT` statement that fails the Check constraint fails as it should:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ab (a,b) VALUES (1, 12312);
 ~~~
@@ -66,14 +69,17 @@ pq: failed to satisfy CHECK constraint (b < 1)
 
 However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ab;
 ~~~
@@ -103,7 +109,7 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 {% include known_limitations/cte-in-values-clause.md %}
 
-### Using CTEs with Set Operations
+### Using CTEs with set operations
 
 {% include known_limitations/cte-in-set-expression.md %}
 
@@ -119,14 +125,17 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
 ~~~

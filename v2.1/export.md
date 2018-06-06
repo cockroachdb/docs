@@ -12,13 +12,13 @@ Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.c
 
 <div id="toc"></div>
 
-## Export File Location
+## Export file location
 
 You can use remote cloud storage (Amazon S3, Google Cloud Platform, etc.) to store the exported CSV data. Alternatively, you can use an [HTTP server](create-a-file-server.html) accessible from all nodes.
 
 For simplicity's sake, it's **strongly recommended** to use cloud/remote storage for the data you want to export. Local files are supported; however, they must be accessible identically from all nodes in the cluster.
 
-## Cancelling Export
+## Cancelling export
 
 After the export has been initiated, you can cancel it with [`CANCEL QUERY`](cancel-query.html).
 
@@ -41,7 +41,7 @@ Only the `root` user can run [`EXPORT`](export.html).
 | `select_stmt` | Specify the query whose result you want to export to CSV format. |
 | `table_name` | Specify the name of the table you want to export to CSV format. |
 
-### Export File URL
+### Export file URL
 
 URLs for the file directory location you want to export to must use the following format:
 
@@ -49,7 +49,7 @@ URLs for the file directory location you want to export to must use the followin
 
 You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
-### Export Options
+### Export options
 
 You can control the [`EXPORT`](export.html) process's behavior using any of the following key-value pairs as a `kv_option`.
 
@@ -105,7 +105,7 @@ Convert SQL *NULL* values so they match the specified string.
 
 ## Examples
 
-### Export a Table
+### Export a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -114,7 +114,7 @@ Convert SQL *NULL* values so they match the specified string.
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
-### Export Using a `SELECT` Statement
+### Export using a `SELECT` statement
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -123,14 +123,14 @@ Convert SQL *NULL* values so they match the specified string.
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-### Non-Distributed Export Using the SQL Shell
+### Non-distributed export using the SQL shell
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
-## Known Limitation
+## Known limitation
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 

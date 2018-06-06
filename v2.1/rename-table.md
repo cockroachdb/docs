@@ -34,9 +34,11 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ### Rename a table
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
+
 ~~~
 +--------+
 | Table  |
@@ -45,12 +47,17 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 | table2 |
 +--------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE db1.table1 RENAME TO db1.tablea
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
+
 ~~~
 +--------+
 | Table  |
@@ -62,6 +69,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS db1.table1 RENAME TO db1.table2;
 ~~~
@@ -70,9 +78,11 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +----------+
 | Database |
@@ -82,9 +92,12 @@ To move a table from one database to another, use the above syntax but specify t
 | system   |
 +----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
+
 ~~~
 +--------+
 | Table  |
@@ -93,21 +106,29 @@ To move a table from one database to another, use the above syntax but specify t
 | tablea |
 +--------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
+
 ~~~
 +-------+
 | Table |
 +-------+
 +-------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE db1.tablea RENAME TO db2.tablea
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
+
 ~~~
 +--------+
 | Table  |
@@ -115,9 +136,12 @@ To move a table from one database to another, use the above syntax but specify t
 | table2 |
 +--------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
+
 ~~~
 +--------+
 | Table  |

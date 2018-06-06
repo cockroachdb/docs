@@ -10,7 +10,7 @@ This page shows you how to identify and, if necessary, cancel SQL queries that a
 
 <div id="toc"></div>
 
-## Identify Long-Running Queries
+## Identify long-running queries
 
 Use the [`SHOW QUERIES`](show-queries.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
@@ -44,7 +44,7 @@ You can also filter for queries that have been running for a certain amount of t
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 
-## Cancel Long-Running Queries
+## Cancel long-running queries
 
 Once you've identified a long-running query via [`SHOW QUERIES`](show-queries.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
@@ -58,7 +58,7 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 - If the canceled query was a single, stand-alone statement, no further action is required by the client.
 - If the canceled query was part of a larger, multi-statement [transaction](transactions.html), the client should then issue a [`ROLLBACK`](rollback-transaction.html) statement.
 
-## Improve Query Performance
+## Improve query performance
 
 After cancelling a long-running query, use the [`EXPLAIN`](explain.html) statement to examine it. It's possible that the query was slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index](create-index.html).
 

@@ -31,9 +31,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Rename an Index
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
+
 ~~~
 +-------+----------------+--------+-----+--------+-----------+---------+----------+
 | Table |      Name      | Unique | Seq | Column | Direction | Storing | Implicit |
@@ -44,15 +46,21 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 +-------+----------------+--------+-----+--------+-----------+---------+----------+
 (3 rows)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX users@users_name_idx RENAME TO name_idx;
 ~~~
+
 ~~~
 RENAME INDEX
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
+
 ~~~
 +-------+----------+--------+-----+--------+-----------+---------+----------+
 | Table |   Name   | Unique | Seq | Column | Direction | Storing | Implicit |

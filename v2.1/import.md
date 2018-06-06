@@ -21,7 +21,7 @@ Before using [`IMPORT`](import.html), you should have:
 
 ## Details
 
-### Import Targets
+### Import targets
 
 Imported tables must not exist and must be created in the [`IMPORT`](import.html) statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
 
@@ -29,7 +29,7 @@ You can only import a single table at a time.
 
 You can specify the target database in the table name in the [`IMPORT`](import.html) statement. If it's not specified there, the active database in the SQL session is used.
 
-### Create Table
+### Create table
 
 Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (representing the schema of the data you want to import) using one of the following methods:
 
@@ -38,7 +38,7 @@ Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (
 
 We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
 
-### CSV Data
+### CSV data
 
 The tabular data to import must be valid [CSV files](https://tools.ietf.org/html/rfc4180), with the caveat that the comma [delimiter](#delimiter) can be set to another single character. In particular:
 
@@ -58,19 +58,19 @@ When importing tables, you must be mindful of the following rules because [`IMPO
 - Objects that the imported table depends on must already exist
 - Objects that depend on the imported table can only be created after the import completes
 
-### Available Storage Requirements
+### Available storage requirements
 
 Each node in the cluster is assigned an equal part of the converted CSV data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage to hold its portion of the data.
 
 On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
 
-### Import File Location
+### Import file location
 
 You can store the tabular data you want to import using remote cloud storage (Amazon S3, Google Cloud Platform, etc.). Alternatively, you can use an [HTTP server](create-a-file-server.html) accessible from all nodes.
 
 For simplicity's sake, it's **strongly recommended** to use cloud/remote storage for the data you want to import. Local files are supported; however, they must be accessible identically from all nodes in the cluster.
 
-### Table Users and Privileges
+### Table users and privileges
 
 Imported tables are treated as new tables, so you must [`GRANT`](grant.html) privileges to them.
 
@@ -78,7 +78,7 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 
 All nodes are used during tabular data conversion into key-value data, which means all nodes' CPU and RAM will be partially consumed by the [`IMPORT`](import.html) task in addition to serving normal traffic.
 
-## Viewing and Controlling Import Jobs
+## Viewing and controlling import jobs
 
 Whenever you initiate an import, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -88,7 +88,9 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/import.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/import.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
@@ -106,13 +108,13 @@ Only the `root` user can run [`IMPORT`](import.html).
 | `file_to_import` | The URL of the file you want to import.|
 | `WITH kv_option` | Control your import's behavior with [these options](#import-options). |
 
-### Import File URLs
+### Import file URLs
 
 URLs for the files you want to import must use the following format:
 
 {% include external-urls-v2.0.md %}
 
-### Import Options
+### Import options
 
 You can control the [`IMPORT`](import.html) process's behavior using any of the following key-value pairs as a `kv_option`.
 
@@ -193,8 +195,9 @@ Convert values to SQL *NULL* if they match the specified string.
 
 ## Examples
 
-### Use Create Table Statement from a File
+### Use `CREATE TABLE` statement from a file
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -202,8 +205,9 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
-### Use Create Table Statement from a Statement
+### Use `CREATE TABLE` statement from a statement
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -214,8 +218,9 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
-### Import a Tab-Separated File
+### Import a tab-separated file
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -228,8 +233,9 @@ WITH
 ;
 ~~~
 
-### Skip Commented Lines
+### Skip commented lines
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -242,8 +248,9 @@ WITH
 ;
 ~~~
 
-### Use Blank Characters as *NULL*
+### Use blank characters as `NULL`
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -256,10 +263,11 @@ WITH
 ;
 ~~~
 
-## Known Limitation
+## Known limitation
 
 `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~

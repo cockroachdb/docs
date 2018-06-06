@@ -8,7 +8,7 @@ CockroachDB's availability model is described as "Multi-Active Availability." In
 
 <div id="toc"></div>
 
-## What is High Availability?
+## What is high availability?
 
 High availability lets an application continue running even if a system hosting one of its services fails. This is achieved by scaling the application's services horizontally, i.e., replicating the service across many machines or systems. If any one of them fails, the others can simply step in and perform the same service.
 
@@ -29,7 +29,7 @@ In active-active systems, multiple replicas run identical services, and traffic 
 
 For databases, though, active-active replication is incredibly difficult to instrument for most workloads. For example, if you let multiple replicas handle writes for the same keys, how do you keep them consistent?
 
-#### Example: Conflicts with Active-Active Replication
+#### Example: conflicts with active-active replication
 
 For this example, we have 2 replicas (**A**, **B**) in an active-active high availability cluster.
 
@@ -40,7 +40,7 @@ For this example, we have 2 replicas (**A**, **B**) in an active-active high ava
 
 {{site.data.alerts.callout_info}}In this example, the cluster remained active the entire time. But in terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is an AP system; it favored being available instead of consistent when partitions occur.{{site.data.alerts.end}}
 
-## What is Multi-Active Availability?
+## What is multi-active availability?
 
 Multi-active availability is CockroachDB's version of high availability (keeping your application online in the face of partial failures), which we've designed to avoid the downsides of both active-passive and traditional active-active systems.
 
@@ -48,7 +48,7 @@ Like active-active designs, all replicas can handle traffic, including both read
 
 To prevent conflicts and guarantee your data's consistency, clusters that lose a majority of replicas stop responding because they've lost the ability to reach a consensus on the state of your data. When a majority of replicas are restarted, your database resumes operation.
 
-### Consistency Example
+### Consistency example
 
 For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a multi-active availability cluster.
 

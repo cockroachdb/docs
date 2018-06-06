@@ -19,25 +19,62 @@ The `cockroach gen` command can generate command-line interface (CLI) utilities 
 
 ## Synopsis
 
+Generate man pages:
+
+{% include copy-clipboard.html %}
 ~~~ shell
-# Generate man pages:
 $ cockroach gen man
+~~~
 
-# Generate bash autocompletion script:
+Generate bash autocompletion script:
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen autocomplete
+~~~
 
-# Generate example SQL data:
+Generate example SQL data:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen example-data intro | cockroach sql
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen example-data startrek | cockroach sql
+~~~
 
-# Generate an HAProxy config file for a running cluster:
+Generate an HAProxy config file for a running cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen haproxy
+~~~
 
-# View help:
+View help:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen --help
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen man --help
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen autocomplete --help
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen example-data --help
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach gen haproxy --help
 ~~~
 
@@ -81,37 +118,42 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-### Generate `man` Pages
+### Generate `man` pages
+
+Generate man pages:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate man pages:
 $ cockroach gen man
 ~~~
 
+Move the man pages to the man directory:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-# Move the man pages to the man directory:
 $ sudo mv man/man1/* /usr/share/man/man1
 ~~~
 
+Access man pages:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-# Access man pages:
 $ man cockroach
 ~~~
 
-### Generate a `bash` Autocompletion Script
+### Generate a `bash` autocompletion script
+
+Generate bash autocompletion script:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate bash autocompletion script:
 $ cockroach gen autocomplete
 ~~~
 
+Add the script to your `.bashrc` and `.bash_profle`:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-# Add the script to your .bashrc and .bash_profle:
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bashrc
 ~~~
 
@@ -122,13 +164,12 @@ $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >>
 
 You can now use `tab` to autocomplete `cockroach` commands.
 
-### Generate Example Data
+### Generate example data
 
 To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate example `startrek` database:
 $ cockroach gen example-data startrek | cockroach sql --insecure
 ~~~
 
@@ -143,9 +184,10 @@ CREATE TABLE
 INSERT 200
 ~~~
 
+Launch the built-in SQL client to view it:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-# Launch the built-in SQL client to view it:
 $ cockroach sql --insecure
 ~~~
 
@@ -167,7 +209,6 @@ You can also generate an example `intro` database, which contains 1 table, `myta
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate example `intro` database:
 $ cockroach gen example-data intro | cockroach sql --insecure
 ~~~
 
@@ -237,7 +278,7 @@ $ cockroach sql --insecure
 (21 rows)
 ~~~
 
-### Generate an HAProxy Configuration File
+### Generate an HAProxy configuration file
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster.
 

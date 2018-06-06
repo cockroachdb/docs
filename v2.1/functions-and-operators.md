@@ -10,7 +10,7 @@ CockroachDB supports the following SQL functions and operators for use in [scala
 
 <div id="toc"></div>
 
-## Special Syntax Forms
+## Special syntax forms
 
 The following syntax forms are recognized for compatibility with the
 SQL standard and PostgreSQL, but are equivalent to regular built-in
@@ -18,7 +18,7 @@ functions:
 
 {% include sql/{{ page.version.version }}/function-special-forms.md %}
 
-## Conditional and Function-Like Operators
+## Conditional and function-like operators
 
 The following table lists the operators that look like built-in
 functions but have special evaluation rules:
@@ -36,11 +36,11 @@ functions but have special evaluation rules:
 | `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) |
 | `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) |
 
-## Built-in Functions
+## Built-in functions
 
 {% include sql/{{ page.version.version }}/functions.md %}
 
-## Aggregate Functions
+## Aggregate functions
 
 {% include sql/{{ page.version.version }}/aggregates.md %}
 
@@ -102,7 +102,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 [Multi-valued]: scalar-expressions.html#multi-valued-comparisons
 
-### Supported Operations
+### Supported operations
 
 {% include sql/{{ page.version.version }}/operators.md %}
 

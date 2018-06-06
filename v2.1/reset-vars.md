@@ -26,10 +26,12 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 {{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET default_transaction_isolation = SNAPSHOT;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW default_transaction_isolation;
 ~~~
@@ -43,10 +45,12 @@ No [privileges](privileges.html) are required to reset a session setting.
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESET default_transaction_isolation;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW default_transaction_isolation;
 ~~~

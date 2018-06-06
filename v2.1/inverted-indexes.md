@@ -10,7 +10,7 @@ Inverted indexes improve your database's performance by helping SQL locate the s
 
 <div id="toc"></div>
 
-## How Do Inverted Indexes Work?
+## How do inverted indexes work?
 
 Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, schemaless data like [`JSONB`](jsonb.html) cannot be queried without a full table scan, since it does not adhere to ordinary value prefix comparison operators. `JSONB` needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
 

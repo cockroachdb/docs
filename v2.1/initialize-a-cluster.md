@@ -12,11 +12,17 @@ This page explains the `cockroach init` [command](cockroach-commands.html), whic
 
 ## Synopsis
 
-~~~ shell
-# Perform a one-time initialization of a cluster:
-$ cockroach init <flags>
+Perform a one-time initialization of a cluster:
 
-# View help:
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach init <flags>
+~~~
+
+View help:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach init --help
 ~~~
 
@@ -75,7 +81,7 @@ These examples assume that nodes have already been started with [`cockroach star
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
-### Initialize a Cluster from Another Machine
+### Initialize a cluster from another machine
 
 <section class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
