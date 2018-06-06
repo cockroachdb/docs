@@ -6,7 +6,9 @@ toc: false
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
 
-{{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions</a> that are aborted to break a dependency cycle between concurrent transactions.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+When using transactions, your application should include logic to [retry transactions](transactions.html#transaction-retries) that are aborted to break a dependency cycle between concurrent transactions.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -46,43 +48,79 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 
 Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` isolation and `NORMAL` priority.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
+{{site.data.alerts.end}}
 
 #### Change isolation level and priority
 
 You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
 You can also set a transaction's isolation level and priority with [`SET TRANSACTION`](set-transaction.html).
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
+{{site.data.alerts.end}}
 
 ### Begin a transaction with automatic retries
 
@@ -90,8 +128,24 @@ CockroachDB will [automatically retry](transactions.html#transaction-retries) al
 
 From the perspective of CockroachDB, a transaction sent as a batch looks like this:
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> BEGIN; DELETE FROM customers WHERE id = 1; DELETE orders WHERE customer = 1; COMMIT;
+> BEGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM customers WHERE id = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE orders WHERE customer = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMIT;
 ~~~
 
 However, in your application's code, batched transactions are often just multiple statements sent at once. For example, in Go, this transaction would sent as a single batch (and automatically retried):

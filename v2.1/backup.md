@@ -4,7 +4,9 @@ summary: Back up your CockroachDB cluster to a cloud storage services such as AW
 toc: false
 ---
 
-{{site.data.alerts.callout_danger}}The <code>BACKUP</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise backups, see <a href="sql-dump.html"><code>cockroach dump</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+The `BACKUP` feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users. For non-enterprise backups, see [`cockroach dump`](sql-dump.html).
+{{site.data.alerts.end}}
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create full or incremental backups of your cluster's schema and data that are consistent as of a given timestamp. Backups can be with or without [revision history](backup.html#backups-with-revision-history).
 
@@ -18,7 +20,9 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 
 You can backup entire tables (which automatically includes their indexes) or [views](views.html). Backing up a database simply backs up all of its tables and views.
 
-{{site.data.alerts.callout_info}}<code>BACKUP</code> only offers table-level granularity; it <em>does not</em> support backing up subsets of a table.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+`BACKUP` only offers table-level granularity; it _does not_ support backing up subsets of a table.
+{{site.data.alerts.end}}
 
 ### Object dependencies
 
@@ -26,7 +30,7 @@ Dependent objects must be backed up at the same time as the objects they depend 
 
 Object | Depends On
 -------|-----------
-Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
+Table with [`FOREIGN KEY`](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
@@ -100,7 +104,9 @@ After the backup has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {% include sql/{{ page.version.version }}/diagrams/backup.html %}
 
-{{site.data.alerts.callout_info}}The <code>BACKUP</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `BACKUP` statement cannot be used within a [transaction](transactions.html).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -130,6 +136,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a single table or view
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -138,6 +145,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup multiple tables
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -146,6 +154,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup an entire database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -154,6 +163,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup with revision history
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -164,6 +174,7 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 Incremental backups must be based off of full backups you've already created.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
@@ -173,6 +184,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 
 ### Create incremental backups with revision history
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \

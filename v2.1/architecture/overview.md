@@ -12,9 +12,9 @@ However, you definitely do not need to understand the underlying architecture to
 
 <div id="toc"></div>
 
-## Using this Guide
+## Using this guide
 
-This guide is broken out into pages detailing each layer of CockroachDB. It's recommended to read through the layers sequentially, starting with this overview and then proceeding to the SQL Layer.
+This guide is broken out into pages detailing each layer of CockroachDB. It's recommended to read through the layers sequentially, starting with this overview and then proceeding to the SQL layer.
 
 If you're looking for a high-level understanding of CockroachDB, you can simply read the **Overview** section of each layer. For more technical detail––for example, if you're interested in [contributing to the project](../contribute-to-cockroachdb.html)––you should read the **Components** sections as well.
 
@@ -44,7 +44,7 @@ Term | Definition
 **Node** | An individual machine running CockroachDB. Many nodes join to create your cluster.
 **Range** | A set of sorted, contiguous data from your cluster.
 **Replicas** | Copies of your ranges, which are stored on at least 3 nodes to ensure survivability.
-**Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+**Range Lease** | For each range, one of the replicas holds the "range lease." This replica, referred to as the "leaseholder," is the one that receives and coordinates all read and write requests for the range.
 
 ### Concepts
 
@@ -93,4 +93,4 @@ Layer | Order | Purpose
 
 ## What's next?
 
-Begin understanding our architecture by learning how CockroachDB works with applications in the [SQL Layer](sql-layer.html).
+Begin understanding our architecture by learning how CockroachDB works with applications in the [SQL layer](sql-layer.html).

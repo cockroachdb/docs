@@ -8,13 +8,13 @@ The `AS OF SYSTEM TIME timestamp` clause causes statements to execute
 using the database contents "as of" a specified time in the past.
 
 This clause can be used to read historical data (also known as "[time
-travel
-queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)")
-and can also be advantageous for performance as it decreases
+travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and can also be advantageous for performance as it decreases
 transaction conflicts. For more details, see [SQL Performance Best
 Practices](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
 
-{{site.data.alerts.callout_info}}Historical data is available only within the garbage collection window, which is determined by the <code>ttlseconds</code> field in the <a href="configure-replication-zones.html">replication zone configuration</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration](configure-replication-zones.html).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -110,7 +110,9 @@ Assuming the following statements are run at `2016-01-01 12:00:00`, they would e
 
 ### Selecting from multiple tables
 
-{{site.data.alerts.callout_info}}It is not yet possible to select from multiple tables at different timestamps. The entire query runs at the specified time in the past.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+It is not yet possible to select from multiple tables at different timestamps. The entire query runs at the specified time in the past.
+{{site.data.alerts.end}}
 
 When selecting over multiple tables in a single `FROM` clause, the `AS
 OF SYSTEM TIME` clause must appear at the very end and applies to the
@@ -169,7 +171,9 @@ For example:
 
 ## Tech note
 
-{{site.data.alerts.callout_info}}Although the following format is supported, it is not intended to be used by most users.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Although the following format is supported, it is not intended to be used by most users.
+{{site.data.alerts.end}}
 
 HLC timestamps can be specified using a [`DECIMAL`](decimal.html). The
 integer part is the wall time in nanoseconds. The fractional part is

@@ -51,7 +51,9 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/TxnSample.java" download><code>TxnSample.java</code></a> file, or create the file yourself and copy the code into it.
 
-{{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code. Note that, in Java, you access error codes with the <code>getSQLState()</code> method instead of <code>getErrorCode()</code>. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code. Note that, in Java, you access error codes with the `getSQLState()` method instead of `getErrorCode()`.
+{{site.data.alerts.end}}
 
 In Java, you access error codes with the getSQLState() method instead of getErrorCode()
 

@@ -6,12 +6,13 @@ toc: false
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
-- [Check](check.html)
-- [Foreign Keys](foreign-key.html)
-- [Unique](unique.html)
+- [`CHECK`](check.html)
+- [`FOREIGN KEY`](foreign-key.html)
+- [`UNIQUE`](unique.html)
 
 {{site.data.alerts.callout_info}}
-The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not Null</a> constraints can only be applied through <a href="create-table.html"><code>CREATE TABLE</code></a>. The <a href="default-value.html">Default</a> constraint is managed through <a href="alter-column.html"><code>ALTER COLUMN</code>.</a>{{site.data.alerts.end}}
+The [`PRIMARY KEY`](primary-key.html) and [`NOT NULL`](not-null.html) constraints can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) constraint is managed through [`ALTER COLUMN`](alter-column.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -29,7 +30,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 |-----------|-------------|
 | `table_name` | The name of the table containing the column you want to constrain. |
 | `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
-| `constraint_elem` | The [Check](check.html), [Foreign Keys](foreign-key.html), [Unique](unique.html) constraint you want to add. <br/><br/>Adding/changing a Default constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's Primary Key is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). |
+| `constraint_elem` | The [`CHECK`](check.html), [`FOREIGN KEY`](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). |
 
 ## Viewing schema changes
 
@@ -39,26 +40,29 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add the `UNIQUE` constraint
 
-Adding the [Unique constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
+Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
 
 ### Add the `CHECK` constraint
 
-Adding the [Check constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
+Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
 ~~~
 
 ### Add the `FOREIGN KEY` constraint with `CASCADE`
 
-Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
+Before you can add the [`FOREIGN KEY`](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
 For example, let's say you have two tables, `orders` and `customers`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE customers;
 ~~~
@@ -78,6 +82,7 @@ For example, let's say you have two tables, `orders` and `customers`:
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~
@@ -100,11 +105,12 @@ For example, let's say you have two tables, `orders` and `customers`:
 
 To ensure that each value in the `orders.customer_id` column matches a unique value in the `customers.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON orders (customer_id);
 ~~~
 
-Then you add the Foreign Key constraint.
+Then you add the `FOREIGN KEY` constraint.
 
 You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
@@ -112,6 +118,7 @@ In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is del
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~

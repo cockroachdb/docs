@@ -12,7 +12,9 @@ The built-in Admin UI gives you essential metrics about a cluster's health, such
 
 You can access the Admin UI from any node in the cluster.
 
-{{site.data.alerts.callout_info}}By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to <a href="#secure-the-admin-ui">enable user authentication</a> to restrict access to the Admin UI to authorized users. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to [enable user authentication](#secure-the-admin-ui) to restrict access to the Admin UI to authorized users.
+{{site.data.alerts.end}}
 
 By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
 
@@ -22,7 +24,7 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 ## Navigate the Admin UI
 
-The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [Cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
+The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
 
 The main panel displays changes for each page:
 
@@ -110,7 +112,8 @@ You can hover over each graph to see actual point-in-time values.
 
 <img src="{{ 'images/v2.1/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-{{site.data.alerts.callout_info}}By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this <a href="operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data">FAQ</a>.
+{{site.data.alerts.callout_info}}
+By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data).
 {{site.data.alerts.end}}
 
 #### Change time range
@@ -175,7 +178,9 @@ The following types of events are listed:
 
 By default, CockroachDB allows all users to access and view the Admin UI. However, for secure clusters, you can choose to enable user authentication</a> to restrict access to authorized users.
 
-{{site.data.alerts.callout_danger}}<strong>This feature is a work in progress</strong>. It will change leading up to the v2.1 release.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+**This feature is a work in progress**. It will change leading up to the v2.1 release.
+{{site.data.alerts.end}}
 
 1. Start a secure cluster as described in our [deployment tutorials](manual-deployment.html).
 
@@ -190,3 +195,9 @@ By default, CockroachDB allows all users to access and view the Admin UI. Howeve
 2. For each user who should have access to the Admin UI, [create a user with a password](create-user.html).
 
     On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
+
+## See also
+
+- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Support Resources](support-resources.html)
+- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)

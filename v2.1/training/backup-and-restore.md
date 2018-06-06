@@ -145,7 +145,7 @@ Start and initialize an insecure cluster like you did in previous modules.
       ...
     ~~~
 
-## Step 3. Perform a "Core" restore
+## Step 3. Perform a "core" restore
 
 Now imagine the tables in the `startrek` database have changed and you want to restore them to their state at the time of the dump.
 
@@ -207,7 +207,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
     (1 row)
     ~~~
 
-## Step 4. Perform an "Enterprise" backup
+## Step 4. Perform an "enterprise" backup
 
 Next, you'll use the enterprise `BACKUP` feature to create a backup of the `startrek` database on S3. Before you can use this or any enterprise feature, you must obtain an enterprise license from Cockroach Labs. For this training, we've created a temporary license.
 
@@ -245,7 +245,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
     (1 row)
     ~~~
 
-## Step 5. Perform an "Enterprise" restore
+## Step 5. Perform an "enterprise" restore
 
 Again, imagine the tables in the `startrek` database have changed and you want to restore them from the enterprise backup.
 

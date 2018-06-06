@@ -42,7 +42,9 @@ Used | Disk space used by the data in the CockroachDB store. Note that this valu
 
 If the Open count is almost equal to the Limit count, increase [File Descriptors](recommended-production-settings.html#file-descriptors-limit).
 
-{{site.data.alerts.callout_info}}If you are running multiple nodes on a single machine (not recommended), the actual number of open file descriptors are considered open on each node. Thus the limit count value displayed on the Admin UI is the actual value of open file descriptors multiplied by the number of nodes, compared with the file descriptor limit. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+If you are running multiple nodes on a single machine (not recommended), the actual number of open file descriptors are considered open on each node. Thus the limit count value displayed on the Admin UI is the actual value of open file descriptors multiplied by the number of nodes, compared with the file descriptor limit.
+{{site.data.alerts.end}}
 
 For Windows systems, you can ignore the File Descriptors graph because the concept of file descriptors is not applicable to Windows.
 
@@ -59,3 +61,9 @@ The **Storage** dashboard shows other time series graphs that are important for 
 - Time Series Bytes Written
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
+
+## See also
+
+- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Support Resources](support-resources.html)
+- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)

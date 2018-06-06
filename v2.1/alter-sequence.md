@@ -6,7 +6,9 @@ toc: false
 
 The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.
 
-{{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see [Online Schema Changes in CockroachDB](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -87,10 +89,13 @@ In this example, we're going to change the next value of the example sequence (`
 +--------+
 ~~~
 
-{{site.data.alerts.callout_info}}The <code>setval('seq_name', value, is_called)</code> function in CockroachDB SQL mimics the <code>setval()</code> function in PostgreSQL, but it does not store the <code>is_called</code> flag. Instead, it sets the value to <code>val - increment</code> for <code>false</code> or <code>val</code> for <code>true</code>. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `setval('seq_name', value, is_called)` function in CockroachDB SQL mimics the `setval()` function in PostgreSQL, but it does not store the `is_called` flag. Instead, it sets the value to `val - increment` for `false` or `val` for `true`.
+{{site.data.alerts.end}}
 
 Let's add another record to the table to check that the new record adheres to the new next value.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customer_list (customer, address) VALUES ('Lola', '333 Schermerhorn');
 ~~~
@@ -105,7 +110,6 @@ Let's add another record to the table to check that the new record adheres to th
 | 20 | Lola     | 333 Schermerhorn   |
 +----+----------+--------------------+
 ~~~
-
 
 ## See also
 

@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `table_name` | The name of the table to which you want to add the column. |
 | `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  |
 | `typename` | The [data type](data-types.html) of the new column. |
-| `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>Note that it is not possible to add a column with the [Foreign Key](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the Foreign Key constraint to the column. |
+| `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>Note that it is not possible to add a column with the [`FOREIGN KEY`](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the `FOREIGN KEY` constraint to the column. |
 
 ## Viewing schema changes
 
@@ -33,10 +33,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a single column
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -53,10 +55,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add multiple columns
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING, ADD COLUMN amount DECIMAL;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -76,10 +80,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -98,12 +104,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a column with `NOT NULL` and `UNIQUE` constraints
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
 ~~~
 
 ### Add a column with collation
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
 ~~~
@@ -111,16 +119,22 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ### Add a column and assign it to a column family
 
 #### Add a column and assign it to a new column family
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
 ~~~
 
 #### Add a column and assign it to an existing column family
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
 #### Add a column and create a new column family if column family does not exist
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f1;
 ~~~
