@@ -10,7 +10,7 @@ The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
 
 ## Considerations
 
-- **New in v2.1:** Schema changes can now be cancelled using [`CANCEL JOB`](cancel-job.html). You can also monitor the progress of schema changes using [`SHOW JOBS`](show-jobs.html).   
+- Schema changes are treated differently than other SQL queries. You can use <a href="show-jobs.html"><code>SHOW JOBS</code></a> to monitor the progress of schema changes, and as of v2.1, use <a href="cancel-job.html"><code>CANCEL JOB</code></a> to cancel schema changes that are taking longer than expected. 
 - In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
 
 ## Required privileges
