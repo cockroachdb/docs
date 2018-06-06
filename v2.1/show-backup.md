@@ -14,7 +14,9 @@ Only the `root` user can run `SHOW BACKUP`.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_backup.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/show_backup.html %}
+</div>
 
 ## Parameters
 
@@ -36,6 +38,7 @@ Field | Description
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 'azure://acme-co-backup/tpch-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~

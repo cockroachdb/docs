@@ -12,7 +12,9 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction isol
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}</section>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/set_transaction.html %}
+</div>
 
 ## Required privileges
 
@@ -20,17 +22,17 @@ No [privileges](privileges.html) are required to set the transaction isolation l
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `ISOLATION LEVEL` | By default, transactions in CockroachDB implement the strongest ANSI isolation level: `SERIALIZABLE`. At this isolation level, transactions will never result in anomalies. The `SNAPSHOT` isolation level is still supported as well for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br><br>The current isolation level is also exposed as the [session variable](show-vars.html) `transaction_isolation`.<br><br>**Default**: `SERIALIZABLE` |
-| `PRIORITY` | If you don't want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br><br>Transactions with higher priority are less likely to need to be retried.<br><br>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br><br>The current priority is also exposed as the [session variable](show-vars.html) `transaction_priority`.<br><br>**Default**: `NORMAL` |
-| `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`|
+Parameter | Description
+----------|------------
+`ISOLATION LEVEL` | By default, transactions in CockroachDB implement the strongest ANSI isolation level: `SERIALIZABLE`. At this isolation level, transactions will never result in anomalies. The `SNAPSHOT` isolation level is still supported as well for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br><br>The current isolation level is also exposed as the [session variable](show-vars.html) `transaction_isolation`.<br><br>**Default**: `SERIALIZABLE`
+`PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br><br>Transactions with higher priority are less likely to need to be retried.<br><br>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br><br>The current priority is also exposed as the [session variable](show-vars.html) `transaction_priority`.<br><br>**Default**: `NORMAL`
+`READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
 
 ## Examples
 
-### Set Isolation & Priority
+### Set isolation and priority
 
-You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
+{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -69,15 +71,14 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 > COMMIT;
 ~~~
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-### Set Session's Default Isolation
+### Set a session's default isolation
 
-You can also set the default isolation level for all transactions in the client's current session using `SET DEFAULT_TRANSACTION_ISOLATION TO <isolation level>`.
-
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
+
 ~~~
 +-------------------------------+
 | default_transaction_isolation |
@@ -86,15 +87,21 @@ You can also set the default isolation level for all transactions in the client'
 +-------------------------------+
 (1 row)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET DEFAULT_TRANSACTION_ISOLATION TO SNAPSHOT;
 ~~~
+
 ~~~
 SET
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
+
 ~~~
 +-------------------------------+
 | default_transaction_isolation |

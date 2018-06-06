@@ -12,7 +12,9 @@ asciicast: true
 
 Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start a secure multi-node cluster locally, using [TLS certificates](create-security-certificates.html) to encrypt network communication.
 
-{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -26,47 +28,60 @@ Also, feel free to watch this process in action before going through the steps y
 <asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
 -->
 
-## Step 1.  Create security certificates
+## Step 1. Create security certificates
 
-You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
+You can use either [`cockroach cert`](create-security-certificates.html) commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
 
-~~~ shell
-# Create a certs directory and safe directory for the CA key.
-# If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
-$ mkdir certs
-$ mkdir my-safe-directory
+1. Create a directory for certificates and a safe directory for the CA key:
 
-# Create the CA key pair:
-$ cockroach cert create-ca \
---certs-dir=certs \
---ca-key=my-safe-directory/ca.key
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs my-safe-directory
+    ~~~
 
-# Create a client key pair for the root user:
-$ cockroach cert create-client \
-root \
---certs-dir=certs \
---ca-key=my-safe-directory/ca.key
+    If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
 
-# Create a key pair for the nodes:
-$ cockroach cert create-node \
-localhost \
-$(hostname) \
---certs-dir=certs \
---ca-key=my-safe-directory/ca.key
-~~~
+2. Create the CA (Certificate Authority) certificate and key pair:
 
-- The first command makes a new directory for the certificates.
-- The second command creates the Certificate Authority (CA) certificate and key: `ca.crt` and `ca.key`.
-- The third command creates the client certificate and key, in this case for the `root` user: `client.root.crt` and `client.root.key`. These files will be used to secure communication between the built-in SQL shell and the cluster (see step 4).
-- The fourth command creates the node certificate and key: `node.crt` and `node.key`. These files will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
-## Step 2.  Start the first node
+3. Create the client certificate and key, in this case for the `root` user:
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+    These files, `client.root.crt` and `client.root.key`, will be used to secure communication between the built-in SQL shell and the cluster (see step 4).
+
+4. Create the node certificate and key:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-node \
+    localhost \
+    $(hostname) \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+    These files, `node.crt` and `node.key`, will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+
+## Step 2. Start the first node
+
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
 --host=localhost \
---http-host=localhost
 ~~~
 
 ~~~
@@ -95,6 +110,7 @@ At this point, your cluster is live and operational. With just one node, you can
 
 In a new terminal, add the second node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -102,12 +118,12 @@ $ cockroach start \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---http-host=localhost \
 --join=localhost:26257
 ~~~
 
 In a new terminal, add the third node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -115,7 +131,6 @@ $ cockroach start \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---http-host=localhost \
 --join=localhost:26257
 ~~~
 
@@ -127,23 +142,31 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 
 {{site.data.alerts.callout_info}}The SQL client is built into the <code>cockroach</code> binary, so nothing extra is needed.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
@@ -158,25 +181,25 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 Exit the SQL shell on node 1:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 Then connect the SQL shell to node 2, this time specifying the node's non-default port:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
 --port=26258
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 {{site.data.alerts.callout_info}}In a real deployment, all nodes would likely use the default port <code>26257</code>, and so you wouldn't need to set the <code>--port</code> flag.{{site.data.alerts.end}}
 
 Now run the same `SELECT` query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -194,6 +217,7 @@ As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
 Exit the SQL shell on node 2:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -222,15 +246,14 @@ Once you're done with your test cluster, switch to the terminal running the firs
 
 At this point, with 2 nodes still online, the cluster remains operational because a majority of replicas are available. To verify that the cluster has tolerated this "failure", connect the built-in SQL shell to nodes 2 or 3. You can do this in the same terminal or in a new terminal.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
 --port=26258
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -246,6 +269,7 @@ $ cockroach sql \
 
 Exit the SQL shell:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -256,6 +280,7 @@ Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data node2 node3
 ~~~
@@ -264,20 +289,21 @@ $ rm -rf cockroach-data node2 node3
 
 If you decide to use the cluster for further testing, you'll need to restart at least 2 of your 3 nodes from the directories containing the nodes' data stores.
 
-Restart the first node from the parent directory of `cockroach-data/`:
+Restart the first node from the parent directory of `cockroach-data`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=localhost \
---http-host=localhost
+--host=localhost
 ~~~
 
 {{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
 {{site.data.alerts.end}}
 
-In a new terminal, restart the second node from the parent directory of `node2/`:
+In a new terminal, restart the second node from the parent directory of `node2`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -285,12 +311,12 @@ $ cockroach start \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---http-host=localhost \
 --join=localhost:26257
 ~~~
 
-In a new terminal, restart the third node from the parent directory of `node3/`:
+In a new terminal, restart the third node from the parent directory of `node3`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -298,7 +324,6 @@ $ cockroach start \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---http-host=localhost \
 --join=localhost:26257
 ~~~
 

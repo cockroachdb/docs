@@ -10,7 +10,9 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_users.html %}
+</div>
 
 ## Required privileges
 
@@ -18,6 +20,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~

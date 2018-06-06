@@ -10,7 +10,7 @@ This page details how CockroachDB performs **name resolution** to answer this qu
 
 <div id="toc"></div>
 
-## Logical Schemas And Namespaces
+## Logical schemas and namespaces
 
 A CockroachDB cluster can store multiple databases, and each database can store multiple tables/views/sequences. This **two-level structure for stored data** is commonly called the "logical schema" in relational database management systems.
 
@@ -42,7 +42,7 @@ database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The
 list of all objects for a given schema can be obtained with other
 `SHOW` statements.
 
-## How Name Resolution Works
+## How name resolution works
 
 Name resolution occurs separately to **look up existing objects** and to
 **decide the full name of a new object**.
@@ -59,9 +59,9 @@ Similarly, the rules to decide the full name of a new object are as follows:
 2. If the name has a single component prefix, try to find a schema with that name. If no such schema exists, use the `public` schema in the database with the prefix name.
 3. If the name has no prefix, use the [current schema](#current-schema) in the [current database](#current-database).
 
-## Parameters for Name Resolution
+## Parameters for name resolution
 
-### Current Database
+### Current database
 
 The current database is used when a name is unqualified or has only one component prefix. It is the current value of the `database` session variable.
 
@@ -72,7 +72,7 @@ database`](show-vars.html) and change it with [`SET database`](set-vars.html).
 
 - For client apps that connect to CockroachDB using a URL of the form `postgres://...`, the initial value of the `database` session variable can be set using the path component of the URL. For example, `postgres://node/mydb` sets `database` to `mydb` when the connection is established.
 
-### Search Path
+### Search path
 
 The search path is used when a name is unqualified (has no prefix). It lists the schemas where objects are looked up. Its first element is also the [current schema](#current-schema) where new objects are created.
 
@@ -84,7 +84,7 @@ search_path`](show-vars.html).
 - By default, the search path contains `public` and `pg_catalog`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with
 `SET search_path`.
 
-### Current Schema
+### Current schema
 
 The current schema is used as target schema when creating a new object if the name is unqualified (has no prefix).
 
@@ -111,7 +111,7 @@ The examples below use the following logical schema as a starting point:
 > SET database = mydb;
 ~~~
 
-### Lookup with Unqualified Names
+### Lookup with unqualified names
 
 An unqualified name is a name with no prefix, that is, a simple identifier.
 
@@ -142,7 +142,7 @@ This uses the search path over the current database, which is now
 `system`. No schema in the search path contain table `mytable`, so the
 look up fails with an error.
 
-### Lookup with Fully Qualified Names
+### Lookup with fully qualified names
 
 A fully qualified name is a name with two prefix components, that is,
 three identifiers separated by periods.
@@ -155,7 +155,7 @@ three identifiers separated by periods.
 Both the database and schema components are specified. The lookup
 succeeds if and only if the object exists at that specific location.
 
-### Lookup with Partially Qualified Names
+### Lookup with partially qualified names
 
 A partially qualified name is a name with one prefix component, that is, two identifiers separated by a period. When a name is partially qualified, CockroachDB will try to use the prefix as a schema name first; and if that fails, use it as a database name.
 
@@ -185,7 +185,7 @@ find a database called `mydb` and uses the `public` schema in that. In
 this example, this rule applies and the fully resolved name is
 `mydb.public.mytable`.
 
-### Using the Search Path to Use Tables Across Schemas
+### Using the search path to use tables across schemas
 
 Suppose that a client frequently accesses a stored table as well as a virtual table in the [Information Schema](information-schema.html). Because `information_schema` is not in the search path by default, all queries that need to access it must mention it explicitly.
 
@@ -219,7 +219,7 @@ search path to simplify queries. For example:
 > SELECT * FROM schemata; -- now valid, uses search_path
 ~~~
 
-## Databases with Special Names
+## Databases with special names
 
 When resolving a partially qualified name with just one component
 prefix, CockroachDB will look up a schema with the given prefix name
@@ -230,9 +230,18 @@ or `crdb_internal`.
 
 For example:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE DATABASE public;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SET database = mydb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE public.mypublictable (x INT);
 ~~~
 
@@ -244,8 +253,13 @@ in the current database, the full name of `mypublictable` becomes
 To create the table in database `public`, one would instead use a
 fully qualified name, as follows:
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE DATABASE public;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE public.public.mypublictable (x INT);
 ~~~
 

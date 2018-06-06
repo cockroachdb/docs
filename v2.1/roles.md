@@ -33,213 +33,212 @@ Indirect member | A user or role that is a member of the role by association. <b
 
 ## Example
 
-For the purpose of this example, you need:
+For the purpose of this example, you need an [enterprise license](enterprise-licensing.html) and one CockroachDB node running in insecure mode:
 
-- An [enterprise license](enterprise-licensing.html)
-- One CockroachDB node running in insecure mode:
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start \
+--insecure \
+--store=roles \
+--host=localhost
+~~~
+
+1. As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --store=roles \
-    --host=localhost
+    $ cockroach user set maxroach --insecure
     ~~~
 
-In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
+2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach user set maxroach --insecure
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
 
-As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+3. Create a database and set it as the default:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE test_roles;
+    ~~~
 
-Create a database and set it as the default:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET DATABASE = test_roles;
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE test_roles;
-~~~
+4. [Create a role](create-role.html) and then [list all roles](show-roles.html) in your database:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SET DATABASE = test_roles;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE ROLE system_ops;
+    ~~~
 
-Now, let's [create a role](create-role.html):
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ROLES;
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE system_ops;
-~~~
+    ~~~
+    +------------+
+    |  rolename  |
+    +------------+
+    | admin      |
+    | system_ops |
+    +------------+
+    ~~~
 
-See what roles are in our databases:
+5. Grant privileges to the `system_ops` role you created:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW ROLES;
-~~~
-~~~
-+------------+
-|  rolename  |
-+------------+
-| admin      |
-| system_ops |
-+------------+
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
+    ~~~
 
-Next, grant privileges to the `system_ops` role you created:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW GRANTS ON DATABASE test_roles;
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
-~~~
+    ~~~
+    +------------+--------------------+------------+------------+
+    |  Database  |       Schema       |    User    | Privileges |
+    +------------+--------------------+------------+------------+
+    | test_roles | crdb_internal      | admin      | ALL        |
+    | test_roles | crdb_internal      | root       | ALL        |
+    | test_roles | crdb_internal      | system_ops | CREATE     |
+    | test_roles | crdb_internal      | system_ops | SELECT     |
+    | test_roles | information_schema | admin      | ALL        |
+    | test_roles | information_schema | root       | ALL        |
+    | test_roles | information_schema | system_ops | CREATE     |
+    | test_roles | information_schema | system_ops | SELECT     |
+    | test_roles | pg_catalog         | admin      | ALL        |
+    | test_roles | pg_catalog         | root       | ALL        |
+    | test_roles | pg_catalog         | system_ops | CREATE     |
+    | test_roles | pg_catalog         | system_ops | SELECT     |
+    | test_roles | public             | admin      | ALL        |
+    | test_roles | public             | root       | ALL        |
+    | test_roles | public             | system_ops | CREATE     |
+    | test_roles | public             | system_ops | SELECT     |
+    +------------+--------------------+------------+------------+
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON DATABASE test_roles;
-~~~
-~~~
-+------------+--------------------+------------+------------+
-|  Database  |       Schema       |    User    | Privileges |
-+------------+--------------------+------------+------------+
-| test_roles | crdb_internal      | admin      | ALL        |
-| test_roles | crdb_internal      | root       | ALL        |
-| test_roles | crdb_internal      | system_ops | CREATE     |
-| test_roles | crdb_internal      | system_ops | SELECT     |
-| test_roles | information_schema | admin      | ALL        |
-| test_roles | information_schema | root       | ALL        |
-| test_roles | information_schema | system_ops | CREATE     |
-| test_roles | information_schema | system_ops | SELECT     |
-| test_roles | pg_catalog         | admin      | ALL        |
-| test_roles | pg_catalog         | root       | ALL        |
-| test_roles | pg_catalog         | system_ops | CREATE     |
-| test_roles | pg_catalog         | system_ops | SELECT     |
-| test_roles | public             | admin      | ALL        |
-| test_roles | public             | root       | ALL        |
-| test_roles | public             | system_ops | CREATE     |
-| test_roles | public             | system_ops | SELECT     |
-+------------+--------------------+------------+------------+
-~~~
+6. Add the `maxroach` user to the `system_ops` role:
 
-Now, add the `maxroach` user to the `system_ops` role:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT system_ops TO maxroach;
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT system_ops TO maxroach;
-~~~
+7. To test the privileges you just added to the `system_ops` role, use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `maxroach` user (who is a member of the `system_ops` role):
 
-To test the privileges you just added to the `system_ops` role, use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `maxroach` user (who is a member of the `system_ops` role):
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --user=maxroach --database=test_roles --insecure
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --user=maxroach --database=test_roles --insecure
-~~~
+8. As the `maxroach` user, create a table:
 
-Create a table:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE employees (
+        id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
+        profile JSONB
+      );
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE employees (
-    id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
-    profile JSONB
-  );
-~~~
+    We were able to create the table because `maxroach` has `CREATE` privileges.
 
-You were able to create the table because `maxroach` has `CREATE` privileges. Now, try to drop the table:
+9. As the `maxroach` user, try to drop the table:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP TABLE employees;
-~~~
-~~~
-pq: user maxroach does not have DROP privilege on relation employees
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > DROP TABLE employees;
+    ~~~
 
-You cannot drop the table because your current user (`maxroach`) is a member of the `system_ops` role, which doesn't have `DROP` privileges.
+    ~~~
+    pq: user maxroach does not have DROP privilege on relation employees
+    ~~~
 
-`maxroach` has `CREATE` and `SELECT` privileges, so try a `SHOW` statement:
+    You cannot drop the table because your current user (`maxroach`) is a member of the `system_ops` role, which doesn't have `DROP` privileges.
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON TABLE employees;
-~~~
-~~~
-+------------+--------+-----------+------------+------------+
-|  Database  | Schema |   Table   |    User    | Privileges |
-+------------+--------+-----------+------------+------------+
-| test_roles | public | employees | admin      | ALL        |
-| test_roles | public | employees | root       | ALL        |
-| test_roles | public | employees | system_ops | CREATE     |
-| test_roles | public | employees | system_ops | SELECT     |
-+------------+--------+-----------+------------+------------+
-~~~
+10. `maxroach` has `CREATE` and `SELECT` privileges, so try a `SHOW` statement:
 
-Let's switch back to the `root` user to test more of the SQL statements related to roles. Log out of the `maxroach` user by exiting the interactive shell. To exit the interactive shell, use `\q` or `ctrl-d`.
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW GRANTS ON TABLE employees;
+    ~~~
 
-Open `cockroach sql` as the `root` user:
+    ~~~
+    +------------+--------+-----------+------------+------------+
+    |  Database  | Schema |   Table   |    User    | Privileges |
+    +------------+--------+-----------+------------+------------+
+    | test_roles | public | employees | admin      | ALL        |
+    | test_roles | public | employees | root       | ALL        |
+    | test_roles | public | employees | system_ops | CREATE     |
+    | test_roles | public | employees | system_ops | SELECT     |
+    +------------+--------+-----------+------------+------------+
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
+11. Now switch back to the `root` user to test more of the SQL statements related to roles. Use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `root` user:
 
-Now that you're logged in as the `root` user, revoke privileges and then drop the `system_ops` role.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> REVOKE ALL ON DATABASE test_roles FROM system_ops;
-~~~
+12. As the `root` user, revoke privileges and then drop the `system_ops` role:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON DATABASE test_roles;
-~~~
-~~~
-+------------+--------------------+-------+------------+
-|  Database  |       Schema       | User  | Privileges |
-+------------+--------------------+-------+------------+
-| test_roles | crdb_internal      | admin | ALL        |
-| test_roles | crdb_internal      | root  | ALL        |
-| test_roles | information_schema | admin | ALL        |
-| test_roles | information_schema | root  | ALL        |
-| test_roles | pg_catalog         | admin | ALL        |
-| test_roles | pg_catalog         | root  | ALL        |
-| test_roles | public             | admin | ALL        |
-| test_roles | public             | root  | ALL        |
-+------------+--------------------+-------+------------+
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > REVOKE ALL ON DATABASE test_roles FROM system_ops;
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> REVOKE ALL ON TABLE test_roles.* FROM system_ops;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW GRANTS ON DATABASE test_roles;
+    ~~~
+    ~~~
+    +------------+--------------------+-------+------------+
+    |  Database  |       Schema       | User  | Privileges |
+    +------------+--------------------+-------+------------+
+    | test_roles | crdb_internal      | admin | ALL        |
+    | test_roles | crdb_internal      | root  | ALL        |
+    | test_roles | information_schema | admin | ALL        |
+    | test_roles | information_schema | root  | ALL        |
+    | test_roles | pg_catalog         | admin | ALL        |
+    | test_roles | pg_catalog         | root  | ALL        |
+    | test_roles | public             | admin | ALL        |
+    | test_roles | public             | root  | ALL        |
+    +------------+--------------------+-------+------------+
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON TABLE test_roles.*;
-~~~
-~~~
-+------------+--------+-----------+-------+------------+
-|  Database  | Schema |   Table   | User  | Privileges |
-+------------+--------+-----------+-------+------------+
-| test_roles | public | employees | admin | ALL        |
-| test_roles | public | employees | root  | ALL        |
-+------------+--------+-----------+-------+------------+
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > REVOKE ALL ON TABLE test_roles.* FROM system_ops;
+    ~~~
 
-{{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW GRANTS ON TABLE test_roles.*;
+    ~~~
+    ~~~
+    +------------+--------+-----------+-------+------------+
+    |  Database  | Schema |   Table   | User  | Privileges |
+    +------------+--------+-----------+-------+------------+
+    | test_roles | public | employees | admin | ALL        |
+    | test_roles | public | employees | root  | ALL        |
+    +------------+--------+-----------+-------+------------+
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP ROLE system_ops;
-~~~
+    {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > DROP ROLE system_ops;
+    ~~~
 
 ## See also
 

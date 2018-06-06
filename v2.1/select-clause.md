@@ -18,11 +18,14 @@ with other constructs to form more complex [selection queries](selection-queries
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/simple_select_clause.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/simple_select_clause.html %}
+</div>
 
-<div markdown="1"></div>
 
-{{site.data.alerts.callout_success}}The simple <code>SELECT</code> clause also has other applications not covered here, such as executing <a href="functions-and-operators.html">functions</a> like <code>SELECT current_timestamp();</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+The simple `SELECT` clause also has other applications not covered here, such as executing [functions](functions-and-operators.html) like `SELECT current_timestamp();`.
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -42,7 +45,7 @@ Parameter | Description
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
 `WINDOW window_definition_list` | A list of [window functions definitions](window-functions.html).
 
-## Eliminate Duplicate Rows
+## Eliminate duplicate rows
 
 The `DISTINCT` subclause specifies to remove duplicate rows.
 
@@ -58,9 +61,9 @@ using the [scalar expressions](scalar-expressions.html) listed with `ON`. When t
 
 ## Examples
 
-### Choose Columns
+### Choose columns
 
-#### Retrieve Specific Columns
+#### Retrieve specific columns
 
 Retrieve specific columns by naming them in a comma-separated list:
 
@@ -69,6 +72,7 @@ Retrieve specific columns by naming them in a comma-separated list:
 > SELECT id, name, balance
 FROM accounts;
 ~~~
+
 ~~~
 +----+-----------------------+---------+
 | id |         name          | balance |
@@ -80,7 +84,7 @@ FROM accounts;
 +----+-----------------------+---------+
 ~~~
 
-#### Retrieve All Columns
+#### Retrieve all columns
 
 Retrieve all columns by using `*`:
 
@@ -89,6 +93,7 @@ Retrieve all columns by using `*`:
 > SELECT *
 FROM accounts;
 ~~~
+
 ~~~
 +----+-----------------------+---------+----------+--------------+
 | id |         name          | balance |   type   | state_opened |
@@ -100,9 +105,9 @@ FROM accounts;
 +----+-----------------------+---------+----------+--------------+
 ~~~
 
-### Filter Rows
+### Filter rows
 
-#### Filter on a Single Condition
+#### Filter on a single condition
 
 Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause:
 
@@ -112,6 +117,7 @@ Filter rows with expressions that use columns and return Boolean values in the `
 FROM accounts
 WHERE balance < 300;
 ~~~
+
 ~~~
 +------------------+---------+
 |       name       | balance |
@@ -122,7 +128,7 @@ WHERE balance < 300;
 +------------------+---------+
 ~~~
 
-#### Filter on Multiple Conditions
+#### Filter on multiple conditions
 
 To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`:
 
@@ -132,6 +138,7 @@ To use multiple `WHERE` filters join them with `AND` or `OR`. You can also creat
 FROM accounts
 WHERE balance > 2500 AND NOT type = 'checking';
 ~~~
+
 ~~~
 +----+-------------------+---------+---------+--------------+
 | id |       name        | balance |  type   | state_opened |
@@ -141,7 +148,7 @@ WHERE balance > 2500 AND NOT type = 'checking';
 +----+-------------------+---------+---------+--------------+
 ~~~
 
-#### Select Distinct Rows
+#### Select distinct rows
 
 Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value:
 
@@ -151,6 +158,7 @@ Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) con
 FROM accounts
 WHERE state_opened = 'VT';
 ~~~
+
 ~~~
 +----------------+
 |      name      |
@@ -168,6 +176,7 @@ Using `DISTINCT`, you can remove all but one instance of duplicate values from y
 FROM accounts
 WHERE state_opened = 'VT';
 ~~~
+
 ~~~
 +----------------+
 |      name      |
@@ -176,7 +185,7 @@ WHERE state_opened = 'VT';
 +----------------+
 ~~~
 
-#### Filter Values with a List
+#### Filter values with a list
 
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
 
@@ -186,6 +195,7 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 FROM accounts
 WHERE state_opened IN ('AZ', 'NY', 'WA');
 ~~~
+
 ~~~
 +-----------------+---------+--------------+
 |      name       | balance | state_opened |
@@ -198,7 +208,7 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 +-----------------+---------+--------------+
 ~~~
 
-### Rename Columns in Output
+### Rename columns in output
 
 Instead of outputting a column's name in the retrieved table, you can change its label using `AS`:
 
@@ -208,6 +218,7 @@ Instead of outputting a column's name in the retrieved table, you can change its
 FROM accounts
 WHERE state_opened = 'NY';
 ~~~
+
 ~~~
 +-------------+---------+
 | NY_accounts | balance |
@@ -219,7 +230,7 @@ WHERE state_opened = 'NY';
 
 This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`](rename-column.html).
 
-### Search for String Values
+### Search for string values
 
 Search for partial [string](string.html) matches in columns using `LIKE`, which supports the following wildcard operators:
 
@@ -234,6 +245,7 @@ For example:
 FROM accounts
 WHERE name LIKE 'Anni%';
 ~~~
+
 ~~~
 +----+----------------+----------+
 | id |      name      |   type   |
@@ -243,18 +255,20 @@ WHERE name LIKE 'Anni%';
 +----+----------------+----------+
 ~~~
 
-### Aggregate Functions
+### Aggregate functions
 
 [Aggregate functions](functions-and-operators.html#aggregate-functions) perform calculations on retrieved rows.
 
-#### Perform Aggregate Function on Entire Column
+#### Perform aggregate function on entire column
 
 By using an aggregate function as a `target_elem`, you can perform the calculation on the entire column.
 
-~~~sql
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT MIN(balance)
 FROM accounts;
 ~~~
+
 ~~~
 +--------------+
 | MIN(balance) |
@@ -275,6 +289,7 @@ WHERE balance = (
       FROM accounts
 );
 ~~~
+
 ~~~
 +----+------------------+---------+
 | id |       name       | balance |
@@ -286,7 +301,7 @@ WHERE balance = (
 +----+------------------+---------+
 ~~~
 
-#### Perform Aggregate Function on Retrieved Rows
+#### Perform aggregate function on retrieved rows
 
 By filtering the statement, you can perform the calculation only on retrieved rows:
 
@@ -296,6 +311,7 @@ By filtering the statement, you can perform the calculation only on retrieved ro
 FROM accounts
 WHERE state_opened IN ('AZ', 'NY', 'WA');
 ~~~
+
 ~~~
 +--------------+
 | SUM(balance) |
@@ -304,7 +320,7 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 +--------------+
 ~~~
 
-#### Filter Columns Fed into Aggregate Functions
+#### Filter columns fed into aggregate functions
 
 You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function:
 
@@ -312,6 +328,7 @@ You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter
 ~~~ sql
 > SELECT count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered FROM accounts;
 ~~~
+
 ~~~
 +------------+----------+
 | unfiltered | filtered |
@@ -320,7 +337,7 @@ You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter
 +------------+----------+
 ~~~
 
-#### Create Aggregate Groups
+#### Create aggregate groups
 
 Instead of performing aggregate functions on an the entire set of retrieved rows, you can split the rows into groups and then perform the aggregate function on each of them.
 
@@ -335,6 +352,7 @@ FROM accounts
 WHERE state_opened IN ('AZ', 'NY', 'WA')
 GROUP BY state_opened;
 ~~~
+
 ~~~
 +-------+---------------+
 | state | state_balance |
@@ -345,7 +363,7 @@ GROUP BY state_opened;
 +-------+---------------+
 ~~~
 
-#### Filter Aggregate Groups
+#### Filter aggregate groups
 
 To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evaluate to a Boolean value.
 
@@ -358,6 +376,7 @@ FROM accounts
 GROUP BY state_opened
 HAVING AVG(balance) BETWEEN 1700 AND 50000;
 ~~~
+
 ~~~
 +--------------+---------+
 | state_opened |   avg   |
@@ -369,7 +388,7 @@ HAVING AVG(balance) BETWEEN 1700 AND 50000;
 +--------------+---------+
 ~~~
 
-#### Use Aggregate Functions in Having Clause
+#### Use aggregate functions in having clause
 
 Aggregate functions can also be used in the `HAVING` clause without needing to be included as a `target_elem`.
 
@@ -383,6 +402,7 @@ WHERE state_opened in ('LA', 'MO')
 GROUP BY name, state_opened
 HAVING COUNT(name) > 1;
 ~~~
+
 ~~~
 +----------------+--------------+
 |      name      | state_opened |
@@ -392,7 +412,7 @@ HAVING COUNT(name) > 1;
 ~~~
 
 
-### Select Historical Data (Time-Travel)
+### Select historical data (time-travel)
 
 CockroachDB lets you find data as it was stored at a given point in
 time using `AS OF SYSTEM TIME` with various [supported
@@ -400,7 +420,7 @@ formats](as-of-system-time.html). This can be also advantageous for
 performance. For more details, see [`AS OF SYSTEM
 TIME`](as-of-system-time.html).
 
-## Advanced Uses of `SELECT` Clauses
+## Advanced uses of `SELECT` clauses
 
 CockroachDB supports numerous ways to combine results from `SELECT`
 clauses together.
@@ -408,7 +428,7 @@ clauses together.
 See [Selection Queries](selection-queries.html) for
 details. A few examples follow.
 
-### Sorting and Limiting Query Results
+### Sorting and limiting query results
 
 To order the results of a `SELECT` clause or limit the number of rows
 in the result, you can combine it with `ORDER BY` or `LIMIT` /
@@ -420,12 +440,11 @@ Results](limit-offset.html) for more details.
 
 {{site.data.alerts.callout_info}}When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.<br><br>Also, CockroachDB sorts <a href="null-handling.html#nulls-and-sorting"><code>NULL</code> values</a> first with <code>ASC</code> and last with <code>DESC</code>. This differs from PostgreSQL, which sorts <code>NULL</code> values last with <code>ASC</code> and first with <code>DESC</code>.{{site.data.alerts.end}}
 
-### Combining Results From Multiple Queries
+### Combining results from multiple queries
 
 Results from two or more queries can be combined together as follows:
 
-- Using [join
-  expressions](joins.html) to combine rows
+- Using [join expressions](joins.html) to combine rows
   according to conditions on specific columns.
 - Using [set operations](selection-queries.html#set-operations) to combine rows
   using inclusion/exclusion rules.
@@ -433,9 +452,8 @@ Results from two or more queries can be combined together as follows:
 ## See also
 
 - [Scalar Expressions](scalar-expressions.html)
-- [Selection Queries](selection-queries.html)
-  - [Selection Clauses](selection-queries.html#selection-clauses)
-  - [Set Operations](selection-queries.html#set-operations)
+- [Selection Clauses](selection-queries.html#selection-clauses)
+- [Set Operations](selection-queries.html#set-operations)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](query-order.html)
 - [Limiting Query Results](limit-offset.html)

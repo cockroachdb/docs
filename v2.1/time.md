@@ -21,11 +21,13 @@ The `TIME` [data type](data-types.html) stores the time of day in UTC, whereas `
 Use of `TIMETZ` is not recommended at this time. The current implementation is incomplete.  The feature will be retracted or corrected in a future release.  If corrected, the fix will be backwards-incompatible.  For details, see [cockroachdb#25224](https://github.com/cockroachdb/cockroach/issues/25224).
 {{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_info}}The default session time zone is UTC, which means that by default <code>TIMETZ</code> values display in UTC.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The default session time zone is UTC, which means that by default `TIMETZ` values display in UTC.
+{{site.data.alerts.end}}
 
 The difference between these two variants is that `TIMETZ` uses the client's session time zone, while `TIME` does not. This behavior extends to [functions like `now()` and `extract()`](functions-and-operators.html#date-and-time-functions) on `TIMETZ` values.
 
-## Best Practices
+## Best practices
 
 We recommend always using `TIME` because the `TIMETZ` variant can lead to unexpected behavior when:
 
@@ -38,10 +40,10 @@ We recommend always using `TIME` because the `TIMETZ` variant can lead to unexpe
 
 The `TIME` data types are aliased as shown below.
 
-| Alias    | Long Version             |
-|----------+--------------------------|
-| `TIME`   | `TIME WITHOUT TIME ZONE` |
-| `TIMETZ` | `TIME WITH TIME ZONE`    |
+Alias    | Long Version
+---------|-------------
+`TIME`   | `TIME WITHOUT TIME ZONE`
+`TIMETZ` | `TIME WITH TIME ZONE`
 
 ## Syntax
 
@@ -78,6 +80,7 @@ A `TIME`/`TIMETZ` column supports values up to 8 bytes in width, but the total s
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
+
 ~~~
 +----------+------+------+---------+-------------+
 |  Field   | Type | Null | Default |   Indices   |
@@ -97,6 +100,7 @@ A `TIME`/`TIMETZ` column supports values up to 8 bytes in width, but the total s
 ~~~ sql
 > SELECT * FROM time;
 ~~~
+
 ~~~
 +---------+---------------------------+
 | time_id |         time_val          |
@@ -115,6 +119,7 @@ Comparing `TIME` values:
 ~~~ sql
 > SELECT (SELECT time_val FROM time WHERE time_id = 1) < (SELECT time_val FROM time WHERE time_id = 2);
 ~~~
+
 ~~~
 +--------------------------------+
 |  (SELECT time_val FROM "time"  |

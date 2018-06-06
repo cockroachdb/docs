@@ -18,7 +18,9 @@ To link directly to the linux or windows tab, append #os-linux or #os-windows to
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
-{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See <a href="orchestration.html">Orchestration</a> for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker and is not recommended for production deployments. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details.
+{{site.data.alerts.end}}
 
 <div id="toc" style="display: none"></div>
 
@@ -76,7 +78,9 @@ As mentioned earlier, CockroachDB automatically replicates your data behind-the-
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
-{{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our [replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), [fault tolerance](demo-fault-tolerance-and-recovery.html) demos.
+{{site.data.alerts.end}}
 
 ## Step 6.  Stop the cluster
 
@@ -163,7 +167,7 @@ To simulate a real deployment, scale your cluster by adding two more nodes:
 These commands add two more containers and start CockroachDB nodes inside them, joining them to the first node. There are only a few differences to note from step 2:
 
 - `-v`: This flag mounts a host directory as a data volume. Data and logs for these nodes will be stored in `Users/<username>/cockroach-data/roach2` and `Users/<username>/cockroach-data/roach3` on the host and will persist after the containers are stopped or deleted.
-- `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
+- `--join`: This flag joins the new nodes to the cluster, using the first container's `hostname`. Note that since each node is in a unique container, using identical default ports will not cause conflicts.
 
 ## Step 4. Test the cluster
 
@@ -176,13 +180,23 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
 
@@ -197,6 +211,7 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 Exit the SQL shell on node 1:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -210,6 +225,7 @@ Then start the SQL shell in the second container:
 
 Now run the same `SELECT` query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -227,6 +243,7 @@ As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
 When you're done, exit the SQL shell on node 2:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -243,7 +260,9 @@ As mentioned earlier, CockroachDB automatically replicates your data behind-the-
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
-{{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our [replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), [fault tolerance](demo-fault-tolerance-and-recovery.html) demos.
+{{site.data.alerts.end}}
 
 ## Step 6.  Stop the cluster
 

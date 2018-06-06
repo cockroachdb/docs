@@ -21,7 +21,9 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_jobs.html %}
+</div>
 
 ## Response
 
@@ -43,11 +45,13 @@ Field | Description
 
 ## Examples
 
-### Show Jobs
+### Show jobs
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
+
 ~~~
 +----------------+---------+-------------------------------------------+...
 |       id       |  type   |               description                 |...
@@ -56,13 +60,15 @@ Field | Description
 +----------------+---------+-------------------------------------------+...
 ~~~
 
-### Filter Jobs
+### Filter jobs
 
 You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~
+
 ~~~
 +----------------+---------+-------------------------------------------+...
 |       id       |  type   |               description                 |...
@@ -70,7 +76,6 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 | 27536791415282 | RESTORE | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 +----------------+---------+-------------------------------------------+...
 ~~~
-
 
 ## See also
 

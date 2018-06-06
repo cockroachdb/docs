@@ -11,7 +11,9 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all database in the 
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_databases.html %}
+</div>
 
 ## Required privileges
 
@@ -19,9 +21,11 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +--------------------+
 |      Database      |

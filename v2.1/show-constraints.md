@@ -6,7 +6,9 @@ toc: false
 
 The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed Check constraints on a table.
 
-{{site.data.alerts.callout_danger}}The <code>SHOW CONSTRAINTS</code> statement is under development; the exact output will continue to change.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+The `SHOW CONSTRAINTS` statement is under development; the exact output will continue to change.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -20,7 +22,9 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_constraints.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/show_constraints.html %}
+</div>
 
 ## Parameters
 
@@ -30,7 +34,7 @@ Parameter | Description
 
 ## Response
 
-The following fields are returned for each constraint. 
+The following fields are returned for each constraint.
 
 {{site.data.alerts.callout_danger}}The <code>SHOW CONSTRAINTS</code> statement is under development; the exact output will continue to change.{{site.data.alerts.end}}
 
@@ -44,6 +48,7 @@ Field | Description
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -55,9 +60,13 @@ Field | Description
     CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
     FAMILY (id, date, priority, customer_id, status)
 );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
+
 ~~~
 +--------+------------------------+-------------+---------------+--------------------------------------------------------+
 | Table  |          Name          |    Type     |   Column(s)   |                        Details                         |

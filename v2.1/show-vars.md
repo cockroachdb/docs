@@ -19,7 +19,9 @@ No [privileges](privileges.html) are required to display the session settings.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_var.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>SHOW</code> statement for session settings is unrelated to the other <code>SHOW</code> statements: <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create-table.html"><code>SHOW CREATE TABLE</code></a>, <a href="show-create-view.html"><code>SHOW CREATE VIEW</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
 
@@ -70,8 +72,9 @@ Special syntax cases supported for compatibility:
 
 ## Examples
 
-### Showing the Value of a Single Session Variable
+### Showing the value of a single session variable
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASE;
 ~~~
@@ -85,8 +88,9 @@ Special syntax cases supported for compatibility:
 (1 row)
 ~~~
 
-### Showing the Value of all Session Variables
+### Showing the value of all session variables
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL;
 ~~~

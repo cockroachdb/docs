@@ -14,7 +14,9 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_create_table.html %}
+</div>
 
 ## Parameters
 
@@ -31,14 +33,17 @@ Field | Description
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE products (sku STRING PRIMARY KEY, price DECIMAL(9,2));
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -51,6 +56,7 @@ Field | Description
 );
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE customer;
 ~~~
@@ -71,6 +77,7 @@ Field | Description
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE products;
 ~~~
@@ -89,6 +96,7 @@ Field | Description
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~

@@ -921,9 +921,9 @@
                 ]
               },
               {
-                "title": "<code>SHOW TESTING_RANGES</code>",
+                "title": "<code>SHOW EXPERIMENTAL_RANGES</code>",
                 "urls": [
-                  "/${VERSION}/show-testing-ranges.html"
+                  "/${VERSION}/show-experimental-ranges.html"
                 ]
               },
               {
@@ -957,15 +957,15 @@
                 ]
               },
               {
-                "title": "<code>SHOW SESSIONS</code>",
-                "urls": [
-                  "/${VERSION}/show-sessions.html"
-                ]
-              },
-              {
                 "title": "<code>SHOW SCHEMAS</code>",
                 "urls": [
                   "/${VERSION}/show-schemas.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SESSIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-sessions.html"
                 ]
               },
               {

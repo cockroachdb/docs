@@ -11,7 +11,9 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}</section>
+<div>
+{% include sql/{{ page.version.version }}/diagrams/show_grants.html %}
+</div>
 
 ## Required privileges
 
@@ -28,7 +30,7 @@ Parameter | Description
 
 ## Examples
 
-### Show All Grants 
+### Show all grants
 
 To list all grants for all users and roles on all databases and tables:
 
@@ -49,7 +51,7 @@ To list all grants for all users and roles on all databases and tables:
 (167 rows)
 ~~~
 
-### Show a Specific User or Role's Grants 
+### Show a specific user or role's grants
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -66,7 +68,7 @@ To list all grants for all users and roles on all databases and tables:
 +------------+--------------------+-------+----------+------------+
 ~~~
 
-### Show Grants on Databases
+### Show grants on databases
 
 **Specific database, all users and roles:**
 
@@ -110,7 +112,7 @@ To list all grants for all users and roles on all databases and tables:
 +----------+--------------------+------------+------------+
 ~~~
 
-### Show Grants on Tables
+### Show grants on tables
 
 **Specific tables, all users and roles:**
 
@@ -175,7 +177,7 @@ To list all grants for all users and roles on all databases and tables:
 +------------+--------+-----------+------------+------------+
 ~~~
 
-### Show Role Memberships 
+### Show role memberships
 
 **All members of all roles:**
 

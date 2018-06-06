@@ -16,7 +16,9 @@ Only the `root` user can modify cluster settings.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/set_cluster_setting.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/set_cluster_setting.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="set-vars.html"><code>SET (session variable)</code></a> statements.{{site.data.alerts.end}}
 
@@ -30,28 +32,33 @@ Only the `root` user can modify cluster settings.
 
 ## Examples
 
-### Change the Default Distributed Execution Parameter
+### Change the default distributed execution parameter
 
-You can configure a cluster so that new sessions automatically try to run queries [in a distributed fashion](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/):
+To configure a cluster so that new sessions automatically try to run queries [in a distributed fashion](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.distsql = 1;
 ~~~
 
-You can also disable distributed execution for all new sessions:
+To disable distributed execution for all new sessions:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.distsql = 0;
 ~~~
 
-### Disable Automatic Diagnostic Reporting
+### Disable automatic diagnostic reporting
 
-You can opt out of
-[automatic diagnostic reporting](diagnostics-reporting.html) of usage
-data to Cockroach Labs using the following:
+To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of usage data to Cockroach Labs:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
 
@@ -64,14 +71,16 @@ data to Cockroach Labs using the following:
 (1 row)
 ~~~
 
-### Reset a Setting to Its Default Value
+### Reset a setting to its default value
 
 {{site.data.alerts.callout_success}}You can use <a href="reset-cluster-setting.html"><code>RESET CLUSTER SETTING</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
@@ -85,10 +94,12 @@ data to Cockroach Labs using the following:
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = DEFAULT;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
