@@ -291,7 +291,20 @@ Start shell code samples with `~~~ shell` followed by a line break. The first ch
 
 SQL code samples are broken into two sections: commands and responses.
 
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`. Commands should be properly capitalized, and there should be only one command per code sample.
+- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`. Commands should be properly capitalized, and there should be only one command per code sample. For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line break. For example:
+
+  ```
+  {% include copy-clipboard.html %}
+  ~~~ sql
+  CREATE VIEW startrek.quotes_per_season (season, quotes) \
+  AS SELECT startrek.episodes.season, count(*) \
+  FROM startrek.quotes \
+  JOIN startrek.episodes \
+  ON startrek.quotes.episode = startrek.episodes.id \
+  GROUP BY startrek.episodes.season;
+  ~~~
+  ```
+
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should *not* be syntax highlighted.
 
   Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
