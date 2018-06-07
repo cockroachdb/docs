@@ -51,30 +51,15 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > SAVEPOINT cockroach_restart;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > COMMIT;
 ~~~
 
@@ -89,30 +74,15 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > SAVEPOINT cockroach_restart;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > COMMIT;
 ~~~
 
@@ -131,20 +101,11 @@ From the perspective of CockroachDB, a transaction sent as a batch looks like th
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > DELETE FROM customers WHERE id = 1;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > DELETE orders WHERE customer = 1;
-~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
 > COMMIT;
 ~~~
 
