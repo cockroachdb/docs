@@ -6,7 +6,9 @@ toc: false
 
 The SQL layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
 
-{{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
