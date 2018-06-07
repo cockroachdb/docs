@@ -43,7 +43,7 @@ Other general guidance about language and tone:
 
     **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
 
-- For [tutorials, training, and examples](#tutorials-training-and-examples), we recommended you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
+- For [tutorials, training, and examples](#tutorials-training-and-examples), we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
     **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
