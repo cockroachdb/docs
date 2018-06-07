@@ -109,7 +109,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 ## Supported casting & conversion
 
-`UUID` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
+`UUID` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
 
 Type | Details
 -----|--------

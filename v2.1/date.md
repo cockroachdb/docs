@@ -75,7 +75,7 @@ String literal implicitly typed as `DATE`:
 
 ## Supported casting and conversion
 
-`DATE` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`DATE` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------

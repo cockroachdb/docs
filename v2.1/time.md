@@ -129,7 +129,7 @@ Comparing `TIME` values:
 
 ## Supported casting & conversion
 
-`TIME` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`TIME` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------

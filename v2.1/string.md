@@ -87,7 +87,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Supported casting & conversion
 
-`STRING` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`STRING` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------

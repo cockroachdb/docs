@@ -99,7 +99,7 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 
 ## Supported casting and conversion
 
-`DECIMAL` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`DECIMAL` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------

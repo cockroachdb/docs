@@ -90,7 +90,7 @@ INSERT 1
 
 ## Supported casting & conversion
 
-`INT` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`INT` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
