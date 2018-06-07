@@ -14,7 +14,9 @@ This tutorial shows you how build a simple Python application with CockroachDB u
 
 We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-{{site.data.alerts.callout_success}}For a more realistic use of SQLAlchemy with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -41,7 +43,7 @@ The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/late
 ])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
 
 {{site.data.alerts.callout_info}}
-The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
+The [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL. Using `postgres://` to connect to your cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code or
