@@ -43,9 +43,9 @@ Other general guidance about language and tone:
 
     **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
 
-- For [tutorials, training, and examples](#tutorials-training-and-examples), use the first-person plural tense (e.g., we, let's). These docs should be conversational, as if they are teaching the user.
+- For [tutorials, training, and examples](#tutorials-training-and-examples), we recommended you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
-    **Example:** Now that we have a database, user, and a table, let's run the following code to insert rows into the table.
+    **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
 - Use active voice instead of passive. For more information, refer to the [Purdue Online Writing Lab resource](https://owl.english.purdue.edu/owl/resource/539/02/).
 - Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in [reference docs](#reference-and-task-based-docs) are phrases).
@@ -217,8 +217,12 @@ For example, you might include a tip to our Github repo's Terraform scripts on t
 To insert a tip, use the following code:
 
 ~~~
-{{site.data.alerts.callout_success}} <tip text goes here> {{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+<tip text goes here>
+{{site.data.alerts.end}}
 ~~~
+
+Each liquid tag should be on its own line. Markdown can be used within the highlighted text.
 
 #### Notes
 
@@ -229,8 +233,12 @@ For example, you might use a note to let users know that the `DELETE` statement 
 To insert a note, use the following code:
 
 ~~~
-{{site.data.alerts.callout_info}} <note text goes here> {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<note text goes here>
+{{site.data.alerts.end}}
 ~~~
+
+Each liquid tag should be on its own line. Markdown can be used within the highlighted text.
 
 #### Warnings
 
@@ -241,8 +249,12 @@ For example, you might include a warning that using `CASCADE` in `DROP INDEX` dr
 To insert a warning, use the following code:
 
 ~~~
-{{site.data.alerts.callout_danger}} <warning text goes here> {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+<warning text goes here>
+{{site.data.alerts.end}}
 ~~~
+
+Each liquid tag should be on its own line. Markdown can be used within the highlighted text.
 
 ### Code
 
@@ -256,7 +268,20 @@ Example: The `CREATE TABLE` statement creates a new table in a database.
 
 #### Code blocks
 
-Code blocks are used to provide executable code samples, marked with an opening and closing set of 3 tildes (`~~~`). Code blocks can support syntax highlighting if you add the language name immediately after the first line of back-ticks. Shell and SQL commands should be syntax highlighted where appropriate using the following info:
+Code blocks are used to provide executable code samples, marked with an opening and closing set of 3 tildes (`~~~`). Code blocks can support syntax highlighting if you add the language name immediately after the first line of back-ticks. There should be one returned line before and after a code block, for better Markdown readability. For example:
+
+```
+This is a sample line of text.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq
+~~~
+
+This is more sample text.
+```
+
+Shell and SQL commands should be syntax highlighted where appropriate using the following info:
 
 **Shell code samples**
 
