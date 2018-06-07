@@ -21,7 +21,7 @@ The `debug zip` [command](cockroach-commands.html) connects to your cluster and 
 
 ## Details
 
-### Use Cases
+### Use cases
 
 There are two scenarios in which `debug zip` is useful:
 
@@ -31,7 +31,7 @@ There are two scenarios in which `debug zip` is useful:
 
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
-### Collecting Log Files
+### Collecting log files
 
 When you issue the `debug zip` command, the node that receives the request connects to each other node in the cluster. Once it's connected, the node requests the content of all log files stored on the node, the location of which is determined by the `--log-dir` value when you [started the node](start-a-node.html).
 

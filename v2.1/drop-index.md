@@ -10,7 +10,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_index.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/drop_index.html %}</section>
 
 ## Required privileges
 
@@ -28,7 +28,8 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 ## Examples
 
-### Remove an Index (No Dependencies)
+### Remove an index (no dependencies)
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
@@ -42,9 +43,14 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 +-------+--------------+--------+-----+--------+-----------+---------+----------+
 (3 rows)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX tbl@tbl_name_idx;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
 ~~~
@@ -56,10 +62,11 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 (1 row)
 ~~~
 
-### Remove an Index and Dependent Objects with `CASCADE`
+### Remove an index and dependent objects with `CASCADE`
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM orders;
 ~~~
@@ -73,12 +80,16 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 +--------+---------------------+--------+-----+----------+-----------+---------+----------+
 (3 rows)
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX orders@orders_customer_idx;
 ~~~
 ~~~
 pq: index "orders_customer_idx" is in use as a foreign key constraint
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
@@ -90,9 +101,14 @@ pq: index "orders_customer_idx" is in use as a foreign key constraint
 | orders | primary                   | PRIMARY KEY | [id]       | NULL           |
 +--------+---------------------------+-------------+------------+----------------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX orders@orders_customer_idx CASCADE;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
 ~~~

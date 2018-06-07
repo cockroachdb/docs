@@ -14,7 +14,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/commit_transaction.html %}
+<section> {% include sql/{{ page.version.version }}/diagrams/commit_transaction.html %} </section>
 
 ## Required privileges
 
@@ -34,6 +34,7 @@ How you commit transactions depends on how your application handles [transaction
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), statements are committed by [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html). `COMMIT` itself only clears the connection for the next transaction.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -54,6 +55,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 If you are using transactions that CockroachDB will [automatically retry](transactions.html#automatic-retries) (i.e., all statements sent in a single batch), commit the transaction with `COMMIT`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN; UPDATE products SET inventory = 100 WHERE = '8675309'; UPDATE products SET inventory = 100 WHERE = '8675310'; COMMIT;
 ~~~

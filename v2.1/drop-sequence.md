@@ -35,7 +35,7 @@ table td:first-child {
 
 ## Examples
 
-### Remove a Sequence (No Dependents)
+### Remove a sequence (no dependencies)
 
 In this example, other objects do not depend on the sequence being dropped.
 

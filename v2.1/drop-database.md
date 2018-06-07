@@ -14,7 +14,7 @@ The user must have the `DROP` [privilege](privileges.html) on the database and o
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_database.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/drop_database.html %} </section>
 
 ## Parameters
 
@@ -31,6 +31,7 @@ Parameter | Description
 
 For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -45,10 +46,12 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 (2 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE db2;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -63,6 +66,7 @@ For interactive sessions from the [built-in SQL client](use-the-built-in-sql-cli
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -77,6 +81,7 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (2 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE db2 RESTRICT;
 ~~~

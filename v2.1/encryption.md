@@ -36,7 +36,7 @@ Any new file created by the store uses the currently-active data key. All data k
 
 CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all data with the desired encryption.
 
-## Rotating Keys
+## Rotating keys
 
 Key rotation is necessary for encryption at rest for multiple reasons:
 

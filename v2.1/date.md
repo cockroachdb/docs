@@ -30,9 +30,13 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 
 ## Examples
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE dates (a DATE PRIMARY KEY, b INT);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM dates;
 ~~~
 ~~~
@@ -43,13 +47,21 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 | b     | INT  | true  | NULL    |
 +-------+------+-------+---------+
 ~~~
+
+Explicitly typed `DATE` literal:
+{% include copy-clipboard.html %}
 ~~~ sql
-> -- explicitly typed DATE literal
 > INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
+~~~
 
-> -- string literal implicitly typed as DATE
+String literal implicitly typed as `DATE`:
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO dates VALUES ('2016-03-27', 12345);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM dates;
 ~~~
 ~~~
@@ -61,7 +73,7 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 +---------------------------+-------+
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `DATE` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 

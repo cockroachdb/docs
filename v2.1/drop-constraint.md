@@ -12,7 +12,7 @@ The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_constraint.html %}
+<section>{% include sql/{{ page.version.version }}/diagrams/drop_constraint.html %} </section>
 
 ## Required privileges
 
@@ -31,6 +31,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
@@ -42,12 +43,16 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | orders | primary                   | PRIMARY KEY | id        | NULL           |
 +--------+---------------------------+-------------+-----------+----------------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP CONSTRAINT fk_customer_ref_customers;
 ~~~
 ~~~
 ALTER TABLE
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~

@@ -8,7 +8,7 @@ CockroachDB's flexible [replication controls](configure-replication-zones.html) 
 
 <div id="toc"></div>
 
-## Watch a Live Demo
+## Watch the demo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cCJkgZy6s2Q" frameborder="0" allowfullscreen></iframe>
 

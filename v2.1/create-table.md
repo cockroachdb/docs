@@ -73,7 +73,7 @@ Parameter | Description
 
 By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
 
-## Row-l;evel replication
+## Row-level replication
 
 CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition) for more information.
 
@@ -87,12 +87,16 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logon (
     user_id INT,
     logon_date DATE
 );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM logon;
 ~~~
 
@@ -106,6 +110,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 (2 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM logon;
 ~~~
@@ -123,13 +128,17 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 In this example, we create a table with three columns. One column is the [primary key](primary-key.html), another is given the [Unique constraint](unique.html), and the third has no constraints. The primary key and column with the Unique constraint are automatically indexed.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff (
     user_id INT PRIMARY KEY,
     user_email STRING UNIQUE,
     logoff_date DATE
 );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM logoff;
 ~~~
 
@@ -144,6 +153,7 @@ In this example, we create a table with three columns. One column is the [primar
 (3 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM logoff;
 ~~~
@@ -188,7 +198,10 @@ This example also demonstrates a number of column-level and table-level [constra
     INDEX supp_id_prod_status_idx (supplier_id, product_status),
     INVERTED INDEX details (misc)
 );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW INDEX FROM product_information;
 ~~~
 
@@ -236,26 +249,26 @@ You can include a [foreign key action](foreign-key.html#foreign-key-actions) to 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
     name STRING
   );
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
     customer_id INT REFERENCES customers(id) ON DELETE CASCADE
   );
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > SHOW CREATE TABLE orders;
-```
-```
+~~~
+~~~
 +--------+---------------------------------------------------------------------------------------------------------------------+
 | Table  |                                                     CreateTable                                                     |
 +--------+---------------------------------------------------------------------------------------------------------------------+
@@ -268,33 +281,33 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 |        |     FAMILY "primary" (id, customer_id)␤                                                                             |
 |        | )                                                                                                                   |
 +--------+---------------------------------------------------------------------------------------------------------------------+
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > INSERT INTO customers VALUES (1, 'Lauren');
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > INSERT INTO orders VALUES (1,1);
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > DELETE FROM customers WHERE id = 1;
-```
+~~~
 
 {% include copy-clipboard.html %}
-``` sql
+~~~ sql
 > SELECT * FROM orders;
-```
-```
+~~~
+~~~
 +----+-------------+
 | id | customer_id |
 +----+-------------+
 +----+-------------+
-```
+~~~
 
 ### Create a table that mirrors key-value storage
 
@@ -320,7 +333,10 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM customers_ny;
 ~~~
 ~~~

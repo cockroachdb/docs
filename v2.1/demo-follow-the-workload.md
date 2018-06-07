@@ -10,7 +10,7 @@ toc: false
 
 ## Overview
 
-### Basic Terms
+### Basic terms
 
 To understand how "follow-the-workload" works, it's important to start with some basic terms:
 
@@ -20,7 +20,7 @@ Term | Description
 **Range Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 **Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 
-### How It Works
+### How it works
 
 "Follow-the-workload" is based on the way **range leases** handle read requests. Read requests bypass the Raft consensus protocol, accessing the range replica that holds the range lease (the leaseholder) and sending the results to the client without needing to coordinate with any of the other range replicas. Bypassing Raft, and the network round trips involved, is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder.
 

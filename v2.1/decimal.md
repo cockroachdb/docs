@@ -4,7 +4,7 @@ summary: The DECIMAL data type stores exact, fixed-point numbers.
 toc: false
 ---
 
-The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data. 
+The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
 <div id="toc"></div>
 
@@ -12,16 +12,16 @@ The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. Th
 
 In CockroachDB, the following are aliases for `DECIMAL`:
 
-- `DEC` 
-- `NUMERIC` 
+- `DEC`
+- `NUMERIC`
 
-## Precision and Scale
+## Precision and scale
 
 To limit a decimal column, use `DECIMAL(precision, scale)`, where `precision` is the **maximum** count of digits both to the left and right of the decimal point and `scale` is the **exact** count of digits to the right of the decimal point. The `precision` must not be smaller than the `scale`. Also note that using `DECIMAL(precision)` is equivalent to `DECIMAL(precision, 0)`.
 
 When inserting a decimal value:
 
-- If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale. 
+- If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale.
 - If digits to the right of the decimal point are fewer than the column's `scale`, CockroachDB pads to the scale with `0`s.
 - If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.  
 - If the column's `precision` and `scale` are identical, the inserted value must round to less than 1.
@@ -58,9 +58,13 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 
 ## Examples
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE decimals (a DECIMAL PRIMARY KEY, b DECIMAL(10,5), c NUMERIC);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM decimals;
 ~~~
 ~~~
@@ -72,9 +76,14 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 | c     | DECIMAL       | true  | NULL    |
 +-------+---------------+-------+---------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM decimals;
 ~~~
 ~~~
@@ -88,7 +97,7 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 # The value in "c" is handled like "a" because NUMERIC is an alias.
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `DECIMAL` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
 
