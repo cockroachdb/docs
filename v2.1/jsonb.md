@@ -186,7 +186,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 {% include computed-columns/jsonb.md %}
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
 

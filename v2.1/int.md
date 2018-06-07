@@ -88,7 +88,7 @@ INSERT 1
 (1 row)
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `INT` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 

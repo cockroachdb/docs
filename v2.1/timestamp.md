@@ -95,7 +95,7 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 # Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `TIMESTAMP` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 

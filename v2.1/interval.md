@@ -86,7 +86,7 @@ INSERT 3
 (3 rows)
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `INTERVAL` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
