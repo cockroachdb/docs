@@ -57,7 +57,7 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 +-------+------+-------+
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `BOOL` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 

@@ -180,7 +180,7 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 (1 row)
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 [Casting](data-types.html#data-type-conversions-and-casts) between `ARRAY` values is supported when the data types of the arrays support casting. For example, it is possible to cast from a `BOOL` array to an `INT` array but not from a `BOOL` array to a `TIMESTAMP` array:
 
