@@ -14,7 +14,9 @@ To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`D
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
+</div>
 
 ## Required privileges
 

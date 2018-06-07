@@ -75,7 +75,7 @@ This mechanism lets us avoid tracking leases for every range, which eliminates a
 
 #### Expiration-based leases (meta and system ranges)
 
-Your table's meta and system ranges (detailed in the [distribution layer](architecture/distribution-layer.html)) are treated as normal key-value data, and therefore have leases, as well. However, instead of using epochs, they have an expiration-based lease. These leases simply expire at a particular timestamp (typically a few seconds)––however, as long as the node continues proposing Raft commands, it continues to extend the expiration of the lease. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+Your table's meta and system ranges (detailed in the distribution layer) are treated as normal key-value data, and therefore have leases, as well. However, instead of using epochs, they have an expiration-based lease. These leases simply expire at a particular timestamp (typically a few seconds)––however, as long as the node continues proposing Raft commands, it continues to extend the expiration of the lease. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
 ### Membership changes: rebalance/repair
 
