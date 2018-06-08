@@ -6,7 +6,9 @@ toc: false
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
-{{site.data.alerts.callout_danger}}If you update a row that contains a column referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions"><code>ON UPDATE</code> action</a>, all of the dependent rows will also be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+If you update a row that contains a column referenced by a [foreign key constraint](foreign-key.html) and has an [`ON UPDATE` action](foreign-key.html#foreign-key-actions), all of the dependent rows will also be updated.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -16,9 +18,9 @@ The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/update.html %}
-
-<div markdown="1"></div>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/update.html %}
+</div>
 
 ## Parameters
 
@@ -39,11 +41,13 @@ Parameter | Description
 
 ## Examples
 
-### Update a Single Column in a Single Row
+### Update a single column in a single row
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+----------+
 | id | balance  | customer |
@@ -56,11 +60,16 @@ Parameter | Description
 (4 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = 5000.0 WHERE id = 2;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+----------+
 | id | balance  | customer |
@@ -73,13 +82,18 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update Multiple Columns in a Single Row
+### Update multiple columns in a single row
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET (balance, customer) = (9000.0, 'Kelly') WHERE id = 2;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+----------+
 | id | balance  | customer |
@@ -92,9 +106,13 @@ Parameter | Description
 (4 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = 6300.0, customer = 'Stanley' WHERE id = 3;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
 
@@ -110,12 +128,17 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update Using `SELECT` Statement
+### Update using `SELECT` statement
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET (balance, customer) =
     (SELECT balance, customer FROM accounts WHERE id = 2)
      WHERE id = 4;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
 
@@ -131,13 +154,18 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update with Default Values
+### Update with default values
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = DEFAULT where customer = 'Stanley';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+----------+----------+
 | id | balance  | customer |
@@ -150,15 +178,22 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update All Rows
+### Update all rows
 
-{{site.data.alerts.callout_danger}}If you do not use the <code>WHERE</code> clause to specify the rows to be updated, the values for all rows will be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+If you do not use the `WHERE` clause to specify the rows to be updated, the values for all rows will be updated.
+{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = 5000.0;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM accounts;
 ~~~
+
 ~~~
 +----+---------+----------+
 | id | balance | customer |
@@ -171,7 +206,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-### Update and Return Values
+### Update and return values
 
 In this example, the `RETURNING` clause returns the `id` value of the row updated. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
@@ -190,6 +225,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id;
 ~~~
@@ -208,6 +244,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="python">
 <p></p>
 
+{% include copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -255,6 +292,7 @@ ID:
 <section class="filter-content" markdown="1" data-scope="ruby">
 <p></p>
 
+{% include copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -296,6 +334,7 @@ ID:
 <section class="filter-content" markdown="1" data-scope="go">
 <p></p>
 
+{% include copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -351,6 +390,7 @@ ID:
 <section class="filter-content" markdown="1" data-scope="js">
 <p></p>
 
+{% include copy-clipboard.html %}
 ~~~ js
 var async = require('async');
 

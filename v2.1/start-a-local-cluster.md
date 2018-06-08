@@ -13,7 +13,9 @@ asciicast: true
 
 Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start an insecure multi-node cluster locally.
 
-{{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a> or <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -90,7 +92,9 @@ The main difference in these commands is that you use the `--join` flag to conne
 
 Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the cluster. To demonstrate this, open a new terminal and connect the [built-in SQL client](use-the-built-in-sql-client.html) to node 1:
 
-{{site.data.alerts.callout_info}}The SQL client is built into the <code>cockroach</code> binary, so nothing extra is needed.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The SQL client is built into the `cockroach` binary, so nothing extra is needed.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -142,7 +146,9 @@ Then connect the SQL shell to node 2, this time specifying the node's non-defaul
 $ cockroach sql --insecure --port=26258
 ~~~
 
-{{site.data.alerts.callout_info}}In a real deployment, all nodes would likely use the default port <code>26257</code>, and so you wouldn't need to set the <code>--port</code> flag.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In a real deployment, all nodes would likely use the default port `26257`, and so you wouldn't need to set the `--port` flag.
+{{site.data.alerts.end}}
 
 Now run the same `SELECT` query:
 
@@ -181,9 +187,13 @@ As mentioned earlier, CockroachDB automatically replicates your data behind-the-
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
-{{site.data.alerts.callout_info}}Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this <a href="known-limitations.html#available-capacity-metric-in-the-admin-ui">limitation</a>. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our [replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), [fault tolerance](demo-fault-tolerance-and-recovery.html) demos.
+{{site.data.alerts.end}}
 
 ## Step 5.  Stop the cluster
 
@@ -219,7 +229,9 @@ Exit the SQL shell:
 
 Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press **CTRL-C** a second time.
+{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
@@ -241,7 +253,8 @@ $ cockroach start \
 --host=localhost
 ~~~
 
-{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
+{{site.data.alerts.callout_info}}
+With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
 {{site.data.alerts.end}}
 
 In a new terminal, restart the second node from the parent directory of `node2/`:

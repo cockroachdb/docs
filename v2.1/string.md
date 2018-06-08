@@ -58,11 +58,16 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Examples
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM strings;
 ~~~
+
 ~~~
 +-------+-----------+-------+---------+
 | Field |  Type     | Null  | Default |
@@ -72,11 +77,17 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 | c     | STRING    | true  | NULL    |
 +-------+-----------+-------+---------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM strings;
 ~~~
+
 ~~~
 +----------+------+--------+
 |    a     |  b   |   c    |

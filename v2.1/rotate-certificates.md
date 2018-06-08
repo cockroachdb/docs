@@ -2,7 +2,6 @@
 title: Rotate Security Certificates
 summary: Rotate the security certificates of a secure CockroachDB cluster by creating and reloading new certificates.
 toc: false
-toc_not_nested: true
 ---
 
 CockroachDB allows you to rotate security certificates without restarting nodes.
@@ -11,7 +10,7 @@ CockroachDB allows you to rotate security certificates without restarting nodes.
 
 <div id="toc"></div>
 
-## When to Rotate Certificates
+## When to rotate certificates
 
 You may need to rotate the node, client, or CA certificates in the following scenarios:
 
@@ -20,7 +19,7 @@ You may need to rotate the node, client, or CA certificates in the following sce
 - The key (for a node, client, or CA) is compromised.
 - You need to modify the contents of a certificate, for example, to add another DNS name or the IP address of a load balancer through which a node can be reached. In this case, you would need to rotate only the node certificates.
 
-## Rotate Client Certificates
+### Rotate client certificates
 
 1. Create a new client certificate and key:
 
@@ -37,7 +36,7 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
     This step is application-specific and may require restarting the client.
 
-## Rotate Node Certificates
+### Rotate node certificates
 
 To rotate a node certificate, you create a new node certificate and key and reload them on the node.
 
@@ -78,11 +77,11 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
     Scroll to the node certificate details and confirm that the **Valid Until** field shows the new certificate expiration time.
 
-## Rotate the CA Certificate
+### Rotate the CA certificate
 
 To rotate the CA certificate, you create a new CA key and a combined CA certificate that contains the new CA certificate followed by the old CA certificate, and then you reload the new combined CA certificate on the nodes and clients. Once all nodes and clients have the combined CA certificate, you then create new node and client certificates signed with the new CA certificate and reload those certificates on the nodes and clients as well.
 
-For more background, see [Why CockroachDB creates a combined CA certificate](rotate-certificates.html#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance](rotate-certificates.html#why-rotate-ca-certificates-in-advance).
+For more background, see [Why CockroachDB creates a combined CA certificate](rotate-certificates.html#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance](rotate-certificates.html#why-to-rotate-ca-certificates-in-advance).
 
 1. Rename the existing CA key:
 
@@ -134,13 +133,13 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
 7. Once you are confident that all nodes and clients have the new CA certificate, [rotate the node certificates](#rotate-node-certificates) and [rotate the client certificates](#rotate-client-certificates).
 
-### Why CockroachDB creates a combined CA certificate
+## Why CockroachDB creates a combined CA certificate
 
 On rotating the CA certificate, the nodes have the new CA certificate after certs directory is rescanned, and the clients have the new CA certificates as and when they are restarted. However, until the node and client certificates are rotated, the nodes and client certificates are still signed with the old CA certificate. Thus the nodes and clients are unable to verify each other's identity using the new CA certificate.
 
 To overcome the issue, we take advantage of the fact that multiple CA certificates can be active at the same time. While verifying the identity of another node or a client, they can check with multiple CA certificates uploaded to them. Thus instead of creating only the new certificate while rotating the CA certificates, CockroachDB creates a combined CA certificate that contains the new CA certificate followed by the old CA certificate. As and when node and client certificates are rotated, the combined CA certificate is used to verify old as well as new node and client certificates.
 
-### Why rotate CA certificates in advance
+## Why to rotate CA certificates in advance
 
 On rotating node and client certificates after rotating the CA certificate, the node and client certificates are signed using new CA certificates. The nodes use the new node and CA certificates as soon as the certs directory on the node is rescanned. However, the clients use the new CA and client certificates only when the clients are restarted. Thus node certificates signed by the new CA certificate are not accepted by clients that do not have the new CA certificate yet. To ensure all nodes and clients have the latest CA certificate, rotate CA certificates on a completely different schedule; ideally, months before changing the node and client certificates.
 

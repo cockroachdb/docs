@@ -10,9 +10,13 @@ The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range s
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_table_at.html %}</section>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/split_table_at.html %}
+</div>
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}</section>
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}
+</div>
 
 ## Required privileges
 
@@ -25,7 +29,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table or ind
 | `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. |
 | `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index. |
 
-## Why Manually Split a Range?
+## Why manually split a range?
 
 The key-value layer of CockroachDB is broken into sections of contiguous
 key-space known as ranges. By default, CockroachDB attempts to keep ranges below
@@ -54,7 +58,7 @@ the ranges that store tables or indexes:
 
 ## Examples
 
-### Split a Table
+### Split a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -103,7 +107,7 @@ the ranges that store tables or indexes:
 (4 rows)
 ~~~
 
-### Split a Table with a Composite Primary Key
+### Split a table with a composite primary key
 
 You may want to split a table with a composite primary key (e.g., when working with [partitions](partitioning.html#partition-using-primary-key)).
 
@@ -184,7 +188,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 (2 rows)
 ~~~
 
-### Split an Index
+### Split an index
 
 {% include copy-clipboard.html %}
 ~~~ sql

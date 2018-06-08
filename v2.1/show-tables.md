@@ -13,7 +13,9 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](v
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
+</div>
 
 ## Required privileges
 
@@ -31,8 +33,9 @@ Parameter | Description
 
 These example assumes that the `bank` database has been set as the current database for the session, either via the [`SET`](set-vars.html) statement or in the client's connection string.
 
-### Show Tables in the Current Database
+### Show tables in the current database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -49,10 +52,15 @@ These example assumes that the `bank` database has been set as the current datab
 
 This uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`.
 
-### Show Tables in a Different Schema
+### Show tables in a different schema
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW TABLES FROM bank.information_schema; -- also possible
 ~~~
 
@@ -82,10 +90,15 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 (18 rows)
 ~~~
 
-### Show Tables in a Different Database
+### Show tables in a different database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek.public;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW TABLES FROM startrek; -- also possible
 ~~~
 

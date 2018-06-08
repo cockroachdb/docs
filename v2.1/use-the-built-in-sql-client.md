@@ -58,7 +58,7 @@ By default, the `sql` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## SQL Shell Welcome
+## SQL shell welcome
 
 When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
 
@@ -81,7 +81,7 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 - When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
 - Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
 
-## Interactive Sessions
+## Interactive sessions
 
 `cockroach sql` distinguishes between an *interactive session* and other sessions that generate terminal output. An interactive session is one where there's a user manually entering queries and looking at the results. This is detected using the following criteria:
 
@@ -96,7 +96,7 @@ When an interactive session is detected, the following options have their defaul
 + The [`check_syntax` option](#sql-option-check-syntax) defaults to `true`.
 + The [`smart_prompt` option](#sql-option-smart-prompt) defaults to `true`.
 
-## SQL Shell Commands
+## SQL shell commands
 
 The following commands can be used within the interactive SQL shell:
 
@@ -110,7 +110,7 @@ Command | Usage
 `\?`<br>`help` | View this help within the shell.
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL Shell Help](#sql-shell-help) for more details.
 
-### SQL Shell Options
+### SQL shell options
 
 To view help and the current settings, use `\set` without any options. To enable or disable a shell option, use `\set <option>` or `\unset <option>`.
 
@@ -123,7 +123,7 @@ Client Options | Description
 `show_times` | Reveal the time a query takes to complete.<br><br>**Default:** `true`. To disable it, run `\unset show_times`.
 <a name="sql-option-smart-prompt"></a> `smart_prompt` | Query the server for the current transaction status and return it to the prompt.<br /><br />**Default:** `true` for [interactive sessions](#interactive-sessions), `false` otherwise. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
-### SQL Shell Help
+### SQL shell help
 
 Within the SQL shell, you can get interactive help about statements and functions:
 
@@ -170,7 +170,8 @@ uuid_v4() -> bytes [ID Generation]
 See also:
   https://www.cockroachlabs.com/docs/v1.1/functions-and-operators.html
 ~~~
-### SQL Shell Shortcuts
+
+### SQL shell shortcuts
 
 The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
@@ -180,6 +181,7 @@ The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell 
 
 In these examples, we connect a SQL shell to a **secure cluster**.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql \
@@ -188,7 +190,10 @@ $ cockroach sql \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Using the --url flag:
 $ cockroach sql \
 --url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslcert=certs/client.maxroach.crt&sslkey=certs/client.maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt"
@@ -196,6 +201,7 @@ $ cockroach sql \
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql --insecure \
@@ -203,7 +209,10 @@ $ cockroach sql --insecure \
 --host=12.345.67.89 \
 --port=26257 \
 --database=critterdb
+~~~
 
+{% include copy-clipboard.html %}
+~~~ shell
 # Using the --url flag:
 $ cockroach sql \
 --url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslmode=disable"
@@ -213,13 +222,21 @@ $ cockroach sql \
 
 This example assume that we have already started the SQL shell (see examples above).
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE animals (id SERIAL PRIMARY KEY, name STRING);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM animals;
 ~~~
+
 ~~~
 +--------------------+----------+
 |         id         |   name   |
@@ -234,6 +251,7 @@ This example assume that we have already started the SQL shell (see examples abo
 
 In these examples, we use the `--execute` flag to execute statements from the command line:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Statements with a single --execute flag:
 $ cockroach sql --insecure \
@@ -249,6 +267,7 @@ CREATE TABLE
 INSERT 2
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Statements with multiple --execute flags:
 $ cockroach sql --insecure \
@@ -267,9 +286,13 @@ INSERT 2
 
 In this example, we use the `echo` command to execute statements from the command line:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 # Statements with the echo command:
 $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=12.345.67.89 --port=26257 --database=critterdb
+~~~
+
+~~~
 +----------+
 |  Table   |
 +----------+
@@ -289,6 +312,7 @@ In these examples, we show tables and special characters printed in various form
 
 When the standard output is a terminal, `--format` defaults to `pretty` and tables are printed with ASCII art and special characters are not escaped for easy human consumption:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
@@ -308,6 +332,7 @@ $ cockroach sql --insecure \
 
 However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=tsv \
@@ -324,6 +349,7 @@ chick	turtle
 🐥	🐢
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=html \
@@ -345,6 +371,7 @@ $ cockroach sql --insecure \
 
 When piping output to another command or a file, `--format` defaults to `tsv`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
@@ -354,6 +381,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat out.txt
 ~~~
@@ -366,6 +394,7 @@ chick	turtle
 
 However, you can explicitly set `--format` to another format, for example, `pretty`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=pretty \
@@ -376,6 +405,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat out.txt
 ~~~
@@ -393,6 +423,7 @@ $ cat out.txt
 
 To make it possible to select from the output of `SHOW` statements, set `--format` to `raw`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=raw \
@@ -402,6 +433,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE customers;
 ~~~
@@ -424,6 +456,7 @@ CREATE TABLE customers (
 
 When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#sql-shell-options) to change the output format within the interactive session:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \set display_format raw
 ~~~
@@ -448,6 +481,7 @@ CREATE TABLE customers (
 
 In this example, we show and then execute the contents of a file containing SQL statements.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat statements.sql
 ~~~
@@ -457,6 +491,7 @@ CREATE TABLE roaches (name STRING, country STRING);
 INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
@@ -477,6 +512,7 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 
 {{site.data.alerts.callout_info}}This example works only if the values in the CSV file are numbers. For values in other formats, use an online CSV-to-SQL converter or make your own import program.{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \! cat test.csv
 ~~~
@@ -486,11 +522,18 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 10, 20, 30
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE csv (x INT, y INT, z INT);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM csv;
 ~~~
 
@@ -505,11 +548,18 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 
 In this example, we create a table and then use `\|` to programmatically insert values.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE for_loop (x INT);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM for_loop;
 ~~~
 
@@ -534,6 +584,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
 ~~~
@@ -556,6 +607,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
 (10 rows)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="DELETE FROM db1.t1"
 ~~~
@@ -567,6 +619,7 @@ Failed running "sql"
 
 However, to allow an "unsafe" statement, you can set `--safe-updates=false`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --safe-updates=false --execute="DELETE FROM db1.t1"
 ~~~
@@ -581,6 +634,7 @@ DELETE 10
 
 In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal SQL statements sent implicitly:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
@@ -604,6 +658,7 @@ INSERT 3
 
 In this example, we start the interactive SQL shell and enable the `echo` shell option to reveal SQL statements sent implicitly:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
@@ -612,10 +667,12 @@ $ cockroach sql --insecure \
 --database=db1
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > \set echo
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
 ~~~

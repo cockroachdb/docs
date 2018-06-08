@@ -24,7 +24,9 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}</section>
+<div>
+{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}
+</div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.
 - To list the active queries just on the local node, use `SHOW LOCAL QUERIES`.
@@ -47,7 +49,7 @@ Field | Description
 
 ## Examples
 
-### List Queries Across the Cluster
+### List queries across the cluster
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -73,7 +75,7 @@ Field | Description
 
 Alternatively, you can use `SHOW QUERIES` to receive the same response.
 
-### List Queries on the Local Node
+### List queries on the local node
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -92,7 +94,7 @@ Alternatively, you can use `SHOW QUERIES` to receive the same response.
 (4 rows)
 ~~~
 
-### Filter for Specific Queries
+### Filter for specific queries
 
 You can use a [`SELECT`](select-clause.html) statement to filter the list of active queries by one or more of the [response fields](#response).
 
@@ -174,7 +176,7 @@ To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.ht
 (8 rows)
 ~~~
 
-### Cancel a Query
+### Cancel a query
 
 When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to kill it.
 

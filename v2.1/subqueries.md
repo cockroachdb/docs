@@ -6,12 +6,16 @@ toc: false
 
 SQL subqueries enable reuse of the results from a [selection query](selection-queries.html) within another query.
 
+<div id="toc"></div>
+
+## Overview
+
 CockroachDB supports two kinds of subqueries:
 
 - **Relational** subqueries which appear as operand in [selection queries](selection-queries.html) or [table expressions](table-expressions.html).
 - **Scalar** subqueries which appear as operand in a [scalar expression](scalar-expressions.html).
 
-## Data Writes in Subqueries
+## Data writes in subqueries
 
 When a subquery contains a data-modifying statement (`INSERT`,
 `DELETE`, etc.), the data modification is always executed to
@@ -34,7 +38,7 @@ For example:
 This query always inserts 3 rows into `t`, even though the surrounding
 query only observes 1 row using [`LIMIT`](limit-offset.html).
 
-## Correlated Subqueries
+## Correlated subqueries
 
 A subquery is said to be "correlated" when it uses table or column
 names defined in the surrounding query.
@@ -66,11 +70,15 @@ however, it can be transformed to the equivalent query:
 
 See also [this question on Stack Overflow: Procedurally transform subquery into join](https://stackoverflow.com/questions/1772609/procedurally-transform-subquery-into-join).
 
-{{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to introduce support for correlated subqueries. This limitation is expected to be lifted in a future release.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+CockroachDB is currently undergoing major changes to introduce support for correlated subqueries. This limitation is expected to be lifted in a future release.
+{{site.data.alerts.end}}
 
-## Performance Best Practices
+## Performance best practices
 
-{{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of subqueries. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+CockroachDB is currently undergoing major changes to evolve and improve the performance of subqueries. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.
+{{site.data.alerts.end}}
 
 - Scalar subqueries currently disable the distribution of the execution of a query. To ensure maximum performance on queries that process a large number of rows, make the client application compute the subquery results ahead of time and pass these results directly in the surrounding query.
 

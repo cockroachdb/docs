@@ -11,26 +11,29 @@ via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
 <div id="toc"></div>
 
-## Required privileges 
+## Required privileges
 
 Only the `root` user can display cluster settings.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_cluster_setting.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/show_cluster_setting.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>SHOW</code> statement for cluster settings is unrelated to the other <code>SHOW</code> statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create-table.html"><code>SHOW CREATE TABLE</code></a>, <a href="show-create-view.html"><code>SHOW CREATE VIEW</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `any_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). |
+Parameter | Description
+----------|------------
+`any_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive).
 
 ## Examples
 
-### Showing the Value of a Single Cluster Setting
+### Showing the value of a single cluster setting
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -44,6 +47,7 @@ Only the `root` user can display cluster settings.
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.default.distsql;
 ~~~
@@ -57,8 +61,9 @@ Only the `root` user can display cluster settings.
 (1 row)
 ~~~
 
-### Showing the Value of All Cluster Settings
+### Showing the value of all cluster settings
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL CLUSTER SETTINGS;
 ~~~

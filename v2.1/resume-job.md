@@ -16,7 +16,9 @@ By default, only the `root` user can control a job.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/resume_job.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/resume_job.html %}
+</div>
 
 ## Parameters
 
@@ -26,11 +28,13 @@ Parameter | Description
 
 ## Examples
 
-### Pause & Resume a Restore Job
+### Pause a restore job
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
+
 ~~~
 +----------------+---------+-------------------------------------------+...
 |       id       |  type   |               description                 |...
@@ -38,12 +42,15 @@ Parameter | Description
 | 27536791415282 | RESTORE | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 +----------------+---------+-------------------------------------------+...
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
 
-Once you're ready for the restore to resume:
+### Resume a restore job
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB 27536791415282;
 ~~~

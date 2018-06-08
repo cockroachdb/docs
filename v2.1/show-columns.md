@@ -14,7 +14,9 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_columns.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/show_columns.html %}
+</div>
 
 ## Parameters
 
@@ -24,18 +26,19 @@ Parameter | Description
 
 ## Response
 
-The following fields are returned for each column. 
+The following fields are returned for each column.
 
 Field | Description
 ------|------------
 `Field` | The name of the column.
-`Type` | The [data type](data-types.html) of the column. 
+`Type` | The [data type](data-types.html) of the column.
 `Null` | Whether or not the column accepts `NULL`. Possible values: `true` or `false`.
 `Default` | The default value for the column, or an expression that evaluates to a default value.
 `Indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
 
 ## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY DEFAULT unique_rowid(),
@@ -47,7 +50,10 @@ Field | Description
     CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
     FAMILY (id, date, priority, customer_id, status)
 );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM orders;
 ~~~
 
@@ -69,4 +75,3 @@ Field | Description
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
-

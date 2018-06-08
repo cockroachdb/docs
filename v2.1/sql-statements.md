@@ -6,11 +6,13 @@ toc: false
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-{{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\h [statement]</code> to get inline help about a specific statement.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+In the [built-in SQL shell](use-the-built-in-sql-client.html#sql-shell-help), use `\h [statement]` to get inline help about a specific statement.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
-## Data Manipulation Statements
+## Data manipulation statements
 
 Statement | Usage
 ----------|------------
@@ -28,7 +30,7 @@ Statement | Usage
 [`UPSERT`](upsert.html) | Insert rows that do not violate uniqueness constraints; update rows that do.
 [`VALUES`](selection-queries.html#values-clause) | Return rows containing specific values.
 
-## Data Definition Statements
+## Data definition statements
 
 Statement | Usage
 ----------|------------
@@ -72,7 +74,7 @@ Statement | Usage
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
-## Transaction Management Statements
+## Transaction management statements
 
 Statement | Usage
 ----------|------------
@@ -84,7 +86,7 @@ Statement | Usage
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
-## Access Management Statements
+## Access management statements
 
 Statement | Usage
 ----------|------------
@@ -100,7 +102,7 @@ Statement | Usage
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
 
-## Session Management Statements
+## Session management statements
 
 Statement | Usage
 ----------|------------
@@ -109,7 +111,7 @@ Statement | Usage
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
 
-## Cluster Management Statements
+## Cluster management statements
 
 Statement | Usage
 ----------|------------
@@ -119,14 +121,14 @@ Statement | Usage
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
 [`CANCEL SESSION`](cancel-session.html) | <span class="version-tag">New in v2.1:</span> Cancel a long-running session.
 
-## Query Management Statements
+## Query management statements
 
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 
-## Job Management Statements
+## Job management statements
 
 Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
 
@@ -137,11 +139,13 @@ Statement | Usage
 [`RESUME JOB`](resume-job.html) | Resume paused `BACKUP`, `RESTORE`, or `IMPORT` jobs.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
-## Backup & Restore Statements (Enterprise)
+## Backup and restore statements (Enterprise)
 
 The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 
-{{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+For non-enterprise users, see [Back up Data](back-up-data.html) and [Restore Data](restore-data.html).
+{{site.data.alerts.end}}
 
 Statement | Usage
 ----------|------------

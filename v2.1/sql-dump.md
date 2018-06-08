@@ -6,7 +6,9 @@ toc: false
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
-{{site.data.alerts.callout_success}}CockroachDB <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users can also back up their cluster's data using <a href="backup.html"><code>BACKUP</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+CockroachDB [enterprise license](https://www.cockroachlabs.com/pricing/) users can also back up their cluster's data using [`BACKUP`](backup.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -19,7 +21,9 @@ When `cockroach dump` is executed:
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 
-{{site.data.alerts.callout_info}}The user must have the <code>SELECT</code> privilege on the target table(s).{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The user must have the `SELECT` privilege on the target table(s).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -67,9 +71,9 @@ Flag | Description
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
-{{site.data.alerts.callout_info}}The user specified with <code>--user</code> must
-have the <code>SELECT</code> privilege on the target
-tables.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The user specified with `--user` must have the `SELECT` privilege on the target tables.
+{{site.data.alerts.end}}
 
 ### Logging
 
@@ -79,14 +83,18 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-{{site.data.alerts.callout_info}}These examples use our sample startrek database, which you can add to a cluster via the <a href="generate-cockroachdb-resources.html#generate-example-data"><code>cockroach gen</code></a> command. Also, the examples assume that the <code>maxroach</code> user has been <a href="grant.html">granted</a> the <code>SELECT</code> privilege on all target tables. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+These examples use our sample `startrek` database, which you can add to a cluster via the [`cockroach gen`](generate-cockroachdb-resources.html#generate-example-data) command. Also, the examples assume that the `maxroach` user has been [granted](grant.html) the `SELECT` privilege on all target tables.
+{{site.data.alerts.end}}
 
 ### Dump a table's schema and data
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -120,10 +128,12 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 
 ### Dump just a table's schema
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=schema > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -144,10 +154,12 @@ CREATE TABLE episodes (
 
 ### Dump just a table's data
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=maxroach --dump-mode=data > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -169,10 +181,12 @@ INSERT INTO episodes (id, season, num, title, stardate) VALUES
 
 ### Dump all tables in a database
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek --insecure --user=maxroach > backup.sql
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -226,11 +240,12 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 In this example, the `dump` command fails for a user that does not have the `SELECT` privilege on the `episodes` table.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump startrek episodes --insecure --user=leslieroach > backup.sql
 ~~~
 
-~~~ shell
+~~~
 Error: pq: user leslieroach has no privileges on table episodes
 Failed running "dump"
 ~~~
@@ -239,6 +254,7 @@ Failed running "dump"
 
 In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cat backup.sql
 ~~~
@@ -263,11 +279,12 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
     ...
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=startrek --user=maxroach < backup.sql
 ~~~
 
-~~~ shell
+~~~
 CREATE TABLE
 INSERT 100
 INSERT 100
@@ -279,6 +296,7 @@ In this example, we assume there were several inserts into a table both before a
 
 First, let's use the built-in SQL client to view the table at the current time:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 ~~~
@@ -309,6 +327,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test"
 
 Next, let's use a [time-travel query](select-clause.html#select-historical-data-time-travel) to view the contents of the table as of `2017-03-07 19:55:00`:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM TIME '2017-03-07 19:55:00'"
 ~~~
@@ -331,6 +350,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.dump_test AS OF SYSTEM T
 
 Finally, let's use `cockroach dump` with the `--as-of` flag set to dump the contents of the table as of `2017-03-07 19:55:00`.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump db1 dump_test --insecure --dump-mode=data --as-of='2017-03-07 19:55:00'
 ~~~

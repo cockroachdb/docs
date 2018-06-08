@@ -78,7 +78,7 @@ In the example output below, a `NULL` in the *Start Key* column means "beginning
 A `NULL` in the *End Key* column means "end of table".
 {{site.data.alerts.end}}
 
-### Show Ranges for a Table (Primary Index)
+### Show ranges for a table (primary index)
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -97,7 +97,7 @@ A `NULL` in the *End Key* column means "end of table".
 (4 rows)
 ~~~
 
-### Show Ranges for an Index
+### Show ranges for an index
 
 {% include copy-clipboard.html %}
 ~~~ sql

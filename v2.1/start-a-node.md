@@ -27,7 +27,7 @@ $ cockroach start <flags, including --join>
 $ cockroach start --help
 ~~~
 
-## Flags 
+## Flags
 
 The `start` command supports the following [general-use](#general) and
 [logging](#logging) flags. All flags must be specified each time the
@@ -116,7 +116,7 @@ By default, `cockroach start` writes all messages to log files, and prints nothi
 
 This means, by default, CockroachDB writes all messages to log files, and never prints to `stderr`.
 
-## Standard Output
+## Standard output
 
 When you run `cockroach start`, some helpful details are printed to the standard output:
 
