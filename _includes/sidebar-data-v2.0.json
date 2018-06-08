@@ -1161,6 +1161,12 @@
         ]
       },
       {
+        "title": "Performance Tuning",
+        "urls": [
+          "/${VERSION}/performance-tuning.html"
+        ]
+      },
+      {
         "title": "Access Management",
         "items": [
         {
