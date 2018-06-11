@@ -51,21 +51,34 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
-{{site.data.alerts.callout_danger}}
-This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
-{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
 #### Change isolation level and priority
 
@@ -74,15 +87,30 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > COMMIT;
 ~~~
 
