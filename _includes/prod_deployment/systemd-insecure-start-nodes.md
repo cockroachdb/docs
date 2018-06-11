@@ -2,7 +2,7 @@ For each initial node of your cluster, complete the following steps:
 
 {{site.data.alerts.callout_info}}After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.{{site.data.alerts.end}}
 
-1. SSH to the machine where you want the node to run. Ensure you are logged in as the root user.
+1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
@@ -39,11 +39,19 @@ For each initial node of your cluster, complete the following steps:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    chown cockroach /var/lib/cockroach
+    $ chown cockroach /var/lib/cockroach
     ~~~
 
-7. Download the [sample configuration template](/_includes/prod_deployment/insecurecockroachdb.service), or create the file yourself and copy the script into it:
+7. Download the [sample configuration template](/_includes/prod_deployment/insecurecockroachdb.service):
 
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ wget -qO- https://xxxxx (where this is the url to the raw version of the file in our github repo)
+    ~~~
+
+    Alternatively, you can create the file yourself and copy the script into it:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
     {% include prod_deployment/insecurecockroachdb.service %}
     ~~~
@@ -63,7 +71,7 @@ For each initial node of your cluster, complete the following steps:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    systemctl start insecurecockroachdb
+    $ systemctl start insecurecockroachdb
     ~~~
 
 10. Repeat these steps for each addition node that you want in your cluster.
