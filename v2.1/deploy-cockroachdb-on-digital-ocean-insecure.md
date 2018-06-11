@@ -75,25 +75,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 5. Start nodes
 
-You can start the nodes manually or automate the process using [systemd](https://www.freedesktop.org/wiki/Software/systemd/).
-
-<div class="filters clearfix">
-  <button style="width: 15%" class="filter-button" data-scope="manual">Manual</button>
-  <button style="width: 15%" class="filter-button" data-scope="systemd">systemd</button>
-</div>
-<p></p>
-
-<section class="filter-content" markdown="1" data-scope="manual">
-
 {% include prod_deployment/insecure-start-nodes.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="systemd">
-
-{% include prod_deployment/systemd-insecure-start-nodes.md %}
-
-</section>
 
 ## Step 6. Initialize the cluster
 
