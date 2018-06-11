@@ -25,10 +25,10 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*) \
-  FROM startrek.quotes \
-  JOIN startrek.episodes \
-  ON startrek.quotes.episode = startrek.episodes.id \
+> SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 
@@ -47,11 +47,11 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW startrek.quotes_per_season (season, quotes) \
-  AS SELECT startrek.episodes.season, count(*) \
-  FROM startrek.quotes \
-  JOIN startrek.episodes \
-  ON startrek.quotes.episode = startrek.episodes.id \
+> CREATE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
   GROUP BY startrek.episodes.season;
 ~~~
 
@@ -107,8 +107,8 @@ You want a particular user, `bob`, to be able to see the types of accounts each 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW bank.user_accounts \
-  AS SELECT type, email \
+> CREATE VIEW bank.user_accounts
+  AS SELECT type, email
   FROM bank.accounts;
 ~~~
 
@@ -177,8 +177,8 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW bank.user_accounts \
-  AS SELECT type, email \
+> CREATE VIEW bank.user_accounts
+  AS SELECT type, email
   FROM bank.accounts;
 ~~~
 
