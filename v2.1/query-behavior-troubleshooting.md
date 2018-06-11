@@ -8,7 +8,7 @@ If a query returns an unexpected result or takes longer than expected to process
 
 <div id="toc"></div>
 
-## Correctness Issues
+## Correctness issues
 
 If your queries return unexpected results, there are several possibilities:
 
@@ -16,7 +16,7 @@ If your queries return unexpected results, there are several possibilities:
 - Your application has a bug. It's always worthwhile to check and double-check your application’s logic before filing an issue. That said, you can always [reach out for support](support-resources.html).
 - CockroachDB has a bug. Please [file an issue](file-an-issue.html).
 
-## Performance Issues
+## Performance issues
 
 If queries are taking longer than expected to process, there are a few things you can check into:
 
@@ -28,7 +28,7 @@ If queries are taking longer than expected to process, there are a few things yo
 
 If you're still unable to determine why the query executes slowly, please [file an issue](file-an-issue.html).
 
-## `bad connection` & `closed` Responses
+## `bad connection` & `closed` responses
 
 If you receive a response of `bad connection` or `closed`, this normally indicates that the node you connected to died. You can check this by connecting to another node in the cluster and running [`cockroach node status`](view-node-details.html#show-the-status-of-all-nodes).
 
@@ -36,11 +36,11 @@ Once you find the downed node, you can check its [logs](debug-and-error-logs.htm
 
 Because this kind of behavior is entirely unexpected, you should [file an issue](file-an-issue.html).
 
-## SQL Logging
+## SQL logging
 
 {% include faq/sql-query-logging.md %}
 
-## Something Else?
+## Something else?
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 

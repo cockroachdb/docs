@@ -10,14 +10,14 @@ CockroachDB allows you to define table partitions, thus giving you row-level con
 
 <div id="toc"></div>
 
-## Why Use Table Partitioning
+## Why use table partitioning
 
 Table partitioning helps you reduce latency and cost:
 
 - **Geo-partitioning** allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby **reducing latency**. To geo-partition a table, define location-based partitions while creating a table, create location-specific zone configurations, and apply the zone configurations to the corresponding partitions.
 - **Archival-partitioning** allows you to store infrequently-accessed data on slower and cheaper storage, thereby **reducing costs**. To archival-partition a table, define frequency-based partitions while creating a table, create frequency-specific zone configurations with appropriate storage devices constraints, and apply the zone configurations to the corresponding partitions.
 
-## How It Works
+## How it works
 
 Table partitioning involves a combination of CockroachDB features:
 
@@ -26,7 +26,7 @@ Table partitioning involves a combination of CockroachDB features:
 - [Table Creation](#table-creation)
 - [Replication Zones](#replication-zones)
 
-### Node Attributes
+### Node attributes
 
 To store partitions in specific locations (e.g., geo-partitioning), or on machines with specific attributes (e.g., archival-partitioning), the nodes of your cluster must be [started](start-a-node.html) with the relevant flags:
 
@@ -36,7 +36,7 @@ To store partitions in specific locations (e.g., geo-partitioning), or on machin
 
 For more details about these flags, see the [`cockroach start`](start-a-node.html) documentation.
 
-### Enterprise License
+### Enterprise license
 
 You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
@@ -54,14 +54,14 @@ However, the following features continue to work even with an expired enterprise
 - Unpartitioning a partitioned table
 - Making non-partitioning changes to a partitioned table (for example, adding a column/index/foreign key/check constraint)
 
-### Table Creation
+### Table creation
 
 You can define partitions and subpartitions over one or more columns of a table. During [table creation](create-table.html), you declare which values belong to each partition in one of two ways:
 
 - **List partitioning**: Enumerate all possible values for each partition. List partitioning is a good choice when the number of possible values is small. List partitioning is well-suited for geo-partitioning.
 - **Range partitioning**: Specify a contiguous range of values for each partition by specifying lower and upper bounds. Range partitioning is a good choice when the number of possible values is too large to explicitly list out. Range partitioning is well-suited for archival-partitioning.
 
-#### Partition by List
+#### Partition by list
 
 [`PARTITION BY LIST`](partition-by.html) lets you map one or more tuples to a partition.
 
@@ -69,7 +69,7 @@ To partition a table by list, use the [`PARTITION BY LIST`](partition-by.html) s
 
 See [Partition by List](#partition-by-list) example below for more details.
 
-#### Partition by Range
+#### Partition by range
 
 [`PARTITION BY RANGE`](partition-by.html) lets you map ranges of tuples to a partition.
 
@@ -81,7 +81,7 @@ Partition values can be any SQL expression, but it’s only evaluated once. If y
 
 See [Partition by Range](#partition-by-range) example below for more details.
 
-#### Partition using Primary Key
+#### Partition using primary key
 
 The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
 
@@ -101,9 +101,9 @@ For instance, consider the database of a global online learning portal that has 
 **Primary Key Considerations**
 
 - For v2.0, you cannot change the primary key after you create the table. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `expected_graduation_date` in the future, define the primary key as `(country, expected_graduation_date, id)`. v2.1 will allow you to change the primary key.
-- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You can’t skip `country` and partition by `expected_graduation_date`.
+- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
-#### Partition using Secondary Index
+#### Partition using secondary index
 
 The primary key discussed above has two drawbacks:
 
@@ -114,11 +114,16 @@ To ensure uniqueness or fast lookups, create a unique, unpartitioned secondary i
 
 Indexes can also be partitioned, but are not required to be. Each partition is required to have a name that is unique among all partitions on that table and its indexes. For example, the following `CREATE INDEX` scenario will fail because it reuses the name of a partition of the primary key:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE foo (a STRING PRIMARY KEY, b STRING) PARTITION BY LIST (a) (
     bar VALUES IN ('bar'),
     default VALUES IN (DEFAULT)
 );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
     baz VALUES IN ('baz'),
     default VALUES IN (DEFAULT)
@@ -127,11 +132,11 @@ CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
 
 Consider using a naming scheme that uses the index name to avoid conflicts. For example, the partitions above could be named `primary_idx_bar`, `primary_idx_default`, `b_idx_baz`, `b_idx_default`.
 
-#### Define Partitions on Interleaved Tables
+#### Define partitions on interleaved tables
 
 For [interleaved tables](interleave-in-parent.html), partitions can be defined only on the root table of the interleave hierarchy, while children are interleaved the same as their parents.
 
-### Replication Zones
+### Replication zones
 
 On their own, partitions are inert and simply apply a label to the rows of the table that satisfy the criteria of the defined partitions. Applying functionality to a partition requires creating and applying [replication zone](configure-replication-zones.html) to the corresponding partitions.
 
@@ -139,7 +144,7 @@ CockroachDB uses the most granular zone config available. Zone configs that targ
 
 ## Examples
 
-### Define Table Partitions by List
+### Define table partitions by list
 
 Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the students' data closer to their locations:
 
@@ -234,7 +239,7 @@ $ cockroach zone set roachlearn.students_by_list.australia --insecure  -f austra
 
 You should see the following output:
 
-~~~ sql
+~~~
 +-----------------+-----------------+----------+----------+--------------+
 |    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
 +-----------------+-----------------+----------+----------+--------------+
@@ -253,7 +258,7 @@ You should see the following output:
 Time: 7.209032ms
 ~~~
 
-### Define Table Partitions by Range
+### define table partitions by range
 
 Suppose we want to store the data of current students on fast and expensive storage devices (e.g., SSD) and store the data of the graduated students on slower, cheaper storage devices (e.g., HDD).
 
@@ -340,7 +345,7 @@ $ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f gradu
 
 You should see the following output:
 
-~~~ sql
+~~~
 +-----------+---------+----------+----------+--------------+
 | Start Key | End Key | Range ID | Replicas | Lease Holder |
 +-----------+---------+----------+----------+--------------+
@@ -352,7 +357,7 @@ You should see the following output:
 Time: 5.850903ms
 ~~~
 
-### Define Subpartitions on a Table
+### Define subpartitions on a Table
 
 A list partition can itself be partitioned, forming a subpartition. There is no limit on the number of levels of subpartitioning; that is, list partitions can be infinitely nested.
 
@@ -482,7 +487,7 @@ $ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au
 
 You should see the following output:
 
-~~~ sql
+~~~
 +-----------------+-----------------+----------+----------+--------------+
 |    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
 +-----------------+-----------------+----------+----------+--------------+
@@ -525,7 +530,7 @@ You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](p
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
 
-## Locality–Resilience Tradeoff
+## Locality–resilience tradeoff
 
 There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students.
 
@@ -533,7 +538,7 @@ There is a tradeoff between making reads/writes fast and surviving failures. Con
 - If two replicas are pinned to an Australian datacenter, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then the loss of one datacenter can lead to data unavailability, so some deployments may want two separate Australian datacenters.
 - If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
 
-## How CockroachDB's Partitioning Differs from Other Databases
+## How CockroachDB's partitioning differs from other databases
 
 Other databases use partitioning for three additional use cases: secondary indexes, sharding, and bulk loading/deleting. CockroachDB addresses these use-cases not by using partitioning, but in the following ways:
 

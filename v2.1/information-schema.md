@@ -12,7 +12,7 @@ The definition of `information_schema` is part of the SQL standard and can there
 
 <div id="toc"></div>
 
-## Data Exposed by information_schema
+## Data exposed by information_schema
 
 To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements.
 
@@ -268,7 +268,7 @@ Column | Description
 
 ## Examples
 
-### Retrieve All Columns from an Information Schema Table
+### Retrieve all columns from an information schema table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -282,7 +282,7 @@ Column | Description
 +--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
 ~~~
 
-### Retrieve Specific Columns from an Information Schema Table
+### Retrieve specific columns from an information schema table
 
 {% include copy-clipboard.html %}
 ~~~ sql

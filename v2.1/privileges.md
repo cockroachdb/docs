@@ -12,11 +12,11 @@ For the privileges required by specific statements, see the documentation for th
 
 <div id="toc"></div>
 
-## Supported Privileges
+## Supported privileges
 
 For a full list of supported privileges, see the [`GRANT`](grant.html) documentation.
 
-## Granting Privileges
+## Granting privileges
 
 To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, for example:
 
@@ -25,7 +25,7 @@ To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, 
 > GRANT SELECT, INSERT ON bank.accounts TO maxroach;
 ~~~
 
-## Showing Privileges
+## Showing privileges
 
 To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
 
@@ -34,7 +34,7 @@ To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grant
 > SHOW GRANTS ON DATABASE bank FOR maxroach;
 ~~~
 
-## Revoking Privileges
+## Revoking privileges
 
 To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statement, for example:
 

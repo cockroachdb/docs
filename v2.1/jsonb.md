@@ -121,7 +121,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
 ~~~
 
-### Retrieve Formatted `JSONB` Data
+### Retrieve formatted `JSONB` data
 
 To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
@@ -148,7 +148,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 +--------------------------------------+----------------------------------+------------------------------------+
 ~~~
 
-### Retrieve Specific Fields from a `JSONB` Value
+### Retrieve specific fields from a `JSONB` value
 
 To retrieve a specific field from a `JSONB` value, use the `->` operator. For example, retrieve a field from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
@@ -182,11 +182,11 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
-### Create a Table with a `JSONB` Column and a Computed Column
+### Create a table with a `JSONB` column and a computed column
 
 {% include computed-columns/jsonb.md %}
 
-## Supported casting & conversion
+## Supported casting and conversion
 
 `JSONB` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
 

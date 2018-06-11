@@ -28,9 +28,11 @@ Parameter | Description
 
 ### Rename a Database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +----------+
 | Database |
@@ -40,15 +42,21 @@ Parameter | Description
 | system   |
 +----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db1 RENAME TO db3;
 ~~~
+
 ~~~
 RENAME DATABASE
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +----------+
 | Database |
@@ -59,11 +67,13 @@ RENAME DATABASE
 +----------+
 ~~~
 
-### Rename Fails (New Name Already In Use)
+### Rename fails (new name already in use)
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
+
 ~~~
 +----------+
 | Database |
@@ -73,9 +83,12 @@ RENAME DATABASE
 | system   |
 +----------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db2 RENAME TO db3;
 ~~~
+
 ~~~
 pq: the new database name "db3" already exists
 ~~~

@@ -11,11 +11,11 @@ Interleaving tables improves query performance by optimizing the key-value struc
 
 <div id="toc"></div>
 
-## How Interleaved Tables Work
+## How interleaved tables work
 
 When tables are interleaved, data written to one table (known as the **child**) is inserted directly into another (known as the **parent**) in the key-value store. This is accomplished by matching the child table's Primary Key to the parent's.
 
-### Interleave Prefix
+### Interleave prefix
 
 For interleaved tables to have Primary Keys that can be matched, the child table must use the parent table's entire Primary Key as a prefix of its own Primary Key––these matching columns are referred to as the **interleave prefix**. It's easiest to think of these columns as representing the same data, which is usually implemented with Foreign Keys.
 
@@ -23,7 +23,7 @@ For interleaved tables to have Primary Keys that can be matched, the child table
 
 For example, if you want to interleave `orders` into `customers` and the Primary Key of customers is `id`, you need to create a column representing `customers.id` as the first column in the Primary Key of `orders`&mdash;e.g., with a column called `customer`. So the data representing `customers.id` is the interleave prefix, which exists in the `orders` table as the `customer` column.
 
-### Key-Value Structure
+### Key-value structure
 
 When you write data into the child table, it is inserted into the key-value store immediately after the parent table's key matching the interleave prefix.
 
@@ -43,11 +43,11 @@ For example, if you interleave `orders` into `customers`, the `orders` data is w
 
 By writing data in this way, related data is more likely to remain on the same key-value range, which can make it much faster to read from and write to. Using the above example, all of customer 1's data is going to be written to the same range, including its representation in both the `customers` and `orders` tables.
 
-## When to Interleave Tables
+## When to interleave tables
 
 {% include faq/when-to-interleave-tables.html %}
 
-### Interleaved Hierarchy
+### Interleaved hierarchy
 
 Interleaved tables typically work best when the tables form a hierarchy. For example, you could interleave the table `orders` (as the child) into the table `customers` (as the parent, which represents the people who placed the orders). You can extend this example by also interleaving the tables `invoices` (as a child) and `packages` (as a child) into `orders` (as the parent).
 
@@ -109,25 +109,31 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 ## Examples
 
-### Interleaving Tables
+### Interleaving tables
 
 This example creates an interleaved hierarchy between `customers`, `orders`, and `packages`, as well as the appropriate Foreign Key constraints. You can see that each child table uses its parent table's Primary Key as a prefix of its own Primary Key (the **interleave prefix**).
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
     name STRING(50)
   );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE orders (
     customer INT,
     id INT,
     total DECIMAL(20, 5),
     PRIMARY KEY (customer, id),
     CONSTRAINT fk_customer FOREIGN KEY (customer) REFERENCES customers
-    ) INTERLEAVE IN PARENT customers (customer)
-  ;
+  ) INTERLEAVE IN PARENT customers (customer);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > CREATE TABLE packages (
     customer INT,
     "order" INT,
@@ -137,26 +143,27 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
     delivery_date DATE,
     PRIMARY KEY (customer, "order", id),
     CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
-    ) INTERLEAVE IN PARENT orders (customer, "order")
-  ;
+  ) INTERLEAVE IN PARENT orders (customer, "order");
 ~~~
 
-### Key-Value Storage Example
+### Key-value storage example
 
 It can be easier to understand what interleaving tables does by seeing what it looks like in the key-value store. For example, using the above example of interleaving `orders` in `customers`, we could insert the following values:
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers
-  (id, name) VALUES
-  (1, 'Ha-Yun'),
-  (2, 'Emanuela');
+> INSERT INTO customers (id, name) VALUES
+    (1, 'Ha-Yun'),
+    (2, 'Emanuela');
+~~~
 
-> INSERT INTO orders
-  (customer, id, total) VALUES
-  (1, 1000, 100.00),
-  (2, 1001, 90.00),
-  (1, 1002, 80.00),
-  (2, 1003, 70.00);
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders (customer, id, total) VALUES
+    (1, 1000, 100.00),
+    (2, 1001, 90.00),
+    (1, 1002, 80.00),
+    (2, 1003, 70.00);
 ~~~
 
 Using an illustrative format of the key-value store (keys are represented in colors; values are represented by `-> value`), the data would be written like this:

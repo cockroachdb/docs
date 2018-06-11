@@ -10,7 +10,7 @@ This page explains available monitoring tools and critical events and metrics to
 
 <div id="toc"></div>
 
-## Monitoring Tools
+## Monitoring tools
 
 ### Admin UI
 
@@ -18,7 +18,7 @@ The [built-in Admin UI](admin-ui-access-and-navigate.html) gives you essential m
 
 {{site.data.alerts.callout_danger}}Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.{{site.data.alerts.end}}
 
-### Prometheus Endpoint
+### Prometheus endpoint
 
 Every node of a CockroachDB cluster exports granular timeseries metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data, but the format is **easy-to-parse** and can be massaged to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
@@ -47,7 +47,7 @@ replicas_quiescent{store="1"} 20
 
 {{site.data.alerts.callout_info}}In addition to using the exported timeseries data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See <a href="#events-to-alert-on">Events to Alert On</a> for more details.{{site.data.alerts.end}}
 
-### Health Endpoints
+### Health endpoints
 
 CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
 
@@ -115,13 +115,13 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 }
 ~~~
 
-### Raw Status Endpoints
+### Raw status endpoints
 
 Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.  
 
 <img src="{{ 'images/v2.1/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
-### Node Status Command
+### Node status command
 
 The [`cockroach node status`](view-node-details.html) command gives you metrics about the health and status of each node.
 
@@ -130,7 +130,7 @@ The [`cockroach node status`](view-node-details.html) command gives you metrics 
 - With the `--decommission` flag, you get details about the [node decommissioning](remove-nodes.html) process.
 - With the `--all` flag, you get all of the above.
 
-## Events to Alert On
+## Events to alert on
 
 Active monitoring helps you spot problems early, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus Endpoint](#prometheus-endpoint) metrics to use for detecting the events.
 

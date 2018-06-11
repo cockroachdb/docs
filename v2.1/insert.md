@@ -8,7 +8,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 <div id="toc"></div>
 
-## Performance Best Practices
+## Performance best practices
 
 - A single [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement is faster than multiple single-row `INSERT` statements. To bulk-insert data into an existing table, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
 - The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
@@ -72,7 +72,7 @@ All of the examples below assume you've already created a table `accounts`:
 );
 ~~~
 
-### Insert a Single Row
+### Insert a single row
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -127,7 +127,7 @@ If you do not list column names, the statement will use the columns of the table
 +----+----------+
 ~~~
 
-### Insert Multiple Rows into an Existing Table
+### Insert multiple rows into an existing table
 
 {{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching multiple rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). {{site.data.alerts.end}}
 
@@ -136,6 +136,7 @@ If you do not list column names, the statement will use the columns of the table
 > INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -151,11 +152,11 @@ If you do not list column names, the statement will use the columns of the table
 +----+----------+
 ~~~
 
-### Insert Multiple Rows into a New Table
+### Insert multiple rows into a new table
 
 The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
 
-### Insert from a `SELECT` Statement
+### Insert from a `SELECT` statement
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -195,7 +196,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 +----+----------+
 ~~~
 
-### Insert Default Values
+### Insert default values
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -226,6 +227,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 > INSERT INTO accounts DEFAULT VALUES;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -247,7 +249,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 +--------------------+----------+
 ~~~
 
-### Insert and Return Values
+### Insert and return values
 
 In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `unique_rowid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
@@ -504,7 +506,7 @@ IDs:
 
 </section>
 
-### Update Values `ON CONFLICT`
+### Update values `ON CONFLICT`
 
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict:
 
@@ -516,6 +518,7 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
     DO UPDATE SET balance = excluded.balance;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -539,6 +542,7 @@ You can also update the row using an existing value:
     DO UPDATE SET balance = accounts.balance + excluded.balance;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -553,6 +557,7 @@ You can also update the row using an existing value:
 
 You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 700)
@@ -561,6 +566,7 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
     WHERE excluded.balance > accounts.balance;
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -574,7 +580,7 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 (1 row)
 ~~~
 
-### Do Not Update Values `ON CONFLICT`
+### Do not update values `ON CONFLICT`
 
 In this example, we get an error from a uniqueness conflict:
 

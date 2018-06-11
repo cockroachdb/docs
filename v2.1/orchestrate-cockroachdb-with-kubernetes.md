@@ -22,7 +22,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
-### Kubernetes Terminology
+### Kubernetes terminology
 
 Feature | Description
 --------|------------

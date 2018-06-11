@@ -28,11 +28,13 @@ Parameter | Description
 
 ## Examples
 
-### Pause a Restore Job
+### Pause a restore job
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
+
 ~~~
 +----------------+---------+-------------------------------------------+...
 |       id       |  type   |               description                 |...
@@ -40,6 +42,8 @@ Parameter | Description
 | 27536791415282 | RESTORE | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 +----------------+---------+-------------------------------------------+...
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~

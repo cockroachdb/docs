@@ -35,7 +35,7 @@ Parameter | Description
 
 ## Examples
 
-### Grant Role Membership
+### Grant role membership
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -57,7 +57,7 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-### Grant the Admin Option
+### Grant the admin option
 
 {% include copy-clipboard.html %}
 ~~~ sql

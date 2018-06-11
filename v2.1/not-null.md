@@ -40,23 +40,31 @@ You can only apply the Not Null constraint to individual columns.
 | `column_def` | Definitions for any other columns in the table. |
 | `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
 
-## Usage Example
+## Usage example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS customers (
     customer_id INT         PRIMARY KEY,
     cust_name   STRING(30)  NULL,
     cust_email  STRING(100) NOT NULL
   );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
 ~~~
+
 ~~~
 pq: null value in column "cust_email" violates not-null constraint
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (customer_id, cust_name) VALUES (1, 'Smith');
 ~~~
+
 ~~~
 pq: null value in column "cust_email" violates not-null constraint
 ~~~

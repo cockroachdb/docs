@@ -10,7 +10,7 @@ toc: false
 
 <div id="toc"></div>
 
-## Primary Key Requirements
+## Primary key requirements
 
 The [primary key required for partitioning](partitioning.html#partition-using-primary-key) is different from the conventional primary key: The unique identifier in the primary key requires to be prefixed with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
 
@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
-### Define a List Partition on an Existing Table
+### Define a list partition on an existing table
 
 Suppose we have an existing table named `students_by_list` in a global online learning portal, and the primary key of the table is defined as `(country, id)`. We can define partitions on the table by list:
 
@@ -49,7 +49,7 @@ Suppose we have an existing table named `students_by_list` in a global online le
       PARTITION DEFAULT VALUES IN (default));
 ~~~
 
-### Define a Range Partition on an Existing Table
+### Define a range partition on an existing table
 
 Suppose we have an another existing table named `students_by_range` and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the table by range:
 
@@ -60,7 +60,7 @@ Suppose we have an another existing table named `students_by_range` and the prim
       PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
 ~~~
 
-### Define a Subpartitions on an Existing Table
+### Define a subpartitions on an existing table
 
 Suppose we have an yet another existing table named `students` with the primary key defined as `(country, expected_graduation_date, id)`. We can define partitions and subpartitions on the table:
 
@@ -72,7 +72,7 @@ Suppose we have an yet another existing table named `students` with the primary 
     );
 ~~~
 
-### Repartition a Table
+### Repartition a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -81,7 +81,7 @@ Suppose we have an yet another existing table named `students` with the primary 
     PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
 
-### Unpartition a Table
+### Unpartition a table
 
 {% include copy-clipboard.html %}
 ~~~ sql

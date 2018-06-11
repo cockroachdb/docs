@@ -17,7 +17,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 ## Details
 
-### Rules for Creating Foreign Keys
+### Rules for creating foreign keys
 
 **Foreign Key Columns**
 
@@ -37,7 +37,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [Unique](unique.html) or [Primary Key](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
 
-### _NULL_ Values
+### _NULL_ values
 
 Single-column foreign keys accept _NULL_ values.
 
@@ -50,7 +50,7 @@ For example, if you have a Foreign Key constraint on columns `(A, B)` and try to
 
 However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
-### Foreign Key Actions 
+### Foreign key actions
 
 When you set a foreign key constraint, you can control what happens to the constrained column when the column it's referencing (the foreign key) is deleted or updated.
 
@@ -77,7 +77,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 {{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint-with-cascade"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
-### Column Level
+### Column level
 
 <section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_column_level.html %}</section>
 
@@ -94,6 +94,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -104,7 +105,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 ~~~
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
-### Table Level
+### Table level
 
 <section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_table_level.html %}</section>
 
@@ -120,6 +121,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
+{% include copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE packages (
     customer INT,
@@ -134,9 +136,9 @@ CREATE TABLE packages (
   ;
 ~~~
 
-## Usage Examples
+## Usage examples
 
-### Use a Foreign Key Constraint with Default Actions
+### Use a foreign key constraint with default actions
 
 In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
 

@@ -33,7 +33,7 @@ Unlike other constraints which have very specific uses, the Primary Key constrai
 
 Primary Key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-### Column Level
+### Column level
 
 {% include sql/{{ page.version.version }}/diagrams/primary_key_column_level.html %}
 
@@ -48,6 +48,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
+{% include copy-clipboard.html %}
 ~~~ sql 
 > CREATE TABLE orders (
     order_id        INT PRIMARY KEY,
@@ -58,7 +59,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
   );
 ~~~
 
-### Table Level
+### Table level
 
 {% include sql/{{ page.version.version }}/diagrams/primary_key_table_level.html %}
 
@@ -72,6 +73,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -81,8 +83,9 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
   );
 ~~~
 
-## Usage Example
+## Usage example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -90,17 +93,27 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
     quantity_on_hand  INT NOT NULL,
     PRIMARY KEY (product_id, warehouse_id)
   );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 100);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 200);
 ~~~
+
 ~~~
 pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constraint "primary"
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, NULL, 100);
 ~~~
+
 ~~~
 pq: null value in column "warehouse_id" violates not-null constraint
 ~~~

@@ -33,8 +33,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Example
 
-### Rename a Column
+### Rename a column
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -46,12 +47,17 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 |  2 | Jerry | rat   |
 +----+-------+-------+
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users RENAME COLUMN title TO species;
 ~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
+
 ~~~
 +----+-------+---------+
 | id | name  | species |

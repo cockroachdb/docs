@@ -8,7 +8,7 @@ The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan 
 
 <div id="toc"></div>
 
-## Explainable Statements
+## Explainable statements
 
 You can `EXPLAIN` on the following statements:
 
@@ -33,7 +33,7 @@ You can `EXPLAIN` on the following statements:
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)
 
-## Query Optimization
+## Query optimization
 
 Using `EXPLAIN`'s output, you can optimize your queries by taking the following points into consideration:
 
@@ -70,7 +70,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
-## Success Responses
+## Success responses
 
 Successful `EXPLAIN` statements return tables with the following columns:
 
@@ -84,7 +84,7 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
 ## Examples
 
-### Default Query Plans
+### Default query plans
 
 By default, `EXPLAIN` includes the least detail about the query plan but can be
 useful to find out which indexes and index key ranges are used by a query:
@@ -113,7 +113,7 @@ index you are scanning (in this case, a full table scan). For more
 information on indexes and key ranges, see the
 [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
-### `EXPRS` Option
+### `EXPRS` option
 
 The `EXPRS` option includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level:
 
@@ -135,7 +135,7 @@ The `EXPRS` option includes SQL expressions that are involved in each processing
 +-----------+--------+-------------+
 ~~~
 
-### `METADATA` Option
+### `METADATA` option
 
 The `METADATA` option includes detail about which columns are being used by each
 level, as well as properties of the result set on that level:
@@ -211,7 +211,7 @@ that are known to have the same value on all rows. For example:
 This indicates that on any row, column `a` has the same value with column `e`,
 and that all rows have the same value on column `c`.
 
-### `QUALIFY` Option
+### `QUALIFY` option
 
 `QUALIFY` uses `<table name>.<column name>` notation for columns in the query plan. However, `QUALIFY` must be used with `EXPRS` to show the SQL values used:
 
@@ -261,7 +261,7 @@ You can contrast this with the same statement not including the `QUALIFY` option
 +-------+--------+----------+-------------+
 ~~~
 
-### `VERBOSE` Option
+### `VERBOSE` option
 
 The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options:
 
@@ -294,7 +294,7 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 +---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
 ~~~
 
-### `TYPES` Option
+### `TYPES` option
 
 The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well:
 
@@ -316,7 +316,7 @@ The `TYPES` mode includes the types of the values used in the query plan, and im
 +-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
 ~~~
 
-### Find the Indexes and Key Ranges a Query Uses
+### Find the indexes and key ranges a query uses
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use,
 which can help you ensure a query isn't performing a full table scan.
