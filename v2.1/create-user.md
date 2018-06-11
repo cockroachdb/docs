@@ -55,10 +55,11 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 ## Examples
 
-### Create a User
+### Create a user
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE USER jpointsman;
 ~~~
@@ -68,19 +69,20 @@ After creating users, you must:
 - [Grant them privileges to databases](grant.html).
 - For secure clusters, you must also [create their client certificates](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client).
 
-### Create a User With a Password
+### Create a user with a password
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
 Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
-### Manage Users
+### Manage users
 
 After creating users, you can manage them using the [`cockroach user`](create-and-manage-users.html) command.
 
-### Authenticate as a Specific User
+### Authenticate as a specific user
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -90,20 +92,22 @@ After creating users, you can manage them using the [`cockroach user`](create-an
 
 <div class="filter-content" markdown="1" data-scope="secure">
 
-#### Secure Clusters with Client Certificates
+#### Secure clusters with client certificates
 
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --user=jpointsman
 ~~~
 
-#### Secure Clusters with Passwords
+#### Secure clusters with passwords
 
 [Users with passwords](#create-a-user) can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
 
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --user=jpointsman
 ~~~
@@ -112,6 +116,7 @@ $ cockroach sql --user=jpointsman
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --user=jpointsman
 ~~~

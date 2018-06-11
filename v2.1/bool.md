@@ -4,13 +4,13 @@ summary: The BOOL data type stores Boolean values of false or true.
 toc: false
 ---
 
-The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`. 
+The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`.
 
 <div id="toc"></div>
 
 ## Aliases
 
-In CockroachDB, `BOOLEAN` is an alias for `BOOL`. 
+In CockroachDB, `BOOLEAN` is an alias for `BOOL`.
 
 ## Syntax
 
@@ -57,9 +57,9 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 +-------+------+-------+
 ~~~
 
-## Supported casting & conversion
+## Supported casting and conversion
 
-`BOOL` values can be [cast](data-types.html#data-type-conversions-casts) to any of the following data types:
+`BOOL` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------

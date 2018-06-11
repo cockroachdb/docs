@@ -119,11 +119,11 @@ Proceed through the following steps until you locate the source of the issue wit
 
 **Next step**: If you successfully completed these steps, try [securing your deployment](manual-deployment.html) (*troubleshooting docs for this coming soon*) or reviewing our other [support resources](support-resources.html).
 
-## Troubleshooting Information
+## Troubleshooting information
 
 Use the information below to resolve issues you encounter when trying to start or scale your cluster.
 
-### Networking Troubleshooting
+### Networking troubleshooting
 
 Most networking-related issues are caused by one of two issues:
 
@@ -145,7 +145,7 @@ However, to efficiently troubleshoot the issue, it's important to understand whe
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
-### Node Won't Join Cluster
+### Node won't join cluster
 
 When joining a node to a cluster, you might receive one of the following errors:
 
@@ -183,7 +183,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 
 **Explanation**: When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit `cockroach`, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.
 
-### Replication Error in a Multi-Node Cluster
+### Replication error in a multi-node cluster
 
 If data is not being replicated to some nodes in the cluster, we recommend checking out the following:
 

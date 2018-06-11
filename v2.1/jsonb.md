@@ -188,7 +188,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 ## Supported casting and conversion
 
-`JSONB` values can be [cast](data-types.html#data-type-conversions-casts) to the following data type:
+`JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
 
 - `STRING`
 

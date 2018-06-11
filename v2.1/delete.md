@@ -40,7 +40,7 @@ table td:first-child {
 | `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
 | `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`. |
 
-## Success Responses
+## Success responses
 
 Successful `DELETE` statements return one of the following:
 
@@ -49,7 +49,7 @@ Successful `DELETE` statements return one of the following:
 |`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
 |Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)|
 
-## Disk Space Usage After Deletes
+## Disk space usage after deletes
 
 Deleting a row does not immediately free up the disk space. This is
 due to the fact that CockroachDB retains [the ability to query tables
@@ -62,7 +62,7 @@ deleted rows more frequently. Second, unlike `DELETE`,
 [truncate](truncate.html) immediately deletes the entire table, so
 consider if you can use `TRUNCATE` instead.
 
-## Select Performance on Deleted Rows
+## Select performance on deleted rows
 
 Queries that scan across tables that have lots of deleted rows will
 have to scan over deletions that have not yet been garbage
@@ -73,10 +73,11 @@ deleted rows more frequently.
 
 ## Examples
 
-### Delete All Rows
+### Delete all rows
 
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details;
 ~~~
@@ -86,7 +87,8 @@ DELETE 7
 
 This is roughly equivalent to [`TRUNCATE`](truncate.html).
 
-~~~
+{% include copy-clipboard.html %}
+~~~ sql
 > TRUNCATE account_details;
 ~~~
 ~~~
@@ -97,16 +99,17 @@ As you can see, one difference is that `TRUNCATE` does not return the number of 
 
 {{site.data.alerts.callout_info}}The <code>TRUNCATE</code> statement removes all rows from a table by dropping the table and recreating a new table with the same name. This is much more performant than deleting each of the rows. {{site.data.alerts.end}}
 
-### Delete Specific Rows
+### Delete specific rows
 
 When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using columns with the [Primary Key](primary-key.html)/[Unique](unique.html) constraints (both of which enforce uniqueness) versus those that are not unique.
 
-#### Delete Rows Using Primary Key/Unique Columns
+#### Delete rows using Primary Key/unique columns
 
 Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
 
 In this example, `account_id` is our primary key and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;
 ~~~
@@ -118,10 +121,11 @@ In this example, `account_id` is our primary key and we want to delete the row w
 +------------+---------+--------------+
 ~~~
 
-#### Delete Rows Using Non-Unique Columns
+#### Delete rows Using non-unique columns
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance = 30000 RETURNING *;
 ~~~
@@ -136,13 +140,14 @@ Deleting rows using non-unique columns removes _every_ row that returns `TRUE` f
 
 The example statement deleted two rows, which might be unexpected.
 
-### Return Deleted Rows
+### Return deleted rows
 
 To see which rows your statement deleted, include the `RETURNING` clause to retrieve them using the columns you specify.
 
-#### Use All Columns
+#### Use all columns
 By specifying `*`, you retrieve all columns of the delete rows.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 23000 RETURNING *;
 ~~~
@@ -154,10 +159,11 @@ By specifying `*`, you retrieve all columns of the delete rows.
 +------------+---------+--------------+
 ~~~
 
-#### Use Specific Columns
+#### Use specific columns
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
 ~~~
@@ -169,10 +175,11 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 +------------+--------------+
 ~~~
 
-#### Change Column Labels
+#### Change column labels
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 22500 RETURNING account_id, balance AS final_balance;
 ~~~

@@ -27,7 +27,7 @@ All [`cockroach` commands](cockroach-commands.html) support logging. However, it
 - `cockroach start` generates most messages related to the operation of your cluster.
 - Other commands do generate messages, but they're typically only interesting in troubleshooting scenarios.
 
-### Severity Levels
+### Severity levels
 
 CockroachDB identifies each message with a severity level, letting operators know if they need to intercede:
 
@@ -36,14 +36,14 @@ CockroachDB identifies each message with a severity level, letting operators kno
 3. `ERROR`
 4. `FATAL` *(highest severity; requires operator attention)*
 
-**Default Behavior by Severity Level**
+**Default behavior by severity level**
 
 Command | `INFO` messages | `WARNING` and above messages
 --------|--------|--------------------
 [`cockroach start`](start-a-node.html) | Write to file | Write to file
 [All other commands](cockroach-commands.html) | Discard | Print to `stderr`
 
-### Output Locations
+### Output locations
 
 Based on the command's flags and the message's [severity level](#severity-levels), CockroachDB does one of the following:
 
@@ -51,7 +51,7 @@ Based on the command's flags and the message's [severity level](#severity-levels
 - [Prints it to `stderr`](#print-to-stderr)
 - [Discards the message entirely](#discard-message)
 
-#### Write to File
+#### Write to file
 
 CockroachDB can write messages to log files.  The files are named using the following format:
 
@@ -91,7 +91,7 @@ Disabled by | Default<sup>2</sup> | `--logtostderr=NONE`
 
 {{site.data.alerts.callout_info}}<sup>2</sup> <code>cockroach start</code> does not print any messages to <code>stderr</code> unless the <code>cockroach</code> process does not have access to on-disk storage, in which case it defaults to <code>--logtostderr=INFO</code> and prints all messages to <code>stderr</code>.{{site.data.alerts.end}}
 
-#### Discard Message
+#### Discard message
 
 Messages with severity levels below the `--logtostderr` and `--log-file-verbosity` flag's values are neither written to files nor printed to `stderr`, so they are discarded.
 

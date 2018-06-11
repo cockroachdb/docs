@@ -34,7 +34,7 @@ CockroachDB requires TCP communication on two ports:
 
 Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to expose your Admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/vpc/firewalls).
 
-### Creating Firewall Rules
+### Creating firewall rules
 
 When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature, which lets you specify that you want to apply the rule only to instance that include the same tag.
 
@@ -48,7 +48,7 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 | Allowed protocols... | **tcp:8080** |
 | Target tags | **cockroachdb** |
 
-#### Application Data
+#### Application data
 
 Applications will not connect directly to your CockroachDB nodes. Instead, they'll connect to GCE's TCP Proxy Load Balancing service, which automatically routes traffic to the instances that are closest to the user. Because this service is implemented at the edge of the Google Cloud, you'll need to create a firewall rule to allow traffic from the load balancer and health checker to your instances. This is covered in [Step 4](#step-4-set-up-tcp-proxy-load-balancing).
 

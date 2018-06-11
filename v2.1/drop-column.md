@@ -10,7 +10,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_column.html %}
+<section> {% include sql/{{ page.version.version }}/diagrams/drop_column.html %} </section>
 
 ## Required privileges
 
@@ -31,48 +31,56 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
-### Drop Columns
+### Drop columns
 
 If you no longer want a column in a table, you can drop it.
 
-``` sql
+{% include copy-clipboard.html %}
+~~~ sql
 > ALTER TABLE orders DROP COLUMN billing_zip;
-```
+~~~
 
-### Prevent Dropping Columns with Dependent Objects (`RESTRICT`)
+### Prevent dropping columns with dependent objects (`RESTRICT`)
 
 If the column has dependent objects, such as [views](views.html), CockroachDB will not drop the column by default; however, if you want to be sure of the behavior you can include the `RESTRICT` clause.
 
-``` sql
+{% include copy-clipboard.html %}
+~~~ sql
 > ALTER TABLE orders DROP COLUMN customer RESTRICT;
-```
-```
+~~~
+~~~
 pq: cannot drop column "customer" because view "customer_view" depends on it
-```
+~~~
 
-### Drop Column & Dependent Objects (`CASCADE`)
+### Drop column and dependent objects (`CASCADE`)
 
 If you want to drop the column and all of its dependent options, include the `CASCADE` clause.
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so should be used cautiously.{{site.data.alerts.end}}
 
-``` sql
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW CREATE VIEW customer_view;
-```
-```
+~~~
+~~~
 +---------------+----------------------------------------------------------------+
 |     View      |                          CreateView                            |
 +---------------+----------------------------------------------------------------+
 | customer_view | CREATE VIEW customer_view AS SELECT customer FROM store.orders |
 +---------------+----------------------------------------------------------------+
-```
-``` sql
+~~~
+{% include copy-clipboard.html %}
+~~~ sql
 > ALTER TABLE orders DROP COLUMN customer CASCADE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~
 > SHOW CREATE VIEW customer_view;
-```
-```
+~~~
+~~~
 pq: view "customer_view" does not exist
-```
+~~~
 
 ## See also
 

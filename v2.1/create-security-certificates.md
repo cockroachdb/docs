@@ -43,7 +43,7 @@ File name pattern | File usage
 `ca.crt`     | CA certificate
 `node.crt`   | Server certificate
 `node.key`   | Key for server certificate
-`client.<user>.crt` | Client certificate for `<user>` (eg: `client.root.crt` for user `root`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
 `client.<user>.key` | Key for the client certificate
 
 Note the following:

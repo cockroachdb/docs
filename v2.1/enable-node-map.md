@@ -14,7 +14,7 @@ This page walks you through the process of setting up and enabling the **Node Ma
 
 <div id="toc"></div>
 
-## Set Up and Enable the Node Map
+## Set up and enable the Node Map
 
 To enable the **Node Map**, you need to start the cluster with the correct `--locality` flags and assign the latitudes and longitudes for each locality.
 
@@ -29,8 +29,9 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-### Step 1. Ensure the CockroachDB Version is 2.0 or Higher
+### Step 1. Ensure the CockroachDB Version is 2.0 or higher
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach version
 ~~~
@@ -48,7 +49,7 @@ Build Type:   release
 
 If any node is running an earlier version, [upgrade it to CockroachDB v2.0](upgrade-cockroach-version.html).
 
-### Step 2. Start the Nodes with the Correct `--locality` Flags
+### Step 2. Start the nodes with the correct `--locality` flags
 
 To start a new cluster with the correct `--locality` flags:
 
@@ -115,13 +116,13 @@ $ cockroach init --insecure
 
 <img src="{{ 'images/v2.1/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 3. [Set the Enterprise License](enterprise-licensing.html) and refresh the Admin UI
+### Step 3. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
 
 The following page should be displayed:
 
 <img src="{{ 'images/v2.1/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 4. Set the Latitudes and Longitudes for the Localities
+### Step 4. Set the latitudes and longitudes for the localities
 
 Launch the built-in SQL client:
 
@@ -162,7 +163,7 @@ Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in
 
 ## Troubleshoot the Node Map
 
-### Node Map Not Displayed
+### Node Map not displayed
 
 The **Node Map** will not be displayed until all nodes have localities and are assigned the corresponding latitudes and longitudes. To verify if you have assigned localities as well as latitude and longitudes assigned to all nodes, navigate to the Localities debug page (`https://<address of any node>:8080/#/reports/localities`) in the Admin UI.
 
@@ -174,7 +175,7 @@ The Localities debug page displays the following:
 
 On the page, ensure that every node has a locality as well as latitude/longitude coordinates assigned to them.
 
-### Node Map Not Displayed for All Locality Levels
+### Node Map not displayed for all locality levels
 
 The **Node Map** is displayed only for the locality levels that have latitude/longitude coordinates assigned to them:
 
@@ -185,15 +186,15 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ## Known limitations
 
-### Unable to Assign Latitude/Longitude Coordinates to Localities
+### Unable to assign latitude/longitude coordinates to localities
 
 {% include known_limitations/node-map.md %}
 
-### **Capacity Used** Value Displayed is More Than Configured Capacity
+### **Capacity Used** value displayed is more than configured Capacity
 
 {% include available-capacity-metric.md %}
 
-## Location Coordinates for Reference
+## Location coordinates for reference
 
 ### AWS locations
 

@@ -19,7 +19,7 @@ You can only apply the Default Value constraint to individual columns.
 
 {{site.data.alerts.callout_info}}You can also add the Default Value constraint to an existing table through <a href="alter-column.html#set-or-change-a-default-value"><code>ALTER COLUMN</code></a>. {{site.data.alerts.end}}
 
-{% include sql/{{ page.version.version }}/diagrams/default_value_column_level.html %}
+<section> {% include sql/{{ page.version.version }}/diagrams/default_value_column_level.html %} </section>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -31,8 +31,9 @@ You can only apply the Default Value constraint to individual columns.
 | `column_def` | Definitions for any other columns in the table. |
 | `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
 
-## Usage Example
+## Example
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE inventories (
     product_id        INT,
@@ -40,11 +41,20 @@ You can only apply the Default Value constraint to individual columns.
     quantity_on_hand  INT DEFAULT 100,
     PRIMARY KEY (product_id, warehouse_id)
   );
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (2,30, NULL);
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > SELECT * FROM inventories;
 ~~~
 ~~~

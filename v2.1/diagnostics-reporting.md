@@ -12,11 +12,11 @@ This page explains the details that get shared and how to opt out of sharing.
 
 <div id="toc"></div>
 
-## What Gets Shared
+## What gets shared
 
 When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized storage details, SQL table structure details, and SQL query statistics with Cockroach Labs on an hourly basis, as well as crash reports as they occur. If the Admin UI is accessed, the anonymized user information and page views are shared. Please note that the details that get shared may change over time, but as that happens, we will update this page and announce the changes in release notes.
 
-### Storage Details
+### Storage details
 
 Each node of a CockroachDB cluster shares the following storage details on an hourly basis:
 
@@ -59,7 +59,7 @@ This JSON example shows what storage details look like when sent to Cockroach La
 }
 ~~~
 
-### SQL Table Structure Details
+### SQL table structure details
 
 Each node of a CockroachDB cluster shares the following details about the structure of each table stored on the node on an hourly basis:
 
@@ -112,7 +112,7 @@ This JSON example shows an excerpt of what table structure details look like whe
 }
 ~~~
 
-### SQL Query Statistics
+### SQL query statistics
 
 Each node of a CockroachDB cluster shares the following statistics about the SQL queries it has executed on an hourly basis:
 
@@ -200,7 +200,7 @@ This JSON example shows an excerpt of what query statistics look like when sent 
 }
 ~~~
 
-### Admin UI Details
+### Admin UI details
 
 CockroachDB uses the Identity and Page methods of [Segment](https://segment.com/)'s analytics.js library to collect anonymized data about Admin UI usage.
 
@@ -282,13 +282,13 @@ This JSON example shows what anonymized Admin UI page views information looks li
 }
 ~~~
 
-## Opt Out of Diagnostics Reporting
+## Opt out of diagnostics reporting
 
-### At Cluster Initialization
+### At cluster initialization
 
 To make sure that absolutely no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET CLUSTER SETTING` method described below.
 
-### After Cluster Initialization
+### After cluster initialization
 
 To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
 
@@ -299,7 +299,7 @@ To stop sending diagnostic details to Cockroach Labs once a cluster is running, 
 
 This change will not be instantaneous, as it must be propagated to other nodes in the cluster.
 
-## Check the State of Diagnostics Reporting
+## Check the state of diagnostics reporting
 
 To check the state of diagnostics reporting, [use the built-in SQL client](use-the-built-in-sql-client.html) to execute the following [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement:
 

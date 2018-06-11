@@ -60,7 +60,7 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 ## Supported conversions
 
 `BYTES` values can be
-[cast](data-types.html#data-type-conversions-casts) explicitly to
+[cast](data-types.html#data-type-conversions-and-casts) explicitly to
 `STRING`. The conversion verifies that the byte array contains only
 valid UTF-8 byte sequences; an error is reported otherwise.
 

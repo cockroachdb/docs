@@ -185,7 +185,7 @@ decide whether to retry or not based on whether it would be better for
 your application to apply the transaction twice or return an error to
 the user.
 
-## Something Else?
+## Something else?
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 

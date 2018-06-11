@@ -4,7 +4,7 @@ summary: Learn about the data types supported by CockroachDB.
 toc: true
 ---
 
-## Supported Types
+## Supported types
 
 CockroachDB supports the following data types. Click a type for more details.
 
@@ -29,7 +29,7 @@ Type | Description | Example
 [`TIMESTAMPTZ`](timestamp.html) | A date and time pairing with a time zone offset from UTC. | `TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`
 [`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
 
-## Data Type Conversions & Casts
+## Data type conversions and casts
 
 CockroachDB supports explicit type conversions using the following methods:
 
