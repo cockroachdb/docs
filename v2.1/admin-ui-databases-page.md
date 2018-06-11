@@ -30,3 +30,9 @@ The **Grants** view shows the [privileges](privileges.html) granted to users for
 For more details about grants and privileges, see [Grants](grant.html).
 
 <img src="{{ 'images/v2.1/admin_ui_database_grants_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Grants View" style="border:1px solid #eee;max-width:100%" />
+
+## See also
+
+- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Support Resources](support-resources.html)
+- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)

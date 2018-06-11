@@ -67,3 +67,9 @@ The **SQL** dashboard shows other time series graphs that are important for Cock
 - Schema Changes
 
 For monitoring CockroachDB, it is sufficient to use the [**SQL Connections**](#sql-connections), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries**](#sql-queries), [**Service Latency**](#service-latency), and [**Transactions**](#transactions) graphs.
+
+## See also
+
+- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Support Resources](support-resources.html)
+- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)

@@ -19,6 +19,6 @@ The modules build on each other, so it's important to complete them in order. As
 
 Once you've finished, [let us know if you are interested in more detailed training](https://www.surveymonkey.com/r/5TGPWRJ) on deploying, monitoring, troubleshooting, and maintaining CockroachDB.
 
-## What's First?
+## What's first?
 
 - [Why CockroachDB?](why-cockroachdb.html)

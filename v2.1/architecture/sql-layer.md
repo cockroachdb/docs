@@ -4,9 +4,11 @@ summary:
 toc: false
 ---
 
-The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
+The SQL layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
 
-{{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -16,17 +18,17 @@ Once CockroachDB has been deployed, developers need nothing more than a connecti
 
 Because CockroachDB's nodes all behave symmetrically, developers can send requests to any node (which means CockroachDB works well with load balancers). Whichever node receives the request acts as the "gateway node," as other layers process the request.
 
-When developers send requests to the cluster, they arrive as SQL statements, but data is ultimately written to and read from the storage layer as key-value (KV) pairs. To handle this, the SQL layer converts SQL statements into a plan of KV operations, which it passes along to the Transaction Layer.
+When developers send requests to the cluster, they arrive as SQL statements, but data is ultimately written to and read from the storage layer as key-value (KV) pairs. To handle this, the SQL layer converts SQL statements into a plan of KV operations, which it passes along to the transaction layer.
 
-### Interactions with Other Layers
+### Interactions with other layers
 
-In relationship to other layers in CockroachDB, the SQL Layer:
+In relationship to other layers in CockroachDB, the SQL layer:
 
-- Sends requests to the Transaction Layer.
+- Sends requests to the transaction layer.
 
 ## Components
 
-### Relational Structure
+### Relational structure
 
 Developers experience data stored in CockroachDB in a relational structure, i.e., rows and columns. Sets of rows and columns are organized into tables. Collections of tables are organized into databases. Your cluster can contain many databases.
 
@@ -38,17 +40,17 @@ CockroachDB implements a large portion of the ANSI SQL standard to manifest its 
 
 Importantly, through the SQL API, we also let developers use ACID-semantic transactions like they would through any SQL database (`BEGIN`, `END`, `ISOLATION LEVELS`, etc.)
 
-### PostgreSQL Wire Protocol
+### PostgreSQL wire protocol
 
 SQL queries reach your cluster through the PostgreSQL wire protocol. This makes connecting your application to the cluster simple by supporting most PostgreSQL-compatible drivers, as well as many PostgreSQL ORMs, such as GORM (Go) and Hibernate (Java).
 
-### SQL Parser, Planner, Executor
+### SQL parser, planner, executor
 
 After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, creates a query plan, and then executes the plan.
 
 #### Parsing
 
-Received queries are parsed against our `yacc` file (which describes our supported syntax), and converts the string version of each query into [Abstract Syntax Trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
+Received queries are parsed against our `yacc` file (which describes our supported syntax), and converts the string version of each query into [abstract syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
 #### Planning
 
@@ -60,7 +62,7 @@ You can see the `planNodes` a query generates using [`EXPLAIN`](../explain.html)
 
 #### Executing
 
-`planNodes` are then executed, which begins by communicating with the Transaction Layer.
+`planNodes` are then executed, which begins by communicating with the transaction layer.
 
 This step also includes encoding values from your statements, as well as decoding values returned from lower layers.
 
@@ -91,12 +93,12 @@ To run SQL statements in a distributed fashion, we introduce a couple of concept
 
 You can find much greater detail in the [DistSQL RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160421_distributed_sql.md).
 
-## Technical Interactions with Other Layers
+## Technical interactions with other layers
 
-### SQL & Transaction Layer
+### SQL and transaction layer
 
-KV operations from executed `planNodes` are sent to the Transaction Layer.
+KV operations from executed `planNodes` are sent to the transaction layer.
 
 ## What's next?
 
-Learn how CockroachDB handles concurrent requests in the [Transaction Layer](transaction-layer.html).
+Learn how CockroachDB handles concurrent requests in the [transaction layer](transaction-layer.html).

@@ -73,8 +73,10 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Copy the code below to `myapp/src/test/test.clj` or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.clj" download>download it directly</a>. Again, preserve the file name `test.clj`.
-
-{{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the
+[client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ clojure

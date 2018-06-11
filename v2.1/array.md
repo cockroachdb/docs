@@ -10,7 +10,9 @@ The `ARRAY` data type is useful for ensuring compatibility with ORMs and other t
 
 <div id="toc"></div>
 
-{{site.data.alerts.callout_info}} CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.
+{{site.data.alerts.end}}
 
 ## Syntax
 
@@ -78,7 +80,9 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 ~~~
 
 ### Accessing an array element using array index
-{{site.data.alerts.callout_info}} Arrays in CockroachDB are 1-indexed. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Arrays in CockroachDB are 1-indexed.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql

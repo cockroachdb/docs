@@ -40,8 +40,8 @@ Options include:
 
 To compare system vs. userspace CPU usage, select the following values under **Metric Name**:
 
-+ `sys.cpu.sys.percent`
-+ `sys.cpu.user.percent`
+- `sys.cpu.sys.percent`
+- `sys.cpu.user.percent`
 
 The Y-axis label is the **Count**. A count of 1 represents 100% utilization. The **Aggregator** of **Sum** can show the count to be above 1, which would mean CPU utilization is greater than 100%.
 
@@ -57,6 +57,6 @@ This list is taken directly from the source code and is subject to change. Some 
 
 ## See also
 
-+ [Troubleshooting Overview](troubleshooting-overview.html)
-+ [Support Resources](support-resources.html)
-+ [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Support Resources](support-resources.html)
+- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
