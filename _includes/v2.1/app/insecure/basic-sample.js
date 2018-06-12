@@ -7,15 +7,7 @@ var config = {
     user: 'maxroach',
     host: 'localhost',
     database: 'bank',
-    port: 26257,
-    ssl: {
-        ca: fs.readFileSync('certs/ca.crt')
-            .toString(),
-        key: fs.readFileSync('certs/client.maxroach.key')
-            .toString(),
-        cert: fs.readFileSync('certs/client.maxroach.crt')
-            .toString()
-    }
+    port: 26257
 };
 
 // Create a pool.
