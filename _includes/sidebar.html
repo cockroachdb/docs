@@ -9,7 +9,7 @@
 
       var navgocoOptions = {
         caretHtml: '',
-        accordion: true,
+        {% if page.version.version == 'v2.1' %}accordion: false,{% else %}accordion: true,{% endif %}
         openClass: 'active', // open
         save: false, // leave false or nav highlighting doesn't work right
         cookie: {
@@ -22,6 +22,9 @@
           easing: 'swing'
         }
       };
+
+
+    {% if page.version.version == 'v2.1' %}$('#mysidebar .tier-1').addClass('active');{% endif %}
 
       function adjustMinHeight() {
         setTimeout(function() {
