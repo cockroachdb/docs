@@ -18,10 +18,16 @@ We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and 
 For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+1. [Install CockroachDB](install-cockroachdb.html).
+2. Start up a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
+3. Choose the instructions that correspond to whether your cluster is secure or insecure:
+
+<div class="filters filters-big clearfix">
+  <button class="filter-button" data-scope="secure">Secure</button>
+  <button class="filter-button" data-scope="insecure">Insecure</button>
+</div>
 
 ## Step 1. Install the SQLAlchemy ORM
 
@@ -34,23 +40,49 @@ $ pip install sqlalchemy cockroachdb
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-{% include {{ page.version.version }}/app/common-steps.md %}
+## Step 2. Create the `maxroach` user and `bank` database
 
-## Step 5. Run the Python code
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER IF NOT EXISTS maxroach;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE bank;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+~~~
+
+<section class="filter-content" markdown="1" data-scope="secure">
+
+## Step 3. Generate a certificate for the `maxroach` user
+
+Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+
+{% include copy-clipboard.html %}
+~~~ sh
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=certs/ca.key
+~~~
+
+## Step 3. Run the Python code
 
 The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) to map Python-specific objects to SQL operations. Specifically, `Base.metadata.create_all(engine)` creates an `accounts` table based on the Account class, `session.add_all([Account(),...
 ])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
 
 {{site.data.alerts.callout_info}}
-The [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL. Using `postgres://` to connect to your cluster will not work.
+The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{ page.version.version }}/app/sqlalchemy-basic-sample.py %}
+{% include v2.1/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
@@ -70,8 +102,9 @@ The output should be:
 To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
+~~~ sql
+> USE bank;
+> SHOW TABLES;
 ~~~
 
 ~~~
@@ -84,8 +117,8 @@ $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
+~~~ sql
+> SELECT id, balance FROM accounts;
 ~~~
 
 ~~~
@@ -98,8 +131,77 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 (2 rows)
 ~~~
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+## Step 3. Run the Python code
+
+The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) to map Python-specific objects to SQL operations. Specifically, `Base.metadata.create_all(engine)` creates an `accounts` table based on the Account class, `session.add_all([Account(),...
+])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
+
+{{site.data.alerts.callout_info}}
+The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
+{{site.data.alerts.end}}
+
+Copy the code or
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/sqlalchemy-basic-sample.py" download>download it directly</a>.
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include v2.1/app/insecure/sqlalchemy-basic-sample.py %}
+~~~
+
+Then run the code:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python sqlalchemy-basic-sample.py
+~~~
+
+The output should be:
+
+~~~ shell
+1 1000
+2 250
+~~~
+
+To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> USE bank;
+> SHOW TABLES;
+~~~
+
+~~~
++----------+
+|  Table   |
++----------+
+| accounts |
++----------+
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, balance FROM accounts;
+~~~
+
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  1 |    1000 |
+|  2 |     250 |
++----+---------+
+(2 rows)
+~~~
+
+</section>
+
 ## What's next?
 
 Read more about using the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/), or check out a more realistic implementation of SQLAlchemy with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include {{ page.version.version }}/app/see-also-links.md %}
+{% include v2.1/app/see-also-links.md %}

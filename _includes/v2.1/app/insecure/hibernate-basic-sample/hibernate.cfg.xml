@@ -4,12 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.pk8&sslcert=certs/client.maxroach.crt]]></property>
-        <property name="hibernate.connection.username">maxroach</property>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+        <property name="connection.url">jdbc:postgresql://127.0.0.1:26257/bank?sslmode=disable</property>
+        <property name="connection.username">maxroach</property>
 
         <!-- Required so a table can be created from the 'Account' class in Sample.java -->
         <property name="hibernate.hbm2ddl.auto">create</property>
