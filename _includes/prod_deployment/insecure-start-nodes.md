@@ -107,7 +107,7 @@ For each initial node of your cluster, complete the following steps:
     $ chown cockroach /var/lib/cockroach
     ~~~
 
-7. Download the [sample configuration template](/_includes/prod_deployment/insecurecockroachdb.service):
+7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/prod_deployment/insecurecockroachdb.service):
 
     {% include copy-clipboard.html %}
     ~~~ shell
