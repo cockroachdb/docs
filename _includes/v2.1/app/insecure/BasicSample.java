@@ -20,10 +20,7 @@ public class BasicSample {
         // Connect to the "bank" database.
         Properties props = new Properties();
         props.setProperty("user", "maxroach");
-        props.setProperty("sslmode", "require");
-        props.setProperty("sslrootcert", "certs/ca.crt");
-        props.setProperty("sslkey", "certs/client.maxroach.pk8");
-        props.setProperty("sslcert", "certs/client.maxroach.crt");
+        props.setProperty("sslmode", "disable");
 
         Connection db = DriverManager
             .getConnection("jdbc:postgresql://127.0.0.1:26257/bank", props);
