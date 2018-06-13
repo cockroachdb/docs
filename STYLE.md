@@ -342,6 +342,8 @@ To insert a version tag, use the following code:
 <span class="version-tag">New in vX.X:</span>
 ~~~
 
+Note: Version tags cannot be used in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
+
 Examples:
 
 - [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
