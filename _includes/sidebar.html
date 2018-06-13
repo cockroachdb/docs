@@ -10,7 +10,7 @@
       var navgocoOptions = {
         caretHtml: '',
         {% if page.version.version == 'v2.1' %}accordion: false,{% else %}accordion: true,{% endif %}
-        openClass: 'active', // open
+        openClass: 'active--expand', // open
         save: false, // leave false or nav highlighting doesn't work right
         cookie: {
           name: 'navgoco',
@@ -22,11 +22,25 @@
           easing: 'swing'
         }
       };
-
-
-    {% if page.version.version == 'v2.1' %}$('#mysidebar .tier-1').addClass('active');{% endif %}
-
-      function adjustMinHeight() {
+      
+      // when/if we decide to include this functionality in other versions, we can remove the conditional liquid statement
+      // and migrate the contained code block to customscripts.js
+      {% if page.version.version == 'v2.1' %}
+        if ($(window).width() >= 992) {
+          $('#mysidebar .tier-1').addClass('active--expand');
+        }
+    
+        $(window).on('resize', function() {
+          if ($(window).width() > 992) {
+            $('#mysidebar .tier-1>ul').slideDown(0);
+            adjustMinHeight();
+          } else {
+            $('#mysidebar .tier-1>ul').slideUp(0);
+          }
+        });
+      {% endif %}
+        
+      function adjustMinHeight(duration) {
         setTimeout(function() {
           var height = $sidebar.outerHeight();
           if(height > 475) {
@@ -36,7 +50,7 @@
             $maincontent.animate({ 'min-height' : 625 }, 200);
             $contentcol.css({ 'min-height' : 625 });
           }
-        }, 400);
+        }, 200);
       }
 
       function closeVersionSwitcher() {
