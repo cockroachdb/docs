@@ -49,9 +49,11 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in step 5:
 
-1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+1. [Upgrade to v2.0.3](../v2.0/upgrade-cockroach-version.html), if you haven't already. The `cluster.preserve_downgrade_option` setting mentioned below is available only as of v2.0.3.
 
-2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+
+3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
