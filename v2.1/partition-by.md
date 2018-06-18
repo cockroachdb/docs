@@ -8,6 +8,11 @@ toc: true
 
 {{site.data.alerts.callout_info}}<a href="partitioning.html">Defining table partitions</a> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
+{{site.data.alerts.end}}
+
+<div id="toc"></div>
 
 ## Primary key requirements
 
