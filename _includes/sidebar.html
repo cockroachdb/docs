@@ -23,19 +23,6 @@
         }
       };
 
-      function adjustMinHeight() {
-        setTimeout(function() {
-          var height = $sidebar.outerHeight();
-          if(height > 475) {
-            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
-            $contentcol.css({ 'min-height' : 625 + (height - 475) });
-          } else {
-            $maincontent.animate({ 'min-height' : 625 }, 200);
-            $contentcol.css({ 'min-height' : 625 });
-          }
-        }, 400);
-      }
-
       function closeVersionSwitcher() {
         $('#version-switcher .tier-1 ul').slideUp();
         $('#version-switcher').removeClass('open');
@@ -43,7 +30,6 @@
 
       $sidebar.navgoco($.extend(navgocoOptions, {
         onToggleAfter: function() {
-          adjustMinHeight();
           if ($(this.el).attr('id') == 'mysidebar' &&
               $('#version-switcher').hasClass('open')) {
             closeVersionSwitcher();
@@ -59,7 +45,6 @@
 
       $sidebar.show();
       $versionSwitcher.show();
-      adjustMinHeight();
     });
   </script>
 
