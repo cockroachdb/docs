@@ -31,14 +31,22 @@
     }
 
     @media (min-width: $screen-md) {
-      width: 90%;
-      margin-bottom: 30px;
+      width: 100%;
     }
   }
 }
 
 li.search-wrap {
   margin-bottom: 0;
+
+  @include at-query($min, $screen-md) {
+    display: block;
+    position: fixed;
+    top: 135px;
+    width: 260px;
+    background: #ffffff;
+    z-index: 2;
+  }
 }
 
 .search-item {

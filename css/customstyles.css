@@ -569,12 +569,14 @@ body.sidenav-open .col-content {
       transition: box-shadow 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
-      top: 70px; } }
-  @media screen and (min-width: 992px) {
-    .col-sidebar {
-      background-color: transparent;
-      border-bottom: none;
-      padding-left: 0; } }
+      position: fixed;
+      top: 145px;
+      bottom: 0;
+      min-width: 290px;
+      padding: 0 30px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #DADADA;
+      overflow-y: scroll; } }
   @media screen and (max-width: 991px) {
     .col-sidebar--scrolled {
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); } }
@@ -602,8 +604,11 @@ body.sidenav-open .col-content {
       display: none; } }
   .sidenav-arrow .arrow-down {
     padding: 4px;
-    margin: 23px 0 2px 7px;
+    margin: 23px 30px 2px 7px;
     border-width: 2px 0 0 2px; }
+    @media screen and (min-width: 992px) {
+      .sidenav-arrow .arrow-down {
+        margin: 23px 0 2px 7px; } }
 
 .collapsed-header {
   display: none;
@@ -619,7 +624,7 @@ body.sidenav-open .col-content {
 
 .nav {
   background-color: transparent;
-  padding: 0px;
+  padding: 0;
   margin: 0px; }
   .nav--collapsed .sidenav-arrow {
     transform: translateY(21px); }
@@ -749,15 +754,12 @@ a:not([href]) {
     float: right; } }
 
 #mysidebar {
-  padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 5px; }
+  padding: 10px 15px 5px 15px; }
   @media screen and (min-width: 992px) {
     #mysidebar {
-      padding: 0; } }
-  @media screen and (min-width: 1200px) {
-    #mysidebar {
+      padding: 70px 0 0 0;
       width: 260px; } }
   #mysidebar li.tier-1 {
     margin-top: 5px;
@@ -795,13 +797,13 @@ a:not([href]) {
   display: none;
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -1;
   width: 100%;
   background-color: #F3F3F3;
   border-top: 1px solid #DADADA; }
   @media screen and (min-width: 992px) {
     #version-switcher {
-      width: 227.5px;
+      width: 260px;
       display: block;
       background: #fff;
       left: auto; } }
@@ -979,22 +981,26 @@ a:not([href]) {
   -moz-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
-  #content #main-content .content-col {
-    padding-top: 50px;
-    padding-bottom: 100px; }
-    #content #main-content .content-col--landing {
-      padding-top: 30px; }
+  #content #main-content {
+    margin: 0 15px; }
+    @media screen and (min-width: 992px) {
+      #content #main-content {
+        margin: 0 30px 0 0;
+        min-height: 625px; } }
+    #content #main-content .content-col {
+      padding-top: 50px;
+      padding-bottom: 100px; }
+      @media screen and (min-width: 992px) {
+        #content #main-content .content-col {
+          min-height: 625px;
+          padding-left: 365px; }
+          #content #main-content .content-col-border {
+            border-left: 1px solid #DADADA; } }
+      #content #main-content .content-col--landing {
+        padding-top: 30px; }
   @media screen and (min-width: 992px) {
     #content {
       padding-top: 71px; } }
-  @media screen and (min-width: 992px) {
-    #content #main-content {
-      min-height: 625px; }
-      #content #main-content .content-col {
-        min-height: 625px;
-        padding-left: 55px; }
-        #content #main-content .content-col-border {
-          border-left: 1px solid #DADADA; } }
 
 section.footer {
   background: #F7F7F7;
@@ -1514,11 +1520,18 @@ a.accordion-toggle {
       border-color: #69CC00; }
     @media (min-width: 992px) {
       .search #search-input {
-        width: 90%;
-        margin-bottom: 30px; } }
+        width: 100%; } }
 
 li.search-wrap {
   margin-bottom: 0; }
+  @media screen and (min-width: 992px) {
+    li.search-wrap {
+      display: block;
+      position: fixed;
+      top: 135px;
+      width: 260px;
+      background: #ffffff;
+      z-index: 2; } }
 
 .search-item {
   margin-top: 30px; }
@@ -3151,6 +3164,9 @@ img.mfp-img {
   -moz-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: opacity 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+  @media screen and (min-width: 992px) {
+    #help-widgets {
+      right: 30px; } }
   #help-widgets.fixed {
     position: fixed;
     bottom: 25px; }

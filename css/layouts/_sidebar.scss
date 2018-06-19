@@ -29,16 +29,17 @@ body.sidenav-open {
     z-index: 1001;
     @include groovy(margin-left);
     @include groovy(box-shadow);
-  }
+  } 
 
   @include at-query($min, $screen-md) {
-    top: 70px;
-  }
-
-  @include at-query($min, $screen-md){
-    background-color: transparent;
-    border-bottom: none;
-    padding-left: 0;
+    position: fixed;
+    top: 145px;
+    bottom: 0;
+    min-width: 290px;
+    padding: 0 30px;
+    background-color: #ffffff;
+    border-bottom: 1px solid $cl_gray_medium;
+    overflow-y: scroll;
   }
 
   &--scrolled {
@@ -81,8 +82,12 @@ body.sidenav-open {
 
   .arrow-down {
     padding: 4px;
-    margin: 23px 0 2px 7px;
+    margin: 23px 30px 2px 7px;
     border-width: 2px 0 0 2px;
+
+    @include at-query($min, $screen-md) {
+      margin: 23px 0 2px 7px;
+    }
   }
 }
 
@@ -99,7 +104,7 @@ body.sidenav-open {
 
 .nav {
   background-color: transparent;
-  padding:0px;
+  padding: 0;
   margin: 0px;
 
   &--collapsed {
@@ -288,13 +293,14 @@ a:not([href]) {
 }
 
 #mysidebar {
-  padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 5px;
+  padding: 10px 15px 5px 15px;
 
-  @include at-query($min, $screen-md) { padding: 0; }
-  @include at-query($min, $screen-lg) { width: 260px; }
+  @include at-query($min, $screen-md) { 
+    padding: 70px 0 0 0;
+    width: 260px; 
+  }
 
   li.tier-1 {
     margin-top: 5px;
@@ -338,13 +344,13 @@ a:not([href]) {
   display: none;
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -1;
   width: 100%;
   background-color: $cl_gray_light;
   border-top: 1px solid $cl_gray_medium;
 
   @include at-query($min, $screen-md) {
-    width: 227.5px;
+    width: 260px;
     display: block;
     background: #fff;
     left: auto;

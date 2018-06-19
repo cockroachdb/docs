@@ -6,6 +6,10 @@
     opacity: 0;
     @include groovy(opacity);
 
+    @include at-query($min, $screen-md) {
+        right: 30px;
+    }
+
     &.fixed {
         position: fixed;
         bottom: 25px;
