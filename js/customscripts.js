@@ -123,9 +123,9 @@ $(function() {
       $colSidebar.css('bottom', '');
       $versionSwitcher.css({'bottom': '0'});
 
-      var scrolled = $('.col-sidebar').hasClass('col-sidebar--scrolled');
+      var scrolled = $colSidebar.hasClass('col-sidebar--scrolled');
       if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
-        $('.col-sidebar').addClass('col-sidebar--scrolled');
+        $colSidebar.addClass('col-sidebar--scrolled');
         $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
         $sidebar.animate({height: sideNavHeight}, {duration: 250});
