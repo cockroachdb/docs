@@ -569,7 +569,7 @@ body.sidenav-open .col-content {
       transition: box-shadow 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
-      top: 70px; } }
+      top: 62px; } }
   @media screen and (min-width: 992px) {
     .col-sidebar {
       background-color: transparent;

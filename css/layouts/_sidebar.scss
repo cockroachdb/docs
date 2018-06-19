@@ -32,7 +32,7 @@ body.sidenav-open {
   }
 
   @include at-query($min, $screen-md) {
-    top: 70px;
+    top: 62px;
   }
 
   @include at-query($min, $screen-md){

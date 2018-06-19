@@ -105,7 +105,7 @@ $(function() {
 
     if (_viewport_width > 992) {
       if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '69px'});
+        $versionSwitcher.css({'position': 'absolute', 'bottom': '61px'});
       } else {
         $versionSwitcher.css({'position': 'fixed', 'bottom': '-1px'});
       }
