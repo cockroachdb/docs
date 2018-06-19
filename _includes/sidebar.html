@@ -1,4 +1,4 @@
-<div class="col-md-3 col-sidebar">
+<div class="col-sidebar">
   <script>
     $(document).ready(function() {
       // Initialize navgoco with default options
@@ -9,7 +9,7 @@
 
       var navgocoOptions = {
         caretHtml: '',
-        {% if page.version.version == 'v2.1' %}accordion: false,{% else %}accordion: true,{% endif %}
+        accordion: false,
         openClass: 'active--expand', // open
         save: false, // leave false or nav highlighting doesn't work right
         cookie: {

@@ -19,9 +19,9 @@ $(function() {
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
       $mobile_menu = $('nav.mobile_expanded'),
+      $colSidebar = $('.col-sidebar'),
       $sidebar = $('#mysidebar'),
       $footer = $('section.footer'),
-      footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
       $versionSwitcher = $('#version-switcher');
 
@@ -100,20 +100,31 @@ $(function() {
     cachedWidth = _viewport_width;
   });
 
-  $(window).on('scroll', function(){
+  $(window).on('scroll', function() {
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var footerOffset = $footer.offset().top;
+    var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
     _viewport_width = window.innerWidth;
 
+    $sidebar.css('padding-top', '');
+
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '61px'});
+
+      if (scrollTop + windowHeight >= footerOffset) {
+        $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
+        $colSidebar.css('bottom', viewportFooterDiff + 'px');
       } else {
-        $versionSwitcher.css({'position': 'fixed', 'bottom': '-1px'});
+        $versionSwitcher.css({'bottom': '-1px'});
+        $colSidebar.css('bottom', '0');
       }
     } else { // mobile
       $sidebar.css('padding-top', 10);
+      $colSidebar.css('bottom', '');
+      $versionSwitcher.css({'bottom': '0'});
 
       var scrolled = $('.col-sidebar').hasClass('col-sidebar--scrolled');
-      if ($sidebar.hasClass('nav--collapsed') && $(window).scrollTop() > 0 && !scrolled) {
+      if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
         $('.col-sidebar').addClass('col-sidebar--scrolled');
         $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
@@ -121,6 +132,7 @@ $(function() {
       }
     }
   });
+
   // Fire scroll event on load
   $(window).scroll();
 
