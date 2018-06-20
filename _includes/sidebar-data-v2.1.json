@@ -1574,6 +1574,12 @@
             ]
           },
           {
+            "title": "Follower Reads",
+            "urls": [
+              "/${VERSION}/follower-reads.html"
+            ]
+          },
+          {
             "title": "Automated Scaling & Repair",
             "urls": [
               "/${VERSION}/automated-scaling-and-repair.html"
