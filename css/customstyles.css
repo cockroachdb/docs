@@ -990,7 +990,8 @@ a:not([href]) {
     #content #main-content .content-col {
       padding-top: 50px;
       padding-bottom: 100px;
-      max-width: 100%; }
+      max-width: 100%;
+      min-width: 0; }
       @media screen and (min-width: 992px) {
         #content #main-content .content-col {
           min-height: 625px;
@@ -1637,24 +1638,26 @@ li.search-wrap {
   @media screen and (min-width: 1072px) {
     .toc-col {
       padding: 30px 30px 30px 0;
-      min-width: 360px;
+      min-width: 275px;
+      max-width: 275px;
       display: inline-block; } }
 
 #toc {
   display: block;
-  max-width: 500px; }
+  max-width: 500px;
+  margin: 0; }
   @media screen and (min-width: 1072px) {
     #toc {
       display: none; } }
 
 #toc-right {
-  max-width: 100%; }
+  max-width: 100%;
+  margin: 30px 0 0 0; }
 
 #toc > ul,
 #toc-right > ul {
   background-color: #F0FFE8;
-  padding: 20px 30px;
-  margin: 0;
+  padding: 20px;
   width: 100%; }
   #toc > ul li,
   #toc-right > ul li {

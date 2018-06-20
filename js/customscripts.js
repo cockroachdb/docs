@@ -138,6 +138,22 @@ $(function() {
         $sidebar.animate({height: sideNavHeight}, {duration: 250});
       }
     }
+
+    if (_viewport_width >= 1072 && scrollTop >= 51) {
+      $('#toc-right').css({
+        position: 'fixed',
+        top: 51,
+        right: 30,
+        width: '245px'
+      });
+    } else {
+      $('#toc-right').css({
+        position: 'relative',
+        top: '',
+        right: '',
+        width: ''
+      });
+    }
   });
 
   // Fire scroll event on load
