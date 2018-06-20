@@ -1,6 +1,27 @@
 @charset "UTF-8";
 
+.toc-col {
+  display: none;
+
+  @include at-query($min, 1500px) {
+    margin: 30px;
+    min-width: 360px;
+    display: inline-block;
+  }
+}
+
 #toc {
+  display: block;
+  max-width: 500px;
+
+  @include at-query($min, 1500px) {
+    display: none;
+  }
+}
+
+#toc,
+#toc-right {
+
   > ul {
     background-color: $cl_green_light;
     padding: 20px 30px;
