@@ -3,8 +3,8 @@
 .toc-col {
   display: none;
 
-  @include at-query($min, 1500px) {
-    margin: 30px;
+  @include at-query($min, 1072px) {
+    padding: 30px 30px 30px 0;
     min-width: 360px;
     display: inline-block;
   }
@@ -14,9 +14,13 @@
   display: block;
   max-width: 500px;
 
-  @include at-query($min, 1500px) {
+  @include at-query($min, 1072px) {
     display: none;
   }
+}
+
+#toc-right {
+  max-width: 100%;
 }
 
 #toc,

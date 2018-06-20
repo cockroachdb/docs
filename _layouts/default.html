@@ -12,7 +12,7 @@
     <div id="main-content">
       <div class="sidebar-row">
         {% if page.no_sidebar == true %}
-          <div class="content-col">
+          <div class="content-col no-sidebar">
         {% else %}
           {% include sidebar.html %}
           <div class="content-col content-col-border {% if page.url == '/' %}content-col--landing{% endif %}"> 

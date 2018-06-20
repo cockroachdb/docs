@@ -989,17 +989,17 @@ a:not([href]) {
         min-height: 625px; } }
     #content #main-content .content-col {
       padding-top: 50px;
-      padding-bottom: 100px; }
+      padding-bottom: 100px;
+      max-width: 100%; }
       @media screen and (min-width: 992px) {
         #content #main-content .content-col {
           min-height: 625px;
           padding-left: 365px;
           padding-right: 30px; }
+          #content #main-content .content-col.no-sidebar {
+            padding-left: 30px; }
           #content #main-content .content-col-border {
             border-left: 1px solid #DADADA; } }
-      @media screen and (min-width: 1500px) {
-        #content #main-content .content-col {
-          padding-right: 0; } }
       #content #main-content .content-col--landing {
         padding-top: 30px; }
   @media screen and (min-width: 992px) {
@@ -1566,14 +1566,15 @@ li.search-wrap {
   height: 38px;
   width: 35px;
   border-radius: 50%;
+  cursor: pointer;
   outline: none; }
   @media screen and (min-width: 992px) {
     .clear-search {
-      right: 20px; } }
+      right: 0; } }
   .clear-search:before, .clear-search:after {
     content: '';
     position: absolute;
-    height: 1px;
+    height: 2px;
     width: 11px;
     top: 50%;
     left: 6px;
@@ -1633,18 +1634,21 @@ li.search-wrap {
 
 .toc-col {
   display: none; }
-  @media screen and (min-width: 1500px) {
+  @media screen and (min-width: 1072px) {
     .toc-col {
-      margin: 30px;
+      padding: 30px 30px 30px 0;
       min-width: 360px;
       display: inline-block; } }
 
 #toc {
   display: block;
   max-width: 500px; }
-  @media screen and (min-width: 1500px) {
+  @media screen and (min-width: 1072px) {
     #toc {
       display: none; } }
+
+#toc-right {
+  max-width: 100%; }
 
 #toc > ul,
 #toc-right > ul {
