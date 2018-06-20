@@ -19,9 +19,12 @@
         {% endif %}
             {{content}}
           </div>
+        {% if page.no_toc == true %}
+        {% else %}
           <div class="toc-col">
             <div id="toc-right"></div>
           </div>
+        {% endif %}
       </div>
     </div>
     {% include footer.html %}
