@@ -18,19 +18,20 @@
 		.content-col {
 			padding-top: 50px;
 			padding-bottom: 100px;
+			max-width: 100%;
 
 			@include at-query($min, $screen-md) {
 				min-height: 625px;
 				padding-left: 365px;
 				padding-right: 30px;
 
+				&.no-sidebar {
+					padding-left: 30px;
+				}
+
 				&-border {
 					border-left: 1px solid $cl_gray_medium;
 				}
-			}
-
-			@include at-query($min, 1500px) {
-				padding-right: 0;
 			}
 
 			&--landing {

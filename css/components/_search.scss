@@ -70,14 +70,15 @@ li.search-wrap {
   height: 38px;
   width: 35px;
   border-radius: 50%;
+  cursor: pointer;
   outline: none;
 
-  @include at-query($min, $screen-md) { right: 20px; }
+  @include at-query($min, $screen-md) { right: 0; }
 
   &:before, &:after {
     content: '';
     position: absolute;
-    height: 1px;
+    height: 2px;
     width: 11px;
     top: 50%;
     left: 6px;
