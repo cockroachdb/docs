@@ -11,6 +11,13 @@ function renderTOC() {
     showSpeed: 0,
     headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
   });
+
+  $('#toc-right').toc({
+    minimumHeaders: 0,
+    listType: 'ul',
+    showSpeed: 0,
+    headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
+  });
 }
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
