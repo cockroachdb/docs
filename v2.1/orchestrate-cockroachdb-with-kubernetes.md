@@ -104,7 +104,8 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 ## Step 5. Initialize the cluster
 
-1. Confirm that three pods are `Running` successfully:
+1. Confirm that three pods are `Running` successfully. Note that they will not
+   be considered `Ready` until after the cluster has been initialized:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -113,9 +114,9 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
     ~~~
     NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2m
-    cockroachdb-1   1/1       Running   0          2m
-    cockroachdb-2   1/1       Running   0          2m
+    cockroachdb-0   0/1       Running   0          2m
+    cockroachdb-1   0/1       Running   0          2m
+    cockroachdb-2   0/1       Running   0          2m
     ~~~
 
 2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
@@ -154,7 +155,9 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     certificatesigningrequest "default.node.cockroachdb-0" approved
     ~~~
 
-5. Confirm that cluster initialization has completed successfully:
+5. Confirm that cluster initialization has completed successfully. The job
+   should be considered successful and the CockroachDB pods should soon be
+   considered `Ready`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -163,7 +166,19 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
     ~~~
     NAME                  DESIRED   SUCCESSFUL   AGE
-    cluster-init-secure   1         1            19m
+    cluster-init-secure   1         1            2m
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          3m
+    cockroachdb-1   1/1       Running   0          3m
+    cockroachdb-2   1/1       Running   0          3m
     ~~~
 
 {{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
