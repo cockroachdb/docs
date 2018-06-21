@@ -76,7 +76,7 @@ $ workload run tpcc \
 "postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
 ~~~
 
-Note that if you only use a subset (or one) of the machines, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. You will not, however, get optimal performance, as all queries will go through the specified subset of the machines.
+Note that if you only direct load at a subset (or one) of the machines, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. You will not, however, get optimal performance, as all queries will go through the specified subset of the machines.
 
 ### Step 3. Interpret the results
 
@@ -101,7 +101,7 @@ The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C re
 - Follow steps 1-7 in [Deploy CockroachDB on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html) to create a cluster with the following settings:
     - 31-node cluster (30 for the database, 1 for the load generator)
     - `n1-highcpu-16` machine type on [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd)
-    - 10 racks (used later to partition the database)
+    - 10 racks, which are used later to partition the database. Each node will start with a locality that includes an artificial "rack number." Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
 
 ### Add an enterprise license
 
@@ -187,9 +187,9 @@ Next, partition your database. This uses CockroachDB's [partitioning feature](pa
     {% include copy-clipboard.html %}
     ~~~ shell
     $ workload.LATEST run tpcc \
-    -- partitions=10 \
+    --partitions=10 \
     --split \
-    -- scatter \
+    --scatter \
     --warehouses=10000 \
     --duration=1s \
     "postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
