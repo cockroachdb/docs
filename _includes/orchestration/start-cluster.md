@@ -35,7 +35,8 @@ statefulset "cockroachdb" created
     statefulset "cockroachdb" created
     ~~~
 
-2. Confirm that three pods are `Running` successfully:
+2. Confirm that three pods are `Running` successfully. Note that they will not
+   be considered `Ready` until after the cluster has been initialized:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -44,9 +45,9 @@ statefulset "cockroachdb" created
 
     ~~~
     NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2m
-    cockroachdb-1   1/1       Running   0          2m
-    cockroachdb-2   1/1       Running   0          2m
+    cockroachdb-0   0/1       Running   0          2m
+    cockroachdb-1   0/1       Running   0          2m
+    cockroachdb-2   0/1       Running   0          2m
     ~~~
 
 3. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:

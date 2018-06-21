@@ -9,7 +9,9 @@
     job "cluster-init" created
     ~~~
 
-2. Confirm that cluster initialization has completed successfully:
+2. Confirm that cluster initialization has completed successfully. The job
+   should be considered successful and the CockroachDB pods should soon be
+   considered `Ready`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -18,7 +20,19 @@
 
     ~~~
     NAME           DESIRED   SUCCESSFUL   AGE
-    cluster-init   1         1            19m
+    cluster-init   1         1            2m
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pods
+    ~~~
+
+    ~~~
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   1/1       Running   0          3m
+    cockroachdb-1   1/1       Running   0          3m
+    cockroachdb-2   1/1       Running   0          3m
     ~~~
 
 {{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
