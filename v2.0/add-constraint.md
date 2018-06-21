@@ -17,7 +17,9 @@ The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not N
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
+<div>
+  {% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
+</div>
 
 ## Required Privileges
 
@@ -41,7 +43,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 Adding the [Unique constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
-
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
@@ -60,6 +62,7 @@ Adding the [Check constraint](check.html) requires that all of a column's values
 Before you can add the [Foreign Key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
 For example, let's say you have two simple tables, `orders` and `customers`:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE customers;
@@ -79,6 +82,7 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +-----------+-------------------------------------------------+
 (1 row)
 ~~~
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
@@ -113,7 +117,9 @@ Then you add the Foreign Key constraint.
 
 In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
 
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
