@@ -7,9 +7,11 @@ toc: false
 This page walks you through TPC-C performance benchmarking on CockroachDB. It measures `tpmC` (new order transactions/minute) on two TPC-C datasets:
 
 - 1,000 warehouses (for a total dataset size of 200GB) on 3 nodes
-- 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes
+- 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes _(Coming soon)_
 
-These two points on the spectrum show how CockroachDB scales from modest sized production workloads to larger scale deployments. This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size.
+These two points on the spectrum show how CockroachDB scales from modest sized production workloads to larger scale deployments.
+<!-- 
+This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size. -->
 
 <div id="toc"></div>
 
