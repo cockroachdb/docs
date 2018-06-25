@@ -1663,8 +1663,7 @@ li.search-wrap {
 
 #toc,
 #toc-right {
-  padding-left: 15px;
-  border-left: 5px solid #54B30E; }
+  padding-left: 15px; }
   #toc > ul,
   #toc-right > ul {
     list-style-type: none;
