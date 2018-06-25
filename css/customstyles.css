@@ -991,11 +991,9 @@ a:not([href]) {
       max-width: 100%;
       min-width: 0;
       padding-top: 45px; }
-      @media screen and (min-width: 768px) {
-        #content #main-content .content-col {
-          padding-top: 0; } }
       @media screen and (min-width: 992px) {
         #content #main-content .content-col {
+          padding-top: 0;
           min-height: 625px;
           padding-left: 365px;
           padding-right: 30px; }
