@@ -4,7 +4,7 @@ summary: Learn how to benchmark CockroachDB against TPC-C.
 toc: false
 ---
 
-This page walks you through TPC-C performance benchmarking on CockroachDB. It measures `tpmC` (transactions/minute, type C) on two TPC-C datasets:
+This page walks you through TPC-C performance benchmarking on CockroachDB. It measures `tpmC` (new order transactions/minute) on two TPC-C datasets:
 
 - 1,000 warehouses (for a total dataset size of 200GB) on 3 nodes
 - 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes
@@ -101,7 +101,7 @@ The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C re
 - Follow steps 1-7 in [Deploy CockroachDB on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html) to create a cluster with the following settings:
     - 31-node cluster (30 for the database, 1 for the load generator)
     - `n1-highcpu-16` machine type on [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd)
-    - 10 racks, which are used later to partition the database. Each node will start with a locality that includes an artificial "rack number." Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
+    - 10 racks, which are used later to partition the database. Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number." Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
 
 ### Add an enterprise license
 
