@@ -17,9 +17,12 @@ These two points on the spectrum show how CockroachDB scales from modest sized p
 
 ### Before you begin
 
-Follow steps 1-7 in [Deploy CockroachDB on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html). Start a 4-node (3 for the database, 1 for the load generator) cluster and use the `n1-highcpu-16` machine type on [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd).
+Follow steps 1-7 in the [GCE tutorial to deploy a 4-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html).
 
-For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, as opposed to networked block storage, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each (as opposed to network- attached replicated block storage).
+- For the 3 CockroachDB nodes, use the `n1-highcpu-16` VMs with [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd).
+    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, as opposed to networked block storage, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each (as opposed to network- attached replicated block storage).
+
+- Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for read and write testing and load balancing.
 
 {{site.data.alerts.callout_danger}}
 If you are following this deployment for production in the cloud, ensure that you spread your nodes across at least three availability zones and [set the CockroachDB zone configuration](configure-replication-zones.html) to spread replicas across zones. Local SSDs on Cloud VMs can lose data if the VM is lost, so it is important that CockroachDB can automatically recover from the loss of any single zone’s disks. This demo does not spread VMs across availability zones, but your production deployment should.
@@ -91,7 +94,12 @@ You will also see some audit checks and latency statistics for each individual q
 
 The TPC-C specification has p90 latency requirements on the order of seconds, but as you see here, CockroachDB far surpasses that requirement with p90 latencies in the hundreds of milliseconds.
 
-## Benchmark a large cluster
+{{site.data.alerts.callout_info}}
+Instructions on how to reproduce our 30-node, 10,000 warehouse TPC-C results are coming soon.
+{{site.data.alerts.end}}
+
+
+<!-- ## Benchmark a large cluster
 
 The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C result is very similar to that for the 3-node, 1,000 warehouse example. The only difference (besides the larger node count and dataset) is that you will use CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given slice of data are usually located on the same nodes that will be queried by the load generator for that slice of data.
 
@@ -219,7 +227,7 @@ $ workload run tpcc \
 
 ### Step 4. Interpret the results
 
-Once the `workload` has finished running, you should see a final output line similar to the output in [Benchmark a small cluster](#benchmark-a-small-cluster). The `tpmC` should be about 10x higher, reflecting the increase in the number of warehouses.
+Once the `workload` has finished running, you should see a final output line similar to the output in [Benchmark a small cluster](#benchmark-a-small-cluster). The `tpmC` should be about 10x higher, reflecting the increase in the number of warehouses. -->
 
 ## See also
 
