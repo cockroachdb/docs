@@ -28,6 +28,7 @@ $(function() {
       $mobile_menu = $('nav.mobile_expanded'),
       $colSidebar = $('.col-sidebar'),
       $sidebar = $('#mysidebar'),
+      $tocRight = $('#toc-right'),
       $footer = $('section.footer'),
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
       $versionSwitcher = $('#version-switcher');
@@ -112,10 +113,12 @@ $(function() {
     var windowHeight = $(window).height();
     var footerOffset = $footer.offset().top;
     var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
+    var tocHeightInColumn = $tocRight.height() + parseInt($tocRight.css('top'));
     _viewport_width = window.innerWidth;
 
     $sidebar.css('padding-top', '');
 
+    // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
 
       if (scrollTop + windowHeight >= footerOffset) {
@@ -139,15 +142,24 @@ $(function() {
       }
     }
 
-    if (_viewport_width >= 1072 && scrollTop >= 51) {
-      $('#toc-right').css({
+    // handle positoning of right-hand TOC when scrolling window
+    if (_viewport_width >= 1072 && scrollTop >= 16) {
+      $tocRight.css({
         position: 'fixed',
-        top: 51,
-        right: 30,
-        width: '245px'
+        top: 82,
+        right: 0,
+        width: '275px'
       });
+
+      // if footer in view and TOC overruns footer, set bottom property to top of footer
+      // otherwise, unset bottom property
+      if (scrollTop + tocHeightInColumn >= footerOffset) {
+        $tocRight.css('bottom', viewportFooterDiff + 'px');
+      } else {
+        $tocRight.css('bottom', '');
+      }
     } else {
-      $('#toc-right').css({
+      $tocRight.css({
         position: 'relative',
         top: '',
         right: '',

@@ -33,7 +33,7 @@ body.sidenav-open {
 
   @include at-query($min, $screen-md) {
     position: fixed;
-    top: 145px;
+    top: 90px;
     bottom: 0;
     min-width: 290px;
     padding: 0 30px;
@@ -298,7 +298,7 @@ a:not([href]) {
   padding: 10px 15px 5px 15px;
 
   @include at-query($min, $screen-md) { 
-    padding: 70px 0 0 0;
+    padding: 55px 0 0 0;
     width: 260px; 
   }
 

@@ -42,7 +42,7 @@ li.search-wrap {
   @include at-query($min, $screen-md) {
     display: block;
     position: fixed;
-    top: 135px;
+    top: 85px;
     width: 260px;
     background: #ffffff;
     z-index: 2;

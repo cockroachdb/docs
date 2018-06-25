@@ -4,7 +4,7 @@
   display: none;
 
   @include at-query($min, 1072px) {
-    padding: 30px 30px 30px 0;
+    padding: 30px 0;
     min-width: 275px;
     max-width: 275px;
     display: inline-block;
@@ -19,24 +19,33 @@
   @include at-query($min, 1072px) {
     display: none;
   }
+
+  > ul {
+    padding: 20px;
+  }
 }
 
 #toc-right {
-  max-width: 100%;
-  margin: 30px 0 0 0;
+  max-height: 90vh;
+  overflow-y: scroll;
+  background: #ffffff;
+
+  > ul {
+    padding: 0;
+  }
 }
 
 #toc,
 #toc-right {
+  padding-left: 15px;
+  border-left: 5px solid $cl-green;
 
   > ul {
-    background-color: $cl_green_light;
-    padding: 20px;
+    list-style-type: none;
     width: 100%;
 
     li {
       margin: 0;
-      padding-left: 25px;
       list-style: none;
 
       a {
@@ -54,13 +63,6 @@
       a:first-child {
         position: relative;
 
-        &:before {
-          position: absolute;
-          content: '•';
-          top: -2px;
-          left: -18px;
-        }
-
         &:hover {
           &:before {
             color: $cl_blue;
@@ -70,7 +72,8 @@
 
       > ul {
         margin: 0;
-        padding: 0;
+        padding: 0 0 0 10px;
+        border-left: 2px solid $cl-green;
       }
     }
 

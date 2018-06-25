@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*============================================================================
   Dependency-free breakpoint mixin
     - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
@@ -570,7 +569,7 @@ body.sidenav-open .col-content {
   @media screen and (min-width: 992px) {
     .col-sidebar {
       position: fixed;
-      top: 145px;
+      top: 90px;
       bottom: 0;
       min-width: 290px;
       padding: 0 30px;
@@ -759,7 +758,7 @@ a:not([href]) {
   padding: 10px 15px 5px 15px; }
   @media screen and (min-width: 992px) {
     #mysidebar {
-      padding: 70px 0 0 0;
+      padding: 55px 0 0 0;
       width: 260px; } }
   #mysidebar li.tier-1 {
     margin-top: 5px;
@@ -988,10 +987,13 @@ a:not([href]) {
         margin: 0;
         min-height: 625px; } }
     #content #main-content .content-col {
-      padding-top: 50px;
       padding-bottom: 100px;
       max-width: 100%;
-      min-width: 0; }
+      min-width: 0;
+      padding-top: 45px; }
+      @media screen and (min-width: 768px) {
+        #content #main-content .content-col {
+          padding-top: 0; } }
       @media screen and (min-width: 992px) {
         #content #main-content .content-col {
           min-height: 625px;
@@ -1533,7 +1535,7 @@ li.search-wrap {
     li.search-wrap {
       display: block;
       position: fixed;
-      top: 135px;
+      top: 85px;
       width: 260px;
       background: #ffffff;
       z-index: 2; } }
@@ -1637,7 +1639,7 @@ li.search-wrap {
   display: none; }
   @media screen and (min-width: 1072px) {
     .toc-col {
-      padding: 30px 30px 30px 0;
+      padding: 30px 0;
       min-width: 275px;
       max-width: 275px;
       display: inline-block; } }
@@ -1649,66 +1651,68 @@ li.search-wrap {
   @media screen and (min-width: 1072px) {
     #toc {
       display: none; } }
+  #toc > ul {
+    padding: 20px; }
 
 #toc-right {
-  max-width: 100%;
-  margin: 30px 0 0 0; }
+  max-height: 90vh;
+  overflow-y: scroll;
+  background: #ffffff; }
+  #toc-right > ul {
+    padding: 0; }
 
-#toc > ul,
-#toc-right > ul {
-  background-color: #F0FFE8;
-  padding: 20px;
-  width: 100%; }
-  #toc > ul li,
-  #toc-right > ul li {
-    margin: 0;
-    padding-left: 25px;
-    list-style: none; }
-    #toc > ul li a,
-    #toc-right > ul li a {
-      font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 14px;
+#toc,
+#toc-right {
+  padding-left: 15px;
+  border-left: 5px solid #54B30E; }
+  #toc > ul,
+  #toc-right > ul {
+    list-style-type: none;
+    width: 100%; }
+    #toc > ul li,
+    #toc-right > ul li {
+      margin: 0;
+      list-style: none; }
+      #toc > ul li a,
+      #toc-right > ul li a {
+        font-family: 'AvenirLTStd-Roman', serif;
+        font-size: 14px;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 20px;
+        color: #152849; }
+        #toc > ul li a:hover,
+        #toc-right > ul li a:hover {
+          color: #54B30E;
+          text-decoration: none;
+          border-bottom: none; }
+      #toc > ul li a:first-child,
+      #toc-right > ul li a:first-child {
+        position: relative; }
+        #toc > ul li a:first-child:hover:before,
+        #toc-right > ul li a:first-child:hover:before {
+          color: #152849; }
+      #toc > ul li > ul,
+      #toc-right > ul li > ul {
+        margin: 0;
+        padding: 0 0 0 10px;
+        border-left: 2px solid #54B30E; }
+    #toc > ul:before,
+    #toc-right > ul:before {
+      content: "On This Page";
+      font-family: 'AvenirLTStd-Heavy', serif;
+      font-size: 17px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 20px;
-      color: #152849; }
-      #toc > ul li a:hover,
-      #toc-right > ul li a:hover {
-        color: #54B30E;
-        text-decoration: none;
-        border-bottom: none; }
-    #toc > ul li a:first-child,
-    #toc-right > ul li a:first-child {
-      position: relative; }
-      #toc > ul li a:first-child:before,
-      #toc-right > ul li a:first-child:before {
-        position: absolute;
-        content: '•';
-        top: -2px;
-        left: -18px; }
-      #toc > ul li a:first-child:hover:before,
-      #toc-right > ul li a:first-child:hover:before {
-        color: #152849; }
-    #toc > ul li > ul,
-    #toc-right > ul li > ul {
-      margin: 0;
-      padding: 0; }
-  #toc > ul:before,
-  #toc-right > ul:before {
-    content: "On This Page";
-    font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 17px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 30px;
-    color: #152849;
-    display: block; }
-#toc code,
-#toc-right code {
-  color: inherit;
-  padding: 0px; }
+      line-height: 30px;
+      color: #152849;
+      display: block; }
+  #toc code,
+  #toc-right code {
+    color: inherit;
+    padding: 0px; }
 
 #os-tabs button {
   border: 1px solid #dddddd;
