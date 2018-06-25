@@ -14,6 +14,7 @@
 #toc {
   display: block;
   max-width: 500px;
+  padding-left: 0px;
   margin: 0;
 
   @include at-query($min, 1072px) {
@@ -21,13 +22,14 @@
   }
 
   > ul {
-    padding: 20px;
+    padding: 20px 0;
   }
 }
 
 #toc-right {
   max-height: 90vh;
   overflow-y: scroll;
+  padding-left: 15px;
   background: #ffffff;
 
   > ul {
@@ -37,7 +39,6 @@
 
 #toc,
 #toc-right {
-  padding-left: 15px;
 
   > ul {
     list-style-type: none;
