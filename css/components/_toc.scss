@@ -20,10 +20,6 @@
   @include at-query($min, 1072px) {
     display: none;
   }
-
-  > ul {
-    padding: 20px 0;
-  }
 }
 
 #toc-right {
@@ -31,10 +27,6 @@
   overflow-y: scroll;
   padding-left: 15px;
   background: #ffffff;
-
-  > ul {
-    padding: 0;
-  }
 }
 
 #toc,
@@ -43,10 +35,12 @@
   > ul {
     list-style-type: none;
     width: 100%;
+    padding: 0;
 
     li {
       margin: 0;
       list-style: none;
+      line-height: 28px;
 
       a {
         @include avenir_r(14px);

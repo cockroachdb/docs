@@ -89,11 +89,8 @@ p {
       margin: 10px 0; } }
 
 h1, h2 {
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: 20px; }
-  @media screen and (min-width: 768px) {
-    h1, h2 {
-      margin-top: 35px; } }
 
 h3, h4, h5, h6 {
   margin-top: 40px;
@@ -1650,25 +1647,23 @@ li.search-wrap {
   @media screen and (min-width: 1072px) {
     #toc {
       display: none; } }
-  #toc > ul {
-    padding: 20px 0; }
 
 #toc-right {
   max-height: 90vh;
   overflow-y: scroll;
   padding-left: 15px;
   background: #ffffff; }
-  #toc-right > ul {
-    padding: 0; }
 
 #toc > ul,
 #toc-right > ul {
   list-style-type: none;
-  width: 100%; }
+  width: 100%;
+  padding: 0; }
   #toc > ul li,
   #toc-right > ul li {
     margin: 0;
-    list-style: none; }
+    list-style: none;
+    line-height: 28px; }
     #toc > ul li a,
     #toc-right > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
