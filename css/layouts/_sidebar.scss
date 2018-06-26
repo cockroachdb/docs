@@ -6,7 +6,7 @@ body.sidenav-open {
 
     #mysidebar {
       height: 100%;
-      overflow: scroll;
+      overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -39,7 +39,12 @@ body.sidenav-open {
     padding: 0 30px;
     background-color: #ffffff;
     border-bottom: 1px solid $cl_gray_medium;
-    overflow-y: scroll;
+
+    &:hover, 
+    &:active, 
+    &:focus {
+      overflow-y: auto;
+    }
   }
 
   &--scrolled {
@@ -62,6 +67,7 @@ body.sidenav-open {
 .sidebar-row {
   @include at-query($min, $screen-md) {
     display: flex;
+    padding-top: 15px;
   }
 }
 
@@ -298,7 +304,7 @@ a:not([href]) {
   padding: 10px 15px 5px 15px;
 
   @include at-query($min, $screen-md) { 
-    padding: 55px 0 0 0;
+    padding: 63px 0 0 0;
     width: 260px; 
   }
 
