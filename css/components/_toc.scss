@@ -4,9 +4,9 @@
   display: none;
 
   @include at-query($min, 1072px) {
-    padding: 33px 0;
-    min-width: 275px;
-    max-width: 275px;
+    padding: 37px 0;
+    min-width: 260px;
+    max-width: 260px;
     display: inline-block;
   }
 }
@@ -26,6 +26,7 @@
   max-height: 90vh;
   padding-right: 15px;
   background: #ffffff;
+  overflow-y: hidden;
 
   &:hover, 
   &:active, 
@@ -45,10 +46,10 @@
     li {
       margin: 0;
       list-style: none;
-      line-height: 28px;
+      line-height: 25px;
 
       a {
-        @include avenir_r(14px);
+        @include avenir_r(13px);
         line-height: 20px;
         color: $cl_blue;
 
@@ -78,7 +79,8 @@
 
     &:before {
       content: "On This Page";
-      @include subhead-avenir-sm;
+      @include adelle_b(13px);
+      line-height: 26px;
       color: $cl_blue;
       display: block;
     }

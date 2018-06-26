@@ -145,9 +145,8 @@ $(function() {
     if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocRight.css({
         position: 'fixed',
-        top: 91,
-        right: 0,
-        width: '275px'
+        top: 88,
+        width: '265px'
       });
 
       // if footer in view and TOC overruns footer, set bottom property to top of footer
@@ -161,7 +160,6 @@ $(function() {
       $tocRight.css({
         position: 'relative',
         top: '',
-        right: '',
         width: ''
       });
     }
