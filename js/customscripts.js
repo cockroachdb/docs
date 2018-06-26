@@ -154,7 +154,7 @@ $(function() {
       // if footer in view and TOC overruns footer, set bottom property to top of footer
       // otherwise, unset bottom property
       if (scrollTop + tocHeightInColumn >= footerOffset) {
-        $tocRight.css('bottom', viewportFooterDiff + 'px');
+        $tocRight.css('bottom', viewportFooterDiff + 1 + 'px');
       } else {
         $tocRight.css('bottom', '');
       }
