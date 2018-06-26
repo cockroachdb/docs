@@ -35,10 +35,11 @@ body.sidenav-open {
     position: fixed;
     top: 90px;
     bottom: 0;
-    min-width: 290px;
+    min-width: 270px;
     padding: 0 30px;
     background-color: #ffffff;
     border-bottom: 1px solid $cl_gray_medium;
+    overflow-y: hidden;
 
     &:hover, 
     &:active, 
@@ -164,12 +165,12 @@ body.sidenav-open {
     }
 
     > ul {
-      margin: 7px 0 0 0;
+      margin: 0;
       padding: 0;
 
       //2nd level
       > li {
-        margin: 0 0 7px 0;
+        margin: 0;
         padding: 0;
         list-style: none;
 
@@ -305,7 +306,7 @@ a:not([href]) {
 
   @include at-query($min, $screen-md) { 
     padding: 63px 0 0 0;
-    width: 260px; 
+    width: 240px; 
   }
 
   li.tier-1 {
@@ -334,9 +335,8 @@ a:not([href]) {
     padding: 10px 0;
 
     > a {
-      @include button-text--heavy--medium;
+      @include avenir_h(14px);
       line-height: 25px;
-      text-transform: uppercase;
     }
 
     .arrow-down { margin-top: 7px; }
@@ -356,13 +356,13 @@ a:not([href]) {
   border-top: 1px solid $cl_gray_medium;
 
   @include at-query($min, $screen-md) {
-    width: 260px;
+    width: 240px;
     display: block;
     background: #fff;
     left: auto;
   }
 
-  @include at-query($min, $screen-lg) {width: 260px; }
+  @include at-query($min, $screen-lg) {width: 240px; }
 
   &.open {
     border-bottom: 1px solid $cl_gray_medium;
@@ -442,8 +442,4 @@ a:not([href]) {
       color: $cl_green;
     }
   }
-}
-
-.nav-expand {
-  content: url(../images/nav-expand.svg);
 }

@@ -568,10 +568,11 @@ body.sidenav-open .col-content {
       position: fixed;
       top: 90px;
       bottom: 0;
-      min-width: 290px;
+      min-width: 270px;
       padding: 0 30px;
       background-color: #ffffff;
-      border-bottom: 1px solid #DADADA; }
+      border-bottom: 1px solid #DADADA;
+      overflow-y: hidden; }
       .col-sidebar:hover, .col-sidebar:active, .col-sidebar:focus {
         overflow-y: auto; } }
   @media screen and (max-width: 991px) {
@@ -658,10 +659,10 @@ body.sidenav-open .col-content {
         .nav > li > a {
           line-height: 30px; } }
     .nav > li > ul {
-      margin: 7px 0 0 0;
+      margin: 0;
       padding: 0; }
       .nav > li > ul > li {
-        margin: 0 0 7px 0;
+        margin: 0;
         padding: 0;
         list-style: none; }
         .nav > li > ul > li:last-of-type {
@@ -758,7 +759,7 @@ a:not([href]) {
   @media screen and (min-width: 992px) {
     #mysidebar {
       padding: 63px 0 0 0;
-      width: 260px; } }
+      width: 240px; } }
   #mysidebar li.tier-1 {
     margin-top: 5px;
     padding-left: 10px; }
@@ -778,14 +779,11 @@ a:not([href]) {
     padding: 10px 0; }
     #mysidebar > li > a {
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 15px;
-      letter-spacing: 1.5px;
-      line-height: 25px;
-      text-transform: uppercase; }
+      line-height: 25px; }
     #mysidebar > li .arrow-down {
       margin-top: 7px; }
     #mysidebar > li li .arrow-down {
@@ -801,13 +799,13 @@ a:not([href]) {
   border-top: 1px solid #DADADA; }
   @media screen and (min-width: 992px) {
     #version-switcher {
-      width: 260px;
+      width: 240px;
       display: block;
       background: #fff;
       left: auto; } }
   @media screen and (min-width: 1200px) {
     #version-switcher {
-      width: 260px; } }
+      width: 240px; } }
   #version-switcher.open {
     border-bottom: 1px solid #DADADA; }
     @media screen and (max-width: 991px) {
@@ -875,9 +873,6 @@ a:not([href]) {
         color: #54B30E; }
     #version-switcher .tier-2.active a {
       color: #54B30E; }
-
-.nav-expand {
-  content: url(../images/nav-expand.svg); }
 
 .landing-page .landing-page__tutorial {
   width: 100%; }
@@ -994,7 +989,7 @@ a:not([href]) {
         #content #main-content .content-col {
           padding-top: 0;
           min-height: 625px;
-          padding-left: 330px;
+          padding-left: 325px;
           padding-right: 30px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; }
@@ -1532,7 +1527,7 @@ li.search-wrap {
       display: block;
       position: fixed;
       top: 89px;
-      width: 260px;
+      width: 240px;
       background: #ffffff;
       z-index: 2; } }
 
@@ -1635,9 +1630,9 @@ li.search-wrap {
   display: none; }
   @media screen and (min-width: 1072px) {
     .toc-col {
-      padding: 33px 0;
-      min-width: 275px;
-      max-width: 275px;
+      padding: 37px 0;
+      min-width: 260px;
+      max-width: 260px;
       display: inline-block; } }
 
 #toc {
@@ -1652,7 +1647,8 @@ li.search-wrap {
 #toc-right {
   max-height: 90vh;
   padding-right: 15px;
-  background: #ffffff; }
+  background: #ffffff;
+  overflow-y: hidden; }
   #toc-right:hover, #toc-right:active, #toc-right:focus {
     overflow-y: auto; }
 
@@ -1665,11 +1661,11 @@ li.search-wrap {
   #toc-right > ul li {
     margin: 0;
     list-style: none;
-    line-height: 28px; }
+    line-height: 25px; }
     #toc > ul li a,
     #toc-right > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -1694,12 +1690,12 @@ li.search-wrap {
   #toc > ul:before,
   #toc-right > ul:before {
     content: "On This Page";
-    font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 17px;
+    font-family: 'Adelle-Bold', serif;
+    font-size: 13px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 30px;
+    line-height: 26px;
     color: #152849;
     display: block; }
 #toc code,
