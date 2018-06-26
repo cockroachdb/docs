@@ -142,10 +142,10 @@ $(function() {
     }
 
     // handle positoning of right-hand TOC when scrolling window
-    if (_viewport_width >= 1072 && scrollTop >= 16) {
+    if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocRight.css({
         position: 'fixed',
-        top: 82,
+        top: 91,
         right: 0,
         width: '275px'
       });

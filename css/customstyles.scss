@@ -13,11 +13,6 @@ body {
   color: $cl_blue;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
-
 p {
   @include paragraph-type;
   color: $cl_blue;
