@@ -60,7 +60,9 @@ Flag | Description
 
 ### Client Connection
 
+<div>
 {% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+</div>
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

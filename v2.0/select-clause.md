@@ -18,7 +18,9 @@ with other constructs to form more complex [selection queries](selection-queries
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/simple_select_clause.html %}
+</div>
 
 <div markdown="1"></div>
 

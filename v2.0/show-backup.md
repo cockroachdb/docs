@@ -14,7 +14,9 @@ Only the `root` user can run `SHOW BACKUP`.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_backup.html %}
+</div>
 
 ## Parameters
 

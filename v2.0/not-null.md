@@ -29,7 +29,9 @@ The Not Null [constraint](constraints.html) specifies a column may not contain *
 
 You can only apply the Not Null constraint to individual columns.
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/not_null_column_level.html %}
+</div>
 
 | Parameter | Description |
 |-----------|-------------|

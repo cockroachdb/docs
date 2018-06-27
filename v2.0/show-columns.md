@@ -14,7 +14,9 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_columns.html %}
+</div>
 
 ## Parameters
 

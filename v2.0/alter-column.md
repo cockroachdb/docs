@@ -12,7 +12,9 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
+</div>
 
 ## Required Privileges
 

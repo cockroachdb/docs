@@ -12,7 +12,9 @@ The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transacti
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/begin_transaction.html %}
+</div>
 
 ## Required Privileges
 

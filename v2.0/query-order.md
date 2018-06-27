@@ -15,7 +15,9 @@ statements.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/sort_clause.html %}
+</div>
 
 ## Parameters
 
