@@ -284,8 +284,7 @@ a {
   color: #142848;
   text-decoration: none;
 }
-a:hover,
-a:focus {
+a:hover {
   text-decoration: none;
   color: #46a417;
 }
