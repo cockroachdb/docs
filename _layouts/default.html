@@ -15,7 +15,7 @@
           <div class="content-col no-sidebar">
         {% else %}
           {% include sidebar.html %}
-          <div class="content-col content-col-border {% if page.url == '/' %}content-col--landing{% endif %}"> 
+          <div class="content-col {% if page.url == '/' %}content-col--landing{% endif %}"> 
         {% endif %}
             {{content}}
           </div>

@@ -190,18 +190,14 @@ header {
 		padding: 15px;
 	}
 
-	.container {
-		position: relative;
-		margin: 0;
+	&.navbar-fixed-top {
+		display: flex;
+		justify-content: center;
+	}
 
-		@include at-query($min, $screen-sm) {
-			width: 100%;
-			margin: 0 auto;
-		}
-
-		@include at-query($min, $screen-lg) {
-			max-width: $max-width;
-		}
+	.navbar-fixed-top--inner {
+		width: 100%;
+		max-width: 1800px;
 	}
 
 	&.scrolled {
