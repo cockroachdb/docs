@@ -184,18 +184,18 @@ body.sidenav-open {
           line-height: 20px;
 
           @include at-query($min, $screen-md) {
-            font-size: 14px;
+            font-size: 13px;
           }
         }
 
         > ul {
-          border-left: 1px solid $cl_green_bright;
+          // border-left: 1px solid $cl_green_bright;
           margin: 0 0 0 5px;
           padding: 0;
 
           //3rd level
           > li {
-            margin: 0 0 7px 15px;
+            margin: 0 0 0 15px;
             padding: 0;
             list-style: none;
 
@@ -204,12 +204,12 @@ body.sidenav-open {
               line-height: 20px;
 
               @include at-query($min, $screen-md) {
-                font-size: 14px;
+                font-size: 13px;
               }
             }
 
             > ul {
-              border-left: 1px solid $cl_green_bright;
+              // border-left: 1px solid $cl_green_bright;
               padding-left: 15px;
 
               //4th level
@@ -221,7 +221,7 @@ body.sidenav-open {
                   line-height: 20px;
 
                   @include at-query($min, $screen-md) {
-                    font-size: 14px;
+                    font-size: 13px;
                   }
                 }
               }
@@ -317,6 +317,7 @@ a:not([href]) {
   li:not(.tier-1) {
     margin-top: 0;
     text-transform: none;
+    line-height: 28px;
   }
 
   li a { width: 100%; }
@@ -324,19 +325,13 @@ a:not([href]) {
   li .arrow-down,
   li .nav-expand { margin-right: 10px; }
 
-  li .nav-expand {
-    display: inline-block;
-    margin-top: 8px;
-    float: right;
-  }
-
   // tier 1
   > li {
-    padding: 10px 0;
+    padding: 5px 0 7px;
 
     > a {
-      @include avenir_h(14px);
-      line-height: 25px;
+      @include avenir_h(13px);
+      line-height: 26px;
     }
 
     .arrow-down { margin-top: 7px; }
