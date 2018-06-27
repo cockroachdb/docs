@@ -123,7 +123,7 @@
 		@include button();
 		background-color: transparent;
 		border: none;
-		color: $cl_blue;
+		color: $cl_gray;
 		line-height: 40px;
 		padding: 0;
 		margin-top: 9px;
@@ -141,7 +141,6 @@
 	.dropdown-menu {
 		border: none;
 		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
-		// box-shadow: 0 0 15px 0 rgba(0,0,0,0.06), 0 0 5px 0 rgba(0,0,0,0.06);
 	}
 
 	.dropdown-menu > li > a {
@@ -160,6 +159,11 @@
 			background-color: transparent;
 			color: $cl_green;
 		}
+	}
+
+	.arrow-up,
+	.arrow-down {
+		border-color: $cl_gray;
 	}
 
 	.arrow-up {

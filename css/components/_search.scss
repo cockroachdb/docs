@@ -11,8 +11,9 @@
 
   #search-input {
     background-color: white;
-    border: solid 1px #bcbcbc;
+    border: none;
     border-radius: 32px;
+    box-shadow: 0 0 8px $cl_gray_medium;
     height: 40px;
     width: calc(100% - 30px);
     outline: 0px none;

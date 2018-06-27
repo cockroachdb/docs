@@ -41,7 +41,8 @@
   > ul {
     list-style-type: none;
     width: 100%;
-    padding: 0;
+    padding: 0 0 0 10px;
+    border-left: 5px solid $cl_gray_light;
 
     li {
       margin: 0;
@@ -73,14 +74,13 @@
       > ul {
         margin: 0;
         padding: 0 0 0 10px;
-        border-left: 2px solid $cl-green;
       }
     }
 
     &:before {
-      content: "On This Page";
-      @include adelle_b(13px);
-      line-height: 26px;
+      content: "Contents";
+      @include avenir_h(14px);
+      line-height: 30px;
       color: $cl_blue;
       display: block;
     }

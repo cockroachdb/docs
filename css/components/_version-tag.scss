@@ -1,34 +1,22 @@
 .version-tag {
+  display: inline-block;
   position: relative;
-  @include paragraph-type--heavy;
   color: $cl_blue_note;
+  @include avenir_r(13px);
+  line-height: 20px;
+  margin-left: 5px;
 
   &:before {
     content: '\f1d8';
     font-family: FontAwesome;
-    font-size: 12px;
+    font-size: 13px;
     margin-right: 5px;
-
-    @include at-query($min, $screen-sm) {
-      position: absolute;
-      margin-right: 0;
-      top: -5px;
-      left: -25px;
-    }
   }
 }
 
-#toc, .clickable-header {
+p, .clickable-header {
   .version-tag {
-    display: inline-block;
-    @include caption;
-    margin-left: 25px;
-
-    &:before {
-      position: absolute;
-      font-size: 13px;
-      top: 0px;
-      left: -20px;
-    }
+    @include avenir_r(15px);
+    line-height: 30px;
   }
 }
