@@ -196,6 +196,8 @@ By default, CockroachDB allows all users to access and view the Admin UI. Howeve
 
     On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
 
+To log out of the Admin UI, click the **Sign Out** link at the bottom of the left-hand navigation bar.
+
 ## See also
 
 - [Troubleshooting Overview](troubleshooting-overview.html)
