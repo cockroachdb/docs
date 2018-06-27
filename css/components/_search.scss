@@ -37,7 +37,7 @@
   }
 }
 
-li.search-wrap {
+#mysidebar li.search-wrap {
   margin-bottom: 0;
 
   @include at-query($min, $screen-md) {
@@ -47,6 +47,7 @@ li.search-wrap {
     width: 240px;
     background: #ffffff;
     z-index: 2;
+    padding-top: 11px;
   }
 }
 
