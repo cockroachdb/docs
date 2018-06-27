@@ -367,7 +367,7 @@ header {
     justify-content: center; }
   header .navbar-fixed-top--inner {
     width: 100%;
-    max-width: 1800px; }
+    max-width: 1500px; }
   header.scrolled {
     background: #FFFFFF;
     border-bottom: 1px solid #DADADA; }
@@ -971,7 +971,7 @@ a:not([href]) {
       #content #main-content {
         margin: 0 auto;
         min-height: 625px;
-        max-width: 1800px; } }
+        max-width: 1500px; } }
     #content #main-content .content-col {
       padding-bottom: 100px;
       max-width: 100%;
