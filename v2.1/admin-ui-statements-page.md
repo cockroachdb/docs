@@ -17,7 +17,7 @@ To view the **Statements** page, open [http://localhost:8080/#/statements](http:
 
 - If you have multiple applications running on the cluster, the **Statements** page shows cumulative parameter values across all applications, while the **Statements Details** page shows the values for the first application only.
 - The **Statements** page provides the SQL statement details only for the [gateway node](architecture/sql-layer.html#overview). To view the details for other nodes, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) from that node and navigate to `http://<node address>:8080/#/statements` from the browser.
-- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. By default, the time interval is set to one hour; however, you can customize the interval using the ` ` cluster setting.
+- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
 
 ## Understanding the Statements page
 
