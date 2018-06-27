@@ -11,7 +11,9 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all database in the 
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_databases.html %}
+</div>
 
 ## Required Privileges
 

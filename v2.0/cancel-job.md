@@ -18,7 +18,9 @@ By default, only the `root` user can cancel a job.
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/cancel_job.html %}
+</div>
 
 ## Parameters
 

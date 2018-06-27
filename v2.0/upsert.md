@@ -22,7 +22,9 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/upsert.html %}
+</div>
 
 <div markdown="1"></div>
 

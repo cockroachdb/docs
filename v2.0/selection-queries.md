@@ -56,7 +56,9 @@ Form | Usage
 
 ### Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/select_clause.html %}
+</div>
 
 <div markdown="1"></div>
 
@@ -67,7 +69,9 @@ Form | Usage
 
 #### Syntax
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/values_clause.html %}
+</div>
 
 A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
@@ -98,7 +102,9 @@ names. [These names can be modified with
 
 #### Syntax
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/table_clause.html %}
+</div>
 
 <div markdown="1"></div>
 

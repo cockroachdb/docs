@@ -13,7 +13,9 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](v
 
 ## Synopsis
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
+</div>
 
 ## Required Privileges
 

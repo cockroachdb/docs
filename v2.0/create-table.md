@@ -25,31 +25,45 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+</div>
 
 **column_def ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+</div>
 
 **col_qualification ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
+</div>
 
 **index_def ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+</div>
 
 **family_def ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+</div>
 
 **table_constraint ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+</div>
 
 **opt_interleave ::=**
 
+<div>
 {% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+</div>
 
 </div>
 
