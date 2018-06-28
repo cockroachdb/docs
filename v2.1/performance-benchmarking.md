@@ -10,16 +10,16 @@ This page walks you through TPC-C performance benchmarking on CockroachDB. It me
 - 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes _(Coming soon)_
 
 These two points on the spectrum show how CockroachDB scales from modest sized production workloads to larger scale deployments.
-<!-- 
+<!--
 This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size. -->
 
 <div id="toc"></div>
 
 ## Benchmark a small cluster
 
-### Before you begin
+### Step 1. Start a cluster on Google Cloud Platform GCE
 
-Follow steps 1-7 in the [GCE tutorial to deploy a 4-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html).
+Follow steps 1-7 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html).
 
 - For the 3 CockroachDB nodes, use the `n1-highcpu-16` VMs with [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd).
     For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, as opposed to networked block storage, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each (as opposed to network- attached replicated block storage).
@@ -30,25 +30,25 @@ Follow steps 1-7 in the [GCE tutorial to deploy a 4-node CockroachDB cluster on 
 If you are following this deployment for production in the cloud, ensure that you spread your nodes across at least three availability zones and [set the CockroachDB zone configuration](configure-replication-zones.html) to spread replicas across zones. Local SSDs on Cloud VMs can lose data if the VM is lost, so it is important that CockroachDB can automatically recover from the loss of any single zone’s disks. This demo does not spread VMs across availability zones, but your production deployment should.
 {{site.data.alerts.end}}
 
-### Step 1. Run a sample workload
+### Step 2. Run a sample workload
 
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
-2. Download `workload` and make it executable:
+1. Download `workload` and make it executable:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST | chmod 755 workload.LATEST
     ~~~
 
-3. Rename and copy `workload` into the `PATH`:
+2. Rename and copy `workload` into the `PATH`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
-4. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the `ca.crt`, `client.root.crt`, and `client.root.key` files:
+3. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the `ca.crt`, `client.root.crt`, and `client.root.key` files:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -67,7 +67,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
      Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup. Follow along with the process on the **Admin UI > Jobs** table.
 
-### Step 2. Run the benchmark
+### Step 3. Run the benchmark
 
 In a new terminal window, run `workload` for five minutes:
 
@@ -83,7 +83,7 @@ $ workload run tpcc \
 
 Note that if you only direct load at a subset (or one) of the machines, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. You will not, however, get optimal performance, as all queries will go through the specified subset of the machines.
 
-### Step 3. Interpret the results
+### Step 4. Interpret the results
 
 Once the `workload` has finished running, you should see a final output line:
 
@@ -109,7 +109,7 @@ The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C re
 
 - You must have a valid enterprise license to use [partitioning](partitioning.html) features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 - Follow steps 1-7 in [Deploy CockroachDB on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html) to create a cluster with the following settings:
-    - 31-node cluster (30 for the database, 1 for the load generator)
+    - 30-node cluster (30 for the database, 1 for the load generator)
     - `n1-highcpu-16` machine type on [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd)
     - 10 racks, which are used later to partition the database. Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number." Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
 
