@@ -154,8 +154,7 @@ body.sidenav-open {
       text-decoration: none;
       color: $cl_blue;
 
-
-      @include avenir_r(15px);
+      @include avenir_r(13px);
 
       line-height: 20px;
       padding: 0;
@@ -180,7 +179,7 @@ body.sidenav-open {
 
         > a {
           width: 100%;
-          @include avenir_r(16px);
+          @include avenir_r(13px);
           line-height: 20px;
 
           @include at-query($min, $screen-md) {
@@ -199,7 +198,7 @@ body.sidenav-open {
             list-style: none;
 
             > a {
-              @include avenir_r(16px);
+              @include avenir_r(13px);
               line-height: 20px;
 
               @include at-query($min, $screen-md) {
@@ -215,7 +214,7 @@ body.sidenav-open {
                 list-style: none;
 
                 > a {
-                  @include avenir_r(16px);
+                  @include avenir_r(13px);
                   line-height: 20px;
 
                   @include at-query($min, $screen-md) {
@@ -268,18 +267,22 @@ body.sidenav-open {
       > code {
         color: $cl_green;
       }
-
-      .arrow-down {
-        transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
-        margin-bottom: 0px;
-      }
     }
 
     // third tier
     li.active {
       a {
         width: 100%;
+      }
+    }
+  }
+
+  li.active--expand {
+    > a {
+      .arrow-down {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        margin-bottom: 0px;
       }
     }
   }
@@ -328,7 +331,8 @@ a:not([href]) {
     padding: 5px 0 7px;
 
     > a {
-      @include avenir_h(13px);
+      @include button-text--heavy--small;
+      text-transform: uppercase;
       line-height: 26px;
     }
 
@@ -371,7 +375,7 @@ a:not([href]) {
     a {
       margin: 0;
       padding: 0 25px;
-      @include button-text--heavy--medium;
+      @include button-text--heavy--small;
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
@@ -380,7 +384,7 @@ a:not([href]) {
       @include at-query($min, $screen-md) { padding: 0 10px; }
 
       .version-name {
-        @include avenir_h(16px);
+        @include avenir_h(14px);
         line-height: 20px;
         color: $cl_green;
         text-transform: none;
@@ -408,7 +412,7 @@ a:not([href]) {
   .nav li ul {
     border-left: none;
     margin: 0;
-    padding: 20px 0;
+    padding: 15px 0;
 
     @include at-query($min, $screen-md) {
       padding-bottom: 0;
@@ -419,8 +423,8 @@ a:not([href]) {
     margin: 0;
 
     a {
-      margin-bottom: 20px;
-      @include avenir_r(16px);
+      margin-bottom: 15px;
+      @include avenir_r(14px);
       line-height: 16px; // vertical spacing
       text-transform: none;
       letter-spacing: normal;

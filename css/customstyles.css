@@ -645,7 +645,7 @@ body.sidenav-open .col-content {
       text-decoration: none;
       color: #152849;
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -666,7 +666,7 @@ body.sidenav-open .col-content {
         .nav > li > ul > li > a {
           width: 100%;
           font-family: 'AvenirLTStd-Roman', serif;
-          font-size: 16px;
+          font-size: 13px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -683,7 +683,7 @@ body.sidenav-open .col-content {
             list-style: none; }
             .nav > li > ul > li > ul > li > a {
               font-family: 'AvenirLTStd-Roman', serif;
-              font-size: 16px;
+              font-size: 13px;
               font-weight: normal;
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
@@ -697,7 +697,7 @@ body.sidenav-open .col-content {
                 list-style: none; }
                 .nav > li > ul > li > ul > li > ul > li > a {
                   font-family: 'AvenirLTStd-Roman', serif;
-                  font-size: 16px;
+                  font-size: 13px;
                   font-weight: normal;
                   -webkit-font-smoothing: antialiased;
                   -moz-osx-font-smoothing: grayscale;
@@ -729,12 +729,12 @@ body.sidenav-open .col-content {
         padding-bottom: 0; } }
     .nav li.active > a > code {
       color: #54B30E; }
-    .nav li.active > a .arrow-down {
-      transform: rotate(-135deg);
-      -webkit-transform: rotate(-135deg);
-      margin-bottom: 0px; }
   .nav li.active li.active a {
     width: 100%; }
+  .nav li.active--expand > a .arrow-down {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    margin-bottom: 0px; }
 
 a:not([href]) {
   color: #aaa; }
@@ -770,10 +770,13 @@ a:not([href]) {
     padding: 5px 0 7px; }
     #mysidebar > li > a {
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      line-height: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       line-height: 26px; }
     #mysidebar > li .arrow-down {
       margin-top: 7px; }
@@ -808,7 +811,7 @@ a:not([href]) {
       margin: 0;
       padding: 0 25px;
       font-family: 'AvenirLTStd-Heavy', serif;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -823,7 +826,7 @@ a:not([href]) {
           padding: 0 10px; } }
       #version-switcher .tier-1 a .version-name {
         font-family: 'AvenirLTStd-Heavy', serif;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -843,16 +846,16 @@ a:not([href]) {
   #version-switcher .nav li ul {
     border-left: none;
     margin: 0;
-    padding: 20px 0; }
+    padding: 15px 0; }
     @media screen and (min-width: 992px) {
       #version-switcher .nav li ul {
         padding-bottom: 0; } }
   #version-switcher .tier-2 {
     margin: 0; }
     #version-switcher .tier-2 a {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
