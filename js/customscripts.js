@@ -108,7 +108,7 @@ $(function() {
     cachedWidth = _viewport_width;
   });
 
-  $(window).on('scroll', function() {
+  $(window).on('scroll', function(e) {
     var scrollTop = $(window).scrollTop();
     var windowHeight = $(window).height();
     var footerOffset = $footer.offset().top;
