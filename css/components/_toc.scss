@@ -59,6 +59,10 @@
           text-decoration: none;
           border-bottom: none;
         }
+
+        &.active--scroll {
+          color: $cl_green;
+        }
       }
 
       a:first-child {

@@ -1672,6 +1672,9 @@ a.accordion-toggle {
         color: #54B30E;
         text-decoration: none;
         border-bottom: none; }
+      #toc > ul li a.active--scroll,
+      #toc-right > ul li a.active--scroll {
+        color: #54B30E; }
     #toc > ul li a:first-child,
     #toc-right > ul li a:first-child {
       position: relative; }
