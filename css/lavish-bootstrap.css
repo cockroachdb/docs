@@ -250,21 +250,12 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  /*font-size: 17px;
-  font-weight: normal;
-  line-height: 28px; */
   font-family: Avenir-Light, Open Sans, sans-serif;
   font-size: 16px;
   line-height:28px;
   font-weight: normal;
-  /*color: #77777a;*/
   color: #142848;
   background-color: white;
-  /*background-color: #FF8700;*/
-  /*background-color: #2ABBB0;*/
-  /*background-color: #E0E1DD;*/
-  /*background-image: url("images/AA_1.jpg");*/
-  /*background-image: url("images/docs.jpg");*/
 }
 input,
 button,
@@ -351,7 +342,6 @@ hr {
   border: 0;
 }
 p {
-  /*margin: 0 0 10px;*/
   margin: 2rem 0;
 }
 .lead {
@@ -449,7 +439,6 @@ h1,
 h2,
 .h2 {
   font-size: 30px;
-  /*text-transform: uppercase;*/
 }
 h3,
 .h3 {
@@ -671,11 +660,7 @@ pre code {
 .container:before,
 .container:after {
   content: " ";
-  /* 1 */
-
   display: table;
-  /* 2 */
-
 }
 .container:after {
   clear: both;
@@ -683,11 +668,7 @@ pre code {
 .container:before,
 .container:after {
   content: " ";
-  /* 1 */
-
   display: table;
-  /* 2 */
-
 }
 .container:after {
   clear: both;
