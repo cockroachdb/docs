@@ -15,15 +15,15 @@ To view the **Statements** page, open [http://localhost:8080/#/statements](http:
 
 ## Limitations
 
-- If you have multiple applications running on the cluster, the **Statements** page shows cumulative parameter values across all applications, while the **Statements Details** page shows the values for the first application only.
-- The **Statements** page provides the SQL statement details only for the [gateway node](architecture/sql-layer.html#overview). To view the details for other nodes, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) from that node and navigate to `http://<node address>:8080/#/statements` from the browser.
-- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+- If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications; however, there is no way to map the statements to the applications. Also, the **Statements Details** page shows the values only for the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. The next CockroachDB alpha release allows you to choose the application on the **Statements** page and, by extension, the **Statement Details** page.
+- The **Statements** page provides the SQL statement details only for statements sent to the node from which the Admin UI is accessed (that is, the [gateway node](architecture/sql-layer.html#overview)). To view the details for other nodes, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) from that node and navigate to `http://<node address>:8080/#/statements` from the browser.
+- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page till the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
 
 ## Understanding the Statements page
 
 ### SQL statement fingerprint
 
-Whenever possible, the **Statements** page displays the details of SQL statement fingerprints instead of individual SQL statements.
+The **Statements** page displays the details of SQL statement fingerprints instead of individual SQL statements.
 
 A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the parameter values with `_`. Grouping similar SQL statements as fingerprints helps you quickly identify the frequently executed SQL statements and their latencies.
 
@@ -47,19 +47,17 @@ The following statements are different enough to not have the same fingerprint:
 
 ### Parameters
 
-The **Statements** page displays the execution time, count, and mean rows and latency for each statement fingerprint. By default, the statement fingerprints are sorted by their execution time; however, you can sort the table by count, mean rows, and mean latency.
+The **Statements** page displays the time, count, and mean rows and latency for each statement fingerprint. By default, the statement fingerprints are sorted by time; however, you can sort the table by count, mean rows, and mean latency.
 
 The following details are provided for each statement fingerprint:
 
 Parameter | Description
 -----|------------
-Statement | The SQL statement or the fingerprint of similar SQL statements.
+Statement | The SQL statement or the fingerprint of similar SQL statements.<br><br>To view additional details of a statement fingerprint, click on the statement fingerprint in the **Statement** column to see the [**Statement Details** page](#statement-details-page).
 Time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint).
 Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed. <br><br>The execution count is displayed in numerical value as well as in the form of a horizontal bar. The bar is color-coded to indicate the ratio of runtime success (indicated by blue) to runtime failure (indicated by red) of the execution count for the fingerprint. The bar also helps you compare the execution count across all SQL fingerprints in the table. <br><br>You can sort the table by count.
 Mean Rows | The average number of rows returned or affected while executing the SQL statement (or multiple statements having the same fingerprint). <br><br>The number of mean rows is displayed in numerical value as well as in the form of a horizontal bar. The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by mean rows.
 Mean Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint). <br><br> The mean latency is displayed in numerical value as well as in the form of a horizontal bar. The bar is color-coded to indicate the latency across the execution phases: parse (indicated by red), plan (indicated by yellow), execute (indicated by blue), and overhead (indicated by red). The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by mean latency.
-
-To view additional details of a statement fingerprint, click on the statement fingerprint in the **Statement** column to see the **Statement Details** page.
 
 ## Statement Details page
 
@@ -73,12 +71,12 @@ Parameter | Description
 -----|------------
 First Attempts | The cumulative number of first attempts to execute the SQL statement (or multiple statements having the same fingerprint).
 Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint).
-Max Retries |
-Total |
+Max Retries | The highest number of retries for a single SQL statement with this fingerprint. <br><br>For example, if three statements having the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+Total | The total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and cumulative retries.
 
 ### Latency by phase
 
-The **Latency by Phase** table provides the mean and standard deviation values of the service latency for each execution phase (parse, plan, run, and overhead) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as bar graphs. The bar graphs are color-coded per execution phase:
+The **Latency by Phase** table provides the mean and standard deviation values of the overall service latency as well as latency for each execution phase (parse, plan, run, and overhead) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as bar graphs. The bar graphs are color-coded per execution phase:
 
 Phase | Color code
 -----|------------
@@ -99,9 +97,17 @@ Parameter | Description
 -----|------------
 Total time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint).
 Execution count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed.
-Executed without retry | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed successfully on the first attempt.
+Executed without retry | The percentage of successful executions of the SQL statement (or multiple statements having the same fingerprint) on the first attempt.
 Mean service latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint).
 Mean number of rows | The average number of rows returned or affected while executing the SQL statement (or multiple statements having the same fingerprint).
+
+The table below the statistics box provides the following details:
+
+Parameter | Description
+-----|------------
+App | Name of the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. The **Statements Details** page shows the details for this application.
+Used DistSQL? | Indicates whether the statement (or multiple statements having the same fingerprint) were executed using DistSQL.
+Failed? | Indicate if the statement (or multiple statements having the same fingerprint) were executed successfully.
 
 ## See also
 
