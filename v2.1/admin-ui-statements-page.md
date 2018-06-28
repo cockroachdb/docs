@@ -25,9 +25,9 @@ To view the **Statements** page, open [http://localhost:8080/#/statements](http:
 
 The **Statements** page displays the details of SQL statement fingerprints instead of individual SQL statements.
 
-A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the parameter values with `_`. Grouping similar SQL statements as fingerprints helps you quickly identify the frequently executed SQL statements and their latencies.
+A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the literal values with underscores (`_`). Grouping similar SQL statements as fingerprints helps you quickly identify the frequently executed SQL statements and their latencies.
 
-A statement fingerprint is generated when two or more statements have the same abstractions. For example, the following statements have the same abstractions:
+A statement fingerprint is generated when two or more statements are the same after any literal values in them (e.g. numbers and strings) are replaced with underscores. For example, the following statements have the same once their numbers have been replaced with underscores:
 
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`
