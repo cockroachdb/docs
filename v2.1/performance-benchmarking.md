@@ -4,14 +4,14 @@ summary: Learn how to benchmark CockroachDB against TPC-C.
 toc: false
 ---
 
-This page walks you through TPC-C performance benchmarking on CockroachDB. It measures `tpmC` (new order transactions/minute) on two TPC-C datasets:
+This page walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on CockroachDB. It measures `tpmC` (new order transactions/minute) on two TPC-C datasets:
 
 - 1,000 warehouses (for a total dataset size of 200GB) on 3 nodes
 - 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes _(Coming soon)_
 
 These two points on the spectrum show how CockroachDB scales from modest sized production workloads to larger scale deployments.
-<!--
-This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size. -->
+
+<!--This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size.-->
 
 <div id="toc"></div>
 
@@ -19,10 +19,10 @@ This demonstrates how CockroachDB achieves high OLTP performance of over 128,000
 
 ### Step 1. Start a cluster on Google Cloud Platform GCE
 
-Follow steps 1-7 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html).
+Follow steps 1-7 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html), with the following changes:
 
 - For the 3 CockroachDB nodes, use the `n1-highcpu-16` VMs with [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd).
-    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, as opposed to networked block storage, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each (as opposed to network- attached replicated block storage).
+    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We do not recommend using network-attached block storage. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each.
 
 - Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for read and write testing and load balancing.
 
@@ -32,7 +32,7 @@ If you are following this deployment for production in the cloud, ensure that yo
 
 ### Step 2. Run a sample workload
 
-CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the TPC-C workload.
 
 1. Download `workload` and make it executable:
 
@@ -48,7 +48,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
-3. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the `ca.crt`, `client.root.crt`, and `client.root.key` files:
+3. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the [`ca.crt`, `client.root.crt`, and `client.root.key` files](connection-parameters.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -81,7 +81,7 @@ $ workload run tpcc \
 "postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
 ~~~
 
-Note that if you only direct load at a subset (or one) of the machines, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. You will not, however, get optimal performance, as all queries will go through the specified subset of the machines.
+Note that if you only direct load at a subset (or one) of the nodes, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. However, you will not get optimal performance, as all queries will go through the specified subset of the machines.
 
 ### Step 4. Interpret the results
 
@@ -92,9 +92,9 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
   298.9s    13154.0 102.3%     75.1     71.3    113.2    130.0    184.5    436.2
 ~~~
 
-You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` number is the headline number and `efc`(i.e, "efficiency"), tells you how close CockroachDB gets to theoretical maximum `tpmC`.
+You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` (new order transactions/minute) number is the headline number and `efc`("efficiency"), tells you how close CockroachDB gets to theoretical maximum `tpmC`.
 
-The TPC-C specification has p90 latency requirements on the order of seconds, but as you see here, CockroachDB far surpasses that requirement with p90 latencies in the hundreds of milliseconds.
+The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-c_v5.11.0.pdf) has p90 latency requirements on the order of seconds, but as you see here, CockroachDB far surpasses that requirement with p90 latencies in the hundreds of milliseconds.
 
 {{site.data.alerts.callout_info}}
 Instructions on how to reproduce our 30-node, 10,000 warehouse TPC-C results are coming soon.
