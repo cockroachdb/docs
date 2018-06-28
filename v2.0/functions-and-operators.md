@@ -96,9 +96,9 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
 |  | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value](scalar-expressions.html#comparison-with-nan) | unary (postfix) |
 |  | `IS OF(...)` | Type predicate | unary (postfix)
-| 15 | `NOT` | Logical NOT | unary |
-| 16 | `AND` | [Logical AND with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
-| 17 | `OR` | [Logical OR with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
+| 15 | `NOT` | [Logical NOT](scalar-expressions.html#logical-operators) | unary |
+| 16 | `AND` | [Logical AND](scalar-expressions.html#logical-operators) | binary |
+| 17 | `OR` | [Logical OR](scalar-expressions.html#logical-operators) | binary |
 
 [Multi-valued]: scalar-expressions.html#multi-valued-comparisons
 
