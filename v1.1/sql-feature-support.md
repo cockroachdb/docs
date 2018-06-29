@@ -133,9 +133,9 @@ table tr td:nth-child(2) {
 |-----------|-----------|------|---------|
 | Common functions | ✓ | Standard | [Functions calls and SQL special forms documentation](sql-expressions.html#function-calls-and-sql-special-forms)
 | Common operators | ✓ | Standard | [Operators documentation](sql-expressions.html#unary-and-binary-operations) |
-| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `AND`/`OR` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions) |
+| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](sql-expressions.html#conditional-expressions) |
+| `AND`/`OR`/`NOT` | ✓ | Standard | [Logical operators documentation](sql-expressions.html#logical-operators) |
 | `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](sql-expressions.html#string-pattern-matching) |
 | `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](sql-expressions.html#string-matching-using-sql-regular-expressions) |
 | Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](sql-expressions.html#string-matching-using-posix-regular-expressions) |

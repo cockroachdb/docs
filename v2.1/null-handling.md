@@ -199,7 +199,7 @@ Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 ## NULLs and conditional operators
 
 The [conditional
-operators](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations)
+operators](scalar-expressions.html#conditional-expressions)
 (including `IF`, `COALESCE`, `IFNULL`) only evaluate some
 operands depending on the value of a condition operand, so their
 result is not always `NULL` depending on the given operands.
