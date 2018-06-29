@@ -6,7 +6,9 @@ toc: false
 
 The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a 64-bit integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
 
-{{site.data.alerts.callout_info}}In most cases, we recommend using the <a href="uuid.html"><code>UUID</code></a> data type with the <code>gen_random_uuid()</code> function as the default value, which generates 128-bit values (much larger than <code>SERIAL</code>'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See <a href="uuid.html#create-a-table-with-auto-generated-unique-row-ids">Create a table with auto-generated unique row IDs</a> for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In most cases, we recommend using the [`UUID`](uuid.html) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (much larger than `SERIAL`'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See [Create a table with auto-generated unique row IDs](uuid.html#create-a-table-with-auto-generated-unique-row-ids) for more details.
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -22,7 +24,9 @@ In CockroachDB, the following are aliases for `SERIAL`:
 - `SMALLSERIAL`
 - `BIGSERIAL`
 
-{{site.data.alerts.callout_danger}}<code>SERIAL2</code> and <code>SERIAL4</code> are the same as <code>SERIAL</code> and store 8-byte values, not 2- or 4-byte values as their names might suggest.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`SERIAL2` and `SERIAL4` are the same as `SERIAL` and store 8-byte values, not 2- or 4-byte values as their names might suggest.
+{{site.data.alerts.end}}
 
 ## Syntax
 
@@ -139,9 +143,9 @@ To experience this for yourself, run through the following example in PostgreSQL
     +---+
     ~~~
 
-    Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
+    Since each insert increased the sequence in column `a` by one, the first committed insert got the value `2`, and the second committed insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
-In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster.
+In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. An alternative feature, introduced in v2.0, is the [`SEQUENCE`](create-sequence.html).
 
 ## Supported casting and conversion
 
