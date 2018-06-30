@@ -1,6 +1,6 @@
 ---
 title: Change Data Capture (CDC)
-summary: Partitioning is an enterprise feature that gives you row-level control of how and where your data is stored.
+summary: Change data capture (CDC) provides efficient, distributed, row-level change subscriptions.
 toc: false
 ---
 
@@ -60,6 +60,17 @@ To pause a changefeed:
 ~~~
 
 For more information, see [`PAUSE JOB`](pause-job.html).
+
+## Resume
+
+To resume a paused changefeed:
+
+{% include copy-clipboard.html %}
+~~~
+> RESUME JOB job_id;
+~~~
+
+For more information, see [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
@@ -165,6 +176,8 @@ In this example, you'll set up a changefeed that is connected to a Kafka sink.
     {"id": 1, "name": "Petee H"}
     {"id": 2, "name": "Carl"}
     ~~~
+
+    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is missing).
 
 10. Back in the SQL client, insert more data:
 
