@@ -38,7 +38,7 @@ Location:
 
 Options:
     timestamps
-    envelope=[key_only | row]
+    envelope=[key_only|row]
     cursor=<timestamp>
     format=json
 ~~~
@@ -49,7 +49,7 @@ Parameter | Description
 ----------|------------
 `INTO location` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. There are query parameters that vary per type. Currently, the `kafka` scheme only has `topic_prefix`, which adds a prefix to all of the topic names. <br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `WITH timestamps` | Turns on updated and resolved timestamps.
-`WITH envelope=[key_only | row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
+`WITH envelope=[key_only/row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
 `WITH cursor=<timestamp>` | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.
 `WITH format=json` | _(Default)_ Format of the emitted record.
 
