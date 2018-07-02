@@ -1,7 +1,7 @@
 /* setup highlight-on-scroll behavior for right-hand TOC */
 $(document).ready(function() {
   var $navigationLinks = $('#toc-right > ul > li > a:not(.anchorjs-link)');
-  var $sections = $($(".clickable-header").get().reverse());
+  var $sections = $(".clickable-header");
   var sectionIdTonavigationLink = {};
   
   $sections.each(function() {
@@ -16,14 +16,10 @@ $(document).ready(function() {
       var currentSection = $(this);
       var sectionTop = currentSection.offset().top - 70;
 
-      // if (currentSection.attr('id') === 'step-3-test-the-cluster') {
-      //   console.log(sectionTop + ' | ' + scrollPosition);
-      // }
-
       if (scrollPosition >= sectionTop) {
         var id = currentSection.attr('id');
         var $currentLink = sectionIdTonavigationLink[id];
-        
+
         if (!$currentLink.hasClass('active--scroll')) {
           $navigationLinks.removeClass('active--scroll');
           $currentLink.addClass('active--scroll');
