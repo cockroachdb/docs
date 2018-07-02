@@ -36,9 +36,9 @@ Use roachprod to create cluster: `roachprod create lauren-tpcc --gce-machine-typ
 
 Download latest version of CockroachDB:
 
-- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz'`
+- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.0.3.linux-amd64.tgz'`
 
-- `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180702.linux-amd64/cockroach cockroach"`
+- `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.0.3.linux-amd64.tgz | tar -xvz; mv cockroach-v2.0.3.linux-amd64/cockroach cockroach"`
 
 Start the cluster: `roachprod run lauren-tpcc -- 'sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1'`
 
@@ -53,9 +53,9 @@ Run sample workload and RESTORE TPC-C data: `roachprod run lauren-tpcc:4 "wget h
 
 Tell workload to load dataset to cluster: `roachprod run lauren-tpcc:4 "./workload.LATEST fixtures load tpcc {pgurl:1} --warehouses=1000"` (this will take about an hour)
 
-Once RESTORE is complete, run the benchmark: `roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=1000 --duration=300s --split --scatter {pgurl:1-3}"`
-
 Check on progress by navigating to the Admin UI > Jobs dashboard: `roachprod adminurl lauren-tpcc:1`
+
+Once RESTORE is complete, run the benchmark: `roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=1000 --duration=300s --split --scatter {pgurl:1-3}"`
 
 Once the workload has finished running, you should see a final output line:
 
