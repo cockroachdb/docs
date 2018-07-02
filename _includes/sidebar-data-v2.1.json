@@ -325,6 +325,12 @@
                 "urls": [
                   "/${VERSION}/roles.html"
                 ]
+              },
+              {
+                "title": "Change Data Capture",
+                "urls": [
+                  "/${VERSION}/change-data-capture.html"
+                ]
               }
             ]
           }
@@ -600,6 +606,12 @@
                 "title": "<code>COMMIT</code>",
                 "urls": [
                   "/${VERSION}/commit-transaction.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE CHANGEFEED</code>",
+                "urls": [
+                  "/${VERSION}/create-changefeed.html"
                 ]
               },
               {
