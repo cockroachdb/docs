@@ -120,7 +120,10 @@ $(function() {
 
     // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 502ea07aeac303e780f6f0c977a5cb99d4446af6
       if (scrollTop + windowHeight >= footerOffset) {
         $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
         $colSidebar.css('bottom', viewportFooterDiff + 'px');
