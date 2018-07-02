@@ -9,7 +9,7 @@ This page walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchm
 - 1,000 warehouses (for a total dataset size of 200GB) on 3 nodes
 - 10,000 warehouses (for a total dataset size of 2TB) on 30 nodes _(Coming soon)_
 
-These two points on the spectrum show how CockroachDB scales from modest sized production workloads to larger scale deployments.
+These two points on the spectrum show how CockroachDB scales from modest-sized production workloads to larger-scale deployments.
 
 <!--This demonstrates how CockroachDB achieves high OLTP performance of over 128,000 tpmC on a TPC-C dataset over 2TB in size.-->
 
@@ -24,10 +24,10 @@ Follow steps 1-7 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on 
 - For the 3 CockroachDB nodes, use the `n1-highcpu-16` VMs with [Local SSD](https://cloud.google.com/compute/docs/disks/local-ssd).
     For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We do not recommend using network-attached block storage. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each.
 
-- Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for read and write testing and load balancing.
+- Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for read and write testing.
 
 {{site.data.alerts.callout_danger}}
-If you are following this deployment for production in the cloud, ensure that you spread your nodes across at least three availability zones and [set the CockroachDB zone configuration](configure-replication-zones.html) to spread replicas across zones. Local SSDs on Cloud VMs can lose data if the VM is lost, so it is important that CockroachDB can automatically recover from the loss of any single zone’s disks. This demo does not spread VMs across availability zones, but your production deployment should.
+This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as ensuring that data is balanced across at least 3 availability zones for resiliency. See the [Production Checklist](recommended-production-settings.html) for more details.
 {{site.data.alerts.end}}
 
 <!-- ## Roachprod directions for performance benchmarking
@@ -36,9 +36,9 @@ Use roachprod to create cluster: `roachprod create lauren-tpcc --gce-machine-typ
 
 Download latest version of CockroachDB:
 
-- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180604.linux-amd64.tgz'`
+- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz'`
 
-- roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180604.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180604.linux-amd64/cockroach cockroach"
+- `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180702.linux-amd64/cockroach cockroach"`
 
 Start the cluster: `roachprod run lauren-tpcc -- 'sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1'`
 
@@ -53,7 +53,9 @@ Run sample workload and RESTORE TPC-C data: `roachprod run lauren-tpcc:4 "wget h
 
 Tell workload to load dataset to cluster: `roachprod run lauren-tpcc:4 "./workload.LATEST fixtures load tpcc {pgurl:1} --warehouses=1000"` (this will take about an hour)
 
-Once RESTORE is complete, run the benchmark: roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=1000 --duration=300s --split --scatter {pgurl:1-3}"
+Once RESTORE is complete, run the benchmark: `roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=1000 --duration=300s --split --scatter {pgurl:1-3}"`
+
+Check on progress by navigating to the Admin UI > Jobs dashboard: `roachprod adminurl lauren-tpcc:1`
 
 Once the workload has finished running, you should see a final output line:
 
@@ -80,13 +82,13 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
-3. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the [`ca.crt`, `client.root.crt`, and `client.root.key` files](connection-parameters.html):
+3. Start the TPC-C workload, pointing it at the IP address of the fourth VM and the location of the [`ca.crt`, `client.root.crt`, and `client.root.key` files](connection-parameters.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ workload fixtures load tpcc \
     --warehouses=1000 \
-    "postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    "postgresql://root@<IP ADDRESS OF FOURTH VM:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take about an hour and loads 1,000 "warehouses" of data.
@@ -103,6 +105,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
 In a new terminal window, run `workload` for five minutes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ workload run tpcc \
 --ramp=30s \
@@ -110,7 +113,7 @@ $ workload run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+"postgresql://root@<IP ADDRESS OF FOURTH VM:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
 ~~~
 
 Note that if you only direct load at a subset (or one) of the nodes, your data will still be replicated across the cluster and remain durable in the event of the loss of a machine. However, you will not get optimal performance, as all queries will go through the specified subset of the machines.
@@ -124,7 +127,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
   298.9s    13154.0 102.3%     75.1     71.3    113.2    130.0    184.5    436.2
 ~~~
 
-You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` (new order transactions/minute) number is the headline number and `efc`("efficiency"), tells you how close CockroachDB gets to theoretical maximum `tpmC`.
+You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` (new order transactions/minute) number is the headline number and `efc` ("efficiency") tells you how close CockroachDB gets to theoretical maximum `tpmC`.
 
 The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-c_v5.11.0.pdf) has p90 latency requirements on the order of seconds, but as you see here, CockroachDB far surpasses that requirement with p90 latencies in the hundreds of milliseconds.
 
