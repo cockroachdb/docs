@@ -7,11 +7,27 @@
           $maincontent = $('#main-content'),
           $contentcol = $('.content-col');
 
-      var navgocoOptions = {
+      var navgocoOptionsSidebar = {
         caretHtml: '',
         accordion: false,
         openClass: 'active--expand',
         save: true,
+        cookie: {
+          name: 'navgoco',
+          expires: false,
+          path: '/'
+        },
+        slide: {
+          duration: 150,
+          easing: 'swing'
+        }
+      };
+
+      var navgocoOptionsVersionSwitcher = {
+        caretHtml: '',
+        accordion: false,
+        openClass: 'active--expand',
+        save: false,
         cookie: {
           name: 'navgoco',
           expires: false,
@@ -30,7 +46,7 @@
         $('#version-switcher').removeClass('open');
       }
 
-      $sidebar.navgoco($.extend(navgocoOptions, {
+      $sidebar.navgoco($.extend(navgocoOptionsSidebar, {
         onToggleAfter: function() {
           if ($(this.el).attr('id') == 'mysidebar' &&
               $('#version-switcher').hasClass('open')) {
@@ -39,7 +55,7 @@
         }
       }));
 
-      $versionSwitcher.navgoco($.extend(navgocoOptions, {
+      $versionSwitcher.navgoco($.extend(navgocoOptionsVersionSwitcher, {
         onToggleBefore: function() {
           $('#version-switcher').toggleClass('open');
         }

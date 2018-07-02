@@ -752,7 +752,7 @@ a:not([href]) {
   padding: 10px 15px 5px 15px; }
   @media screen and (min-width: 992px) {
     #mysidebar {
-      padding: 63px 0 0 0;
+      padding: 63px 0 50px 0;
       width: 240px; } }
   #mysidebar li.tier-1 {
     margin-top: 5px;

@@ -306,7 +306,7 @@ a:not([href]) {
   padding: 10px 15px 5px 15px;
 
   @include at-query($min, $screen-md) { 
-    padding: 63px 0 0 0;
+    padding: 63px 0 50px 0;
     width: 240px; 
   }
 
