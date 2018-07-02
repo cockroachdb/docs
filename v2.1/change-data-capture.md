@@ -7,7 +7,7 @@ toc: false
 <span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
 {{site.data.alerts.callout_danger}}
-**This feature is under active development** and only works for a targeted a use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
+**This feature is under active development** and only works for a targeted use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
 
 In v2.1, CDC will be an enterprise feature and will have a core version.
 {{site.data.alerts.end}}
