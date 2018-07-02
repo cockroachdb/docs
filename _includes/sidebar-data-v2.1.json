@@ -327,6 +327,12 @@
                 ]
               },
               {
+                "title": "Encryption at Rest",
+                "ursl": [
+                  "/${VERSION}/encryption.html"
+                ]
+              },
+              {
                 "title": "Change Data Capture",
                 "urls": [
                   "/${VERSION}/change-data-capture.html"
