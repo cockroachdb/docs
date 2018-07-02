@@ -4,7 +4,7 @@ summary: Change data capture (CDC) provides efficient, distributed, row-level ch
 toc: false
 ---
 
-<span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change subscriptions.
+<span class="version-tag">New in v2.1:</span>Stream changes into Apache Kafka using change data capture (CDC). CDC provides efficient, distributed, row-level change subscriptions and can be used to support downstream processing such as reporting, caching, or full-text indexing.
 
 {{site.data.alerts.callout_danger}}
 **This feature is under active development** and only works for a targeted a use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
@@ -18,7 +18,7 @@ In v2.1, CDC will be an enterprise feature and will have a core version.
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [`CHANGEFEED`](create-changefeed.html). Changefeeds target a whitelist of databases, tables, partitions, rows, or a combination of these; called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (i.e., `JSON` or Avro) to a configurable sink (i.e., [Kafka](https://kafka.apache.org/).
+The core feature of CDC is the [`CHANGEFEED`](create-changefeed.html). Changefeeds target a whitelist of databases and tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
@@ -55,18 +55,18 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 To pause a changefeed:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 > PAUSE JOB job_id;
 ~~~
 
 For more information, see [`PAUSE JOB`](pause-job.html).
 
-## Resume
+### Resume
 
 To resume a paused changefeed:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 > RESUME JOB job_id;
 ~~~
 
@@ -77,7 +77,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 To cancel a changefeed:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 > CANCEL JOB job_id;
 ~~~
 
@@ -87,7 +87,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ### Create a changefeed connected to Kafka
 
-In this example, you'll set up a changefeed that is connected to a Kafka sink.
+In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
 1. In a terminal window, start `cockroach`:
 
@@ -118,42 +118,42 @@ In this example, you'll set up a changefeed that is connected to a Kafka sink.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE DATABASE test;
+    > CREATE DATABASE cdc_demo;
     ~~~
 
 6. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET DATABASE = test;
+    > SET DATABASE = cdc_demo;
     ~~~
 
 7. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE demo_cdc (
+    > CREATE TABLE office_dogs (
          id INT PRIMARY KEY,
          name STRING);
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO demo_cdc VALUES
+    > INSERT INTO office_dogs VALUES
        (1, 'Petee'),
        (2, 'Carl');
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > UPDATE demo_cdc SET name = 'Petee H' WHERE id = 1;
+    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
 8. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE demo_cdc INTO 'kafka://localhost:9092';
+    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092';
     ~~~
     ~~~
     +--------------------+
@@ -164,13 +164,13 @@ In this example, you'll set up a changefeed that is connected to a Kafka sink.
     (1 row)
     ~~~
 
-    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka and survives node failures.
+    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
 9. In a new terminal, start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./confluent-4.0.0/bin/kafka-console-consumer --bootstrap-server=localhost:9092 --from-beginning --topic=demo_cdc
+    $ ./confluent-4.0.0/bin/kafka-console-consumer --bootstrap-server=localhost:9092 --from-beginning --topic=office_dogs
     ~~~
     ~~~
     {"id": 1, "name": "Petee H"}
@@ -183,7 +183,7 @@ In this example, you'll set up a changefeed that is connected to a Kafka sink.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO demo_cdc VALUES (3, 'Ernie');
+    > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
 11. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
@@ -194,7 +194,30 @@ In this example, you'll set up a changefeed that is connected to a Kafka sink.
 
 ## Known limitations
 
-<!-- TO DO: Dan to add -->
+The following are limitations in July 2, 2018 alpha release, and will be addressed before the v2.1 release.
+
+- Changefeeds created with the alpha may not be compatible with future alphas and the final v2.1 release.
+
+    {{site.data.alerts.callout_danger}}
+    Do not use this feature on production data.
+    {{site.data.alerts.end}}
+
+- The CockroachDB core `CHANGEFEED` is not ready for external testing.
+- Some intermediate updates on frequently changed rows are never emitted. [#27101]
+- Changefeed progress is not exposed to the user.
+- The SQL interface is not final and may change.
+- Changefeeds only work on tables with a single column family (which is the default for new tables).
+- Changefeeds do not work on interleaved tables.
+- Many DDL queries (including `TRUNCATE`, `RENAME`, and `DROP`) will cause undefined behavior on a changefeed watching the affected tables.
+- Changefeeds cannot be backed up or restored.
+- Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
+- Changefeed internal buffering does not respect memory use limitations.
+- Changefeeds do not scale horizontally or to high traffic workloads.
+- Changefeeds use a pull model, but will use a push model in v2.1, lowering latencies considerably.
+- Changefeeds are slow on data recently loaded via `RESTORE` or `IMPORT`.
+- Additional format options will be added, including Avro.
+- Additional envelope options will be added, including one that displays the old and new values for the changed row.
+- Additional target options will be added, including partitions and ranges of primary key rows.
 
 ## See also
 

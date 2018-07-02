@@ -6,7 +6,7 @@ toc: false
 
 <span class="version-tag">New in v2.1:</span> The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.
 
-Changefeed targets a whitelist of databases, tables, partitions, rows, or a combination of these; called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (i.e., `JSON` or Avro) to a configurable sink (i.e., Kafka).
+Changefeeds target a whitelist of databases and tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 For more information, see [Change Data Capture](change-data-capture.html).
 
@@ -26,14 +26,14 @@ Only an `admin` user can create a changefeed.
 
 ~~~
 
-CREATE CHANGEFEED FOR <targets...> INTO <location...>
+CREATE CHANGEFEED FOR <targets...> INTO <sink...>
        [ WITH <option> [= <value>] [, ...] ]
 
 Targets:
-    TABLE <table_name> [, ...]
-    DATABASE <database_name> [, ...]
+    TABLE <table_name>
+    DATABASE <database_name>
 
-Location:
+Sink:
     '[scheme]://[host]:[port][?topic_prefix=[foo]]'
 
 Options:
