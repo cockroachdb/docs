@@ -156,6 +156,12 @@
                 "urls": [
                   "/${VERSION}/demo-json-support.html"
                 ]
+              },
+              {
+                "title": "Performance Benchmarking",
+                "urls": [
+                  "/${VERSION}/performance-benchmarking.html"
+                ]
               }
             ]
           }

@@ -30,6 +30,38 @@ Follow steps 1-7 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on 
 If you are following this deployment for production in the cloud, ensure that you spread your nodes across at least three availability zones and [set the CockroachDB zone configuration](configure-replication-zones.html) to spread replicas across zones. Local SSDs on Cloud VMs can lose data if the VM is lost, so it is important that CockroachDB can automatically recover from the loss of any single zone’s disks. This demo does not spread VMs across availability zones, but your production deployment should.
 {{site.data.alerts.end}}
 
+<!-- ## Roachprod directions for performance benchmarking
+
+Use roachprod to create cluster: `roachprod create lauren-tpcc --gce-machine-type "n1-highcpu-16" --local-ssd --nodes 4`
+
+Download latest version of CockroachDB:
+
+- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180604.linux-amd64.tgz'`
+
+- roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180604.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180604.linux-amd64/cockroach cockroach"
+
+Start the cluster: `roachprod run lauren-tpcc -- 'sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1'`
+
+Start the 3 nodes: `roachprod start lauren-tpcc:1-3`
+
+Add license:
+
+- `roachprod sql lauren-tpcc:1`
+- Set CLUSTER SETTING enterprise.license = '<secret>'
+
+Run sample workload and RESTORE TPC-C data: `roachprod run lauren-tpcc:4 "wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST && chmod a+x workload.LATEST"`
+
+Tell workload to load dataset to cluster: `roachprod run lauren-tpcc:4 "./workload.LATEST fixtures load tpcc {pgurl:1} --warehouses=1000"` (this will take about an hour)
+
+Once RESTORE is complete, run the benchmark: roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=1000 --duration=300s --split --scatter {pgurl:1-3}"
+
+Once the workload has finished running, you should see a final output line:
+
+~~~ shell
+_elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
+  298.8s    13149.8 102.3%    108.4    100.7    176.2    201.3    285.2    604.0
+~~~ -->
+
 ### Step 2. Run a sample workload
 
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the TPC-C workload.
