@@ -18,7 +18,7 @@ In v2.1, CDC will be an enterprise feature and will have a core version.
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [`CHANGEFEED`](create-changefeed.html). Changefeeds target a whitelist of databases and tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of databases and tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
@@ -32,7 +32,7 @@ The core feature of CDC is the [`CHANGEFEED`](create-changefeed.html). Changefee
 
 - The `WITH timestamps` option adds an **update timestamp** to each emitted row. It also causes periodic **resolved timestamp** messages to be emitted to each Kafka partition. A resolved timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
-- Cross-row and cross-table order guarantees are not given. However, the resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
+- Cross-row and cross-table order guarantees are not directly given. However, the resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
 
     Because CockroachDB supports transactions that can affect any part of the cluster, there is no way to horizontally divide the cluster's transaction log in a way where each piece is independent, so it can't be scaled in the general case.
 
@@ -201,7 +201,7 @@ The following are limitations in July 2, 2018 alpha release, and will be address
     Do not use this feature on production data.
     {{site.data.alerts.end}}
 
-- The CockroachDB core `CHANGEFEED` is not ready for external testing.
+- The CockroachDB core changefeed is not ready for external testing.
 - Some intermediate updates on frequently changed rows are never emitted.
 - Changefeed progress is not exposed to the user.
 - The SQL interface is not final and may change.
