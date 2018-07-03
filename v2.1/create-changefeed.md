@@ -77,7 +77,15 @@ Parameter | Description
 
 For for information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
 
-### Pause a changefeed
+### Manage a changefeed
+
+Use the following SQL statements to pause, resume, and cancel a changefeed.
+
+{{site.data.alerts.callout_info}}
+Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in the v2.1 release.
+{{site.data.alerts.end}}
+
+#### Pause a changefeed
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -86,7 +94,7 @@ For for information on how to create a changefeed connected to Kafka, see [Chang
 
 For more information, see [`PAUSE JOB`](pause-job.html).
 
-### Resume a paused changefeed
+#### Resume a paused changefeed
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -95,7 +103,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 For more information, see [`RESUME JOB`](resume-job.html).
 
-### Cancel a changefeed
+#### Cancel a changefeed
 
 {% include copy-clipboard.html %}
 ~~~ sql
