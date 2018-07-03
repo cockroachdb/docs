@@ -39,7 +39,19 @@
         }
       };
       
-      $('#mysidebar .tier-1').addClass('active--expand');
+      {% if page.version.version == 'v2.1' %}
+        if ($(window).width() >= 992) {
+          $('#mysidebar .tier-1').addClass('active--expand');
+        }
+
+        $(window).on('resize', function() {
+          if ($(window).width() > 992) {
+            $('#mysidebar .tier-1>ul').slideDown(0);
+          } else {
+            $('#mysidebar .tier-1>ul').slideUp(0);
+          }
+        });
+      {% endif %}
 
       function closeVersionSwitcher() {
         $('#version-switcher .tier-1 ul').slideUp();
