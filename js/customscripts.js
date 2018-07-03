@@ -28,10 +28,10 @@ $(function() {
       $mobile_menu = $('nav.mobile_expanded'),
       $colSidebar = $('.col-sidebar'),
       $sidebar = $('#mysidebar'),
-      $tocRight = $('#toc-right'),
       $footer = $('section.footer'),
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-      $versionSwitcher = $('#version-switcher');
+      $versionSwitcher = $('#version-switcher'),
+      $tocRight = $('#toc-right');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
@@ -108,12 +108,27 @@ $(function() {
     cachedWidth = _viewport_width;
   });
 
+  var tocHeight = 0; // outer var for TOC height reference maintained outside scroll handler
+
   $(window).on('scroll', function(e) {
+    // If we calculate tocHeight inside of scroll handler, the true TOC height will be
+    // miscalculated as too small when a long TOC exceeds the top border of the footer.
+    // This will cause a long TOC to flicker when the user scrolls up.
+    //
+    // To solve this, we need to calculate the TOC height outside the event handler--
+    // however, the TOC is rendered *after* the 'ready' event on $(document) is fired, thus we cannot
+    // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack 
+    // to get the 'true' height of the TOC once it has been rendered on the page.
+    var tempTocHeight = $tocRight.height()
+    if (tempTocHeight > tocHeight) {
+      tocHeight = tempTocHeight;
+    }
+
     var scrollTop = $(window).scrollTop();
     var windowHeight = $(window).height();
     var footerOffset = $footer.offset().top;
     var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
-    var tocHeightInColumn = $tocRight.height() + parseInt($tocRight.css('top'));
+    var tocHeightInColumn = tocHeight + parseInt($tocRight.css('top')),
     _viewport_width = window.innerWidth;
 
     $sidebar.css('padding-top', '');
@@ -149,7 +164,7 @@ $(function() {
         width: '265px'
       });
 
-      // if footer in view and TOC overruns footer, set bottom property to top of footer
+      // if footer in view and TOC overruns top of footer, set bottom property to top of footer
       // otherwise, unset bottom property
       if (scrollTop + tocHeightInColumn >= footerOffset) {
         $tocRight.css('bottom', viewportFooterDiff + 1 + 'px');
