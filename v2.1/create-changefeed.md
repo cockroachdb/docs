@@ -58,13 +58,13 @@ Parameter | Description
 `WITH envelope=key_only` | Emits only the key and no value, which is faster if you only want to know when the key changes. `WITH envelope=row `is the default. In v2.1, there will also be a `WITH envelope=diff`, which emits the old and new value of the changed row.
 `WITH format=json` | Default value. In v2.1, `WITH format=avro` will also be supported.-->
 
-## Example
+## Examples
 
 ### Create a changefeed
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE demo_cdc INTO 'kafka://localhost:9092';
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port';
 ~~~
 ~~~
 +--------------------+
@@ -76,6 +76,33 @@ Parameter | Description
 ~~~
 
 For for information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
+
+### Pause a changefeed
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PAUSE JOB job_id;
+~~~
+
+For more information, see [`PAUSE JOB`](pause-job.html).
+
+### Resume a paused changefeed
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESUME JOB job_id;
+~~~
+
+For more information, see [`RESUME JOB`](resume-job.html).
+
+### Cancel a changefeed
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL JOB job_id;
+~~~
+
+For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ## See also
 
