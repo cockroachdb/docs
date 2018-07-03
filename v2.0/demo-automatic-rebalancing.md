@@ -24,7 +24,7 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 # In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=scale-node1 \
---host=localhost
+--host=localhost \
 --port=26257 \
 --http-port=8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
