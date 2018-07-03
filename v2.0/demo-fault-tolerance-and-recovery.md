@@ -22,7 +22,7 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 $ cockroach start \
 --insecure \
 --store=fault-node1 \
---host=localhost
+--host=localhost \
 --port=26257 \
 --http-port=8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
