@@ -156,12 +156,6 @@
                 "urls": [
                   "/${VERSION}/demo-json-support.html"
                 ]
-              },
-              {
-                "title": "Performance Benchmarking",
-                "urls": [
-                  "/${VERSION}/performance-benchmarking.html"
-                ]
               }
             ]
           }
@@ -272,6 +266,12 @@
                 "title": "Overview",
                 "urls": [
                   "/${VERSION}/monitoring-and-alerting.html"
+                ]
+              },
+              {
+                "title": "Performance Benchmarking with TPC-C",
+                "urls": [
+                  "/${VERSION}/performance-benchmarking-with-tpc-c.html"
                 ]
               },
               {
