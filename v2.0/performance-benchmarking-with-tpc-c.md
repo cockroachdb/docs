@@ -23,7 +23,7 @@ Follow steps 1-6 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on 
 
 - For the 3 CockroachDB nodes, use `n1-highcpu-16` VMs with [Local SSD storage](https://cloud.google.com/compute/docs/disks/local-ssd).  
 
-    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We do not recommend using network-attached block storage. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each.
+    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We do not recommend using network-attached block storage. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each.  
 
 - Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for running the TPC-C benchmark.
 
@@ -37,9 +37,9 @@ Use roachprod to create cluster: `roachprod create lauren-tpcc --gce-machine-typ
 
 Download latest version of CockroachDB:
 
-- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz'`
+- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-v2.0.3.linux-amd64.tgz'`
 
-- `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.1.0-alpha.20180702.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180702.linux-amd64/cockroach cockroach"`
+- `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-v2.0.3.linux-amd64.tgz | tar -xvz; mv cockroach-v2.1.0-alpha.20180702.linux-amd64/cockroach cockroach"`
 
 Start the cluster: `roachprod run lauren-tpcc -- 'sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1'`
 
