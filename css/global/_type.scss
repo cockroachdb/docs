@@ -89,6 +89,20 @@
 }
 
 //
+// body
+//
+@mixin type-body {
+  @include avenir_r(17px);
+  line-height: 30px;
+}
+
+@mixin type-body-medium {
+  @include avenir_m(17px);
+  line-height: 30px;
+}
+
+
+//
 // miscellaneous
 //
 @mixin button-text {
@@ -116,8 +130,8 @@
 }
 
 @mixin caption {
-  @include avenir_r(14px);
-  line-height: 20px;
+  @include avenir_r(15px);
+  line-height: 25px;
 }
 
 @mixin caption--small {
