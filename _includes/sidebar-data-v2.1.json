@@ -334,7 +334,7 @@
               },
               {
                 "title": "Encryption at Rest",
-                "ursl": [
+                "urls": [
                   "/${VERSION}/encryption.html"
                 ]
               },
