@@ -40,13 +40,13 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 
 #### Admin UI
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Name | **cockroachadmin** |
-| Source filter | IP ranges |
-| Source IP ranges | Your local network's IP ranges |
-| Allowed protocols... | **tcp:8080** |
-| Target tags | **cockroachdb** |
+ Field | Recommended Value 
+-------|-------------------
+ Name | **cockroachadmin** 
+ Source filter | IP ranges 
+ Source IP ranges | Your local network's IP ranges 
+ Allowed protocols... | **tcp:8080** 
+ Target tags | **cockroachdb** 
 
 #### Application data
 

@@ -23,18 +23,18 @@ functions:
 The following table lists the operators that look like built-in
 functions but have special evaluation rules:
 
-| Operator | Description |
-|----------|-------------|
-| `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions) |
-| `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array) |
-| `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors) |
-| `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions) |
-| `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions) |
-| `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries) |
-| `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions) |
-| `IFNULL(...)` | Alias for `COALESCE` restricted to two operands |
-| `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) |
-| `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) |
+ Operator | Description 
+----------|-------------
+ `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions) 
+ `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array) 
+ `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors) 
+ `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions) 
+ `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions) 
+ `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries) 
+ `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions) 
+ `IFNULL(...)` | Alias for `COALESCE` restricted to two operands 
+ `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) 
+ `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) 
 
 ## Built-in functions
 

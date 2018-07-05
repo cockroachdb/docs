@@ -15,6 +15,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 <div>
   {% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
 </div>
+</div>
 
 ## Required privileges
 
@@ -22,9 +23,9 @@ No [privileges](privileges.html) are required to rollback a transaction. However
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `TO SAVEPOINT cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. |
+ Parameter | Description 
+-----------|-------------
+ `TO SAVEPOINT cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. 
 
 ## Example
 

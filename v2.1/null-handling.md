@@ -211,42 +211,40 @@ the second operand is `NULL`.
 
 `AND`, `OR` and `IS` implement ternary logic, as follows.
 
-| Expression        | Result  |
-|-------------------|---------|
-| `FALSE AND FALSE` | `FALSE` |
-| `FALSE AND TRUE`  | `FALSE` |
-| `FALSE AND NULL`  | `FALSE` |
-| `TRUE AND FALSE`  | `FALSE` |
-| `TRUE AND TRUE`   | `TRUE`  |
-| `TRUE AND NULL`   | `NULL`  |
-| `NULL AND FALSE`  | `FALSE` |
-| `NULL AND TRUE`   | `NULL`  |
-| `NULL AND NULL`   | `NULL`  |
+ |Expression        | Result | 
+-------------------|---------
+ `FALSE AND FALSE` | `FALSE` 
+ `FALSE AND TRUE`  | `FALSE` 
+ `FALSE AND NULL`  | `FALSE` 
+ `TRUE AND FALSE`  | `FALSE` 
+ `TRUE AND TRUE`   | `TRUE`  
+ `TRUE AND NULL`   | `NULL`  
+ `NULL AND FALSE`  | `FALSE` 
+ `NULL AND TRUE`   | `NULL`  
+ `NULL AND NULL`   | `NULL`  
 
+| Expression       | Result |
+------------------|---------
+ `FALSE OR FALSE` | `FALSE` 
+ `FALSE OR TRUE`  | `TRUE`  
+ `FALSE OR NULL`  | `NULL`  
+ `TRUE OR FALSE`  | `TRUE`  
+ `TRUE OR TRUE`   | `TRUE`  
+ `TRUE OR NULL`   | `TRUE`  
+ `NULL OR FALSE`  | `NULL`  
+ `NULL OR TRUE`   | `TRUE`  
+ `NULL OR NULL`   | `NULL`  
 | Expression       | Result  |
-|------------------|---------|
-| `FALSE OR FALSE` | `FALSE` |
-| `FALSE OR TRUE`  | `TRUE`  |
-| `FALSE OR NULL`  | `NULL`  |
-| `TRUE OR FALSE`  | `TRUE`  |
-| `TRUE OR TRUE`   | `TRUE`  |
-| `TRUE OR NULL`   | `TRUE`  |
-| `NULL OR FALSE`  | `NULL`  |
-| `NULL OR TRUE`   | `TRUE`  |
-| `NULL OR NULL`   | `NULL`  |
-
-| Expression       | Result  |
-|------------------|---------|
-| `FALSE IS FALSE` | `TRUE`  |
-| `FALSE IS TRUE`  | `FALSE` |
-| `FALSE IS NULL`  | `FALSE` |
-| `TRUE IS FALSE`  | `FALSE` |
-| `TRUE IS TRUE`   | `TRUE`  |
-| `TRUE IS NULL`   | `FALSE` |
-| `NULL IS FALSE`  | `FALSE` |
-| `NULL IS TRUE`   | `FALSE` |
-| `NULL IS NULL`   | `TRUE`  |
-
+------------------|---------
+ `FALSE IS FALSE` | `TRUE`  
+ `FALSE IS TRUE`  | `FALSE` 
+ `FALSE IS NULL`  | `FALSE` 
+ `TRUE IS FALSE`  | `FALSE` 
+ `TRUE IS TRUE`   | `TRUE`  
+ `TRUE IS NULL`   | `FALSE` 
+ `NULL IS FALSE`  | `FALSE` 
+ `NULL IS TRUE`   | `FALSE` 
+ `NULL IS NULL`   | `TRUE`  
 ## NULLs and arithmetic
 
 Arithmetic operations involving a `NULL` value will yield a `NULL` result.

@@ -41,32 +41,32 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
     - **Admin UI support**:
 
-        | Field | Recommended Value |
-        |-------|-------------------|
-        | Name | **cockroachadmin** |
-        | Source | **IP Addresses** |
-        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
-        | Source port ranges | * |
-        | Destination | **Any** |
-        | Destination port range | **8080** |
-        | Protocol | **TCP** |
-        | Action | **Allow** |
-        | Priority | Any value > 1000 |
+         Field | Recommended Value 
+        -------|-------------------
+         Name | **cockroachadmin** 
+         Source | **IP Addresses** 
+         Source IP addresses/CIDR ranges | Your local network’s IP ranges 
+         Source port ranges | * 
+         Destination | **Any** 
+         Destination port range | **8080** 
+         Protocol | **TCP** 
+         Action | **Allow** 
+         Priority | Any value > 1000 
     - **Application support**:
 
         {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you will not need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
 
-        | Field | Recommended Value |
-        |-------|-------------------|
-        | Name | **cockroachapp** |
-        | Source | **IP Addresses** |
-        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
-        | Source port ranges | * |
-        | Destination | **Any** |
-        | Destination port range | **26257** |
-        | Protocol | **TCP** |
-        | Action | **Allow** |
-        | Priority | Any value > 1000 |
+         Field | Recommended Value 
+        -------|-------------------
+         Name | **cockroachapp** 
+         Source | **IP Addresses**
+         Source IP addresses/CIDR ranges | Your local network’s IP ranges 
+         Source port ranges | * 
+         Destination | **Any** 
+         Destination port range | **26257** 
+         Protocol | **TCP** 
+         Action | **Allow** 
+         Priority | Any value > 1000 
 
 
 ## Step 2. Create VMs

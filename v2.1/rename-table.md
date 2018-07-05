@@ -20,11 +20,11 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `IF EXISTS` | Rename the table only if a table with the current name exists; if one does not exist, do not return an error. |
-| `current_name` | The current name of the table. |
-| `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
+ Parameter | Description 
+-----------|-------------
+ `IF EXISTS` | Rename the table only if a table with the current name exists; if one does not exist, do not return an error. 
+ `current_name` | The current name of the table. 
+ `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. 
 
 ## Viewing schema changes
 

@@ -20,9 +20,9 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-|`user_name` | The username of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.|
+ Parameter | Description 
+-----------|-------------
+`user_name` | The username of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.
 
 ## Example
 

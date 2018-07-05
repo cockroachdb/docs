@@ -18,12 +18,12 @@ The user must have the `DROP` [privilege](privileges.html) on the specified view
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `IF EXISTS`   | Drop the view if it exists; if it does not exist, do not return an error.|
-| `table_name`  | A comma-separated list of view names. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`|
-| `CASCADE` | Drop other views that depend on the view being dropped.<br><br>`CASCADE` does not list views it drops, so should be used cautiously.|
-| `RESTRICT`    | _(Default)_ Do not drop the view if other views depend on it.|
+ Parameter | Description 
+----------|-------------
+ `IF EXISTS`   | Drop the view if it exists; if it does not exist, do not return an error.
+ `table_name`  | A comma-separated list of view names. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
+ `CASCADE` | Drop other views that depend on the view being dropped.<br><br>`CASCADE` does not list views it drops, so should be used cautiously.
+ `RESTRICT`    | _(Default)_ Do not drop the view if other views depend on it.
 
 ## Examples
 
