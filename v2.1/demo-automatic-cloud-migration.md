@@ -66,7 +66,6 @@ $ cockroach start \
 --host=localhost \
 --port=25259 \
 --http-port=8082 \
---join=localhost:26257 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
