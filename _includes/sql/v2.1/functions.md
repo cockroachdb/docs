@@ -1,14 +1,3 @@
-### ANYELEMENT functions
-
-<table>
-<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
-<tbody>
-<tr><td><code>to_json(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
-</span></td></tr>
-<tr><td><code>to_jsonb(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
-</span></td></tr></tbody>
-</table>
-
 ### Array functions
 
 <table>
@@ -228,6 +217,10 @@
 </span></td></tr>
 <tr><td><code>array_replace(array: timetz[], toreplace: timetz, replacewith: timetz) &rarr; timetz[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
+<tr><td><code>array_to_string(input: anyelement[], delim: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Join an array into a string with a delimiter.</p>
+</span></td></tr>
+<tr><td><code>array_to_string(input: anyelement[], delimiter: <a href="string.html">string</a>, null: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Join an array into a string with a delimiter, replacing NULLs with a null string.</p>
+</span></td></tr>
 <tr><td><code>array_upper(input: anyelement[], array_dimension: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the maximum value of <code>input</code> on the provided <code>array_dimension</code>. However, because CockroachDB doesn’t yet support multi-dimensional arrays, the only supported <code>array_dimension</code> is <strong>1</strong>.</p>
 </span></td></tr>
 <tr><td><code>string_to_array(str: <a href="string.html">string</a>, delimiter: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a>[]</code></td><td><span class="funcdesc"><p>Split a string into components on a delimiter.</p>
@@ -241,6 +234,8 @@
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
+<tr><td><code>ilike_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Matches case insensetively <code>unescaped</code> with <code>pattern</code> using ‘escape’ as an escape token.</p>
+</span></td></tr>
 <tr><td><code>inet_contained_by_or_equals(val: <a href="inet.html">inet</a>, container: <a href="inet.html">inet</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Test for subnet inclusion or equality, using only the network parts of the addresses. The host part of the addresses is ignored.</p>
 </span></td></tr>
 <tr><td><code>inet_contains_or_contained_by(val: <a href="inet.html">inet</a>, val: <a href="inet.html">inet</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Test for subnet inclusion, using only the network parts of the addresses. The host part of the addresses is ignored.</p>
@@ -248,6 +243,16 @@
 <tr><td><code>inet_contains_or_equals(container: <a href="inet.html">inet</a>, val: <a href="inet.html">inet</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Test for subnet inclusion or equality, using only the network parts of the addresses. The host part of the addresses is ignored.</p>
 </span></td></tr>
 <tr><td><code>inet_same_family(val: <a href="inet.html">inet</a>, val: <a href="inet.html">inet</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Checks if two IP addresses are of the same IP family.</p>
+</span></td></tr>
+<tr><td><code>like_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Matches <code>unescaped</code> with <code>pattern</code> using ‘escape’ as an escape token.</p>
+</span></td></tr>
+<tr><td><code>not_ilike_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Checks whether <code>unescaped</code> not matches case insensetively with <code>pattern</code> using ‘escape’ as an escape token.</p>
+</span></td></tr>
+<tr><td><code>not_like_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Checks whether <code>unescaped</code> not matches with <code>pattern</code> using ‘escape’ as an escape token.</p>
+</span></td></tr>
+<tr><td><code>not_similar_to_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Checks whether <code>unescaped</code> not matches with <code>pattern</code> using ‘escape’ as an escape token.</p>
+</span></td></tr>
+<tr><td><code>similar_to_escape(unescaped: <a href="string.html">string</a>, pattern: <a href="string.html">string</a>, escape: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Matches <code>unescaped</code> with <code>pattern</code> using ‘escape’ as an escape token.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -267,19 +272,28 @@
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>age(begin: <a href="timestamp.html">timestamptz</a>, end: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Calculates the interval between <code>begin</code> and <code>end</code>.</p>
+<tr><td><code>age(end: <a href="timestamp.html">timestamptz</a>, begin: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Calculates the interval between <code>begin</code> and <code>end</code>.</p>
 </span></td></tr>
-<tr><td><code>age(val: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Calculates the interval between the current time and <code>val</code>.</p>
+<tr><td><code>age(val: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Calculates the interval between <code>val</code> and the current time.</p>
 </span></td></tr>
-<tr><td><code>clock_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current wallclock time.</p>
+<tr><td><code>clock_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current system time on one of the cluster nodes.</p>
 </span></td></tr>
-<tr><td><code>clock_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current wallclock time.</p>
+<tr><td><code>clock_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current system time on one of the cluster nodes.</p>
 </span></td></tr>
-<tr><td><code>current_date() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the current date.</p>
+<tr><td><code>current_date() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the date of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
-<tr><td><code>current_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>current_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
-<tr><td><code>current_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>current_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><code>date_trunc(element: <a href="string.html">string</a>, input: <a href="date.html">date</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Truncates <code>input</code> to precision <code>element</code>.  Sets all fields that are less
 significant than <code>element</code> to zero (or one, for day and month)</p>
@@ -329,17 +343,29 @@ hour, minute, second, millisecond, microsecond, epoch</p>
 <tr><td><code>extract_duration(element: <a href="string.html">string</a>, input: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.
 Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
-<tr><td><code>now() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>now() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
-<tr><td><code>now() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>now() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
-<tr><td><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current statement’s timestamp.</p>
+<tr><td><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the start time of the current statement.</p>
 </span></td></tr>
-<tr><td><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current statement’s timestamp.</p>
+<tr><td><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the start time of the current statement.</p>
 </span></td></tr>
-<tr><td><code>transaction_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>transaction_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
-<tr><td><code>transaction_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s timestamp.</p>
+<tr><td><code>transaction_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -406,6 +432,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>json_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p>
 </span></td></tr>
+<tr><td><code>json_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
+</span></td></tr>
 <tr><td><code>json_remove_path(val: jsonb, path: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Remove the specified path from the JSON object.</p>
 </span></td></tr>
 <tr><td><code>json_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
@@ -426,6 +454,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>jsonb_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p>
 </span></td></tr>
+<tr><td><code>jsonb_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
+</span></td></tr>
 <tr><td><code>jsonb_pretty(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the given JSON value as a STRING indented and with newlines.</p>
 </span></td></tr>
 <tr><td><code>jsonb_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
@@ -435,6 +465,10 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <tr><td><code>jsonb_strip_nulls(from_json: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns from_json with all object fields that have null values omitted. Other null values are untouched.</p>
 </span></td></tr>
 <tr><td><code>jsonb_typeof(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of the outermost JSON value as a text string.</p>
+</span></td></tr>
+<tr><td><code>to_json(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
+</span></td></tr>
+<tr><td><code>to_jsonb(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -553,7 +587,7 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>round(input: <a href="float.html">float</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position  in <code>input</code> using half to even (banker’s) rounding.</p>
 </span></td></tr>
-<tr><td><code>round(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer, half away from zero: ROUND(+/-2.4) = +/-2, ROUND(+/-2.5) = +/-3.</p>
+<tr><td><code>round(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer, half away from zero: round(+/-2.4) = +/-2, round(+/-2.5) = +/-3.</p>
 </span></td></tr>
 <tr><td><code>round(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer using half to even (banker’s) rounding.</p>
 </span></td></tr>
@@ -571,22 +605,9 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>tan(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the tangent of <code>val</code>.</p>
 </span></td></tr>
-<tr><td><code>to_hex(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> to its hexadecimal representation.</p>
-</span></td></tr>
 <tr><td><code>trunc(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
 </span></td></tr>
 <tr><td><code>trunc(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
-</span></td></tr></tbody>
-</table>
-
-### STRING[] functions
-
-<table>
-<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
-<tbody>
-<tr><td><code>json_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
-</span></td></tr>
-<tr><td><code>jsonb_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -607,26 +628,87 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr></tbody>
 </table>
 
-### String and Byte functions
+### Set-returning functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>crdb_internal.unary_table() &rarr; tuple</code></td><td><span class="funcdesc"><p>Produces a virtual table containing a single row with no values.</p>
+<p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
+<tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive.</p>
+</span></td></tr>
+<tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>, step: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
+</span></td></tr>
+<tr><td><code>generate_series(start: <a href="timestamp.html">timestamp</a>, end: <a href="timestamp.html">timestamp</a>, step: <a href="interval.html">interval</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Produces a virtual table containing the timestamp values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
+</span></td></tr>
+<tr><td><code>generate_subscripts(array: anyelement[]) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
+</span></td></tr>
+<tr><td><code>generate_subscripts(array: anyelement[], dim: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
+</span></td></tr>
+<tr><td><code>generate_subscripts(array: anyelement[], dim: <a href="int.html">int</a>, reverse: <a href="bool.html">bool</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
+<p>When reverse is true, the series is returned in reverse order.</p>
+</span></td></tr>
+<tr><td><code>information_schema._pg_expandarray(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows with an index</p>
+</span></td></tr>
+<tr><td><code>json_array_elements(input: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of JSON values.</p>
+</span></td></tr>
+<tr><td><code>json_array_elements_text(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
+</span></td></tr>
+<tr><td><code>json_each(input: jsonb) &rarr; tuple{string AS key, jsonb AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p>
+</span></td></tr>
+<tr><td><code>json_each_text(input: jsonb) &rarr; tuple{string AS key, string AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p>
+</span></td></tr>
+<tr><td><code>json_object_keys(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
+</span></td></tr>
+<tr><td><code>jsonb_array_elements(input: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of JSON values.</p>
+</span></td></tr>
+<tr><td><code>jsonb_array_elements_text(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
+</span></td></tr>
+<tr><td><code>jsonb_each(input: jsonb) &rarr; tuple{string AS key, jsonb AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p>
+</span></td></tr>
+<tr><td><code>jsonb_each_text(input: jsonb) &rarr; tuple{string AS key, string AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p>
+</span></td></tr>
+<tr><td><code>jsonb_object_keys(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
+</span></td></tr>
+<tr><td><code>pg_get_keywords() &rarr; tuple{string AS word, string AS catcode, string AS catdesc}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
+</span></td></tr>
+<tr><td><code>unnest(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows</p>
+</span></td></tr></tbody>
+</table>
+
+### String and byte functions
 
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
 <tr><td><code>ascii(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the ASCII value for the first character in <code>val</code>.</p>
 </span></td></tr>
+<tr><td><code>bit_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits in <code>val</code>.</p>
+</span></td></tr>
+<tr><td><code>bit_length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits used to represent <code>val</code>.</p>
+</span></td></tr>
 <tr><td><code>btrim(input: <a href="string.html">string</a>, trim_chars: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Removes any characters included in <code>trim_chars</code> from the beginning or end of <code>input</code> (applies recursively).</p>
 <p>For example, <code>btrim('doggie', 'eod')</code> returns <code>ggi</code>.</p>
 </span></td></tr>
 <tr><td><code>btrim(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Removes all spaces from the beginning and end of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><code>char_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes in <code>val</code>.</p>
+</span></td></tr>
+<tr><td><code>char_length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of characters in <code>val</code>.</p>
+</span></td></tr>
+<tr><td><code>character_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes in <code>val</code>.</p>
+</span></td></tr>
+<tr><td><code>character_length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of characters in <code>val</code>.</p>
 </span></td></tr>
 <tr><td><code>concat(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Concatenates a comma-separated list of strings.</p>
 </span></td></tr>
 <tr><td><code>concat_ws(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Uses the first argument as a separator between the concatenation of the subsequent arguments.</p>
 <p>For example <code>concat_ws('!','wow','great')</code> returns <code>wow!great</code>.</p>
 </span></td></tr>
-<tr><td><code>decode(text: <a href="string.html">string</a>, format: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Decodes <code>data</code> as the format specified by <code>format</code> (only “hex”, “escape”, and “base64” are supported).</p>
+<tr><td><code>decode(text: <a href="string.html">string</a>, format: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Decodes <code>data</code> using <code>format</code> (<code>hex</code> / <code>escape</code> / <code>base64</code>).</p>
 </span></td></tr>
-<tr><td><code>encode(data: <a href="bytes.html">bytes</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Encodes <code>data</code> in the text format specified by <code>format</code> (only “hex”, “escape”, and “base64” are supported).</p>
+<tr><td><code>encode(data: <a href="bytes.html">bytes</a>, format: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Encodes <code>data</code> using <code>format</code> (<code>hex</code> / <code>escape</code> / <code>base64</code>).</p>
 </span></td></tr>
 <tr><td><code>from_ip(val: <a href="bytes.html">bytes</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the byte string representation of an IP to its character string representation.</p>
 </span></td></tr>
@@ -666,6 +748,16 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>overlay(input: <a href="string.html">string</a>, overlay_val: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>, end_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Deletes the characters in <code>input</code> between <code>start_pos</code> and <code>end_pos</code> (count starts at 1), and then insert <code>overlay_val</code> at <code>start_pos</code>.</p>
 </span></td></tr>
+<tr><td><code>quote_ident(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Return <code>val</code> suitably quoted to serve as identifier in a SQL statement.</p>
+</span></td></tr>
+<tr><td><code>quote_literal(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Return <code>val</code> suitably quoted to serve as string literal in a SQL statement.</p>
+</span></td></tr>
+<tr><td><code>quote_literal(val: anyelement) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Coerce <code>val</code> to a string and then quote it as a literal.</p>
+</span></td></tr>
+<tr><td><code>quote_nullable(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Coerce <code>val</code> to a string and then quote it as a literal. If <code>val</code> is NULL, returns ‘NULL’.</p>
+</span></td></tr>
+<tr><td><code>quote_nullable(val: anyelement) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Coerce <code>val</code> to a string and then quote it as a literal. If <code>val</code> is NULL, returns ‘NULL’.</p>
+</span></td></tr>
 <tr><td><code>regexp_extract(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the first match for the Regular Expression <code>regex</code> in <code>input</code>.</p>
 </span></td></tr>
 <tr><td><code>regexp_replace(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>, replace: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Replaces matches for the Regular Expression <code>regex</code> in <code>input</code> with the Regular Expression <code>replace</code>.</p>
@@ -685,8 +777,12 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <td>Case-sensitive matching</td>
 </tr>
 <tr>
+<td><strong>g</strong></td>
+<td>Global matching (match each substring instead of only the first)</td>
+</tr>
+<tr>
 <td><strong>i</strong></td>
-<td>Global matching (match each substring instead of only the first).</td>
+<td>Case-insensitive matching</td>
 </tr>
 <tr>
 <td><strong>m</strong> or <strong>n</strong></td>
@@ -796,6 +892,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>to_hex(val: <a href="bytes.html">bytes</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> to its hexadecimal representation.</p>
 </span></td></tr>
+<tr><td><code>to_hex(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> to its hexadecimal representation.</p>
+</span></td></tr>
 <tr><td><code>to_ip(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Converts the character string representation of an IP to its byte string representation.</p>
 </span></td></tr>
 <tr><td><code>to_uuid(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Converts the character string representation of a UUID to its byte string representation.</p>
@@ -812,7 +910,11 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>cluster_logical_timestamp() &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+<tr><td><code>cluster_logical_timestamp() &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Returns the logical time of the current transaction.</p>
+<p>This function is reserved for testing purposes by CockroachDB
+developers and its definition may change without prior notice.</p>
+<p>Note that uses of this function disable server-side optimizations and
+may increase either contention or retry errors, or both.</p>
 </span></td></tr>
 <tr><td><code>crdb_internal.cluster_id() &rarr; <a href="uuid.html">uuid</a></code></td><td><span class="funcdesc"><p>Returns the cluster ID.</p>
 </span></td></tr>
@@ -847,7 +949,10 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>current_time() &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with time zone.</p>
+<tr><td><code>current_time() &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the time of the current transaction, with time zone.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -856,23 +961,7 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 <table>
 <thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>crdb_internal.unary_table() &rarr; setof tuple{}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing a single row with no values.</p>
-<p>This function is used only by CockroachDB’s developers for testing purposes.</p>
-</span></td></tr>
 <tr><td><code>format_type(type_oid: oid, typemod: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the SQL name of a data type that is identified by its type OID and possibly a type modifier. Currently, the type modifier is ignored.</p>
-</span></td></tr>
-<tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive.</p>
-</span></td></tr>
-<tr><td><code>generate_series(start: <a href="int.html">int</a>, end: <a href="int.html">int</a>, step: <a href="int.html">int</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the integer values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
-</span></td></tr>
-<tr><td><code>generate_series(start: <a href="timestamp.html">timestamp</a>, end: <a href="timestamp.html">timestamp</a>, step: <a href="interval.html">interval</a>) &rarr; setof tuple{timestamp}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the timestamp values from <code>start</code> to <code>end</code>, inclusive, by increment of <code>step</code>.</p>
-</span></td></tr>
-<tr><td><code>generate_subscripts(array: anyelement[]) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
-</span></td></tr>
-<tr><td><code>generate_subscripts(array: anyelement[], dim: <a href="int.html">int</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
-</span></td></tr>
-<tr><td><code>generate_subscripts(array: anyelement[], dim: <a href="int.html">int</a>, reverse: <a href="bool.html">bool</a>) &rarr; setof tuple{int}</code></td><td><span class="funcdesc"><p>Returns a series comprising the given array’s subscripts.</p>
-<p>When reverse is true, the series is returned in reverse order.</p>
 </span></td></tr>
 <tr><td><code>has_any_column_privilege(table: <a href="string.html">string</a>, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns whether or not the current user has privileges for any column of table.</p>
 </span></td></tr>
@@ -1030,34 +1119,8 @@ Compatible elements: hour, minute, second, millisecond, microsecond.</p>
 </span></td></tr>
 <tr><td><code>has_type_privilege(user: oid, type: oid, privilege: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns whether or not the user has privileges for type.</p>
 </span></td></tr>
-<tr><td><code>information_schema._pg_expandarray(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows with an index</p>
-</span></td></tr>
-<tr><td><code>json_array_elements(input: jsonb) &rarr; setof tuple{jsonb}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of JSON values.</p>
-</span></td></tr>
-<tr><td><code>json_array_elements_text(input: jsonb) &rarr; setof tuple{string}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
-</span></td></tr>
-<tr><td><code>json_each(input: jsonb) &rarr; setof tuple{<a href="string.html">string</a>, jsonb}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p>
-</span></td></tr>
-<tr><td><code>json_each_text(input: jsonb) &rarr; setof tuple{<a href="string.html">string</a>, string}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p>
-</span></td></tr>
-<tr><td><code>json_object_keys(input: jsonb) &rarr; setof tuple{string}</code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
-</span></td></tr>
-<tr><td><code>jsonb_array_elements(input: jsonb) &rarr; setof tuple{jsonb}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of JSON values.</p>
-</span></td></tr>
-<tr><td><code>jsonb_array_elements_text(input: jsonb) &rarr; setof tuple{string}</code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
-</span></td></tr>
-<tr><td><code>jsonb_each(input: jsonb) &rarr; setof tuple{<a href="string.html">string</a>, jsonb}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p>
-</span></td></tr>
-<tr><td><code>jsonb_each_text(input: jsonb) &rarr; setof tuple{<a href="string.html">string</a>, string}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p>
-</span></td></tr>
-<tr><td><code>jsonb_object_keys(input: jsonb) &rarr; setof tuple{string}</code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
-</span></td></tr>
 <tr><td><code>oid(int: <a href="int.html">int</a>) &rarr; oid</code></td><td><span class="funcdesc"><p>Converts an integer to an OID.</p>
 </span></td></tr>
-<tr><td><code>pg_get_keywords() &rarr; setof tuple{<a href="string.html">string</a>, <a href="string.html">string</a>, string}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
-</span></td></tr>
 <tr><td><code>pg_sleep(seconds: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>pg_sleep makes the current session’s process sleep until seconds seconds have elapsed. seconds is a value of type double precision, so fractional-second delays can be specified.</p>
-</span></td></tr>
-<tr><td><code>unnest(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows</p>
 </span></td></tr></tbody>
 </table>
