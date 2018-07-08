@@ -76,6 +76,7 @@ The `BACKUP` process minimizes its impact to the cluster's performance by distri
 
 For best performance, we also recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP...AS OF SYSTEM TIME '2017-06-09 16:13:55.571516+00:00';
 ~~~
@@ -132,6 +133,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a Single Table or View
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -140,6 +142,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 
 ### Backup Multiple Tables
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -148,6 +151,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 
 ### Backup an Entire Database
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -156,6 +160,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00';
 
 ### Backup with Revision History<span class="version-tag">New in v2.0</span>
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -166,6 +171,7 @@ AS OF SYSTEM TIME '2017-03-26 23:59:00' WITH revision_history;
 
 Incremental backups must be based off of full backups you've already created.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
@@ -175,6 +181,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 
 ### Create Incremental Backups with Revision History<span class="version-tag">New in v2.0</span>
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
