@@ -76,7 +76,7 @@ Once the backup is complete, your client will receive a `BACKUP` response.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/backup.html %}
 
 ## Required Privileges
 

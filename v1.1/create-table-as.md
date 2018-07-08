@@ -34,7 +34,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/create_table_as.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
 
 ## Parameters
 

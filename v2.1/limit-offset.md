@@ -14,9 +14,9 @@ as part of [`INSERT`](insert.html) or [`UPSERT`](upsert.html).
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/limit_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/limit_clause.html %}
 
-{% include sql/{{ page.version.version }}/diagrams/offset_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/offset_clause.html %}
 
 `LIMIT` restricts the operation to only retrieve `limit_val` number of rows.
 

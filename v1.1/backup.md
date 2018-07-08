@@ -86,7 +86,7 @@ After the backup has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/backup.html %}
 
 ## Required Privileges
 

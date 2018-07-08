@@ -87,7 +87,7 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
 </div>
 
 {{site.data.alerts.callout_info}}The <code>RESTORE</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}

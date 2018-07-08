@@ -79,7 +79,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Column Level
 
-<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_column_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/foreign_key_column_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -106,7 +106,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Table Level
 
-<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_table_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/foreign_key_table_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|

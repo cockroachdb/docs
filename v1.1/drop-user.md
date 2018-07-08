@@ -18,7 +18,7 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_user.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_user.html %}</section>
 
 ## Parameters
 

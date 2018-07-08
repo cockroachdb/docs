@@ -24,7 +24,7 @@ This information is useful for verifying that:
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/show_ranges.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_ranges.html %}
 </div>
 
 ## Required privileges

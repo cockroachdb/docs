@@ -20,11 +20,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 **Standard index:**
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_index.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_index.html %}</section>
 
 **Inverted index:**
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_inverted_index.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_inverted_index.html %}</section>
 
 ## Parameters
 

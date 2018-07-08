@@ -51,7 +51,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/explain.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/explain.html %}</section>
 
 ## Required privileges
 

@@ -22,7 +22,7 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 ## Synopsis
 
 <div>
-{% include sql/{{page.version.version}}/diagrams/experimental_audit.html %}
+{% include {{ page.version.version }}/sql/diagrams/experimental_audit.html %}
 </div>
 
 ## Required privileges

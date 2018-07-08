@@ -24,7 +24,7 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_queries.html %}</section>
 
 - To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.
 - To list the active queries just on the local node, use `SHOW LOCAL QUERIES`.

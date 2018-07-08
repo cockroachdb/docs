@@ -103,7 +103,7 @@ After the backup has been initiated, you can control it with [`PAUSE JOB`](pause
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/backup.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

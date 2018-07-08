@@ -20,36 +20,36 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 
 **column_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
 
 **col_qual_list ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/col_qual_list.html %}
+{% include {{ page.version.version }}/sql/diagrams/col_qual_list.html %}
 
 **index_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 
 **family_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
 
 **table_constraint ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 
 **opt_interleave ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
 
 </div>
 

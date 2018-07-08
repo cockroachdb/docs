@@ -77,7 +77,7 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
 
 ## Required Privileges
 

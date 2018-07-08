@@ -14,7 +14,7 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/reset_session.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/reset_session.html %}</section>
 
 ## Parameters
 

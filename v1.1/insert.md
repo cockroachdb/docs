@@ -20,7 +20,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table. To us
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/insert.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/insert.html %}</div>
 
 <div markdown="1">
 

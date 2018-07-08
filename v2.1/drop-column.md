@@ -10,7 +10,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 ## Synopsis
 
-<section> {% include sql/{{ page.version.version }}/diagrams/drop_column.html %} </section>
+<section> {% include {{ page.version.version }}/sql/diagrams/drop_column.html %} </section>
 
 ## Required privileges
 

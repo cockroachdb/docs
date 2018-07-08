@@ -15,7 +15,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/create_view.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_view.html %}
 </div>
 
 ## Parameters

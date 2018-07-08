@@ -18,7 +18,7 @@ clauses](select-clause.html) and [`INSERT`](insert.html),
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/with_clause.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/with_clause.html %}</div>
 
 <div markdown="1"></div>
 

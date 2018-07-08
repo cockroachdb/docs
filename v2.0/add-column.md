@@ -11,7 +11,7 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/add_column.html %}
+  {% include {{ page.version.version }}/sql/diagrams/add_column.html %}
 </div>
 
 ## Required Privileges

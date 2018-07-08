@@ -12,7 +12,7 @@ toc: false
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/grant_roles.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/grant_roles.html %}</section>
 
 ## Required Privileges
 

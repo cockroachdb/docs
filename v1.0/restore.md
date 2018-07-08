@@ -69,7 +69,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
 
 ## Required Privileges
 

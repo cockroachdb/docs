@@ -16,7 +16,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/create_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_index.html %}
 
 ## Parameters
 

@@ -135,7 +135,7 @@ Later steps of the import process distribute work among many nodes and have less
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/import.html %}
+{% include {{ page.version.version }}/sql/diagrams/import.html %}
 
 ## Required Privileges
 
