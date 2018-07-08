@@ -17,7 +17,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Create a table in the new database
 
@@ -43,7 +43,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ rust
-{% include app/basic-sample.rs %}
+{% include {{ page.version.version }}/app/basic-sample.rs %}
 ~~~
 
 ### Transaction (with retry logic)
@@ -56,7 +56,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ rust
-{% include app/txn-sample.rs %}
+{% include {{ page.version.version }}/app/txn-sample.rs %}
 ~~~
 
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:

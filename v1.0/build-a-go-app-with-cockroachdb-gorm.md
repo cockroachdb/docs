@@ -29,7 +29,7 @@ To install [GORM](http://jinzhu.me/gorm/), run the following command:
 $ go get -u github.com/jinzhu/gorm
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Go code
 
@@ -40,7 +40,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/gorm-basic-sample.go %}
+{% include {{ page.version.version }}/app/gorm-basic-sample.go %}
 ~~~
 
 Then run the code:

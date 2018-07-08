@@ -31,7 +31,7 @@ $ pip install sqlalchemy cockroachdb
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Python code
 
@@ -47,7 +47,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/sqlalchemy-basic-sample.py %}
+{% include {{ page.version.version }}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:

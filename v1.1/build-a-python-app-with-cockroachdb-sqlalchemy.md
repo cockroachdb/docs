@@ -33,7 +33,7 @@ $ pip install sqlalchemy cockroachdb
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Python code
 
@@ -49,7 +49,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/sqlalchemy-basic-sample.py %}
+{% include {{ page.version.version }}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
@@ -101,4 +101,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/), or check out a more realistic implementation of SQLAlchemy with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

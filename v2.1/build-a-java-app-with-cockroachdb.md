@@ -28,7 +28,7 @@ The examples on this page assume you are using a Java version <= 9. They do not 
 
 Download and set up the Java jdbc driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Java code
 
@@ -42,7 +42,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include app/BasicSample.java %}
+{% include {{ page.version.version }}/app/BasicSample.java %}
 ~~~
 
 ### Transaction (with retry logic)
@@ -59,7 +59,7 @@ In Java, you access error codes with the getSQLState() method instead of getErro
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include app/TxnSample.java %}
+{% include {{ page.version.version }}/app/TxnSample.java %}
 ~~~
 
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
@@ -83,4 +83,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Java jdbc driver](https://jdbc.postgresql.org/).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

@@ -17,7 +17,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 Install the C++ libpqxx driver as described in the [official documentation](https://github.com/jtv/libpqxx).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the C++ code
 
@@ -31,7 +31,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ cpp
-{% include app/basic-sample.cpp %}
+{% include {{ page.version.version }}/app/basic-sample.cpp %}
 ~~~
 
 ### Transaction (with retry logic)
@@ -44,7 +44,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ cpp
-{% include app/txn-sample.cpp %}
+{% include {{ page.version.version }}/app/txn-sample.cpp %}
 ~~~
 
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:

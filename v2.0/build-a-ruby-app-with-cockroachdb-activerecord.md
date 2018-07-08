@@ -33,7 +33,7 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 
 {{site.data.alerts.callout_success}}The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter.{{site.data.alerts.end}}
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Ruby code
 
@@ -44,7 +44,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/activerecord-basic-sample.rb %}
+{% include {{ page.version.version }}/app/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:
@@ -98,4 +98,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

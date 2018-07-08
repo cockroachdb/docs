@@ -129,7 +129,7 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page includes a syntax diagram from `_includes/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/app`.
 
-The syntax for including content is `{% include <filepath> %}`, for example, `{% include app/basic-sample.rb %}`.
+The syntax for including content is `{% include <filepath> %}`, for example, `{% include {{ page.version.version }}/app/basic-sample.rb %}`.
 
 #### Version Tags
 

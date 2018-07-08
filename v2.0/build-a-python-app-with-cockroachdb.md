@@ -38,7 +38,7 @@ $ pip install psycopg2
 
 For other ways to install psycopg2, see the [official documentation](http://initd.org/psycopg/docs/install.html).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Python code
 
@@ -52,7 +52,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/basic-sample.py %}
+{% include {{ page.version.version }}/app/basic-sample.py %}
 ~~~
 
 Then run the code:
@@ -80,7 +80,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/txn-sample.py %}
+{% include {{ page.version.version }}/app/txn-sample.py %}
 ~~~
 
 Then run the code:
@@ -119,4 +119,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Python psycopg2 driver](http://initd.org/psycopg/docs/).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}
