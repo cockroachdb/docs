@@ -10,9 +10,9 @@ The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range s
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_table_at.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/split_table_at.html %}</section>
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/split_index_at.html %}</section>
 
 ## Required Privileges
 

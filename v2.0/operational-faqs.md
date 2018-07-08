@@ -116,17 +116,17 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 ## What happens when node clocks are not properly synchronized?
 
-{% include faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.html %}
 
 ## How can I tell how well node clocks are synchronized?
 
-{% include faq/clock-synchronization-monitoring.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-monitoring.html %}
 
 You can also see these metrics in [the Clock Offset graph](admin-ui-runtime-dashboard.html#clock-offset) on the Admin UI's Runtime dashboard as of the v2.0 release.
 
 ## How do I prepare for planned node maintenance?
 
-{% include faq/planned-maintenance.md %}
+{% include {{ page.version.version }}/faq/planned-maintenance.md %}
 
 ## See Also
 

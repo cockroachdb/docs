@@ -36,7 +36,7 @@ The example app on this page also requires [`async`](https://www.npmjs.com/packa
 $ npm install async
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Node.js code
 
@@ -50,7 +50,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% include app/basic-sample.js %}
+{% include {{ page.version.version }}/app/basic-sample.js %}
 ~~~
 
 Then run the code:
@@ -78,7 +78,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% include app/txn-sample.js %}
+{% include {{ page.version.version }}/app/txn-sample.js %}
 ~~~
 
 Then run the code:
@@ -117,4 +117,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Node.js pg driver](https://www.npmjs.com/package/pg).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

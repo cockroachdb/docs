@@ -22,7 +22,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/show_jobs.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_jobs.html %}
 </div>
 
 ## Response

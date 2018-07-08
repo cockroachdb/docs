@@ -19,7 +19,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_sequence.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_sequence.html %}</section>
 
 ## Parameters
 

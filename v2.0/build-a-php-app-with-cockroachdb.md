@@ -19,7 +19,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Create a table in the new database
 
@@ -45,7 +45,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ php
-{% include app/basic-sample.php %}
+{% include {{ page.version.version }}/app/basic-sample.php %}
 ~~~
 
 ### Transaction (with retry logic)
@@ -58,7 +58,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ php
-{% include app/txn-sample.php %}
+{% include {{ page.version.version }}/app/txn-sample.php %}
 ~~~
 
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
@@ -82,4 +82,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [php-pgsql driver](http://php.net/manual/en/book.pgsql.php).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

@@ -17,7 +17,7 @@ Despite committing the transaction, you must still issue a [`COMMIT`](commit-tra
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/release_savepoint.html %}
+{% include {{ page.version.version }}/sql/diagrams/release_savepoint.html %}
 </div>
 
 ## Required Privileges

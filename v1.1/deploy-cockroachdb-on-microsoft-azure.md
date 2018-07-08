@@ -19,11 +19,11 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 ## Requirements
 
-{% include prod_deployment/secure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/secure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 ## Step 1. Configure your network
 
@@ -84,7 +84,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 3. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -106,32 +106,32 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 ## Step 5. Generate certificates
 
-{% include prod_deployment/secure-generate-certificates.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
-{% include prod_deployment/secure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include prod_deployment/secure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test the cluster
 
-{% include prod_deployment/secure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include prod_deployment/secure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 11. Use the database
 
-{% include prod_deployment/use-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

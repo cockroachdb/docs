@@ -26,7 +26,7 @@ The locations of all ranges in a cluster are stored in a two-level index at the 
 
 ### Available capacity metric in the Admin UI
 
-{% include available-capacity-metric.md %}
+{% include v1.1/misc/available-capacity-metric.md %}
 
 ### Downgrading to v1.1.0 from a later v1.1.x patch release
 
@@ -184,4 +184,4 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

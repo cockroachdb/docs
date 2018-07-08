@@ -20,7 +20,7 @@ The `root` user can cancel any currently active queries, whereas non-`root` user
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/cancel_query.html %}
+{% include {{ page.version.version }}/sql/diagrams/cancel_query.html %}
 </div>
 
 ## Parameters

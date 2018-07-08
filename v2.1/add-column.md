@@ -10,7 +10,7 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/add_column.html %}
 
 ## Required privileges
 
@@ -27,7 +27,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

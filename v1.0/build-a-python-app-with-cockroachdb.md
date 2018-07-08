@@ -36,7 +36,7 @@ $ pip install psycopg2
 
 For other ways to install psycopg2, see the [official documentation](http://initd.org/psycopg/docs/install.html).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Python code
 
@@ -50,7 +50,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/basic-sample.py %}
+{% include {{ page.version.version }}/app/basic-sample.py %}
 ~~~
 
 Then run the code:
@@ -78,7 +78,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include app/txn-sample.py %}
+{% include {{ page.version.version }}/app/txn-sample.py %}
 ~~~
 
 Then run the code:

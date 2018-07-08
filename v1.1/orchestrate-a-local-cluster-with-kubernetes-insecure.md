@@ -41,17 +41,17 @@ Feature | Description
 
 When starting a cluster manually, you run the <code>cockroach start</code> command multiple times, once per node. In this step, you use a Kubernetes StatefulSet configuration instead, reducing the effort of starting 3 nodes to a single command.
 
-{% include orchestration/start-cluster.md %}
+{% include {{ page.version.version }}/orchestration/start-cluster.md %}
 
 ## Step 3. Initialize the cluster
 
-{% include orchestration/initialize-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/initialize-cluster-insecure.md %}
 
 ## Step 4. Test the cluster
 
 To test the cluster, launch a temporary pod for using the built-in SQL client, and then use a deployment configuration file to run a high-traffic load generator against the cluster from another pod.
 
-{% include orchestration/test-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
 4. Use our [`example-app.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) file to launch a pod and run a load generator against the cluster from the pod:
 
@@ -104,7 +104,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 ## Step 6. Simulate node failure
 
-{% include orchestration/kubernetes-simulate-failure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 7. Scale the cluster
 

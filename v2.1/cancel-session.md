@@ -14,7 +14,7 @@ Only the `root` user and the user that the session belongs to can cancel a sessi
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/cancel_session.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/cancel_session.html %}</section>
 
 ## Parameters
 

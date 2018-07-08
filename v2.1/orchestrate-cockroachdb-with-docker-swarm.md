@@ -551,4 +551,4 @@ $ sudo docker secret rm ca-crt cockroachdb-1-crt cockroachdb-1-key
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

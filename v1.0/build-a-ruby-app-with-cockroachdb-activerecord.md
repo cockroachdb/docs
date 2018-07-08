@@ -29,7 +29,7 @@ To install ActiveRecord as well as the [pg driver](https://rubygems.org/gems/pg)
 $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Ruby code
 
@@ -40,7 +40,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/activerecord-basic-sample.rb %}
+{% include {{ page.version.version }}/app/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:

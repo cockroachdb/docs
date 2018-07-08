@@ -13,7 +13,7 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables in a databas
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_tables.html %}
 
 ## Required Privileges
 

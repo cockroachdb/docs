@@ -29,7 +29,7 @@ To install Sequelize, as well as a [CockroachDB Node.js package](https://github.
 $ npm install sequelize sequelize-cockroachdb
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Node.js code
 
@@ -40,7 +40,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% include app/sequelize-basic-sample.js %}
+{% include {{ page.version.version }}/app/sequelize-basic-sample.js %}
 ~~~
 
 Then run the code:

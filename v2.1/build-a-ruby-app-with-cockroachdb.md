@@ -29,7 +29,7 @@ To install the [Ruby pg driver](https://rubygems.org/gems/pg), run the following
 $ gem install pg
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Ruby code
 
@@ -43,7 +43,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/basic-sample.rb %}
+{% include {{ page.version.version }}/app/basic-sample.rb %}
 ~~~
 
 Then run the code:
@@ -73,7 +73,7 @@ With the default `SERIALIZABLE` isolation level, CockroachDB may require the [cl
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/txn-sample.rb %}
+{% include {{ page.version.version }}/app/txn-sample.rb %}
 ~~~
 
 Then run the code:
@@ -104,4 +104,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Ruby pg driver](https://rubygems.org/gems/pg).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

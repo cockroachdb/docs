@@ -543,7 +543,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 ## Known Limitations
 
-{% include known_limitations/partitioning-with-placeholders.md %}
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
 ## See Also
 

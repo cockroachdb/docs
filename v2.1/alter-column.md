@@ -15,7 +15,7 @@ To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`D
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_column.html %}
 </div>
 
 ## Required privileges
@@ -32,7 +32,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

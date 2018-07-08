@@ -127,7 +127,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include json/json-sample.go %}
+{% include {{ page.version.version }}/json/json-sample.go %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
@@ -150,7 +150,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include json/json-sample.py %}
+{% include {{ page.version.version }}/json/json-sample.py %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:

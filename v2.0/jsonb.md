@@ -184,7 +184,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 ### Create a Table with a `JSONB` Column and a Computed Column
 
-{% include computed-columns/jsonb.md %}
+{% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
 ## Supported Casting & Conversion
 

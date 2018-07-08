@@ -12,7 +12,7 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](roles
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/grant_roles.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/grant_roles.html %}</section>
 
 ## Required privileges
 

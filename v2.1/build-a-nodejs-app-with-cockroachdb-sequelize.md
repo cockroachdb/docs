@@ -33,7 +33,7 @@ To install Sequelize, as well as a [CockroachDB Node.js package](https://github.
 $ npm install sequelize sequelize-cockroachdb
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Node.js code
 
@@ -44,7 +44,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% include app/sequelize-basic-sample.js %}
+{% include {{ page.version.version }}/app/sequelize-basic-sample.js %}
 ~~~
 
 Then run the code:
@@ -96,4 +96,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

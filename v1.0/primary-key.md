@@ -35,7 +35,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Column Level
 
-{% include sql/{{ page.version.version }}/diagrams/primary_key_column_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/primary_key_column_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|
@@ -60,7 +60,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Table Level
 
-{% include sql/{{ page.version.version }}/diagrams/primary_key_table_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/primary_key_table_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|

@@ -86,7 +86,7 @@ After the backup has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/backup.html %}
 
 ## Required Privileges
 
@@ -107,7 +107,7 @@ Only the `root` user can run `BACKUP`.
 
 The path to each backup must be unique. The URL for your backup's destination/locations must use the following format:
 
-{% include external-urls-v1.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ## Examples
 

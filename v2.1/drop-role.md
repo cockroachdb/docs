@@ -21,7 +21,7 @@ Roles can only be dropped by super users, i.e., members of the `admin` role.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_role.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_role.html %}</section>
 
 
 ## Parameters

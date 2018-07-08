@@ -16,7 +16,7 @@ By default, only the `root` user can control a job.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/resume_job.html %}
+{% include {{ page.version.version }}/sql/diagrams/resume_job.html %}
 
 ## Parameters
 

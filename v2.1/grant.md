@@ -12,7 +12,7 @@ For privileges required by specific statements, see the documentation for the re
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/grant_privileges.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/grant_privileges.html %}</section>
 
 ## Required privileges
 

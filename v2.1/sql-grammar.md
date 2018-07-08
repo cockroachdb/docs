@@ -39,5 +39,5 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="timestamp"></a>
 
 <div>
-	{% include sql/{{ page.version.version }}/diagrams/stmt_block.html %}
+	{% include {{ page.version.version }}/sql/diagrams/stmt_block.html %}
 </div>

@@ -95,31 +95,31 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 ### Referring to a CTE by name more than once
 
-{% include known_limitations/cte-by-name.md %}
+{% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
 ### Using CTEs with data-modifying statements
 
-{% include known_limitations/cte-with-dml.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-dml.md %}
 
 ### Using CTEs with views
 
-{% include known_limitations/cte-with-view.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
 
 ### Using CTEs with `VALUES` clauses
 
-{% include known_limitations/cte-in-values-clause.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
 
 ### Using CTEs with set operations
 
-{% include known_limitations/cte-in-set-expression.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
 
 ### Assigning latitude/longitude for the Node Map
 
-{% include known_limitations/node-map.md %}
+{% include {{ page.version.version }}/known-limitations/node-map.md %}
 
 ### Placeholders in `PARTITION BY`
 
-{% include known_limitations/partitioning-with-placeholders.md %}
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
 ### Adding a column with certain `DEFAULT` values
 
@@ -142,7 +142,7 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ### Available capacity metric in the Admin UI
 
-{% include available-capacity-metric.md %}
+{% include v2.1/misc/available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
@@ -287,4 +287,4 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

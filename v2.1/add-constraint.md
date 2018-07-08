@@ -19,7 +19,7 @@ The [`PRIMARY KEY`](primary-key.html) and [`NOT NULL`](not-null.html) constraint
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/add_constraint.html %}
 </div>
 
 ## Required privileges
@@ -36,7 +36,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

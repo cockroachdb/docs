@@ -69,7 +69,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
 
 ## Required Privileges
 
@@ -88,7 +88,7 @@ Only the `root` user can run `RESTORE`.
 
 The URL for your backup's locations must use the following format:
 
-{% include external-urls-v1.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Restore Option List
 

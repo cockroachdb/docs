@@ -10,7 +10,7 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_database.html %}
+{% include {{ page.version.version }}/sql/diagrams/drop_database.html %}
 
 ## Required Privileges
 
