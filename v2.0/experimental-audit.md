@@ -89,12 +89,14 @@ If your deployment requires particular lifecycle and access policies for audit l
 
 Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
 
 Now, every access of customer data is added to the audit log with a line that looks like the following:
 
+{% include copy-clipboard.html %}
 ~~~
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503,user=root,n1] 13 exec "cockroach" {"customers"[53]:READ} "SELECT * FROM customers" {} 123.45 12 OK
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503,user=root,n1] 13 exec "cockroach" {"customers"[53]:READ} "SELECT nonexistent FROM customers" {} 0.123 12 ERROR
@@ -112,6 +114,7 @@ For a more detailed example, see [SQL Audit Logging](sql-audit-logging.html).
 
 To turn off logging, issue the following command:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
