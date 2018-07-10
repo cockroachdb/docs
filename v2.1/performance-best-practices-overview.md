@@ -62,7 +62,7 @@ The best practice in CockroachDB is to generate unique IDs using the `UUID` type
 
 ### Use `UUID` to generate unique IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 

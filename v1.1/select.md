@@ -11,7 +11,7 @@ The `SELECT` [statement](sql-statements.html) retrieves data from a table. The `
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/select.html %}
+{% include {{ page.version.version }}/sql/diagrams/select.html %}
 </div>
 
 {{site.data.alerts.callout_success}}<code>SELECT</code> also has other applications not covered here, such as executing <a href="functions-and-operators.html">functions</a> like <code>SELECT current_timestamp();</code>.{{site.data.alerts.end}}

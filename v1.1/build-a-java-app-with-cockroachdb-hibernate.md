@@ -40,7 +40,7 @@ $ apt-get install gradle
 
 For other ways to install Gradle, see the [official documentation](https://gradle.org/install).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Java code
 
@@ -56,7 +56,7 @@ For more insight into this sample application, review the `Sample.java` file, wh
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include app/hibernate-basic-sample/Sample.java %}
+{% include {{ page.version.version }}/app/hibernate-basic-sample/Sample.java %}
 ~~~
 
 Then in the `hibernate-basic-sample` directory, run the gradle file to fetch the dependencies in `Sample.java` (including Hibernate) and run the application:
@@ -108,4 +108,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

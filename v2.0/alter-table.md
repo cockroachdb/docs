@@ -29,4 +29,4 @@ Subcommand | Description
 
 ## Viewing Schema Changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}

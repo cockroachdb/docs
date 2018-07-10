@@ -17,7 +17,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 Install the Clojure `lein` utility as described in its [official documentation](https://leiningen.org/).
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Create a table in the new database
 
@@ -42,7 +42,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
     {% include copy-clipboard.html %}
     ~~~ clojure
-    {% include app/project.clj %}
+    {% include {{ page.version.version }}/app/project.clj %}
     ~~~
 
 3. Create a file `myapp/src/test/util.clj` and populate it with the code from <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/util.clj" download>this file</a>. Be sure to place the file in the subdirectory `src/test` in your project.
@@ -55,7 +55,7 @@ Create a file `myapp/src/test/test.clj` and copy the code below to it, or <a hre
 
 {% include copy-clipboard.html %}
 ~~~ clojure
-{% include app/basic-sample.clj %}
+{% include {{ page.version.version }}/app/basic-sample.clj %}
 ~~~
 
 Run with:
@@ -76,7 +76,7 @@ Copy the code below to `myapp/src/test/test.clj` or
 
 {% include copy-clipboard.html %}
 ~~~ clojure
-{% include app/txn-sample.clj %}
+{% include {{ page.version.version }}/app/txn-sample.clj %}
 ~~~
 
 Run with:

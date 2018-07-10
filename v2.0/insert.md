@@ -20,7 +20,7 @@ The user must have the `INSERT` [privilege](privileges.html) on the table. To us
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/insert.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/insert.html %}</div>
 
 ## Parameters
 
@@ -36,7 +36,7 @@ Parameter | Description
 
 ### `ON CONFLICT` clause
 
-<div>{% include sql/{{ page.version.version }}/diagrams/on_conflict.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/on_conflict.html %}</div>
 
 Normally, when inserted values
 conflict with a `UNIQUE` constraint on one or more columns, CockroachDB

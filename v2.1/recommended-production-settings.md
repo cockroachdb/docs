@@ -121,11 +121,11 @@ Environment | Featured Approach
 
 ## Monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Clock synchronization
 
-{% include faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.html %}
 
 ## Cache and SQL memory size
 

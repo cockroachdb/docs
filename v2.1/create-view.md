@@ -14,7 +14,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-<section> {% include sql/{{ page.version.version }}/diagrams/create_view.html %} </section>
+<section> {% include {{ page.version.version }}/sql/diagrams/create_view.html %} </section>
 
 ## Parameters
 
@@ -107,7 +107,7 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 {{site.data.alerts.callout_info}} The following limitations may be lifted
 in a future version of CockroachDB.{{site.data.alerts.end}}
 
-{% include known_limitations/cte-with-view.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
 
 ## See also
 

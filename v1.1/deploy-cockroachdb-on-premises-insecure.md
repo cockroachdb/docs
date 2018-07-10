@@ -19,27 +19,27 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 ## Step 1. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 2. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 3. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 4. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 5. Set up HAProxy load balancers
 
@@ -134,16 +134,16 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 ## Step 6. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 7. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 8. Use the cluster
 
-{% include prod_deployment/use-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

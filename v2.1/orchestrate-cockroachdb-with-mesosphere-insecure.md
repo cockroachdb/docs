@@ -392,4 +392,4 @@ To shut down the CockroachDB cluster:
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

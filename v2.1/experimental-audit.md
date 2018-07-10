@@ -15,14 +15,14 @@ The audit logs contain detailed information about queries being executed against
 
 For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <div id="toc"></div>
 
 ## Synopsis
 
 <div>
-{% include sql/{{page.version.version}}/diagrams/experimental_audit.html %}
+{% include {{ page.version.version }}/sql/diagrams/experimental_audit.html %}
 </div>
 
 ## Required privileges

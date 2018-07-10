@@ -11,7 +11,7 @@ The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databa
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/show_roles.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_roles.html %}
 </div>
 
 ## Required privileges

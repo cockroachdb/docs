@@ -15,7 +15,7 @@ Only the `root` user can modify cluster settings.
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/reset_csetting.html %}
+{% include {{ page.version.version }}/sql/diagrams/reset_csetting.html %}
 </div>
 
 ## Parameters

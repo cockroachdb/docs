@@ -22,7 +22,7 @@ Selection queries can occur:
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/select.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/select.html %}</div>
 
 <div markdown="1"></div>
 
@@ -57,7 +57,7 @@ Form | Usage
 ### Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/select_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/select_clause.html %}
 </div>
 
 <div markdown="1"></div>
@@ -70,7 +70,7 @@ Form | Usage
 #### Syntax
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/values_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/values_clause.html %}
 </div>
 
 A `VALUES` clause defines tabular data defined by the expressions
@@ -103,7 +103,7 @@ names. [These names can be modified with
 #### Syntax
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/table_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_clause.html %}
 </div>
 
 <div markdown="1"></div>
@@ -156,7 +156,7 @@ set operations or as main component in a selection query.
 
 ### Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/set_operation.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/set_operation.html %}</div>
 
 <div markdown="1"></div>
 
@@ -462,11 +462,11 @@ in a future version of CockroachDB.{{site.data.alerts.end}}
 
 ### Using `VALUES` Clauses with Common Table Expressions
 
-{% include known_limitations/cte-in-values-clause.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
 
 ### Using Set Operations with Common Table Expressions
 
-{% include known_limitations/cte-in-set-expression.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
 
 ## See Also
 

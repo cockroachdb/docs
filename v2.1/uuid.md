@@ -126,7 +126,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 ### Create a table with auto-generated unique row IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ## Supported casting and conversion
 

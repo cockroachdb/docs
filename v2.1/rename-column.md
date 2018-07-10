@@ -12,7 +12,7 @@ The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a colum
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/rename_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_column.html %}
 
 ## Required privileges
 
@@ -29,7 +29,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Example
 

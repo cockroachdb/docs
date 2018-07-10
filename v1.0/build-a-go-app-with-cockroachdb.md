@@ -27,7 +27,7 @@ To install the [Go pq driver](https://godoc.org/github.com/lib/pq), run the foll
 $ go get -u github.com/lib/pq
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Go code
 
@@ -41,7 +41,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/basic-sample.go %}
+{% include {{ page.version.version }}/app/basic-sample.go %}
 ~~~
 
 Then run the code:
@@ -67,7 +67,7 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/txn-sample.go %}
+{% include {{ page.version.version }}/app/txn-sample.go %}
 ~~~
 
 With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. Clone the library into your `$GOPATH` as follows:

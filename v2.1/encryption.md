@@ -7,7 +7,7 @@ toc: false
 <span class="version-tag">New in v2.1:</span>
 Encryption At Rest provides transparent encryption for node data on local disk.
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <div id="toc"></div>
 

@@ -20,7 +20,7 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/upsert.html %}
+{% include {{ page.version.version }}/sql/diagrams/upsert.html %}
 
 ## Parameters
 

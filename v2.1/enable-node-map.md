@@ -188,22 +188,22 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ### Unable to assign latitude/longitude coordinates to localities
 
-{% include known_limitations/node-map.md %}
+{% include {{ page.version.version }}/known-limitations/node-map.md %}
 
 ### **Capacity Used** value displayed is more than configured Capacity
 
-{% include available-capacity-metric.md %}
+{% include v2.1/misc/available-capacity-metric.md %}
 
 ## Location coordinates for reference
 
 ### AWS locations
 
-{% include aws-locations.md %}
+{% include {{ page.version.version }}/misc/aws-locations.md %}
 
 ### Azure locations
 
-{% include azure-locations.md %}
+{% include {{ page.version.version }}/misc/azure-locations.md %}
 
 ### Google Cloud locations
 
-{% include gce-locations.md %}
+{% include {{ page.version.version }}/misc/gce-locations.md %}

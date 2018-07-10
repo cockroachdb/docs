@@ -17,14 +17,14 @@ This information is useful for verifying that:
 - The ["follow-the-workload"](demo-follow-the-workload.html) feature is operating as expected.
 - Range splits specified by the [`SPLIT AT`](split-at.html) statement were created as expected.
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <div id="toc"></div>
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/show_ranges.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_ranges.html %}
 </div>
 
 ## Required Privileges

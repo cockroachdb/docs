@@ -141,7 +141,7 @@ Flag | Description
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

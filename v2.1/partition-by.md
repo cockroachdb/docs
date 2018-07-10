@@ -19,7 +19,7 @@ As of CockroachDB v2.0, you cannot alter the primary key after it has been defin
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/alter_table_partition_by.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_table_partition_by.html %}
 </div>
 
 ## Parameters

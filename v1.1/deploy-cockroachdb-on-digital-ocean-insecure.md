@@ -19,11 +19,11 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 - If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
 
@@ -39,7 +39,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 2. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 3. Set up load balancing
 
@@ -75,23 +75,23 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 5. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 9. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 10. Use the cluster
 
@@ -103,4 +103,4 @@ Now that your deployment is working, you can:
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

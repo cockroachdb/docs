@@ -20,7 +20,7 @@ You can only apply the Default Value constraint to individual columns.
 {{site.data.alerts.callout_info}}You can also add the Default Value constraint to an existing table through <a href="alter-column.html#set-or-change-a-default-value"><code>ALTER COLUMN</code></a>. {{site.data.alerts.end}}
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/default_value_column_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/default_value_column_level.html %}
 </div>
 
 | Parameter | Description |

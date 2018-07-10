@@ -20,7 +20,7 @@ clauses](select-clause.html) and [`INSERT`](insert.html),
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/with_clause.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/with_clause.html %}</div>
 
 <div markdown="1"></div>
 
@@ -153,23 +153,23 @@ in a future version of CockroachDB.
 
 ### Referring to a CTE by name more than once
 
-{% include known_limitations/cte-by-name.md %}
+{% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
 ### Using CTEs with data-modifying statements
 
-{% include known_limitations/cte-with-dml.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-dml.md %}
 
 ### Using CTEs with views
 
-{% include known_limitations/cte-with-view.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
 
 ### Using CTEs with `VALUES` clauses
 
-{% include known_limitations/cte-in-values-clause.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
 
 ### Using CTEs with Set Operations
 
-{% include known_limitations/cte-in-set-expression.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
 
 ## See also
 

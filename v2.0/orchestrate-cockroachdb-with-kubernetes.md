@@ -33,13 +33,13 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster.
 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
-{% include orchestration/kubernetes-limitations.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-{% include orchestration/start-kubernetes.md %}
+{% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
 ## Step 3. Start CockroachDB nodes
 
-{% include orchestration/start-cluster.md %}
+{% include {{ page.version.version }}/orchestration/start-cluster.md %}
 
 ## Step 4. Approve node certificates
 
@@ -262,15 +262,15 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ## Step 7. Monitor the cluster
 
-{% include orchestration/monitor-cluster.md %}
+{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
 ## Step 8. Simulate node failure
 
-{% include orchestration/kubernetes-simulate-failure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 9. Scale the cluster
 
-{% include orchestration/kubernetes-scale-cluster.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
 3. Get the name of the `Pending` CSR for the new pod:
 
@@ -351,7 +351,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ## Step 10. Upgrade the cluster
 
-{% include orchestration/kubernetes-upgrade-cluster.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
 
 4. If this was an upgrade between minor or major versions (e.g., between v1.0.x and v1.1.y or between v1.1.y and v2.0.z), then you'll want to [finalize the upgrade](upgrade-cockroach-version.html#finalize-the-upgrade) if you're happy with the new version. Assuming you upgraded to the v2.0 minor version, you'd run:
 
@@ -475,9 +475,9 @@ To shut down the CockroachDB cluster:
 
 7. Stop Kubernetes:
 
-{% include orchestration/stop-kubernetes.md %}
+{% include {{ page.version.version }}/orchestration/stop-kubernetes.md %}
 
 ## See Also
 
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

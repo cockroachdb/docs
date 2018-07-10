@@ -31,7 +31,7 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_role.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_role.html %}</section>
 
 ## Parameters
 

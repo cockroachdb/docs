@@ -14,7 +14,7 @@ The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<div>{% include sql/v1.0/diagrams/update.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/update.html %}</div>
 
 ## Parameters
 

@@ -33,7 +33,7 @@ To install [GORM](http://jinzhu.me/gorm/), run the following command:
 $ go get -u github.com/jinzhu/gorm
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Go code
 
@@ -44,7 +44,7 @@ Copy the code or
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/gorm-basic-sample.go %}
+{% include {{ page.version.version }}/app/gorm-basic-sample.go %}
 ~~~
 
 Then run the code:
@@ -97,4 +97,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [GORM ORM](http://jinzhu.me/gorm/), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

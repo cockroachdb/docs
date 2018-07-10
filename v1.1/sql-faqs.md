@@ -12,7 +12,7 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ## How do I get the last ID/SERIAL value inserted into a table?
 
@@ -38,7 +38,7 @@ To learn more, see our blog posts on CockroachDB's JOINs:
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
