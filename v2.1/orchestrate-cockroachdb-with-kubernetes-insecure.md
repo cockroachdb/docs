@@ -1,6 +1,6 @@
 ---
 title: Orchestrate CockroachDB with Kubernetes (Insecure)
-summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
+summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: false
 ---
 
@@ -9,11 +9,13 @@ toc: false
   <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
-This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see <a href="kubernetes-performance.html">CockroachDB Performance on Kubernetes</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -33,27 +35,37 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 {% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
-## Step 3. Start CockroachDB nodes
+## Step 2. Start CockroachDB
+
+### Start CockroachDB nodes
 
 {% include {{ page.version.version }}/orchestration/start-cluster.md %}
 
-## Step 4. Initialize the cluster
+### Initialize the cluster
 
 {% include {{ page.version.version }}/orchestration/initialize-cluster-insecure.md %}
 
-## Step 5. Test the cluster
+## Step 3. Test the cluster
+
+### Use the built-in SQL client
 
 {% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
-## Step 6. Monitor the cluster
+### Access the Admin UI
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
-## Step 7. Simulate node failure
+### Simulate node failure
 
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
-## Step 8. Scale the cluster
+## Step 4. Set up monitoring and alerting
+
+{% include {{ page.version.version }}/orchestration/kubernetes-prometheus-alertmanager.md %}
+
+## Step 5. Maintain the cluster
+
+### Scale the cluster
 
 {% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
@@ -65,18 +77,23 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
     ~~~
 
     ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2h
-    cockroachdb-1   1/1       Running   0          2h
-    cockroachdb-2   1/1       Running   0          9m
-    cockroachdb-3   1/1       Running   0          46s
+    NAME                                   READY     STATUS    RESTARTS   AGE
+    alertmanager-cockroachdb-0             2/2       Running   0          2m
+    alertmanager-cockroachdb-1             2/2       Running   0          2m
+    alertmanager-cockroachdb-2             2/2       Running   0          2m
+    cockroachdb-0                          1/1       Running   0          9m
+    cockroachdb-1                          1/1       Running   0          9m
+    cockroachdb-2                          1/1       Running   0          7m
+    cockroachdb-3                          0/1       Pending   0          5s
+    prometheus-cockroachdb-0               3/3       Running   1          5m
+    prometheus-operator-85dd478dbb-66lvb   1/1       Running   0          6m
     ~~~
 
-## Step 9. Upgrade the cluster
+### Upgrade the cluster
 
 {% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
 
-## Step 10. Stop the cluster
+### Stop the cluster
 
 To shut down the CockroachDB cluster:
 
@@ -84,8 +101,7 @@ To shut down the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
-    -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
 
     ~~~
@@ -93,7 +109,7 @@ To shut down the CockroachDB cluster:
     pod "cockroachdb-1" deleted
     pod "cockroachdb-2" deleted
     pod "cockroachdb-3" deleted
-    statefulset "cockroachdb" deleted
+    service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
     persistentvolumeclaim "datadir-cockroachdb-0" deleted
@@ -101,6 +117,14 @@ To shut down the CockroachDB cluster:
     persistentvolumeclaim "datadir-cockroachdb-2" deleted
     persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget "cockroachdb-budget" deleted
+    job "cluster-init" deleted
+    clusterrolebinding "prometheus" deleted
+    clusterrole "prometheus" deleted
+    serviceaccount "prometheus" deleted
+    alertmanager "cockroachdb" deleted
+    prometheus "cockroachdb" deleted
+    prometheusrule "prometheus-cockroachdb-rules" deleted
+    servicemonitor "cockroachdb" deleted
     ~~~
 
 2. Stop Kubernetes:
