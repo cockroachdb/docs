@@ -64,7 +64,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 <section class="filter-content" markdown="1" data-scope="gce-manual">
 
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](http://kubernetes.io/docs/getting-started-guides/gce/) documentation.
+From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](https://kubernetes.io/docs/setup/turnkey/gce/) documentation.
 
 The process includes:
 
@@ -77,6 +77,6 @@ The process includes:
 
 <section class="filter-content" markdown="1" data-scope="aws-manual">
 
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](http://kubernetes.io/docs/getting-started-guides/aws/) documentation.
+From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](https://kubernetes.io/docs/setup/turnkey/aws/) documentation.
 
 </section>
