@@ -16,12 +16,8 @@
 
     @include at-query($min, $screen-xsm) {
       height: 75px;
-      width: calc(33% - 15.5px);
-      margin-right: 10px;
-      margin-left: 10px;
+      width: calc(33% - 8.5px);
     }
-
-    @include at-query($min, $screen-sm) { width: calc(33% - 14.5px); }
 
     &.install {
       .landing-page__tutorial--tile-icon { content: url(../images/cl-download.svg); }
@@ -30,6 +26,8 @@
           content: 'Install';
 
           @include at-query($min, $screen-sm) { content: 'Install CockroachDB'; }
+          @include at-query($min, $screen-md) { content: 'Install'; }
+          @include at-query($min, $screen-lg + 130px) { content: 'Install CockroachDB'; }
         }
       }
     }
@@ -41,6 +39,8 @@
           content: 'Start cluster';
 
           @include at-query($min, $screen-sm) { content: 'Start a cluster'; }
+          @include at-query($min, $screen-md) { content: 'Start cluster'; }
+          @include at-query($min, $screen-lg) { content: 'Start a cluster'; }
         }
       }
     }

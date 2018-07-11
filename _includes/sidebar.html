@@ -7,26 +7,10 @@
           $maincontent = $('#main-content'),
           $contentcol = $('.content-col');
 
-      var navgocoOptionsSidebar = {
+      var navgocoOptions = {
         caretHtml: '',
-        accordion: false,
-        openClass: 'active--expand',
-        save: true,
-        cookie: {
-          name: 'navgoco',
-          expires: false,
-          path: '/'
-        },
-        slide: {
-          duration: 150,
-          easing: 'swing'
-        }
-      };
-
-      var navgocoOptionsVersionSwitcher = {
-        caretHtml: '',
-        accordion: false,
-        openClass: 'active--expand',
+        accordion: true,
+        openClass: 'active',
         save: false,
         cookie: {
           name: 'navgoco',
@@ -39,26 +23,12 @@
         }
       };
 
-      {% if page.version.version == 'v2.1' %}
-        if ($(window).width() >= 992) {
-          $('#mysidebar .tier-1').addClass('active--expand');
-        }
-
-        $(window).on('resize', function() {
-          if ($(window).width() > 992) {
-            $('#mysidebar .tier-1>ul').slideDown(0);
-          } else {
-            $('#mysidebar .tier-1>ul').slideUp(0);
-          }
-        });
-      {% endif %}
-
       function closeVersionSwitcher() {
         $('#version-switcher .tier-1 ul').slideUp();
         $('#version-switcher').removeClass('open');
       }
 
-      $sidebar.navgoco($.extend(navgocoOptionsSidebar, {
+      $sidebar.navgoco($.extend(navgocoOptions, {
         onToggleAfter: function() {
           if ($(this.el).attr('id') == 'mysidebar' &&
               $('#version-switcher').hasClass('open')) {
@@ -67,7 +37,7 @@
         }
       }));
 
-      $versionSwitcher.navgoco($.extend(navgocoOptionsVersionSwitcher, {
+      $versionSwitcher.navgoco($.extend(navgocoOptions, {
         onToggleBefore: function() {
           $('#version-switcher').toggleClass('open');
         }

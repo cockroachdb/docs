@@ -731,7 +731,7 @@ body.sidenav-open .col-content {
       color: #54B30E; }
   .nav li.active li.active a {
     width: 100%; }
-  .nav li.active--expand > a .arrow-down {
+  .nav li.active > a .arrow-down {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
     margin-bottom: 0px; }
@@ -884,12 +884,7 @@ a:not([href]) {
   @media screen and (min-width: 544px) {
     .landing-page .landing-page__tutorial--tile {
       height: 75px;
-      width: calc(33% - 15.5px);
-      margin-right: 10px;
-      margin-left: 10px; } }
-  @media screen and (min-width: 768px) {
-    .landing-page .landing-page__tutorial--tile {
-      width: calc(33% - 14.5px); } }
+      width: calc(33% - 8.5px); } }
   .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-icon {
     content: url(../images/cl-download.svg); }
   .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
@@ -897,11 +892,23 @@ a:not([href]) {
     @media screen and (min-width: 768px) {
       .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
         content: 'Install CockroachDB'; } }
+    @media screen and (min-width: 992px) {
+      .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
+        content: 'Install'; } }
+    @media screen and (min-width: 1330px) {
+      .landing-page .landing-page__tutorial--tile.install .landing-page__tutorial--tile-label:after {
+        content: 'Install CockroachDB'; } }
   .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-icon {
     content: url(../images/cl-flag-finish.svg); }
   .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
     content: 'Start cluster'; }
     @media screen and (min-width: 768px) {
+      .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
+        content: 'Start a cluster'; } }
+    @media screen and (min-width: 992px) {
+      .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
+        content: 'Start cluster'; } }
+    @media screen and (min-width: 1200px) {
       .landing-page .landing-page__tutorial--tile.start-cluster .landing-page__tutorial--tile-label:after {
         content: 'Start a cluster'; } }
   .landing-page .landing-page__tutorial--tile.build-app .landing-page__tutorial--tile-icon {
