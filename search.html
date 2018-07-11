@@ -31,6 +31,7 @@ var QueryString = function () {
 }();
 
 document.title = 'Search - ' + QueryString.q;
+$('#search-input').val(QueryString.q.replace('+', ' ')); 
 
 var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
 var index = client.initIndex('cockroachlabs');

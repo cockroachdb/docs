@@ -72,15 +72,15 @@
   height: 38px;
   width: 35px;
   border-radius: 50%;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
 
   @include at-query($min, $screen-md) { right: 0; }
 
   &:before, &:after {
     content: '';
     position: absolute;
-    height: 2px;
+    height: 1px;
     width: 11px;
     top: 50%;
     left: 6px;

@@ -1555,15 +1555,15 @@ a.accordion-toggle {
   height: 38px;
   width: 35px;
   border-radius: 50%;
-  cursor: pointer;
-  outline: none; }
+  outline: none;
+  cursor: pointer; }
   @media screen and (min-width: 992px) {
     .clear-search {
       right: 0; } }
   .clear-search:before, .clear-search:after {
     content: '';
     position: absolute;
-    height: 2px;
+    height: 1px;
     width: 11px;
     top: 50%;
     left: 6px;
