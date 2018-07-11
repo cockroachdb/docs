@@ -48,13 +48,13 @@ For other ways to install Gradle, see the [official documentation](https://gradl
 
 ## Step 5. Run the Java code
 
-[Download and extract this tarball](https://github.com/cockroachdb/docs/raw/master/_includes/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which includes three files that work together:
+[Download and extract this tarball](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which includes three files that work together:
 
 File | Description
 -----|------------
-[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/hibernate-basic-sample/hibernate.cfg.xml) | This file specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run. It must be in the `src/main/resources` directory.
-[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/hibernate-basic-sample/Sample.java) | This file uses the Hibernate ORM to map Java-specific objects to SQL operations. It must be in the `src/main/java/com/cockroachlabs/` directory.
-[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/hibernate-basic-sample/build.gradle) | This is the file you run to execute your app.
+[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate.cfg.xml) | This file specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run. It must be in the `src/main/resources` directory.
+[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/Sample.java) | This file uses the Hibernate ORM to map Java-specific objects to SQL operations. It must be in the `src/main/java/com/cockroachlabs/` directory.
+[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/build.gradle) | This is the file you run to execute your app.
 
 For more insight into this sample application, review the `Sample.java` file, which uses the [Hibernate ORM](http://hibernate.org/orm/) to map Java-specific objects to SQL operations. Specifically, an `accounts` table gets created based on the `Account` class, `session.save(new Account())` inserts rows into the table, and the `CriteriaQuery<Account> query` object defines the SQL query for selecting from the table so that balances can be printed.
 

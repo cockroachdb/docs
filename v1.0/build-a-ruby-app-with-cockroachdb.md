@@ -37,7 +37,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
@@ -63,7 +63,7 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
 {{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 

@@ -37,7 +37,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ go
@@ -63,7 +63,7 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ go

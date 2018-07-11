@@ -115,11 +115,11 @@ For each initial node of your cluster, complete the following steps:
     $ chown -R cockroach.cockroach /var/lib/cockroach
     ~~~
 
-8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/prod_deployment/securecockroachdb.service):
+8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/prod_deployment/securecockroachdb.service
+    $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:

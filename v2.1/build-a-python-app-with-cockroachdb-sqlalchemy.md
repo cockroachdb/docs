@@ -47,7 +47,7 @@ The [cockroachdb python package](https://github.com/cockroachdb/cockroachdb-pyth
 {{site.data.alerts.end}}
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
