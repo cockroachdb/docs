@@ -1,7 +1,7 @@
 ---
 title: Build a Python App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Python application with the SQLAlchemy ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -18,7 +18,6 @@ We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and 
 For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 

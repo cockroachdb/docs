@@ -1,11 +1,10 @@
 ---
 title: Jobs Page
-toc: false
+toc: true
 ---
 
 The **Jobs** page of the Admin UI provides details about the backup/restore jobs as well as schema changes performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
 
-<div id="toc"></div>
 
 ## Job details
 

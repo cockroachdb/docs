@@ -1,12 +1,11 @@
 ---
 title: SELECT
 summary: The SELECT statement retrieves data from a table.
-toc: false
+toc: true
 ---
 
 The `SELECT` [statement](sql-statements.html) retrieves data from a table.
 
-<div id="toc"></div>
 
 ## Synopsis
 

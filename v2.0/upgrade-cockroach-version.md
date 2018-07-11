@@ -1,7 +1,7 @@
 ---
 title: Upgrade to CockroachDB v2.0.3
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 {{site.data.alerts.callout_info}}This page shows you how to upgrade to v2.0.3 from v1.1.x, or from any patch release in the v2.0.x series. To upgrade within the v1.1.x series, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the v1.1 version of this page</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Step 1. Verify that you can upgrade
 

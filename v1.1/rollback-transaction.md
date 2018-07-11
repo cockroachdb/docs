@@ -1,14 +1,13 @@
 ---
 title: ROLLBACK
 summary: Abort the current transaction, discarding all updates made by statements included in the transaction with the ROLLBACK statement in CockroachDB.
-toc: false
+toc: true
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT cockroach_restart` to handle a transaction that needs to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
 
-<div id="toc"></div>
 
 ## Synopsis
 

@@ -1,7 +1,7 @@
 ---
 title: Common Table Expressions
 summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -16,7 +16,6 @@ clauses](select-clause.html) and [`INSERT`](insert.html),
 [`DELETE`](delete.html), [`UPDATE`](update.html) and
 [`UPSERT`](upsert.html) statements.
 
-<div id="toc"></div>
 
 ## Synopsis
 

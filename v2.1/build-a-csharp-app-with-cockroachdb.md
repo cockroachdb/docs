@@ -1,7 +1,7 @@
 ---
 title: Build a C# (.NET) App with CockroachDB
 summary: Learn how to use CockroachDB from a simple C# (.NET) application with a low-level client driver.
-toc: false
+toc: true
 twitter: true
 ---
 
@@ -9,7 +9,6 @@ This tutorial shows you how build a simple C# (.NET) application with CockroachD
 
 We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before you begin
 

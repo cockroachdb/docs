@@ -1,12 +1,11 @@
 ---
 title: Cross-Cloud Deployment & Migration
 summary: Use a local cluster to simulate migrating from one cloud platform to another.
-toc: false
+toc: true
 ---
 
 CockroachDB's flexible [replication controls](configure-replication-zones.html) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page walks you through a local simulation of the process.
 
-<div id="toc"></div>
 
 ## Watch a Live Demo
 

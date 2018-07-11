@@ -1,7 +1,7 @@
 ---
 title: ALTER USER
 summary: The ALTER USER statement can be used to add or change a user's password.
-toc: false
+toc: true
 ---
 
 The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-and-manage-users.html) password.
@@ -10,7 +10,6 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add or change a
 You can also use the [`cockroach user`](create-and-manage-users.html#update-a-users-password) command to add or change a user's password.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 

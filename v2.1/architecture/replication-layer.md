@@ -1,7 +1,7 @@
 ---
 title: Replication Layer
 summary:
-toc: false
+toc: true
 ---
 
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
@@ -10,7 +10,6 @@ The replication layer of CockroachDB's architecture copies data between nodes an
 If you haven't already, we recommend reading the [Architecture Overview](overview.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 

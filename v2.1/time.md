@@ -1,11 +1,10 @@
 ---
 title: TIME
 summary: The TIME data type stores a time of day in UTC, whereas TIMETZ stores a time of day with a time zone offset from UTC.
-toc: false
+toc: true
 ---
 The `TIME` [data type](data-types.html) stores the time of day in UTC, whereas `TIMETZ` stores a time of day with a time zone offset from UTC.
 
-<div id="toc"></div>
 
 ## Variants
 

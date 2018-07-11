@@ -1,7 +1,7 @@
 ---
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -18,7 +18,6 @@ We have tested the [Ruby pg driver](https://rubygems.org/gems/pg) and the [Activ
 For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 

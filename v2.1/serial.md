@@ -1,7 +1,7 @@
 ---
 title: SERIAL
 summary: The SERIAL data type defaults to a unique 64-bit integer that is the combination of the insert timestamp and the ID of the node.
-toc: false
+toc: true
 ---
 
 The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a 64-bit integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
@@ -10,7 +10,6 @@ The `SERIAL` [data type](data-types.html) is a column data type that, on insert,
 In most cases, we recommend using the [`UUID`](uuid.html) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (much larger than `SERIAL`'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See [Create a table with auto-generated unique row IDs](uuid.html#create-a-table-with-auto-generated-unique-row-ids) for more details.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Aliases
 

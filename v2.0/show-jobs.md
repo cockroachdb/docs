@@ -1,7 +1,7 @@
 ---
 title: SHOW JOBS
 summary: The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
@@ -13,7 +13,6 @@ These details can help you understand the status of crucial tasks that can impac
 
 {{site.data.alerts.callout_info}} The <code>SHOW JOBS</code> statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the <a href="sql-audit-logging.html">SQL Audit Logging (Experimental)</a> feature.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 

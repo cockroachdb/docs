@@ -1,7 +1,7 @@
 ---
 title: Value Expressions
 summary: Value expressions allow the computation of new values from basic parts.
-toc: false
+toc: true
 ---
 
 Most SQL statements can contain *value expressions* that compute new
@@ -16,7 +16,6 @@ structured as a table.
 
 The following sections provide details on each of these options.
 
-<div id="toc"></div>
 
 ## Constants
 

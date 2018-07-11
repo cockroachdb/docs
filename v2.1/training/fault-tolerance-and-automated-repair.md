@@ -1,6 +1,6 @@
 ---
 title: Fault Tolerance and Automated Repair
-toc: false
+toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 redirect_from: /training/fault-tolerance-and-automated-repair.html
@@ -13,7 +13,6 @@ redirect_from: /training/fault-tolerance-and-automated-repair.html
     content: "Hands-on Lab"
   }
 </style>
-<div id="toc"></div>
 
 ## Before you begin
 

@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Digital Ocean (Insecure)
 summary: Learn how to deploy CockroachDB on Digital Ocean.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -14,7 +14,6 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 

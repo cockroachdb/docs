@@ -1,12 +1,11 @@
 ---
 title: Subqueries
 summary: Subqueries enable the use of the results from a query within another query.
-toc: false
+toc: true
 ---
 
 SQL subqueries enable reuse of the results from a [selection query](selection-queries.html) within another query.
 
-<div id="toc"></div>
 
 ## Overview
 

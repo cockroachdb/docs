@@ -1,14 +1,13 @@
 ---
 title: SET CLUSTER SETTING
 summary: The SET CLUSTER SETTING statement configures one cluster setting.
-toc: false
+toc: true
 ---
 
 The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-wide setting](cluster-settings.html).
 
 {{site.data.alerts.callout_danger}}Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with CockroachDB; otherwise, you use them at your own risk.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 

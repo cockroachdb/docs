@@ -1,14 +1,13 @@
 ---
 title: CREATE USER
 summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
-toc: false
+toc: true
 ---
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user set</code></a> command to create and manage users.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
@@ -17,7 +16,6 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 - {% include {{ page.version.version }}/misc/remove-user-callout.html %}
 
-<div id="toc"></div>
 
 ## Required Privileges
 

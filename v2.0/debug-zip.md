@@ -1,7 +1,7 @@
 ---
 title: Collect Debug Information from Your Cluster
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
-toc: false
+toc: true
 ---
 
 The `debug zip` [command](cockroach-commands.html) connects to your cluster and gathers the following information from each active node into a single file (inactive nodes are not included):
@@ -17,7 +17,6 @@ The `debug zip` [command](cockroach-commands.html) connects to your cluster and 
 
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Details
 

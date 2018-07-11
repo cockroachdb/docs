@@ -2,12 +2,11 @@
 title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
 keywords: reflection
-toc: false
+toc: true
 ---
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
 
-<div id="toc"></div>
 
 ## Synopsis
 

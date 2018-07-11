@@ -1,7 +1,7 @@
 ---
 title: Limiting Query Results
 summary: LIMIT and OFFSET restrict an operation to a few row.
-toc: false
+toc: true
 ---
 
 The `LIMIT` and `OFFSET` clauses restrict the operation of:
@@ -10,7 +10,6 @@ The `LIMIT` and `OFFSET` clauses restrict the operation of:
 as part of [`INSERT`](insert.html) or [`UPSERT`](upsert.html).
 - [`UPDATE`](update.html) and [`DELETE`](delete.html) statements.
 
-<div id="toc"></div>
 
 ## Synopsis
 

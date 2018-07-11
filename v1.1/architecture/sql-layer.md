@@ -1,14 +1,13 @@
 ---
 title: SQL Layer
 summary: 
-toc: false
+toc: true
 ---
 
 The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 

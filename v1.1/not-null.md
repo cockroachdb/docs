@@ -1,12 +1,11 @@
 ---
 title: Not Null Constraint
 summary: The NOT NULL constraint specifies the column may not contain NULL values.
-toc: false
+toc: true
 ---
 
 The Not Null [constraint](constraints.html) specifies a column may not contain *NULL* values.
 
-<div id="toc"></div>
 
 ## Details
 

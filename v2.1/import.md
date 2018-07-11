@@ -1,14 +1,13 @@
 ---
 title: IMPORT
 summary: Import CSV data into your CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g., CSVs) into a single table.
 
 {{site.data.alerts.callout_info}}For details about importing SQL dumps, see <a href="import-data.html">Import Data</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 

@@ -1,7 +1,7 @@
 ---
 title: EXPERIMENTAL_AUDIT
 summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or off for a table.
-toc: false
+toc: true
 ---
 
 `EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn [SQL audit logging](sql-audit-logging.html) on or off for a table.
@@ -17,7 +17,6 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<div id="toc"></div>
 
 ## Synopsis
 

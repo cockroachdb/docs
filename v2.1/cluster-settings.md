@@ -1,7 +1,7 @@
 ---
 title: Cluster Settings
 summary: Learn about cluster settings that apply to all nodes of a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 Cluster settings apply to all nodes of a CockroachDB cluster and control, for example, whether or not to share diagnostic details with Cockroach Labs as well as advanced options for debugging and cluster tuning.
@@ -10,7 +10,6 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {{site.data.alerts.callout_info}}In contrast to cluster-wide settings, node-level settings apply to a single node. They are defined by flags passed to the <code>cockroach start</code> command when starting a node and cannot be changed without stopping and restarting the node. For more details, see <a href="start-a-node.html">Start a Node</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Settings
 

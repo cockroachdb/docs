@@ -1,12 +1,11 @@
 ---
 title: SHOW ROLES
 summary: The SHOW ROLES statement lists the roles for all databases.
-toc: false
+toc: true
 ---
 
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
-<div id="toc"></div>
 
 ## Synopsis
 

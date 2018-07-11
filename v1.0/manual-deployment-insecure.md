@@ -1,7 +1,7 @@
 ---
 title: Manual Deployment (Insecure)
 summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 

@@ -1,12 +1,11 @@
 ---
 title: CREATE TABLE AS
 summary: The CREATE TABLE AS statement persists the result of a query into the database for later reuse.
-toc: false
+toc: true
 ---
 
 The `CREATE TABLE ... AS` statement creates a new table from a [selection query](selection-queries.html).
 
-<div id="toc"></div>
 
 ## Intended Use
 

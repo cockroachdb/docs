@@ -1,7 +1,7 @@
 ---
 title: Privileges
 summary: Privileges are granted to roles and users at the database and table levels. They are not yet supported for other granularities such as columns or rows.
-toc: false
+toc: true
 ---
 
 In CockroachDB, privileges are granted to [roles](roles.html) and [users](create-and-manage-users.html) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
@@ -10,7 +10,6 @@ When a user connects to a database, either via the [built-in SQL client](use-the
 
 For the privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-<div id="toc"></div>
 
 ## Supported privileges
 

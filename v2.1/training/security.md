@@ -14,7 +14,6 @@ redirect_from: /training/security.html
     content: "Hands-on Lab"
   }
 </style>
-<div id="toc"></div>
 
 ## Before you begin
 

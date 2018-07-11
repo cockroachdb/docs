@@ -1,7 +1,7 @@
 ---
 title: ADD CONSTRAINT
 summary: Use the ADD CONSTRAINT statement to add constraints to columns.
-toc: false
+toc: true
 ---
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
@@ -14,7 +14,6 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 The [`PRIMARY KEY`](primary-key.html) and [`NOT NULL`](not-null.html) constraints can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) constraint is managed through [`ALTER COLUMN`](alter-column.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 

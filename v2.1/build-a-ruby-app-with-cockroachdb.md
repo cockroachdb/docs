@@ -1,7 +1,7 @@
 ---
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the pg client driver.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -14,7 +14,6 @@ This tutorial shows you how build a simple Ruby application with CockroachDB usi
 
 We have tested the [Ruby pg driver](https://rubygems.org/gems/pg) and the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before you begin
 

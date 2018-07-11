@@ -1,7 +1,7 @@
 ---
 title: UUID
 summary: The UUID data type stores 128-bit Universal Unique Identifiers.
-toc: false
+toc: true
 ---
 
 The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt).
@@ -10,7 +10,6 @@ The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a
 To auto-generate unique row IDs, we recommend using [`UUID`](uuid.html) with the `gen_random_uuid()` function as the default value. See the [example](#create-a-table-with-auto-generated-unique-row-ids) below for more details.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Syntax
 A `UUID` value can be expressed using the following formats:

@@ -1,12 +1,11 @@
 ---
 title: Unique Constraint
 summary: The UNIQUE constraint specifies that each non-NULL value in the constrained column must be unique.
-toc: false
+toc: true
 ---
 
 The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value in the constrained column must be unique.
 
-<div id="toc"></div>
 
 ## Details
 

@@ -1,7 +1,7 @@
 ---
 title: Upgrade to CockroachDB v1.1
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 {{site.data.alerts.callout_info}} When upgrading, you can skip patch releases, but you cannot skip full releases. Since v1.1 is the second full CockroachDB release, you do not have to go through intermediate releases. You can upgrade to any v1.1.x release from any v1.0.x release, or from any patch release in the v1.1.x series.<br><br>To upgrade within the v1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the v1.0 version of this page</a>. {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Step 1. Prepare to upgrade
 

@@ -1,7 +1,7 @@
 ---
 title: Create Security Certificates
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## How Security Certificates Work
 

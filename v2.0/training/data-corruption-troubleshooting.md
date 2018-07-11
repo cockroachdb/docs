@@ -1,6 +1,6 @@
 ---
 title: Data Corruption Troubleshooting
-toc: false
+toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: true
@@ -14,7 +14,6 @@ redirect_from: /training/data-corruption-troubleshooting.html
     content: "Hands-on Lab"
   }
 </style>
-<div id="toc"></div>
 
 ## Before You Begin
 

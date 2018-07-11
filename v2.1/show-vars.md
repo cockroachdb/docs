@@ -1,7 +1,7 @@
 ---
 title: SHOW (session settings)
 summary: The SHOW statement displays the current settings for the client session.
-toc: false
+toc: true
 redirect_from:
 - show-all.html
 - show-transaction.html
@@ -11,7 +11,6 @@ redirect_from:
 The `SHOW` [statement](sql-statements.html) can display the value of either one or all of
 the session setting variables. Some of these can also be configured via [`SET`](set-vars.html).
 
-<div id="toc"></div>
 
 ## Required privileges
 

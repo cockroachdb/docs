@@ -1,7 +1,7 @@
 ---
 title: SHOW EXPERIMENTAL_RANGES
 summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
-toc: false
+toc: true
 redirect_from: show-testing-ranges.html
 ---
 
@@ -19,7 +19,6 @@ This information is useful for verifying that:
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<div id="toc"></div>
 
 ## Synopsis
 

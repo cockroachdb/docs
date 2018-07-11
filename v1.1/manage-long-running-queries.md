@@ -1,14 +1,13 @@
 ---
 title: Manage Long-Running Queries
 summary: Learn how to identify and cancel long-running queries.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> This page shows you how to identify and, if necessary, cancel SQL queries that are taking longer than expected to process.
 
 {{site.data.alerts.callout_info}}Schema changes (statements beginning with <code>ALTER</code>) cannot currently be cancelled. However, to monitor the progress of schema changes, you can use <a href="show-jobs.html"><code>SHOW JOBS</code></a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Identify Long-Running Queries
 

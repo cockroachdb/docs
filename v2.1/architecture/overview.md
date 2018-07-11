@@ -1,7 +1,7 @@
 ---
 title: Architecture Overview
 summary:
-toc: false
+toc: true
 key: cockroachdb-architecture.html
 redirect_from: index.html
 ---
@@ -10,7 +10,6 @@ CockroachDB was designed to create the open-source database our developers would
 
 However, you definitely do not need to understand the underlying architecture to use CockroachDB. These pages give serious users and database enthusiasts a high-level framework to explain what's happening under the hood.
 
-<div id="toc"></div>
 
 ## Using this guide
 

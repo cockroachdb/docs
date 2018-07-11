@@ -1,7 +1,7 @@
 ---
 title: Orchestrate CockroachDB with Kubernetes (Insecure)
 summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -15,7 +15,6 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 {{site.data.alerts.callout_success}}For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see <a href="kubernetes-performance.html">CockroachDB Performance on Kubernetes</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 

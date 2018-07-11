@@ -1,7 +1,7 @@
 ---
 title: Primary Key Constraint
 summary: The Primary Key constraint specifies that the columns can be used to uniquely identify rows in a table.
-toc: false
+toc: true
 ---
 
 The Primary Key [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row.
@@ -10,7 +10,6 @@ Unlike other constraints which have very specific uses, the Primary Key constrai
 
 {{site.data.alerts.callout_info}}A table's primary key can only be specified in the <a href="create-table.html"><code>CREATE TABLE</code></a> statement. It cannot be changed later using <code>ALTER TABLE</code>, though it is possible to <a href="constraints.html#change-constraints">go through a process</a> to create a new table with the new primary key you want and then migrate the data.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Details
 

@@ -1,12 +1,11 @@
 ---
 title: Stop a Node
 summary: Learn how to stop a node.
-toc: false
+toc: true
 ---
 
 This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to stop a node.
 
-<div id="toc"></div>
 
 ## Overview
 

@@ -1,14 +1,13 @@
 ---
 title: NULL Handling
 summary: Learn how NULL values are handled in CockroachDB SQL.
-toc: false
+toc: true
 ---
 
 This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](use-the-built-in-sql-client.html), using the table data in the first section, [NULLs and Logic](#nulls-and-logic).
 
 {{site.data.alerts.callout_info}}When using the built-in client, <code>NULL</code> values are displayed using the word <code>NULL</code>. This distinguishes them from a character field that contains an empty string ("").{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## NULLs and Logic
 

@@ -1,13 +1,12 @@
 ---
 title: Custom Chart Debug Page
-toc: false
+toc: true
 ---
 
 The **Custom Chart** debug page in the Admin UI can be used to create a custom chart showing any combination of over [200 available metrics](#available-metrics).
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
-<div id="toc"></div>
 
 ## Getting there
 

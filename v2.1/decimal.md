@@ -1,12 +1,11 @@
 ---
 title: DECIMAL
 summary: The DECIMAL data type stores exact, fixed-point numbers.
-toc: false
+toc: true
 ---
 
 The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
-<div id="toc"></div>
 
 ## Aliases
 

@@ -1,7 +1,7 @@
 ---
 title: Orchestrate CockroachDB with Docker Swarm
 summary: How to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a Docker swarm.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ This page shows you how to orchestrate the deployment and management of an insec
 
 If you plan to use CockroachDB in production, we recommend using a secure cluster instead. Select **Secure** above for instructions.
 
-<div id="toc"></div>
 
 ## Before you begin
 

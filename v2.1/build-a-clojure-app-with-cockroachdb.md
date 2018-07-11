@@ -1,7 +1,7 @@
 ---
 title: Build a Clojure App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Clojure application with a low-level client driver.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -9,7 +9,6 @@ This tutorial shows you how build a simple Clojure application with CockroachDB 
 
 We have tested the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html) in conjunction with the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) enough to claim **beta-level** support, so that combination is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before you begin
 

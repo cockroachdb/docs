@@ -1,7 +1,7 @@
 ---
 title: Decommission Nodes
 summary: Permanently remove one or more nodes from a cluster.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ This page shows you how to decommission and permanently remove one or more nodes
 
 For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](stop-a-node.html).
 
-<div id="toc"></div>
 
 ## Overview
 

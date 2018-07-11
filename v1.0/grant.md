@@ -1,14 +1,13 @@
 ---
 title: GRANT
 summary: The GRANT statement grants user privileges for interacting with specific databases and tables.
-toc: false
+toc: true
 ---
 
 The `GRANT` [statement](sql-statements.html) lets you control each [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 

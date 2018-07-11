@@ -1,7 +1,7 @@
 ---
 title: SERIAL
 summary: The SERIAL data type defaults to a unique 64-bit signed integer that is the combination of the insert timestamp and the ID of the node.
-toc: false
+toc: true
 ---
 
 The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a default integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
@@ -12,7 +12,6 @@ issue</a> or <a href="https://gitter.im/cockroachdb/cockroach">chat
 with us on Gitter</a>.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Aliases
 

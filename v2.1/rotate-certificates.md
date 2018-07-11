@@ -1,14 +1,13 @@
 ---
 title: Rotate Security Certificates
 summary: Rotate the security certificates of a secure CockroachDB cluster by creating and reloading new certificates.
-toc: false
+toc: true
 ---
 
 CockroachDB allows you to rotate security certificates without restarting nodes.
 
 {{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="create-security-certificates.html">Create Security Certificates</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## When to rotate certificates
 

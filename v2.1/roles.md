@@ -1,7 +1,7 @@
 ---
 title: Manage Roles
 summary: Roles are SQL groups that contain any number of users and roles as members.
-toc: false
+toc: true
 ---
 
 Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:
@@ -15,7 +15,6 @@ Roles are SQL groups that contain any number of users and roles as members. To c
 - [`SHOW ROLES`](show-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 
-<div id="toc"></div>
 
 ## Terminology
 

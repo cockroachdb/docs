@@ -1,10 +1,9 @@
 ---
 title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
-toc: false
+toc: true
 ---
 
-<div id="toc"></div>
 
 ## How do I bulk insert data into CockroachDB?
 

@@ -1,13 +1,12 @@
 ---
 title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-<div id="toc"></div>
 
 ## How Do Indexes Work?
 

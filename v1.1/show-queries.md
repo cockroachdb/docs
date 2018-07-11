@@ -1,7 +1,7 @@
 ---
 title: SHOW QUERIES
 summary: The SHOW QUERIES statement lists all currently active queries across the cluster or on the local node.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:
@@ -16,7 +16,6 @@ These details let you monitor the progress of active queries and, if necessary, 
 
 {{site.data.alerts.callout_info}}Schema changes and <a href="backup.html"><code>BACKUP</code></a>/<a href="restore.html"><code>RESTORE</code></a> statements are not executed as queries internally and so are not listed by <code>SHOW QUERIES</code>. To monitor such statements, use <a href="show-jobs.html"><code>SHOW JOBS</code></a> instead.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 

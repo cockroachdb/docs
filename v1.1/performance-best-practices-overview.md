@@ -1,12 +1,11 @@
 ---
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
-toc: false
+toc: true
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
-<div id="toc"></div>
 
 ## Multi-Row DML Best Practices
 

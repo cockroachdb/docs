@@ -1,7 +1,7 @@
 ---
 title: Automated Operations
 summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
-toc: false
+toc: true
 ---
 
 Other tutorials in this section feature the ways that CockroachDB automates operations for you. On top of this built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
@@ -10,7 +10,6 @@ This page walks you through a simple demonstration, using the open-source Kubern
 
 {{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 

@@ -1,13 +1,12 @@
 ---
 title: Recommended Production Settings
 summary: Recommended settings for production deployments.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
 This page provides recommended settings for production deployments.
 
-<div id="toc"></div>
 
 ## Hardware
 

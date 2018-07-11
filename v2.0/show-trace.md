@@ -1,14 +1,13 @@
 ---
 title: SHOW TRACE
 summary: The SHOW TRACE statement returns details about how CockroachDB executed a statement or series of statements.
-toc: false
+toc: true
 ---
 
 The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-<div id="toc"></div>
 
 ## Usage Overview
 

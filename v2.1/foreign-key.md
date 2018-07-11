@@ -1,7 +1,7 @@
 ---
 title: Foreign Key Constraint
 summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
-toc: false
+toc: true
 ---
 
 The Foreign Key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
@@ -13,7 +13,6 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 {{site.data.alerts.callout_success}}If you plan to use Foreign Keys in your schema, consider using <a href="interleave-in-parent.html">interleaved tables</a>, which can dramatically improve query performance.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Details
 

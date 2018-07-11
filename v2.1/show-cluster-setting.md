@@ -1,7 +1,7 @@
 ---
 title: SHOW CLUSTER SETTING
 summary: The SHOW CLUSTER SETTING statement displays the current cluster settings.
-toc: false
+toc: true
 ---
 
 The `SHOW CLUSTER SETTING` [statement](sql-statements.html) can
@@ -9,7 +9,6 @@ display the value of either one or all of the
 [cluster settings](cluster-settings.html). These can also be configured
 via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
-<div id="toc"></div>
 
 ## Required privileges
 

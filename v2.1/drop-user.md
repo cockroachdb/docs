@@ -1,14 +1,13 @@
 ---
 title: DROP USER
 summary: The DROP USER statement removes one or more SQL users.
-toc: false
+toc: true
 ---
 
 The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user rm</code></a> command to remove users.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required privileges
 
