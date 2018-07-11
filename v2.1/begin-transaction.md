@@ -14,7 +14,7 @@ When using transactions, your application should include logic to [retry transac
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/begin_transaction.html %}
+{% include {{ page.version.version }}/sql/diagrams/begin_transaction.html %}
 
 ## Required privileges
 

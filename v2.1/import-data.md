@@ -29,7 +29,7 @@ $ cockroach sql --database=[database name] < statements.sql
 
 ## Import from PostgreSQL dump
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <span class="version-tag">New in v2.1:</span> This section has instructions for getting data from PostgreSQL dump files into CockroachDB using [`IMPORT`](import.html). It uses the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).  The data set was imported into PostgreSQL from MySQL using [pgloader](https://pgloader.io).
 
@@ -140,7 +140,7 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
 
 ## Import from MySQL dump
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <span class="version-tag">New in v2.1:</span> This section has instructions for getting data from MySQL dump files into CockroachDB using [`IMPORT`](import.html). It uses the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
 

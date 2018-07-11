@@ -12,7 +12,7 @@ The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/drop_constraint.html %}
 
 ## Required Privileges
 
@@ -26,7 +26,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 | `name` | The name of the constraint you want to drop. |
 
 ## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Example
 

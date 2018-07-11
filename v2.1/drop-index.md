@@ -10,7 +10,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_index.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_index.html %}</section>
 
 ## Required privileges
 

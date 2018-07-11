@@ -13,7 +13,7 @@ The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/truncate.html %}
+  {% include {{ page.version.version }}/sql/diagrams/truncate.html %}
 </div>
 
 ## Required privileges

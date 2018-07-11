@@ -12,7 +12,7 @@ For the list of privileges that can be granted to and revoked from users, see [`
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/revoke.html %}
+{% include {{ page.version.version }}/sql/diagrams/revoke.html %}
 
 ## Required Privileges
 

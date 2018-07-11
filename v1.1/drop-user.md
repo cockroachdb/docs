@@ -8,7 +8,7 @@ toc: false
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user rm</code></a> command to remove users.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}{% include {{ page.version.version }}/misc/remove-user-callout.html %}{{site.data.alerts.end}}
 
 <div id="toc"></div>
 
@@ -18,7 +18,7 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_user.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_user.html %}</section>
 
 ## Parameters
 

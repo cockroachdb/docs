@@ -10,7 +10,7 @@ toc: false
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_roles.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_roles.html %}</section>
 
 ## Required Privileges
 

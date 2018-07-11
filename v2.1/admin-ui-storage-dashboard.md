@@ -29,7 +29,7 @@ Available | The free storage capacity available to CockroachDB.
 Used | Disk space used by the data in the CockroachDB store. Note that this value is less than (Capacity - Available) because Capacity and Available metrics consider the entire disk and all applications on the disk including CockroachDB, whereas Used metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include available-capacity-metric.md %}
+{% include v2.1/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors

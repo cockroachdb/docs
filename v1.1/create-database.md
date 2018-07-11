@@ -14,7 +14,7 @@ Only the `root` user can create databases.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/create_database.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_database.html %}
 
 ## Parameters
 

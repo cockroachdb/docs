@@ -11,7 +11,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/drop_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/drop_column.html %}
 </div>
 
 ## Required Privileges
@@ -29,7 +29,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing Schema Changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

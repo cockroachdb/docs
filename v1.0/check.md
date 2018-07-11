@@ -33,7 +33,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ### Column Level
 
-{% include sql/{{ page.version.version }}/diagrams/check_column_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/check_column_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|
@@ -58,7 +58,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ### Table Level
 
-{% include sql/{{ page.version.version }}/diagrams/check_table_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/check_table_level.html %}
 
 | Parameter | Description |
 |-----------|-------------|

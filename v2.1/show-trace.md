@@ -58,7 +58,7 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 ## Syntax
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/show_trace.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_trace.html %}
 </div>
 
 ## Parameters

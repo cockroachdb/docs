@@ -89,7 +89,7 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/import.html %}
+{% include {{ page.version.version }}/sql/diagrams/import.html %}
 </div>
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
@@ -112,7 +112,7 @@ Only the `root` user can run [`IMPORT`](import.html).
 
 URLs for the files you want to import must use the following format:
 
-{% include external-urls-v2.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Import Options
 

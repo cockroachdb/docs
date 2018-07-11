@@ -135,7 +135,7 @@ Later steps of the import process distribute work among many nodes and have less
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/import.html %}
+{% include {{ page.version.version }}/sql/diagrams/import.html %}
 
 ## Required Privileges
 
@@ -155,7 +155,7 @@ Only the `root` user can run [`IMPORT`](import.html).
 
 URLs for the file you want to import and your temp directory must use the following format:
 
-{% include external-urls-v1.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 #### Notes
 

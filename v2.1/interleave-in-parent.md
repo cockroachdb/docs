@@ -45,7 +45,7 @@ By writing data in this way, related data is more likely to remain on the same k
 
 ## When to interleave tables
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ### Interleaved hierarchy
 
@@ -77,7 +77,7 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 ## Syntax
 
-{% include sql/{{ page.version.version }}/diagrams/interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/interleave.html %}
 
 ## Parameters
 

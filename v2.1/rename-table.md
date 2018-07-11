@@ -16,7 +16,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/rename_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_table.html %}
 
 ## Parameters
 
@@ -28,7 +28,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

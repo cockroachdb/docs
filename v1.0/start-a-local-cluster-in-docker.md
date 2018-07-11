@@ -23,7 +23,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
@@ -62,7 +62,7 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 

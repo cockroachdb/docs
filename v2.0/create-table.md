@@ -20,49 +20,49 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
+{% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 
 **opt_interleave ::=**
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
 </div>
 
 </div>
@@ -233,7 +233,7 @@ We also have other resources on indexes:
 
 ### Create a Table with Auto-Generated Unique Row IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Create a Table with a Foreign Key Constraint
 
@@ -312,7 +312,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 ### Create a Table that Mirrors Key-Value Storage
 
-{% include faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ### Create a Table from a `SELECT` Statement
 
@@ -348,7 +348,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 ### Create a Table with a Computed Column <span class="version-tag">New in v2.0</span>
 
-{% include computed-columns/simple.md %}
+{% include {{ page.version.version }}/computed-columns/simple.md %}
 
 ### Create a Table with Partitions <span class="version-tag">New in v2.0</span>
 

@@ -14,7 +14,7 @@ The user must have the `DROP` [privilege](privileges.html) on the specified view
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_view.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_view.html %}</section>
 
 ## Parameters
 

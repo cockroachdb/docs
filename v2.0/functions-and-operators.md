@@ -16,7 +16,7 @@ The following syntax forms are recognized for compatibility with the
 SQL standard and PostgreSQL, but are equivalent to regular built-in
 functions:
 
-{% include sql/{{ page.version.version }}/function-special-forms.md %}
+{% include {{ page.version.version }}/sql/function-special-forms.md %}
 
 ## Conditional and Function-Like Operators
 
@@ -38,11 +38,11 @@ functions but have special evaluation rules:
 
 ## Built-in Functions
 
-{% include sql/{{ page.version.version }}/functions.md %}
+{% include {{ page.version.version }}/sql/functions.md %}
 
 ## Aggregate Functions
 
-{% include sql/{{ page.version.version }}/aggregates.md %}
+{% include {{ page.version.version }}/sql/aggregates.md %}
 
 ## Operators
 
@@ -104,7 +104,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported Operations
 
-{% include sql/{{ page.version.version }}/operators.md %}
+{% include {{ page.version.version }}/sql/operators.md %}
 
 <!--
 ## `CAST()`

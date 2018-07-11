@@ -27,4 +27,4 @@ Subcommand | Description
 
 ## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}

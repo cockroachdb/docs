@@ -283,6 +283,12 @@
             ]
           },
           {
+            "title": "Performance Benchmarking with TPC-C",
+            "urls": [
+              "/${VERSION}/performance-benchmarking-with-tpc-c.html"
+            ]
+          },        
+          {
             "title": "Access Management",
             "items": [
               {
@@ -328,7 +334,7 @@
               },
               {
                 "title": "Encryption at Rest",
-                "ursl": [
+                "urls": [
                   "/${VERSION}/encryption.html"
                 ]
               },

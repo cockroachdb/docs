@@ -4,7 +4,7 @@ summary: How running CockroachDB in Kubernetes affects its performance and how t
 toc: false
 ---
 
-{% include orchestration/kubernetes-performance.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-performance.md %}
 
 ## See Also
 

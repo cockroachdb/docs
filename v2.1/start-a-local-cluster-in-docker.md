@@ -25,7 +25,7 @@ Running a stateful application like CockroachDB in Docker is more complex and er
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
@@ -64,7 +64,7 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 

@@ -123,11 +123,11 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 2. Inserts the results into the table and grabs the `"after"` string.
 3. Uses the new `"after"` string as the basis for the next request.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include json/json-sample.go %}
+{% include {{ page.version.version }}/json/json-sample.go %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
@@ -146,11 +146,11 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 3. Inserts the results into the table.
 4. Uses the new `"after"` string as the basis for the next request.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include json/json-sample.py %}
+{% include {{ page.version.version }}/json/json-sample.py %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:

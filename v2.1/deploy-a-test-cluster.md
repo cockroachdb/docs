@@ -179,4 +179,4 @@ In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is e
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

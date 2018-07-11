@@ -35,4 +35,4 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="ref_column_name"></a>
 <a id="timestamp"></a>
 
-<div>{% include sql/{{ page.version.version }}/diagrams/grammar.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/grammar.html %}</div>

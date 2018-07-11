@@ -15,14 +15,14 @@ The audit logs contain detailed information about queries being executed against
 
 For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <div id="toc"></div>
 
 ## Synopsis
 
 <div>
-{% include sql/{{page.version.version}}/diagrams/experimental_audit.html %}
+  {% include {{ page.version.version }}/sql/diagrams/experimental_audit.html %}
 </div>
 
 ## Required Privileges
@@ -89,6 +89,7 @@ If your deployment requires particular lifecycle and access policies for audit l
 
 Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -112,6 +113,7 @@ For a more detailed example, see [SQL Audit Logging](sql-audit-logging.html).
 
 To turn off logging, issue the following command:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~

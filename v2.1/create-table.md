@@ -20,36 +20,36 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 
 **column_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
 
 **col_qualification ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
+{% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 
 **index_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 
 **family_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
 
 **table_constraint ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 
 **opt_interleave ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
 
 </div>
 
@@ -232,7 +232,7 @@ We also have other resources on indexes:
 
 ### Create a table with auto-generated unique row IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Create a table with a foreign key constraint
 
@@ -311,7 +311,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 ### Create a table that mirrors key-value storage
 
-{% include faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ### Create a table from a `SELECT` statement
 
@@ -350,7 +350,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 ### Create a table with a computed column
 
-{% include computed-columns/simple.md %}
+{% include {{ page.version.version }}/computed-columns/simple.md %}
 
 ### Create a table with partitions
 

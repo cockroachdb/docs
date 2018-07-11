@@ -33,18 +33,18 @@ To install [GORM](http://jinzhu.me/gorm/), run the following command:
 $ go get -u github.com/jinzhu/gorm
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Go code
 
 The following code uses the [GORM](http://jinzhu.me/gorm/) ORM to map Go-specific objects to SQL operations. Specifically, `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model, `db.Create(&Account{})` inserts rows into the table, and `db.Find(&accounts)` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/gorm-basic-sample.go" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-basic-sample.go" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/gorm-basic-sample.go %}
+{% include {{ page.version.version }}/app/gorm-basic-sample.go %}
 ~~~
 
 Then run the code:
@@ -97,4 +97,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [GORM ORM](http://jinzhu.me/gorm/), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

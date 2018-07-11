@@ -411,7 +411,7 @@ On this page, verify that the cluster is running as expected:
 
 2. Click the **Databases** tab on the left to verify that `securenodetest` is listed.
 
-{% include prometheus-callout.html %}
+{% include {{ page.version.version }}/misc/prometheus-callout.html %}
 
 ## Step 10. Use the database
 

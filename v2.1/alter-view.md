@@ -18,7 +18,7 @@ The user must have the `DROP` [privilege](privileges.html) on the view and the `
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/alter_view.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_view.html %}
 
 ## Parameters
 

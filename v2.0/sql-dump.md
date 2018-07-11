@@ -63,7 +63,7 @@ Flag | Description
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -351,7 +351,7 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 ## Known Limitations
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}
 
 ## See Also
 
