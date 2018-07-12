@@ -195,7 +195,7 @@ nav.mobile_expanded {
 		line-height: 23px;
 	}
 
-	@include at-query($min, $screen-lg) {
+	@include at-query($min, $screen-md) {
 		width: 209px;
 		margin-top: 3px;
 	}
