@@ -1,7 +1,7 @@
 ---
 title: Information Schema
 summary: The information_schema database contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
-toc: false
+toc: true
 ---
 
 CockroachDB represents your cluster's schema in a database called `information_schema`, which contains read-only [views](views.html) that you can use for introspection into your database's tables, columns, indexes, and views.
@@ -10,7 +10,6 @@ This notion of an information schema is part of the SQL standard, which means it
 
 {{site.data.alerts.callout_info}}The <code>information_schema</code> views typically represent objects that the current user has privilege to access. To ensure you can view your cluster's entire schema, access it as the <code>root</code> user.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Objects
 

@@ -1,4 +1,4 @@
-<div class="col-md-3 col-sidebar">
+<div class="col-sidebar">
   <script>
     $(document).ready(function() {
       // Initialize navgoco with default options
@@ -9,9 +9,9 @@
 
       var navgocoOptions = {
         caretHtml: '',
-        {% if page.version.version == 'v2.1' %}accordion: false,{% else %}accordion: true,{% endif %}
-        openClass: 'active--expand', // open
-        save: false, // leave false or nav highlighting doesn't work right
+        accordion: true,
+        openClass: 'active',
+        save: false,
         cookie: {
           name: 'navgoco',
           expires: false,
@@ -22,36 +22,6 @@
           easing: 'swing'
         }
       };
-      
-      // when/if we decide to include this functionality in other versions, we can remove the conditional liquid statement
-      // and migrate the contained code block to customscripts.js
-      {% if page.version.version == 'v2.1' %}
-        if ($(window).width() >= 992) {
-          $('#mysidebar .tier-1').addClass('active--expand');
-        }
-    
-        $(window).on('resize', function() {
-          if ($(window).width() > 992) {
-            $('#mysidebar .tier-1>ul').slideDown(0);
-            adjustMinHeight();
-          } else {
-            $('#mysidebar .tier-1>ul').slideUp(0);
-          }
-        });
-      {% endif %}
-        
-      function adjustMinHeight(duration) {
-        setTimeout(function() {
-          var height = $sidebar.outerHeight();
-          if(height > 475) {
-            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
-            $contentcol.css({ 'min-height' : 625 + (height - 475) });
-          } else {
-            $maincontent.animate({ 'min-height' : 625 }, 200);
-            $contentcol.css({ 'min-height' : 625 });
-          }
-        }, 200);
-      }
 
       function closeVersionSwitcher() {
         $('#version-switcher .tier-1 ul').slideUp();
@@ -60,7 +30,6 @@
 
       $sidebar.navgoco($.extend(navgocoOptions, {
         onToggleAfter: function() {
-          adjustMinHeight();
           if ($(this.el).attr('id') == 'mysidebar' &&
               $('#version-switcher').hasClass('open')) {
             closeVersionSwitcher();
@@ -76,7 +45,6 @@
 
       $sidebar.show();
       $versionSwitcher.show();
-      adjustMinHeight();
     });
   </script>
 
@@ -104,7 +72,6 @@
         </form>
       </div>
     </li>
-
     <script>
       (function () {
         var baseUrl = "{{ site.baseurl }}";
@@ -240,41 +207,9 @@
       location.href = $(this).val();
     });
   </script>
+  
+  <script src="{{ 'js/searchInputRendering.js' | relative_url }}"></script>
 </div>
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
 <script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
-
-{% if page.url == '/search.html' %}
-<script>
-$(document).ready(function() {
-  // this will make search appear instead of header in collapsed docs menu
-  $('.collapsed-header').hide();
-  $('.search-wrap').show();
-
-  // this will remove the class with custom styling for search page,
-  // so when we close the menu it reverts to normal styling
-  // needs to happen if any of these elements are clicked
-  $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
-    if ($('#mysidebar').hasClass('nav--search')) {
-      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
-    }
-  });
-
-  // set search input value to query string
-  $('#search-input').val(QueryString.q.replace('+', ' '));
-
-  // on load, show close button if search input
-	if ($('#search-input').val() != '') $('.clear-search').show();
-
-  $('.clear-search').on('click', function() {
-    $('#search-input').val('');
-    $(this).hide();
-  });
-
-  $('#search-input').on('input', function() {
-    if ($(this).val() != '') $('.clear-search').show();
-  });
-});
-</script>
-{% endif %}

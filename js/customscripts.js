@@ -11,6 +11,13 @@ function renderTOC() {
     showSpeed: 0,
     headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
   });
+
+  $('#toc-right').toc({
+    minimumHeaders: 0,
+    listType: 'ul',
+    showSpeed: 0,
+    headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
+  });
 }
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
@@ -19,11 +26,12 @@ $(function() {
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
       $mobile_menu = $('nav.mobile_expanded'),
+      $colSidebar = $('.col-sidebar'),
       $sidebar = $('#mysidebar'),
       $footer = $('section.footer'),
-      footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-      $versionSwitcher = $('#version-switcher');
+      $versionSwitcher = $('#version-switcher'),
+      $tocRight = $('#toc-right');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
@@ -100,27 +108,78 @@ $(function() {
     cachedWidth = _viewport_width;
   });
 
-  $(window).on('scroll', function(){
+  var tocHeight = 0; // outer var for TOC height reference maintained outside scroll handler
+
+  $(window).on('scroll', function(e) {
+    // If we calculate tocHeight inside of scroll handler, the true TOC height will be
+    // miscalculated as too small when a long TOC exceeds the top border of the footer.
+    // This will cause a long TOC to flicker when the user scrolls up.
+    //
+    // To solve this, we need to calculate the TOC height outside the event handler--
+    // however, the TOC is rendered *after* the 'ready' event on $(document) is fired, thus we cannot
+    // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack 
+    // to get the 'true' height of the TOC once it has been rendered on the page.
+    var tempTocHeight = $tocRight.height()
+    if (tempTocHeight > tocHeight) {
+      tocHeight = tempTocHeight;
+    }
+
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var footerOffset = $footer.offset().top;
+    var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
+    var tocHeightInColumn = tocHeight + parseInt($tocRight.css('top')),
     _viewport_width = window.innerWidth;
 
+    $sidebar.css('padding-top', '');
+
+    // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '61px'});
+      if (scrollTop + windowHeight >= footerOffset) {
+        $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
+        $colSidebar.css('bottom', viewportFooterDiff + 'px');
       } else {
-        $versionSwitcher.css({'position': 'fixed', 'bottom': '-1px'});
+        $versionSwitcher.css({'bottom': '-1px'});
+        $colSidebar.css('bottom', '0');
       }
     } else { // mobile
       $sidebar.css('padding-top', 10);
+      $colSidebar.css('bottom', '');
+      $versionSwitcher.css({'bottom': '0'});
 
-      var scrolled = $('.col-sidebar').hasClass('col-sidebar--scrolled');
-      if ($sidebar.hasClass('nav--collapsed') && $(window).scrollTop() > 0 && !scrolled) {
-        $('.col-sidebar').addClass('col-sidebar--scrolled');
+      var scrolled = $colSidebar.hasClass('col-sidebar--scrolled');
+      if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
+        $colSidebar.addClass('col-sidebar--scrolled');
         $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
         $sidebar.animate({height: sideNavHeight}, {duration: 250});
       }
     }
+
+    // handle positoning of right-hand TOC when scrolling window
+    if (_viewport_width >= 1072 && scrollTop >= 31) {
+      $tocRight.css({
+        position: 'fixed',
+        top: 88,
+        width: '265px'
+      });
+
+      // if footer in view and TOC overruns top of footer, set bottom property to top of footer
+      // otherwise, unset bottom property
+      if (scrollTop + tocHeightInColumn >= footerOffset) {
+        $tocRight.css('bottom', viewportFooterDiff + 1 + 'px');
+      } else {
+        $tocRight.css('bottom', '');
+      }
+    } else {
+      $tocRight.css({
+        position: 'relative',
+        top: '',
+        width: ''
+      });
+    }
   });
+
   // Fire scroll event on load
   $(window).scroll();
 

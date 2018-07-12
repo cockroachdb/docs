@@ -1,12 +1,11 @@
 ---
 title: CREATE SEQUENCE
 summary:
-toc: false
+toc: true
 ---
 
 The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-<div id="toc"></div>
 
 ## Considerations
 

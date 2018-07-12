@@ -30,7 +30,7 @@
 		<div class="mobile-sub-nav">
 				<span>Spotlights</span>
 				<ul class="mobile-sub-nav--link-list">
-					<li><a href="https://www.cockroachlabs.com/campaigns/kubernetes/">CockroachDB on Kubernetes</a></li>
+					<li><a href="https://www.cockroachlabs.com/campaigns/kubernetes/">How to Run CockroachDB on Kubernetes</a></li>
 				</ul>
 				<a href="https://www.cockroachlabs.com/guides/">Guides</a>
 				<a href="https://www.cockroachlabs.com/docs/stable/training/">Training</a>
@@ -42,69 +42,66 @@
 
 <!-- Desktop / Tablet Navigation -->
 <header class="navbar-fixed-top">
-    <div class="container">
-        <div class="row">
-            <a class="logo" href="https://www.cockroachlabs.com/" title="Cockroach Labs">
-                <img src="{{ 'images/CL_Logo_Horizontal.svg' | relative_url }}" width="100%" alt="Cockroach Labs" />
-            </a>
+	<div class="navbar-fixed-top--inner">
+		<a class="logo" href="https://www.cockroachlabs.com/" title="Cockroach Labs">
+			<img src="{{ 'images/CL_Logo_Horizontal.svg' | relative_url }}" width="100%" alt="Cockroach Labs" />
+		</a>
 
-            <nav class="desktop" role="navigation">
-        			<div class='menu-item-dropdown'>
-        				Product
-        				<div class="menu-dropdown">
-        					<a href="https://www.cockroachlabs.com/product/cockroachdb/" data-proofer-ignore>
-        						<div class="menu-dropdown__title">CockroachDB</div>
-        						<div class="menu-dropdown__info">The SQL database for global cloud services.</div>
-        					</a>
-									<a href="https://www.cockroachlabs.com/solutions/automated-operation/" data-proofer-ignore>
-        						<div class="menu-dropdown__title">Automated Operation</div>
-										<div class="menu-dropdown__info">Automate tasks like scaling, replication, and recovery.</div>
-        					</a>
-									<a href="https://www.cockroachlabs.com/solutions/global-clusters/" data-proofer-ignore>
-        						<div class="menu-dropdown__title">Global Clusters</div>
-										<div class="menu-dropdown__info">Scale your infrastructure across datacenters and regions.</div>
-        					</a>
-									<a href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>
-        						<div class="menu-dropdown__title">Pricing</div>
-        					</a>
-        					<a href="{{ "/stable/frequently-asked-questions.html" | relative_url }}" data-proofer-ignore>
-        						<div class="menu-dropdown__title">FAQ</div>
-        					</a>
-        				</div>
-        			</div>
-        			<a href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
-        			<a href="{{ "/stable" | relative_url }}" class="current-menu-item" data-proofer-ignore>Docs</a>
-        			<div class='menu-item-dropdown'>
-        				<div class="menu-item-dropdown__parent-link">Resources</div>
-        				<div class="menu-dropdown">
-										<div class="menu-dropdown--subsection">
-											<span class="menu-dropdown--subsection__title">Spotlights</span>
-											<a class="menu-dropdown--subsection__link" href="https://www.cockroachlabs.com/campaigns/kubernetes/">CockroachDB on Kubernetes</a>
-										</div>
-										<a href="https://www.cockroachlabs.com/guides/">
-											<div class="menu-dropdown__title">Guides</div>
-										</a>
-										<a href="https://www.cockroachlabs.com/docs/stable/training/" data-proofer-ignore>
-											<div class="menu-dropdown__title">Training</div>
-										</a>
-										<a href="https://forum.cockroachlabs.com/">
-											<div class="menu-dropdown__title">Forum</div>
-										</a>
-									</div>
-        			</div>
-        			<a href="https://www.cockroachlabs.com/blog/" class='blog-nav' data-proofer-ignore>Blog</a>
-              <a href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Download</a>
-        		</nav>
-            <nav class="mobile" role="navigation">
-              <a href="#" title="Expand Menu" class="hamburger">
-        				<span></span>
-        				<span></span>
-        				<span></span>
-        				<span></span>
-        			</a>
-              <a target="_blank" href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Download</a>
-            </nav>
-
-        </div>
-    </div>
+		<nav class="desktop" role="navigation">
+			<div class='menu-item-dropdown'>
+				Product
+				<div class="menu-dropdown">
+					<a href="https://www.cockroachlabs.com/product/cockroachdb/" data-proofer-ignore>
+						<div class="menu-dropdown__title">CockroachDB</div>
+						<div class="menu-dropdown__info">The SQL database for global cloud services.</div>
+					</a>
+					<a href="https://www.cockroachlabs.com/solutions/automated-operation/" data-proofer-ignore>
+						<div class="menu-dropdown__title">Automated Operation</div>
+						<div class="menu-dropdown__info">Automate tasks like scaling, replication, and recovery.</div>
+					</a>
+					<a href="https://www.cockroachlabs.com/solutions/global-clusters/" data-proofer-ignore>
+						<div class="menu-dropdown__title">Global Clusters</div>
+						<div class="menu-dropdown__info">Scale your infrastructure across datacenters and regions.</div>
+					</a>
+					<a href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>
+						<div class="menu-dropdown__title">Pricing</div>
+					</a>
+					<a href="{{ "/stable/frequently-asked-questions.html" | relative_url }}" data-proofer-ignore>
+						<div class="menu-dropdown__title">FAQ</div>
+					</a>
+				</div>
+			</div>
+			<a href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
+			<a href="{{ "/stable" | relative_url }}" class="current-menu-item" data-proofer-ignore>Docs</a>
+			<div class='menu-item-dropdown'>
+				<div class="menu-item-dropdown__parent-link">Resources</div>
+				<div class="menu-dropdown">
+						<div class="menu-dropdown--subsection">
+							<span class="menu-dropdown--subsection__title">Spotlights</span>
+							<a class="menu-dropdown--subsection__link" href="https://www.cockroachlabs.com/campaigns/kubernetes/">How to Run CockroachDB on Kubernetes</a>
+						</div>
+						<a href="https://www.cockroachlabs.com/guides/">
+							<div class="menu-dropdown__title">Guides</div>
+						</a>
+						<a href="https://www.cockroachlabs.com/docs/stable/training/" data-proofer-ignore>
+							<div class="menu-dropdown__title">Training</div>
+						</a>
+						<a href="https://forum.cockroachlabs.com/">
+							<div class="menu-dropdown__title">Forum</div>
+						</a>
+					</div>
+			</div>
+			<a href="https://www.cockroachlabs.com/blog/" class='blog-nav' data-proofer-ignore>Blog</a>
+			<a href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Download</a>
+		</nav>
+		<nav class="mobile" role="navigation">
+			<a href="#" title="Expand Menu" class="hamburger">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</a>
+			<a target="_blank" href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Download</a>
+		</nav>
+	</div>
 </header>

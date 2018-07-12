@@ -1,14 +1,13 @@
 ---
 title: Constraints
 summary: Constraints offer additional data integrity by enforcing conditions on the data within a column.
-toc: false
+toc: true
 ---
 
 Constraints offer additional data integrity by enforcing conditions on the data within a column. Whenever values are manipulated (inserted, deleted, or updated), constraints are checked and modifications that violate constraints are rejected.
 
 For example, the Unique constraint requires that all values in a column be unique from one another (except *NULL* values). If you attempt to write a duplicate value, the constraint rejects the entire statement.
 
-<div id="toc"></div>
 
 ## Supported constraints
 

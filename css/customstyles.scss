@@ -27,12 +27,8 @@ p {
 }
 
 h1, h2 {
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: 20px;
-
-  @include at-query($min, $screen-sm) {
-    margin-top: 35px;
-  }
 }
 
 h3, h4, h5, h6 {

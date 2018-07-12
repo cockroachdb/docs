@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Microsoft Azure
 summary: Learn how to deploy CockroachDB on Microsoft Azure.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -14,7 +14,6 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 

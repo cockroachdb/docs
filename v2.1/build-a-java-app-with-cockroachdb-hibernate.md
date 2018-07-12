@@ -1,7 +1,7 @@
 ---
 title: Build a Java App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Java application with the Hibernate ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -18,7 +18,6 @@ We have tested the [Java jdbc driver](https://jdbc.postgresql.org/) and the [Hib
 For a more realistic use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 

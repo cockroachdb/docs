@@ -1,13 +1,12 @@
 ---
 title: Statements Page
-toc: false
+toc: true
 ---
 
 The **Statements** page helps you identify the frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
 
 To view the **Statements** page, open [http://localhost:8080/#/statements](http://localhost:8080/#/statements) in your browser (replacing `localhost` and `8080` with your node's host and port).
 
-<div id="toc"></div>
 
 {{site.data.alerts.callout_danger}}
 **This feature is a work in progress**. It will change leading up to the v2.1 release.

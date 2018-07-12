@@ -1,7 +1,7 @@
 ---
 title: SHOW SESSIONS
 summary: The SHOW SESSIONS statement lists all currently active sessions across the cluster or on the local node.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
@@ -14,7 +14,6 @@ toc: false
 
 These details let you monitor the overall state of client connections and identify those that may need further investigation or adjustment.
 
-<div id="toc"></div>
 
 ## Required Privileges
 

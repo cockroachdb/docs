@@ -1,6 +1,6 @@
 ---
 title: Cluster Startup and Scaling
-toc: false
+toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 redirect_from: /training/cluster-startup-and-scaling.html
@@ -13,7 +13,6 @@ redirect_from: /training/cluster-startup-and-scaling.html
     content: "Hands-on Lab"
   }
 </style>
-<div id="toc"></div>
 
 ## Step 1. Create a training directory
 

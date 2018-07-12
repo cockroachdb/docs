@@ -1,12 +1,11 @@
 ---
 title: SHOW CREATE VIEW
 summary: The SHOW CREATE VIEW statement shows the CREATE VIEW statement that would create a copy of the specified view.
-toc: false
+toc: true
 ---
 
 The `SHOW CREATE VIEW` [statement](sql-statements.html) shows the `CREATE VIEW` statement that would create a copy of the specified [view](views.html).
 
-<div id="toc"></div>
 
 ## Required privileges
 

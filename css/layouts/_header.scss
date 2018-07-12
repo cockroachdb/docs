@@ -195,7 +195,7 @@ nav.mobile_expanded {
 		line-height: 23px;
 	}
 
-	@include at-query($min, $screen-lg) {
+	@include at-query($min, $screen-md) {
 		width: 209px;
 		margin-top: 3px;
 	}
@@ -218,18 +218,14 @@ header {
 		padding: 15px;
 	}
 
-	.container {
-		position: relative;
-		margin: 0;
+	&.navbar-fixed-top {
+		display: flex;
+		justify-content: center;
+	}
 
-		@include at-query($min, $screen-sm) {
-			width: 100%;
-			margin: 0 auto;
-		}
-
-		@include at-query($min, $screen-lg) {
-			max-width: $max-width;
-		}
+	.navbar-fixed-top--inner {
+		width: 100%;
+		max-width: 1500px;
 	}
 
 	&.scrolled {
@@ -338,6 +334,7 @@ header {
 
 				&__link {
 					float: none;
+					display: inline-block;
 					@include caption;
 					color: $cl_green;
 					text-transform: none;

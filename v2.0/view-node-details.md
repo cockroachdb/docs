@@ -1,14 +1,13 @@
 ---
 title: View Node Details
 summary: To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags.
-toc: false
+toc: true
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
 <span class="version-tag">New in v1.1:</span> The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 
-<div id="toc"></div>
 
 ## Subcommands
 

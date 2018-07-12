@@ -1,14 +1,13 @@
 ---
 title: Name Resolution
 summary: Table and function names can exist in multiple places. Resolution decides which one to use.
-toc: false
+toc: true
 ---
 
 A query can specify a table name without a database or schema name (e.g., `SELECT * FROM orders`). How does CockroachDB know which `orders` table is being considered and in which schema?
 
 This page details how CockroachDB performs **name resolution** to answer this question.
 
-<div id="toc"></div>
 
 ## Logical schemas and namespaces
 

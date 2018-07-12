@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB On-Premises
 summary: Learn how to manually deploy a secure, multi-node CockroachDB cluster on multiple machines.
-toc: false
+toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 ---
 
@@ -14,7 +14,6 @@ This tutorial shows you how to manually deploy a secure multi-node CockroachDB c
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 

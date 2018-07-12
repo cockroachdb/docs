@@ -1,11 +1,10 @@
 ---
 title: Database Page
-toc: false
+toc: true
 ---
 
 The **Databases** page of the Admin UI provides details of the databases configured, the tables in each database, and the grants assigned to each user.
 
-<div id="toc"></div>
 
 ## Tables View
 

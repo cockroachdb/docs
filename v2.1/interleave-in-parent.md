@@ -1,7 +1,7 @@
 ---
 title: INTERLEAVE IN PARENT
 summary: Interleaving tables improves query performance by optimizing the key-value structure of closely related table's data.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Interleaving tables improves query performance by optimizing the key-value struc
 
 {{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## How interleaved tables work
 

@@ -1,14 +1,13 @@
 ---
 title: REVOKE &lt;privileges&gt;
 summary: The REVOKE statement revokes privileges from users and/or roles.
-toc: false
+toc: true
 ---
 
 The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](privileges.html) from [users](create-and-manage-users.html) and/or [roles](roles.html).
 
 For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 

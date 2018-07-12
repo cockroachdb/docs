@@ -1,7 +1,7 @@
 ---
 title: CREATE CHANGEFEED
 summary: The CREATE CHANGEFEED statement creates a new changefeed, which provides row-level change subscriptions.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.1:</span> The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.
@@ -16,7 +16,6 @@ For more information, see [Change Data Capture](change-data-capture.html).
 In v2.1, CDC will be an enterprise feature and will have a core version.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required privileges
 

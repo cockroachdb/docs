@@ -1,7 +1,7 @@
 ---
 title: UPDATE
 summary: The UPDATE statement updates rows in a table.
-toc: false
+toc: true
 ---
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
@@ -10,7 +10,6 @@ The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 If you update a row that contains a column referenced by a [foreign key constraint](foreign-key.html) and has an [`ON UPDATE` action](foreign-key.html#foreign-key-actions), all of the dependent rows will also be updated.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required privileges
 

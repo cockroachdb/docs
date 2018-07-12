@@ -1,7 +1,7 @@
 ---
 title: Name Resolution
 summary: Table and function names can exist in multiple places. Resolution decides which one to use.
-toc: false
+toc: true
 ---
 
 A SQL client can have access to multiple databases side-by-side. The
@@ -13,7 +13,6 @@ which `orders` table is being considered?
 This page details how CockroachDB performs **name resolution** to answer
 this question.
 
-<div id="toc"></div>
 
 ## Overview
 

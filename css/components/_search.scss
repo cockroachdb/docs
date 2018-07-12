@@ -11,8 +11,9 @@
 
   #search-input {
     background-color: white;
-    border: solid 1px #bcbcbc;
+    border: none;
     border-radius: 32px;
+    box-shadow: 0 0 8px $cl_gray_medium;
     height: 40px;
     width: calc(100% - 30px);
     outline: 0px none;
@@ -31,14 +32,23 @@
     }
 
     @media (min-width: $screen-md) {
-      width: 90%;
-      margin-bottom: 30px;
+      width: 100%;
     }
   }
 }
 
-li.search-wrap {
+#mysidebar li.search-wrap {
   margin-bottom: 0;
+
+  @include at-query($min, $screen-md) {
+    display: block;
+    position: fixed;
+    top: 89px;
+    width: 240px;
+    background: #ffffff;
+    z-index: 2;
+    padding-top: 11px;
+  }
 }
 
 .search-item {
@@ -63,8 +73,9 @@ li.search-wrap {
   width: 35px;
   border-radius: 50%;
   outline: none;
+  cursor: pointer;
 
-  @include at-query($min, $screen-md) { right: 20px; }
+  @include at-query($min, $screen-md) { right: 0; }
 
   &:before, &:after {
     content: '';

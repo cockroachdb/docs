@@ -1,7 +1,7 @@
 ---
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
-toc: false
+toc: true
 ---
 
 {{site.data.alerts.callout_danger}}The <code>BACKUP</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise backups, see <a href="sql-dump.html"><code>cockroach dump</code></a>.{{site.data.alerts.end}}
@@ -10,7 +10,6 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) creates full or incremen
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
-<div id="toc"></div>
 
 ## Functional Details
 

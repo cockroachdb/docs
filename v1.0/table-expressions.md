@@ -1,13 +1,12 @@
 ---
 title: Table Expressions
 summary: Table expressions define a data source in SELECT and INSERT statements.
-toc: false
+toc: true
 ---
 
 Table expressions define a data source in the `FROM` clause of
 [`SELECT`](select.html) and [`INSERT`](insert.html) statements.
 
-<div id="toc"></div>
 
 ## Introduction
 

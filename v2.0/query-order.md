@@ -1,7 +1,7 @@
 ---
 title: Ordering Query Results
 summary: The ORDER BY clause controls the order of rows.
-toc: false
+toc: true
 ---
 
 The `ORDER BY` clause controls the order in which rows are returned or
@@ -11,7 +11,6 @@ as operand of [`INSERT`](insert.html) or [`UPSERT`](upsert.html), as
 well as with [`DELETE`](delete.html) and [`UPDATE`](update.html)
 statements.
 
-<div id="toc"></div>
 
 ## Synopsis
 

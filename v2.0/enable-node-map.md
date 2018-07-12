@@ -1,7 +1,7 @@
 ---
 title: Enable the Node Map
 summary: Learn how to enable the node map in the Admin UI.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0</span> The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
@@ -12,7 +12,6 @@ This page walks you through the process of setting up and enabling the **Node Ma
 
 <img src="{{ 'images/v2.0/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-<div id="toc"></div>
 
 ## Set Up and Enable the Node Map
 

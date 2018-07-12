@@ -1,7 +1,7 @@
 ---
 title: RESTORE
 summary: Restore your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
-toc: false
+toc: true
 ---
 
 {{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
@@ -10,7 +10,6 @@ The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas a
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
-<div id="toc"></div>
 
 ## Functional details
 

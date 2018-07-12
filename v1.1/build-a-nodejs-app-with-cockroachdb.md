@@ -1,7 +1,7 @@
 ---
 title: Build a Node.js App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Node.js application with the Node.js pg driver.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -14,7 +14,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) and the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before You Begin
 

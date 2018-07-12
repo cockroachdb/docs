@@ -1,12 +1,11 @@
 ---
 title: Constant Values
 summary: SQL Constants represent a simple value that doesn't change.
-toc: false
+toc: true
 ---
 
 SQL Constants represent a simple value that doesn't change.
 
-<div id="toc"></div>
 
 ## Introduction
 

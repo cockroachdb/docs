@@ -1,7 +1,7 @@
 ---
 title: ALTER TABLE
 summary: Use the ALTER TABLE statement to change the schema of a table.
-toc: false
+toc: true
 ---
 
 The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table.
@@ -10,7 +10,6 @@ The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a 
 To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see [Online Schema Changes in CockroachDB](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Subcommands
 

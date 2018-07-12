@@ -1,12 +1,11 @@
 ---
 title: Fault Tolerance & Recovery
 summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
-toc: false
+toc: true
 ---
 
 This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
 
-<div id="toc"></div>
 
 ## Before you begin
 

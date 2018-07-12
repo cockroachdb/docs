@@ -1,12 +1,11 @@
 ---
 title: BOOL
 summary: The BOOL data type stores Boolean values of false or true.
-toc: false
+toc: true
 ---
 
 The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`. 
 
-<div id="toc"></div>
 
 ## Aliases
 

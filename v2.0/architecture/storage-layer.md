@@ -1,14 +1,13 @@
 ---
 title: Storage Layer
 summary: 
-toc: false
+toc: true
 ---
 
 The Storage Layer of CockroachDB's architecture reads and writes data to disk.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 

@@ -1,7 +1,7 @@
 ---
 title: Encryption At Rest
 summary: Encryption At Rest encrypts node data on local disk transparently.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.1:</span>
@@ -9,7 +9,6 @@ Encryption At Rest provides transparent encryption for node data on local disk.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<div id="toc"></div>
 
 ## Overview
 

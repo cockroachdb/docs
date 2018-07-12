@@ -1,12 +1,11 @@
 ---
 title: SHOW CREATE SEQUENCE
 summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement that would create a copy of the specified sequence.
-toc: false
+toc: true
 ---
 
 The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
 
-<div id="toc"></div>
 
 ## Required privileges
 

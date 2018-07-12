@@ -3,7 +3,6 @@ title: SQL Feature Support in CockroachDB v1.0
 summary: Find CockroachDB's conformance to the SQL standard and which common extensions it supports.
 ---
 
-<div id="toc"></div>
 
 ## Overview
 

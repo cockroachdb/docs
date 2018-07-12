@@ -1,10 +1,9 @@
 ---
 title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
-toc: false
+toc: true
 ---
 
-<div id="toc"></div>
 
 ## Why is my process hanging when I try to start it in the background?
 

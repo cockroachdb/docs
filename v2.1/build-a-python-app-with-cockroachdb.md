@@ -1,7 +1,7 @@
 ---
 title: Build a Python App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
-toc: false
+toc: true
 asciicast: true
 twitter: false
 ---
@@ -15,7 +15,6 @@ This tutorial shows you how build a simple Python application with CockroachDB u
 
 We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before you begin
 

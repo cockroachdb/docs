@@ -1,12 +1,11 @@
 ---
 title: SHOW INDEX
 summary: The SHOW INDEX statement returns index information for a table.
-toc: false
+toc: true
 ---
 
 The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table.
 
-<div id="toc"></div>
 
 ## Required Privileges
 

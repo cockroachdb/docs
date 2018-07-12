@@ -1,14 +1,13 @@
 ---
 title: STRING
 summary: The STRING data type stores a string of Unicode characters.
-toc: false
+toc: true
 ---
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
 
 
-<div id="toc"></div>
 
 ## Aliases
 

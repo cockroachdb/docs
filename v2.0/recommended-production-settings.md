@@ -1,12 +1,11 @@
 ---
 title: Production Checklist
 summary: Recommended settings for production deployments.
-toc: false
+toc: true
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
 
-<div id="toc"></div>
 
 ## Cluster Topology
 

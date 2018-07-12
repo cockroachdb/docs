@@ -1,7 +1,7 @@
 ---
 title: SQL Audit Logging
 summary: Use the EXPERIMENTAL_AUDIT setting to turn SQL audit logging on or off for a table.
-toc: false
+toc: true
 ---
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
@@ -16,7 +16,6 @@ For reference material, including a detailed description of the audit log file f
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<div id="toc"></div>
 
 ## Step 1. Create sample tables
 

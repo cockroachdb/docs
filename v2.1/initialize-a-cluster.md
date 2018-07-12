@@ -1,14 +1,13 @@
 ---
 title: Initialize a Cluster
 summary: Perform a one-time-only initialization of a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}When <a href="start-a-node.html#start-a-single-node-cluster">starting a single-node cluster</a>, you do not need to use the <code>cockroach init</code> command. You can simply run the <code>cockroach start</code> command without the <code>--join</code> flag to start and initialize the single-node cluster.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 

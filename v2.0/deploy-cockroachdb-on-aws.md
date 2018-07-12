@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on AWS EC2
 summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ---
@@ -15,7 +15,6 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 

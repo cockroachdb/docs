@@ -1,14 +1,13 @@
 ---
 title: ALTER COLUMN
 summary: Use the ALTER COLUMN statement to change a column's Default constraint.
-toc: false
+toc: true
 ---
 
 The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and changes a column's [Default constraint](default-value.html) or drops the [Not Null constraint](not-null.html).
 
 {{site.data.alerts.callout_info}}To manage other constraints, see <a href="add-constraint.html"><code>ADD CONSTRAINT</code></a> and <a href="drop-constraint.html"><code>DROP CONSTRAINT</code></a>{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 

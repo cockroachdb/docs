@@ -1,12 +1,11 @@
 ---
 title: Understand Debug & Error Logs
 summary: Learn how to find and read CockroachDB error logs
-toc: false
+toc: true
 ---
 
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
-<div id="toc"></div>
 
 ## Details
 

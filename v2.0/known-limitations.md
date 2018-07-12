@@ -1,12 +1,11 @@
 ---
 title: Known Limitations in CockroachDB v2.0
 summary: Known limitations in CockroachDB v2.0.
-toc: false
+toc: true
 ---
 
 This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
 
-<div id="toc"></div>
 
 ## New Limitations
 

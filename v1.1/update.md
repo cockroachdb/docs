@@ -1,12 +1,11 @@
 ---
 title: UPDATE
 summary: The UPDATE statement updates rows in a table.
-toc: false
+toc: true
 ---
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
 
-<div id="toc"></div>
 
 ## Required Privileges 
 

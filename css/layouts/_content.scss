@@ -4,14 +4,37 @@
 	padding-top: 62px;
 	width: 100%;
 	z-index: 1000;
-	// @include groovy(all);
 	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	overflow: auto;
 
 	#main-content {
+		margin: 0 15px;
+
+		@include at-query($min, $screen-md) {
+			margin: 0 auto;
+			min-height: 625px;
+
+			// this is slight hack done to ensure alignment of the left edge of the header logo
+			// with left edge of sidebar under all responsive conditions
+			max-width: 1530px; 
+		}
+
 		.content-col {
-			padding-top: 50px;
 			padding-bottom: 100px;
+			max-width: 100%;
+			min-width: 0;
+			padding-top: 45px;
+
+			@include at-query($min, $screen-md) {
+				padding-top: 0;
+				min-height: 625px;
+				padding-left: 310px;
+				padding-right: 60px;
+
+				&.no-sidebar {
+					padding-left: 30px;
+				}
+			}
 
 			&--landing {
 				padding-top: 30px;
@@ -21,20 +44,5 @@
 
 	@include at-query($min, $screen-md){
 		padding-top: 71px;
-	}
-
-	@include at-query($min, $screen-md){
-		#main-content {
-			min-height: 625px;
-
-			.content-col {
-				min-height: 625px;
-				padding-left: 55px;
-
-				&-border {
-					border-left: 1px solid $cl_gray_medium;
-				}
-			}
-		}
 	}
 }

@@ -1,7 +1,7 @@
 ---
 title: Scalar Expressions
 summary: Scalar expressions allow the computation of new values from basic parts.
-toc: false
+toc: true
 redirect_from: sql-expressions.html
 key: sql-expressions.html
 ---
@@ -18,7 +18,6 @@ structured as a table.
 
 The following sections provide details on each of these options.
 
-<div id="toc"></div>
 
 ## Constants
 

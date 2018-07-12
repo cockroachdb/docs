@@ -6,7 +6,7 @@ body.sidenav-open {
 
     #mysidebar {
       height: 100%;
-      overflow: scroll;
+      overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -29,16 +29,23 @@ body.sidenav-open {
     z-index: 1001;
     @include groovy(margin-left);
     @include groovy(box-shadow);
-  }
+  } 
 
   @include at-query($min, $screen-md) {
-    top: 62px;
-  }
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    min-width: 270px;
+    padding: 0 30px 0 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid $cl_gray_medium;
+    overflow-y: hidden;
 
-  @include at-query($min, $screen-md){
-    background-color: transparent;
-    border-bottom: none;
-    padding-left: 0;
+    &:hover, 
+    &:active, 
+    &:focus {
+      overflow-y: auto;
+    }
   }
 
   &--scrolled {
@@ -61,6 +68,7 @@ body.sidenav-open {
 .sidebar-row {
   @include at-query($min, $screen-md) {
     display: flex;
+    padding-top: 15px;
   }
 }
 
@@ -81,8 +89,12 @@ body.sidenav-open {
 
   .arrow-down {
     padding: 4px;
-    margin: 23px 0 2px 7px;
+    margin: 23px 30px 2px 7px;
     border-width: 2px 0 0 2px;
+
+    @include at-query($min, $screen-md) {
+      margin: 23px 0 2px 7px;
+    }
   }
 }
 
@@ -99,7 +111,7 @@ body.sidenav-open {
 
 .nav {
   background-color: transparent;
-  padding:0px;
+  padding: 0;
   margin: 0px;
 
   &--collapsed {
@@ -142,8 +154,7 @@ body.sidenav-open {
       text-decoration: none;
       color: $cl_blue;
 
-
-      @include avenir_r(15px);
+      @include avenir_r(13px);
 
       line-height: 20px;
       padding: 0;
@@ -153,12 +164,12 @@ body.sidenav-open {
     }
 
     > ul {
-      margin: 7px 0 0 0;
+      margin: 0;
       padding: 0;
 
       //2nd level
       > li {
-        margin: 0 0 7px 0;
+        margin: 0;
         padding: 0;
         list-style: none;
 
@@ -168,36 +179,34 @@ body.sidenav-open {
 
         > a {
           width: 100%;
-          @include avenir_r(16px);
+          @include avenir_r(13px);
           line-height: 20px;
 
           @include at-query($min, $screen-md) {
-            font-size: 14px;
+            font-size: 13px;
           }
         }
 
         > ul {
-          border-left: 1px solid $cl_green_bright;
           margin: 0 0 0 5px;
           padding: 0;
 
           //3rd level
           > li {
-            margin: 0 0 7px 15px;
+            margin: 0 0 0 15px;
             padding: 0;
             list-style: none;
 
             > a {
-              @include avenir_r(16px);
+              @include avenir_r(13px);
               line-height: 20px;
 
               @include at-query($min, $screen-md) {
-                font-size: 14px;
+                font-size: 13px;
               }
             }
 
             > ul {
-              border-left: 1px solid $cl_green_bright;
               padding-left: 15px;
 
               //4th level
@@ -205,11 +214,11 @@ body.sidenav-open {
                 list-style: none;
 
                 > a {
-                  @include avenir_r(16px);
+                  @include avenir_r(13px);
                   line-height: 20px;
 
                   @include at-query($min, $screen-md) {
-                    font-size: 14px;
+                    font-size: 13px;
                   }
                 }
               }
@@ -258,18 +267,22 @@ body.sidenav-open {
       > code {
         color: $cl_green;
       }
-
-      .arrow-down {
-        transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
-        margin-bottom: 0px;
-      }
     }
 
     // third tier
     li.active {
       a {
         width: 100%;
+      }
+    }
+  }
+
+  li.active {
+    > a {
+      .arrow-down {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        margin-bottom: 0px;
       }
     }
   }
@@ -288,13 +301,14 @@ a:not([href]) {
 }
 
 #mysidebar {
-  padding-top: 10px;
   background-color: transparent;
   border-radius: 0px;
-  padding-bottom: 5px;
+  padding: 10px 15px 5px 15px;
 
-  @include at-query($min, $screen-md) { padding: 0; }
-  @include at-query($min, $screen-lg) { width: 260px; }
+  @include at-query($min, $screen-md) { 
+    padding: 63px 0 50px 0;
+    width: 240px; 
+  }
 
   li.tier-1 {
     margin-top: 5px;
@@ -304,6 +318,7 @@ a:not([href]) {
   li:not(.tier-1) {
     margin-top: 0;
     text-transform: none;
+    line-height: 28px;
   }
 
   li a { width: 100%; }
@@ -312,19 +327,19 @@ a:not([href]) {
   li .nav-expand { margin-right: 10px; }
 
   li .nav-expand {
-    display: inline-block;
-    margin-top: 8px;
     float: right;
+    height: 8px;
+    margin-top: 8px;
   }
 
   // tier 1
   > li {
-    padding: 10px 0;
+    padding: 5px 0 7px;
 
     > a {
-      @include button-text--heavy--medium;
-      line-height: 25px;
+      @include button-text--heavy--small;
       text-transform: uppercase;
+      line-height: 26px;
     }
 
     .arrow-down { margin-top: 7px; }
@@ -338,19 +353,19 @@ a:not([href]) {
   display: none;
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -1;
   width: 100%;
   background-color: $cl_gray_light;
   border-top: 1px solid $cl_gray_medium;
 
   @include at-query($min, $screen-md) {
-    width: 227.5px;
+    width: 240px;
     display: block;
     background: #fff;
     left: auto;
   }
 
-  @include at-query($min, $screen-lg) {width: 260px; }
+  @include at-query($min, $screen-lg) {width: 240px; }
 
   &.open {
     border-bottom: 1px solid $cl_gray_medium;
@@ -366,7 +381,7 @@ a:not([href]) {
     a {
       margin: 0;
       padding: 0 25px;
-      @include button-text--heavy--medium;
+      @include button-text--heavy--small;
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
@@ -375,7 +390,7 @@ a:not([href]) {
       @include at-query($min, $screen-md) { padding: 0 10px; }
 
       .version-name {
-        @include avenir_h(16px);
+        @include avenir_h(14px);
         line-height: 20px;
         color: $cl_green;
         text-transform: none;
@@ -403,7 +418,7 @@ a:not([href]) {
   .nav li ul {
     border-left: none;
     margin: 0;
-    padding: 20px 0;
+    padding: 15px 0;
 
     @include at-query($min, $screen-md) {
       padding-bottom: 0;
@@ -414,8 +429,8 @@ a:not([href]) {
     margin: 0;
 
     a {
-      margin-bottom: 20px;
-      @include avenir_r(16px);
+      margin-bottom: 15px;
+      @include avenir_r(14px);
       line-height: 16px; // vertical spacing
       text-transform: none;
       letter-spacing: normal;

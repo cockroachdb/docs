@@ -1,7 +1,7 @@
 ---
 title: SHOW CONSTRAINTS
 summary: The SHOW CONSTRAINTS statement lists the constraints on a table.
-toc: false
+toc: true
 ---
 
 The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed Check constraints on a table.
@@ -10,7 +10,6 @@ The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constra
 The `SHOW CONSTRAINTS` statement is under development; the exact output will continue to change.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required privileges
 

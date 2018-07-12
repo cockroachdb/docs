@@ -1,14 +1,13 @@
 ---
 title: SQL Statements
 summary: SQL statements supported by CockroachDB.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\h [statement]</code> to get inline help about a specific statement.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Data Manipulation Statements
 

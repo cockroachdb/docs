@@ -1,7 +1,7 @@
 ---
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
-toc: false
+toc: true
 ---
 
 Client applications, including client [`cockroach`
@@ -10,7 +10,6 @@ connection to a CockroachDB cluster. The client connection parameters
 determine which CockroachDB cluster they connect to, and how to
 establish this network connection.
 
-<div id="toc"></div>
 
 ## Supported connection parameters
 

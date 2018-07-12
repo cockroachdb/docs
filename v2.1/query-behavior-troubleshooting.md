@@ -1,12 +1,11 @@
 ---
 title: Troubleshoot Query Behavior
 summary: Learn how to troubleshoot issues with specific queries with CockroachDB
-toc: false
+toc: true
 ---
 
 If a query returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
-<div id="toc"></div>
 
 ## Correctness issues
 

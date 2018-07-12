@@ -1,12 +1,11 @@
 ---
 title: SQL Statements
 summary: SQL statements supported by CockroachDB.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
-<div id="toc"></div>
 
 ## Data Manipulation Statements
 

@@ -1,12 +1,11 @@
 ---
 title: Use the CockroachDB Admin UI
 summary: Learn how to access and navigate the Admin UI.
-toc: false
+toc: true
 ---
 
 The built-in Admin UI gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 
-<div id="toc"></div>
 
 ## Access the Admin UI
 

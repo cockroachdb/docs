@@ -1,7 +1,7 @@
 ---
 title: Build a Go App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Go application with the GORM ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -16,7 +16,6 @@ We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [
 
 {{site.data.alerts.callout_success}}For a more realistic use of GORM with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 

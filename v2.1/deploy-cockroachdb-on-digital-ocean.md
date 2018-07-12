@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Digital Ocean
 summary: Learn how to deploy CockroachDB on Digital Ocean.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
 ---
@@ -15,7 +15,6 @@ This page shows you how to deploy a secure multi-node CockroachDB cluster on Dig
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 

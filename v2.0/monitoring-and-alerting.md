@@ -1,14 +1,13 @@
 ---
 title: Monitoring and Alerting
 summary: Monitor the health and performance of a cluster and alert on critical events and metrics.
-toc: false
+toc: true
 ---
 
 Despite CockroachDB's various [built-in safeguards against failure](high-availability.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 This page explains available monitoring tools and critical events and metrics to alert on.
 
-<div id="toc"></div>
 
 ## Monitoring Tools
 

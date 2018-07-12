@@ -1,7 +1,7 @@
 ---
 title: Distribution Layer
 summary:
-toc: false
+toc: true
 ---
 
 The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.
@@ -10,7 +10,6 @@ The distribution layer of CockroachDB's architecture provides a unified view of 
 If you haven't already, we recommend reading the [Architecture Overview](overview.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 

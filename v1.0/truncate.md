@@ -1,14 +1,13 @@
 ---
 title: TRUNCATE
 summary: The TRUNCATE statement deletes all rows from specified tables.
-toc: false
+toc: true
 ---
 
 The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.
 
 {{site.data.alerts.callout_info}}The <code>TRUNCATE</code> removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a <a href="delete.html#delete-all-rows"><code>DELETE</code> statement without a <code>WHERE</code> clause<a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 

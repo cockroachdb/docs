@@ -1,7 +1,7 @@
 ---
 title: Table Expressions
 summary: Table expressions define a data source in selection clauses.
-toc: false
+toc: true
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
@@ -11,7 +11,6 @@ Table expressions define a data source in the `FROM` sub-clause of
 [SQL Joins](joins.html) are a particular kind of table
 expression.
 
-<div id="toc"></div>
 
 ## Synopsis
 

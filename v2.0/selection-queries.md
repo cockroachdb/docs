@@ -1,7 +1,7 @@
 ---
 title: Selection Queries
 summary: Selection Queries can read and process data.
-toc: false
+toc: true
 redirect_from: selection-clauses.html
 key: selection-clauses.html
 ---
@@ -18,7 +18,6 @@ Selection queries can occur:
 - Between parentheses as a [subquery](table-expressions.html#subqueries-as-table-expressions).
 - As [operand to other statements](#using-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html) or [`ALTER ... SPLIT AT`](split-at.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 

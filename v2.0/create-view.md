@@ -1,12 +1,11 @@
 ---
 title: CREATE VIEW
 summary: The CREATE VIEW statement creates a .
-toc: false
+toc: true
 ---
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.
 
-<div id="toc"></div>
 
 ## Required Privileges
 

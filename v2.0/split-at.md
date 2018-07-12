@@ -1,12 +1,11 @@
 ---
 title: SPLIT AT
 summary: The SPLIT AT statement forces a key-value layer range split at the specified row in a table or index.
-toc: false
+toc: true
 ---
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
 
-<div id="toc"></div>
 
 ## Synopsis
 
