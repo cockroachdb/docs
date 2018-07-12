@@ -155,7 +155,9 @@
               .html(item.title);
 
             if (subitems.length > 0) {
-              if (!item.is_top_level) {
+              if (item.is_top_level) {
+                a.append(" ").append($("<div>").addClass("nav-expand"));
+              } else {
                 a.append(" ").append($("<div>").addClass("arrow-down"));
               }
             }

@@ -614,7 +614,7 @@ body.sidenav-open .col-content {
       top: 90px;
       bottom: 0;
       min-width: 270px;
-      padding: 0 30px;
+      padding: 0 30px 0 15px;
       background-color: #ffffff;
       border-bottom: 1px solid #DADADA;
       overflow-y: hidden; }
@@ -815,6 +815,10 @@ a:not([href]) {
   #mysidebar li .arrow-down,
   #mysidebar li .nav-expand {
     margin-right: 10px; }
+  #mysidebar li .nav-expand {
+    float: right;
+    height: 8px;
+    margin-top: 8px; }
   #mysidebar > li {
     padding: 5px 0 7px; }
     #mysidebar > li > a {
@@ -916,6 +920,9 @@ a:not([href]) {
         color: #54B30E; }
     #version-switcher .tier-2.active a {
       color: #54B30E; }
+
+.nav-expand {
+  content: url(../images/nav-expand.svg); }
 
 .landing-page .landing-page__tutorial {
   width: 100%; }
@@ -1030,7 +1037,7 @@ a:not([href]) {
       #content #main-content {
         margin: 0 auto;
         min-height: 625px;
-        max-width: 1500px; } }
+        max-width: 1530px; } }
     #content #main-content .content-col {
       padding-bottom: 100px;
       max-width: 100%;
@@ -1040,7 +1047,7 @@ a:not([href]) {
         #content #main-content .content-col {
           padding-top: 0;
           min-height: 625px;
-          padding-left: 340px;
+          padding-left: 310px;
           padding-right: 60px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; } }

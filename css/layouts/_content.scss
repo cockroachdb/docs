@@ -13,7 +13,10 @@
 		@include at-query($min, $screen-md) {
 			margin: 0 auto;
 			min-height: 625px;
-			max-width: 1500px;
+
+			// this is slight hack done to ensure alignment of the left edge of the header logo
+			// with left edge of sidebar under all responsive conditions
+			max-width: 1530px; 
 		}
 
 		.content-col {
@@ -25,7 +28,7 @@
 			@include at-query($min, $screen-md) {
 				padding-top: 0;
 				min-height: 625px;
-				padding-left: 340px;
+				padding-left: 310px;
 				padding-right: 60px;
 
 				&.no-sidebar {

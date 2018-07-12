@@ -36,7 +36,7 @@ body.sidenav-open {
     top: 90px;
     bottom: 0;
     min-width: 270px;
-    padding: 0 30px;
+    padding: 0 30px 0 15px;
     background-color: #ffffff;
     border-bottom: 1px solid $cl_gray_medium;
     overflow-y: hidden;
@@ -326,6 +326,12 @@ a:not([href]) {
   li .arrow-down,
   li .nav-expand { margin-right: 10px; }
 
+  li .nav-expand {
+    float: right;
+    height: 8px;
+    margin-top: 8px;
+  }
+
   // tier 1
   > li {
     padding: 5px 0 7px;
@@ -439,4 +445,8 @@ a:not([href]) {
       color: $cl_green;
     }
   }
+}
+
+.nav-expand {
+  content: url(../images/nav-expand.svg);
 }

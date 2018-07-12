@@ -20,14 +20,10 @@
             {{content}}
           </div>
           <div class="toc-col">
-            <div id="toc-right"></div>
+            {% if page.toc == true %}
+              <div id="toc-right"></div>
+            {% endif %}
           </div>
-        <!-- {% if page.no_toc == true %}
-        {% else %}
-          <div class="toc-col">
-            <div id="toc-right"></div>
-          </div>
-        {% endif %} -->
       </div>
     </div>
     {% include footer.html %}
