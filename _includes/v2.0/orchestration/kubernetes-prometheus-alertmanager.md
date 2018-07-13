@@ -114,6 +114,10 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     secret "alertmanager-cockroachdb" labeled
     ~~~
 
+    {{site.data.alerts.callout_danger}}
+    The name of the secret, `alertmanager-cockroachdb`, must match the name used in the `altermanager.yaml` file. If they differ, the Alertmanager instance will start without configuration, and nothing will happen.
+    {{site.data.alerts.end}}
+
 4. Use our [`alertmanager.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
 
     {% include copy-clipboard.html %}
@@ -125,10 +129,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     alertmanager "cockroachdb" created
     service "alertmanager-cockroachdb" created
     ~~~
-
-    {{site.data.alerts.callout_danger}}
-    Do not change the secret name or the contents of the `alertmanager.yaml` file. Doing so will XXXX
-    {{site.data.alerts.end}}
 
 5. Verify that Alertmanager is running:
 
