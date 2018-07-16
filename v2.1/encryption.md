@@ -72,6 +72,17 @@ and encrypted.
 
 There are a number of considerations to keep in mind when running with encryption.
 
+### Deployment configuration
+
+To prevent key leakage, production deployments should:
+
+* use encrypted swap, or disable swap entirely
+* disable core files
+
+CockroachDB attempts to disable core files at startup when encryption is requested, but it may fail.
+
+### Key handling
+
 Key management is the most dangerous aspect of encryption. The following rules should be kept in mind:
 
 * make sure only the unix user running the `cockroach` process has access to the keys
@@ -79,11 +90,13 @@ Key management is the most dangerous aspect of encryption. The following rules s
 * rotate store keys frequently (every few weeks to months)
 * keep the data key rotation period low (default is one week)
 
+### Other recommendations
+
 A few other recommendations apply for best security practices:
 
-* do not switch from encrypted to plaintext, this leaks data keys. Once transitioned to plaintext, all data must be considered reachable.
-* do not copy the encrypted files as the data keys are not easily available.
-* if encryption is desired, start a node with it enabled from first run without ever running in plaintext.
+* do not switch from encrypted to plaintext, this leaks data keys. When plaintext is selected, all previously encrypted data must be considered reachable
+* do not copy the encrypted files as the data keys are not easily available
+* if encryption is desired, start a node with it enabled from first run without ever running in plaintext
 
 Note that backups taken with the [`BACKUP`](backup.html) statement are not encrypted (whether you are using this feature or not). If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
 
