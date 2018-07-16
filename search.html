@@ -35,12 +35,16 @@ $('#search-input').val(QueryString.q.replace('+', ' '));
 
 var client = algoliasearch('BH4D9OD16A', '5a93998460e4910a8769500d325250cb');
 var index = client.initIndex('cockroachlabs');
-var currentVersion = getCookie('currentVersion') || 'stable';
+
+// search against numeric version instead of version tag to ensure accurate results
+var siteVersions = {{ site.versions | jsonify }};
+var currentVersionCookie = getCookie('currentVersion') || 'stable';
+var currentVersionNumeric = currentVersionCookie in siteVersions ? siteVersions[currentVersionCookie] : currentVersionCookie;
 
 var searchConfig = {
 	query: QueryString.q,
 	hitsPerPage: 10,
-	facetFilters: ['version:' + currentVersion]
+	facetFilters: ['version:' + currentVersionNumeric]
 };
 
 index.search(searchConfig, function searchDone(err, data) {
