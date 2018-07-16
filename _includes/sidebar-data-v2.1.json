@@ -283,11 +283,11 @@
             ]
           },
           {
-            "title": "Performance Benchmarking with TPC-C",
+            "title": "Performance Benchmarking",
             "urls": [
               "/${VERSION}/performance-benchmarking-with-tpc-c.html"
             ]
-          },        
+          },
           {
             "title": "Access Management",
             "items": [
