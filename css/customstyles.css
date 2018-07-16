@@ -615,8 +615,7 @@ body.sidenav-open .col-content {
       bottom: 0;
       min-width: 270px;
       padding: 0 30px 0 15px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #DADADA;
+      background-color: transparent;
       overflow-y: hidden; }
       .col-sidebar:hover, .col-sidebar:active, .col-sidebar:focus {
         overflow-y: auto; } }
