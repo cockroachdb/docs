@@ -11,14 +11,14 @@ For example, the Unique constraint requires that all values in a column be uniqu
 
 ## Supported constraints
 
-| Constraint | Description |
-|------------|-------------|
-| [Check](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression. |
-| [Default Value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the Default Value is written to the column. |
-| [Foreign Keys](foreign-key.html) | Values must exactly match existing values from the column it references. |
-| [Not Null](not-null.html) | Values may not be *NULL*. |
-| [Primary Key](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the Not Null and Unique constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns. |
-| [Unique](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns. |
+ Constraint | Description 
+------------|-------------
+ [Check](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression. 
+ [Default Value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the Default Value is written to the column. 
+ [Foreign Keys](foreign-key.html) | Values must exactly match existing values from the column it references. 
+ [Not Null](not-null.html) | Values may not be *NULL*. 
+ [Primary Key](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the Not Null and Unique constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns.
+ [Unique](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns. 
 
 ## Using constraints
 

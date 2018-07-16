@@ -19,12 +19,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `IF EXISTS` | Rename the column only if a column of `current_name` exists; if one does not exist, do not return an error. |
-| `table_name` | The name of the table with the column you want to use. |
-| `current_name` | The current name of the column. |
-| `name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
+ Parameter | Description 
+-----------|-------------
+ `IF EXISTS` | Rename the column only if a column of `current_name` exists; if one does not exist, do not return an error. 
+ `table_name` | The name of the table with the column you want to use. 
+ `current_name` | The current name of the column. 
+ `name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). 
 
 ## Viewing schema changes
 

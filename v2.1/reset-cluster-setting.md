@@ -17,9 +17,9 @@ Only the `root` user can modify cluster settings.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). |
+ Parameter | Description 
+-----------|-------------
+ `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). 
 
 ## Example
 
