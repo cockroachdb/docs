@@ -80,11 +80,11 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
-| `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into. |
-| `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). |
+ Parameter | Description 
+-----------|-------------
+ `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
+ `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into. 
+ `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). 
 
 ## Requirements
 

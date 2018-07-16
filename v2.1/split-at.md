@@ -23,10 +23,10 @@ The user must have the `INSERT` [privilege](privileges.html) on the table or ind
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. |
-| `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index. |
+ Parameter | Description 
+-----------|-------------
+ `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. 
+ `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index. 
 
 ## Why manually split a range?
 

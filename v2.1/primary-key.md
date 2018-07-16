@@ -36,14 +36,14 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 {% include {{ page.version.version }}/sql/diagrams/primary_key_column_level.html %}
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table you're creating. |
-| `column_name` | The name of the Primary Key column. |
-| `column_type` | The Primary Key column's [data type](data-types.html). |
-| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. |
-| `column_def` | Definitions for any other columns in the table. |
-| `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
+ Parameter | Description 
+-----------|-------------
+ `table_name` | The name of the table you're creating. 
+ `column_name` | The name of the Primary Key column. 
+ `column_type` | The Primary Key column's [data type](data-types.html). 
+ `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. 
+ `column_def` | Definitions for any other columns in the table. 
+ `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. 
 
 **Example**
 
@@ -62,13 +62,13 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 {% include {{ page.version.version }}/sql/diagrams/primary_key_table_level.html %}
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table you're creating. |
-| `column_def` | Definitions for any other columns in the table. |
-| `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). |
-| `column_name` | The name of the column you want to use as the Primary Key.<br/><br/>The order in which you list columns here affects the structure of the `primary` index.|
-| `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply. |
+ Parameter | Description 
+-----------|-------------
+ `table_name` | The name of the table you're creating. 
+ `column_def` | Definitions for any other columns in the table. 
+ `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). 
+ `column_name` | The name of the column you want to use as the Primary Key.<br/><br/>The order in which you list columns here affects the structure of the `primary` index.
+ `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply. 
 
 **Example**
 

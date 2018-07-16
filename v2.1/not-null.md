@@ -30,14 +30,14 @@ You can only apply the Not Null constraint to individual columns.
 
 {% include {{ page.version.version }}/sql/diagrams/not_null_column_level.html %}
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table you're creating. |
-| `column_name` | The name of the constrained column. |
-| `column_type` | The constrained column's [data type](data-types.html). |
-| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. |
-| `column_def` | Definitions for any other columns in the table. |
-| `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
+ Parameter | Description 
+-----------|-------------
+ `table_name` | The name of the table you're creating. 
+ `column_name` | The name of the constrained column. 
+ `column_type` | The constrained column's [data type](data-types.html). 
+ `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. 
+ `column_def` | Definitions for any other columns in the table. 
+ `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. 
 
 ## Usage example
 

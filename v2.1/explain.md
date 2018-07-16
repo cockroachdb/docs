@@ -58,14 +58,14 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `EXPRS` | Include the SQL expressions that are involved in each processing stage. |
-| `QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option. |
-| `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
-| `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
-| `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
+ Parameter | Description 
+-----------|-------------
+ `EXPRS` | Include the SQL expressions that are involved in each processing stage. 
+ `QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option. 
+ `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. 
+ `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. 
+ `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
+ `explainable_stmt` | The [statement](#explainable-statements) you want details about. 
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -73,13 +73,13 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 Successful `EXPLAIN` statements return tables with the following columns:
 
-| Column | Description |
-|-----------|-------------|
-| **Tree** | A tree representation showing the hierarchy of the query plan.
-| **Field** | The name of a parameter relevant to the query plan node immediately above. |
-| **Description** | Additional information for the parameter in  **Field**. |
-| **Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
-| **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
+ Column | Description 
+-----------|-------------
+ **Tree** | A tree representation showing the hierarchy of the query plan.
+ **Field** | The name of a parameter relevant to the query plan node immediately above. 
+ **Description** | Additional information for the parameter in  **Field**. 
+ **Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. 
+ **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied. 
 
 ## Examples
 
