@@ -17,9 +17,9 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `session_var` | The name of the [session variable](set-vars.html#supported-variables). |
+ Parameter | Description 
+-----------|-------------
+ `session_var` | The name of the [session variable](set-vars.html#supported-variables). 
 
 ## Example
 
