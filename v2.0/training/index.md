@@ -17,8 +17,8 @@ This training introduces you to the fundamentals of CockroachDB, with an emphasi
 
 The modules build on each other, so it's important to complete them in order. As you go, feel free to ask questions on our pubic [Gitter chat channel](https://gitter.im/cockroachdb/cockroach) or [support forum](https://forum.cockroachlabs.com/).
 
-Once you've finished, [let us know if you are interested in more detailed training](https://www.surveymonkey.com/r/5TGPWRJ) on deploying, monitoring, troubleshooting, and maintaining CockroachDB.
+<!-- Once you've finished, [let us know if you are interested in more detailed training](https://www.surveymonkey.com/r/5TGPWRJ) on deploying, monitoring, troubleshooting, and maintaining CockroachDB. -->
 
 ## What's First?
 
-- [Why CockroachDB?](why-cockroachdb.html)
+[Why CockroachDB?](why-cockroachdb.html)

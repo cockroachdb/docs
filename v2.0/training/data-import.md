@@ -3,7 +3,7 @@ title: Data Import
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/data-import.html
 ---
 
@@ -386,4 +386,4 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
 ## What's Next?
 
-- [Users and Privileges](users-and-privileges.html)
+[Users and Privileges](users-and-privileges.html)

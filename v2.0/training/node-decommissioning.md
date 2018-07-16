@@ -3,7 +3,7 @@ title: Node Decommissioning
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/node-decommissioning.html
 ---
 
@@ -127,4 +127,4 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 ## What's Next?
 
-- [Backup and Restore](backup-and-restore.html)
+[Backup and Restore](backup-and-restore.html)

@@ -27,4 +27,4 @@ Kick off your training by watching Alex Robinson, a CockroachDB Engineer, explai
 
 ## What's next?
 
-- [Architecture Overview](architecture-overview.html)
+[Architecture Overview](architecture-overview.html)

@@ -3,7 +3,7 @@ title: How to Get Support
 toc: false
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/how-to-get-support.html
 ---
 
