@@ -3,7 +3,7 @@ title: Users and Privileges
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/users-and-privileges.html
 ---
 
@@ -286,4 +286,4 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 ## What's next?
 
-- [Security](security.html)
+[Security](security.html)

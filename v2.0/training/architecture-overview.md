@@ -28,4 +28,4 @@ Watch the rest of Alex Robinson's talk, where he explains the CockroachDB archit
 
 ## What's Next?
 
-- [Cluster Startup and Scaling](cluster-startup-and-scaling.html)
+[Cluster Startup and Scaling](cluster-startup-and-scaling.html)
