@@ -6,7 +6,6 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
 
-
 ## New Limitations
 
 ### Silent validation error with `DECIMAL` values
@@ -52,6 +51,8 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 ~~~
 
 ### Check constraints with `INSERT ... ON CONFLICT`
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.4.html">v2.0.4</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26699">#26699</a>.{{site.data.alerts.end}}
 
 [`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
 
