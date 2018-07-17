@@ -99,6 +99,43 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
     Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
 
+## Networking
+
+### Networking flags
+
+When starting a node via [`cockroach start`](start-a-node.html), two main flags are used to control its network connections with other nodes and clients:
+
+- `--host` determines which IP address or hostname CockroachDB listens on.
+- `--advertise-host` determines which IP address or hostname is advertised to other nodes.
+
+The effect depends on how these two flags are used in combination:
+
+| | **`--host` not specified** | **`--host` specified** |
+|-|----------------------------|------------------------|
+| **`--advertise-host` not specified** | Node listens on all interfaces and advertises the canonical hostname to other nodes. | Node listens on the interface specified in `--host` and advertises this value to other nodes.
+| **`--advertise-host` specified** | Node listens on all interfaces and advertises the value of `--advertise-host` to other nodes. **This is recommended for most cases.** | Node listens on the interface specified by `--host` and advertises the value of `--advertise-host` to other nodes.
+
+{{site.data.alerts.callout_success}}
+Be careful about the value advertised to other nodes, either via `--advertise-host` or via `--host` when `--advertise-host` is not specified: If using a hostname, it must be resolvable from all nodes; if using an IP address, it must be routable from all nodes.
+{{site.data.alerts.end}}
+
+### Single private network
+
+When running all nodes of a cluster on a single private network, each node will typically have a private IP address or hostname that is reachable anywhere within the network. In this scenario, when starting each node:
+
+- If clients are on the private network, set `--host` to the private IP address or hostname and leave `--advertise-host` unspecified, or set both `--advertise-host` and `--host` to the same private IP address or hostname.
+- If clients are outside the private network, set `--advertise-host` to the private IP address or hostname (so nodes use it) and leave the `--host` flag unspecified (so clients can reach nodes on public addresses).
+    - Firewalls would also need to be configured to allow traffic from clients outside the private network.
+
+### Multiple private networks
+
+When running nodes across multiple private networks, the nodes in each private network will typically have access to their own private IP addresses or hostnames, but not to those of nodes in other private networks. In this scenario, when starting each node in a given private network:
+
+- Set `--advertise-host` to a public IP address or hostname reachable by nodes and clients in other private networks, and leave `--host` unspecified.
+    - Firewalls would also need to be configured to allow traffic from nodes and clients in other private networks.
+
+Another approach is to use [network address translation (NAT)](https://en.wikipedia.org/wiki/Network_address_translation) to map private IP addresses or hostnames in each private network to public addresses. You could then set `--advertise-host` to a node's private IP address or hostname and leave `--host` unspecified. This would allow nodes within the same private network to use private addresses and nodes and clients outside of the private network to use public addresses.
+
 ## Load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to ensure client performance and reliability, it's important to use load balancing:
