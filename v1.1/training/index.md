@@ -2,6 +2,7 @@
 title: CockroachDB Training
 summary: Learn how to use CockroachDB for your applications
 toc: false
+feedback: false
 sidebar_data: sidebar-data-training.json
 redirect_from:
 - /training/index.html
@@ -21,4 +22,4 @@ The modules build on each other, so it's important to complete them in order. As
 
 ## What's First?
 
-- [Why CockroachDB?](why-cockroachdb.html)
+[Why CockroachDB?](why-cockroachdb.html)
