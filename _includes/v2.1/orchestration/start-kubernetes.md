@@ -1,4 +1,4 @@
-## Step 1. Choose your deployment environment
+## Step 1. Start Kubernetes
 
 Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
@@ -7,8 +7,6 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
   <button class="filter-button" data-scope="gce-manual">Manual GCE</button>
   <button class="filter-button" data-scope="aws-manual">Manual AWS</button>
 </div>
-
-## Step 2. Start Kubernetes
 
 <section class="filter-content" markdown="1" data-scope="gke-hosted">
 
@@ -33,8 +31,6 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
-{% if page.secure == true %}
-
 3. Get the email address associated with your Google Cloud account:
 
     {% include copy-clipboard.html %}
@@ -46,19 +42,20 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     Account: [your.google.cloud.email@example.org]
     ~~~
 
+    {{site.data.alerts.callout_danger}}
+    This command returns your email address in all lowercase. However, in the next step, you must enter the address using the accurate capitalization. For example, if your address is YourName@example.com, you must use YourName@example.com and not yourname@example.com.
+    {{site.data.alerts.end}}
+
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
+    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
     ~~~
 
     ~~~
     clusterrolebinding "cluster-admin-binding" created
     ~~~
-
-
-{% endif %}
 
 </section>
 
