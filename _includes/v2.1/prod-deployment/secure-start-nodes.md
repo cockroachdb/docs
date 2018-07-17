@@ -115,7 +115,7 @@ For each initial node of your cluster, complete the following steps:
     $ chown -R cockroach.cockroach /var/lib/cockroach
     ~~~
 
-8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
+8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -129,8 +129,6 @@ For each initial node of your cluster, complete the following steps:
     {% include {{ page.version.version }}/prod-deployment/securecockroachdb.service %}
     ~~~
 
-    Save the file in the `/etc/systemd/system/` directory.
-
 9.  Customize the sample configuration template for your deployment:
 
     Specify values for the following flags in the sample configuration template:
@@ -138,6 +136,7 @@ For each initial node of your cluster, complete the following steps:
      Flag | Description
      -----|------------
      `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster.
+     `--advertise-host` | The hostname or IP address to advertise to other CockroachDB nodes. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.
      `--host` | Specifies the hostname or IP address to listen on for intra-cluster and client communication, as well as to identify the node in the Admin UI. If it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>If you want the node to listen on multiple interfaces, leave `--host` empty.<br><br>If you want the node to communicate with other nodes on an internal address (e.g., within a private network) while listening on all interfaces, leave `--host` empty and set the `--advertise-host` flag to the internal address.
 
 10.  Start the CockroachDB cluster:
