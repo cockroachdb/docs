@@ -175,8 +175,10 @@
 
 @media (min-width: 700px) {
 	#os-tabs {
+
 		button {
 			width: 140px;
+			margin: 0 10px 15px 0;
 
 			&:before {
 				font-family: 'FontAwesome';
@@ -187,29 +189,28 @@
 			}
 
 			&#mac {
-				margin: 0 2% 2% 0;
+				
 				&:before {
 					content: "\f179";
-	         	}
+	        }
 			}
 
 			&#linux {
-				margin: 0 2% 2% 0;
 
 				&:before {
 					content: "\f17c";
-	         	}
+	        }
 			}
 
 			&#windows {
-				margin: 0 2% 0 0;
+
 				&:before {
 					content: "\f17a";
-	         	}
+	        }
 			}
 
 			&#source {
-				margin: 0 2% 0 0;
+
 				&:before {
 					content: "\f1c6";
 				}
