@@ -43,12 +43,12 @@ The examples in this section operate on a hypothetical "user credit information"
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE credit_users (
-       id INT PRIMARY KEY,
-       area_code INTEGER NOT NULL,
-       name STRING UNIQUE NOT NULL,
-       address STRING NOT NULL,
-       zip_code INTEGER NOT NULL,
-       credit_score INTEGER NOT NULL
+  id INT PRIMARY KEY,
+  area_code INT NOT NULL,
+  name STRING NOT NULL UNIQUE,
+  address STRING NOT NULL,
+  zip_code INT NOT NULL,
+  credit_score INT NOT NULL
 );
 ~~~
 
@@ -56,7 +56,7 @@ We added a secondary [index](indexes.html) to the table on the `area_code` colum
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX areaCode on credit_users(area_code);
+> CREATE INDEX areacode ON credit_users (area_code);
 ~~~
 
 Next, we ran a couple of [`SPLIT AT`s](split-at.html) on the table and the index:
@@ -68,7 +68,7 @@ Next, we ran a couple of [`SPLIT AT`s](split-at.html) on the table and the index
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER INDEX credit_users@areaCode SPLIT AT VALUES (400), (600), (999);
+> ALTER INDEX credit_users@areacode SPLIT AT VALUES (400), (600), (999);
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -99,7 +99,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX credit_users@areaCode;
+> SHOW EXPERIMENTAL_RANGES FROM INDEX credit_users@areacode;
 ~~~
 
 ~~~

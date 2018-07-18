@@ -66,7 +66,7 @@ Next, create a database called `jsonb_test`:
 Set the database as the default:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET DATABASE = jsonb_test;
 ~~~
 
@@ -84,9 +84,9 @@ Still in the SQL shell, create a table called `programming`:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE programming (
-    id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
-    posts JSONB
-  );
+  id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID,
+  posts JSONB
+);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -230,7 +230,7 @@ The query in the previous step took 105.877736ms. To optimize the performance of
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INVERTED INDEX ON programming(posts);
+> CREATE INVERTED INDEX ON programming (posts);
 ~~~
 
 ## Step 9. Run the query again

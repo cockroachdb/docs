@@ -59,7 +59,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
+> CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c STRING);
 ~~~
 
 {% include copy-clipboard.html %}

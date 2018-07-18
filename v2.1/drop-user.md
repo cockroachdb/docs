@@ -31,7 +31,7 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON test.customers FOR mroach;
+> SHOW GRANTS ON TABLE test.customers FOR mroach;
 ~~~
 
 ~~~
@@ -47,11 +47,11 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
+> REVOKE CREATE, INSERT, UPDATE ON TABLE test.customers FROM mroach;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > DROP USER mroach;
 ~~~
 

@@ -40,14 +40,14 @@ Field | Description
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    id INT PRIMARY KEY DEFAULT unique_rowid(),
-    date TIMESTAMP NOT NULL,
-    priority INT DEFAULT 1,
-    customer_id INT UNIQUE,
-    status STRING DEFAULT 'open',
-    CHECK (priority BETWEEN 1 AND 5),
-    CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
-    FAMILY (id, date, priority, customer_id, status)
+  id INT PRIMARY KEY DEFAULT unique_rowid(),
+  date TIMESTAMP NOT NULL,
+  priority INT DEFAULT 1,
+  customer_id INT UNIQUE,
+  status STRING DEFAULT 'open',
+  CHECK (priority BETWEEN 1 AND 5),
+  CHECK (status IN ('open', 'in progress', 'done', 'cancelled')),
+  FAMILY (id, date, priority, customer_id, status)
 );
 ~~~
 

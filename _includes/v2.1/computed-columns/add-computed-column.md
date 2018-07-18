@@ -3,11 +3,11 @@ In this example, create a table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE x (
-    a INT NULL,
-    b INT NULL AS (a * 2) STORED,
-    c INT NULL AS (a + 4) STORED,
-    FAMILY "primary" (a, b, rowid, c)
-  );
+  a INT NULL,
+  b INT NULL AS (a * 2) STORED,
+  c INT NULL AS (a + 4) STORED,
+  FAMILY "primary" (a, b, rowid, c)
+);
 ~~~
 
 Then, insert a row of data:

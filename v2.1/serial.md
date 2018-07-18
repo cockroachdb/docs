@@ -68,12 +68,16 @@ When we insert rows without values in column `a` and display the new rows, we se
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
+> INSERT
+INTO
+  serial (b, c)
+VALUES
+  ('red', true), ('yellow', false), ('pink', true);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
+> INSERT INTO serial (a, b, c) VALUES (123, 'white', false);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -108,22 +112,22 @@ To experience this for yourself, run through the following example in PostgreSQL
 2. Run four transactions for inserting rows:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN; INSERT INTO increment DEFAULT VALUES; ROLLBACK;
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN; INSERT INTO increment DEFAULT VALUES; COMMIT;
     ~~~
 
@@ -131,7 +135,7 @@ To experience this for yourself, run through the following example in PostgreSQL
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * from increment;
+    > SELECT * FROM increment;
     ~~~
 
     ~~~

@@ -66,7 +66,14 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
+> SELECT
+  *
+FROM
+  [SHOW JOBS]
+WHERE
+  type = 'RESTORE' AND status IN ('running', 'failed')
+ORDER BY
+  created DESC;
 ~~~
 
 ~~~

@@ -69,7 +69,9 @@ To import the PostgreSQL dump file, issue an `IMPORT` statement like the one bel
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
+> IMPORT
+TABLE
+  employees (
     emp_no INT PRIMARY KEY,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,
@@ -77,7 +79,10 @@ To import the PostgreSQL dump file, issue an `IMPORT` statement like the one bel
     gender STRING NOT NULL,
     hire_date DATE NOT NULL
   )
-  PGDUMP DATA ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=ACCESSKEY&AWS_SECRET_ACCESS_KEY=SECRET');
+PGDUMP
+  DATA (
+    's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=ACCESSKEY&AWS_SECRET_ACCESS_KEY=SECRET'
+  );
 ~~~
 
 Success will look like:
@@ -126,7 +131,9 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
+> IMPORT
+TABLE
+  employees (
     emp_no INT PRIMARY KEY,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,
@@ -134,7 +141,8 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
     gender STRING NOT NULL,
     hire_date DATE NOT NULL
   )
-  PGDUMP DATA ('nodelocal:///employees_table.sql');
+PGDUMP
+  DATA ('nodelocal:///employees_table.sql');
 ~~~
 
 ## Import from MySQL dump
@@ -163,7 +171,9 @@ This example uses S3. For a complete list of the types of cloud storage `IMPORT`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
+> IMPORT
+TABLE
+  employees (
     emp_no INT PRIMARY KEY,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,
@@ -171,7 +181,10 @@ This example uses S3. For a complete list of the types of cloud storage `IMPORT`
     gender STRING NOT NULL,
     hire_date DATE NOT NULL
   )
-  MYSQLDUMP DATA ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=ACCESSKEY&AWS_SECRET_ACCESS_KEY=SECRET');
+MYSQLDUMP
+  DATA (
+    's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=ACCESSKEY&AWS_SECRET_ACCESS_KEY=SECRET'
+  );
 ~~~
 
 Success will look like:
@@ -195,7 +208,9 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
+> IMPORT
+TABLE
+  employees (
     emp_no INT PRIMARY KEY,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,
@@ -203,7 +218,8 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
     gender STRING NOT NULL,
     hire_date DATE NOT NULL
   )
-  MYSQLDUMP DATA ('nodelocal:///employees_table.sql');
+MYSQLDUMP
+  DATA ('nodelocal:///employees_table.sql');
 ~~~
 
 ## See also

@@ -29,7 +29,7 @@ The different integer types place different constraints on the range of allowabl
 ## Examples
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT);
 ~~~
 

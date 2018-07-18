@@ -29,9 +29,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-   FROM [INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x]
-  LIMIT 1;
+> SELECT * FROM [INSERT INTO t (x) VALUES (1), (2), (3) RETURNING x] LIMIT 1;
 ~~~
 
 This query always inserts 3 rows into `t`, even though the surrounding
@@ -51,9 +49,12 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ sql
 # Find every customer with at least one order.
-> SELECT c.name
-    FROM customers c
-   WHERE EXISTS(SELECT * FROM orders o WHERE o.customer_id = c.id);
+> SELECT
+  c.name
+FROM
+  customers AS c
+WHERE
+  EXISTS(SELECT * FROM orders AS o WHERE o.customer_id = c.id);
 ~~~
 
 The subquery is correlated because it uses `c` defined in the
@@ -62,9 +63,12 @@ however, it can be transformed to the equivalent query:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT ON(c.id) c.name
-    FROM customers c CROSS JOIN orders o
-   WHERE c.id = o.customer_id;
+> SELECT
+  DISTINCT ON (c.id) c.name
+FROM
+  customers AS c CROSS JOIN orders AS o
+WHERE
+  c.id = o.customer_id;
 ~~~
 
 See also [this question on Stack Overflow: Procedurally transform subquery into join](https://stackoverflow.com/questions/1772609/procedurally-transform-subquery-into-join).

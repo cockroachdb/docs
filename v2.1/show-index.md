@@ -49,12 +49,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t1 (
-    a INT PRIMARY KEY,
-    b DECIMAL,
-    c TIMESTAMP,
-    d STRING
-  );
+> CREATE TABLE t1 (a INT PRIMARY KEY, b DECIMAL, c TIMESTAMP, d STRING);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -64,7 +59,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM t1;
+> SHOW INDEXES FROM t1;
 ~~~
 
 ~~~

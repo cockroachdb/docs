@@ -102,11 +102,11 @@ The examples below use the following logical schema as a starting point:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE mydb.mytable(x INT);
+> CREATE TABLE mydb.mytable (x INT);
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET database = mydb;
 ~~~
 
@@ -124,7 +124,7 @@ is `public` by default, in the current database. The resolved name is
 `mydb.public.mytable`.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET database = system;
 ~~~
 
@@ -235,7 +235,7 @@ For example:
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET database = mydb;
 ~~~
 

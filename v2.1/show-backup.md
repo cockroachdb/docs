@@ -37,7 +37,7 @@ Field | Description
 ## Example
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW BACKUP 'azure://acme-co-backup/tpch-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 

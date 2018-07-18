@@ -96,7 +96,7 @@ Column | Type | Description
 ### Trace a session
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET tracing = on;
 ~~~
 
@@ -150,7 +150,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 2. Still in terminal 1, open a transaction and perform a write without closing the transaction:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN;
     ~~~
 
@@ -179,7 +179,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 4. Back in terminal 1, finish the transaction:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > COMMIT;
     ~~~
 
@@ -354,12 +354,12 @@ In this example, we use session tracing to show an [automatic transaction retry]
 1. In terminal 1, turn on trace recording and then start a transaction:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET tracing = on;
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN;
     ~~~
 
@@ -386,7 +386,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 4. Turn off trace recording and request the trace:
 
     {% include copy-clipboard.html %}
-  	~~~ sql
+  	~~~ sql?nofmt
   	> SET tracing = off;
   	~~~
 

@@ -20,10 +20,7 @@ To create a table, use [`CREATE TABLE`](create-table.html) followed by a table n
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE accounts (
-    id INT PRIMARY KEY,
-    balance DECIMAL
-);
+> CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);
 ~~~
 
 Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
@@ -32,10 +29,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE IF NOT EXISTS accounts (
-    id INT PRIMARY KEY,
-    balance DECIMAL
-);
+> CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance DECIMAL);
 ~~~
 
 To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.html) followed by the table name:
@@ -93,36 +87,31 @@ If you want to pass column values in a different order, list the column names ex
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (balance, id) VALUES
-    (25000.00, 2);
+> INSERT INTO accounts (balance, id) VALUES (25000.00, 2);
 ~~~
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts VALUES
-    (3, 8100.73),
-    (4, 9400.10);
+> INSERT INTO accounts VALUES (3, 8100.73), (4, 9400.10);
 ~~~
 
 [Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id) VALUES
-    (5);
+> INSERT INTO accounts (id) VALUES (5);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES
-    (6, DEFAULT);
+> INSERT INTO accounts (id, balance) VALUES (6, DEFAULT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id in (5, 6);
+> SELECT * FROM accounts WHERE id IN (5, 6);
 ~~~
 
 ~~~
@@ -151,19 +140,19 @@ You can create indexes during table creation as well; just include the `INDEX` k
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
-    id INT PRIMARY KEY,
-    balance DECIMAL,
-    INDEX balance_idx (balance)
+  id INT PRIMARY KEY,
+  balance DECIMAL,
+  INDEX balance_idx (balance)
 );
 ~~~
 
 ## Show indexes on a table
 
-To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
+To show the indexes on a table, use [`SHOW INDEXES FROM`](show-index.html) followed by the name of the table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM accounts;
+> SHOW INDEXES FROM accounts;
 ~~~
 
 ~~~
@@ -296,7 +285,7 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM accounts WHERE id in (5, 6);
+> DELETE FROM accounts WHERE id IN (5, 6);
 ~~~
 
 {% include copy-clipboard.html %}

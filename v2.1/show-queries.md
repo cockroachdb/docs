@@ -100,8 +100,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE node_id = 2;
+> SELECT * FROM [SHOW CLUSTER QUERIES] WHERE node_id = 2;
 ~~~
 
 ~~~
@@ -119,8 +118,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE start < (now() - INTERVAL '3 hours');
+> SELECT * FROM [SHOW CLUSTER QUERIES] WHERE start < (now() - '3h':::INTERVAL);
 ~~~
 
 ~~~
@@ -135,9 +133,12 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE client_address = '192.168.0.72:56194'
-          AND username = 'mroach';
+> SELECT
+  *
+FROM
+  [SHOW CLUSTER QUERIES]
+WHERE
+  client_address = '192.168.0.72:56194' AND username = 'mroach';
 ~~~
 
 ~~~
@@ -154,8 +155,7 @@ To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.ht
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE application_name != 'cockroach';
+> SELECT * FROM [SHOW CLUSTER QUERIES] WHERE application_name != 'cockroach';
 ~~~
 
 ~~~
@@ -182,8 +182,7 @@ For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE start < (now() - INTERVAL '3 hours');
+> SELECT * FROM [SHOW CLUSTER QUERIES] WHERE start < (now() - '3h':::INTERVAL);
 ~~~
 
 ~~~
@@ -197,7 +196,7 @@ For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have 
 To cancel this long-running query, and stop it from consuming resources, you note the `query_id` and use it with the `CANCEL QUERY` statement:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 

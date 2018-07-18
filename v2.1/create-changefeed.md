@@ -87,7 +87,7 @@ Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in 
 #### Pause a changefeed
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > PAUSE JOB job_id;
 ~~~
 
@@ -96,7 +96,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 #### Resume a paused changefeed
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > RESUME JOB job_id;
 ~~~
 
@@ -105,7 +105,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 #### Cancel a changefeed
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL JOB job_id;
 ~~~
 

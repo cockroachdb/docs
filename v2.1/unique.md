@@ -45,10 +45,10 @@ Parameter | Description
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE warehouses (
-    warehouse_id    INT        PRIMARY KEY NOT NULL,
-    warehouse_name  STRING(35) UNIQUE,
-    location_id     INT
-  );
+  warehouse_id INT NOT NULL PRIMARY KEY,
+  warehouse_name STRING(35) UNIQUE,
+  location_id INT
+);
 ~~~
 
 ### Table level
@@ -70,11 +70,11 @@ Parameter | Description
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logon (
-    login_id  INT PRIMARY KEY,
-    customer_id   INT,
-    logon_date    TIMESTAMP,
-    UNIQUE (customer_id, logon_date)
-  );
+  login_id INT PRIMARY KEY,
+  customer_id INT,
+  logon_date TIMESTAMP,
+  UNIQUE (customer_id, logon_date)
+);
 ~~~
 
 ## Usage example
@@ -82,11 +82,11 @@ Parameter | Description
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS logon (
-    login_id INT PRIMARY KEY,
-    customer_id   INT NOT NULL,
-    sales_id INT,
-    UNIQUE (customer_id, sales_id)
-  );
+  login_id INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  sales_id INT,
+  UNIQUE (customer_id, sales_id)
+);
 ~~~
 
 {% include copy-clipboard.html %}

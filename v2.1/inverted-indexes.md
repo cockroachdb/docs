@@ -58,7 +58,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
 - Using the following PostgreSQL-compatible syntax:
 
-    ~~~ sql
+    ~~~ sql?nofmt
     > CREATE INDEX <optional name> ON <table> USING GIN (<column>);
     ~~~
 
@@ -89,21 +89,29 @@ In this example, let's create a table with a `JSONB` column and an inverted inde
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
-    profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    last_updated TIMESTAMP DEFAULT now(),
-    user_profile JSONB,
-    INVERTED INDEX user_details (user_profile)
-  );
+  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  last_updated TIMESTAMP DEFAULT now(),
+  user_profile JSONB,
+  INVERTED INDEX user_details (user_profile)
+);
 ~~~
 
 Then, insert a few rows a data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users (user_profile) VALUES
-    ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
-    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}'),
-    ('{"first_name": "Carl", "last_name": "Kimball", "location": "NYC", "breed": "Boston Terrier"}'
+> INSERT
+INTO
+  users (user_profile)
+VALUES
+  (
+    '{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'
+  ),
+  (
+    '{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}'
+  ),
+  (
+    '{"first_name": "Carl", "last_name": "Kimball", "location": "NYC", "breed": "Boston Terrier"}'
   );
 ~~~
 
@@ -143,7 +151,7 @@ Now, run a query that filters on the `JSONB` column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users where user_profile @> '{"location":"NYC"}';
+> SELECT * FROM users WHERE user_profile @> '{"location":"NYC"}';
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+

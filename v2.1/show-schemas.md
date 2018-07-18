@@ -25,7 +25,7 @@ Parameter | Description
 ## Example
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET DATABASE = bank;
 ~~~
 

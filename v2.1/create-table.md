@@ -88,10 +88,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE logon (
-    user_id INT,
-    logon_date DATE
-);
+> CREATE TABLE logon (user_id INT, logon_date DATE);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -111,7 +108,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM logon;
+> SHOW INDEXES FROM logon;
 ~~~
 
 ~~~
@@ -130,9 +127,9 @@ In this example, we create a table with three columns. One column is the [primar
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff (
-    user_id INT PRIMARY KEY,
-    user_email STRING UNIQUE,
-    logoff_date DATE
+  user_id INT PRIMARY KEY,
+  user_email STRING UNIQUE,
+  logoff_date DATE
 );
 ~~~
 
@@ -154,7 +151,7 @@ In this example, we create a table with three columns. One column is the [primar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM logoff;
+> SHOW INDEXES FROM logoff;
 ~~~
 
 ~~~
@@ -179,29 +176,30 @@ This example also demonstrates a number of column-level and table-level [constra
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE product_information (
-    product_id           INT PRIMARY KEY NOT NULL,
-    product_name         STRING(50) UNIQUE NOT NULL,
-    product_description  STRING(2000),
-    category_id          STRING(1) NOT NULL CHECK (category_id IN ('A','B','C')),
-    weight_class         INT,
-    warranty_period      INT CONSTRAINT valid_warranty CHECK (warranty_period BETWEEN 0 AND 24),
-    supplier_id          INT,
-    product_status       STRING(20),
-    list_price           DECIMAL(8,2),
-    min_price            DECIMAL(8,2),
-    catalog_url          STRING(50) UNIQUE,
-    date_added           DATE DEFAULT CURRENT_DATE(),
-    misc                 JSONB,     
-    CONSTRAINT price_check CHECK (list_price >= min_price),
-    INDEX date_added_idx (date_added),
-    INDEX supp_id_prod_status_idx (supplier_id, product_status),
-    INVERTED INDEX details (misc)
+  product_id INT NOT NULL PRIMARY KEY,
+  product_name STRING(50) NOT NULL UNIQUE,
+  product_description STRING(2000),
+  category_id STRING(1) NOT NULL CHECK (category_id IN ('A', 'B', 'C')),
+  weight_class INT,
+  warranty_period
+    INT CONSTRAINT valid_warranty CHECK (warranty_period BETWEEN 0 AND 24),
+  supplier_id INT,
+  product_status STRING(20),
+  list_price DECIMAL(8,2),
+  min_price DECIMAL(8,2),
+  catalog_url STRING(50) UNIQUE,
+  date_added DATE DEFAULT current_date(),
+  misc JSONB,
+  CONSTRAINT price_check CHECK (list_price >= min_price),
+  INDEX date_added_idx (date_added),
+  INDEX supp_id_prod_status_idx (supplier_id, product_status),
+  INVERTED INDEX details (misc)
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM product_information;
+> SHOW INDEXES FROM product_information;
 ~~~
 
 ~~~
@@ -249,18 +247,15 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING
-  );
+> CREATE TABLE customers (id INT PRIMARY KEY, name STRING);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    id INT PRIMARY KEY,
-    customer_id INT REFERENCES customers(id) ON DELETE CASCADE
-  );
+  id INT PRIMARY KEY,
+  customer_id INT REFERENCES customers (id) ON DELETE CASCADE
+);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -300,7 +295,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders VALUES (1,1);
+> INSERT INTO orders VALUES (1, 1);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -373,7 +368,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE students_by_list (
     id SERIAL,
     name STRING,
@@ -392,7 +387,7 @@ In this example, we create a table and [define partitions by list](partitioning.
 In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE students_by_range (
    id SERIAL,
    name STRING,

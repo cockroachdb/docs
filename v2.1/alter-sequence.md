@@ -96,7 +96,11 @@ Let's add another record to the table to check that the new record adheres to th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customer_list (customer, address) VALUES ('Lola', '333 Schermerhorn');
+> INSERT
+INTO
+  customer_list (customer, address)
+VALUES
+  ('Lola', '333 Schermerhorn');
 ~~~
 ~~~
 +----+----------+--------------------+

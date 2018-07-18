@@ -89,12 +89,13 @@ For instance, consider the database of a global online learning portal that has 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,   
-    PRIMARY KEY (country, id));
+  id SERIAL,
+  name STRING,
+  email STRING,
+  country STRING,
+  expected_graduation_date DATE,
+  PRIMARY KEY (country, id)
+);
 ~~~
 
 **Primary Key Considerations**
@@ -115,17 +116,19 @@ Indexes can also be partitioned, but are not required to be. Each partition is r
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE TABLE foo (a STRING PRIMARY KEY, b STRING) PARTITION BY LIST (a) (
-    bar VALUES IN ('bar'),
-    default VALUES IN (DEFAULT)
+CREATE TABLE foo (a STRING PRIMARY KEY, b STRING)
+PARTITION BY LIST (a) (
+  PARTITION bar VALUES IN ('bar'),
+  PARTITION default VALUES IN (DEFAULT)
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
-    baz VALUES IN ('baz'),
-    default VALUES IN (DEFAULT)
+CREATE INDEX foo_b_idx ON foo (b)
+PARTITION BY LIST (b) (
+  PARTITION baz VALUES IN ('baz'),
+  PARTITION default VALUES IN (DEFAULT)
 );
 ~~~
 
@@ -189,16 +192,18 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
-    id SERIAL,
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,   
-    PRIMARY KEY (country, id))
-    PARTITION BY LIST (country)
-      (PARTITION north_america VALUES IN ('CA','US'),
-      PARTITION australia VALUES IN ('AU','NZ'),
-      PARTITION DEFAULT VALUES IN (default));
+  id SERIAL,
+  name STRING,
+  email STRING,
+  country STRING,
+  expected_graduation_date DATE,
+  PRIMARY KEY (country, id)
+)
+PARTITION BY LIST (country) (
+  PARTITION north_america VALUES IN ('CA', 'US'),
+  PARTITION australia VALUES IN ('AU', 'NZ'),
+  PARTITION default VALUES IN (DEFAULT)
+);
 ~~~
 
 #### Step 5. Create and apply corresponding zone configurations
@@ -296,15 +301,17 @@ $ cockroach start --insecure \
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
-   id SERIAL,
-   name STRING,
-   email STRING,                                                                                           
-   country STRING,
-   expected_graduation_date DATE,                                                                                      
-   PRIMARY KEY (expected_graduation_date, id))
-   PARTITION BY RANGE (expected_graduation_date)
-      (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
+  id SERIAL,
+  name STRING,
+  email STRING,
+  country STRING,
+  expected_graduation_date DATE,
+  PRIMARY KEY (expected_graduation_date, id)
+)
+PARTITION BY RANGE (expected_graduation_date) (
+  PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
+  PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE)
+);
 ~~~
 
 #### Step 5. Create and apply corresponding zone configurations
@@ -413,16 +420,25 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,
-    PRIMARY KEY (country, expected_graduation_date, id))
-    PARTITION BY LIST (country)(
-        PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date)(PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)),
-        PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (expected_graduation_date)(PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'), PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE))
-    );
+  id SERIAL,
+  name STRING,
+  email STRING,
+  country STRING,
+  expected_graduation_date DATE,
+  PRIMARY KEY (country, expected_graduation_date, id)
+)
+PARTITION BY LIST (country) (
+  PARTITION australia VALUES IN ('AU', 'NZ')
+    PARTITION BY RANGE (expected_graduation_date) (
+      PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'),
+      PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)
+    ),
+  PARTITION north_america VALUES IN ('US', 'CA')
+    PARTITION BY RANGE (expected_graduation_date) (
+      PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'),
+      PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE)
+    )
+);
 ~~~
 
 Subpartition names must be unique within a table. In our example, even though `graduated` and `current` are sub-partitions of distinct partitions, they still need to be uniquely named. Hence the names `graduated_au`, `graduated_us`, and `current_au` and `current_us`.
@@ -514,7 +530,7 @@ Time: 11.586626ms
 Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
     PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
@@ -525,7 +541,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
 

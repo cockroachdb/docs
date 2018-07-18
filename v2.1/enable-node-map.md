@@ -134,7 +134,10 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO system.locations VALUES
+> INSERT
+INTO
+  system.locations
+VALUES
   ('region', 'us-east-1', 37.478397, -76.453077),
   ('region', 'us-west-1', 38.837522, -120.895824),
   ('region', 'eu-west-1', 53.142367, -7.692054);

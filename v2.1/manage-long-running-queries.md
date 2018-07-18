@@ -14,7 +14,7 @@ This page shows you how to identify and, if necessary, cancel SQL queries that a
 Use the [`SHOW QUERIES`](show-queries.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW QUERIES;
 ~~~
 
@@ -39,8 +39,7 @@ You can also filter for queries that have been running for a certain amount of t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE start < (now() - INTERVAL '3 hours');
+> SELECT * FROM [SHOW CLUSTER QUERIES] WHERE start < (now() - '3h':::INTERVAL);
 ~~~
 
 ## Cancel long-running queries
@@ -48,7 +47,7 @@ You can also filter for queries that have been running for a certain amount of t
 Once you've identified a long-running query via [`SHOW QUERIES`](show-queries.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 

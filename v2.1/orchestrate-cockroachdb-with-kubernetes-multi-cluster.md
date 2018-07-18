@@ -436,7 +436,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
         {% include copy-clipboard.html %}
-        ~~~ sql
+        ~~~ sql?nofmt
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
         ~~~
 
@@ -494,7 +494,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     2. Re-enable auto-finalization:
 
         {% include copy-clipboard.html %}
-        ~~~ sql
+        ~~~ sql?nofmt
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 

@@ -143,14 +143,22 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE
+TABLE
+  bank.customers
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 ### Restore multiple tables
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE
+TABLE
+  bank.customers, bank.accounts
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 ### Restore an entire database
@@ -166,25 +174,41 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '2017-02-26 10:00:00';
+> RESTORE
+TABLE
+  bank.customers
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+AS OF SYSTEM TIME
+  '2017-02-26 10:00:00';
 ~~~
 
 ### Restore from incremental backups
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
+> RESTORE
+TABLE
+  bank.customers
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly',
+  'gs://acme-co-backup/database-bank-2017-03-28-nightly',
+  'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
 ### Point-in-time restore from incremental backups
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
-AS OF SYSTEM TIME '2017-02-28 10:00:00';
+> RESTORE
+TABLE
+  bank.customers
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly',
+  'gs://acme-co-backup/database-bank-2017-03-28-nightly',
+  'gs://acme-co-backup/database-bank-2017-03-29-nightly'
+AS OF SYSTEM TIME
+  '2017-02-28 10:00:00';
 ~~~
 
 ### Restore into a different database
@@ -193,9 +217,13 @@ By default, tables and views are restored to the database they originally belong
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-WITH into_db = 'newdb';
+> RESTORE
+TABLE
+  bank.customers
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+WITH
+  into_db = 'newdb';
 ~~~
 
 ### Remove the foreign key before restore
@@ -204,9 +232,13 @@ By default, tables with [Foreign Key](foreign-key.html) constraints must be rest
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.accounts \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-WITH skip_missing_foreign_keys;
+> RESTORE
+TABLE
+  bank.accounts
+FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+WITH
+  skip_missing_foreign_keys;
 ~~~
 
 ### Restoring users from `system.users` backup
@@ -217,9 +249,13 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE system.users \
-FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
-WITH into_db = 'newdb';
+> RESTORE
+TABLE
+  system.users
+FROM
+  'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+WITH
+  into_db = 'newdb';
 ~~~
 
 {% include copy-clipboard.html %}

@@ -64,14 +64,14 @@ $ cockroach start \
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET DATABASE = test_roles;
     ~~~
 
 4. [Create a role](create-role.html) and then [list all roles](show-roles.html) in your database:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > CREATE ROLE system_ops;
     ~~~
 
@@ -143,9 +143,9 @@ $ cockroach start \
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
-        id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
-        profile JSONB
-      );
+  id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID,
+  profile JSONB
+);
     ~~~
 
     We were able to create the table because `maxroach` has `CREATE` privileges.
@@ -235,7 +235,7 @@ $ cockroach start \
     {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > DROP ROLE system_ops;
     ~~~
 

@@ -100,7 +100,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE user-name = 'mroach';
+> SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE user_name = 'mroach';
 ~~~
 
 ~~~
@@ -120,8 +120,7 @@ To exclude sessions from the [built-in SQL client](use-the-built-in-sql-client.h
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER SESSIONS]
-      WHERE application_name != 'cockroach';
+> SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE application_name != 'cockroach';
 ~~~
 
 ~~~
@@ -158,10 +157,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE client_address = '192.168.0.72:56194'
-          AND user_name = 'mroach'
-          AND query = 'SELECT * FROM test.kv ORDER BY k';
+> SELECT
+  *
+FROM
+  [SHOW CLUSTER QUERIES]
+WHERE
+  client_address = '192.168.0.72:56194'
+  AND user_name = 'mroach'
+  AND query = 'SELECT * FROM test.kv ORDER BY k';
 ~~~
 
 ~~~
@@ -175,14 +178,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`](cancel-query.html) statement with a nested `SELECT` statement that returns the `query_id`:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
       WHERE client_address = '192.168.0.72:56194'
           AND user_name = 'mroach'

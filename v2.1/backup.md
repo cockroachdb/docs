@@ -139,36 +139,54 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank.customers \
-TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '-10s';
+> BACKUP
+TABLE
+  bank.customers
+TO
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+AS OF SYSTEM TIME
+  '-10s';
 ~~~
 
 ### Backup multiple tables
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank.customers, bank.accounts \
-TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '-10s';
+> BACKUP
+TABLE
+  bank.customers, bank.accounts
+TO
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+AS OF SYSTEM TIME
+  '-10s';
 ~~~
 
 ### Backup an entire database
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank \
-TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '-10s';
+> BACKUP
+DATABASE
+  bank
+TO
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+AS OF SYSTEM TIME
+  '-10s';
 ~~~
 
 ### Backup with revision history
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank \
-TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
-AS OF SYSTEM TIME '-10s' WITH revision_history;
+> BACKUP
+DATABASE
+  bank
+TO
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly'
+AS OF SYSTEM TIME
+  '-10s'
+WITH
+  revision_history;
 ~~~
 
 ### Create incremental backups
@@ -177,20 +195,34 @@ Incremental backups must be based off of full backups you've already created.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank \
-TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
-AS OF SYSTEM TIME '-10s' \
-INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly';
+> BACKUP
+DATABASE
+  bank
+TO
+  'gs://acme-co-backup/db/bank/2017-03-29-nightly'
+AS OF SYSTEM TIME
+  '-10s'
+INCREMENTAL FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly',
+  'gs://acme-co-backup/database-bank-2017-03-28-nightly';
 ~~~
 
 ### Create incremental backups with revision history
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank \
-TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
-AS OF SYSTEM TIME '-10s' \
-INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
+> BACKUP
+DATABASE
+  bank
+TO
+  'gs://acme-co-backup/database-bank-2017-03-29-nightly'
+AS OF SYSTEM TIME
+  '-10s'
+INCREMENTAL FROM
+  'gs://acme-co-backup/database-bank-2017-03-27-weekly',
+  'gs://acme-co-backup/database-bank-2017-03-28-nightly'
+WITH
+  revision_history;
 ~~~
 
 ## See also

@@ -50,12 +50,12 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    order_id        INT PRIMARY KEY,
-    order_date      TIMESTAMP NOT NULL,
-    order_mode      STRING(8),
-    customer_id     INT,
-    order_status    INT
-  );
+  order_id INT PRIMARY KEY,
+  order_date TIMESTAMP NOT NULL,
+  order_mode STRING(8),
+  customer_id INT,
+  order_status INT
+);
 ~~~
 
 ### Table level
@@ -75,11 +75,11 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT NOT NULL,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT,
+  warehouse_id INT,
+  quantity_on_hand INT NOT NULL,
+  PRIMARY KEY (product_id, warehouse_id)
+);
 ~~~
 
 ## Usage example
@@ -87,11 +87,11 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT NOT NULL,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT,
+  warehouse_id INT,
+  quantity_on_hand INT NOT NULL,
+  PRIMARY KEY (product_id, warehouse_id)
+);
 ~~~
 
 {% include copy-clipboard.html %}

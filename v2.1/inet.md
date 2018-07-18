@@ -34,10 +34,10 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE computers (
-    ip INET PRIMARY KEY,
-    user_email STRING,
-    registration_date DATE
-  );
+  ip INET PRIMARY KEY,
+  user_email STRING,
+  registration_date DATE
+);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -58,11 +58,17 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO computers
-  VALUES
-    ('192.168.0.1', 'info@cockroachlabs.com', '2018-01-31'),
-    ('192.168.0.2/10', 'lauren@cockroachlabs.com', '2018-01-31'),
-    ('2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120', 'test@cockroachlabs.com', '2018-01-31');
+> INSERT
+INTO
+  computers
+VALUES
+  ('192.168.0.1', 'info@cockroachlabs.com', '2018-01-31'),
+  ('192.168.0.2/10', 'lauren@cockroachlabs.com', '2018-01-31'),
+  (
+    '2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120',
+    'test@cockroachlabs.com',
+    '2018-01-31'
+  );
 ~~~
 
 {% include copy-clipboard.html %}

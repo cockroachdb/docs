@@ -192,7 +192,7 @@ that are known to have the same value on all rows. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
+> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a = e AND c = 1;
 ~~~
 
 ~~~
@@ -271,7 +271,8 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
+> EXPLAIN (VERBOSE)
+  SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
 ~~~
 
 ~~~
@@ -302,7 +303,13 @@ By default, the `Level` and `Type` columns are hidden. To view, use `SELECT`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT "Level", "Type" FROM [EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC];
+> SELECT
+  "Level", "Type"
+FROM
+  [
+    EXPLAIN (VERBOSE)
+      SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC
+  ];
 ~~~
 ~~~
 +-------+--------+

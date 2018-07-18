@@ -167,13 +167,8 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY')
-UNION
-SELECT name
-FROM mortgages
-WHERE state_opened IN ('AZ', 'NY');
+> SELECT name FROM accounts WHERE state_opened IN ('AZ', 'NY')
+UNION SELECT name FROM mortgages WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
 +-----------------+
@@ -190,13 +185,8 @@ To show duplicate rows, you can use `ALL`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY')
-UNION ALL
-SELECT name
-FROM mortgages
-WHERE state_opened IN ('AZ', 'NY');
+> SELECT name FROM accounts WHERE state_opened IN ('AZ', 'NY')
+UNION ALL SELECT name FROM mortgages WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
 +-----------------+
@@ -217,12 +207,8 @@ WHERE state_opened IN ('AZ', 'NY');
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('NJ', 'VA')
-INTERSECT
-SELECT name
-FROM mortgages;
+> SELECT name FROM accounts WHERE state_opened IN ('NJ', 'VA')
+INTERSECT SELECT name FROM mortgages;
 ~~~
 ~~~
 +-----------------+
@@ -239,11 +225,7 @@ FROM mortgages;
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM mortgages
-EXCEPT
-SELECT name
-FROM accounts;
+> SELECT name FROM mortgages EXCEPT SELECT name FROM accounts;
 ~~~
 ~~~
 +------------------+
@@ -263,10 +245,7 @@ The following sections provide examples. For more details, see [Ordering Query R
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance BETWEEN 350 AND 500
-ORDER BY balance DESC;
+> SELECT * FROM accounts WHERE balance BETWEEN 350 AND 500 ORDER BY balance DESC;
 ~~~
 ~~~
 +----+--------------------+---------+----------+--------------+
@@ -289,10 +268,14 @@ Columns are sorted in the order you list them in `sortby_list`. For example, `OR
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance BETWEEN 350 AND 500
-ORDER BY balance DESC, name ASC;
+> SELECT
+  *
+FROM
+  accounts
+WHERE
+  balance BETWEEN 350 AND 500
+ORDER BY
+  balance DESC, name ASC;
 ~~~
 ~~~
 +----+--------------------+---------+----------+--------------+
@@ -319,9 +302,7 @@ You can reduce the number of results with `LIMIT`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name
-FROM accounts
-LIMIT 5;
+> SELECT id, name FROM accounts LIMIT 5;
 ~~~
 ~~~
 +----+------------------+
@@ -341,10 +322,7 @@ If you want to limit the number of results, but go beyond the initial set, use `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name
-FROM accounts
-LIMIT 5
-OFFSET 5;
+> SELECT id, name FROM accounts LIMIT 5 OFFSET 5;
 ~~~
 ~~~
 +----+------------------+
@@ -412,12 +390,12 @@ Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> TABLE (customers c JOIN orders o ON c.id = o.customer_id);
+> TABLE (customers AS c JOIN orders AS o ON c.id = o.customer_id);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
+> SELECT * FROM customers AS c JOIN orders AS o ON c.id = o.customer_id;
 ~~~
 
 ### Using any selection query as table expression
@@ -430,7 +408,7 @@ For example, the following construct is a selection query, but is not a valid ta
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers ORDER BY name LIMIT 5
+> SELECT * FROM customers ORDER BY name LIMIT 5;
 ~~~
 
 To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
@@ -442,10 +420,12 @@ To make it valid as operand to `FROM` or another table expression, you can enclo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT o.id
-    FROM orders o
-    JOIN (SELECT * FROM customers ORDER BY name LIMIT 5) AS c
-	  ON o.customer_id = c.id;
+> SELECT
+  o.id
+FROM
+  orders AS o
+  JOIN (SELECT * FROM customers ORDER BY name LIMIT 5) AS c
+  ON o.customer_id = c.id;
 ~~~
 
 ### Using selection queries with other statements

@@ -28,7 +28,7 @@ No [privileges](privileges.html) are required to release a savepoint. However, p
 After declaring `SAVEPOINT cockroach_restart`, commit the transaction with `RELEASE SAVEPOINT cockroach_restart` and then prepare the connection for the next transaction with `COMMIT`.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 
 > SAVEPOINT cockroach_restart;

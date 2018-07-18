@@ -21,7 +21,7 @@ To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT, INSERT ON bank.accounts TO maxroach;
+> GRANT SELECT, INSERT ON TABLE bank.accounts TO maxroach;
 ~~~
 
 ## Showing privileges
@@ -39,7 +39,7 @@ To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statem
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> REVOKE INSERT ON bank.accounts FROM maxroach;
+> REVOKE INSERT ON TABLE bank.accounts FROM maxroach;
 ~~~
 
 ## See also

@@ -101,7 +101,7 @@ pq: cannot drop table "accounts" because view "user_accounts_view" depends on it
 ~~~
 
 {% include copy-clipboard.html %}
-~~~sql
+~~~ sql
 > DROP TABLE bank.accounts CASCADE;
 ~~~
 

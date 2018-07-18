@@ -48,10 +48,15 @@ Parameter | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t (a, b, c)
-    VALUES (1, 2, 3)
-    ON CONFLICT (a, b)
-    DO UPDATE SET c = excluded.c;
+> INSERT
+INTO
+  t (a, b, c)
+VALUES
+  (1, 2, 3)
+ON CONFLICT
+  (a, b)
+DO
+  UPDATE SET c = excluded.c;
 ~~~
 
 `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primary Key)](#upsert-that-fails-conflict-on-non-primary-key) example below.
@@ -215,7 +220,15 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
+> INSERT
+INTO
+  unique_test
+VALUES
+  (4, 1)
+ON CONFLICT
+  (b)
+DO
+  UPDATE SET a = excluded.a;
 ~~~
 
 {% include copy-clipboard.html %}

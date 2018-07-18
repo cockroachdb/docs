@@ -48,7 +48,7 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` isolation and `NORMAL` priority.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 ~~~
 
@@ -73,7 +73,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > COMMIT;
 ~~~
 
@@ -84,7 +84,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
 ~~~
 
@@ -109,7 +109,7 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > COMMIT;
 ~~~
 
@@ -126,7 +126,7 @@ CockroachDB will [automatically retry](transactions.html#transaction-retries) al
 From the perspective of CockroachDB, a transaction sent as a batch looks like this:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 
 > DELETE FROM customers WHERE id = 1;

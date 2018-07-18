@@ -31,11 +31,13 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~
@@ -52,7 +54,7 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes

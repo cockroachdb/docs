@@ -147,7 +147,7 @@ To use a lookup join:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM weather@index_1 LEFT OUTER JOIN cities ON (weather.city = cities.name);
+    > SELECT * FROM weather@index_1 LEFT JOIN cities ON weather.city = cities.name;
     ~~~
 
 Lookup joins are performed on two tables as follows:

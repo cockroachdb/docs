@@ -39,7 +39,7 @@ Parameter | Description
 | 27536791415282 | RESTORE | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 +----------------+---------+-------------------------------------------+...
 ~~~
-~~~ sql
+~~~ sql?nofmt
 > CANCEL JOB 27536791415282;
 ~~~
 

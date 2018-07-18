@@ -68,8 +68,7 @@ Retrieve specific columns by naming them in a comma-separated list:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, balance
-FROM accounts;
+> SELECT id, name, balance FROM accounts;
 ~~~
 
 ~~~
@@ -89,8 +88,7 @@ Retrieve all columns by using `*`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts;
+> SELECT * FROM accounts;
 ~~~
 
 ~~~
@@ -112,9 +110,7 @@ Filter rows with expressions that use columns and return Boolean values in the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance
-FROM accounts
-WHERE balance < 300;
+> SELECT name, balance FROM accounts WHERE balance < 300;
 ~~~
 
 ~~~
@@ -133,9 +129,7 @@ To use multiple `WHERE` filters join them with `AND` or `OR`. You can also creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance > 2500 AND NOT type = 'checking';
+> SELECT * FROM accounts WHERE balance > 2500 AND NOT (type = 'checking');
 ~~~
 
 ~~~
@@ -153,9 +147,7 @@ Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) con
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened = 'VT';
+> SELECT name FROM accounts WHERE state_opened = 'VT';
 ~~~
 
 ~~~
@@ -171,9 +163,7 @@ Using `DISTINCT`, you can remove all but one instance of duplicate values from y
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT name
-FROM accounts
-WHERE state_opened = 'VT';
+> SELECT DISTINCT name FROM accounts WHERE state_opened = 'VT';
 ~~~
 
 ~~~
@@ -190,9 +180,12 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance, state_opened
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA');
+> SELECT
+  name, balance, state_opened
+FROM
+  accounts
+WHERE
+  state_opened IN ('AZ', 'NY', 'WA');
 ~~~
 
 ~~~
@@ -213,9 +206,7 @@ Instead of outputting a column's name in the retrieved table, you can change its
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name AS NY_accounts, balance
-FROM accounts
-WHERE state_opened = 'NY';
+> SELECT name AS ny_accounts, balance FROM accounts WHERE state_opened = 'NY';
 ~~~
 
 ~~~
@@ -240,9 +231,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, type
-FROM accounts
-WHERE name LIKE 'Anni%';
+> SELECT id, name, type FROM accounts WHERE name LIKE 'Anni%';
 ~~~
 
 ~~~
@@ -264,8 +253,7 @@ By using an aggregate function as a `target_elem`, you can perform the calculati
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT MIN(balance)
-FROM accounts;
+> SELECT min(balance) FROM accounts;
 ~~~
 
 ~~~
@@ -280,13 +268,12 @@ You can also use the retrieved value as part of an expression. For example, you 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, balance
-FROM accounts
-WHERE balance = (
-      SELECT
-      MIN(balance)
-      FROM accounts
-);
+> SELECT
+  id, name, balance
+FROM
+  accounts
+WHERE
+  balance = (SELECT min(balance) FROM accounts);
 ~~~
 
 ~~~
@@ -306,9 +293,7 @@ By filtering the statement, you can perform the calculation only on retrieved ro
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT SUM(balance)
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA');
+> SELECT sum(balance) FROM accounts WHERE state_opened IN ('AZ', 'NY', 'WA');
 ~~~
 
 ~~~
@@ -325,7 +310,10 @@ You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered FROM accounts;
+> SELECT
+  count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered
+FROM
+  accounts;
 ~~~
 
 ~~~
@@ -346,10 +334,14 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT state_opened AS state, SUM(balance) AS state_balance
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA')
-GROUP BY state_opened;
+> SELECT
+  state_opened AS state, sum(balance) AS state_balance
+FROM
+  accounts
+WHERE
+  state_opened IN ('AZ', 'NY', 'WA')
+GROUP BY
+  state_opened;
 ~~~
 
 ~~~
@@ -370,10 +362,14 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT state_opened, AVG(balance) as avg
-FROM accounts
-GROUP BY state_opened
-HAVING AVG(balance) BETWEEN 1700 AND 50000;
+> SELECT
+  state_opened, avg(balance) AS avg
+FROM
+  accounts
+GROUP BY
+  state_opened
+HAVING
+  avg(balance) BETWEEN 1700 AND 50000;
 ~~~
 
 ~~~
@@ -395,11 +391,16 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, state_opened
-FROM accounts
-WHERE state_opened in ('LA', 'MO')
-GROUP BY name, state_opened
-HAVING COUNT(name) > 1;
+> SELECT
+  name, state_opened
+FROM
+  accounts
+WHERE
+  state_opened IN ('LA', 'MO')
+GROUP BY
+  name, state_opened
+HAVING
+  count(name) > 1;
 ~~~
 
 ~~~

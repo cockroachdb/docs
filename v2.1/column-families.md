@@ -26,11 +26,11 @@ For example, let's say we want to create a table to store an immutable blob of d
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE test (
-    id INT PRIMARY KEY,
-    last_accessed TIMESTAMP,
-    data BYTES,
-    FAMILY f1 (id, last_accessed),
-    FAMILY f2 (data)
+  id INT PRIMARY KEY,
+  last_accessed TIMESTAMP,
+  data BYTES,
+  FAMILY f1 (id, last_accessed),
+  FAMILY f2 (data)
 );
 ~~~
 

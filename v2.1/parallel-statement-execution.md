@@ -26,7 +26,7 @@ Let's understand how sequential and parallel execution works in the following sc
 Then the traditional transaction to update the user's information is as follows:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1;
 > UPDATE favorite_movies SET movies = 'The Matrix' WHERE user_id = 1;
@@ -43,11 +43,25 @@ The SQL statements in our sample scenario can be executed in parallel since they
 In our sample scenario, the transaction would be as follows:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1 RETURNING NOTHING;
-> UPDATE favorite_movies SET movies = 'The Matrix' WHERE user_id = 1 RETURNING NOTHING;
-> UPDATE favorite_songs SET songs = 'All this time' WHERE user_id = 1 RETURNING NOTHING;
+> UPDATE
+  favorite_movies
+SET
+  movies = 'The Matrix'
+WHERE
+  user_id = 1
+RETURNING
+  NOTHING;
+> UPDATE
+  favorite_songs
+SET
+  songs = 'All this time'
+WHERE
+  user_id = 1
+RETURNING
+  NOTHING;
 > COMMIT;
 ~~~
 
@@ -76,7 +90,7 @@ If two consecutive statements are not independent, and yet a `RETURNING NOTHING`
 Revising our sample scenario, suppose we want to create a new user on the social networking app. We need to create entries for the last name of the user, their favorite movie, and favorite song. We need to insert entries into three tables: `users`, `favorite_movies`, and `favorite_songs`. The transaction would be as follows:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 > INSERT INTO users VALUES last_name = 'Pavlo' WHERE id = 2 RETURNING NOTHING;
 > INSERT INTO favorite_movies VALUES movies = 'Godfather' WHERE user_id = 2 RETURNING NOTHING;
@@ -116,7 +130,7 @@ The following pairs of statements are dependent since reordering them will affec
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE a SET y = true  WHERE y = false;
+> UPDATE a SET y = true WHERE y = false;
 > UPDATE a SET y = false WHERE y = true;
 ~~~
 

@@ -3,27 +3,30 @@ In this example, create a table with a computed columns and an index on that col
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE gymnastics (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    athlete STRING,
-    vault DECIMAL,
-    bars DECIMAL,
-    beam DECIMAL,
-    floor DECIMAL,
-    combined_score DECIMAL AS (vault + bars + beam + floor) STORED,
-    INDEX total (combined_score DESC)
-  );
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  athlete STRING,
+  vault DECIMAL,
+  bars DECIMAL,
+  beam DECIMAL,
+  floor DECIMAL,
+  combined_score DECIMAL AS (vault + bars + beam + floor) STORED,
+  INDEX total (combined_score DESC)
+);
 ~~~
 
 Then, insert a few rows a data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO gymnastics (athlete, vault, bars, beam, floor) VALUES
-    ('Simone Biles', 15.933, 14.800, 15.300, 15.800),
-    ('Gabby Douglas', 0, 15.766, 0, 0),
-    ('Laurie Hernandez', 15.100, 0, 15.233, 14.833),
-    ('Madison Kocian', 0, 15.933, 0, 0),
-    ('Aly Raisman', 15.833, 0, 15.000, 15.366);
+> INSERT
+INTO
+  gymnastics (athlete, vault, bars, beam, floor)
+VALUES
+  ('Simone Biles', 15.933, 14.800, 15.300, 15.800),
+  ('Gabby Douglas', 0, 15.766, 0, 0),
+  ('Laurie Hernandez', 15.100, 0, 15.233, 14.833),
+  ('Madison Kocian', 0, 15.933, 0, 0),
+  ('Aly Raisman', 15.833, 0, 15.000, 15.366);
 ~~~
 
 {% include copy-clipboard.html %}

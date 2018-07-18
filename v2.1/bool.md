@@ -27,7 +27,7 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 ## Examples
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE bool (a INT PRIMARY KEY, b BOOL, c BOOLEAN);
 ~~~
 

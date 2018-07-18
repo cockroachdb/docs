@@ -32,7 +32,7 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 
 ## Example
 
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE bytes (a INT PRIMARY KEY, b BYTES);
 
 > -- explicitly typed BYTES literals

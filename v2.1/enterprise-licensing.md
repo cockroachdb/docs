@@ -32,12 +32,12 @@ $ cockroach sql --insecure
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 >  SET CLUSTER SETTING cluster.organization = 'Acme Company';
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 >  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
 ~~~
 
@@ -46,7 +46,7 @@ $ cockroach sql --insecure
 To verify the license key, open the [built-in SQL shell](use-the-built-in-sql-client.html) and use the `SHOW CLUSTER SETTING` command to check the organization name and license key:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
 ~~~
@@ -59,7 +59,7 @@ To verify the license key, open the [built-in SQL shell](use-the-built-in-sql-cl
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 >  SHOW CLUSTER SETTING enterprise.license;
 ~~~
 ~~~

@@ -73,25 +73,26 @@ Suppose the table schema is as follows:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE X (
-	ID1 INT,
-	ID2 INT,
-	ID3 INT DEFAULT 1,
-	PRIMARY KEY (ID1,ID2)
-  );
+> CREATE TABLE x (id1 INT, id2 INT, id3 INT DEFAULT 1, PRIMARY KEY (id1, id2));
 ~~~
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 
-> INSERT INTO X VALUES (1,1,1)
-  	ON CONFLICT (ID1,ID2)
-  	DO UPDATE SET ID3=X.ID3+1;
+> INSERT
+INTO
+  x
+VALUES
+  (1, 1, 1)
+ON CONFLICT
+  (id1, id2)
+DO
+  UPDATE SET id3 = x.id3 + 1;
 
-> SELECT * FROM X WHERE ID1=1 AND ID2=1;
+> SELECT * FROM x WHERE id1 = 1 AND id2 = 1;
 
 > COMMIT;
 ~~~
@@ -100,10 +101,17 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
-	ON CONFLICT (ID1,ID2)
-	DO UPDATE SET ID3=X.ID3 + 1
-	RETURNING ID1,ID2,ID3;
+> INSERT
+INTO
+  x
+VALUES
+  (1, 1, 1), (2, 2, 2), (3, 3, 3)
+ON CONFLICT
+  (id1, id2)
+DO
+  UPDATE SET id3 = x.id3 + 1
+RETURNING
+  id1, id2, id3;
 ~~~
 
 #### Generate random unique IDs
@@ -112,23 +120,18 @@ Suppose the table schema is as follows:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE X (
-	ID1 INT,
-	ID2 INT,
-	ID3 SERIAL,
-	PRIMARY KEY (ID1,ID2)
-  );
+> CREATE TABLE x (id1 INT, id2 INT, id3 SERIAL, PRIMARY KEY (id1, id2));
 ~~~
 
 The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 
-> INSERT INTO X VALUES (1,1);
+> INSERT INTO x VALUES (1, 1);
 
-> SELECT * FROM X WHERE ID1=1 AND ID2=1;
+> SELECT * FROM x WHERE id1 = 1 AND id2 = 1;
 
 > COMMIT;
 ~~~
@@ -137,8 +140,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO X VALUES (1,1),(2,2),(3,3)
-	RETURNING ID1,ID2,ID3;
+> INSERT INTO x VALUES (1, 1), (2, 2), (3, 3) RETURNING id1, id2, id3;
 ~~~
 
 ## Indexes best practices
@@ -194,14 +196,14 @@ Now if we want to find the account balances of all customers, an inefficient tab
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM ACCOUNTS;
+> SELECT * FROM accounts;
 ~~~
 
 This query retrieves all data stored in the table. A more efficient query would be:
 
 {% include copy-clipboard.html %}
 ~~~ sql
- > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
+ > SELECT customer, balance FROM accounts;
 ~~~
 
 This query returns the account balances of the customers.

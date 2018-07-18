@@ -5,6 +5,5 @@ referred to twice:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH a AS (VALUES (1), (2), (3))
-  SELECT * FROM a, a;
+> WITH a AS (VALUES (1), (2), (3)) SELECT * FROM a, a;
 ~~~

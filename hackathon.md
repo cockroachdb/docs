@@ -324,7 +324,7 @@ Here's how to do that:
     If this is the only database you're using, you can set it as the default database:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET DATABASE = db_name;
     ~~~
 
@@ -349,19 +349,16 @@ For some of your tables, you'll want to include a `FOREIGN KEY` columns. You don
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE parent_table (
-id INT PRIMARY KEY,
-val TEXT
-);
+> CREATE TABLE parent_table (id INT PRIMARY KEY, val STRING);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE child_table (
-parent_id INT,
-id INT PRIMARY KEY,
-val STRING,
-CONSTRAINT fk FOREIGN KEY (parent_id) REFERENCES parent_table (id)
+  parent_id INT,
+  id INT PRIMARY KEY,
+  val STRING,
+  CONSTRAINT fk FOREIGN KEY (parent_id) REFERENCES parent_table (id)
 );
 ~~~
 
@@ -540,10 +537,10 @@ Here's a simple example that will show you all of the customers who have data in
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT customers.id, customers.name
-FROM customers
-JOIN orders
-ON customers.id = orders.customer_id;
+> SELECT
+  customers.id, customers.name
+FROM
+  customers JOIN orders ON customers.id = orders.customer_id;
 ~~~
 
 ### Changing Table's Schema

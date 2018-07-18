@@ -5,21 +5,22 @@ In this example, create a simple table with a computed column:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE office_dogs (
-    id INT PRIMARY KEY,
-    first_name STRING,
-    last_name STRING,
-    full_name STRING AS (CONCAT(first_name, ' ', last_name)) STORED
-  );
+  id INT PRIMARY KEY,
+  first_name STRING,
+  last_name STRING,
+  full_name STRING AS (concat(first_name, ' ', last_name)) STORED
+);
 ~~~
 
 Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO office_dogs (id, first_name, last_name) VALUES
-    (1, 'Petee', 'Hirata'),
-    (2, 'Carl', 'Kimball'),
-    (3, 'Ernie', 'Narayan');
+> INSERT
+INTO
+  office_dogs (id, first_name, last_name)
+VALUES
+  (1, 'Petee', 'Hirata'), (2, 'Carl', 'Kimball'), (3, 'Ernie', 'Narayan');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -87,7 +88,11 @@ The computed column is now a regular column and can be updated as such:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO office_dogs (id, first_name, last_name, full_name) VALUES (4, 'Lola', 'McDog', 'This is not computed');
+> INSERT
+INTO
+  office_dogs (id, first_name, last_name, full_name)
+VALUES
+  (4, 'Lola', 'McDog', 'This is not computed');
 ~~~
 
 {% include copy-clipboard.html %}

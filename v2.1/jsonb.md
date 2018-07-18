@@ -78,10 +78,10 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
-    profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    last_updated TIMESTAMP DEFAULT now(),
-    user_profile JSONB
-  );
+  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  last_updated TIMESTAMP DEFAULT now(),
+  user_profile JSONB
+);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -102,9 +102,16 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users (user_profile) VALUES
-    ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
-    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
+> INSERT
+INTO
+  users (user_profile)
+VALUES
+  (
+    '{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'
+  ),
+  (
+    '{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}'
+  );
 ~~~
 
 {% include copy-clipboard.html %}
@@ -155,7 +162,7 @@ To retrieve a specific field from a `JSONB` value, use the `->` operator. For ex
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->'first_name',user_profile->'location' FROM users;
+> SELECT user_profile->'first_name', user_profile->'location' FROM users;
 ~~~
 ~~~
 +----------------------------+--------------------------+

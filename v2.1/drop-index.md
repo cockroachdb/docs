@@ -31,7 +31,7 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM tl;
+> SHOW INDEXES FROM tl;
 ~~~
 
 ~~~
@@ -52,7 +52,7 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM tbl;
+> SHOW INDEXES FROM tbl;
 ~~~
 
 ~~~
@@ -70,7 +70,7 @@ The user must have the `CREATE` [privilege](privileges.html) on each specified t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM orders;
+> SHOW INDEXES FROM orders;
 ~~~
 
 ~~~

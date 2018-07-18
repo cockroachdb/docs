@@ -96,11 +96,11 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
-    orderTotal DECIMAL(9,2),
-    INDEX (customer)
-  );
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
+  ordertotal DECIMAL(9,2),
+  INDEX (customer)
+);
 ~~~
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
 
@@ -123,16 +123,16 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE packages (
-    customer INT,
-    "order" INT,
-    id INT,
-    address STRING(50),
-    delivered BOOL,
-    delivery_date DATE,
-    PRIMARY KEY (customer, "order", id),
-    CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
-    ) INTERLEAVE IN PARENT orders (customer, "order")
-  ;
+  customer INT,
+  "order" INT,
+  id INT,
+  address STRING(50),
+  delivered BOOL,
+  delivery_date DATE,
+  PRIMARY KEY (customer, "order", id),
+  CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
+)
+INTERLEAVE IN PARENT orders (customer, "order");
 ~~~
 
 ## Usage examples
@@ -153,18 +153,22 @@ Next, create the referencing table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id),
-    orderTotal DECIMAL(9,2),
-    INDEX (customer)
-  );
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id),
+  ordertotal DECIMAL(9,2),
+  INDEX (customer)
+);
 ~~~
 
 Let's insert a record into each table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
+> INSERT
+INTO
+  customers
+VALUES
+  (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -249,9 +253,7 @@ First, create the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_2 (
-    id INT PRIMARY KEY
-  );
+> CREATE TABLE customers_2 (id INT PRIMARY KEY);
 ~~~
 
 Then, create the referencing table:
@@ -259,9 +261,10 @@ Then, create the referencing table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_2 (
-    id INT PRIMARY KEY,
-    customer_id INT REFERENCES customers_2(id) ON UPDATE CASCADE ON DELETE CASCADE
-  );
+  id INT PRIMARY KEY,
+  customer_id
+    INT REFERENCES customers_2 (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 ~~~
 
 Insert a few records into the referenced table:
@@ -275,7 +278,7 @@ Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
+> INSERT INTO orders_2 VALUES (100, 1), (101, 2), (102, 3), (103, 1);
 ~~~
 
 Now, let's update an `id` in the referenced table:
@@ -359,9 +362,7 @@ First, create the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_3 (
-    id INT PRIMARY KEY
-  );
+> CREATE TABLE customers_3 (id INT PRIMARY KEY);
 ~~~
 
 Then, create the referencing table:
@@ -369,9 +370,10 @@ Then, create the referencing table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_3 (
-    id INT PRIMARY KEY,
-    customer_id INT REFERENCES customers_3(id) ON UPDATE SET NULL ON DELETE SET NULL
-  );
+  id INT PRIMARY KEY,
+  customer_id
+    INT REFERENCES customers_3 (id) ON DELETE SET NULL ON UPDATE SET NULL
+);
 ~~~
 
 Insert a few records into the referenced table:
@@ -385,7 +387,7 @@ Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
+> INSERT INTO orders_3 VALUES (100, 1), (101, 2), (102, 3), (103, 1);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -486,9 +488,7 @@ First, create the referenced table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_4 (
-    id INT PRIMARY KEY
-  );
+> CREATE TABLE customers_4 (id INT PRIMARY KEY);
 ~~~
 
 Then, create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
@@ -496,9 +496,12 @@ Then, create the referencing table with the `DEFAULT` value for `customer_id` se
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_4 (
-    id INT PRIMARY KEY,
-    customer_id INT DEFAULT 9999 REFERENCES customers_4(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT
-  );
+  id INT PRIMARY KEY,
+  customer_id
+    INT
+    DEFAULT 9999
+    REFERENCES customers_4 (id) ON DELETE SET DEFAULT ON UPDATE SET DEFAULT
+);
 ~~~
 
 Insert a few records into the referenced table:
@@ -512,7 +515,7 @@ Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
+> INSERT INTO orders_4 VALUES (100, 1), (101, 2), (102, 3), (103, 1);
 ~~~
 ~~~
 +-----+-------------+

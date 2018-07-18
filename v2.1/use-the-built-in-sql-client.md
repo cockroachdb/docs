@@ -238,7 +238,7 @@ This example assume that we have already started the SQL shell (see examples abo
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
 ~~~
 

@@ -36,7 +36,7 @@ How you add constraints depends on the number of columns you want to constrain, 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
+    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a, b));
     ~~~
 
   {{site.data.alerts.callout_info}}
@@ -75,7 +75,7 @@ You can name constraints applied to new tables using the `CONSTRAINT` clause bef
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE bar (a INT, b INT, CONSTRAINT yet_another_name PRIMARY KEY (a,b));
+> CREATE TABLE bar (a INT, b INT, CONSTRAINT yet_another_name PRIMARY KEY (a, b));
 ~~~
 
 ### View constraints

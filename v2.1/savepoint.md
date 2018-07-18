@@ -24,7 +24,7 @@ No [privileges](privileges.html) are required to create a savepoint. However, pr
 After you `BEGIN` the transaction, you must create the savepoint to identify that if the transaction contends with another transaction for resources and "loses", you intend to use [the function for client-side transaction retries](transactions.html#transaction-retries):
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 ~~~
 
@@ -49,7 +49,7 @@ After you `BEGIN` the transaction, you must create the savepoint to identify tha
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > COMMIT;
 ~~~
 

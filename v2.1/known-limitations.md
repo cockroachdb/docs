@@ -41,7 +41,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
@@ -60,7 +60,7 @@ A simple `INSERT` statement that fails the `CHECK` constraint fails as it should
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO ab (a,b) VALUES (1, 12312);
+> INSERT INTO ab (a, b) VALUES (1, 12312);
 ~~~
 
 ~~~
@@ -70,13 +70,13 @@ pq: failed to satisfy CHECK constraint (b < 1)
 However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
+> INSERT INTO ab (a, b) VALUES (1, 0) ON CONFLICT (a) DO UPDATE SET b = 123132;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -127,17 +127,17 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT nextval('initial_seq');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> ALTER TABLE add_default ADD COLUMN g OID DEFAULT 'foo'::REGCLASS::OID;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT 'foo'::REGTYPE::INT;
 ~~~
 
 ### Available capacity metric in the Admin UI
@@ -215,7 +215,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ('string1' collate en) || ('string2' collate en);
+> SELECT ('string1' COLLATE en) || ('string2' COLLATE en);
 ~~~
 
 ~~~

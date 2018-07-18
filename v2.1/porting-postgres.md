@@ -25,8 +25,8 @@ ERROR:  zero raised to a negative power is undefined
 In CockroachDB, these expressions instead return Infinity:
 
 {% include copy-clipboard.html %}
-~~~ sql
-SELECT 1e300::float * 1e10::float;
+~~~ sql?nofmt
+SELECT 1e300::FLOAT * 1e10::FLOAT;
 ~~~
 
 ~~~
@@ -38,8 +38,8 @@ SELECT 1e300::float * 1e10::float;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
-SELECT pow(0::float, -1::float);
+~~~ sql?nofmt
+SELECT pow(0::FLOAT, -1::FLOAT);
 ~~~
 
 ~~~
@@ -56,7 +56,7 @@ In PostgreSQL, the unary `~` (bitwise not) operator has a low precedence. For ex
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT ~1 + 2
+SELECT ~1 + 2;
 ~~~
 
 In CockroachDB, unary `~` has the same (high) precedence as unary `-`, so the above expression will be parsed as `(~1) + 2`.
@@ -77,7 +77,7 @@ In PostgreSQL, division of integers results in an integer. For example, the foll
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1 + 1 / 2
+SELECT 1 + 1 / 2;
 ~~~
 
 In CockroachDB, integer division results in a `decimal`. CockroachDB instead provides the `//` operator to perform floor division.
@@ -90,7 +90,7 @@ In PostgreSQL, the shift operators (`<<`, `>>`) sometimes modulo their second ar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1::int << 32
+SELECT 1::INT << 32;
 ~~~
 
 In CockroachDB, no such modulo is performed.
@@ -99,5 +99,5 @@ In CockroachDB, no such modulo is performed.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1::int << (x % 64)
+SELECT 1::INT << x % 64;
 ~~~

@@ -118,7 +118,7 @@ Considering the following table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE a(a INT);
+> CREATE TABLE a (a INT);
 > INSERT INTO a VALUES (1), (3), (2);
 ~~~
 
@@ -147,7 +147,7 @@ take priority over the data source columns, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a AS b, b AS c FROM ab ORDER BY b; -- orders by column a, renamed to b
 > SELECT a,      b      FROM ab ORDER BY b; -- orders by column b
 ~~~
@@ -166,7 +166,7 @@ to order rows that are equal over the earlier specifications, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b, a;
 ~~~
 
@@ -181,7 +181,7 @@ invert its order. This can be specified separately for each specification, for e
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b DESC, a; -- sorts on b descending, then a ascending.
 ~~~
 
@@ -196,7 +196,7 @@ additional sorting computation to achieve it, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE kv(k INT PRIMARY KEY, v INT);
+> CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 > SELECT k, v FROM kv ORDER BY PRIMARY KEY kv; -- guarantees ordering by column k.
 ~~~
 
@@ -225,7 +225,7 @@ additional sorting computation to achieve it, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE kv(k INT PRIMARY KEY, v INT, INDEX v_idx(v));
+> CREATE TABLE kv (k INT PRIMARY KEY, v INT, INDEX v_idx (v));
 > SELECT k, v FROM kv ORDER BY INDEX kv@v_idx; -- guarantees ordering by column v.
 ~~~
 

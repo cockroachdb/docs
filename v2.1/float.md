@@ -49,7 +49,7 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 ## Examples
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
 ~~~
 
@@ -70,8 +70,12 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
+~~~ sql?nofmt
+> INSERT
+INTO
+  floats
+VALUES
+  (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
 ~~~
 
 {% include copy-clipboard.html %}

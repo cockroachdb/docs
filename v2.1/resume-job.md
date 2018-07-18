@@ -43,14 +43,14 @@ Parameter | Description
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > PAUSE JOB 27536791415282;
 ~~~
 
 ### Resume a restore job
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > RESUME JOB 27536791415282;
 ~~~
 

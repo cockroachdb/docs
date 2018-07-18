@@ -46,7 +46,7 @@ As noted in [Limitations](#limitations), you cannot run schema changes inside tr
 However, as of version 2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
   SAVEPOINT cockroach_restart;
   CREATE TABLE fruits (
@@ -128,7 +128,7 @@ The following statements fail due to the [no schema changes within transactions]
 #### Create an index and then run a select against that index inside a transaction
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE foo (id INT PRIMARY KEY, name VARCHAR);
   BEGIN;
   SAVEPOINT cockroach_restart;
@@ -151,7 +151,7 @@ ROLLBACK
 #### Add a column and then add a constraint against that column inside a transaction
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE foo ();
   BEGIN;
   SAVEPOINT cockroach_restart;
@@ -174,7 +174,7 @@ ROLLBACK
 #### Add a column and then select against that column inside a transaction
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE TABLE foo ();
   BEGIN;
   SAVEPOINT cockroach_restart;

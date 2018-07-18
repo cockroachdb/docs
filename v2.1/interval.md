@@ -60,11 +60,14 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO intervals VALUES
-  (1, INTERVAL '1h2m3s4ms5us6ns'),
-  (2, INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'),
-  (3, INTERVAL '1-2 3 4:5:6');
+~~~ sql?nofmt
+> INSERT
+INTO
+  intervals
+VALUES
+  (1, '1h2m3s4ms5µs6ns':::INTERVAL),
+  (2, '1y2mon3d4h5m6s':::INTERVAL),
+  (3, '1y2mon3d4h5m6s':::INTERVAL);
 ~~~
 
 ~~~

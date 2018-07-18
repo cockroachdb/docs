@@ -3,21 +3,22 @@ In this example, let's create a simple table with a computed column:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE names (
-    id INT PRIMARY KEY,
-    first_name STRING,
-    last_name STRING,
-    full_name STRING AS (CONCAT(first_name, ' ', last_name)) STORED
-  );
+  id INT PRIMARY KEY,
+  first_name STRING,
+  last_name STRING,
+  full_name STRING AS (concat(first_name, ' ', last_name)) STORED
+);
 ~~~
 
 Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO names (id, first_name, last_name) VALUES
-    (1, 'Lola', 'McDog'),
-    (2, 'Carl', 'Kimball'),
-    (3, 'Ernie', 'Narayan');
+> INSERT
+INTO
+  names (id, first_name, last_name)
+VALUES
+  (1, 'Lola', 'McDog'), (2, 'Carl', 'Kimball'), (3, 'Ernie', 'Narayan');
 ~~~
 
 {% include copy-clipboard.html %}

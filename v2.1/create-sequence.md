@@ -124,21 +124,23 @@ In this example, we create a table using the sequence we created in the first ex
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customer_list (
-    id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
-    customer string,
-    address string
-  );
+  id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
+  customer STRING,
+  address STRING
+);
 ~~~
 
 Insert a few records to see the sequence.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customer_list (customer, address)
-  VALUES
-    ('Lauren', '123 Main Street'),
-    ('Jesse', '456 Broad Ave'),
-    ('Amruta', '9876 Green Parkway');
+> INSERT
+INTO
+  customer_list (customer, address)
+VALUES
+  ('Lauren', '123 Main Street'),
+  ('Jesse', '456 Broad Ave'),
+  ('Amruta', '9876 Green Parkway');
 ~~~
 
 {% include copy-clipboard.html %}

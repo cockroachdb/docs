@@ -76,7 +76,7 @@ To turn the cost-based optimizer off for the current session:
 To turn the cost-based optimizer off for all sessions:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET CLUSTER SETTING sql.defaults.optimizer = 'off';
 ~~~
 

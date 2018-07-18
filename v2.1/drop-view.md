@@ -99,7 +99,7 @@ pq: cannot drop view "user_accounts" because view "user_emails" depends on it
 ~~~
 
 {% include copy-clipboard.html %}
-~~~sql
+~~~ sql
 > DROP VIEW bank.user_accounts CASCADE;
 ~~~
 

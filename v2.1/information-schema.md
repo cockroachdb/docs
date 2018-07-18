@@ -330,7 +330,10 @@ Column | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT table_name, constraint_name FROM db_name.information_schema.table_constraints;
+> SELECT
+  table_name, constraint_name
+FROM
+  db_name.information_schema.table_constraints;
 ~~~
 ~~~
 +-------------+-----------------+

@@ -250,83 +250,108 @@ Import compressed files.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
+> IMPORT
+TABLE
+  customers
+CREATE USING
+  'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  );
 ~~~
 
 ### Use `CREATE TABLE` statement from a statement
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  );
 ~~~
 
 ### Import a tab-separated file
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.tsv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.tsv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  )
 WITH
-	delimiter = e'\t'
-;
+  delimiter = e'\t';
 ~~~
 
 ### Skip commented lines
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  )
 WITH
-	comment = '#'
-;
+  comment = '#';
 ~~~
 
 ### Skip first *n* lines
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  )
 WITH
-	skip = '2'
-;
+  skip = '2';
 ~~~
 
 ### Use blank characters as `NULL`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  )
 WITH
-	nullif = ''
-;
+  "nullif" = '';
 ~~~
 
 ### Import a compressed CSV file
@@ -335,28 +360,36 @@ CockroachDB chooses the decompression codec based on the filename (the common ex
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  );
 ~~~
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz.latest?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+> IMPORT
+TABLE
+  customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name STRING,
+    INDEX name_idx (name)
+  )
+CSV
+  DATA (
+    'azure://acme-co/customer-import-data.csv.gz.latest?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  )
 WITH
-	decompress = 'gzip'
-;
+  decompress = 'gzip';
 ~~~
 
 ## Known limitation
@@ -364,7 +397,7 @@ WITH
 `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 

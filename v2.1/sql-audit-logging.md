@@ -29,22 +29,28 @@ Later, we'll show how to turn on audit logs for the `customers` table.
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name STRING NOT NULL,
-    address STRING NOT NULL,
-    national_id INT NOT NULL,
-    telephone INT NOT NULL,
-    email STRING UNIQUE NOT NULL
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name STRING NOT NULL,
+  address STRING NOT NULL,
+  national_id INT NOT NULL,
+  telephone INT NOT NULL,
+  email STRING NOT NULL UNIQUE
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    product_id INT NOT NULL,
-    delivery_status STRING check (delivery_status='processing' or delivery_status='in-transit' or delivery_status='delivered') NOT NULL,
-    customer_id UUID NOT NULL REFERENCES customers (id)
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_id INT NOT NULL,
+  delivery_status
+    STRING
+    NOT NULL
+    CHECK (
+      (delivery_status = 'processing' OR delivery_status = 'in-transit')
+      OR delivery_status = 'delivered'
+    ),
+  customer_id UUID NOT NULL REFERENCES customers (id)
 );
 ~~~
 
@@ -67,24 +73,32 @@ Now that we have auditing turned on, let's add some customer data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers (name, address, national_id, telephone, email) VALUES (
+> INSERT
+INTO
+  customers (name, address, national_id, telephone, email)
+VALUES
+  (
     'Pritchard M. Cleveland',
     '23 Crooked Lane, Garden City, NY USA 11536',
     778124477,
     12125552000,
     'pritchmeister@aol.com'
-);
+  );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers (name, address, national_id, telephone, email) VALUES (
+> INSERT
+INTO
+  customers (name, address, national_id, telephone, email)
+VALUES
+  (
     'Vainglorious K. Snerptwiddle III',
     '44 Straight Narrows, Garden City, NY USA 11536',
     899127890,
     16465552000,
     'snerp@snerpy.net'
-);
+  );
 ~~~
 
 Now let's verify that our customers were added successfully:
@@ -136,11 +150,15 @@ Evaluate the below a few times to generate data; note that this would error if [
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders (product_id, delivery_status, customer_id) VALUES (
+> INSERT
+INTO
+  orders (product_id, delivery_status, customer_id)
+VALUES
+  (
     nextval('product_ids_asc'),
     'processing',
     (SELECT id FROM customers WHERE name ~ 'Cleve')
-);
+  );
 ~~~
 
 Let's verify that our orders were added successfully:

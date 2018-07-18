@@ -8,7 +8,7 @@ $ cockroach sql --insecure
 In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE USER IF NOT EXISTS maxroach;
 ~~~
 

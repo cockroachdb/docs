@@ -74,7 +74,7 @@ Special syntax cases supported for compatibility:
 ### Showing the value of a single session variable
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW DATABASE;
 ~~~
 
@@ -90,7 +90,7 @@ Special syntax cases supported for compatibility:
 ### Showing the value of all session variables
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW ALL;
 ~~~
 

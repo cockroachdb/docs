@@ -55,7 +55,7 @@ We recommend disabling auto-finalization so you can monitor the stability and pe
 3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
     ~~~
 
@@ -206,7 +206,7 @@ Once you are satisfied with the new version, re-enable auto-finalization:
 2. Re-enable auto-finalization:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 

@@ -26,12 +26,12 @@ Only the `root` user can modify cluster settings.
 {{site.data.alerts.callout_success}}You can use <a href="set-cluster-setting.html"><code>SET CLUSTER SETTING .. TO DEFAULT</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
 
@@ -45,12 +45,12 @@ Only the `root` user can modify cluster settings.
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > RESET CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
 

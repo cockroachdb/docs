@@ -24,11 +24,13 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~
@@ -45,7 +47,7 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes
@@ -105,7 +107,7 @@ Let's say you have a `bank` database containing an `accounts` table:
 You want a particular user, `bob`, to be able to see the types of accounts each user has without seeing the balance in each account, so you create a view to expose just the `type` and `email` columns:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.accounts;
@@ -119,7 +121,7 @@ You then make sure `bob` does not have privileges on the underlying `bank.accoun
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON bank.accounts;
+> SHOW GRANTS ON TABLE bank.accounts;
 ~~~
 
 ~~~
@@ -136,7 +138,7 @@ Finally, you grant `bob` privileges on the `bank.user_accounts` view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT ON bank.user_accounts TO bob;
+> GRANT SELECT ON TABLE bank.user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `bank.accounts` table but will be allowed to query the `bank.user_accounts` view:
@@ -175,7 +177,7 @@ pq: user bob does not have SELECT privilege on table accounts
 To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
   FROM bank.accounts;
@@ -277,7 +279,12 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
+> SELECT
+  view_definition
+FROM
+  bank.information_schema.views
+WHERE
+  table_name = 'user_accounts';
 ~~~
 
 ~~~
@@ -358,7 +365,7 @@ To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP VIEW bank.user_accounts
+> DROP VIEW bank.user_accounts;
 ~~~
 
 ~~~

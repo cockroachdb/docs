@@ -110,7 +110,7 @@ clauses and indexes.
 For example:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT FLOAT 'NaN' < 1, 1 < FLOAT 'NaN', FLOAT 'NaN' < FLOAT 'NaN';
 ~~~
 
@@ -123,7 +123,7 @@ For example:
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT FLOAT 'NaN' = FLOAT 'NaN' AS result;
 ~~~
 
@@ -136,7 +136,7 @@ For example:
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT FLOAT 'NaN' < FLOAT '-INFINITY' AS result;
 ~~~
 
@@ -244,7 +244,7 @@ the result of evaluating the right operand. In the subquery form, any
 For example:
 
 {% include copy-clipboard.html %}
-~~~sql
+~~~ sql
 > SELECT a IN (1, 2, 3) FROM sometable;
 ~~~
 
@@ -287,8 +287,11 @@ character, or `%` to match any sequence of zero or more characters.
 For example:
 
 {% include copy-clipboard.html %}
-~~~sql
-> SELECT 'monday' LIKE '%day' AS a, 'tuesday' LIKE 'tue_day' AS b, 'wednesday' ILIKE 'W%' AS c;
+~~~ sql
+> SELECT
+  'monday' LIKE '%day' AS a,
+  'tuesday' LIKE 'tue_day' AS b,
+  'wednesday' ILIKE 'W%' AS c;
 ~~~
 
 ~~~
@@ -330,8 +333,11 @@ inside a string, not only at the beginning.
 For example:
 
 {% include copy-clipboard.html %}
-~~~sql
-> SELECT 'monday' ~ 'onday' AS a, 'tuEsday' ~ 't[uU][eE]sday' AS b, 'wednesday' ~* 'W.*y' AS c;
+~~~ sql
+> SELECT
+  'monday' ~ 'onday' AS a,
+  'tuEsday' ~ 't[uU][eE]sday' AS b,
+  'wednesday' ~* 'W.*y' AS c;
 ~~~
 
 ~~~
@@ -370,8 +376,11 @@ This is a mix of SQL `LIKE` patterns and POSIX regular expressions:
 For example:
 
 {% include copy-clipboard.html %}
-~~~sql
-> SELECT 'monday' SIMILAR TO '_onday' AS a, 'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b, 'wednesday' SIMILAR TO 'w%y' AS c;
+~~~ sql
+> SELECT
+  'monday' SIMILAR TO '_onday' AS a,
+  'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b,
+  'wednesday' SIMILAR TO 'w%y' AS c;
 ~~~
 
 ~~~
@@ -676,7 +685,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[1,2,3] AS a;
+> SELECT ARRAY[1, 2, 3] AS a;
 ~~~
 
 ~~~
@@ -696,7 +705,7 @@ specified explicitly using a type annotation. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[]:::int[];
+> SELECT ARRAY[]:::INT[];
 ~~~
 
 {{site.data.alerts.callout_success}}To convert the results of a subquery to an array, use <a href="#conversion-of-subquery-results-to-an-array"><code>ARRAY(...)</code></a> instead.{{site.data.alerts.end}}
@@ -759,7 +768,7 @@ Type annotations are specially useful to guide the arithmetic on
 numeric values. For example:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT (1 / 0):::FLOAT;
 ~~~
 
@@ -821,8 +830,8 @@ For example, the following query returns `TRUE` if there are more rows in table 
 `admins`:
 
 {% include copy-clipboard.html %}
-~~~sql
-> SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
+~~~ sql
+> SELECT (SELECT count(*) FROM users) > (SELECT count(*) FROM admins);
 ~~~
 
 {{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}

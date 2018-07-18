@@ -28,10 +28,12 @@ For example, consider this query:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT(city),
-             SUM(revenue) OVER (PARTITION BY city) AS city_revenue
-            FROM rides
-        ORDER BY city_revenue DESC;
+> SELECT
+  DISTINCT city, sum(revenue) OVER (PARTITION BY city) AS city_revenue
+FROM
+  rides
+ORDER BY
+  city_revenue DESC;
 ~~~
 
 Its operation can be described as follows (numbered steps listed here correspond to the numbers in the diagram below):
@@ -64,7 +66,7 @@ The tables used in the examples are shown below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE users;
+> SHOW CREATE users;
 ~~~
 
 ~~~
@@ -85,7 +87,7 @@ The tables used in the examples are shown below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE rides;
+> SHOW CREATE rides;
 ~~~
 
 ~~~
@@ -120,7 +122,7 @@ The tables used in the examples are shown below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE vehicles;
+> SHOW CREATE vehicles;
 ~~~
 
 ~~~
@@ -151,11 +153,21 @@ To see which customers have taken the most rides, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM
-    (SELECT distinct(name) as "name",
-            COUNT(*) OVER (PARTITION BY name) AS "number of rides"
-     FROM users JOIN rides ON users.id = rides.rider_id)
-  ORDER BY "number of rides" DESC LIMIT 10;
+> SELECT
+  *
+FROM
+  (
+    SELECT
+      DISTINCT
+      name AS name,
+      count(*) OVER (PARTITION BY name) AS "number of rides"
+    FROM
+      users JOIN rides ON users.id = rides.rider_id
+  )
+ORDER BY
+  "number of rides" DESC
+LIMIT
+  10;
 ~~~
 
 ~~~
@@ -182,11 +194,14 @@ To see which customers have generated the most revenue, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT name,
-    SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
-    FROM users JOIN rides ON users.id = rides.rider_id
-    ORDER BY "total rider revenue" DESC
-    LIMIT 10;
+> SELECT
+  DISTINCT name, sum(revenue) OVER (PARTITION BY name) AS "total rider revenue"
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+ORDER BY
+  "total rider revenue" DESC
+LIMIT
+  10;
 ~~~
 
 ~~~
@@ -213,17 +228,21 @@ To add row numbers to the output, kick the previous query down into a subquery a
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT row_number() OVER (), *
-  FROM (
-		  SELECT DISTINCT
-		         name,
-		         sum(revenue) OVER (
-					PARTITION BY name
-		         ) AS "total rider revenue"
-		    FROM users JOIN rides ON users.id = rides.rider_id
-		ORDER BY "total rider revenue" DESC
-		   LIMIT 10
-       );
+> SELECT
+  row_number() OVER (), *
+FROM
+  (
+    SELECT
+      DISTINCT
+      name,
+      sum(revenue) OVER (PARTITION BY name) AS "total rider revenue"
+    FROM
+      users JOIN rides ON users.id = rides.rider_id
+    ORDER BY
+      "total rider revenue" DESC
+    LIMIT
+      10
+  );
 ~~~
 
 ~~~
@@ -250,16 +269,24 @@ To see which customers have taken the most rides while generating the most reven
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM (
-    SELECT DISTINCT name,
-      COUNT(*)     OVER w AS "number of rides",
-      (SUM(revenue) OVER w)::DECIMAL(100,2) AS "total rider revenue"
-      FROM users JOIN rides ON users.ID = rides.rider_id
-      WINDOW w AS (PARTITION BY name)
-    )
-  ORDER BY "number of rides" DESC,
-           "total rider revenue" DESC
-  LIMIT 10;
+> SELECT
+  *
+FROM
+  (
+    SELECT
+      DISTINCT
+      name,
+      count(*) OVER w AS "number of rides",
+      (sum(revenue) OVER w)::DECIMAL(100,2) AS "total rider revenue"
+    FROM
+      users JOIN rides ON users.id = rides.rider_id
+    WINDOW
+      w AS (PARTITION BY name)
+  )
+ORDER BY
+  "number of rides" DESC, "total rider revenue" DESC
+LIMIT
+  10;
 ~~~
 
 ~~~
@@ -286,13 +313,18 @@ To see which customers have the highest average revenue per ride, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name,
-    COUNT(*)     OVER w AS "number of rides",
-    AVG(revenue) OVER w AS "average revenue per ride"
-    FROM users JOIN rides ON users.ID = rides.rider_id
-    WINDOW w AS (PARTITION BY name)
-    ORDER BY "average revenue per ride" DESC, "number of rides" ASC
-    LIMIT 10;
+> SELECT
+  name,
+  count(*) OVER w AS "number of rides",
+  avg(revenue) OVER w AS "average revenue per ride"
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WINDOW
+  w AS (PARTITION BY name)
+ORDER BY
+  "average revenue per ride" DESC, "number of rides" ASC
+LIMIT
+  10;
 ~~~
 
 ~~~
@@ -319,16 +351,26 @@ To see which customers have the highest average revenue per ride, given that the
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM (
-    SELECT DISTINCT name,
-      COUNT(*)     OVER w AS "number of rides",
-      (AVG(revenue) OVER w)::DECIMAL(100,2) AS "average revenue per ride"
-      FROM users JOIN rides ON users.ID = rides.rider_id
-      WINDOW w AS (PARTITION BY name)
+> SELECT
+  *
+FROM
+  (
+    SELECT
+      DISTINCT
+      name,
+      count(*) OVER w AS "number of rides",
+      (avg(revenue) OVER w)::DECIMAL(100,2) AS "average revenue per ride"
+    FROM
+      users JOIN rides ON users.id = rides.rider_id
+    WINDOW
+      w AS (PARTITION BY name)
   )
-  WHERE "number of rides" >= 5
-  ORDER BY "average revenue per ride" DESC
-  LIMIT 10;
+WHERE
+  "number of rides" >= 5
+ORDER BY
+  "average revenue per ride" DESC
+LIMIT
+  10;
 ~~~
 
 ~~~
@@ -356,13 +398,18 @@ To find out the total number of riders and total revenue generated thus far by t
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT
-    COUNT("name") AS "total # of riders",
-    SUM("total rider revenue") AS "total revenue" FROM (
-      SELECT name,
-             SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
-        FROM users JOIN rides ON users.id = rides.rider_id
-        ORDER BY "total rider revenue" DESC
-        LIMIT (SELECT count(distinct(rider_id)) FROM rides)
+  count(name) AS "total # of riders",
+  sum("total rider revenue") AS "total revenue"
+FROM
+  (
+    SELECT
+      name, sum(revenue) OVER (PARTITION BY name) AS "total rider revenue"
+    FROM
+      users JOIN rides ON users.id = rides.rider_id
+    ORDER BY
+      "total rider revenue" DESC
+    LIMIT
+      (SELECT count(DISTINCT rider_id) FROM rides)
   );
 ~~~
 
@@ -379,7 +426,12 @@ To find out the total number of riders and total revenue generated thus far by t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT type, COUNT(*) OVER (PARTITION BY type) AS cnt FROM vehicles ORDER BY cnt DESC;
+> SELECT
+  DISTINCT type, count(*) OVER (PARTITION BY type) AS cnt
+FROM
+  vehicles
+ORDER BY
+  cnt DESC;
 ~~~
 
 ~~~
@@ -397,7 +449,12 @@ To find out the total number of riders and total revenue generated thus far by t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT DISTINCT(city), SUM(revenue) OVER (PARTITION BY city) AS city_revenue FROM rides ORDER BY city_revenue DESC;
+> SELECT
+  DISTINCT city, sum(revenue) OVER (PARTITION BY city) AS city_revenue
+FROM
+  rides
+ORDER BY
+  city_revenue DESC;
 ~~~
 
 ~~~

@@ -106,9 +106,7 @@ By using the explicit index annotation, you can override [CockroachDB's index se
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance
-FROM accounts@accounts_name_idx
-WHERE name = 'Edna Barath';
+> SELECT name, balance FROM accounts@accounts_name_idx WHERE name = 'Edna Barath';
 ~~~
 ~~~
 +-------------+---------+
@@ -163,7 +161,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM sin(3.2)
+> SELECT * FROM sin(3.2);
 ~~~
 ~~~
 +-----------------------+
@@ -186,7 +184,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM generate_series(1, 3)
+> SELECT * FROM generate_series(1, 3);
 ~~~
 ~~~
 +-----------------+
@@ -227,12 +225,12 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
+> SELECT c.x FROM (SELECT count(*) AS x FROM users) AS c;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
+> SELECT c.x FROM (SELECT count(*) FROM users) AS c (x);
 ~~~
 
 ### Ordinality annotation
@@ -250,7 +248,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM (VALUES('a'),('b'),('c'));
+> SELECT * FROM (VALUES ('a'), ('b'), ('c'));
 ~~~
 ~~~
 +---------+
@@ -310,12 +308,12 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT c + 2 FROM (SELECT count(*) AS c FROM users);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT * FROM (VALUES (1), (2), (3));
 ~~~
 
 {% include copy-clipboard.html %}
@@ -350,7 +348,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT "column_name" FROM [SHOW COLUMNS FROM customer];
+> SELECT column_name FROM [SHOW COLUMNS FROM customer];
 ~~~
 
 ~~~
@@ -371,9 +369,19 @@ client:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO management(manager, reportee)
-    VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
-            (SELECT id FROM [INSERT INTO employee(name) VALUES ('Albert') RETURNING id]));
+> INSERT
+INTO
+  management (manager, reportee)
+VALUES
+  (
+    (SELECT id FROM employee WHERE name = 'Diana'),
+    (
+      SELECT
+        id
+      FROM
+        [INSERT INTO employee (name) VALUES ('Albert') RETURNING id]
+    )
+  );
 ~~~
 
 ## Composability

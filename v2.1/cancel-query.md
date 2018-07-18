@@ -40,7 +40,7 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 
 In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
 
-~~~ sql
+~~~ sql?nofmt
 > SHOW QUERIES;
 ~~~
 
@@ -54,7 +54,7 @@ In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get
 +----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
 ~~~
 
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
@@ -62,7 +62,7 @@ In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get
 
 In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
-~~~ sql
+~~~ sql?nofmt
 > CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
       WHERE client_address = '192.168.0.72:56194'
           AND username = 'mroach'

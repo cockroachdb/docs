@@ -31,7 +31,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
 1. In the built-in SQL client, create a database:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > CREATE DATABASE bank;
     ~~~
 
@@ -41,7 +41,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
 2. Create a table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > CREATE TABLE bank.customers (
        customer_id INTEGER PRIMARY KEY,
        name STRING,
@@ -60,7 +60,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 1. Insert a row into the table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.customers
       VALUES (1, 'Petee', '101 5th Ave, New York, NY 10003');
     ~~~
@@ -70,7 +70,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 2. Verify that the data was inserted successfully by using a [`SELECT` statement](../select.html) to retrieve data from the table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SELECT customer_id, name, address FROM bank.customers;
     ~~~
 
@@ -84,7 +84,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 3. Insert another row:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.customers VALUES (2, 'Carl', NULL);
     ~~~
 
@@ -93,7 +93,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 4. Insert two rows in the same statement:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.customers VALUES
       (3, 'Lola', NULL),
       (4, 'Ernie', '1600 Pennsylvania Ave NW, Washington, DC 20500');
@@ -102,7 +102,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 5. Verify that the data was inserted successfully:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SELECT * FROM bank.customers;
     ~~~
 
@@ -129,7 +129,7 @@ Now that you have a place to store personal information about customers, create 
 1. Create an `accounts` table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > CREATE TABLE bank.accounts (
         type STRING,
         balance DECIMAL(8, 2),
@@ -147,7 +147,7 @@ Now that you have a place to store personal information about customers, create 
 2. Try to open an account for a customer that doesn't exist:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.accounts VALUES ('checking', 0.00, 5);
     ~~~
 
@@ -160,14 +160,14 @@ Now that you have a place to store personal information about customers, create 
 3. Now open an account for a valid customer:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.accounts VALUES ('checking', 0.00, 1);
     ~~~
 
 4. Try to [delete](../delete.html) a customer record:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > DELETE FROM bank.customers WHERE customer_id = 1;
     ~~~
 
@@ -182,21 +182,21 @@ Now that you have a place to store personal information about customers, create 
 5. Delete a customer's account:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > DELETE FROM bank.accounts WHERE customer_id = 1;
     ~~~
 
 6. Now that the customer's account is deleted, you can delete the customer record:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > DELETE FROM bank.customers WHERE customer_id = 1;
     ~~~
 
 7. Create accounts for Carl (`customer_id=2`) and Ernie (`customer_id=4`):
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > INSERT INTO bank.accounts VALUES
       ('checking', 250.00, 2),
       ('savings', 314.15, 2),
@@ -208,7 +208,7 @@ Now that you have a place to store personal information about customers, create 
 1. View account balances using a `SELECT` statement:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SELECT * FROM bank.accounts;
     ~~~
 
@@ -224,7 +224,7 @@ Now that you have a place to store personal information about customers, create 
 2. Use a [join](../joins.html) to match customer IDs with the name and address in the `customers` table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SELECT * FROM bank.customers NATURAL JOIN bank.accounts;
     ~~~
 
@@ -244,7 +244,7 @@ Now that you have a place to store personal information about customers, create 
 3. [Update](../update.html) Carl's address:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > UPDATE bank.customers
       SET address = '4 Privet Drive, Little Whinging, England'
       WHERE customer_id = 2;
@@ -253,7 +253,7 @@ Now that you have a place to store personal information about customers, create 
 4. With the join, the address is updated on both accounts:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SELECT * FROM bank.customers NATURAL JOIN bank.accounts;
     ~~~
 
@@ -327,7 +327,7 @@ Now try running two copies of the above transaction in parallel:
 1. In the SQL shell, run:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN;
     ~~~
 
@@ -339,14 +339,14 @@ Now try running two copies of the above transaction in parallel:
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > BEGIN;
     ~~~
 
 3. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
@@ -355,7 +355,7 @@ Now try running two copies of the above transaction in parallel:
 5. Back in the second SQL shell, run the same:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
@@ -364,7 +364,7 @@ Now try running two copies of the above transaction in parallel:
 7. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
     ~~~
 
@@ -373,7 +373,7 @@ Now try running two copies of the above transaction in parallel:
 9. Back in the second SQL shell, run the same:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
     ~~~
 
@@ -382,7 +382,7 @@ Now try running two copies of the above transaction in parallel:
 11. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     OPEN> COMMIT;
     ~~~
 
@@ -391,7 +391,7 @@ Now try running two copies of the above transaction in parallel:
 13. Back in the second SQL shell, run the same and press enter:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > COMMIT;
     ~~~
 
@@ -414,8 +414,8 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
 1. Add all of the balances in the the `accounts` table:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT SUM(balance) FROM bank.accounts;
+    ~~~ sql?nofmt
+    > SELECT sum(balance) FROM bank.accounts;
     ~~~
 
     ~~~
@@ -428,8 +428,8 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
 2. View the balance grouped by account type:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT type, SUM(balance) FROM bank.accounts GROUP BY type;
+    ~~~ sql?nofmt
+    > SELECT type, sum(balance) FROM bank.accounts GROUP BY type;
     ~~~
 
     ~~~

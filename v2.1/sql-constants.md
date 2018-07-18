@@ -57,7 +57,7 @@ To include a single quote in the string, use a double single quote.
 For example:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT 'hello' as a, 'it''s a beautiful day' as b;
 ~~~
 
@@ -75,7 +75,7 @@ a newline character are automatically concatenated together to form a
 single constant. For example:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT 'hello'
 ' world!' as a;
 ~~~

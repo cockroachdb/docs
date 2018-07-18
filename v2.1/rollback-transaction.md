@@ -45,7 +45,7 @@ Typically, an application conditionally executes rollbacks, but we can see their
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 ~~~
 
@@ -55,7 +55,7 @@ Typically, an application conditionally executes rollbacks, but we can see their
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > ROLLBACK;
 ~~~
 
@@ -77,7 +77,7 @@ Typically, an application conditionally executes rollbacks, but we can see their
 To use [client-side transaction retries](transactions.html#client-side-transaction-retries), an application must execute `ROLLBACK TO SAVEPOINT cockroach_restart` after detecting a `40001` / `retry transaction` error:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~
 

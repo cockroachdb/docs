@@ -99,7 +99,7 @@ This also applies the [Unique constraint](unique.html) at the table level, simil
 The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CREATE INDEX ON users USING GIN (profile);
 ~~~
 
@@ -131,7 +131,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM products;
+> SHOW INDEXES FROM products;
 ~~~
 
 ~~~

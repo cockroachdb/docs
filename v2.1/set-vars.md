@@ -72,7 +72,7 @@ The following demonstrates how `SET` can be used to configure the
 default database for the current session:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET database = bank;
 ~~~
 
@@ -95,7 +95,7 @@ default database for the current session:
 The following demonstrates how to use quoting to use values containing spaces:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET database = "database name with spaces";
 ~~~
 
@@ -119,7 +119,7 @@ The following demonstrates how to assign a list of values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET search_path = pg_catalog,public;
+> SET search_path = pg_catalog, public;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -141,12 +141,12 @@ The following demonstrates how to assign a list of values:
 {{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET default_transaction_isolation = SNAPSHOT;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW default_transaction_isolation;
 ~~~
 
@@ -160,12 +160,12 @@ The following demonstrates how to assign a list of values:
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET default_transaction_isolation = DEFAULT;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW default_transaction_isolation;
 ~~~
 
@@ -203,7 +203,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW TIME ZONE;
 ~~~
 
@@ -222,7 +222,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW TIME ZONE;
 ~~~
 

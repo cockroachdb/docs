@@ -89,7 +89,11 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
+> INSERT
+INTO
+  timestamps
+VALUES
+  (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
 ~~~
 
 {% include copy-clipboard.html %}

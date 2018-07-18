@@ -50,7 +50,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE db1.t1 RENAME TO db1.t3
+> ALTER TABLE db1.t1 RENAME TO db1.t3;
 ~~~
 
 {% include copy-clipboard.html %}

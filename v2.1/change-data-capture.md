@@ -67,7 +67,7 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 To pause a changefeed:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > PAUSE JOB job_id;
 ~~~
 
@@ -78,7 +78,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 To resume a paused changefeed:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > RESUME JOB job_id;
 ~~~
 
@@ -89,7 +89,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 To cancel a changefeed:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > CANCEL JOB job_id;
 ~~~
 
@@ -147,7 +147,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 7. Set the database as the default:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET DATABASE = cdc_demo;
     ~~~
 
@@ -155,16 +155,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE office_dogs (
-         id INT PRIMARY KEY,
-         name STRING);
+    > CREATE TABLE office_dogs (id INT PRIMARY KEY, name STRING);
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES
-       (1, 'Petee'),
-       (2, 'Carl');
+    > INSERT INTO office_dogs VALUES (1, 'Petee'), (2, 'Carl');
     ~~~
 
     {% include copy-clipboard.html %}

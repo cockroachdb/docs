@@ -20,51 +20,51 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
+> INSERT
+INTO
+  customers (customer_id, cust_name, cust_email)
+VALUES
+  (1, 'Smith', NULL);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t1(
-  a INT,
-  b INT,
-  c INT
-);
+> CREATE TABLE t1 (a INT, b INT, c INT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(1, 0, 0);
+> INSERT INTO t1 VALUES (1, 0, 0);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(2, 0, 1);
+> INSERT INTO t1 VALUES (2, 0, 1);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(3, 1, 0);
+> INSERT INTO t1 VALUES (3, 1, 0);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(4, 1, 1);
+> INSERT INTO t1 VALUES (4, 1, 1);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(5, NULL, 0);
+> INSERT INTO t1 VALUES (5, NULL, 0);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(6, NULL, 1);
+> INSERT INTO t1 VALUES (6, NULL, 1);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 VALUES(7, NULL, NULL);
+> INSERT INTO t1 VALUES (7, NULL, NULL);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -104,7 +104,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t1 WHERE NOT b > 10;
+> SELECT * FROM t1 WHERE NOT (b > 10);
 ~~~
 
 ~~~
@@ -250,7 +250,7 @@ Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT a, b, c, b*0, b*c, b+c FROM t1;
+> SELECT a, b, c, b * 0, b * c, b + c FROM t1;
 ~~~
 
 ~~~
@@ -292,7 +292,7 @@ Aggregate [functions](functions-and-operators.html) are those that operate on a 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), MIN(b), MAX(b) FROM t1;
+> SELECT count(*), count(b), sum(b), avg(b), min(b), max(b) FROM t1;
 ~~~
 
 ~~~
@@ -335,7 +335,7 @@ However, counting the number of distinct values excludes `NULL`s, which is consi
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT COUNT(DISTINCT b) FROM t1;
+> SELECT count(DISTINCT b) FROM t1;
 ~~~
 
 ~~~
@@ -354,7 +354,10 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), AVG(IFNULL(b, 0)), MIN(b), MAX(b) FROM t1;
+> SELECT
+  count(*), count(b), sum(b), avg(b), avg(IFNULL(b, 0)), min(b), max(b)
+FROM
+  t1;
 ~~~
 
 ~~~
@@ -435,22 +438,22 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t2(a INT, b INT UNIQUE);
+> CREATE TABLE t2 (a INT, b INT UNIQUE);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t2 VALUES(1, 1);
+> INSERT INTO t2 VALUES (1, 1);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t2 VALUES(2, NULL);
+> INSERT INTO t2 VALUES (2, NULL);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t2 VALUES(3, NULL);
+> INSERT INTO t2 VALUES (3, NULL);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -474,7 +477,12 @@ A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is consid
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE products (id STRING PRIMARY KEY, price INT NOT NULL CHECK (price > 0), discount INT, CHECK (discount <= price));
+> CREATE TABLE products (
+  id STRING PRIMARY KEY,
+  price INT NOT NULL CHECK (price > 0),
+  discount INT,
+  CHECK (discount <= price)
+);
 ~~~
 
 {% include copy-clipboard.html %}

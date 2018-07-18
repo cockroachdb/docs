@@ -288,7 +288,7 @@ To [increase the snapshot rate](cluster-settings.html), which helps speed up thi
 2. Set the cluster setting to increase the snapshot rate:
 
     {% include copy-clipboard.html %}
-    ~~~ sql
+    ~~~ sql?nofmt
     > SET CLUSTER SETTING kv.snapshot_rebalance.max_rate='64MiB';
     ~~~
 

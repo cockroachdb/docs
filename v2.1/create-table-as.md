@@ -104,7 +104,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX logoff_copy_id_idx ON logoff_copy(user_id);
+> CREATE INDEX logoff_copy_id_idx ON logoff_copy (user_id);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -171,8 +171,9 @@ results.
 This statement creates a copy of an existing table but with changed column names.
 
 {% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
+~~~ sql?nofmt
+> CREATE TABLE customers_ny (id, first_name) AS
+  SELECT id, name FROM customers WHERE state = 'NY';
 ~~~
 
 {% include copy-clipboard.html %}

@@ -32,7 +32,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE v (token uuid);
+> CREATE TABLE v (token UUID);
 ~~~
 
 {% include copy-clipboard.html %}

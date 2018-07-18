@@ -34,12 +34,12 @@ Parameter | Description
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > BEGIN;
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET TRANSACTION ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
 ~~~
 
@@ -66,7 +66,7 @@ Parameter | Description
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > COMMIT;
 ~~~
 
@@ -74,7 +74,7 @@ Parameter | Description
 ### Set a session's default isolation
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
 
@@ -88,7 +88,7 @@ Parameter | Description
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SET DEFAULT_TRANSACTION_ISOLATION TO SNAPSHOT;
 ~~~
 
@@ -97,7 +97,7 @@ SET
 ~~~
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SHOW DEFAULT_TRANSACTION_ISOLATION;
 ~~~
 

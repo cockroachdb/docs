@@ -60,7 +60,7 @@ For example, you can set a column's default collation to German (`de`):
 When inserting values into this column, you must specify the collation for every value:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > INSERT INTO de_names VALUES ('Backhaus' COLLATE de), ('Bär' COLLATE de), ('Baz' COLLATE de);
 ~~~
 
@@ -105,7 +105,7 @@ For example, you receive different results if you order results by German (`de`)
 You can cast any string into a collation on the fly.
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 > SELECT 'A' COLLATE de < 'Ä' COLLATE de;
 ~~~
 ~~~
@@ -115,7 +115,7 @@ true
 However, you cannot compare values with different collations:
 
 {% include copy-clipboard.html %}
-~~~ sql
+~~~ sql?nofmt
 SELECT 'Ä' COLLATE sv < 'Ä' COLLATE de;
 ~~~
 ~~~
