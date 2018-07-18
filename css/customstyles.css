@@ -1549,6 +1549,10 @@ a.accordion-toggle {
   margin-top: 0;
   margin-bottom: 0; }
 
+.cockroachdb-training {
+  width: 100%;
+  max-width: 800px; }
+
 .search {
   position: relative; }
   .search .fa-search {

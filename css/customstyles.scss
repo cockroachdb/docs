@@ -524,6 +524,11 @@ a.accordion-toggle {
   margin-bottom: 0;
 }
 
+.cockroachdb-training {
+  width: 100%;
+  max-width: 800px;
+}
+
 @import "components/search";
 @import "components/callout";
 @import "components/toc";
