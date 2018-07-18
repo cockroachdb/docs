@@ -1049,7 +1049,9 @@ a:not([href]) {
           padding-left: 310px;
           padding-right: 60px; }
           #content #main-content .content-col.no-sidebar {
-            padding-left: 30px; } }
+            padding-left: 30px; }
+          #content #main-content .content-col.no-toc {
+            padding-right: 15px; } }
       #content #main-content .content-col--landing {
         padding-top: 30px; }
   @media screen and (min-width: 992px) {
