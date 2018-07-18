@@ -1900,29 +1900,22 @@ a.accordion-toggle {
 
 @media (min-width: 700px) {
   #os-tabs button {
-    width: 140px; }
+    width: 140px;
+    margin: 0 10px 15px 0; }
     #os-tabs button:before {
       font-family: 'FontAwesome';
       content: "\f078";
       margin-right: 10px;
       z-index: 5;
       font-size: 24px; }
-    #os-tabs button#mac {
-      margin: 0 2% 2% 0; }
-      #os-tabs button#mac:before {
-        content: "\f179"; }
-    #os-tabs button#linux {
-      margin: 0 2% 2% 0; }
-      #os-tabs button#linux:before {
-        content: "\f17c"; }
-    #os-tabs button#windows {
-      margin: 0 2% 0 0; }
-      #os-tabs button#windows:before {
-        content: "\f17a"; }
-    #os-tabs button#source {
-      margin: 0 2% 0 0; }
-      #os-tabs button#source:before {
-        content: "\f1c6"; }
+    #os-tabs button#mac:before {
+      content: "\f179"; }
+    #os-tabs button#linux:before {
+      content: "\f17c"; }
+    #os-tabs button#windows:before {
+      content: "\f17a"; }
+    #os-tabs button#source:before {
+      content: "\f1c6"; }
 
   #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;
