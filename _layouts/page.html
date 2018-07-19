@@ -14,11 +14,6 @@ layout: default
        TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
        page TOC to h2 headers only, set `toc_not_nested: true` in the page's
        front-matter.
-
-       TOC PLACEMENT: To place the toc at the top of the page, set `toc: true`
-       in the page's front-matter. To place the toc somewhere else, set `toc:
-       false` in the front-matter, and then include the below
-       <div> manually where you want it.
    -->
    {% if page.toc %}
       <div id="toc"></div>
