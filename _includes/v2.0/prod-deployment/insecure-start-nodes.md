@@ -49,7 +49,7 @@ For each initial node of your cluster, complete the following steps:
     Flag | Description
     -----|------------
     `--insecure` | Indicates that the cluster is insecure, with no network encryption or authentication.
-    `--advertise-host` | Specifies the IP address or hostname to advertise to other nodes. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.<br><br>In some networking scenarios, you may need to use this flag differently or in combination with the `--host` flag. For more details, see [Networking](recommended-production-settings.html#networking).
+    `--advertise-host` | Specifies the IP address or hostname to advertise to other nodes. This value must route to an IP address the node is listening on (with `--host` unspecified, the node listens on all interfaces).<br><br>In some networking scenarios, you may need to use `--advertise-host` and/or `--host` differently. For more details, see [Networking](recommended-production-settings.html#networking).
     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
     `--cache`<br>`--max-sql-memory` | Increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing. For more details, see [Cache and SQL Memory Size](recommended-production-settings.html#cache-and-sql-memory-size).
     `--background` | Starts the node in the background so you gain control of the terminal to issue more commands.
@@ -108,7 +108,7 @@ For each initial node of your cluster, complete the following steps:
     $ chown cockroach /var/lib/cockroach
     ~~~
 
-7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service):
+7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -122,13 +122,11 @@ For each initial node of your cluster, complete the following steps:
     {% include {{ page.version.version }}/prod-deployment/insecurecockroachdb.service %}
     ~~~
 
-    Save the file in the `/etc/systemd/system/` directory
-
 8. In the sample configuration template, specify values for the following flags:
 
     Flag | Description
     -----|------------
-    `--advertise-host` | Specifies the IP address or hostname to advertise to other nodes. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.<br><br>In some networking scenarios, you may need to use this flag differently or in combination with the `--host` flag. For more details, see [Networking](recommended-production-settings.html#networking).
+    `--advertise-host` | Specifies the IP address or hostname to advertise to other nodes. This value must route to an IP address the node is listening on (with `--host` unspecified, the node listens on all interfaces).<br><br>In some networking scenarios, you may need to use `--advertise-host` and/or `--host` differently. For more details, see [Networking](recommended-production-settings.html#networking).
     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](start-a-node.html#locality).
