@@ -164,7 +164,7 @@ For each node in your cluster, complete the following steps.
     ~~~
     </div>
 
-5. Start the node to have it rejoin the cluster:
+5. Start the node to have it rejoin the cluster.
 
     Without a process manager like `systemd`, run this command to start the node:
 

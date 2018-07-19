@@ -141,7 +141,7 @@ For each node in your cluster, complete the following steps.
     ~~~
     </div>
 
-5. Start the node to have it rejoin the cluster:
+5. Start the node to have it rejoin the cluster.
 
     Without a process manager like `systemd`, use this command:
 
@@ -193,6 +193,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT crdb_internal.node_executable_version();
     ~~~
@@ -201,6 +202,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 3. Use the same function to finalize the upgrade:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
     ~~~
