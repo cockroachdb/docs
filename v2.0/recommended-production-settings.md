@@ -103,10 +103,10 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
 ### Networking flags
 
-When starting a node via [`cockroach start`](start-a-node.html), two main flags are used to control its network connections with other nodes and clients:
+When [starting a node](start-a-node.html), two main flags are used to control its network connections with other nodes and clients:
 
-- `--host` determines which IP address or hostname CockroachDB listens on.
-- `--advertise-host` determines which IP address or hostname is advertised to other nodes.
+- `--host` determines which interface(s) CockroachDB listens on.
+- `--advertise-host` determines which IP address or hostname is advertised to other nodes. This value must route to an interface the node is listening on.
 
 The effect depends on how these two flags are used in combination:
 
@@ -121,20 +121,20 @@ Be careful about the value advertised to other nodes, either via `--advertise-ho
 
 ### Single private network
 
-When running all nodes of a cluster on a single private network, each node will typically have a private IP address or hostname that is reachable anywhere within the network. In this scenario, when starting each node:
+When running a cluster on a single private network, each node will typically have a private interface reachable from anywhere within the network. In this scenario, when starting each node:
 
-- If clients are on the private network, set `--host` to the private IP address or hostname and leave `--advertise-host` unspecified, or set both `--advertise-host` and `--host` to the same private IP address or hostname.
-- If clients are outside the private network, set `--advertise-host` to the private IP address or hostname (so nodes use it) and leave the `--host` flag unspecified (so clients can reach nodes on public addresses).
+- If clients are on the private network, set `--host` to a private IP address or hostname associated with the private interface and leave `--advertise-host` unspecified, or set both `--advertise-host` and `--host` to the same private IP address or hostname.
+- If clients are outside the private network, set `--advertise-host` to a private IP address or hostname associated with the private interface (so nodes use it) and leave the `--host` flag unspecified (so clients can reach nodes on any of the node's interfaces).
     - Firewalls would also need to be configured to allow traffic from clients outside the private network.
 
 ### Multiple private networks
 
-When running nodes across multiple private networks, the nodes in each private network will typically have access to their own private IP addresses or hostnames, but not to those of nodes in other private networks. In this scenario, when starting each node in a given private network:
+When running a cluster across multiple private networks, the nodes in each private network will typically have private interfaces reachable from anywhere within the private network, but not from the other private networks. In this scenario, when starting each node in a given private network:
 
-- Set `--advertise-host` to a public IP address or hostname reachable by nodes and clients in other private networks, and leave `--host` unspecified.
+- Set `--advertise-host` to a public IP address or hostname reachable by nodes and clients in other private networks, and leave `--host` unspecified. The `--advertise-host` value must route to an interface the node is listening on.
     - Firewalls would also need to be configured to allow traffic from nodes and clients in other private networks.
 
-Another approach is to use [network address translation (NAT)](https://en.wikipedia.org/wiki/Network_address_translation) to map private IP addresses or hostnames in each private network to public addresses. You could then set `--advertise-host` to a node's private IP address or hostname and leave `--host` unspecified. This would allow nodes within the same private network to use private addresses and nodes and clients outside of the private network to use public addresses.
+Another approach is to use [network address translation (NAT)](https://en.wikipedia.org/wiki/Network_address_translation) to route requests from a public IP address to private interfaces that CockroachDB is listening on. For each node, you could then set `--advertise-host` to a private IP address or hostname associated with the private interface and leave `--host` unspecified. This would allow nodes within the same private network to use their private interfaces and nodes and clients outside of the private network to use the public address.
 
 ## Load Balancing
 
