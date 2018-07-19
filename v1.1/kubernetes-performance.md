@@ -1,7 +1,7 @@
 ---
 title: CockroachDB Performance on Kubernetes
 summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when running in Kubernetes.
-toc: false
+toc: true
 ---
 
 {% include {{ page.version.version }}/orchestration/kubernetes-performance.md %}
