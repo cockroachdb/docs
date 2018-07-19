@@ -98,7 +98,7 @@ Optionally, you can specify other fields in the front-matter:
 
 Field | Description | Default
 ------|-------------|--------
-`toc` | Adds an auto-generated table of contents to the top of the page. Usually, we accept the `false` default and place the TOC after the introduction. See [Page TOC](#page-toc) for more details. | `false`
+`toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens or at the top of the page (on smaller screen).
 `toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
 `allowed_hashes` | Specifies a list of allowed hashes that don't correspond to a section heading on the page. | Nothing
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
@@ -113,13 +113,7 @@ Field | Description | Default
 
 The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 and h3 headers or just all h2 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.
 
-- To add a page TOC to the very top of the page, set `toc: true` in the page's front-matter.
-
-- To add a page TOC anywhere else on the page (for example, after an intro paragraph), set `toc: false` in the page's front-matter and add the following HTML where you want the toc to appear on the page:
-
-    ``` html
-    <div id="toc"></div>
-    ```
+- To add a page TOC, set `toc: true` in the page's front-matter.
 
 - To omit a page TOC from the page, set `toc: false` in the page's front-matter.
 
