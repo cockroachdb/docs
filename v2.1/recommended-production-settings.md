@@ -103,38 +103,39 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
 ### Networking flags
 
-When starting a node via [`cockroach start`](start-a-node.html), two main flags are used to control its network connections with other nodes and clients:
+When [starting a node](start-a-node.html), two main flags are used to control its network connections:
 
-- `--host` determines which IP address or hostname CockroachDB listens on.
-- `--advertise-host` determines which IP address or hostname is advertised to other nodes.
+- `--host` determines which address(es) to listen on for connections from other nodes and clients.
+- `--advertise-host` determines which address to tell other nodes to use.
 
 The effect depends on how these two flags are used in combination:
 
-| | **`--host` not specified** | **`--host` specified** |
+| | `--host` not specified | `--host` specified |
 |-|----------------------------|------------------------|
-| **`--advertise-host` not specified** | Node listens on all interfaces and advertises the canonical hostname to other nodes. | Node listens on the interface specified in `--host` and advertises this value to other nodes.
-| **`--advertise-host` specified** | Node listens on all interfaces and advertises the value of `--advertise-host` to other nodes. **This is recommended for most cases.** | Node listens on the interface specified by `--host` and advertises the value of `--advertise-host` to other nodes.
+| **`--advertise-host` not specified** | Node listens on all of its IP addresses and advertises its canonical hostname to other nodes. | Node listens on the IP address or hostname specified in `--host` and advertises this value to other nodes.
+| **`--advertise-host` specified** | Node listens on all of its IP addresses and advertises the value specified in `--advertise-host` to other nodes. **Recommended for most cases.** | Node listens on the IP address or hostname specified in `--host` and advertises the value specified in `--advertise-host` to other nodes.
 
 {{site.data.alerts.callout_success}}
-Be careful about the value advertised to other nodes, either via `--advertise-host` or via `--host` when `--advertise-host` is not specified: If using a hostname, it must be resolvable from all nodes; if using an IP address, it must be routable from all nodes.
+When using hostnames, make sure they resolve properly (e.g., via DNS or `etc/hosts`). In particular, be careful about the value advertised to other nodes, either via `--advertise-host` or via `--host` when `--advertise-host` is not specified.
 {{site.data.alerts.end}}
 
-### Single private network
+### Cluster on a single network
 
-When running all nodes of a cluster on a single private network, each node will typically have a private IP address or hostname that is reachable anywhere within the network. In this scenario, when starting each node:
+When running a cluster on a single network, the setup depends on whether the network is private. In a private network, machines have addresses restricted to the network, not accessible to the public internet. Using these addresses is more secure and usually provides lower latency than public addresses.
 
-- If clients are on the private network, set `--host` to the private IP address or hostname and leave `--advertise-host` unspecified, or set both `--advertise-host` and `--host` to the same private IP address or hostname.
-- If clients are outside the private network, set `--advertise-host` to the private IP address or hostname (so nodes use it) and leave the `--host` flag unspecified (so clients can reach nodes on public addresses).
-    - Firewalls would also need to be configured to allow traffic from clients outside the private network.
+Private? | Recommended setup
+---------|------------------
+Yes | Start each node with `--host` set to its private IP address and do not specify `--advertise-host`. This will tell other nodes to use the private IP address advertised. Load balancers/clients in the private network must use it as well.
+No | Start each node with `--advertise-host` set to a stable public IP address that routes to the node and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>If load balancers/clients are outside the network, also configure firewalls to allow external traffic to reach the cluster.
 
-### Multiple private networks
+### Cluster spanning multiple networks
 
-When running nodes across multiple private networks, the nodes in each private network will typically have access to their own private IP addresses or hostnames, but not to those of nodes in other private networks. In this scenario, when starting each node in a given private network:
+When running a cluster across multiple networks, the setup depends on whether nodes can reach each other across the networks.
 
-- Set `--advertise-host` to a public IP address or hostname reachable by nodes and clients in other private networks, and leave `--host` unspecified.
-    - Firewalls would also need to be configured to allow traffic from nodes and clients in other private networks.
-
-Another approach is to use [network address translation (NAT)](https://en.wikipedia.org/wiki/Network_address_translation) to map private IP addresses or hostnames in each private network to public addresses. You could then set `--advertise-host` to a node's private IP address or hostname and leave `--host` unspecified. This would allow nodes within the same private network to use private addresses and nodes and clients outside of the private network to use public addresses.
+Nodes reachable across networks? | Recommended setup
+---------------------------------|------------------
+Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-host` set to the address that is reachable from other networks and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.
 
 ## Load balancing
 
