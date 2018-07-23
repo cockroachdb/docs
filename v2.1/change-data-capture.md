@@ -30,6 +30,19 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
 - The `WITH timestamps` option adds an **update timestamp** to each emitted row. It also causes periodic **resolved timestamp** messages to be emitted to each Kafka partition. A resolved timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+    For example:
+
+    ~~~ json
+    {"__crdb__": {"updated": "1532377312562986715.0000000000"}, "id": 1, "name": "Petee H"}
+    {"__crdb__": {"updated": "1532377306108205142.0000000000"}, "id": 2, "name": "Carl"}
+    {"__crdb__": {"updated": "1532377358501715562.0000000000"}, "id": 3, "name": "Ernie"}
+    {"__crdb__":{"resolved":"1532379887442299001.0000000000"}}
+    {"__crdb__":{"resolved":"1532379888444290910.0000000000"}}
+    {"__crdb__":{"resolved":"1532379889448662988.0000000000"}}
+    ...
+    {"__crdb__":{"resolved":"1532379922512859361.0000000000"}}
+    {"__crdb__": {"updated": "1532379923319195777.0000000000"}, "id": 4, "name": "Lucky"}
+    ~~~
 
 - Cross-row and cross-table order guarantees are not directly given. However, the resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
 
@@ -94,7 +107,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./cockroach start --insecure
     ~~~
 
-2. Download and extract the [Confluent platform](https://www.confluent.io/download/) (which includes Kafka).
+2. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
 
 3. Start Confluent:
 
@@ -105,28 +118,39 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
-4. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+4. Create a Kafka topic:
+
+    {% include copy-clipboard.html %}
+    ~~~
+    $ ./confluent-4.0.0/bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic office_dogs
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
+    {{site.data.alerts.end}}
+
+5. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-5. Create a database called `test`:
+6. Create a database called `test`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-6. Set the database as the default:
+7. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-7. Create a table and add data:
+8. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -147,7 +171,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-8. Start the changefeed:
+9. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -164,7 +188,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-9. In a new terminal, start watching the Kafka topic:
+10. In a new terminal, start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -177,14 +201,14 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is missing).
 
-10. Back in the SQL client, insert more data:
+11. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-11. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+12. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~
     {"id": 3, "name": "Ernie"}
@@ -192,7 +216,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-The following are limitations in July 2, 2018 alpha release, and will be addressed before the v2.1 release.
+The following are limitations in July 30, 2018 alpha release, and will be addressed before the v2.1 release.
 
 - Changefeeds created with the alpha may not be compatible with future alphas and the final v2.1 release.
 
