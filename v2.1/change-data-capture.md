@@ -226,7 +226,6 @@ The following are limitations in July 30, 2018 alpha release, and will be addres
     {{site.data.alerts.end}}
 
 - The CockroachDB core changefeed is not ready for external testing.
-- Some intermediate updates on frequently changed rows are never emitted.
 - Changefeed progress is not exposed to the user.
 - The SQL interface is not final and may change.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
