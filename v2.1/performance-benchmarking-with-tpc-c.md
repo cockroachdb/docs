@@ -249,7 +249,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ workload.LATEST run tpcc \
+    $ ulimit -n 10000 && workload.LATEST run tpcc \
     --partitions=10 \
     --split \
     --scatter \
@@ -260,11 +260,11 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
     Partitioning will take at least 12 hours. It takes this long because all of the data (over 2TB replicated for TPC-C-10K) needs to be moved to the right locations.
 
-2. To watch the progress, follow along with the process on the **Admin UI > Metrics > Queues > Replication Queue** graph.
+2. To watch the progress, follow along with the process on the **Admin UI > Metrics > Queues > Replication Queue** graph. Change the timeframe to **Last 10 Min** to view a more granular graph.
 
     Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
-    Once the queue gets to `0` and stays there, the cluster should be finished rebalancing and is ready for testing.
+    Once the Replication Queue gets to `0` for all actions and stays there, the cluster should be finished rebalancing and is ready for testing.
 
 ### Step 6. Run the benchmark
 
@@ -318,15 +318,15 @@ Check on progress by navigating to the Admin UI > Jobs dashboard: `roachprod adm
 
 Once RESTORE is complete, set the snapshot cluster setting: `roachprod sql lauren-tpcc:1 -- -e "SET CLUSTER SETTING kv.snapshot_rebalance.max_rate='64MiB';"`
 
-Partition the database: `roachprod ssh lauren-tpcc:31 "./workload.LATEST run tpcc --partitions=10 --split --scatter --warehouses=10000 --duration=1s {pgurl:1-30}"`
+Partition the database: `roachprod ssh lauren-tpcc:31 "ulimit -n 10000 && ./workload.LATEST run tpcc --partitions=10 --split --scatter --warehouses=10000 --duration=1s {pgurl:1-30}"`
 
 This will take ~12hrs. Once the Replication Queue (Admin UI) gets to `0` and stays there, the cluster should be finished rebalancing and is ready for testing.
+
+To check that each range is correctly partitioned, use `SHOW testing_ranges FROM TABLE tpcc.new_order;` This will show you a table with the `RANGE ID` and `REPLICAS`. Once the `REPLICAS` column sorts itself (e.g., Range 1,2,3 Range 4,5,6 etc.), partitioning is done.
 
 Run the benchmark: `roachprod run lauren-tpcc:31 "ulimit -n 10000 && ./workload.LATEST run tpcc --warehouses=10000 --duration=300s {pgurl:1-30}"`
 
 OR `roachprod run lauren-tpcc:31 "./workload.LATEST run tpcc --ramp=30s --warehouses=10000 --duration=300s --split --scatter {pgurl:1-3}"`
-
-
 
 Once the workload has finished running, you should see a final output line.-->
 
