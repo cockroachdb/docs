@@ -21,6 +21,12 @@ Follow steps 1-6 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on 
 
     For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
 
+- Configure the local SSDs to be more performant:
+
+    ~~~ shell
+    $ sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1
+    ~~~
+
 - Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for running the TPC-C benchmark.
 
 {{site.data.alerts.callout_danger}}
@@ -110,7 +116,7 @@ $ ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, NODE 3 ADDRESS>:26257?sslmode=disable
+"postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, NODE 3 ADDRESS>:26257?sslmode=disable"
 ~~~
 
 ### Step 4. Interpret the results
@@ -128,7 +134,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
 ## Benchmark a large cluster
 
-The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C result is similar to that for the [3-node, 1,000 warehouse example](#benchmark-a-small-cluster). The only difference (besides the larger node count and dataset) is that you will use CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data.
+The methodology for reproducing CockroachDB's 30-node, 10,000 warehouse TPC-C result is similar to that for the [3-node, 1,000 warehouse example](#benchmark-a-small-cluster). The only difference (besides the larger node count and dataset) is that you will use CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning also helps distribute the workload evenly across the cluster.
 
 ### Before you start
 
@@ -141,6 +147,12 @@ Follow steps 1-6 in the [GCE tutorial to deploy a 30-node CockroachDB cluster on
 - For the 30 CockroachDB nodes, use `n1-highcpu-16` VMs with [local SSD storage](https://cloud.google.com/compute/docs/disks/local-ssd).  
 
     For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+
+- Configure the local SSDs to be more performant:
+
+    ~~~ shell
+    $ sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1
+    ~~~
 
 - Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a thirty-first VM for running the TPC-C benchmark.
 
@@ -243,7 +255,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     --scatter \
     --warehouses=10000 \
     --duration=1s \
-    postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, [...], NODE 30 ADDRESS>:26257?sslmode=disable
+    "postgresql://root@<NODE 1 ADDRESS>:26257?sslmode=disable"
     ~~~
 
     Partitioning will take at least 12 hours. It takes this long because all of the data (over 2TB replicated for TPC-C-10K) needs to be moved to the right locations.
@@ -262,7 +274,7 @@ In a new terminal window, run `workload` for five minutes:
 $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 --warehouses=10000 \
 --duration=300s \
-postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, [...], NODE 30 ADDRESS>:26257?sslmode=disable
+"postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, [...], NODE 30 ADDRESS>:26257?sslmode=disable"
 ~~~
 
 ### Step 7. Interpret the results
@@ -312,7 +324,7 @@ This will take ~12hrs. Once the Replication Queue (Admin UI) gets to `0` and sta
 
 Run the benchmark: `roachprod run lauren-tpcc:31 "ulimit -n 10000 && ./workload.LATEST run tpcc --warehouses=10000 --duration=300s {pgurl:1-30}"`
 
-OR `roachprod run lauren-tpcc:4 "./workload.LATEST run tpcc --ramp=30s --warehouses=10000 --duration=300s --split --scatter {pgurl:1-3}"`
+OR `roachprod run lauren-tpcc:31 "./workload.LATEST run tpcc --ramp=30s --warehouses=10000 --duration=300s --split --scatter {pgurl:1-3}"`
 
 
 
