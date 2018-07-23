@@ -30,6 +30,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
 - The `WITH timestamps` option adds an **update timestamp** to each emitted row. It also causes periodic **resolved timestamp** messages to be emitted to each Kafka partition. A resolved timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+
     For example:
 
     ~~~ json
