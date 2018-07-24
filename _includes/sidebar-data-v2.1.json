@@ -1474,6 +1474,12 @@
             ]
           },
           {
+            "title": "Hardware Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-hardware-dashboard.html"
+            ]
+          },
+          {
             "title": "Runtime Dashboard",
             "urls": [
               "/${VERSION}/admin-ui-runtime-dashboard.html"
