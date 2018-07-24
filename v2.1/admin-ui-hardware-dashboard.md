@@ -36,33 +36,33 @@ For multi-core systems, the System CPU Percent can be greater than 100%. Full ut
 
 <img src="{{ 'images/v2.1/admin_ui_memory_usage_new.png' | relative_url }}" alt="CockroachDB Admin UI Memory Usage graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the memory in use for the selected node.
+- In the node view, the graph shows the memory in use by CockroachDB for the selected node.
 
-- In the cluster view, the graph shows the memory in use across all nodes in the cluster.
+- In the cluster view, the graph shows the memory in use by CockroachDB across all nodes in the cluster.
 
 ## Disk Read Bytes
 
 <img src="{{ 'images/v2.1/admin_ui_disk_read_bytes.png' | relative_url }}" alt="CockroachDB Admin UI Disk Read Bytes graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes read per second for the node.
+- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes read per second by all processes including CockroachDB for the selected node.
 
-- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes read per second across all nodes.
+- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes read per second by all processes including CockroachDB across all nodes.
 
 ## Disk Write Bytes
 
 <img src="{{ 'images/v2.1/admin_ui_disk_write_bytes.png' | relative_url }}" alt="CockroachDB Admin UI Disk Write Bytes graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes written per second for the node.
+- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes written per second by all processes including CockroachDB for the node.
 
-- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes written per second across all nodes.
+- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of bytes written per second by all processes including CockroachDB across all nodes.
 
 ## Disk IOPS in Progress
 
 <img src="{{ 'images/v2.1/admin_ui_disk_iops.png' | relative_url }}" alt="CockroachDB Admin UI Disk IOPS in Progress graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the number of disk reads and writes in queue for the selected node.
+- In the node view, the graph shows the number of disk reads and writes in queue for all processes including CockroachDB for the selected node.
 
-- In the cluster view, the graph shows the number of disk reads and writes in queue across all nodes in the cluster.
+- In the cluster view, the graph shows the number of disk reads and writes in queue for all processes including CockroachDB across all nodes in the cluster.
 
 ## Disk Capacity
 
@@ -90,17 +90,17 @@ Used | Disk space used by the data in the CockroachDB store. Note that this valu
 
 <img src="{{ 'images/v2.1/admin_ui_network_bytes_received.png' | relative_url }}" alt="CockroachDB Admin UI Network Bytes Received graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes received per second for the node.
+- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes received per second for all processes including CockroachDB for the node.
 
-- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes received per second across all nodes.
+- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes received for all processes including CockroachDB per second across all nodes.
 
 ## Network Bytes Sent
 
 <img src="{{ 'images/v2.1/admin_ui_network_bytes_sent.png' | relative_url }}" alt="CockroachDB Admin UI Network Bytes Sent graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes sent per second for the node.
+- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes sent per second by all processes including CockroachDB for the node.
 
-- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes sent per second across all nodes.
+- In the cluster view, the graph shows the current moving average, over the last 10 seconds, of the number of network bytes sent per second by all processes including CockroachDB across all nodes.
 
 ## See also
 
