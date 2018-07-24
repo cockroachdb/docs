@@ -304,7 +304,7 @@ Download latest version of CockroachDB:
 
 Configure SSD to be more performant: `roachprod run lauren-tpcc -- 'sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1'`
 
-Start the 30 nodes: `roachprod start lauren-tpcc:1-30`
+Start the 30 nodes: `roachprod start lauren-tpcc:1-30 --racks 10`
 
 Add license:
 
