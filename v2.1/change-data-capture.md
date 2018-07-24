@@ -217,7 +217,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-The following are limitations in July 30, 2018 alpha release, and will be addressed before the v2.1 release.
+The following are limitations in the July 30, 2018 alpha release, and will be addressed before the v2.1 release.
 
 - Changefeeds created with the alpha may not be compatible with future alphas and the final v2.1 release.
 
