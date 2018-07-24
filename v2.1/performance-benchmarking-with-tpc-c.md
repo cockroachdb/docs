@@ -273,7 +273,10 @@ In a new terminal window, run `workload` for five minutes:
 ~~~ shell
 $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 --warehouses=10000 \
+--ramp=30s \
 --duration=300s \
+--split \
+--scatter \
 "postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, [...], NODE 30 ADDRESS>:26257?sslmode=disable"
 ~~~
 
@@ -283,7 +286,7 @@ Once the `workload` has finished running, you should see a final output line sim
 
 ~~~ shell
 _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
-  300.0s    12713.6  98.9%    357.8     75.5    159.4   2415.9   6710.9   9663.7
+  291.6s   131109.8 102.0%    115.3     88.1    184.5    268.4    637.5   4295.0
 ~~~
 
 You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` (new order transactions/minute) number is the headline number and `efc` ("efficiency") tells you how close CockroachDB gets to theoretical maximum `tpmC`.
@@ -324,9 +327,7 @@ This will take ~12hrs. Once the Replication Queue (Admin UI) gets to `0` and sta
 
 To check that each range is correctly partitioned, use `SHOW testing_ranges FROM TABLE tpcc.new_order;` This will show you a table with the `RANGE ID` and `REPLICAS`. Once the `REPLICAS` column sorts itself (e.g., Range 1,2,3 Range 4,5,6 etc.), partitioning is done.
 
-Run the benchmark: `roachprod run lauren-tpcc:31 "ulimit -n 10000 && ./workload.LATEST run tpcc --warehouses=10000 --duration=300s {pgurl:1-30}"`
-
-OR `roachprod run lauren-tpcc:31 "./workload.LATEST run tpcc --ramp=30s --warehouses=10000 --duration=300s --split --scatter {pgurl:1-3}"`
+Run the benchmark: `roachprod run lauren-tpcc:31 "ulimit -n 10000 && ./workload.LATEST run tpcc --ramp=30s --warehouses=10000 --duration=300s --split --scatter {pgurl:1-30}"`
 
 Once the workload has finished running, you should see a final output line.-->
 
