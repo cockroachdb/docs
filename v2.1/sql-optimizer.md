@@ -69,6 +69,7 @@ Changing the cluster setting does not immediately turn the Optimizer off; instea
 
 - The optimizer will not support automated use of statistics during this time period.
 - Some features present in v2.0 are not supported by the Optimizer; however, the Optimizer will fall back to the v2.0 code path for this functionality. If performance in the new alpha is worse than v2.0, you will need to manually force it to fallback to v2.0 (see [How to turn the Optimizer off](#how-to-turn-the-optimizer-off)).
+- Some correlated subqueries are not supported yet.
 
 ## See also
 
