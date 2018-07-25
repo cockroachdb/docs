@@ -60,12 +60,13 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 | Parameter | Description |
 |-----------|-------------|
-| `EXPRS` | Include the SQL expressions that are involved in each processing stage. |
-| `QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option. |
-| `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail. |
-| `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options. |
-| `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.|
-| `explainable_stmt` | The [statement](#explainable-statements) you want details about. |
+`EXPRS` | Include the SQL expressions that are involved in each processing stage.
+`QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option.
+`METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail.
+`VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options.
+`TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
+`OPT` | Display a query plan tree if the query will be run with the [cost-based Optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based Optimizer and will be run with the legacy heuristic planner.
+`explainable_stmt` | The [statement](#explainable-statements) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -314,6 +315,55 @@ The `TYPES` mode includes the types of the values used in the query plan, and im
 |           |     1 |      | filter | ((v)[int] > (3)[int])[bool] |                |                              |
 +-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
 ~~~
+
+### `OPT` option
+
+<span class="version-tag">New in v2.1:</span> The `OPT` option displays a query plan tree if the query will be run with the [cost-based Optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based Optimizer and will be run with the legacy heuristic planner.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) SELECT * FROM x WHERE a = 3;
+~~~
+
+~~~
++--------------------------------------------------------------------------+
+|                                   text                                   |
++--------------------------------------------------------------------------+
+| select                                                                   |
+|  ├── columns: a:1(int!null) b:2(jsonb)                                   |
+|  ├── stats: [rows=1.42857143, distinct(1)=1]                             |
+|  ├── cost: 1060                                                          |
+|  ├── fd: ()-->(1)                                                        |
+|  ├── prune: (2)                                                          |
+|  ├── scan x                                                              |
+|  │    ├── columns: x.a:1(int) x.b:2(jsonb)                               |
+|  │    ├── stats: [rows=1000, distinct(1)=700]                            |
+|  │    ├── cost: 1050                                                     |
+|  │    └── prune: (1,2)                                                   |
+|  └── filters [type=bool, outer=(1), constraints=(/1: [/3 - /3]; tight),  |
+| fd=()-->(1)]                                                             |
+|       └── eq [type=bool, outer=(1), constraints=(/1: [/3 - /3]; tight)]  |
+|            ├── variable: x.a [type=int, outer=(1)]                       |
+|            └── const: 3 [type=int]                                       |
++--------------------------------------------------------------------------+
+(15 rows)
+~~~
+
+The query above will be run with the cost-based Optimizer and `EXPLAIN (OPT)` returns the query plan tree.
+
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) INSERT INTO x VALUES (1);
+~~~
+
+~~~
+pq: unsupported statement: *tree.Insert
+~~~
+
+The query above will not be run with the cost-based Optimizer.
 
 ### Find the indexes and key ranges a query uses
 

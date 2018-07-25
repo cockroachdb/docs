@@ -18,8 +18,7 @@ In version 2.1, CockroachDB's new **cost-based Optimizer will be enabled by defa
 
 ## View query plan
 
-
-To see whether a given query will be run with the cost-based Optimizer, run the query with `EXPLAIN (OPT)`. If `EXPLAIN (OPT)` returns a query plan tree, that query will be run with the cost-based Optimizer. If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based Optimizer.
+To see whether a given query will be run with the cost-based Optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). If `EXPLAIN (OPT)` returns a query plan tree, that query will be run with the cost-based Optimizer. If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based Optimizer.
 
 For example:
 
