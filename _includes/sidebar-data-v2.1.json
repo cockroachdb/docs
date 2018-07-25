@@ -1347,6 +1347,12 @@
                 "urls": [
                   "/${VERSION}/parallel-statement-execution.html"
                 ]
+              },
+              {
+                "title": "SQL Optimizer",
+                "urls": [
+                  "/${VERSION}/sql-optimizer.html"
+                ]
               }
             ]
           },
