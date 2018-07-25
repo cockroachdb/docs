@@ -74,13 +74,13 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 Successful `EXPLAIN` statements return tables with the following columns:
 
-| Column | Description |
-|-----------|-------------|
-| **Tree** | A tree representation showing the hierarchy of the query plan.
-| **Field** | The name of a parameter relevant to the query plan node immediately above. |
-| **Description** | Additional information for the parameter in  **Field**. |
-| **Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
-| **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied. |
+ Column | Description 
+-----------|-------------
+ **Tree** | A tree representation showing the hierarchy of the query plan.
+ **Field** | The name of a parameter relevant to the query plan node immediately above. 
+ **Description** | Additional information for the parameter in  **Field**. 
+ **Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied. 
+ **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied. 
 
 ## Examples
 

@@ -11,4 +11,4 @@ redirect_from: /training/monitoring-and-alerting.html
 
 ## What's Next?
 
-[Debug Logs](logs.html)
+- [Debug Logs](logs.html)

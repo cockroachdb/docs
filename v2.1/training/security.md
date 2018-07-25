@@ -1,8 +1,9 @@
 ---
 title: Secure Your Cluster
+toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/security.html
 ---
 
@@ -207,4 +208,4 @@ Although we recommend always using TLS certificates to authenticate users, it's 
 
 ## What's next?
 
-- [Production Deployment](production-deployment.html)
+[Production Deployment](production-deployment.html)

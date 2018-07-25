@@ -2,7 +2,7 @@
 title: Production Deployment
 toc: false
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/production-deployment.html
 ---
 
@@ -10,4 +10,4 @@ redirect_from: /training/production-deployment.html
 
 ## What's next?
 
-- [Monitoring and Alerting](monitoring-and-alerting.html)
+[Monitoring and Alerting](monitoring-and-alerting.html)

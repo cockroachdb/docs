@@ -15,15 +15,15 @@
           <div class="content-col no-sidebar">
         {% else %}
           {% include sidebar.html %}
-          <div class="content-col {% if page.url == '/' %}content-col--landing{% endif %}"> 
+          <div class="content-col {% if page.url == '/' %}content-col--landing{% endif %} {% if page.toc != true %}no-toc{% endif %}">
         {% endif %}
             {{content}}
           </div>
-          <div class="toc-col">
-            {% if page.toc == true %}
+          {% if page.toc == true %}
+            <div class="toc-col">
               <div id="toc-right"></div>
-            {% endif %}
-          </div>
+            </div>
+          {% endif %}
       </div>
     </div>
     {% include footer.html %}

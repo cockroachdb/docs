@@ -115,7 +115,7 @@ For each initial node of your cluster, complete the following steps:
     $ chown -R cockroach.cockroach /var/lib/cockroach
     ~~~
 
-8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
+8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -128,8 +128,6 @@ For each initial node of your cluster, complete the following steps:
     ~~~ shell
     {% include {{ page.version.version }}/prod-deployment/securecockroachdb.service %}
     ~~~
-
-    Save the file in the `/etc/systemd/system/` directory.
 
 9.  Customize the sample configuration template for your deployment:
 
@@ -150,7 +148,7 @@ For each initial node of your cluster, complete the following steps:
 11.  Repeat these steps for each additional node that you want in your cluster.
 
 {{site.data.alerts.callout_info}}
-`systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run <code>systemctl stop securecockroachdb</code>
+`systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run `systemctl stop securecockroachdb`
 {{site.data.alerts.end}}
 
 </section>

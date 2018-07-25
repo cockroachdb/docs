@@ -17,12 +17,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table with the column you want to drop. |
-| `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped. |
-| `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br>`CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. |
-| `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it. |
+ Parameter | Description 
+-----------|-------------
+ `table_name` | The name of the table with the column you want to drop. 
+ `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped. 
+ `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br>`CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. 
+ `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it. 
 
 ## Viewing schema changes
 
