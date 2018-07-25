@@ -258,7 +258,9 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     "postgresql://root@<NODE 1 ADDRESS>:26257?sslmode=disable"
     ~~~
 
-    Partitioning will take at least 12 hours. It takes this long because all of the data (over 2TB replicated for TPC-C-10K) needs to be moved to the right locations.
+    This command runs the TPC-C workload against the cluster for 1 second, long enough to add the partitions.
+
+    Partitioning the data will take at least 12 hours. It takes this long because all of the data (over 2TB replicated for TPC-C-10K) needs to be moved to the right locations.
 
 2. To watch the progress, follow along with the process on the **Admin UI > Metrics > Queues > Replication Queue** graph. Change the timeframe to **Last 10 Min** to view a more granular graph.
 
