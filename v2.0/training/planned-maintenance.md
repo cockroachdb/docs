@@ -3,7 +3,7 @@ title: Planned Maintenance
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-block_search: true
+block_search: false
 redirect_from: /training/planned-maintenance.html
 ---
 

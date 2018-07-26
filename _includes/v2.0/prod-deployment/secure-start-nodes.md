@@ -150,7 +150,7 @@ For each initial node of your cluster, complete the following steps:
 11.  Repeat these steps for each additional node that you want in your cluster.
 
 {{site.data.alerts.callout_info}}
-`systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run <code>systemctl stop securecockroachdb</code>
+`systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run `systemctl stop insecurecockroachdb`
 {{site.data.alerts.end}}
 
 </section>

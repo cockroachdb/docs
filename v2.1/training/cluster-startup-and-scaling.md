@@ -294,4 +294,4 @@ Another way to observe this is to click **Metrics** in the upper left and scroll
 
 ## What's next?
 
-- [Fault Tolerance and Automated Repair](fault-tolerance-and-automated-repair.html)
+[Fault Tolerance and Automated Repair](fault-tolerance-and-automated-repair.html)

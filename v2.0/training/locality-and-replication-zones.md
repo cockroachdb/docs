@@ -418,7 +418,4 @@ Take a moment to clean things up.
 
 ## What's Next?
 
-- [Give us feedback on this training](https://www.surveymonkey.com/r/5TGPWRJ) and let us know if you'd like more
-- [Read our docs](../)
-
-<!-- - [Data Import](data-import.html) -->
+[Data Import](data-import.html)

@@ -15,16 +15,16 @@ For a detailed discussion of CockroachDB transaction semantics, see [How Cockroa
 
 Each of the following SQL statements control transactions in some way.
 
-| Statement | Function |
-|-----------|----------|
-| [`BEGIN`](begin-transaction.html) | Initiate a transaction, as well as control its [priority](#transaction-priorities) and [isolation level](#isolation-levels). |
-| [`SET TRANSACTION`](set-transaction.html) | Control a transaction's [priority](#transaction-priorities) and [isolation level](#isolation-levels). |
-| [`SAVEPOINT cockroach_restart`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values. |
-| [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries). |
-| [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction. |
-| [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority. |
-| [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began. |
-| [`SHOW`](show-vars.html) | Display the current transaction settings. |
+ Statement | Function 
+-----------|----------
+ [`BEGIN`](begin-transaction.html) | Initiate a transaction, as well as control its [priority](#transaction-priorities) and [isolation level](#isolation-levels). 
+ [`SET TRANSACTION`](set-transaction.html) | Control a transaction's [priority](#transaction-priorities) and [isolation level](#isolation-levels). 
+ [`SAVEPOINT cockroach_restart`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values. 
+ [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries). 
+ [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction. 
+ [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority. 
+ [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began. 
+ [`SHOW`](show-vars.html) | Display the current transaction settings. 
 
 ## Syntax
 

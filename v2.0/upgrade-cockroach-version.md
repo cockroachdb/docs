@@ -50,11 +50,18 @@ For each node in your cluster, complete the following steps.
 
 2. Stop the `cockroach` process.
 
-    Without a process manager, use this command:
+    Without a process manager like `systemd`, use this command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ pkill cockroach
+    ~~~
+
+    If you are using `systemd` as the process manager, use this command to stop a node without `systemd` restarting it:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ systemctl stop <systemd config filename>
     ~~~
 
     Then verify that the process has stopped:
@@ -134,15 +141,22 @@ For each node in your cluster, complete the following steps.
     ~~~
     </div>
 
-5. If you're running with a process manager, have the node rejoin the cluster by starting it.
+5. Start the node to have it rejoin the cluster.
 
-    Without a process manager, use this command:
+    Without a process manager like `systemd`, use this command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --join=[IP address of any other node] [other flags]
     ~~~
     `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it `--host`.
+
+    If you are using `systemd` as the process manager, run this command to start the node:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ systemctl start <systemd config filename>
+    ~~~
 
 6. Verify the node has rejoined the cluster through its output to `stdout` or through the [admin UI](admin-ui-access-and-navigate.html).
 
@@ -179,6 +193,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 2. Use the `crdb_internal.node_executable_version()` [built-in function](functions-and-operators.html) to check the CockroachDB version running on the node:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT crdb_internal.node_executable_version();
     ~~~
@@ -187,6 +202,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 3. Use the same function to finalize the upgrade:
 
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING version = crdb_internal.node_executable_version();
     ~~~

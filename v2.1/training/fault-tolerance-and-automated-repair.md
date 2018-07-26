@@ -349,4 +349,4 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 ## What's next?
 
-- [Locality and Replication Zones](locality-and-replication-zones.html)
+[Locality and Replication Zones](locality-and-replication-zones.html)
