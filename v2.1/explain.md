@@ -60,12 +60,14 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 Parameter | Description
 -----------|-----------
+`ANALYZE` | Carry out the command and show execution statistics.
 `EXPRS` | Include the SQL expressions that are involved in each processing stage.
 `QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option.
 `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail.
 `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options.
 `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
 `OPT` | Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+`DISTSQL` | Provide a link that displays a distributed SQL plan tree.
 `explainable_stmt` | The [statement](#explainable-statements) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
@@ -364,6 +366,46 @@ pq: unsupported statement: *tree.Insert
 ~~~
 
 The query above will not be run with the cost-based optimizer.
+
+### `DISTSQL` option
+
+<span class="version-tag">New in v2.1:</span> The `DISTSQL` option provides a link to a distributed query plan tree and point your browser to the URL provided:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
+~~~
+
+~~~
++-----------+----------------------------------------------+
+| Automatic |                      URL                     |
++-----------+----------------------------------------------+
+|   true    | https://cockroachdb.github.io/distsqlplan... |
++-----------+----------------------------------------------+
+~~~
+
+Point your browser to the URL provided:
+
+<img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
+To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN ANALYZE (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
+~~~
+
+~~~
++-----------+----------------------------------------------+
+| Automatic |                      URL                     |
++-----------+----------------------------------------------+
+|   true    | https://cockroachdb.github.io/distsqlplan... |
++-----------+----------------------------------------------+
+~~~
+
+Point your browser to the URL provided:
+
+<img src="{{ 'images/v2.1/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
 ### Find the indexes and key ranges a query uses
 
