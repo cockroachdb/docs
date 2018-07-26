@@ -6,8 +6,9 @@ toc: true
 
 The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.
 
-{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a <a href="delete.html#delete-all-rows"><code>DELETE</code> statement without a <code>WHERE</code> clause</a>.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+`TRUNCATE` removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -26,6 +27,10 @@ Parameter | Description
 `table_name` | The name of the table to truncate.
 `CASCADE` | Truncate all tables with [Foreign Key](foreign-key.html) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key](foreign-key.html) dependencies on it.
+
+## Limitations
+
+`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes](online-schema-changes.html).
 
 ## Examples
 

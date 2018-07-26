@@ -146,56 +146,11 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ### Schema changes within transactions
 
-Within a single [transaction](transactions.html):
-
-- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
-- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
-- A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+{% include v2.1/misc/schema-changes-within-transactions.md %}
 
 ### Schema changes between executions of prepared statements
 
-When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE users (id INT PRIMARY KEY);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> PREPARE prep1 AS SELECT * FROM users;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users ADD COLUMN name STRING;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO users VALUES (1, 'Max Roach');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXECUTE prep1;
-~~~
-
-~~~
-+----+-----------+
-| id |   name    |
-+----+-----------+
-|  1 | Max Roach |
-+----+-----------+
-(1 row)
-~~~
-
-It's therefore recommended to **not** use `SELECT *` in queries that will be repeated, via prepared statements or otherwise.
-
-Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
-
-- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
-- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
+{% include v2.1/misc/schema-changes-between-prepared-statements.md %}
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
