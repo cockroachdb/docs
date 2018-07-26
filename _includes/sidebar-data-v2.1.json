@@ -1610,6 +1610,12 @@
             ]
           },
           {
+            "title": "Online Schema Changes",
+            "urls": [
+              "/${VERSION}/online-schema-changes.html"
+            ]
+          },
+          {
             "title": "Automated Scaling & Repair",
             "urls": [
               "/${VERSION}/automated-scaling-and-repair.html"
