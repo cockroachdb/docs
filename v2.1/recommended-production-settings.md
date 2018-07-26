@@ -99,6 +99,44 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
     Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
 
+## Networking
+
+### Networking flags
+
+When [starting a node](start-a-node.html), two main flags are used to control its network connections:
+
+- `--host` determines which address(es) to listen on for connections from other nodes and clients.
+- `--advertise-host` determines which address to tell other nodes to use.
+
+The effect depends on how these two flags are used in combination:
+
+| | `--host` not specified | `--host` specified |
+|-|----------------------------|------------------------|
+| **`--advertise-host` not specified** | Node listens on all of its IP addresses and advertises its canonical hostname to other nodes. | Node listens on the IP address or hostname specified in `--host` and advertises this value to other nodes.
+| **`--advertise-host` specified** | Node listens on all of its IP addresses and advertises the value specified in `--advertise-host` to other nodes. **Recommended for most cases.** | Node listens on the IP address or hostname specified in `--host` and advertises the value specified in `--advertise-host` to other nodes.
+
+{{site.data.alerts.callout_success}}
+When using hostnames, make sure they resolve properly (e.g., via DNS or `etc/hosts`). In particular, be careful about the value advertised to other nodes, either via `--advertise-host` or via `--host` when `--advertise-host` is not specified.
+{{site.data.alerts.end}}
+
+### Cluster on a single network
+
+When running a cluster on a single network, the setup depends on whether the network is private. In a private network, machines have addresses restricted to the network, not accessible to the public internet. Using these addresses is more secure and usually provides lower latency than public addresses.
+
+Private? | Recommended setup
+---------|------------------
+Yes | Start each node with `--host` set to its private IP address and do not specify `--advertise-host`. This will tell other nodes to use the private IP address advertised. Load balancers/clients in the private network must use it as well.
+No | Start each node with `--advertise-host` set to a stable public IP address that routes to the node and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>If load balancers/clients are outside the network, also configure firewalls to allow external traffic to reach the cluster.
+
+### Cluster spanning multiple networks
+
+When running a cluster across multiple networks, the setup depends on whether nodes can reach each other across the networks.
+
+Nodes reachable across networks? | Recommended setup
+---------------------------------|------------------
+Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-host` set to the address that is reachable from other networks and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.
+
 ## Load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to ensure client performance and reliability, it's important to use load balancing:
