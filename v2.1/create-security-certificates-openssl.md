@@ -84,6 +84,7 @@ Note the following:
     serial = serial.txt
     default_md = sha256
     copy_extensions = copy
+    unique_subject = no
 
     # Used to create the CA certificate.
     [ req ]
