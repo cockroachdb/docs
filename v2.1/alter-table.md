@@ -7,9 +7,8 @@ toc: true
 The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table.
 
 {{site.data.alerts.callout_info}}
-To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see [Online Schema Changes in CockroachDB](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
+To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see [Online Schema Changes](online-schema-changes.html).
 {{site.data.alerts.end}}
-
 
 ## Subcommands
 
