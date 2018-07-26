@@ -579,6 +579,31 @@ In this example, we create a table and then use `\|` to programmatically insert 
 +---+
 ~~~
 
+### Edit SQL statements in an external editor
+
+In applications that use [GNU Readline](https://tiswww.case.edu/php/chet/readline/rltop.html) (such as [bash](https://www.gnu.org/software/bash/)), you can edit a long line in your preferred editor by typing `Ctrl-x Ctrl-e`.  However, CockroachDB uses the BSD-licensed [libedit](https://thrysoee.dk/editline/), which does not include this functionality.
+
+If you would like to be able to edit the current line in an external editor by typing `C-x C-e` as in `bash`, do the following:
+
+1. Install the `vipe` program (from the [moreutils](https://joeyh.name/code/moreutils/) suite of tools).
+2. Edit your `~/.editrc` to add the following line, which takes advantage of the SQL client's ability to [run external commands](#run-external-commands-from-the-sql-shell):
+
+   {% include copy-clipboard.html %}
+   ~~~
+   cockroach:bind -s ^X^E '^A^K\\\| echo \"^Y\" | vipe\r'
+   ~~~
+
+This tells libedit to translate `C-x C-e` into the following commands:
+
+1. Move to the beginning of the current line.
+2. Kill (cut) the whole line.
+3. Yank (paste) the line into your editor via `vipe`.
+4. Pass the edited file back to the SQL client when `vipe` exits.
+
+{{site.data.alerts.callout_info}}
+Future versions of the SQL client may opt to use a different back-end for reading input, in which case please refer to this page for additional updates.
+{{site.data.alerts.end}}
+
 ### Allow potentially unsafe SQL statements
 
 The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
