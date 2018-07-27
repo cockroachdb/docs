@@ -17,7 +17,7 @@ The **Hardware** dashboard displays the following time series graphs:
 - In the cluster view, the graph shows the amount of CPU resources used by the CockroachDB process across all nodes.
 
 {{site.data.alerts.callout_info}}
-For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU Percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
 {{site.data.alerts.end}}
 
 ## System CPU Percent
@@ -29,7 +29,7 @@ For multi-core systems, the user CPU percent can be greater than 100%. Full util
 - In the cluster view, the graph shows the amount of CPU resources used for CockroachDB system-level operations across all nodes.
 
 {{site.data.alerts.callout_info}}
-For multi-core systems, the system CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the system CPU Percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+For multi-core systems, the system CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the system CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
 {{site.data.alerts.end}}
 
 ## Memory Usage
