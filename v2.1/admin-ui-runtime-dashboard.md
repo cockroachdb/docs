@@ -49,7 +49,7 @@ On hovering over the CPU Time graph, the values for the following metrics are di
 Metric | Description
 --------|----
 User CPU Time | Total CPU seconds per second used by the CockroachDB process across all nodes.
-Sys CPU Time | Total CPU seconds per second used by the system calls made by CockroachDB across all nodes.
+Sys CPU Time | Total CPU seconds per second used for CockroachDB system-level operations across all nodes.
 
 ## Clock Offset
 

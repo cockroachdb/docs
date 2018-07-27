@@ -31,7 +31,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 <img src="{{ 'images/v2.1/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
@@ -39,7 +39,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 <img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows separately the current moving average, over the last 10 seconds, of the number of opened, committed, aborted, and rolled back transactions per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of opened, committed, aborted, and rolled back transactions per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current transactions load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
