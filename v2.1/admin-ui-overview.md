@@ -13,6 +13,7 @@ Area | Description
 [Node Map](enable-node-map.html) | View and monitor the metrics and geographical configuration of your cluster.
 [Cluster Health](admin-ui-access-and-navigate.html#summary-panel) | View essential metrics about the cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 [Overview Metrics](admin-ui-overview-dashboard.html) | View important SQL performance, replication, and storage metrics.
+[Hardware Metrics](admin-ui-hardware-dashboard.html) | View metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 [Runtime Metrics](admin-ui-runtime-dashboard.html) | View metrics about node count, CPU time, and memory usage.
 [SQL Performance](admin-ui-sql-dashboard.html) | View metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 [Storage Utilization](admin-ui-storage-dashboard.html) | View metrics about storage capacity and file descriptors.
