@@ -17,9 +17,9 @@ The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on th
 
 ## Synopsis
 
-{% include {{ page.version.version }}/sql/diagrams/delete.html %}
-
-<div markdown="1"></div>
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/delete.html %}
+</div>
 
 ## Parameters
 
@@ -29,7 +29,7 @@ table td:first-child {
 }
 </style>
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
  `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
  `table_name` | The name of the table that contains the rows you want to update.
@@ -37,15 +37,15 @@ table td:first-child {
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__
  `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
- `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`. 
+ `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
 ## Success responses
 
 Successful `DELETE` statements return one of the following:
 
- Response | Description 
+ Response | Description
 -----------|-------------
-`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. 
+`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response.
 Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)
 
 ## Disk space usage after deletes
