@@ -38,6 +38,8 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Queries with fewer levels execute more quickly. Restructuring queries to require fewer levels of processing will generally improve performance.
 
+- To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`.
+
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
@@ -60,14 +62,14 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 Parameter | Description
 -----------|-----------
-`ANALYZE` | Carry out the command and show execution statistics.
+`ANALYZE` | <span class="version-tag">New in v2.1:</span> Execute the command and show execution statistics.
 `EXPRS` | Include the SQL expressions that are involved in each processing stage.
 `QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option.
 `METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail.
 `VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options.
 `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
-`OPT` | Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
-`DISTSQL` | Provide a link that displays a distributed SQL plan tree.
+`OPT` | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+`DISTSQL` | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
 `explainable_stmt` | The [statement](#explainable-statements) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
@@ -369,7 +371,7 @@ The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 
-<span class="version-tag">New in v2.1:</span> The `DISTSQL` option provides a link to a distributed query plan tree and point your browser to the URL provided:
+<span class="version-tag">New in v2.1:</span> The `DISTSQL` option provides a link to a distributed query plan tree:
 
 {% include copy-clipboard.html %}
 ~~~ sql
