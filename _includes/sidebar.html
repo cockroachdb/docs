@@ -135,8 +135,11 @@
               }
               return url;
             });
+            
+            // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
+            var activePathname = location.pathname.slice(-5) === '.html' ? location.pathname : location.pathname + '.html';
 
-            var active = (urls.indexOf(location.pathname) !== -1);
+            var active = (urls.indexOf(activePathname) !== -1);
             if (active) {
               // This mutation inside an otherwise pure function is
               // unfortunate, but doing it here avoids a separate
