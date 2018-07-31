@@ -17,17 +17,21 @@ These two points on the spectrum show how CockroachDB scales from modest-sized p
 
 Follow steps 1-6 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html), with the following changes:
 
-- For the 3 CockroachDB nodes, use `n1-highcpu-16` VMs with [local SSD storage](https://cloud.google.com/compute/docs/disks/local-ssd).  
+1. [Create 3 instances](https://cloud.google.com/compute/docs/instances/create-start-instance) for your CockroachDB nodes. While creating each instance:  
+    - Select the **us-east1-b** [zone](https://cloud.google.com/compute/docs/regions-zones/).
+    - Use the `n1-highcpu-16` machine type.
 
-    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+        For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios.
+    - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
 
-- Configure the local SSDs to be more performant:
+        We attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-    ~~~ shell
-    $ sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1
-    ~~~
+2. Note the internal IP address of each `n1-highcpu-16` instance. You'll need these addresses when starting the CockroachDB nodes.
 
-- Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for running the TPC-C benchmark.
+3. SSH to each instance and [optimize the local SSD for write performance](https://cloud.google.com/compute/docs/disks/performance#optimize_local_ssd) (see the **Disable write cache flushing** section).
+
+4. Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for running the TPC-C benchmark.
 
 {{site.data.alerts.callout_danger}}
 This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as ensuring that data is balanced across at least three availability zones for resiliency. See the [Production Checklist](recommended-production-settings.html) for more details.
@@ -71,7 +75,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the TPC-C workload.
 
-1. SSH to VM 4, download `workload` and make it executable:
+1. SSH to the fourth instance (the one not running a CockroachDB node), download `workload`, and make it executable:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -85,13 +89,13 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
-3. Start the TPC-C workload, pointing it at the IP address of a node and including any [connection parameters](connection-parameters.html):
+3. Start the TPC-C workload, pointing it at the [connection string of a node](connection-parameters.html#connect-using-a-url) and including any connection parameters:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./workload.LATEST fixtures load tpcc \
     --warehouses=10000 \
-    postgresql://root@<NODE 1 ADDRESS>:26257?sslmode=disable
+    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take about an hour and loads 1,000 "warehouses" of data.
@@ -106,7 +110,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
 ### Step 3. Run the benchmark
 
-Still on VM 4, run `workload` for five minutes:
+Still on the fourth instance, run `workload` for five minutes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -116,7 +120,7 @@ $ ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, NODE 3 ADDRESS>:26257?sslmode=disable"
+"postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[, ...]"
 ~~~
 
 ### Step 4. Interpret the results
@@ -142,21 +146,25 @@ Benchmarking a large cluster uses [partitioning](partitioning.html). You must ha
 
 ### Step 1. Start a 30-node cluster on Google Cloud Platform GCE
 
-Follow steps 1-6 in the [GCE tutorial to deploy a 30-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html), with the following changes:
+Follow steps 1-6 in the [GCE tutorial to deploy a 3-node CockroachDB cluster on Google Cloud](deploy-cockroachdb-on-google-cloud-platform.html), with the following changes:
 
-- For the 30 CockroachDB nodes, use `n1-highcpu-16` VMs with [local SSD storage](https://cloud.google.com/compute/docs/disks/local-ssd).  
+1. [Create 30 instances](https://cloud.google.com/compute/docs/instances/create-start-instance) for your CockroachDB nodes. While creating each instance:  
+    - Select the **us-east1-b** [zone](https://cloud.google.com/compute/docs/regions-zones/).
+    - Use the `n1-highcpu-16` machine type.
 
-    For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios. We also attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+        For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios.
+    - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
 
-- Configure the local SSDs to be more performant:
+        We attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-    ~~~ shell
-    $ sudo umount /mnt/data1; sudo mount -o discard,defaults,nobarrier /dev/disk/by-id/google-local-ssd-0 /mnt/data1/; mount | grep /mnt/data1
-    ~~~
+2. Note the internal IP address of each `n1-highcpu-16` instance. You'll need these addresses when starting the CockroachDB nodes.
 
-- Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a thirty-first VM for running the TPC-C benchmark.
+3. SSH to each instance and [optimize the local SSD for write performance](https://cloud.google.com/compute/docs/disks/performance#optimize_local_ssd) (see the **Disable write cache flushing** section).
 
-- Add 10 racks, which are used later to partition the database. Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=1`) Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
+4. Skip step 4, for setting up Google's manage load balancing service. Instead, reserve a fourth VM for running the TPC-C benchmark.
+
+5. Add 10 racks, which are used later to partition the database. Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=1`) Use 10 racks for 30 nodes so that every tenth node is part of the same rack.
 
 {{site.data.alerts.callout_danger}}
 This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as ensuring that data is balanced across at least three availability zones for resiliency. See the [Production Checklist](recommended-production-settings.html) for more details.
@@ -168,7 +176,7 @@ For this benchmark, you will use partitioning, which is an enterprise feature. F
 
 To add an enterprise license to your cluster once it is started, [use the built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-1. On your local machine, launch the built-in SQL client:
+1. SSH to the 31st instance (the one not running a CockroachDB node) and launch the built-in SQL client:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -188,7 +196,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
-2. SSH to VM 31, download `workload` and make it executable:
+2. SSH to the 31st instance (the one not running a CockroachDB node), download `workload`, and make it executable:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -202,13 +210,13 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
-4. Start the TPC-C workload, pointing it at the IP address of a node and including any [connection parameters](connection-parameters.html):
+4. Start the TPC-C workload, pointing it at the [connection string of a node](connection-parameters.html#connect-using-a-url) and including any connection parameters:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $  ./workload.LATEST fixtures load tpcc \
     --warehouses=100000 \
-    postgresql://root@<NODE 1 ADDRESS>:26257?sslmode=disable
+    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take at about an hour and loads 10,000 "warehouses" of data.
@@ -225,7 +233,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
 To [increase the snapshot rate](cluster-settings.html), which helps speed up this large-scale data movement:
 
-1. Still on VM 31, launch the built-in SQL client:
+1. Still on the 31st instance, launch the built-in SQL client:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -245,7 +253,7 @@ To [increase the snapshot rate](cluster-settings.html), which helps speed up thi
 
 Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into ten partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
-1. Still on VM 31, start the partitioning:
+1. Still on the 31st instance, start the partitioning:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -255,7 +263,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     --scatter \
     --warehouses=10000 \
     --duration=1s \
-    "postgresql://root@<NODE 1 ADDRESS>:26257?sslmode=disable"
+    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
     ~~~
 
     This command runs the TPC-C workload against the cluster for 1 second, long enough to add the partitions.
@@ -279,7 +287,7 @@ $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgresql://root@<NODE 1 ADDRESS, NODE 2 ADDRESS, [...], NODE 30 ADDRESS>:26257?sslmode=disable"
+"postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[, ...]"
 ~~~
 
 ### Step 7. Interpret the results
