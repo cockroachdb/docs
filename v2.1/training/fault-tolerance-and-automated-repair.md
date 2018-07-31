@@ -73,7 +73,7 @@ In this module, you'll run a load generator to simulate multiple client connecti
         option              clitcpka
 
     listen psql
-        bind :26257
+        bind :26000
         mode tcp
         balance roundrobin
         option httpchk GET /health?ready=1
@@ -142,7 +142,7 @@ Initially, the load generator creates a new database called `ycsb`, creates a `u
 
 1. To check the SQL queries getting executed, go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **Metrics** on the left, and hover over the **SQL Queries** graph at the top:
 
-    <img src="{{ 'images/v2.0/training-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 2. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **SQL Connections** graph:
 
