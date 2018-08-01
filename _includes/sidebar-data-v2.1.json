@@ -376,15 +376,9 @@
             ]
           },
           {
-            "title": "Back up Data",
+            "title": "Backup and Restore Data",
             "urls": [
-              "/${VERSION}/back-up-data.html"
-            ]
-          },
-          {
-            "title": "Restore Data",
-            "urls": [
-              "/${VERSION}/restore-data.html"
+              "/${VERSION}/backup-and-restore.html"
             ]
           },
           {

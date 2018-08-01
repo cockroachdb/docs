@@ -4,7 +4,7 @@ summary: Learn how to back up and restore a CockroachDB cluster.
 toc: false
 ---
 
-How you restore your cluster's data depends on the type of [backup](back-up-data.html) originally:
+How you restore your cluster's data depends on the type of [backup](backup.html) originally:
 
 Backup Type | Restore using...
 ------------|-----------------
@@ -15,6 +15,5 @@ If you created a back up from another database and want to import it into Cockro
 
 ## See also
 
-- [Back up Data](back-up-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
