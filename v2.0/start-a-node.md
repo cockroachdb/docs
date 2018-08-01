@@ -92,7 +92,7 @@ The `--store` flag supports the following fields. Note that commas are used to s
 
 {{site.data.alerts.callout_info}}In-memory storage is not suitable for production deployments at this time.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}If you are using 3-node cluster, with multiple disks per node, balancing does <strong>not</strong> work as expected. Please check https://forum.cockroachlabs.com/t/storage-on-multiple-disks/1328/6 and https://forum.cockroachlabs.com/t/how-cockroach-utilizes-multiple-disks-on-a-single-node/1880/3.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you are using 3-node cluster, with multiple disks per node, balancing does <strong>not</strong> work as expected. Please check <a href="://forum.cockroachlabs.com/t/storage-on-multiple-disks/1328/6">here</a> and <a href="://forum.cockroachlabs.com/t/how-cockroach-utilizes-multiple-disks-on-a-single-node/1880/3">here</a>.<br><br>If you have similar setup, for the most automatic IO and ranges load balancing between drives, please use filesystem-level striping across the multiple disks (LVM, btrfs, linear RAID). This will increase read and write bandwidth just as well as using multiple stores in CockroachDB. However please note that on drive failure, the failure domain is the entire server, not only single disk on the server.{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
