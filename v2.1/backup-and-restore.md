@@ -81,7 +81,7 @@ You can restore your database by running the [`RESTORE`](restore.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE <database_name> FROM '<full_backup_location>', '<previous_incremental_backup_location>', '<incremental_backup_location>';
+> RESTORE <database_name> FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
 ~~~
 
 ### Automate full and incremental backups
@@ -107,18 +107,18 @@ In the sample script, configure the day of the week for which you want to create
 
     set -euo pipefail
 
-    # this script runs backups, creating full backups when run on the configured
+    # This script creates full backups when run on the configured
     # day of the week and incremental backups when run on other days, and tracks
-    # recently created backups in a file to pass as the base for INCREMENTAL option.
+    # recently created backups in a file to pass as the base for incremental backups.
 
-    full_day=<day_of_the_week>                 # Must match (including case) the output of `LC_ALL=C date +%A`.
-    what="DATABASE <database_name>"            # what to backup.
-    base="<storage_URL/backups"   # base dir in which to create backups.
-    extra="<storage_parameters>"                        # any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
-    recent=recent_backups.txt              # file in which recent backups are recorded.
-    backup_parameters=                        # e.g. "WITH revision_history"
+    full_day=<day_of_the_week>                        # Must match (including case) the output of `LC_ALL=C date +%A`.
+    what="DATABASE <database_name>"                   # The name of the database you want to backup.
+    base="<storage_URL>/backups"                      # The URL where you want to store the backup.
+    extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
+    recent=recent_backups.txt                         # File in which recent backups are tracked.
+    backup_parameters=<additional backup parameters>  # e.g. "WITH revision_history"
 
-    # customize with additional flags for certificates/hosts/etc as needed to connect.
+    # Customize with additional flags for certificates/hosts/etc. as needed to connect.
     runsql() { cockroach sql --insecure -e "$1"; }
 
     destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"
@@ -146,10 +146,12 @@ In the sample script, configure the day of the week for which you want to create
     Flag | Description
     -----|------------
     `day_of_the_week` | The day of the week on which you want to take a full backup.
-    `database_name` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).
+    `database_name` | The name of the database you want to backup (i.e., create backups of all tables and views in the database).
     `storage_URL` | The URL where you want to store the backup.<br/><br/>URL format: `[scheme]://[host]/[path]` <br/><br/>For information about the components of the URL, see [Backup File URLs](backup.html#backup-file-urls).
     `storage_parameters`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
-    `backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.
+    `additional_backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.
+
+    Also customize the `cockroach sql` command with [additional flags](use-the-built-in-sql-client.html#flags) (if required).
 
 3. Change the file permissions to make the script executable:
 

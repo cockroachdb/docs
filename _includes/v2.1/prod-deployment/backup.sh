@@ -2,18 +2,18 @@
 
 set -euo pipefail
 
-# this script runs backups, creating full backups when run on the configured
+# This script creates full backups when run on the configured
 # day of the week and incremental backups when run on other days, and tracks
-# recently created backups in a file to pass as the base for INCREMENTAL option.
+# recently created backups in a file to pass as the base for incremental backups.
 
-full_day=<day_of_the_week>                 # Must match (including case) the output of `LC_ALL=C date +%A`.
-what="DATABASE <database_name>"            # what to backup.
-base="<storage_URL>/backups"   # base dir in which to create backups.
-extra="<storage_parameters>"                        # any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
-recent=recent_backups.txt              # file in which recent backups are recorded.
-backup_parameters=                        # e.g. "WITH revision_history"
+full_day=<day_of_the_week>                        # Must match (including case) the output of `LC_ALL=C date +%A`.
+what="DATABASE <database_name>"                   # The name of the database you want to backup.
+base="<storage_URL>/backups"                      # The URL where you want to store the backup.
+extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
+recent=recent_backups.txt                         # File in which recent backups are tracked.
+backup_parameters=<additional backup parameters>  # e.g. "WITH revision_history"
 
-# customize with additional flags for certificates/hosts/etc as needed to connect.
+# Customize with additional flags for certificates/hosts/etc. as needed to connect.
 runsql() { cockroach sql --insecure -e "$1"; }
 
 destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"
