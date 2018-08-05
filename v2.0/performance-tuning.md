@@ -99,14 +99,19 @@ Just as in the read scenario, if the write request is received by the node that 
 ## Single-region deployment
 
 <!-- roachprod instructions for single-region deployment
-1. Reserve 12 VMs across 3 GCE zone: roachprod create jesse-perf-tuning --geo --gce-zones us-east1-b,us-west1-a,us-west2-a --local-ssd -n 12
-2. Put cockroach` on all VM: `roachprod run jesse-perf-tuning "curl https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz; mv cockroach-v2.0.4.linux-amd64/cockroach cockroach"
-3. Start the cluster in us-east1-b: roachprod start jesse-perf-tuning:1-3
-4. List the IP address of all instances: roachprod list -d jesse-perf-tuning
-5. SSH onto instance 4: roachprod run jesse-perf-tuning:4
-6. Start sql shell: ./cockroach sql --insecure --host=<IP address of any running node>
-7. Run the SQL commands in Step 4 below.
-8. Still on instance 4, install the Python client. See step 5.
+1. Reserve 12 instances across 3 GCE zone: roachprod create <yourname>-tuning --geo --gce-zones us-east1-b,us-west1-a,us-west2-a --local-ssd -n 12
+2. Put cockroach` on all instances: `roachprod run <yourname>-tuning "curl https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz; mv cockroach-v2.0.4.linux-amd64/cockroach cockroach"
+3. Start the cluster in us-east1-b: roachprod start <yourname>-tuning:1-3
+4. You'll need the addresses of all instances later, so list and record them somewhere: roachprod list -d <yourname>-tuning
+5. Import the Movr dataset:
+   - SSH onto instance 4: roachprod run <yourname>-tuning:4
+   - Run the SQL commands in Step 4 below.
+8. Install the Python client:
+   - Still on instance 4, run commands in Step 5 below.
+9. Test/tune read performance:
+   - Still on instance 4, run commands in Step 6.
+10. Test/tune write performance:
+   - Still on instance 4, run commands in Step 7.
 -->
 
 ### Step 1. Configure your network
@@ -1325,6 +1330,28 @@ At just 8.42ms, this approach is faster due to the write and read executing in o
 - Maybe interleaved tables -->
 
 ## Multi-region deployment
+
+<!-- roachprod instructions for multi-region deployment
+You created all instanced up front, so no need to add more now.
+1. Install the Python client on instance 8:
+   - SSH to instance 8: roachprod run <yourname>-tuning:8
+   - Run commands in Step 5 above.
+2. Install the Python client on instance 12:
+   - SSH onto instance 12: roachprod run <yourname>-tuning:12
+   - Run commands in Step 5 above.
+3. Check rebalancing:
+   - SSH to instance 4, 8, or 12.
+   - Run `SHOW EXPERIMENTAL_RANGES` from Step 11 below.
+4. Test performance:
+   - Run the SQL commands in Step 12 below. You'll need to SSH to instance 8 or 12 as suggested.
+5. Partition the data:
+   - SSH to any node and run the SQL in Step 13 below.
+6. Check rebalancing after partitioning:
+   - SSH to instance 4, 8, or 12.
+   - Run `SHOW EXPERIMENTAL_RANGES` from Step 14 below.
+7. Test performance after partitioning:
+   - Run the SQL commands in Step 15 below. You'll need to SSH to instance 8 or 12 as suggested.
+-->
 
 Given that Movr is active on both US coasts, you'll now scale the cluster into two new regions, us-west1-a and us-west2-a, each with 3 nodes and an extra instance for simulating regional client traffic.
 
