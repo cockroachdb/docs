@@ -8,7 +8,6 @@ CockroachDB comes with a built-in client for executing SQL statements from an in
 
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
-
 ## Synopsis
 
 ~~~ shell
@@ -40,10 +39,11 @@ The `sql` command supports the following types of flags:
 Flag | Description
 -----|------------
 `--database`<br>`-d` | A database name to use as [current database](sql-name-resolution.html#current-database) in the newly created session.
-`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#sql-shell-commands).
+`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
 <a name="sql-flag-execute"></a> `--execute`<br />`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` for [interactive sessions](#interactive-sessions), `tsv` for non-interactive sessions<br /><br />Corresponds to the [`display_format`](#sql-option-display-format) SQL shell option for use in interactive sessions.
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#interactive-sessions), `false` otherwise.<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
+`--set`<br>`-s` | <span class="version-tag">New in v2.1:</span> Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.  
 
 ### Client connection
 
@@ -56,29 +56,6 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 By default, the `sql` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
-
-## SQL shell welcome
-
-When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
-
-~~~ shell
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
-#
-# Server version: CCL {{page.release_info.version}} (darwin amd64, built 2017/07/13 11:43:06, go1.8) (same version as client)
-# Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
-#
-# Enter \? for a brief introduction.
-#
->
-~~~
-
-The **Version** and **Cluster ID** details are particularly noteworthy:
-
-- When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
-- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
-- Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
 
 ## Interactive sessions
 
@@ -95,7 +72,32 @@ When an interactive session is detected, the following options have their defaul
 + The [`check_syntax` option](#sql-option-check-syntax) defaults to `true`.
 + The [`smart_prompt` option](#sql-option-smart-prompt) defaults to `true`.
 
-## SQL shell commands
+## SQL shell
+
+### Welcome message
+
+When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
+
+~~~ shell
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+#
+# Server version: CCL {{page.release_info.version}} (darwin amd64, built 2017/07/13 11:43:06, go1.10.1) (same version as client)
+# Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
+#
+# Enter \? for a brief introduction.
+#
+>
+~~~
+
+The **Version** and **Cluster ID** details are particularly noteworthy:
+
+- When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
+- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
+- Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
+
+### Commands
 
 The following commands can be used within the interactive SQL shell:
 
@@ -104,25 +106,28 @@ Command | Usage
 `\q`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\set <option>` | Enable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options).<br><br>To view help and the current settings, use `\set` without any options.
-`\unset <option>` | Disable a client-side option. For available options, see [SQL Shell Options](#sql-shell-options).
+`\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>As of v2.1, you can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\?`<br>`help` | View this help within the shell.
-`\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL Shell Help](#sql-shell-help) for more details.
+`\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
 
-### SQL shell options
+### Client-side options
 
-To view help and the current settings, use `\set` without any options. To enable or disable a shell option, use `\set <option>` or `\unset <option>`.
+- To view option descriptions and how they are currently set, use `\set` without any options.
+- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. As of v2.1, you can also use the form `<option>=<value>`.
+- If an option accepts a boolean value:
+    - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
+    - As of v2.1, `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
 
 Client Options | Description
 ---------------|------------
-<a name="sql-option-display-format"></a> `display_format` | <span class="version-tag">Updated in v2.0:</span> How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` when the output goes to a terminal and the [`--format` flag](#sql-flag-format) is not passed at startup, `tsv` otherwise.<br /><br />To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
+<a name="sql-option-display-format"></a> `display_format` | How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `pretty`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `pretty` when the output goes to a terminal and the [`--format` flag](#sql-flag-format) is not passed at startup, `tsv` otherwise.<br /><br />To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
 `echo` | Reveal the SQL statements sent implicitly by the SQL shell.<br><br>**Default:** `false`. To enable it, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-<a name="sql-option-errexit"></a> `errexit` | <span class="version-tag">Updated in v2.0:</span> Exit the SQL shell upon encountering an error.<br /><br />**Default:** `false` for [interactive sessions](#interactive-sessions), `true` otherwise. To enable it, run `\set errexit`.
+<a name="sql-option-errexit"></a> `errexit` | Exit the SQL shell upon encountering an error.<br /><br />**Default:** `false` for [interactive sessions](#interactive-sessions), `true` otherwise. To enable it, run `\set errexit`.
 <a name="sql-option-check-syntax"></a> `check_syntax` | Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br /><br />**Default:** `true` for [interactive sessions](#interactive-sessions), `false` otherwise. To disable it, run `\unset check_syntax`.
 `show_times` | Reveal the time a query takes to complete.<br><br>**Default:** `true`. To disable it, run `\unset show_times`.
 <a name="sql-option-smart-prompt"></a> `smart_prompt` | Query the server for the current transaction status and return it to the prompt.<br /><br />**Default:** `true` for [interactive sessions](#interactive-sessions), `false` otherwise. However, it is respected only when `ECHO` is enabled as well. To disable this option, run `\unset smart_prompt`.
 
-### SQL shell help
+### Help
 
 Within the SQL shell, you can get interactive help about statements and functions:
 
@@ -151,7 +156,7 @@ See also:
   INSERT
   UPSERT
   DELETE
-  https://www.cockroachlabs.com/docs/v1.1/update.html
+  https://www.cockroachlabs.com/docs/v2.1/update.html
 ~~~
 
 ~~~ sql
@@ -167,10 +172,10 @@ Signature          Category
 uuid_v4() -> bytes [ID Generation]
 
 See also:
-  https://www.cockroachlabs.com/docs/v1.1/functions-and-operators.html
+  https://www.cockroachlabs.com/docs/v2.1/functions-and-operators.html
 ~~~
 
-### SQL shell shortcuts
+### Shortcuts
 
 The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
@@ -453,7 +458,7 @@ CREATE TABLE customers (
 # 1 row
 ~~~
 
-When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#sql-shell-options) to change the output format within the interactive session:
+When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#client-side-options) to change the output format within the interactive session:
 
 {% include copy-clipboard.html %}
 ~~~ sql
