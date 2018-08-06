@@ -5,10 +5,7 @@ import psycopg2
 conn = psycopg2.connect(
     database='bank',
     user='maxroach',
-    sslmode='require',
-    sslrootcert='certs/ca.crt',
-    sslkey='certs/client.maxroach.key',
-    sslcert='certs/client.maxroach.crt',
+    sslmode='disable',
     port=26257,
     host='localhost'
 )
