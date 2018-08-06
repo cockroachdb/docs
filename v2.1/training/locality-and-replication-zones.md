@@ -77,7 +77,7 @@ By default, CockroachDB tries to balance data evenly across specified "localitie
 
 To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the replica count is the same on all nodes.
 
-<img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 3. Expand into 2 more US regions
 
@@ -130,6 +130,8 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --background
     ~~~
 
+    You started nodes 4, 5, and 6 in the Central region.
+
 4. Start node 7:
 
     {% include copy-clipboard.html %}
@@ -174,6 +176,8 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
+
+    You started nodes 7, 8, and 9 in the East region.
 
 ## Step 4. Write data and verify data distribution
 
