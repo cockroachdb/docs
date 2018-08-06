@@ -48,14 +48,14 @@ A connection URL has the following format:
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
 
-Component | Description | Required
-----------|-------------|----------
-`<username>` | The [SQL user](create-and-manage-users.html) that will own the client session. | ✗
-`<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>[Find more detail about how CockroachDB handles passwords](create-and-manage-users.html#user-authentication). | ✗
-`<host>` | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
-`<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. | Required by most client drivers.
-`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database).  | ✗
-`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | ✗
+ Component      | Description                                                                                                                                                                                               | Required
+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------
+ `<username>`   | The [SQL user](create-and-manage-users.html) that will own the client session.                                                                                                                            | ✗
+ `<password>`   | The user's password. It is not recommended to pass the password in the URL directly.<br><br>[Find more detail about how CockroachDB handles passwords](create-and-manage-users.html#user-authentication). | ✗
+ `<host>`       | The host name or address of a CockroachDB node or load balancer.                                                                                                                                          | Required by most client drivers.
+ `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer.                                                                                                                            | Required by most client drivers.
+ `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database).  Defaults to `defaultdb` unless otherwise specified.                                                             | ✗
+ `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings.                                                                                            | ✗
 
 {{site.data.alerts.callout_info}}You can specify the URL for
 <code>cockroach</code> commands that accept a URL with the
@@ -225,7 +225,7 @@ In other words:
 
 ### Example override of the current database
 
-For example, the `cockroach start` command prints out the following connection URL:
+For example, the `cockroach start` command prints out the following connection URL, which connects to the `defaultdb` database by default:
 
 ~~~
 postgres://root@servername:26257/?sslmode=disable

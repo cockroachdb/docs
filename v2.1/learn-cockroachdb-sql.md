@@ -13,7 +13,7 @@ This page walks you through some of the most essential CockroachDB SQL statement
 
 ## Create a Database
 
-CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
+By default, the SQL client connects to the `defaultdb` database. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -44,14 +44,18 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(2 rows)
++---------------+
+| database_name |
++---------------+
+| bank          |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(4 rows)
 ~~~
+
+{% include {{page.version.version}}/default-databases.md %}
 
 ## Set the default database
 

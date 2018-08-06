@@ -5,8 +5,7 @@ keywords: reflection
 toc: true
 ---
 
-The `SHOW DATABASES` [statement](sql-statements.html) lists all database in the CockroachDB cluster.
-
+The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the CockroachDB cluster.
 
 ## Synopsis
 
@@ -26,14 +25,17 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(5 rows)
++---------------+
+| database_name |
++---------------+
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(3 rows)
 ~~~
+
+{% include {{page.version.version}}/default-databases.md %}
 
 ## See also
 
