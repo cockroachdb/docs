@@ -7,7 +7,7 @@ toc: true
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}
-In the [built-in SQL shell](use-the-built-in-sql-client.html#sql-shell-help), use `\h [statement]` to get inline help about a specific statement.
+In the [built-in SQL shell](use-the-built-in-sql-client.html#help), use `\h [statement]` to get inline help about a specific statement.
 {{site.data.alerts.end}}
 
 
