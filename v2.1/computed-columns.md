@@ -21,7 +21,6 @@ Computed columns are especially useful when used with [partitioning](partitionin
 
 Computed columns:
 
-- Cannot be added after a table is created. Follow the [GitHub issue](https://github.com/cockroachdb/cockroach/issues/22652) for updates on this limitation.
 - Cannot be used to generate other computed columns.
 - Cannot be a [foreign key](foreign-key.html) reference.
 - Behave like any other column, with the exception that they cannot be written to directly.
@@ -59,6 +58,12 @@ Parameter | Description
 ### Create a table with a secondary index on a computed column
 
 {% include {{ page.version.version }}/computed-columns/secondary-index.md %}
+
+### Add a computed column to an existing table
+
+{% include {{ page.version.version }}/computed-columns/add-computed-column.md %}
+
+For more information, see [`ADD COLUMN`](add-column.html).
 
 ## See also
 
