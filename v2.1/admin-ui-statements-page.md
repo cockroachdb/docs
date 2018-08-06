@@ -11,10 +11,13 @@ To view the **Statements** page, open [http://localhost:8080/#/statements](http:
 **This feature is a work in progress**. It will change leading up to the v2.1 release.
 {{site.data.alerts.end}}
 
-## Limitations
+## Limitation
 
-- If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications; however, there is no way to map the statements to the applications. Also, the **Statements Details** page shows the values only for the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. From the next CockroachDB alpha release, you will be able to choose the application on the **Statements** page and, by extension, the **Statement Details** page.
-- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+
+## Selecting the application
+
+If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the particular application from the **App** dropdown menu.
 
 ## Understanding the Statements page
 
@@ -88,7 +91,7 @@ The **Row Count** table provides the mean and standard deviation values of cumul
 
 ### By Gateway Node
 
-The **By Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides details about the cumulative time taken to execute the statement, the total number of times the SQL statement (or multiple statements having the same fingerprint) is executed, the mean number of rows affected, and the mean latency. 
+The **By Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides details about the cumulative time taken to execute the statement, the total number of times the SQL statement (or multiple statements having the same fingerprint) is executed, the mean number of rows affected, and the mean latency.
 
 ### Statistics
 
