@@ -15,7 +15,7 @@ To view the **Statements** page, open [http://localhost:8080/#/statements](http:
 
 The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
 
-## Selecting the application
+## Selecting an application
 
 If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the particular application from the **App** dropdown menu.
 
