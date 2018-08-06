@@ -1,58 +1,28 @@
 ---
-title: SHOW TRACE
-summary: The SHOW TRACE statement returns details about how CockroachDB executed a statement or series of statements.
+title: SHOW TRACE FOR SESSION
+summary: The SHOW TRACE FOR SESSION statement returns details about how CockroachDB executed a statement or series of statements recorded during a session.
 toc: true
 ---
 
-The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
+The `SHOW TRACE FOR SESSION` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements recorded during a session. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
-You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
+You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
 
 ## Usage overview
 
-There are two distinct ways to use `SHOW TRACE`:
-
-Statement | Usage
-----------|------
-[`SHOW TRACE FOR <stmt>`](#show-trace-for-stmt) | Execute a single [explainable](sql-grammar.html#explainable_stmt) statement and return a trace of its actions.
-[`SHOW TRACE FOR SESSION`](#show-trace-for-session) | Return a trace of all executed statements recorded during a session.
-
-### SHOW TRACE FOR &lt;stmt&gt;
-
-This use of `SHOW TRACE` executes a single [explainable](explain.html#explainable-statements) statement and then returns messages and timing information from all nodes involved in its execution. It's important to note the following:
-
-- `SHOW TRACE FOR <stmt>` executes the target statement and, once execution has completed, then returns a trace of the actions taken. For example, tracing an `INSERT` statement inserts data and then returns a trace, a `DELETE` statement deletes data and then returns a trace, etc. This is different than the [`EXPLAIN`](explain.html) statement, which does not execute its target statement but instead returns details about its predicted execution plan.
-    - The target statement must be an [`explainable`](explain.html#explainable-statements) statement. All non-explainable statements are not supported.
-    - The target statement is always executed with the local SQL engine. Due to this [known limitation](https://github.com/cockroachdb/cockroach/issues/16562), the trace will not reflect the way in which some statements would have been executed when not the target of `SHOW TRACE FOR <stmt>`. This limitation does not apply to `SHOW TRACE FOR SESSION`.
-
-- If the target statement encounters errors, those errors are not returned to the client. Instead, they are included in the trace. This has the following important implications for [transaction retries](transactions.html#transaction-retries):
-    - Normally, individual statements (considered implicit transactions) and multi-statement transactions batched by the client are [automatically retried](transactions.html#automatic-retries) by CockroachDB when [retryable errors](transactions.html#error-handling) are encountered due to contention. However, when such statements are the target of `SHOW TRACE FOR <stmt>`, CockroachDB does **not** automatically retry.
-    - When each statement in a multi-statement transaction is sent individually (as opposed to being batched), if one of the statements is the target or `SHOW TRACE <stmt>`, retryable errors encountered by that statement will not be returned to the client.
-
-    {{site.data.alerts.callout_success}}Given these implications, when you expect transaction retries or want to trace across retries, it's recommended to use <code>SHOW TRACE FOR SESSION</code>.{{site.data.alerts.end}}
-
-- When tracing an individual statement (i.e., an implicit transaction), the tracing
-  might change the way in which the statement commits its data; tracing
-  inhibits the "one-phase commit" optimization for transactions that touch a
-  single range. The trace will not reflect the committing of the transaction.
-  `SHOW TRACE FOR SESSION` does not have this effect.
-
-### SHOW TRACE FOR SESSION
-
-This use of `SHOW TRACE` returns messages and timing information for all statements recorded during a session. It's important to note the following:
+`SHOW TRACE FOR SESSION` returns messages and timing information for all statements recorded during a session. It's important to note the following:
 
 - `SHOW TRACE FOR SESSION` only returns the most recently recorded traces, or for a currently active recording of traces.
     - To start recording traces during a session, enable the `tracing` session variable via [`SET tracing = on;`](set-vars.html#set-tracing).
     - To stop recording traces during a session, disable the `tracing` session variable via [`SET tracing = off;`](set-vars.html#set-tracing).
 
-- In contrast to `SHOW TRACE FOR <stmt>`, recording traces during a session does not effect the execution of any statements traced. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retryable errors](transactions.html#error-handling) are encountered due to contention. Also, clients will receive retryable errors required to handle [client-side retries](transactions.html#client-side-intervention). As a result, traces of all transaction retries will be captured during a recording.
+- Recording traces during a session does not effect the execution of any statements traced. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retryable errors](transactions.html#error-handling) are encountered due to contention. Also, clients will receive retryable errors required to handle [client-side retries](transactions.html#client-side-intervention). As a result, traces of all transaction retries will be captured during a recording.
 
-- `SHOW TRACE FOR <stmt>` overwrites the last recorded trace. This means that if you enable session recording, disable session recording, execute `SHOW TRACE FOR <stmt>`, and then execute `SHOW TRACE FOR SESSION`, the response will be the trace for `SHOW TRACE FOR <stmt>`, not for the previously recorded session.
 
 ## Required privileges
 
-For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](privileges.html) for the statement being traced. For `SHOW TRACE FOR SESSION`, no privileges are required.
+For `SHOW TRACE FOR SESSION`, no privileges are required.
 
 ## Syntax
 
@@ -64,9 +34,8 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 
 Parameter | Description
 ----------|------------
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 `COMPACT` | If specified, fewer columns are returned by the statement. See [Response](#response) for more details.
-`explainable_stmt` | The statement to execute and trace. Only [explainable](explain.html#explainable-statements) statements are supported.
 
 ## Trace description
 
@@ -75,7 +44,7 @@ it can be easily integrated with OpenTracing-compatible trace collectors; for ex
 
 Concept | Description
 --------|------------
-**trace** | Information about the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a query execution in the case of `SHOW TRACE FOR <stmt>` or a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
+**trace** | Information about the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
 **span** | A named, timed operation that describes a contiguous segment of work in a trace. Each span links to "child spans", representing sub-operations; their children would be sub-sub-operations of the grandparent span, etc.<br><br>Different spans can represent (sub-)operations that executed either sequentially or in parallel with respect to each other. (This possibly-parallel nature of execution is one of the important things that a trace is supposed to describe.) The operations described by a trace may be _distributed_, that is, different spans may describe operations executed by different nodes.
 **message** | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files](debug-and-error-logs.html) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
 
@@ -85,7 +54,7 @@ To further clarify these concepts, let's look at a visualization of a trace for 
 
 ## Response
 
-{{site.data.alerts.callout_info}}The format of the <code>SHOW TRACE</code> response may change in future versions.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The format of the <code>SHOW TRACE FOR SESSION</code> response may change in future versions.{{site.data.alerts.end}}
 
 CockroachDB outputs traces in linear tabular format. Each result row represents either a span start (identified by the `=== SPAN START: <operation> ===` message) or a log message from a span. Rows are generally listed in their timestamp order (i.e., the order in which the events they represent occurred) with the exception that messages from child spans are interleaved in the parent span according to their timing. Messages from sibling spans, however, are not interleaved with respect to one another.
 
@@ -117,7 +86,7 @@ Column | Type | Description
 `age` | interval | The age of the message relative to the beginning of the trace (i.e., the beginning of the statement execution in the case of `SHOW TRACE FOR <stmt>` and the beginning of the recording in the case of `SHOW TRACE FOR SESSION`.
 `message` | string | The log message.
 `tag` | string | Meta-information about the message's context. This is the same information that appears in the beginning of log file messages in between square brackets (e.g, `[client=[::1]:49985,user=root,n1]`).
-`loc` | string | The file:line location of the line of code that produced the message. Only some of the messages have this field set; it depends on specifically how the message was logged. The `--vmodule` flag passed to the node producing the message also affects what rows get this field populated. Generally, if `--vmodule=<file>=<level>` is specified, messages produced by that file will have the field populated.
+`location` | string | The file:line location of the line of code that produced the message. Only some of the messages have this field set; it depends on specifically how the message was logged. The `--vmodule` flag passed to the node producing the message also affects what rows get this field populated. Generally, if `--vmodule=<file>=<level>` is specified, messages produced by that file will have the field populated.
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message was logged.
 `span` | int | The index of the span within the virtual list of all spans if they were ordered by the span's start time.
 
@@ -125,44 +94,55 @@ Column | Type | Description
 
 ## Examples
 
-### Trace a simple `SELECT`
+### Trace a session
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TRACE FOR SELECT * FROM foo;
+> SET tracing = on;
 ~~~
 
 ~~~
-+----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
-|            timestamp             |      age      |                        message                        |                      tag                       | loc |             operation             | span |
-+----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
-| 2018-03-08 21:22:18.266373+00:00 | 0s            | === SPAN START: sql txn ===                           |                                                |     | sql txn                           |    0 |
-| 2018-03-08 21:22:18.267341+00:00 | 967µs713ns    | === SPAN START: session recording ===                 |                                                |     | session recording                 |    5 |
-| 2018-03-08 21:22:18.267343+00:00 | 969µs760ns    | === SPAN START: starting plan ===                     |                                                |     | starting plan                     |    1 |
-| 2018-03-08 21:22:18.267367+00:00 | 993µs551ns    | === SPAN START: consuming rows ===                    |                                                |     | consuming rows                    |    2 |
-| 2018-03-08 21:22:18.267384+00:00 | 1ms10µs504ns  | Scan /Table/51/{1-2}                                  | [n1,client=[::1]:58264,user=root]              |     | sql txn                           |    0 |
-| 2018-03-08 21:22:18.267434+00:00 | 1ms60µs392ns  | === SPAN START: dist sender ===                       |                                                |     | dist sender                       |    3 |
-| 2018-03-08 21:22:18.267444+00:00 | 1ms71µs136ns  | querying next range at /Table/51/1                    | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
-| 2018-03-08 21:22:18.267462+00:00 | 1ms88µs421ns  | r20: sending batch 1 Scan to (n1,s1):1                | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
-| 2018-03-08 21:22:18.267465+00:00 | 1ms91µs570ns  | sending request to local server                       | [client=[::1]:58264,user=root,txn=76d25cda,n1] |     | dist sender                       |    3 |
-| 2018-03-08 21:22:18.267467+00:00 | 1ms93µs707ns  | === SPAN START: /cockroach.roachpb.Internal/Batch === |                                                |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267469+00:00 | 1ms96µs103ns  | 1 Scan                                                | [n1]                                           |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267471+00:00 | 1ms97µs437ns  | read has no clock uncertainty                         | [n1]                                           |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267474+00:00 | 1ms101µs60ns  | executing 1 requests                                  | [n1,s1]                                        |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267479+00:00 | 1ms105µs912ns | read-only path                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267483+00:00 | 1ms110µs94ns  | command queue                                         | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267487+00:00 | 1ms114µs240ns | waiting for read lock                                 | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.26752+00:00  | 1ms146µs596ns | read completed                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |     | /cockroach.roachpb.Internal/Batch |    4 |
-| 2018-03-08 21:22:18.267566+00:00 | 1ms192µs724ns | plan completed execution                              | [n1,client=[::1]:58264,user=root]              |     | consuming rows                    |    2 |
-| 2018-03-08 21:22:18.267568+00:00 | 1ms195µs60ns  | resources released, stopping trace                    | [n1,client=[::1]:58264,user=root]              |     | consuming rows                    |    2 |
-+----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+-----+-----------------------------------+------+
+SET TRACING
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TRACE FOR SESSION;
+~~~
+
+~~~
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+----------+-----------------------------------+------+
+|            timestamp             |      age      |                        message                        |                      tag                       | location |             operation             | span |
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+----------+-----------------------------------+------+
+| 2018-03-08 21:22:18.266373+00:00 | 0s            | === SPAN START: sql txn ===                           |                                                |          | sql txn                           |    0 |
+| 2018-03-08 21:22:18.267341+00:00 | 967µs713ns    | === SPAN START: session recording ===                 |                                                |          | session recording                 |    5 |
+| 2018-03-08 21:22:18.267343+00:00 | 969µs760ns    | === SPAN START: starting plan ===                     |                                                |          | starting plan                     |    1 |
+| 2018-03-08 21:22:18.267367+00:00 | 993µs551ns    | === SPAN START: consuming rows ===                    |                                                |          | consuming rows                    |    2 |
+| 2018-03-08 21:22:18.267384+00:00 | 1ms10µs504ns  | Scan /Table/51/{1-2}                                  | [n1,client=[::1]:58264,user=root]              |          | sql txn                           |    0 |
+| 2018-03-08 21:22:18.267434+00:00 | 1ms60µs392ns  | === SPAN START: dist sender ===                       |                                                |          | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267444+00:00 | 1ms71µs136ns  | querying next range at /Table/51/1                    | [client=[::1]:58264,user=root,txn=76d25cda,n1] |          | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267462+00:00 | 1ms88µs421ns  | r20: sending batch 1 Scan to (n1,s1):1                | [client=[::1]:58264,user=root,txn=76d25cda,n1] |          | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267465+00:00 | 1ms91µs570ns  | sending request to local server                       | [client=[::1]:58264,user=root,txn=76d25cda,n1] |          | dist sender                       |    3 |
+| 2018-03-08 21:22:18.267467+00:00 | 1ms93µs707ns  | === SPAN START: /cockroach.roachpb.Internal/Batch === |                                                |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267469+00:00 | 1ms96µs103ns  | 1 Scan                                                | [n1]                                           |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267471+00:00 | 1ms97µs437ns  | read has no clock uncertainty                         | [n1]                                           |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267474+00:00 | 1ms101µs60ns  | executing 1 requests                                  | [n1,s1]                                        |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267479+00:00 | 1ms105µs912ns | read-only path                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267483+00:00 | 1ms110µs94ns  | command queue                                         | [n1,s1,r20/1:/Table/5{1-2}]                    |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267487+00:00 | 1ms114µs240ns | waiting for read lock                                 | [n1,s1,r20/1:/Table/5{1-2}]                    |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.26752+00:00  | 1ms146µs596ns | read completed                                        | [n1,s1,r20/1:/Table/5{1-2}]                    |          | /cockroach.roachpb.Internal/Batch |    4 |
+| 2018-03-08 21:22:18.267566+00:00 | 1ms192µs724ns | plan completed execution                              | [n1,client=[::1]:58264,user=root]              |          | consuming rows                    |    2 |
+| 2018-03-08 21:22:18.267568+00:00 | 1ms195µs60ns  | resources released, stopping trace                    | [n1,client=[::1]:58264,user=root]              |          | consuming rows                    |    2 |
++----------------------------------+---------------+-------------------------------------------------------+------------------------------------------------+----------+-----------------------------------+------+
 (19 rows)
 ~~~
 
-{{site.data.alerts.callout_success}}You can use <code>SHOW TRACE</code> as the <a href="table-expressions.html">data source</a> for a <code>SELECT</code> statement, and then filter the values with the <code>WHERE</code> clause. For example, to see only messages about spans starting, you might execute <code>SELECT * FROM [SHOW TRACE FOR <stmt>] where message LIKE '=== SPAN START%'</code>.{{site.data.alerts.end}}
-
-### Trace conflicting transactions
+<!-- ### Trace conflicting transactions
 
 In this example, we use two terminals concurrently to generate conflicting transactions.
+
+
+Set tracing = on;
 
 1. In terminal 1, create a table:
 
@@ -170,6 +150,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
     ~~~ sql
     > CREATE TABLE t (k INT);
     ~~~
+
 
 2. Still in terminal 1, open a transaction and perform a write without closing the transaction:
 
@@ -189,7 +170,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT age, span, message FROM [SHOW TRACE FOR SELECT * FROM t];
+    > SELECT age, span, message FROM [SHOW TRACE FOR SESSION];
     ~~~
 
     You'll see that this statement is blocked until the transaction in terminal 1 finishes.
@@ -222,7 +203,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
   	| 518µs675ns        | (0,3)  | read-only path                                                                                        |
   	| 525µs357ns        | (0,3)  | command queue                                                                                         |
   	| 531µs990ns        | (0,3)  | waiting for read lock                                                                                 |
-      | # Annotation: The following line identifies the conflict, and some of the lines below it describe the conflict resolution          |
+    | # Annotation: The following line identifies the conflict, and some of the lines below it describe the conflict resolution          |
   	| 603µs363ns        | (0,3)  | conflicting intents on /Table/61/1/285895906846146561/0                                               |
   	| 611µs228ns        | (0,3)  | replica.Send got error: conflicting intents on /Table/61/1/285895906846146561/0                       |
   	| # Annotation: The read is now going to wait for the writer to finish by executing a PushTxn request.                               |
@@ -270,19 +251,13 @@ In this example, we use two terminals concurrently to generate conflicting trans
   	| 4s349ms339µs111ns | (0,2)  | plan completed execution                                                                              |
   	| 4s349ms341µs476ns | (0,2)  | resources released, stopping trace                                                                    |
   	+-------------------+--------+-------------------------------------------------------------------------------------------------------+
-  	~~~
+  	~~~ -->
 
 ### Trace a transaction retry
 
 In this example, we use session tracing to show an [automatic transaction retry](transactions.html#automatic-retries). Like in the previous example, we'll have to use two terminals because retries are induced by unfortunate interactions between transactions.
 
-1. In terminal 1, unset the `smart_prompt` shell option, turn on trace recording, and then start a transaction:
-
-    {% include copy-clipboard.html %}
-
-    ~~~ sql
-    > \unset smart_prompt
-    ~~~
+1. In terminal 1, turn on trace recording and then start a transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
