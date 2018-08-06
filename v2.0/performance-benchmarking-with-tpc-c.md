@@ -147,7 +147,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
      Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup. Follow along with the process on the **Admin UI > Jobs** table.
 
-### Step 3. Run the benchmark
+### Step 4. Run the benchmark
 
 Still on the fourth instance, run `workload` for five minutes against the other 3 instances:
 
@@ -162,7 +162,7 @@ $ ./workload.LATEST run tpcc \
 "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[ ...space separated list]"
 ~~~
 
-### Step 4. Interpret the results
+### Step 5. Interpret the results
 
 Once the `workload` has finished running, you should see a final output line:
 
@@ -224,7 +224,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
 3. Exit the interactive shell, using `\q` or `ctrl-d`.
 
-### Step 2. Start a 30-node cluster
+### Step 3. Start a 30-node cluster
 
 1. SSH to the first `n1-highcpu-16` instance.
 
@@ -270,7 +270,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
 
-### Step 3. Load data for the benchmark
+### Step 4. Load data for the benchmark
 
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
@@ -307,7 +307,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
      Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
-### Step 4. Increase the snapshot rate
+### Step 5. Increase the snapshot rate
 
 To [increase the snapshot rate](cluster-settings.html), which helps speed up this large-scale data movement:
 
@@ -327,7 +327,7 @@ To [increase the snapshot rate](cluster-settings.html), which helps speed up thi
 
 3. Exit the interactive shell, using `\q` or `ctrl-d`.
 
-### Step 5. Partition the database
+### Step 6. Partition the database
 
 Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into ten partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
@@ -354,7 +354,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
     Once the Replication Queue gets to `0` for all actions and stays there, the cluster should be finished rebalancing and is ready for testing.
 
-### Step 6. Run the benchmark
+### Step 7. Run the benchmark
 
 Still on the 31st instance, run `workload` for five minutes against the other 30 instances:
 
@@ -368,7 +368,7 @@ $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[ ...space separated list]"
 ~~~
 
-### Step 7. Interpret the results
+### Step 8. Interpret the results
 
 Once the `workload` has finished running, you should see a final output line similar to the output in [Benchmark a small cluster](#benchmark-a-small-cluster). The `tpmC` should be about 10x higher, reflecting the increase in the number of warehouses:
 
