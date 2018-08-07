@@ -246,7 +246,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 `on`  | Same as `cluster`.
 `kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`](show-trace-for-session.html).
 `local` | Trace recording is enabled; only trace messages issued by the local node are collected.
-`results` | Result rows and row counts are copied to the session trace. This must be specified explicitly when printing the results produced by a query in the trace is needed.<br><br>Example: `SET tracing = kv, results;`
+`results` | Result rows and row counts are copied to the session trace. This must be specified to in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
 ## See also
 
