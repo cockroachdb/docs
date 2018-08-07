@@ -99,13 +99,13 @@ Only the `root` user can run [`IMPORT`](import.html).
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you want to import/create. 
- `create_table_file` | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-create-table-statement-from-a-file)). 
- `table_elem_list` | The table definition you want to use (see [this example for syntax](#use-create-table-statement-from-a-statement)). 
+ `table_name` | The name of the table you want to import/create.
+ `create_table_file` | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-create-table-statement-from-a-file)).
+ `table_elem_list` | The table definition you want to use (see [this example for syntax](#use-create-table-statement-from-a-statement)).
  `file_to_import` | The URL of the file you want to import.
- `WITH kv_option` | Control your import's behavior with [these options](#import-options). 
+ `WITH kv_option` | Control your import's behavior with [these options](#import-options).
 
 ### Import file URLs
 
@@ -192,6 +192,33 @@ Convert values to SQL *NULL* if they match the specified string.
 	</tbody>
 </table>
 
+#### `skip`
+
+Skip the first *n* lines of a CSV file.
+
+<table>
+	<tbody>
+		<tr>
+			<td><strong>Required?</strong></td>
+			<td>No</td>
+		</tr>
+		<tr>
+			<td><strong>Key</strong></td>
+			<td><code>skip</code></td>
+		</tr>
+		<tr>
+			<td><strong>Value</strong></td>
+			<td>The number of rows to be skipped while importing a file</td>
+		</tr>
+		<tr>
+			<td><strong>Example</strong></td>
+			<td>To import CSV files with column headers <em>NULL</em>: <code>WITH skip = ''</code></td>
+		</tr>
+	</tbody>
+</table>
+
+
+
 ## Examples
 
 ### Use `CREATE TABLE` statement from a file
@@ -244,6 +271,21 @@ WITH
 CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	comment = '#'
+;
+~~~
+
+### Skip first *n* lines
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+WITH
+	skip = '2'
 ;
 ~~~
 
