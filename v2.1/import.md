@@ -233,7 +233,7 @@ Import compressed files.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which attempts to guess the codec based on the filename, matching the common extensions `.gz` or `.bz2` and `.bz` <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
+			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which guesses the codec based on the filename, matching the common extensions `.gz` or `.bz2` and `.bz` <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -331,6 +331,21 @@ WITH
 
 ### Import a compressed CSV file
 
+CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+;
+~~~
+
+Optionally, you can use the `decompression` option to specify the codec to be used for decompressing the file during import:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -340,7 +355,7 @@ WITH
 )
 CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
-	decompress = 'gzip'
+	decompression = 'gzip'
 ;
 ~~~
 
