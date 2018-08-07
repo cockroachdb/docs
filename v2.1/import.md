@@ -217,6 +217,31 @@ Skip the first *n* lines of a CSV file.
 	</tbody>
 </table>
 
+#### `decompress`
+
+Import compressed files.
+
+<table>
+	<tbody>
+		<tr>
+			<td><strong>Required?</strong></td>
+			<td>No</td>
+		</tr>
+		<tr>
+			<td><strong>Key</strong></td>
+			<td><code>decompress</code></td>
+		</tr>
+		<tr>
+			<td><strong>Value</strong></td>
+			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which attempts to guess the codec based on the filename, matching the common extensions '.gz' or '.bz2' and .bz. <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
+		</tr>
+		<tr>
+			<td><strong>Example</strong></td>
+			<td>To import a file compressed using the <code>bzip</code> codec: <code>WITH decompress = 'bzip'</code></td>
+		</tr>
+	</tbody>
+</table>
+
 
 
 ## Examples
@@ -253,7 +278,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.tsv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	delimiter = e'\t'
 ;
@@ -268,7 +293,7 @@ WITH
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	comment = '#'
 ;
@@ -283,7 +308,7 @@ WITH
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	skip = '2'
 ;
@@ -298,9 +323,24 @@ WITH
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	nullif = ''
+;
+~~~
+
+### Import a compressed CSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+WITH
+	decompress = 'gzip'
 ;
 ~~~
 
