@@ -1,4 +1,4 @@
-In this example, let's create a table with a computed columns and an index on that column:
+In this example, create a table with a computed columns and an index on that column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -42,7 +42,7 @@ Then, insert a few rows a data:
 +--------------------------------------+------------------+--------+--------+--------+--------+----------------+
 ~~~
 
-Now, let's run a query using the secondary index:
+Now, run a query using the secondary index:
 
 {% include copy-clipboard.html %}
 ~~~ sql

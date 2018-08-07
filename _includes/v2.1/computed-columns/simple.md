@@ -10,7 +10,7 @@ In this example, let's create a simple table with a computed column:
   );
 ~~~
 
-Then, insert a few rows a data:
+Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
