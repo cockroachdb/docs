@@ -212,7 +212,7 @@ Skip the first *n* lines of a CSV file.
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
-			<td>To import CSV files with column headers <em>NULL</em>: <code>WITH skip = ''</code></td>
+			<td>To import CSV files with column headers: <code>WITH skip = '1'</code></td>
 		</tr>
 	</tbody>
 </table>
@@ -233,7 +233,7 @@ Import compressed files.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which attempts to guess the codec based on the filename, matching the common extensions '.gz' or '.bz2' and .bz. <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
+			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which attempts to guess the codec based on the filename, matching the common extensions `.gz` or `.bz2` and `.bz` <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -338,7 +338,7 @@ WITH
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
 	decompress = 'gzip'
 ;
