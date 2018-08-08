@@ -11,7 +11,9 @@ The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a dat
 
 ## Synopsis
 
+<div>
 {% include {{ page.version.version }}/sql/diagrams/rename_database.html %}
+</div>
 
 ## Required privileges
 
