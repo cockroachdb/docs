@@ -34,6 +34,38 @@ As write intents are created, CockroachDB checks for newer committed valuesâ€“â€
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 
+<a name="txn-pipelining"></a>
+
+<span class="version-tag">New in v2.1:</span> Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes.  For example, consider the following transaction:
+
+{% include copy-clipboard.html %}
+~~~ sql
+-- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
+> BEGIN;
+  SAVEPOINT cockroach_restart;
+  INSERT into kv (key, value) VALUES ('apple', 'red');
+  INSERT into kv (key, value) VALUES ('banana', 'yellow');
+  INSERT into kv (key, value) VALUES ('orange', 'orange');
+  RELEASE SAVEPOINT cockroach_restart;
+  COMMIT;
+~~~
+
+In versions prior to 2.1, for each `INSERT` statement above, the transaction gateway node would have to wait for write intents to propagate to each leaseholder, resulting in higher cumulative latency.
+
+In versions 2.1 and later, write intents are propagated to leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
+
+At a high level, transaction pipelining works as follows:
+
+1. The transaction gateway node communicates with the leaseholders (*L*<sub>1</sub>, *L*<sub>2</sub>, *L*<sub>3</sub>, ..., *L*<sub>i</sub>) for the ranges it wants to write to.  Since the primary keys in the table above are UUIDs, the ranges are probably split across multiple leaseholders (this is a good thing, as it decreases [transaction conflicts](#transaction-conflicts)).
+
+2. Each leaseholder *L*<sub>i</sub> receives the communication from the transaction gateway node and does the following in parallel:
+  - Creates write intents and sends them to its follower nodes
+  - Responds to the transaction gateway node that the write intents have been sent
+
+3. The transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers.  When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
+
+In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write.  This changes the cost of multiple writes from `O(n)` in the number of SQL DML statements to `O(1)`.
+
 #### Reading
 
 If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if it encounters any write intents, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
@@ -203,3 +235,8 @@ The `TxnCoordSender` sends its KV requests to `DistSender` in the distribution l
 ## What's next?
 
 Learn how CockroachDB presents a unified view of your cluster's data in the [distribution layer](distribution-layer.html).
+
+<!-- Links -->
+
+[storage]: storage-layer.html
+[sql]: sql-layer.html
