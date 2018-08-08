@@ -445,7 +445,7 @@ $ cockroach sql --insecure \
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE customers;
+> SHOW CREATE customers;
 ~~~
 
 ~~~

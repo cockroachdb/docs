@@ -65,7 +65,7 @@ For example, let's say you have two tables, `orders` and `customers`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE customers;
+> SHOW CREATE customers;
 ~~~
 
 ~~~
@@ -85,7 +85,7 @@ For example, let's say you have two tables, `orders` and `customers`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE orders;
+> SHOW CREATE orders;
 ~~~
 
 ~~~

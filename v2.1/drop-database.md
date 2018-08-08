@@ -36,12 +36,12 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 
@@ -71,12 +71,12 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 

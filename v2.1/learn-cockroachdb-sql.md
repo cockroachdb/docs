@@ -47,13 +47,15 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(2 rows)
++---------------+
+| database_name |
++---------------+
+| bank          |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(3 rows)
 ~~~
 
 ## Set the default database
@@ -113,12 +115,12 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 ~~~
 
 ~~~
-+---------+---------+-------+---------+-----------+
-|  Field  |  Type   | Null  | Default |  Indices  |
-+---------+---------+-------+---------+-----------+
-| id      | INT     | false | NULL    | {primary} |
-| balance | DECIMAL | true  | NULL    | {}        |
-+---------+---------+-------+---------+-----------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| id          | INT       |    true     | unique_rowid() |                       | {}      |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
 (2 rows)
 ~~~
 
@@ -139,12 +141,12 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-| users    |
-+----------+
++------------+
+| table_name |
++------------+
+| accounts   |
+| users      |
++------------+
 (2 rows)
 ~~~
 
@@ -156,16 +158,16 @@ To view tables in a database that's not active, use `SHOW TABLES FROM` followed 
 ~~~
 
 ~~~
-+-----------+
-|   Table   |
-+-----------+
-| aardvarks |
-| elephants |
-| frogs     |
-| moles     |
-| pandas    |
-| turtles   |
-+-----------+
++------------+
+| table_name |
++------------+
+| aardvarks  |
+| elephants  |
+| frogs      |
+| moles      |
+| pandas     |
+| turtles    |
++------------+
 (6 rows)
 ~~~
 
@@ -256,13 +258,13 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
 
 ~~~
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing | Implicit |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-| accounts | primary     | true   |   1 | id      | ASC       | false   | false    |
-| accounts | balance_idx | false  |   1 | balance | DESC      | false   | false    |
-| accounts | balance_idx | false  |   2 | id      | ASC       | false   | true     |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+| accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false   |
+| accounts   | balance_idx |    true    |            1 | balance     | ASC       |  false  |  false   |
+| accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true   |
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
 (3 rows)
 ~~~
 

@@ -6,7 +6,6 @@ toc: true
 
 The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
 
-
 ## Synopsis
 
 <div>
@@ -18,7 +17,6 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
-
 
  Parameter | Description
 -----------|-------------
@@ -46,13 +44,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 ~~~
-+-----------+-------------------+-------+---------+-----------+
-|   Field   |       Type        | Null  | Default |  Indices  |
-+-----------+-------------------+-------+---------+-----------+
-| id        | INT               | false | NULL    | {primary} |
-| balance   | DECIMAL           | true  | NULL    | {}        |
-| names     | STRING            | true  | NULL    | {}        |
-+-----------+-------------------+-------+---------+-----------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL           |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}          |
+| names       | STRING    |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 ### Add multiple columns
@@ -68,16 +67,16 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 ~~~
-+-----------+-------------------+-------+---------+-----------+
-|   Field   |       Type        | Null  | Default |  Indices  |
-+-----------+-------------------+-------+---------+-----------+
-| id        | INT               | false | NULL    | {primary} |
-| balance   | DECIMAL           | true  | NULL    | {}        |
-| names     | STRING            | true  | NULL    | {}        |
-| location  | STRING            | true  | NULL    | {}        |
-| amount    | DECIMAL           | true  | NULL    | {}        |
-+-----------+-------------------+-------+---------+-----------+
-
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL           |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}          |
+| names       | STRING    |    true     | NULL           |                       | {}          |
+| location    | STRING    |    true     | NULL           |                       | {}          |
+| amount      | DECIMAL   |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(5 rows)
 ~~~
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
@@ -92,16 +91,17 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 > SHOW COLUMNS FROM accounts;
 ~~~
 ~~~
-+-----------+-------------------+-------+---------------------------+-----------+
-|   Field   |       Type        | Null  |          Default          |  Indices  |
-+-----------+-------------------+-------+---------------------------+-----------+
-| id        | INT               | false | NULL                      | {primary} |
-| balance   | DECIMAL           | true  | NULL                      | {}        |
-| names     | STRING            | true  | NULL                      | {}        |
-| location  | STRING            | true  | NULL                      | {}        |
-| amount    | DECIMAL           | true  | NULL                      | {}        |
-| interest  | DECIMAL           | false | ('1.3':::STRING::DECIMAL) | {}        |
-+-----------+-------------------+-------+---------------------------+-----------+
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+| column_name | data_type | is_nullable |     column_default     | generation_expression |   indices   |
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL                   |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL                   |                       | {}          |
+| names       | STRING    |    true     | NULL                   |                       | {}          |
+| location    | STRING    |    true     | NULL                   |                       | {}          |
+| amount      | DECIMAL   |    true     | NULL                   |                       | {}          |
+| interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {}          |
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+(6 rows)
 ~~~
 
 ### Add a column with `NOT NULL` and `UNIQUE` constraints

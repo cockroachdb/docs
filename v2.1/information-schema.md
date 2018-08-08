@@ -23,7 +23,7 @@ Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
-Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
+Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`](show-create.html)
 
 ## Tables in information_schema
 
@@ -300,8 +300,7 @@ Column | Description
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)

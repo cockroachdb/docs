@@ -74,7 +74,7 @@ The view is then represented as a virtual table alongside other tables in the da
 
 ~~~
 +-------------------+
-|       Table       |
+| table_name        |
 +-------------------+
 | episodes          |
 | quotes            |
@@ -112,6 +112,6 @@ in a future version of CockroachDB.{{site.data.alerts.end}}
 
 - [Selection Queries](selection-queries.html)
 - [Views](views.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)

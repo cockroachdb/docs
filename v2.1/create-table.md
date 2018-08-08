@@ -61,7 +61,7 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) or other column qualification (e.g., [computed columns](computed-columns.html)) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any Primary Key, Unique, and Check [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE TABLE`](show-create-table.html) statement to view them at the table level.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) or other column qualification (e.g., [computed columns](computed-columns.html)) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any Primary Key, Unique, and Check [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and Inverted Indexes](#create-a-table-with-secondary-and-inverted-indexes) example below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
@@ -100,12 +100,12 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 ~~~
 
 ~~~
-+------------+------+------+---------+---------+
-|   Field    | Type | Null | Default | Indices |
-+------------+------+------+---------+---------+
-| user_id    | INT  | true | NULL    | {}      |
-| logon_date | DATE | true | NULL    | {}      |
-+------------+------+------+---------+---------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| user_id     | INT       |    true     | NULL           |                       | {}      |
+| logon_date  | DATE      |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
 (2 rows)
 ~~~
 
@@ -115,11 +115,11 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 ~~~
 
 ~~~
-+-------+---------+--------+-----+--------+-----------+---------+----------+
-| Table |  Name   | Unique | Seq | Column | Direction | Storing | Implicit |
-+-------+---------+--------+-----+--------+-----------+---------+----------+
-| logon | primary | true   |   1 | rowid  | ASC       | false   | false    |
-+-------+---------+--------+-----+--------+-----------+---------+----------+
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
+| logon      | primary    |   false    |            1 | rowid       | ASC       |  false  |  false   |
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
 (1 row)
 ~~~
 
@@ -142,13 +142,13 @@ In this example, we create a table with three columns. One column is the [primar
 ~~~
 
 ~~~
-+-------------+--------+-------+---------+---------------------------------+
-|    Field    |  Type  | Null  | Default |             Indices             |
-+-------------+--------+-------+---------+---------------------------------+
-| user_id     | INT    | false | NULL    | {primary,logoff_user_email_key} |
-| user_email  | STRING | true  | NULL    | {logoff_user_email_key}         |
-| logoff_date | DATE   | true  | NULL    | {}                              |
-+-------------+--------+-------+---------+---------------------------------+
++-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |               indices               |
++-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
+| user_id     | INT       |    false    | NULL           |                       | {"primary","logoff_user_email_key"} |
+| user_email  | STRING    |    true     | NULL           |                       | {"logoff_user_email_key"}           |
+| logoff_date | DATE      |    true     | NULL           |                       | {}                                  |
++-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
 (3 rows)
 ~~~
 
@@ -158,13 +158,13 @@ In this example, we create a table with three columns. One column is the [primar
 ~~~
 
 ~~~
-+--------+-----------------------+--------+-----+------------+-----------+---------+----------+
-| Table  |         Name          | Unique | Seq |   Column   | Direction | Storing | Implicit |
-+--------+-----------------------+--------+-----+------------+-----------+---------+----------+
-| logoff | primary               | true   |   1 | user_id    | ASC       | false   | false    |
-| logoff | logoff_user_email_key | true   |   1 | user_email | ASC       | false   | false    |
-| logoff | logoff_user_email_key | true   |   2 | user_id    | ASC       | false   | true     |
-+--------+-----------------------+--------+-----+------------+-----------+---------+----------+
++------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name |      index_name       | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
+| logoff     | primary               |   false    |            1 | user_id     | ASC       |  false  |  false   |
+| logoff     | logoff_user_email_key |   false    |            1 | user_email  | ASC       |  false  |  false   |
+| logoff     | logoff_user_email_key |   false    |            2 | user_id     | ASC       |  false  |   true   |
++------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
 (3 rows)
 ~~~
 
@@ -205,22 +205,22 @@ This example also demonstrates a number of column-level and table-level [constra
 ~~~
 
 ~~~
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
-|        Table        |                 Name                 | Unique | Seq |     Column     | Direction | Storing | Implicit |
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
-| product_information | primary                              | true   |   1 | product_id     | ASC       | false   | false    |
-| product_information | product_information_product_name_key | true   |   1 | product_name   | ASC       | false   | false    |
-| product_information | product_information_product_name_key | true   |   2 | product_id     | ASC       | false   | true     |
-| product_information | product_information_catalog_url_key  | true   |   1 | catalog_url    | ASC       | false   | false    |
-| product_information | product_information_catalog_url_key  | true   |   2 | product_id     | ASC       | false   | true     |
-| product_information | date_added_idx                       | false  |   1 | date_added     | ASC       | false   | false    |
-| product_information | date_added_idx                       | false  |   2 | product_id     | ASC       | false   | true     |
-| product_information | supp_id_prod_status_idx              | false  |   1 | supplier_id    | ASC       | false   | false    |
-| product_information | supp_id_prod_status_idx              | false  |   2 | product_status | ASC       | false   | false    |
-| product_information | supp_id_prod_status_idx              | false  |   3 | product_id     | ASC       | false   | true     |
-| product_information | details                              | false  |   1 | misc           | ASC       | false   | false    |
-| product_information | details                              | false  |   2 | product_id     | ASC       | false   | true     |
-+---------------------+--------------------------------------+--------+-----+----------------+-----------+---------+----------+
++---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
+|     table_name      |              index_name              | non_unique | seq_in_index |  column_name   | direction | storing | implicit |
++---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
+| product_information | primary                              |   false    |            1 | product_id     | ASC       |  false  |  false   |
+| product_information | product_information_product_name_key |   false    |            1 | product_name   | ASC       |  false  |  false   |
+| product_information | product_information_product_name_key |   false    |            2 | product_id     | ASC       |  false  |   true   |
+| product_information | product_information_catalog_url_key  |   false    |            1 | catalog_url    | ASC       |  false  |  false   |
+| product_information | product_information_catalog_url_key  |   false    |            2 | product_id     | ASC       |  false  |   true   |
+| product_information | date_added_idx                       |    true    |            1 | date_added     | ASC       |  false  |  false   |
+| product_information | date_added_idx                       |    true    |            2 | product_id     | ASC       |  false  |   true   |
+| product_information | supp_id_prod_status_idx              |    true    |            1 | supplier_id    | ASC       |  false  |  false   |
+| product_information | supp_id_prod_status_idx              |    true    |            2 | product_status | ASC       |  false  |  false   |
+| product_information | supp_id_prod_status_idx              |    true    |            3 | product_id     | ASC       |  false  |   true   |
+| product_information | details                              |    true    |            1 | misc           | ASC       |  false  |  false   |
+| product_information | details                              |    true    |            2 | product_id     | ASC       |  false  |   true   |
++---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
 (12 rows)
 ~~~
 
@@ -265,21 +265,32 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE orders;
+> SHOW CREATE orders;
 ~~~
+
 ~~~
-+--------+---------------------------------------------------------------------------------------------------------------------+
-| Table  |                                                     CreateTable                                                     |
-+--------+---------------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                              |
-|        |     id INT NOT NULL,␤                                                                                               |
-|        |     customer_id INT NULL,␤                                                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                                     |
-|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,␤ |
-|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),␤                                        |
-|        |     FAMILY "primary" (id, customer_id)␤                                                                             |
-|        | )                                                                                                                   |
-+--------+---------------------------------------------------------------------------------------------------------------------+
++------------+--------------------------------------------------------------------------+
+| table_name |                             create_statement                             |
++------------+--------------------------------------------------------------------------+
+| orders     | CREATE TABLE orders (                                                    |
+|            |                                                                          |
+|            |     id INT NOT NULL,                                                     |
+|            |                                                                          |
+|            |     customer_id INT NULL,                                                |
+|            |                                                                          |
+|            |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                           |
+|            |                                                                          |
+|            |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id)    |
+|            | REFERENCES customers (id) ON DELETE CASCADE,                             |
+|            |                                                                          |
+|            |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id    |
+|            | ASC),                                                                    |
+|            |                                                                          |
+|            |     FAMILY "primary" (id, customer_id)                                   |
+|            |                                                                          |
+|            | )                                                                        |
++------------+--------------------------------------------------------------------------+
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -320,6 +331,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
 ~~~
+
 ~~~
 +----+---------+-------+
 | id |  name   | state |
@@ -338,6 +350,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 ~~~ sql
 > SELECT * FROM customers_ny;
 ~~~
+
 ~~~
 +----+---------+-------+
 | id |  name   | state |
@@ -394,26 +407,33 @@ In this example, we create a table and [define partitions by range](partitioning
 
 ### Show the definition of a table
 
-To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
+To show the definition of a table, use the [`SHOW CREATE`](show-create.html) statement. The contents of the `create_statement` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE logoff;
+> SHOW CREATE logoff;
 ~~~
 
 ~~~
-+--------+----------------------------------------------------------+
-| Table  |                       CreateTable                        |
-+--------+----------------------------------------------------------+
-| logoff | CREATE TABLE logoff (␤                                   |
-|        |     user_id INT NOT NULL,␤                               |
-|        |     user_email STRING(50) NULL,␤                         |
-|        |     logoff_date DATE NULL,␤                              |
-|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),␤         |
-|        |     UNIQUE INDEX logoff_user_email_key (user_email),␤    |
-|        |     FAMILY "primary" (user_id, user_email, logoff_date)␤ |
-|        | )                                                        |
-+--------+----------------------------------------------------------+
++------------+----------------------------------------------------------+
+| table_name |                     create_statement                     |
++------------+----------------------------------------------------------+
+| logoff     | CREATE TABLE logoff (                                    |
+|            |                                                          |
+|            |     user_id INT NOT NULL,                                |
+|            |                                                          |
+|            |     user_email STRING NULL,                              |
+|            |                                                          |
+|            |     logoff_date DATE NULL,                               |
+|            |                                                          |
+|            |     CONSTRAINT "primary" PRIMARY KEY (user_id ASC),      |
+|            |                                                          |
+|            |     UNIQUE INDEX logoff_user_email_key (user_email ASC), |
+|            |                                                          |
+|            |     FAMILY "primary" (user_id, user_email, logoff_date)  |
+|            |                                                          |
+|            | )                                                        |
++------------+----------------------------------------------------------+
 (1 row)
 ~~~
 

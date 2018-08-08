@@ -84,13 +84,13 @@ To successfully connect the user, you must first either generate a client certif
     This time, the connection attempt succeeds:
 
     ~~~
-    +--------------------+
-    |      Database      |
-    +--------------------+
-    | crdb_internal      |
-    | information_schema |
-    | pg_catalog         |
-    +--------------------+
+    +---------------+
+    | database_name |
+    +---------------+
+    | defaultdb     |
+    | postgres      |
+    | system        |
+    +---------------+
     (3 rows)
     ~~~
 
@@ -139,11 +139,14 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-+----------+
-| Database |
-+----------+
-+----------+
-(0 rows)
++---------------+
+| database_name |
++---------------+
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(3 rows)
 ~~~
 
 ## Clean up

@@ -350,16 +350,18 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT "Field" FROM [SHOW COLUMNS FROM customer];
+> SELECT "column_name" FROM [SHOW COLUMNS FROM customer];
 ~~~
+
 ~~~
-+---------+
-| Field   |
-+---------+
-| id      |
-| name    |
-| address |
-+---------+
++-------------+
+| column_name |
++-------------+
+| id          |
+| name        |
+| address     |
++-------------+
+(3 rows)
 ~~~
 
 The following statement inserts Albert in the `employee` table and

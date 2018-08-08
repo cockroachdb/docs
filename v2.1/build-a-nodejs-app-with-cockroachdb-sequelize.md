@@ -68,11 +68,11 @@ $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-+----------+
++------------+
+| table_name |
++------------+
+| accounts   |
++------------+
 (1 row)
 ~~~
 

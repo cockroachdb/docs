@@ -66,11 +66,14 @@ Proceed through the following steps until you locate the source of the issue wit
     You should receive a response that looks similar to this:
 
     ~~~
-    +--------------------+
-    |      Database      |
-    +--------------------+
-    | system             |
-    +--------------------+
+    +---------------+
+    | database_name |
+    +---------------+
+    | defaultdb     |
+    | postgres      |
+    | system        |
+    +---------------+
+    (3 rows)
     ~~~
 
     Errors at this stage potentially include:

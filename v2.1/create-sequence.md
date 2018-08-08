@@ -6,7 +6,6 @@ toc: true
 
 The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-
 ## Considerations
 
 - Using a sequence is slower than [auto-generating unique IDs with the `UUID`, `BYTES`, or `SERIAL` data type](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required.
@@ -81,14 +80,17 @@ In this example, we create a sequence with default settings.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE SEQUENCE customer_seq;
+> SHOW CREATE customer_seq;
 ~~~
+
 ~~~
-+--------------+------------------------------------------------------------------------------------------+
-|   Sequence   |                                      CreateSequence                                      |
-+--------------+------------------------------------------------------------------------------------------+
-| customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 |
-+--------------+------------------------------------------------------------------------------------------+
++--------------+--------------------------------------------------------------------------+
+|  table_name  |                             create_statement                             |
++--------------+--------------------------------------------------------------------------+
+| customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807     |
+|              | INCREMENT 1 START 1                                                      |
++--------------+--------------------------------------------------------------------------+
+(1 row)
 ~~~
 
 ### Create a sequence with user-defined settings
@@ -102,15 +104,17 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE SEQUENCE desc_customer_list;
+> SHOW CREATE desc_customer_list;
 ~~~
 
 ~~~
-+--------------------+----------------------------------------------------------------------------------------------------+
-|      Sequence      |                                           CreateSequence                                           |
-+--------------------+----------------------------------------------------------------------------------------------------+
-| desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1 |
-+--------------------+----------------------------------------------------------------------------------------------------+
++--------------------+--------------------------------------------------------------------------+
+|     table_name     |                             create_statement                             |
++--------------------+--------------------------------------------------------------------------+
+| desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808         |
+|                    | MAXVALUE -1 INCREMENT -2 START -1                                        |
++--------------------+--------------------------------------------------------------------------+
+(1 row)
 ~~~
 
 ### Create a table with a sequence
@@ -141,6 +145,7 @@ Insert a few records to see the sequence.
 ~~~ sql
 > SELECT * FROM customer_list;
 ~~~
+
 ~~~
 +----+----------+--------------------+
 | id | customer |      address       |
@@ -159,6 +164,7 @@ To view the current value without incrementing the sequence, use:
 ~~~ sql
 > SELECT * FROM customer_seq;
 ~~~
+
 ~~~
 +------------+---------+-----------+
 | last_value | log_cnt | is_called |
@@ -174,6 +180,7 @@ If a value has been obtained from the sequence in the current session, you can a
 ~~~ sql
 > SELECT currval('customer_seq');
 ~~~
+
 ~~~
 +---------+
 | currval |
@@ -186,5 +193,6 @@ If a value has been obtained from the sequence in the current session, you can a
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
+- [`SHOW CREATE`](show-create.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)

@@ -38,13 +38,15 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 ~~~ sql
 > SHOW COLUMNS FROM dates;
 ~~~
+
 ~~~
-+-------+------+-------+---------+
-| Field | Type | Null  | Default |
-+-------+------+-------+---------+
-| a     | DATE | false | NULL    |
-| b     | INT  | true  | NULL    |
-+-------+------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | DATE      |    false    | NULL           |                       | {"primary"} |
+| b           | INT       |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(2 rows)
 ~~~
 
 Explicitly typed `DATE` literal:
@@ -63,6 +65,7 @@ String literal implicitly typed as `DATE`:
 ~~~ sql
 > SELECT * FROM dates;
 ~~~
+
 ~~~
 +---------------------------+-------+
 |             a             |   b   |

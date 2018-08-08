@@ -6,7 +6,6 @@ toc: true
 
 The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of an enterprise backup created with the [`BACKUP`](backup.html) statement.
 
-
 ## Required privileges
 
 Only the `root` user can run `SHOW BACKUP`.
@@ -29,8 +28,8 @@ The following fields are returned.
 
 Field | Description
 ------|------------
-`database` | The database name.
-`table` | The table name.
+`database_name` | The database name.
+`table_name` | The table name.
 `start_time` | The time at which the backup was started. For a full backup, this will be empty.
 `end_time` | The time at which the backup was completed.
 `size_bytes` | The size of the backup, in bytes.
@@ -43,18 +42,18 @@ Field | Description
 ~~~
 
 ~~~
-+----------+----------+------------+----------------------------------+------------+
-| database |  table   | start_time |             end_time             | size_bytes |
-+----------+----------+------------+----------------------------------+------------+
-| tpch     | nation   |            | 2017-03-27 13:54:31.371103+00:00 |       3828 |
-| tpch     | region   |            | 2017-03-27 13:54:31.371103+00:00 |       6626 |
-| tpch     | part     |            | 2017-03-27 13:54:31.371103+00:00 |       8128 |
-| tpch     | supplier |            | 2017-03-27 13:54:31.371103+00:00 |       2834 |
-| tpch     | partsupp |            | 2017-03-27 13:54:31.371103+00:00 |       3884 |
-| tpch     | customer |            | 2017-03-27 13:54:31.371103+00:00 |      12736 |
-| tpch     | orders   |            | 2017-03-27 13:54:31.371103+00:00 |       6020 |
-| tpch     | lineitem |            | 2017-03-27 13:54:31.371103+00:00 |     729811 |
-+----------+----------+------------+----------------------------------+------------+
++---------------+---------------+------------+----------------------------------+------------+
+| database_name |  table_name   | start_time |             end_time             | size_bytes |
++---------------+---------------+------------+----------------------------------+------------+
+| tpch          | nation        |            | 2017-03-27 13:54:31.371103+00:00 |       3828 |
+| tpch          | region        |            | 2017-03-27 13:54:31.371103+00:00 |       6626 |
+| tpch          | part          |            | 2017-03-27 13:54:31.371103+00:00 |       8128 |
+| tpch          | supplier      |            | 2017-03-27 13:54:31.371103+00:00 |       2834 |
+| tpch          | partsupp      |            | 2017-03-27 13:54:31.371103+00:00 |       3884 |
+| tpch          | customer      |            | 2017-03-27 13:54:31.371103+00:00 |      12736 |
+| tpch          | orders        |            | 2017-03-27 13:54:31.371103+00:00 |       6020 |
+| tpch          | lineitem      |            | 2017-03-27 13:54:31.371103+00:00 |     729811 |
++---------------+---------------+------------+----------------------------------+------------+
 (8 rows)
 
 Time: 32.540353ms
