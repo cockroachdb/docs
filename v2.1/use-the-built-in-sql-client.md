@@ -8,6 +8,10 @@ CockroachDB comes with a built-in client for executing SQL statements from an in
 
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
+{{site.data.alerts.callout_success}}
+If you want to experiment with CockroachDB SQL but don't have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster. 
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 ~~~ shell
@@ -18,6 +22,7 @@ $ cockroach sql <flags>
 $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
+
 
 # View help:
 $ cockroach sql --help
@@ -720,6 +725,7 @@ Time: 2.426534ms
 ## See also
 
 - [Client Connection Parameters](connection-parameters.html)
+- [`cockroach demo`](cockroach-demo.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

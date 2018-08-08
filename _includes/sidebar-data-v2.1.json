@@ -1439,6 +1439,12 @@
             ]
           },
           {
+            "title": "<code>cockroach demo</code>",
+            "urls": [
+              "/${VERSION}/cockroach-demo.html"
+            ]
+          },
+          {
             "title": "<code>cockroach debug zip</code>",
             "urls": [
               "/${VERSION}/debug-zip.html"
