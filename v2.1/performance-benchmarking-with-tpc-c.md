@@ -215,7 +215,7 @@ This configuration is intended for performance benchmarking only. For production
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
 
-### Step 2. Add an enterprise license
+### Step 3. Add an enterprise license
 
 For this benchmark, you will use partitioning, which is an enterprise feature. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
