@@ -137,12 +137,9 @@ SET TRACING
 (19 rows)
 ~~~
 
-<!-- ### Trace conflicting transactions
+### Trace conflicting transactions
 
 In this example, we use two terminals concurrently to generate conflicting transactions.
-
-
-Set tracing = on;
 
 1. In terminal 1, create a table:
 
@@ -150,7 +147,6 @@ Set tracing = on;
     ~~~ sql
     > CREATE TABLE t (k INT);
     ~~~
-
 
 2. Still in terminal 1, open a transaction and perform a write without closing the transaction:
 
@@ -166,11 +162,17 @@ Set tracing = on;
 
     Press enter one more time to send these statements to the server.
 
-3. In terminal 2, execute and trace a conflicting read:
+3. In terminal 2, turn tracing on:
+
+    ~~~
+    > SET tracing = on;
+    ~~~
+
+4.  Still in terminal 2, execute a conflicting read:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT age, span, message FROM [SHOW TRACE FOR SESSION];
+    > SELECT * FROM t;
     ~~~
 
     You'll see that this statement is blocked until the transaction in terminal 1 finishes.
@@ -182,76 +184,169 @@ Set tracing = on;
     > COMMIT;
     ~~~
 
-5. Back in terminal 2, you'll see the completed trace:
+5. In terminal 2, you'll see the completed read:
+
+    ~~~
+    +---+
+    | k |
+    +---+
+    | 1 |
+    +---+
+    ~~~
+
+6. Still in terminal 2, stop tracing and then view the completed trace:
 
     {{site.data.alerts.callout_success}}Check the lines starting with <code>#Annotation</code> for insights into how the conflict is traced.{{site.data.alerts.end}}
 
-  	~~~ shell
-  	+-------------------+--------+-------------------------------------------------------------------------------------------------------+
-  	|        age        |  span  |            message                                                                                    |
-  	+-------------------+--------+-------------------------------------------------------------------------------------------------------+
-  	| 0s                | (0,0)  | === SPAN START: sql txn implicit ===                                                                  |
-  	| 409µs750ns        | (0,1)  | === SPAN START: starting plan ===                                                                     |
-  	| 417µs68ns         | (0,2)  | === SPAN START: consuming rows ===                                                                    |
-  	| 446µs968ns        | (0,0)  | querying next range at /Table/61/1                                                                    |
-  	| 474µs387ns        | (0,0)  | r42: sending batch 1 Scan to (n1,s1):1                                                                |
-  	| 491µs800ns        | (0,0)  | sending request to local server                                                                       |
-  	| 503µs260ns        | (0,3)  | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                 |
-  	| 506µs135ns        | (0,3)  | 1 Scan                                                                                                |
-  	| 508µs385ns        | (0,3)  | read has no clock uncertainty                                                                         |
-  	| 512µs176ns        | (0,3)  | executing 1 requests                                                                                  |
-  	| 518µs675ns        | (0,3)  | read-only path                                                                                        |
-  	| 525µs357ns        | (0,3)  | command queue                                                                                         |
-  	| 531µs990ns        | (0,3)  | waiting for read lock                                                                                 |
-    | # Annotation: The following line identifies the conflict, and some of the lines below it describe the conflict resolution          |
-  	| 603µs363ns        | (0,3)  | conflicting intents on /Table/61/1/285895906846146561/0                                               |
-  	| 611µs228ns        | (0,3)  | replica.Send got error: conflicting intents on /Table/61/1/285895906846146561/0                       |
-  	| # Annotation: The read is now going to wait for the writer to finish by executing a PushTxn request.                               |
-  	| 615µs680ns        | (0,3)  | pushing 1 transaction(s)                                                                              |
-  	| 630µs734ns        | (0,3)  | querying next range at /Table/61/1/285895906846146561/0                                               |
-  	| 646µs292ns        | (0,3)  | r42: sending batch 1 PushTxn to (n1,s1):1                                                             |
-  	| 658µs613ns        | (0,3)  | sending request to local server                                                                       |
-  	| 665µs738ns        | (0,4)  | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                 |
-  	| 668µs765ns        | (0,4)  | 1 PushTxn                                                                                             |
-  	| 671µs770ns        | (0,4)  | executing 1 requests                                                                                  |
-  	| 677µs182ns        | (0,4)  | read-write path                                                                                       |
-  	| 681µs909ns        | (0,4)  | command queue                                                                                         |
-  	| 693µs718ns        | (0,4)  | applied timestamp cache                                                                               |
-  	| 794µs20ns         | (0,4)  | evaluated request                                                                                     |
-  	| 807µs125ns        | (0,4)  | replica.Send got error: failed to push "sql txn" id=23fce0c4 key=/Table/61/1/285895906846146561/0 ... |
-  	| 812µs917ns        | (0,4)  | 62cddd0b pushing 23fce0c4 (1 pending)                                                                 |
-  	| 4s348ms604µs506ns | (0,4)  | result of pending push: "sql txn" id=23fce0c4 key=/Table/61/1/285895906846146561/0 rw=true pri=0  ... |
-  	| # Annotation: The writer is detected to have finished.                                                                             |
-  	| 4s348ms609µs635ns | (0,4)  | push request is satisfied                                                                             |
-  	| 4s348ms657µs576ns | (0,3)  | 23fce0c4-1d22-4321-9779-35f0f463b2d5 is now COMMITTED                                                 |
-      | # Annotation: The write has committed. Some cleanup follows.                                                                       |
-  	| 4s348ms659µs899ns | (0,3)  | resolving intents [wait=true]                                                                         |
-  	| 4s348ms669µs431ns | (0,17) | === SPAN START: storage.intentResolve: resolving intents ===                                          |
-  	| 4s348ms726µs582ns | (0,17) | querying next range at /Table/61/1/285895906846146561/0                                               |
-  	| 4s348ms746µs398ns | (0,17) | r42: sending batch 1 ResolveIntent to (n1,s1):1                                                       |
-  	| 4s348ms758µs761ns | (0,17) | sending request to local server                                                                       |
-  	| 4s348ms769µs344ns | (0,18) | === SPAN START: /cockroach.roachpb.Internal/Batch ===                                                 |
-  	| 4s348ms772µs713ns | (0,18) | 1 ResolveIntent                                                                                       |
-  	| 4s348ms776µs159ns | (0,18) | executing 1 requests                                                                                  |
-  	| 4s348ms781µs364ns | (0,18) | read-write path                                                                                       |
-  	| 4s348ms786µs536ns | (0,18) | command queue                                                                                         |
-  	| 4s348ms797µs901ns | (0,18) | applied timestamp cache                                                                               |
-  	| 4s348ms868µs521ns | (0,18) | evaluated request                                                                                     |
-  	| 4s348ms875µs924ns | (0,18) | acquired {raft,replica}mu                                                                             |
-  	| 4s349ms150µs556ns | (0,18) | applying command                                                                                      |
-  	| 4s349ms232µs373ns | (0,3)  | read-only path                                                                                        |
-  	| 4s349ms237µs724ns | (0,3)  | command queue                                                                                         |
-  	| 4s349ms241µs857ns | (0,3)  | waiting for read lock                                                                                 |
-  	| # Annotation: This is where we would have been if there hadn't been a conflict.                                                    |
-  	| 4s349ms280µs702ns | (0,3)  | read completed                                                                                        |
-  	| 4s349ms330µs707ns | (0,2)  | output row: [1]                                                                                       |
-  	| 4s349ms333µs718ns | (0,2)  | output row: [1]                                                                                       |
-  	| 4s349ms336µs53ns  | (0,2)  | output row: [1]                                                                                       |
-  	| 4s349ms338µs212ns | (0,2)  | output row: [1]                                                                                       |
-  	| 4s349ms339µs111ns | (0,2)  | plan completed execution                                                                              |
-  	| 4s349ms341µs476ns | (0,2)  | resources released, stopping trace                                                                    |
-  	+-------------------+--------+-------------------------------------------------------------------------------------------------------+
-  	~~~ -->
+    ~~~
+    +--------------------+------+--------------------------------------------------------------------------+
+    |        age         | span |                                 message                                  |
+    +--------------------+------+--------------------------------------------------------------------------+
+    | 0s                 |    0 | === SPAN START: session recording ===                                    |
+    | 26µs841ns          |    0 | [NoTxn pos:25] executing Sync                                            |
+    | 214µs31ns          |    0 | [NoTxn pos:26] executing ExecStmt: SHOW TRANSACTION STATUS               |
+    ...
+    | 6s289ms100µs820ns  |    3 | === SPAN START: sql txn ===                                              |
+    | 6s289ms136µs804ns  |    3 | [Open pos:34] executing ExecStmt: SELECT * FROM t                        |
+    | 6s289ms147µs236ns  |    3 | executing: SELECT * FROM t in state: Open                                |
+    | 6s289ms169µs623ns  |    3 | planning starts: SELECT                                                  |
+    | 6s289ms171µs400ns  |    3 | generating optimizer plan                                                |
+    | 6s289ms203µs35ns   |    3 | added table 'defaultdb.public.t' to table collection                     |
+    | 6s289ms300µs796ns  |    3 | optimizer plan succeeded                                                 |
+    | 6s289ms301µs851ns  |    3 | planning ends                                                            |
+    | 6s289ms305µs338ns  |    3 | checking distributability                                                |
+    | 6s289ms308µs608ns  |    3 | distributable plan: true                                                 |
+    | 6s289ms314µs399ns  |    3 | execution starts: distributed                                            |
+    | 6s289ms315µs380ns  |    4 | === SPAN START: consuming rows ===                                       |
+    | 6s289ms327µs736ns  |    3 | creating DistSQL plan                                                    |
+    | 6s289ms360µs73ns   |    3 | querying next range at /Table/52/1                                       |
+    | 6s289ms397µs745ns  |    3 | running DistSQL plan                                                     |
+    | 6s289ms411µs676ns  |    5 | === SPAN START: flow ===                                                 |
+    | 6s289ms459µs347ns  |    5 | starting (1 processors, 0 startables)                                    |
+    | 6s289ms476µs196ns  |    8 | === SPAN START: table reader ===                                         |
+    |                    |      |                                                                          |
+    |                    |      | cockroach.stat.tablereader.stalltime: 7µs                                |
+    |                    |      |                                                                          |
+    |                    |      | cockroach.processorid: 0                                                 |
+    |                    |      |                                                                          |
+    |                    |      | cockroach.stat.tablereader.input.rows: 2                                 |
+    | 6s290ms23µs213ns   |    8 | Scan /Table/52/{1-2}                                                     |
+    | 6s290ms39µs563ns   |    9 | === SPAN START: dist sender ===                                          |
+    | 6s290ms82µs250ns   |    9 | querying next range at /Table/52/1                                       |
+    | 6s290ms106µs319ns  |    9 | r23: sending batch 1 Scan to (n1,s1):1                                   |
+    | 6s290ms112µs72ns   |    9 | sending request to local server                                          |
+    | 6s290ms156µs75ns   |   10 | === SPAN START: /cockroach.roachpb.Internal/Batch ===                    |
+    | 6s290ms160µs422ns  |   10 | 1 Scan                                                                   |
+    | 6s290ms166µs984ns  |   10 | executing 1 requests                                                     |
+    | 6s290ms175µs94ns   |   10 | read-only path                                                           |
+    | 6s290ms179µs708ns  |   10 | read has no clock uncertainty                                            |
+    | 6s290ms186µs84ns   |   10 | command queue                                                            |
+    | 6s290ms203µs789ns  |   10 | waiting for read lock                                                    |
+    | # Annotation: The following line identifies the conflict and describes the conflict resolution.      |
+    | 6s290ms318µs839ns  |   10 | conflicting intents on /Table/52/1/372254698480435201/0                  |
+    | 6s290ms337µs353ns  |   10 | replica.Send got error: conflicting intents on                           |
+    |                    |      | /Table/52/1/372254698480435201/0                                         |
+    | 6s290ms352µs992ns  |   10 | adding f4a8193b to contention queue on intent                            |
+    |                    |      | /Table/52/1/372254698480435201/0 @c4203a16                               |
+    | # Annotation: The read is now going to wait for the writer to finish by executing a PushTxn request. |
+    | 6s290ms362µs345ns  |   10 | pushing 1 transaction(s)                                                 |
+    | 6s290ms370µs927ns  |   11 | === SPAN START: dist sender ===                                          |
+    | 6s290ms378µs722ns  |   11 | querying next range at /Table/52/1/372254698480435201/0                  |
+    | 6s290ms389µs560ns  |   11 | r23: sending batch 1 PushTxn to (n1,s1):1                                |
+    | 6s290ms392µs349ns  |   11 | sending request to local server                                          |
+    | 6s290ms455µs709ns  |   12 | === SPAN START: /cockroach.roachpb.Internal/Batch ===                    |
+    | 6s290ms461µs351ns  |   12 | 1 PushTxn                                                                |
+    | 6s290ms464µs607ns  |   12 | executing 1 requests                                                     |
+    | 6s290ms471µs394ns  |   12 | read-write path                                                          |
+    | 6s290ms476µs558ns  |   12 | command queue                                                            |
+    | 6s290ms484µs12ns   |   12 | applied timestamp cache                                                  |
+    | 6s290ms593µs363ns  |   12 | evaluated request                                                        |
+    | 6s290ms606µs183ns  |   12 | replica.Send got error: failed to push "sql txn" id=c4203a16             |
+    |                    |      | key=/Table/52/1/372254698480435201/0 rw=true pri=0.03424799              |
+    |                    |      | iso=SERIALIZABLE stat=PENDING epo=0 ts=1533673518.429352831,0            |
+    |                    |      | orig=1533673518.429352831,0 max=1533673518.429352831,0 wto=false         |
+    |                    |      | rop=false seq=1                                                          |
+    | 6s290ms617µs794ns  |   12 | f4a8193b pushing c4203a16 (1 pending)                                    |
+    | 6s290ms655µs798ns  |   12 | querying pushee                                                          |
+    ...
+    | 11s777ms251µs907ns |   20 | === SPAN START: /cockroach.roachpb.Internal/Batch ===                    |
+    | 11s777ms261µs211ns |   20 | 1 QueryTxn                                                               |
+    | 11s777ms286µs672ns |   20 | executing 1 requests                                                     |
+    | 11s777ms300µs370ns |   20 | read-only path                                                           |
+    | 11s777ms371µs665ns |   20 | command queue                                                            |
+    | 11s777ms393µs277ns |   20 | waiting for 1 overlapping requests                                       |
+    | 11s779ms520µs651ns |   20 | waited 2.113298ms for overlapping requests                               |
+    | 11s779ms543µs461ns |   20 | waiting for read lock                                                    |
+    | 11s779ms641µs611ns |   20 | read completed                                                           |
+    | 12s440ms469µs377ns |   12 | result of pending push: "sql txn" id=c4203a16                            |
+    |                    |      | key=/Table/52/1/372254698480435201/0 rw=true pri=0.03424799              |
+    |                    |      | iso=SERIALIZABLE stat=COMMITTED epo=0 ts=1533673518.429352831,0          |
+    |                    |      | orig=1533673518.429352831,0 max=1533673518.429352831,0 wto=false         |
+    |                    |      | rop=false seq=3                                                          |
+    | # Annotation: The writer is detected to have finished.                                               |
+    | 12s440ms473µs127ns |   12 | push request is satisfied                                                |
+    | 12s440ms546µs916ns |   10 | c4203a16-78c5-4841-92f3-9a0c966ba9db is now COMMITTED                    |
+    | # Annotation: The write has committed. Some cleanup follows.                                         |
+    | 12s440ms551µs686ns |   10 | resolving intents [wait=false]                                           |
+    | 12s440ms603µs878ns |   21 | === SPAN START: dist sender ===                                          |
+    | 12s440ms648µs131ns |   21 | querying next range at /Table/52/1/372254698480435201/0                  |
+    | 12s440ms692µs427ns |   21 | r23: sending batch 1 ResolveIntent to (n1,s1):1                          |
+    | 12s440ms699µs732ns |   21 | sending request to local server                                          |
+    | 12s440ms703µs670ns |   22 | === SPAN START: /cockroach.roachpb.Internal/Batch ===                    |
+    | 12s440ms708µs476ns |   22 | 1 ResolveIntent                                                          |
+    | 12s440ms714µs221ns |   22 | executing 1 requests                                                     |
+    | 12s440ms720µs853ns |   22 | read-write path                                                          |
+    | 12s440ms733µs90ns  |   22 | command queue                                                            |
+    | 12s440ms742µs916ns |   22 | applied timestamp cache                                                  |
+    | 12s440ms831µs18ns  |   22 | evaluated request                                                        |
+    | 12s440ms857µs118ns |   10 | read-only path                                                           |
+    | 12s440ms860µs848ns |   10 | read has no clock uncertainty                                            |
+    | 12s440ms867µs261ns |   10 | command queue                                                            |
+    | 12s440ms873µs171ns |   10 | waiting for read lock                                                    |
+    | # Annotation: This is where we would have been if there hadn't been a conflict.                      |
+    | 12s440ms913µs370ns |   10 | read completed                                                           |
+    | 12s440ms961µs323ns |   10 | f4a8193b finished, leaving intent? false (owned by <nil>)                |
+    | 12s441ms989µs325ns |    3 | execution ends                                                           |
+    | 12s441ms991µs398ns |    3 | rows affected: 2                                                         |
+    | 12s442ms22µs953ns  |    3 | AutoCommit. err: <nil>                                                   |
+    | 12s442ms44µs376ns  |    0 | releasing 1 tables                                                       |
+    | 12s442ms57µs49ns   |    0 | [NoTxn pos:35] executing Sync                                            |
+    | 12s442ms449µs324ns |    0 | [NoTxn pos:36] executing ExecStmt: SHOW TRANSACTION STATUS               |
+    | 12s442ms457µs347ns |    0 | executing: SHOW TRANSACTION STATUS in state: NoTxn                       |
+    | 12s442ms466µs126ns |    0 | [NoTxn pos:37] executing Sync                                            |
+    | 12s442ms586µs65ns  |    0 | [NoTxn pos:38] executing ExecStmt: SHOW database                         |
+    | 12s442ms591µs342ns |    0 | executing: SHOW database in state: NoTxn                                 |
+    | 12s442ms599µs279ns |    6 | === SPAN START: sql txn ===                                              |
+    | 12s442ms621µs543ns |    6 | [Open pos:38] executing ExecStmt: SHOW database                          |
+    | 12s442ms624µs632ns |    6 | executing: SHOW database in state: Open                                  |
+    | 12s442ms639µs579ns |    6 | planning starts: SHOW                                                    |
+    | 12s442ms641µs610ns |    6 | generating optimizer plan                                                |
+    | 12s442ms657µs397ns |    6 | optimizer plan failed: unsupported statement: *tree.ShowVar              |
+    | 12s442ms659µs345ns |    6 | optimizer falls back on heuristic planner                                |
+    | 12s442ms666µs926ns |    6 | query is correlated: false                                               |
+    | 12s442ms667µs859ns |    6 | heuristic planner starts                                                 |
+    | 12s442ms765µs327ns |    6 | heuristic planner optimizes plan                                         |
+    | 12s442ms811µs772ns |    6 | heuristic planner optimizes subqueries                                   |
+    | 12s442ms812µs988ns |    6 | planning ends                                                            |
+    | 12s442ms815µs950ns |    6 | checking distributability                                                |
+    | 12s442ms825µs105ns |    6 | query not supported for distSQL: unsupported node *sql.valuesNode        |
+    | 12s442ms826µs599ns |    6 | distributable plan: false                                                |
+    | 12s442ms828µs79ns  |    6 | execution starts: local                                                  |
+    | 12s442ms832µs803ns |    7 | === SPAN START: consuming rows ===                                       |
+    | 12s442ms845µs752ns |    6 | execution ends                                                           |
+    | 12s442ms846µs750ns |    6 | rows affected: 1                                                         |
+    | 12s442ms860µs278ns |    6 | AutoCommit. err: <nil>                                                   |
+    | 12s442ms869µs681ns |    0 | [NoTxn pos:39] executing Sync                                            |
+    | 12s442ms975µs847ns |    0 | [NoTxn pos:40] executing ExecStmt: SHOW TRANSACTION STATUS               |
+    | 12s442ms979µs816ns |    0 | executing: SHOW TRANSACTION STATUS in state: NoTxn                       |
+    | 12s442ms987µs160ns |    0 | [NoTxn pos:41] executing Sync                                            |
+    | 21s727ms852µs808ns |    0 | [NoTxn pos:42] executing ExecStmt: SHOW SYNTAX 'set tracing = off;'      |
+    | 21s727ms875µs564ns |    0 | executing: SHOW SYNTAX 'set tracing = off;' in state: NoTxn              |
+    | 21s727ms955µs982ns |    0 | [NoTxn pos:43] executing Sync                                            |
+    | 21s728ms150µs348ns |    0 | [NoTxn pos:44] executing ExecStmt: SET TRACING = off                     |
+    | 21s728ms163µs798ns |    0 | executing: SET TRACING = off in state: NoTxn                             |
+    +--------------------+------+--------------------------------------------------------------------------+
+    ~~~
 
 ### Trace a transaction retry
 
@@ -261,7 +356,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET tracing = cluster;
+    > SET tracing = on;
     ~~~
 
     {% include copy-clipboard.html %}
