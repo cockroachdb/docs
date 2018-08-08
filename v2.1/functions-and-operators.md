@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).
 
-{{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
 ## Special syntax forms
 
