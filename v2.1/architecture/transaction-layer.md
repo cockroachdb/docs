@@ -190,6 +190,38 @@ Whenever a write occurs, its timestamp is checked against the timestamp cache. I
 Whenever a transaction's timestamp has been pushed, additional checks are required before allowing serializable transactions to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
 If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.
 
+### Transaction pipelining
+
+<span class="version-tag">New in v2.1:</span> Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
+
+{% include copy-clipboard.html %}
+~~~ sql
+-- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
+> BEGIN;
+  SAVEPOINT cockroach_restart;
+  INSERT into kv (key, value) VALUES ('apple', 'red');
+  INSERT into kv (key, value) VALUES ('banana', 'yellow');
+  INSERT into kv (key, value) VALUES ('orange', 'orange');
+  RELEASE SAVEPOINT cockroach_restart;
+  COMMIT;
+~~~
+
+In versions prior to 2.1, for each `INSERT` statement above, the transaction gateway node would have to wait for write intents to propagate to each leaseholder, resulting in higher cumulative latency.
+
+In versions 2.1 and later, write intents are propagated to leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
+
+At a high level, transaction pipelining works as follows:
+
+1. For each statement, the transaction gateway node communicates with the leaseholders (*L*<sub>1</sub>, *L*<sub>2</sub>, *L*<sub>3</sub>, ..., *L*<sub>i</sub>) for the ranges it wants to write to. Since the primary keys in the table above are UUIDs, the ranges are probably split across multiple leaseholders (this is a good thing, as it decreases [transaction conflicts](#transaction-conflicts)).
+
+2. Each leaseholder *L*<sub>i</sub> receives the communication from the transaction gateway node and does the following in parallel:
+  - Creates write intents and sends them to its follower nodes.
+  - Responds to the transaction gateway node that the write intents have been sent. Note that replication of the intents is still in-flight at this stage.
+
+3. When attempting to commit, the transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers. When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
+
+In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write, which was the prior behavior. This changes the cost of multiple writes from `O(n)` in the number of SQL DML statements to `O(1)`.
+
 ## Technical interactions with other layers
 
 ### Transaction and SQL layer
@@ -203,3 +235,8 @@ The `TxnCoordSender` sends its KV requests to `DistSender` in the distribution l
 ## What's next?
 
 Learn how CockroachDB presents a unified view of your cluster's data in the [distribution layer](distribution-layer.html).
+
+<!-- Links -->
+
+[storage]: storage-layer.html
+[sql]: sql-layer.html
