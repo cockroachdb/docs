@@ -999,9 +999,9 @@
                 ]
               },
               {
-                "title": "<code>SHOW TRACE</code>",
+                "title": "<code>SHOW TRACE FOR SESSION</code>",
                 "urls": [
-                  "/${VERSION}/show-trace.html"
+                  "/${VERSION}/show-trace-for-session.html"
                 ]
               },
               {
