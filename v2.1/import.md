@@ -344,7 +344,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZ
 ;
 ~~~
 
-Optionally, you can use the `decompression` option to specify the codec to be used for decompressing the file during import:
+Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -353,9 +353,9 @@ Optionally, you can use the `decompression` option to specify the codec to be us
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv.gz.latest?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
 WITH
-	decompression = 'gzip'
+	decompress = 'gzip'
 ;
 ~~~
 
