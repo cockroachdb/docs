@@ -23,8 +23,8 @@ Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
-Roles | [`role_table_grants`](#role-table-grants) | [`SHOW ROLES`](show-roles.html)
-Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCES`](show-create-sequences.html)
+Roles | [`role_table_grants`](#role_table_grants) | [`SHOW ROLES`](show-roles.html)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-sequence.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
 
@@ -104,7 +104,7 @@ Column | Description
 
 ### constraint_column_usage
 
-`constraint_column_usage` identifies all columns in a database that are used by some [constraint](constraint.html).
+`constraint_column_usage` identifies all columns in a database that are used by some [constraint](constraints.html).
 
 Column | Description
 -------|-----------
