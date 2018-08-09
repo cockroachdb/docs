@@ -19,12 +19,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `IF EXISTS` | Rename the column only if a column of `current_name` exists; if one does not exist, do not return an error. 
+ `IF EXISTS` | Rename the column only if a column of `current_name` exists; if one does not exist, do not return an error.
  `table_name` | The name of the table with the index you want to use
- `index_name` | The current name of the index 
- `name` | The [`name`](sql-grammar.html#name) you want to use for the index, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). 
+ `index_name` | The current name of the index
+ `name` | The [`name`](sql-grammar.html#name) you want to use for the index, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 
 ## Example
 
@@ -36,23 +36,19 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 ~~~
-+-------+----------------+--------+-----+--------+-----------+---------+----------+
-| Table |      Name      | Unique | Seq | Column | Direction | Storing | Implicit |
-+-------+----------------+--------+-----+--------+-----------+---------+----------+
-| users | primary        | true   |   1 | id     | ASC       | false   | false    |
-| users | users_name_idx | false  |   1 | name   | ASC       | false   | false    |
-| users | users_name_idx | false  |   2 | id     | ASC       | false   | true     |
-+-------+----------------+--------+-----+--------+-----------+---------+----------+
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
+| users      | primary    |   false    |            1 | id          | ASC       |  false  |  false   |
+| users      | name_idx   |    true    |            1 | name        | ASC       |  false  |  false   |
+| users      | name_idx   |    true    |            2 | id          | ASC       |  false  |   true   |
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
 (3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER INDEX users@users_name_idx RENAME TO name_idx;
-~~~
-
-~~~
-RENAME INDEX
+> ALTER INDEX users@name_idx RENAME TO users_name_idx;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -61,13 +57,13 @@ RENAME INDEX
 ~~~
 
 ~~~
-+-------+----------+--------+-----+--------+-----------+---------+----------+
-| Table |   Name   | Unique | Seq | Column | Direction | Storing | Implicit |
-+-------+----------+--------+-----+--------+-----------+---------+----------+
-| users | primary  | true   |   1 | id     | ASC       | false   | false    |
-| users | name_idx | false  |   1 | name   | ASC       | false   | false    |
-| users | name_idx | false  |   2 | id     | ASC       | false   | true     |
-+-------+----------+--------+-----+--------+-----------+---------+----------+
++------------+----------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+----------------+------------+--------------+-------------+-----------+---------+----------+
+| users      | primary        |   false    |            1 | id          | ASC       |  false  |  false   |
+| users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   |
+| users      | users_name_idx |    true    |            2 | id          | ASC       |  false  |   true   |
++------------+----------------+------------+--------------+-------------+-----------+---------+----------+
 (3 rows)
 ~~~
 

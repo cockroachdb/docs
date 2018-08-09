@@ -6,11 +6,10 @@ toc: true
 
 The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.
 
-
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_users.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_users.html %}
 </div>
 
 ## Required privileges
@@ -25,13 +24,13 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 ~~~
 
 ~~~
-+------------+
-|  username  |
-+------------+
-| jpointsman |
-| maxroach   |
-| root       |
-+------------+
++-------------+
+|  user_name  |
++-------------+
+| jpointsman  |
+| maxroach    |
+| root        |
++-------------+
 ~~~
 
 ## See also

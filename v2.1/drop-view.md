@@ -17,7 +17,7 @@ The user must have the `DROP` [privilege](privileges.html) on the specified view
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 ----------|-------------
  `IF EXISTS`   | Drop the view if it exists; if it does not exist, do not return an error.
  `table_name`  | A comma-separated list of view names. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
@@ -125,5 +125,5 @@ DROP VIEW
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`ALTER VIEW`](alter-view.html)

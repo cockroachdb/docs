@@ -43,7 +43,7 @@ The following values are recognized:
 ----------------------------------------|------------------------------------------------
  `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;                                                
  `-inf`, `-infinity`                    | -&#8734;                                                
- `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) 
+ `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
 
 For example:
 
@@ -66,14 +66,16 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 ~~~ sql
 > SHOW COLUMNS FROM decimals;
 ~~~
+
 ~~~
-+-------+---------------+-------+---------+
-| Field |     Type      | Null  | Default |
-+-------+---------------+-------+---------+
-| a     | DECIMAL       | false | NULL    |
-| b     | DECIMAL(10,5) | true  | NULL    |
-| c     | DECIMAL       | true  | NULL    |
-+-------+---------------+-------+---------+
++-------------+---------------+-------------+----------------+-----------------------+-------------+
+| column_name |   data_type   | is_nullable | column_default | generation_expression |   indices   |
++-------------+---------------+-------------+----------------+-----------------------+-------------+
+| a           | DECIMAL       |    false    | NULL           |                       | {"primary"} |
+| b           | DECIMAL(10,5) |    true     | NULL           |                       | {}          |
+| c           | DECIMAL       |    true     | NULL           |                       | {}          |
++-------------+---------------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -85,6 +87,7 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 ~~~ sql
 > SELECT * FROM decimals;
 ~~~
+
 ~~~
 +------------------------+---------+-----------------------+
 |           a            |    b    |         c             |

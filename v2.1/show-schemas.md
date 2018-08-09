@@ -6,7 +6,6 @@ toc: true
 
 The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
 
-
 ## Required privileges
 
 No [privileges](privileges.html) are required to list the schemas in a database.
@@ -14,7 +13,7 @@ No [privileges](privileges.html) are required to list the schemas in a database.
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_schemas.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_schemas.html %}
 </div>
 
 ## Parameters
@@ -37,7 +36,7 @@ Parameter | Description
 
 ~~~
 +--------------------+
-|       Schema       |
+|    schema_name     |
 +--------------------+
 | crdb_internal      |
 | information_schema |

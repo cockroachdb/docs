@@ -37,13 +37,14 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 ~~~
 
 ~~~
-+-------+------+-------+---------+
-| Field | Type | Null  | Default |
-+-------+------+-------+---------+
-| a     | INT  | false | NULL    |
-| b     | BOOL | true  | NULL    |
-| c     | BOOL | true  | NULL    |
-+-------+------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | INT       |    false    | NULL           |                       | {"primary"} |
+| b           | BOOL      |    true     | NULL           |                       | {}          |
+| c           | BOOL      |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}

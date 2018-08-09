@@ -40,29 +40,18 @@ Parameter | Description
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| bank          |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(4 rows)
 ~~~
 
 ### Create fails (name already in use)
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
-~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -71,20 +60,6 @@ Parameter | Description
 
 ~~~
 pq: database "bank" already exists
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
 ~~~
 
 {% include copy-clipboard.html %}
@@ -100,12 +75,15 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| bank     |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| bank          |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(4 rows)
 ~~~
 
 ## See also

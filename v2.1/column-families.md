@@ -36,7 +36,7 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE users;
+> SHOW CREATE users;
 ~~~
 
 ~~~

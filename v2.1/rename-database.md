@@ -33,13 +33,16 @@ Parameter | Description
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| db1      |
-| db2      |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| db1           |
+| db2           |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -47,41 +50,25 @@ Parameter | Description
 > ALTER DATABASE db1 RENAME TO db3;
 ~~~
 
-~~~
-RENAME DATABASE
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| db2      |
-| db3      |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| db2           |
+| db3           |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(5 rows)
 ~~~
 
 ### Rename fails (new name already in use)
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+----------+
-| Database |
-+----------+
-| db2      |
-| db3      |
-| system   |
-+----------+
-~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
