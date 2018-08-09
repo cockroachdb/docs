@@ -79,7 +79,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 ## Viewing and controlling restore jobs
 
-Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+Whenever CockroachDB starts executing a restore, it register the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the restore has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
@@ -99,12 +99,12 @@ Only the `root` user can run `RESTORE`.
 
  Parameter | Description |
 -----------|-------------|
- `table_pattern` | The table or [view](views.html) you want to restore. 
- `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database. 
- `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). 
- `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). 
- `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history). 
- `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list). 
+ `table_pattern` | The table or [view](views.html) you want to restore.
+ `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
+ `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+ `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format).
+ `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history).
+ `kv_option_list` | Control your backup's behavior with [these options](#restore-option-list).
 
 ### Backup file URLs
 
