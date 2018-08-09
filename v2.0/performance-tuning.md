@@ -52,12 +52,14 @@ Concept | Description
 **Node** | An individual machine running CockroachDB. Many nodes join together to create your cluster.
 **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 64 MiB in size, it splits into two ranges. This process continues as the table and its indexes continue growing.
 **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-**Leaseholder** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.<br><br>Read requests bypass the Raft consensus protocol, accessing the leaseholder and sending the results to the client without needing to coordinate with any of the other range replicas. Bypassing Raft, and the network round trips involved, is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder.
+**Leaseholder** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.<br><br>Unlike writes, read requests access the leaseholder and send the results to the client without needing to coordinate with any of the other range replicas. This reduces the network round trips involved and is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder. Read performance is therefore
 **Raft Leader** | For each range, one of the replicas is the "leader" for write requests. Via the [Raft consensus protocol](architecture/replication-layer.html#raft), this replica ensures that a majority of replicas (the leader and enough followers) agree before committing the write. The Raft leader is almost always the same replica as the leaseholder.
 
-As mentioned above, when a query is executed, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
+As mentioned above, when a query is executed, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. Therefore, For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
 
 Let's consider how these mechanics play out in some hypothetical queries.
+
+#### Read scenario
 
 First, imagine a simple read scenario where:
 
@@ -79,6 +81,8 @@ If the query is received by the node that has the leaseholder for the relevant r
 
 <img src="{{ 'images/v2.0/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
+#### Write scenario
+
 Now imagine a simple write scenario where a query is executed against node 3 to write to table 1:
 
 <img src="{{ 'images/v2.0/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
@@ -95,6 +99,12 @@ In this case:
 Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
 
 <img src="{{ 'images/v2.0/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+
+#### Network and I/O bottlenecks
+
+With the above examples in mind, it's important to consider two main performance bottlenecks: network and I/O.
+
+- For a read, the request always goes from the gateway node to the leaseholder. 
 
 ## Single-region deployment
 
