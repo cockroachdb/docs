@@ -22,7 +22,7 @@ Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
-Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCES`](show-create-sequences.html)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-sequence.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
 
