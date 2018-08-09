@@ -6,9 +6,10 @@ toc: true
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{{site.data.alerts.callout_success}}The easiest way to try out these statements is to use the <a href="use-the-built-in-sql-client.html">built-in interactive SQL shell</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
 
 ## Create a table
 

@@ -7,3 +7,4 @@ layout: null
 {% endfor %}
 
 /docs/releases/ /docs/releases/index.html 200!
+/docs /docs/stable/ 301

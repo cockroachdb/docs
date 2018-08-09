@@ -7,7 +7,7 @@ toc: true
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}
-In the [built-in SQL shell](use-the-built-in-sql-client.html#sql-shell-help), use `\h [statement]` to get inline help about a specific statement.
+In the [built-in SQL shell](use-the-built-in-sql-client.html#help), use `\h [statement]` to get inline help about a specific statement.
 {{site.data.alerts.end}}
 
 
@@ -22,7 +22,7 @@ Statement | Usage
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
-[`SHOW TRACE`](show-trace.html) | Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
+[`SHOW TRACE FOR SESSION`](show-trace-for-session.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
