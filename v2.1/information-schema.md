@@ -18,7 +18,7 @@ To perform introspection on objects, you can either read from the related `infor
 
 Object | Information Schema Table | Corresponding `SHOW` Statement
 -------|--------------|--------
-Columns | [`columns`](#columns), [`constraint_column_usage`](`constraint_column_usage`)| [`SHOW COLUMNS`](show-columns.html)
+Columns | [`columns`](#columns) | [`SHOW COLUMNS`](show-columns.html)
 Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
