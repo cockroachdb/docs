@@ -1,7 +1,7 @@
 ---
 title: AS OF SYSTEM TIME
 summary: The AS OF SYSTEM TIME clause executes a statement as of a specified time.
-toc: false
+toc: true
 ---
 
 The `AS OF SYSTEM TIME timestamp` clause causes statements to execute
@@ -162,6 +162,35 @@ For example:
            JOIN u ON tp.x = u.y
            AS OF SYSTEM TIME '-4h'  -- same timestamp as above - OK.
      WHERE x < 123;
+~~~
+
+### Using `AS OF SYSTEM TIME` with computed expressions
+
+`AS OF SYSTEM TIME` can be used with complex expressions to compute a timestamp.
+
+For example, create table `t`:
+
+{% include copy-clipboard.html %}
+~~~sql
+> CREATE TABLE t (i INT);
+~~~
+
+{% include copy-clipboard.html %}
+~~~sql
+> INSERT INTO t VALUES (2);
+~~~
+
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT * FROM t AS OF SYSTEM TIME -( ('1' || 'ns')::INTERVAL );
+~~~
+
+~~~
++---+
+| i |
++---+
+| 2 |
++---+
 ~~~
 
 ## See also
