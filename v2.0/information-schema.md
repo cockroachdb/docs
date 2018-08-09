@@ -187,7 +187,7 @@ Column | Description
 `sequence_name` | Name of the sequence.
 `data_type` | The data type of the sequence.
 `numeric_precision` | The (declared or implicit) precision of the sequence `data_type`.
-`numeric_precision_radix` | This column indicates in which base the values in the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
+`numeric_precision_radix` | The base of the values in which the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
 `numeric_scale` | The (declared or implicit) scale of the sequence `data_type`. The scale indicates the number of significant digits to the right of the decimal point. It can be expressed in decimal (base 10) or binary (base 2) terms, as specified in the column `numeric_precision_radix`.
 `start_value` | The first value of the sequence.
 `minimum_value` | The minimum value of the sequence.

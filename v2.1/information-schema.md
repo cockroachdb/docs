@@ -18,7 +18,7 @@ To perform introspection on objects, you can either read from the related `infor
 
 Object | Information Schema Table | Corresponding `SHOW` Statement
 -------|--------------|--------
-Columns | [`columns`](#columns)| [`SHOW COLUMNS`](show-columns.html)
+Columns | [`columns`](#columns), [`constraint_column_usage`](`constraint_column_usage`)| [`SHOW COLUMNS`](show-columns.html)
 Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
@@ -208,7 +208,7 @@ Column | Description
 `sequence_name` | Name of the sequence.
 `data_type` | The data type of the sequence.
 `numeric_precision` | The (declared or implicit) precision of the sequence `data_type`.
-`numeric_precision_radix` | This column indicates in which base the values in the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
+`numeric_precision_radix` | The base of the values in which the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
 `numeric_scale` | The (declared or implicit) scale of the sequence `data_type`. The scale indicates the number of significant digits to the right of the decimal point. It can be expressed in decimal (base 10) or binary (base 2) terms, as specified in the column `numeric_precision_radix`.
 `start_value` | The first value of the sequence.
 `minimum_value` | The minimum value of the sequence.
