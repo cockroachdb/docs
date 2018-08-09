@@ -8,7 +8,6 @@ The `SHOW TRACE FOR SESSION` [statement](sql-statements.html) returns details ab
 
 You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-
 ## Usage overview
 
 `SHOW TRACE FOR SESSION` returns messages and timing information for all statements recorded during a session. It's important to note the following:
@@ -90,7 +89,7 @@ Column | Type | Description
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message was logged.
 `span` | int | The index of the span within the virtual list of all spans if they were ordered by the span's start time.
 
-{{site.data.alerts.callout_info}}If the <code>COMPACT</code> keyword was specified, only the <code>age</code>, <code>message</code>, <code>tag</code> and <code>operation</code> columns are returned. In addition, the value of the <code>loc</code> columns is prepended to <code>message</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If the <code>COMPACT</code> keyword was specified, only the <code>age</code>, <code>message</code>, <code>tag</code> and <code>operation</code> columns are returned. In addition, the value of the <code>location</code> columns is prepended to <code>message</code>.{{site.data.alerts.end}}
 
 ## Examples
 

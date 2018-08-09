@@ -44,14 +44,16 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 ~~~ sql
 > SHOW COLUMNS FROM computers;
 ~~~
+
 ~~~
-+-------------------+--------+-------+---------+-------------+
-|       Field       |  Type  | Null  | Default |   Indices   |
-+-------------------+--------+-------+---------+-------------+
-| ip                | INET   | false | NULL    | {"primary"} |
-| user_email        | STRING | true  | NULL    | {}          |
-| registration_date | DATE   | true  | NULL    | {}          |
-+-------------------+--------+-------+---------+-------------+
++-------------------+-----------+-------------+----------------+-----------------------+-------------+
+|    column_name    | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------------+-----------+-------------+----------------+-----------------------+-------------+
+| ip                | INET      |    false    | NULL           |                       | {"primary"} |
+| user_email        | STRING    |    true     | NULL           |                       | {}          |
+| registration_date | DATE      |    true     | NULL           |                       | {}          |
++-------------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}

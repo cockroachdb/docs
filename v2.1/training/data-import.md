@@ -110,7 +110,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     $ ./cockroach sql \
     --insecure \
     --database="import_test" \
-    --execute="SHOW CREATE TABLE orders;"
+    --execute="SHOW CREATE orders;"
     ~~~
 
     ~~~
@@ -226,7 +226,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     $ ./cockroach sql \
     --insecure \
     --database="startrek" \
-    --execute="SHOW CREATE TABLE episodes;"
+    --execute="SHOW CREATE episodes;"
     ~~~
 
     ~~~

@@ -61,13 +61,15 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| intro              |
-| system             |
-+--------------------+
-(2 rows)
++---------------+
+| database_name |
++---------------+
+| defaultdb     |
+| intro         |
+| postgres      |
+| system        |
++---------------+
+(4 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -76,11 +78,11 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+---------+
-|  Table  |
-+---------+
-| mytable |
-+---------+
++------------+
+| table_name |
++------------+
+| mytable    |
++------------+
 (1 row)
 ~~~
 

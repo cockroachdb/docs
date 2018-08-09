@@ -9,7 +9,6 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](v
 
 {{site.data.alerts.callout_info}}While a table or view is being <a href="drop-table.html">dropped</a>, <code>SHOW TABLES</code> will list the object with a <code>(dropped)</code> suffix.{{site.data.alerts.end}}
 
-
 ## Synopsis
 
 <div>
@@ -41,7 +40,7 @@ These example assumes that the `bank` database has been set as the current datab
 
 ~~~
 +---------------+
-|     Table     |
+| table_name    |
 +---------------+
 | accounts      |
 | user_accounts |
@@ -65,7 +64,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ~~~
 +-----------------------------------+
-|               Table               |
+|            table_name             |
 +-----------------------------------+
 | administrable_role_authorizations |
 | applicable_roles                  |
@@ -74,8 +73,10 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 | constraint_column_usage           |
 | enabled_roles                     |
 | key_column_usage                  |
+| parameters                        |
 | referential_constraints           |
 | role_table_grants                 |
+| routines                          |
 | schema_privileges                 |
 | schemata                          |
 | sequences                         |
@@ -86,7 +87,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 | user_privileges                   |
 | views                             |
 +-----------------------------------+
-(18 rows)
+(20 rows)
 ~~~
 
 ### Show tables in a different database
@@ -103,7 +104,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ~~~
 +-------------------+
-|       Table       |
+| table_name        |
 +-------------------+
 | episodes          |
 | quotes            |

@@ -4,12 +4,7 @@ summary: The SHOW CONSTRAINTS statement lists the constraints on a table.
 toc: true
 ---
 
-The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed Check constraints on a table.
-
-{{site.data.alerts.callout_danger}}
-The `SHOW CONSTRAINTS` statement is under development; the exact output will continue to change.
-{{site.data.alerts.end}}
-
+The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed [`CHECK`](check.html) constraints on a table.
 
 ## Required privileges
 
@@ -35,15 +30,13 @@ Parameter | Description
 
 The following fields are returned for each constraint.
 
-{{site.data.alerts.callout_danger}}The <code>SHOW CONSTRAINTS</code> statement is under development; the exact output will continue to change.{{site.data.alerts.end}}
-
 Field | Description
 ------|------------
-`Table` | The name of the table.
-`Name` | The name of the constraint.
-`Type` | The type of constraint.
-`Column(s)` | The columns to which the constraint applies. For [Check constraints](check.html), column information will be in `Details` and this field will be `NULL`.
-`Details` | The conditions for a Check constraint.
+`table_name` | The name of the table.
+`constraint_name` | The name of the constraint.
+`constraint_type` | The type of constraint.
+`details` | The definition of the constraint, including the column(s) to which it applies.
+`validated` | Whether values in the column(s) match the constraint.
 
 ## Example
 
@@ -67,14 +60,15 @@ Field | Description
 ~~~
 
 ~~~
-+--------+------------------------+-------------+---------------+--------------------------------------------------------+
-| Table  |          Name          |    Type     |   Column(s)   |                        Details                         |
-+--------+------------------------+-------------+---------------+--------------------------------------------------------+
-| orders |                        | CHECK       | NULL          | status IN ('open', 'in progress', 'done', 'cancelled') |
-| orders |                        | CHECK       | NULL          | priority BETWEEN 1 AND 5                               |
-| orders | orders_customer_id_key | UNIQUE      | [customer_id] | NULL                                                   |
-| orders | primary                | PRIMARY KEY | [id]          | NULL                                                   |
-+--------+------------------------+-------------+---------------+--------------------------------------------------------+
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
+| table_name |    constraint_name     | constraint_type |                                 details                                  | validated |
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
+| orders     | check_priority         | CHECK           | CHECK (priority BETWEEN 1 AND 5)                                         |   true    |
+| orders     | check_status           | CHECK           | CHECK (status IN ('open':::STRING, 'in progress':::STRING,               |   true    |
+|            |                        |                 | 'done':::STRING, 'cancelled':::STRING))                                  |           |
+| orders     | orders_customer_id_key | UNIQUE          | UNIQUE (customer_id ASC)                                                 |   true    |
+| orders     | primary                | PRIMARY KEY     | PRIMARY KEY (id ASC)                                                     |   true    |
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
 (4 rows)
 ~~~
 

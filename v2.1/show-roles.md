@@ -6,11 +6,10 @@ toc: true
 
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
-
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_roles.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_roles.html %}
 </div>
 
 ## Required privileges
@@ -25,12 +24,12 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 ~~~
 
 ~~~
-+----------+
-| rolename |
-+----------+
-| admin    |
-| dev_ops  |
-+----------+
++-----------+
+| role_name |
++-----------+
+| admin     |
+| dev_ops   |
++-----------+
 ~~~
 
 ## See also

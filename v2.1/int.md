@@ -45,13 +45,13 @@ You can use the `BIT(n)` type, with `n` from 1 to 64, to constrain integers base
 ~~~
 
 ~~~
-+-------+----------+-------+---------+-------------+
-| Field |   Type   | Null  | Default |   Indices   |
-+-------+----------+-------+---------+-------------+
-| a     | INT      | false | NULL    | {"primary"} |
-| b     | SMALLINT | true  | NULL    | {}          |
-| c     | BIT(5)   | true  | NULL    | {}          |
-+-------+----------+-------+---------+-------------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | INT       |    false    | NULL           |                       | {"primary"} |
+| b           | SMALLINT  |    true     | NULL           |                       | {}          |
+| c           | BIT(5)    |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
 (3 rows)
 ~~~
 

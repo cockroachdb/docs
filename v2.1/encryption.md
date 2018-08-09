@@ -33,6 +33,8 @@ the key size has changed, or the data key is too old (default lifetime is one we
 
 Any new file created by the store uses the currently-active data key. All data keys (both active and previous) are stored in a key registry file and encrypted with the active store key.
 
+After startup, if the active data key is too old CockroachDB generates a new data key and marks it as active using it for all further encryption.
+
 CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all data with the desired encryption.
 
 ## Rotating keys
@@ -52,10 +54,12 @@ Data keys will automatically be rotated at startup if any of the following condi
 * the encryption type changed (different key size, or plaintext to/from encryption)
 * the current data key is `rotation-period` old or more.
 
-Once rotated, an old key cannot be made the active key again.
+Data keys will automatically be rotated at runtime if the current data key is `rotation-period` old or more.
+
+Once rotated, an old store key cannot be made the active key again.
 
 Upon store key rotation the data keys registry is decrypted using the old key and encrypted with the new
-key. The new data key is used to encrypt all new data from this point on.
+key. The newly-generated data key is used to encrypt all new data from this point on.
 
 ## Changing encryption type
 
@@ -164,6 +168,15 @@ Encryption status can be see on the node's stores report, reachable through: `ht
 
 The report shows the currently-active store key as well as the currently-active data key. The `encryption_type` field
 reflects the algorithm currently in use.
+
+Information about keys is written to the logs, including:
+
+* active/old key information at startup
+* new key information after data key rotation
+
+The information includes the key ID, algorithm, source (filename) for store keys, and parent key ID for data keys.
+
+The actual key is never displayed or logged.
 
 ### Changing encryption algorithm or keys
 

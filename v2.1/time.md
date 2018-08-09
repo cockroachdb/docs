@@ -81,12 +81,12 @@ A `TIME`/`TIMETZ` column supports values up to 8 bytes in width, but the total s
 ~~~
 
 ~~~
-+----------+------+------+---------+-------------+
-|  Field   | Type | Null | Default |   Indices   |
-+----------+------+------+---------+-------------+
-| time_id  | INT  | f    | NULL    | {"primary"} |
-| time_val | TIME | t    | NULL    | {}          |
-+----------+------+------+---------+-------------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| time_id     | INT       |    false    | NULL           |                       | {"primary"} |
+| time_val    | TIME      |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
 (2 rows)
 ~~~
 

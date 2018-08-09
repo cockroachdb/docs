@@ -34,7 +34,7 @@ The following values are recognized:
  Syntax                                 | Value                                            --------------------------------------|------------------------------------------------
  `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;                                                
  `-inf`, `-infinity`                    | -&#8734;                                                
- `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) 
+ `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
 
 For example:
 
@@ -59,13 +59,13 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 ~~~
 
 ~~~
-+-------+------------------+---------+---------+-------------+
-| Field | Type             | Null    | Default |   Indices   |
-+-------+------------------+---------+---------+-------------+
-| a     | FLOAT            | false   | NULL    | {"primary"} |
-| b     | REAL             | true    | NULL    | {}          |
-| c     | DOUBLE PRECISION | true    | NULL    | {}          |
-+-------+------------------+---------+---------+-------------+
++-------------+------------------+-------------+----------------+-----------------------+-------------+
+| column_name |    data_type     | is_nullable | column_default | generation_expression |   indices   |
++-------------+------------------+-------------+----------------+-----------------------+-------------+
+| a           | FLOAT            |    false    | NULL           |                       | {"primary"} |
+| b           | REAL             |    true     | NULL           |                       | {}          |
+| c           | DOUBLE PRECISION |    true     | NULL           |                       | {}          |
++-------------+------------------+-------------+----------------+-----------------------+-------------+
 (3 rows)
 ~~~
 

@@ -921,21 +921,9 @@
                 ]
               },
               {
-                "title": "<code>SHOW CREATE SEQUENCE</code>",
+                "title": "<code>SHOW CREATE</code>",
                 "urls": [
-                  "/${VERSION}/show-create-sequence.html"
-                ]
-              },
-              {
-                "title": "<code>SHOW CREATE TABLE</code>",
-                "urls": [
-                  "/${VERSION}/show-create-table.html"
-                ]
-              },
-              {
-                "title": "<code>SHOW CREATE VIEW</code>",
-                "urls": [
-                  "/${VERSION}/show-create-view.html"
+                  "/${VERSION}/show-create.html"
                 ]
               },
               {
@@ -1436,6 +1424,12 @@
             "title": "<code>cockroach dump</code>",
             "urls": [
               "/${VERSION}/sql-dump.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach demo</code>",
+            "urls": [
+              "/${VERSION}/cockroach-demo.html"
             ]
           },
           {

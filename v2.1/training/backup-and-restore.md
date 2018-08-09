@@ -167,10 +167,10 @@ Now imagine the tables in the `startrek` database have changed and you want to r
     ~~~
 
     ~~~
-    +-------+
-    | Table |
-    +-------+
-    +-------+
+    +------------+
+    | table_name |
+    +------------+
+    +------------+
     (0 rows)
     ~~~
 

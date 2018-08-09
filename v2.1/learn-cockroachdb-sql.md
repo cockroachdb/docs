@@ -6,10 +6,13 @@ toc: true
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{{site.data.alerts.callout_success}}The easiest way to try out these statements is to use the <a href="use-the-built-in-sql-client.html">built-in interactive SQL shell</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
+{{site.data.alerts.end}}
 
 ## Create a Database
 
@@ -44,13 +47,15 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(2 rows)
++---------------+
+| database_name |
++---------------+
+| bank          |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(3 rows)
 ~~~
 
 ## Set the default database
@@ -110,12 +115,12 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 ~~~
 
 ~~~
-+---------+---------+-------+---------+-----------+
-|  Field  |  Type   | Null  | Default |  Indices  |
-+---------+---------+-------+---------+-----------+
-| id      | INT     | false | NULL    | {primary} |
-| balance | DECIMAL | true  | NULL    | {}        |
-+---------+---------+-------+---------+-----------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| id          | INT       |    true     | unique_rowid() |                       | {}      |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
 (2 rows)
 ~~~
 
@@ -136,12 +141,12 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-| users    |
-+----------+
++------------+
+| table_name |
++------------+
+| accounts   |
+| users      |
++------------+
 (2 rows)
 ~~~
 
@@ -153,16 +158,16 @@ To view tables in a database that's not active, use `SHOW TABLES FROM` followed 
 ~~~
 
 ~~~
-+-----------+
-|   Table   |
-+-----------+
-| aardvarks |
-| elephants |
-| frogs     |
-| moles     |
-| pandas    |
-| turtles   |
-+-----------+
++------------+
+| table_name |
++------------+
+| aardvarks  |
+| elephants  |
+| frogs      |
+| moles      |
+| pandas     |
+| turtles    |
++------------+
 (6 rows)
 ~~~
 
@@ -253,13 +258,13 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
 
 ~~~
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing | Implicit |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-| accounts | primary     | true   |   1 | id      | ASC       | false   | false    |
-| accounts | balance_idx | false  |   1 | balance | DESC      | false   | false    |
-| accounts | balance_idx | false  |   2 | id      | ASC       | false   | true     |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+| table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit |
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+| accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false   |
+| accounts   | balance_idx |    true    |            1 | balance     | ASC       |  false  |  false   |
+| accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true   |
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
 (3 rows)
 ~~~
 

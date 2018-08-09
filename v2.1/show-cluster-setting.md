@@ -9,7 +9,6 @@ display the value of either one or all of the
 [cluster settings](cluster-settings.html). These can also be configured
 via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
-
 ## Required privileges
 
 Only the `root` user can display cluster settings.
@@ -20,7 +19,7 @@ Only the `root` user can display cluster settings.
   {% include {{ page.version.version }}/sql/diagrams/show_cluster_setting.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SHOW</code> statement for cluster settings is unrelated to the other <code>SHOW</code> statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create-table.html"><code>SHOW CREATE TABLE</code></a>, <a href="show-create-view.html"><code>SHOW CREATE VIEW</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <code>SHOW</code> statement for cluster settings is unrelated to the other <code>SHOW</code> statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
 
 ## Parameters
 
@@ -41,22 +40,8 @@ Parameter | Description
 +-------------------------------+
 | diagnostics.reporting.enabled |
 +-------------------------------+
-| true                          |
+|             true              |
 +-------------------------------+
-(1 row)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CLUSTER SETTING sql.default.distsql;
-~~~
-
-~~~
-+----------------------+
-| sql.defaults.distsql |
-+----------------------+
-|                    1 |
-+----------------------+
 (1 row)
 ~~~
 
@@ -68,13 +53,15 @@ Parameter | Description
 ~~~
 
 ~~~
++------------------------------------------------------+-----------+--------------+--------------------------------------------------------------------------+
+|                       variable                       |   value   | setting_type |                               description                                |
++------------------------------------------------------+-----------+--------------+--------------------------------------------------------------------------+
+| cloudstorage.gs.default.key                          |           | s            | if set, JSON key to use during Google Cloud Storage operations           |
+| cloudstorage.http.custom_ca                          |           | s            | custom root CA (appended to system's default CAs) for verifying          |
+|                                                      |           |              | certificates when interacting with HTTPS storage                         |
+| cloudstorage.timeout                                 | 10m0s     | d            | the timeout for import/export storage operations                         |
+...
 +-------------------------------+---------------+------+--------------------------------------------------------+
-|          name                 | current_value | type | description                                            |
-+-------------------------------+---------------+------+--------------------------------------------------------+
-| diagnostics.reporting.enabled | true          | b    | enable reporting diagnostic metrics to cockroach labs  |
-| ...                           | ...           | ...  | ...                                                    |
-+-------------------------------+---------------+------+--------------------------------------------------------+
-(24 rows)
 ~~~
 
 ## See also
@@ -85,8 +72,7 @@ Parameter | Description
 - [`SHOW` (session variable)](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)
