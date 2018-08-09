@@ -23,10 +23,10 @@ The user must have the `INSERT` [privilege](privileges.html) on the table or ind
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. 
- `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index. 
+ `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split.
+ `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index.
 
 ## Why manually split a range?
 
@@ -66,7 +66,7 @@ the ranges that store tables or indexes:
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | NULL    |       72 | {1}      |            1 |
 +-----------+---------+----------+----------+--------------+
@@ -96,7 +96,7 @@ the ranges that store tables or indexes:
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /10     |       72 | {1}      |            1 |
 | /10       | /20     |       73 | {1}      |            1 |
@@ -144,7 +144,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /5/1    |      151 | {2,3,5}  |            5 |
 | /5/1      | /5/2    |      152 | {2,3,5}  |            5 |
@@ -179,7 +179,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /3      |      155 | {2,3,5}  |            5 |
 | /3        | NULL    |      165 | {2,3,5}  |            5 |
@@ -201,7 +201,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | NULL    |       75 | {1}      |            1 |
 +-----------+---------+----------+----------+--------------+
@@ -231,7 +231,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /"a"    |       75 | {1}      |            1 |
 | /"a"      | /"b"    |       76 | {1}      |            1 |

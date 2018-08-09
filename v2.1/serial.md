@@ -54,13 +54,14 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 ~~~
 
 ~~~
-+-------+------------+-------+----------------+
-| Field |    Type    | Null  |    Default     |
-+-------+------------+-------+----------------+
-| a     | INT        | false | unique_rowid() |
-| b     | STRING     | true  | NULL           |
-| c     | BOOL       | true  | NULL           |
-+-------+------------+-------+----------------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | INT       |    false    | unique_rowid() |                       | {"primary"} |
+| b           | STRING    |    true     | NULL           |                       | {}          |
+| c           | BOOL      |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.

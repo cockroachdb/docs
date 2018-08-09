@@ -19,7 +19,6 @@ This information is useful for verifying that:
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-
 ## Synopsis
 
 <div>
@@ -86,7 +85,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /5      |      158 | {2,3,5}  |            5 |
 | /5        | /10     |      159 | {3,4,5}  |            5 |
@@ -105,7 +104,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ~~~
 +-----------+---------+----------+-----------+--------------+
-| Start Key | End Key | Range ID | Replicas  | Lease Holder |
+| start_key | end_key | range_id | replicas  | lease_holder |
 +-----------+---------+----------+-----------+--------------+
 | NULL      | /400    |      135 | {2,4,5}   |            2 |
 | /400      | /600    |      136 | {2,4,5}   |            4 |

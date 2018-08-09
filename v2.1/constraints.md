@@ -11,14 +11,14 @@ For example, the Unique constraint requires that all values in a column be uniqu
 
 ## Supported constraints
 
- Constraint | Description 
+ Constraint | Description
 ------------|-------------
- [Check](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression. 
- [Default Value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the Default Value is written to the column. 
- [Foreign Keys](foreign-key.html) | Values must exactly match existing values from the column it references. 
- [Not Null](not-null.html) | Values may not be *NULL*. 
+ [Check](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression.
+ [Default Value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the Default Value is written to the column.
+ [Foreign Keys](foreign-key.html) | Values must exactly match existing values from the column it references.
+ [Not Null](not-null.html) | Values may not be *NULL*.
  [Primary Key](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the Not Null and Unique constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns.
- [Unique](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns. 
+ [Unique](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns.
 
 ## Using constraints
 
@@ -78,7 +78,7 @@ You can name constraints applied to new tables using the `CONSTRAINT` clause bef
 
 ### View constraints
 
-To view a table's constraints, use [`SHOW CONSTRAINTS`](show-constraints.html) or [`SHOW CREATE TABLE`](show-create-table.html).
+To view a table's constraints, use [`SHOW CONSTRAINTS`](show-constraints.html) or [`SHOW CREATE`](show-create.html).
 
 ### Remove constraints
 
@@ -120,4 +120,4 @@ If you want to make a change to an immutable constraint, you can use the followi
 - [`ADD CONSTRAINT`](add-constraint.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
+- [`SHOW CREATE`](show-create.html)

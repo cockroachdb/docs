@@ -88,14 +88,16 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
+
 ~~~
-+--------------+-----------+-------+-------------------+-------------+
-|    Field     |   Type    | Null  |      Default      |   Indices   |
-+--------------+-----------+-------+-------------------+-------------+
-| profile_id   | UUID      | false | gen_random_uuid() | {"primary"} |
-| last_updated | TIMESTAMP | true  | now()             | {}          |
-| user_profile | JSON      | true  | NULL              | {}          |
-+--------------+-----------+-------+-------------------+-------------+
++--------------+-----------+-------------+-------------------+-----------------------+-------------+
+| column_name  | data_type | is_nullable |  column_default   | generation_expression |   indices   |
++--------------+-----------+-------------+-------------------+-----------------------+-------------+
+| profile_id   | UUID      |    false    | gen_random_uuid() |                       | {"primary"} |
+| last_updated | TIMESTAMP |    true     | now()             |                       | {}          |
+| user_profile | JSON      |    true     | NULL              |                       | {}          |
++--------------+-----------+-------------+-------------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}

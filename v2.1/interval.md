@@ -44,22 +44,19 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-~~~
-CREATE TABLE
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
 
 ~~~
-+-------+----------+-------+---------+
-| Field |   Type   | Null  | Default |
-+-------+----------+-------+---------+
-| a     | INT      | false | NULL    |
-| b     | INTERVAL | true  | NULL    |
-+-------+----------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | INT       |    false    | NULL           |                       | {"primary"} |
+| b           | INTERVAL  |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}

@@ -73,5 +73,5 @@ Parameter | Description
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`DROP VIEW`](drop-view.html)

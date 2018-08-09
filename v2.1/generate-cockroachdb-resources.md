@@ -9,12 +9,12 @@ The `cockroach gen` command can generate command-line interface (CLI) utilities 
 
 ## Subcommands
 
- Subcommand | Usage 
- -----------|------ 
- `man` | Generate man pages for CockroachDB. 
- `autocomplete` | Generate bash autocompletion script for CockroachDB. 
- `example-data` | Generate example SQL data. 
- `haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. 
+ Subcommand | Usage
+ -----------|------
+ `man` | Generate man pages for CockroachDB.
+ `autocomplete` | Generate bash autocompletion script for CockroachDB.
+ `example-data` | Generate example SQL data.
+ `haproxy` | Generate an HAProxy config file for a running CockroachDB cluster.
 
 ## Synopsis
 
@@ -195,12 +195,12 @@ $ cockroach sql --insecure
 > SHOW TABLES FROM startrek;
 ~~~
 ~~~
-+----------+
-|  Table   |
-+----------+
-| episodes |
-| quotes   |
-+----------+
++------------+
+| table_name |
++------------+
+| episodes   |
+| quotes     |
++------------+
 (2 rows)
 ~~~
 
@@ -235,11 +235,11 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+---------+
-|  Table  |
-+---------+
-| mytable |
-+---------+
++-------------+
+| table_name  |
++-------------+
+| mytable     |
++-------------+
 (1 row)
 ~~~
 

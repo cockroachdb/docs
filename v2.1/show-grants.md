@@ -7,11 +7,10 @@ toc: true
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
 
-
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_grants.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_grants.html %}
 </div>
 
 ## Required privileges
@@ -37,16 +36,18 @@ To list all grants for all users and roles on all databases and tables:
 ~~~ sql
 > SHOW GRANTS;
 ~~~
+
 ~~~
-+------------+--------------------+------------------+------------+------------+
-|  Database  |       Schema       |      Table       |    User    | Privileges |
-+------------+--------------------+------------------+------------+------------+
-| system     | crdb_internal      | NULL             | admin      | GRANT      |
-| system     | crdb_internal      | NULL             | admin      | SELECT     |
-| system     | crdb_internal      | NULL             | root       | GRANT      |
++---------------+--------------------+-----------------------------------+---------+----------------+
+| database_name |    schema_name     |            table_name             | grantee | privilege_type |
++---------------+--------------------+-----------------------------------+---------+----------------+
+| defaultdb     | crdb_internal      | NULL                              | admin   | ALL            |
+| defaultdb     | crdb_internal      | NULL                              | root    | ALL            |
+| defaultdb     | crdb_internal      | backward_dependencies             | public  | SELECT         |
+| defaultdb     | crdb_internal      | builtin_functions                 | public  | SELECT         |
+| defaultdb     | crdb_internal      | cluster_queries                   | public  | SELECT         |
 ...
-| test_roles | public             | employees        | system_ops | CREATE     |
-+------------+--------------------+------------------+------------+------------+
++---------------+--------------------+-----------------------------------+---------+----------------+
 (167 rows)
 ~~~
 
@@ -56,15 +57,16 @@ To list all grants for all users and roles on all databases and tables:
 ~~~ sql
 > SHOW GRANTS FOR maxroach;
 ~~~
+
 ~~~
-+------------+--------------------+-------+----------+------------+
-|  Database  |       Schema       | Table |   User   | Privileges |
-+------------+--------------------+-------+----------+------------+
-| test_roles | crdb_internal      | NULL  | maxroach | DELETE     |
-| test_roles | information_schema | NULL  | maxroach | DELETE     |
-| test_roles | pg_catalog         | NULL  | maxroach | DELETE     |
-| test_roles | public             | NULL  | maxroach | DELETE     |
-+------------+--------------------+-------+----------+------------+
++---------------+--------------------+-----------------------------------+----------+----------------+
+| database_name |    schema_name     |            table_name             | grantee  | privilege_type |
++---------------+--------------------+-----------------------------------+----------+----------------+
+| test_roles    | crdb_internal      | NULL                              | maxroach | DELETE         |
+| test_roles    | information_schema | NULL                              | maxroach | DELETE         |
+| test_roles    | pg_catalog         | NULL                              | maxroach | DELETE         |
+| test_roles    | public             | NULL                              | maxroach | DELETE         |
++---------------+--------------------+-----------------------------------+----------+----------------+
 ~~~
 
 ### Show grants on databases
@@ -73,42 +75,46 @@ To list all grants for all users and roles on all databases and tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE db2:
+> SHOW GRANTS ON DATABASE test;
 ~~~
-~~~ shell
-+----------+--------------------+------------+------------+
-| Database |       Schema       |    User    | Privileges |
-+----------+--------------------+------------+------------+
-| db2      | crdb_internal      | admin      | ALL        |
-| db2      | crdb_internal      | betsyroach | CREATE     |
-| db2      | crdb_internal      | root       | ALL        |
-| db2      | information_schema | admin      | ALL        |
-| db2      | information_schema | betsyroach | CREATE     |
-| db2      | information_schema | root       | ALL        |
-| db2      | pg_catalog         | admin      | ALL        |
-| db2      | pg_catalog         | betsyroach | CREATE     |
-| db2      | pg_catalog         | root       | ALL        |
-| db2      | public             | admin      | ALL        |
-| db2      | public             | betsyroach | CREATE     |
-| db2      | public             | root       | ALL        |
-+----------+--------------------+------------+------------+
+
+~~~
++---------------+--------------------+----------+----------------+
+| database_name |    schema_name     | grantee  | privilege_type |
++---------------+--------------------+----------+----------------+
+| test          | crdb_internal      | admin    | ALL            |
+| test          | crdb_internal      | maxroach | CREATE         |
+| test          | crdb_internal      | root     | ALL            |
+| test          | information_schema | admin    | ALL            |
+| test          | information_schema | maxroach | CREATE         |
+| test          | information_schema | root     | ALL            |
+| test          | pg_catalog         | admin    | ALL            |
+| test          | pg_catalog         | maxroach | CREATE         |
+| test          | pg_catalog         | root     | ALL            |
+| test          | public             | admin    | ALL            |
+| test          | public             | maxroach | CREATE         |
+| test          | public             | root     | ALL            |
++---------------+--------------------+----------+----------------+
+(12 rows)
 ~~~
 
 **Specific database, specific user or role:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE db2 FOR betsyroach;
+> SHOW GRANTS ON DATABASE test FOR maxroach;
 ~~~
-~~~ shell
-+----------+--------------------+------------+------------+
-| Database |       Schema       |    User    | Privileges |
-+----------+--------------------+------------+------------+
-| db2      | crdb_internal      | betsyroach | CREATE     |
-| db2      | information_schema | betsyroach | CREATE     |
-| db2      | pg_catalog         | betsyroach | CREATE     |
-| db2      | public             | betsyroach | CREATE     |
-+----------+--------------------+------------+------------+
+
+~~~
++---------------+--------------------+----------+----------------+
+| database_name |    schema_name     | grantee  | privilege_type |
++---------------+--------------------+----------+----------------+
+| test          | crdb_internal      | maxroach | CREATE         |
+| test          | information_schema | maxroach | CREATE         |
+| test          | pg_catalog         | maxroach | CREATE         |
+| test          | public             | maxroach | CREATE         |
++---------------+--------------------+----------+----------------+
+(4 rows)
 ~~~
 
 ### Show grants on tables
@@ -117,63 +123,68 @@ To list all grants for all users and roles on all databases and tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test_roles.employees;
+> SHOW GRANTS ON TABLE test.t1;
 ~~~
 
-~~~ shell
-+------------+--------+-----------+------------+------------+
-|  Database  | Schema |   Table   |    User    | Privileges |
-+------------+--------+-----------+------------+------------+
-| test_roles | public | employees | admin      | ALL        |
-| test_roles | public | employees | root       | ALL        |
-| test_roles | public | employees | system_ops | CREATE     |
-+------------+--------+-----------+------------+------------+
+~~~
++---------------+-------------+------------+----------+----------------+
+| database_name | schema_name | table_name | grantee  | privilege_type |
++---------------+-------------+------------+----------+----------------+
+| test          | public      | t1         | admin    | ALL            |
+| test          | public      | t1         | maxroach | CREATE         |
+| test          | public      | t1         | root     | ALL            |
++---------------+-------------+------------+----------+----------------+
+(3 rows)
 ~~~
 
 **Specific tables, specific role or user:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test_roles.employees FOR system_ops;
+> SHOW GRANTS ON TABLE test.t1 FOR maxroach;
 ~~~
-~~~ shell
-+------------+--------+-----------+------------+------------+
-|  Database  | Schema |   Table   |    User    | Privileges |
-+------------+--------+-----------+------------+------------+
-| test_roles | public | employees | system_ops | CREATE     |
-+------------+--------+-----------+------------+------------+
+
+~~~
++---------------+-------------+------------+----------+----------------+
+| database_name | schema_name | table_name | grantee  | privilege_type |
++---------------+-------------+------------+----------+----------------+
+| test          | public      | t1         | maxroach | CREATE         |
++---------------+-------------+------------+----------+----------------+
+(1 row)
 ~~~
 
 **All tables, all users and roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test_roles.*;
+> SHOW GRANTS ON TABLE test.*;
 ~~~
 
-~~~ shell
-+------------+--------+-----------+------------+------------+
-|  Database  | Schema |   Table   |    User    | Privileges |
-+------------+--------+-----------+------------+------------+
-| test_roles | public | employees | admin      | ALL        |
-| test_roles | public | employees | root       | ALL        |
-| test_roles | public | employees | system_ops | CREATE     |
-+------------+--------+-----------+------------+------------+
+~~~
++---------------+-------------+------------+----------+----------------+
+| database_name | schema_name | table_name | grantee  | privilege_type |
++---------------+-------------+------------+----------+----------------+
+| test          | public      | t1         | admin    | ALL            |
+| test          | public      | t1         | maxroach | CREATE         |
+| test          | public      | t1         | root     | ALL            |
++---------------+-------------+------------+----------+----------------+
+(3 rows)
 ~~~
 
 **All tables, specific users or roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test_roles.* FOR system_ops;
+> SHOW GRANTS ON TABLE test.* FOR maxroach;
 ~~~
 
-~~~ shell
-+------------+--------+-----------+------------+------------+
-|  Database  | Schema |   Table   |    User    | Privileges |
-+------------+--------+-----------+------------+------------+
-| test_roles | public | employees | system_ops | CREATE     |
-+------------+--------+-----------+------------+------------+
+~~~
++---------------+-------------+------------+----------+----------------+
+| database_name | schema_name | table_name | grantee  | privilege_type |
++---------------+-------------+------------+----------+----------------+
+| test          | public      | t1         | maxroach | CREATE         |
++---------------+-------------+------------+----------+----------------+
+(1 row)
 ~~~
 
 ### Show role memberships
@@ -184,19 +195,20 @@ To list all grants for all users and roles on all databases and tables:
 ~~~ sql
 SHOW GRANTS ON ROLE;
 ~~~
+
 ~~~
-+--------+---------+---------+
-|  role  | member  | isAdmin |
-+--------+---------+---------+
-| admin  | root    | true    |
-| design | ernie   | false   |
-| design | lola    | false   |
-| dev    | barkley | false   |
-| dev    | carl    | false   |
-| docs   | carl    | false   |
-| hr     | finance | false   |
-| hr     | lucky   | false   |
-+--------+---------+---------+
++------------+---------+----------+
+| role_name  | member  | is_admin |
++------------+---------+----------+
+| admin      | root    | true     |
+| design     | ernie   | false    |
+| design     | lola    | false    |
+| dev        | barkley | false    |
+| dev        | carl    | false    |
+| docs       | carl    | false    |
+| hr         | finance | false    |
+| hr         | lucky   | false    |
++------------+---------+----------+
 ~~~
 
 **Members of a specific role:**
@@ -205,13 +217,14 @@ SHOW GRANTS ON ROLE;
 ~~~ sql
 SHOW GRANTS ON ROLE design;
 ~~~
+
 ~~~
-+--------+--------+---------+
-|  role  | member | isAdmin |
-+--------+--------+---------+
-| design | ernie  | false   |
-| design | lola   | false   |
-+--------+--------+---------+
++------------+---------+----------+
+| role_name  | member  | is_admin |
++------------+---------+----------+
+| design     | ernie   | false    |
+| design     | lola    | false    |
++------------+---------+----------+
 ~~~
 
 **Roles of a specific user or role:**
@@ -220,13 +233,14 @@ SHOW GRANTS ON ROLE design;
 ~~~ sql
 SHOW GRANTS ON ROLE FOR carl;
 ~~~
+
 ~~~
-+------+--------+---------+
-| role | member | isAdmin |
-+------+--------+---------+
-| dev  | carl   | false   |
-| docs | carl   | false   |
-+------+--------+---------+
++------------+---------+----------+
+| role_name  | member  | is_admin |
++------------+---------+----------+
+| dev        | carl    | false    |
+| docs       | carl    | false    |
++------------+---------+----------+
 ~~~
 
 ## See also
