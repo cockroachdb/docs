@@ -22,6 +22,10 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
+{{site.data.alerts.callout_info}}
+To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+{{site.data.alerts.end}}
+
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
@@ -34,9 +38,10 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --port=26257 \
     --http-port=8080 \
     --join=localhost:26257,localhost:26258,localhost:26259
+    --background
     ~~~~
 
-2. In a new terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -48,9 +53,10 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --port=26258 \
     --http-port=8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
+    --background
     ~~~
 
-3. In a new terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -62,9 +68,10 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --port=26259 \
     --http-port=8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
+    --background
     ~~~
 
-4. In a new terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. Use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -83,9 +90,7 @@ To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer
 
 Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
 
-{{site.data.alerts.callout_info}}To simplify the process of adding more nodes, you'll start them in the background instead of in separate terminals.{{site.data.alerts.end}}
-
-1. In the same terminal, start node 4:
+1. In a new terminal, start node 4:
 
     {% include copy-clipboard.html %}
     ~~~ shell
