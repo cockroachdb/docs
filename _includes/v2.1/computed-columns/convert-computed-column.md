@@ -1,4 +1,4 @@
-You can convert a stored, computed column to a regular column by using `ALTER TABLE`.
+You can convert a stored, computed column into a regular column by using `ALTER TABLE`.
 
 In this example, create a simple table with a computed column:
 

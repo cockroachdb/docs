@@ -64,7 +64,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
 
-### Remove a computed column from a table
+### Convert a computed column into a regular column
 
 <span class="version-tag">New in v2.1:</span> {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
