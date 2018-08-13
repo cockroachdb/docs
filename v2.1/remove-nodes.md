@@ -24,8 +24,7 @@ Basic terms:
 
 ### Considerations
 
-- Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
-- If a node has died, for example, due to a hardware failure, do not use the `--wait=all` flag to decommission the node. Doing so will cause the decommission process to hang indefinitely. Instead, use `--wait=live`. See [Remove a Single Node (Dead)](#remove-a-single-node-dead) and [Remove Multiple Nodes](#remove-multiple-nodes) for more details.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
 
 ### Examples
 
@@ -181,19 +180,18 @@ Open the Admin UI and select the **Node List** view. Note the ID of the node lis
 
 SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to officially decommission:
 
-{{site.data.alerts.callout_success}}Be sure to include <code>--wait=live</code>. If not specified, this flag defaults to <code>--wait=all</code>, which will cause the <code>node decommission</code> command to hang indefinitely.{{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --wait=live --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 --certs-dir=certs --host=<address of live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --wait=live --insecure --host=<address of live node>
+$ cockroach node decommission 4 --insecure --host=<address of live node>
 ~~~
 </div>
 
