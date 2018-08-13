@@ -77,7 +77,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE logoff_copy;
+> SHOW CREATE logoff_copy;
 ~~~
 ~~~
 +-------------+-----------------------------------------------------------------+
@@ -109,7 +109,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE logoff_copy;
+> SHOW CREATE logoff_copy;
 ~~~
 ~~~
 +-------------+-----------------------------------------------------------------+

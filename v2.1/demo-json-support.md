@@ -91,7 +91,7 @@ Still in the SQL shell, create a table called `programming`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE programming;
+> SHOW CREATE programming;
 ~~~
 ~~~
 +--------------+-------------------------------------------------+

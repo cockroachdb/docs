@@ -232,7 +232,6 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     | postgres  |
     | system    |
     +-----------+
-    (3 rows)
     ~~~
 
     You just queried the node listening on `26257`, but every other node is a SQL gateway to the cluster as well. We'll learn more about CockroachDB SQL and the built-in SQL client in a later module.

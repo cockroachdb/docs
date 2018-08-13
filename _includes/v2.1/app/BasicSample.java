@@ -1,30 +1,50 @@
 import java.sql.*;
+import java.util.Properties;
 
 /*
-You can compile and run this example with a command like:
-  javac BasicSample.java && java -cp .:~/path/to/postgresql-9.4.1208.jar BasicSample
-You can download the postgres JDBC driver jar from https://jdbc.postgresql.org.
+  Download the Postgres JDBC driver jar from https://jdbc.postgresql.org.
+
+  Then, compile and run this example like so:
+
+  $ export CLASSPATH=.:/path/to/postgresql.jar
+  $ javac BasicSample.java && java BasicSample
 */
+
 public class BasicSample {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        // Load the postgres JDBC driver.
+    public static void main(String[] args)
+        throws ClassNotFoundException, SQLException {
+
+        // Load the Postgres JDBC driver.
         Class.forName("org.postgresql.Driver");
 
         // Connect to the "bank" database.
-        Connection db = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:26257/bank?sslmode=disable", "maxroach", "");
+        Properties props = new Properties();
+        props.setProperty("user", "maxroach");
+        props.setProperty("sslmode", "require");
+        props.setProperty("sslrootcert", "certs/ca.crt");
+        props.setProperty("sslkey", "certs/client.maxroach.pk8");
+        props.setProperty("sslcert", "certs/client.maxroach.crt");
+
+        Connection db = DriverManager
+            .getConnection("jdbc:postgresql://127.0.0.1:26257/bank", props);
 
         try {
             // Create the "accounts" table.
-            db.createStatement().execute("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)");
+            db.createStatement()
+                .execute("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)");
 
             // Insert two rows into the "accounts" table.
-            db.createStatement().execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
+            db.createStatement()
+                .execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)");
 
             // Print out the balances.
             System.out.println("Initial balances:");
-            ResultSet res = db.createStatement().executeQuery("SELECT id, balance FROM accounts");
+            ResultSet res = db.createStatement()
+                .executeQuery("SELECT id, balance FROM accounts");
             while (res.next()) {
-                System.out.printf("\taccount %s: %s\n", res.getInt("id"), res.getInt("balance"));
+                System.out.printf("\taccount %s: %s\n",
+                                  res.getInt("id"),
+                                  res.getInt("balance"));
             }
         } finally {
             // Close the database connection.

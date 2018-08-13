@@ -28,7 +28,7 @@ You can `EXPLAIN` on the following statements:
 - [`SELECT`](select-clause.html) and any [selection query](selection-queries.html)
 - [`SET`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW BACKUP`](show-backup.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE TABLE`](show-create-table.html), [`SHOW CREATE VIEW`](show-create-view.html), [`SHOW CREATE SEQUENCE`](show-create-sequence.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW JOBS`](show-jobs.html), [`SHOW QUERIES`](show-queries.html), [`SHOW SESSIONS`](show-sessions.html), [`SHOW TABLES`](show-tables.html), [`SHOW TRACE`](show-trace.html), [`SHOW USERS`](show-users.html), [`SHOW HISTOGRAM`](sql-grammar.html#show_histogram_stmt)
+- [`SHOW BACKUP`](show-backup.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE `](show-create.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW JOBS`](show-jobs.html), [`SHOW QUERIES`](show-queries.html), [`SHOW SESSIONS`](show-sessions.html), [`SHOW TABLES`](show-tables.html), [`SHOW TRACE FOR SESSION`](show-trace-for-session.html), [`SHOW USERS`](show-users.html), [`SHOW HISTOGRAM`](sql-grammar.html#show_histogram_stmt)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)
 
@@ -275,27 +275,57 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 ~~~
 
 ~~~
-+---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
-|        Tree         | Level |  Type  |     Field      |   Description    |        Columns        |           Ordering           |
-+---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
-| sort                |     0 | sort   |                |                  | (k, v, v)             | k!=NULL; key(k); -v          |
-|  │                  |     0 |        | order          | -v               |                       |                              |
-|  └── render         |     1 | render |                |                  | (k, v, v)             | k!=NULL; key(k)              |
-|       │             |     1 |        | render 0       | a.k              |                       |                              |
-|       │             |     1 |        | render 1       | a.v              |                       |                              |
-|       │             |     1 |        | render 2       | radu.public.kv.v |                       |                              |
-|       └── join      |     2 | join   |                |                  | (k, v, k[omitted], v) | k=k; k!=NULL; key(k)         |
-|            │        |     2 |        | type           | inner            |                       |                              |
-|            │        |     2 |        | equality       | (k) = (k)        |                       |                              |
-|            │        |     2 |        | mergeJoinOrder | +"(k=k)"         |                       |                              |
-|            ├── scan |     3 | scan   |                |                  | (k, v)                | k!=NULL; v!=NULL; key(k); +k |
-|            │        |     3 |        | table          | kv@primary       |                       |                              |
-|            │        |     3 |        | spans          | ALL              |                       |                              |
-|            │        |     3 |        | filter         | v > 3            |                       |                              |
-|            └── scan |     3 | scan   |                |                  | (k, v)                | k!=NULL; key(k); +k          |
-|                     |     3 |        | table          | kv@primary       |                       |                              |
-|                     |     3 |        | spans          | ALL              |                       |                              |
-+---------------------+-------+--------+----------------+------------------+-----------------------+------------------------------+
++---------------------+----------------+------------------+-----------------------+------------------------------+
+|        Tree         |     Field      |   Description    |        Columns        |           Ordering           |
++---------------------+----------------+------------------+-----------------------+------------------------------+
+| sort                |                |                  | (k, v, v)             | k!=NULL; key(k); -v          |
+|  │                  | order          | -v               |                       |                              |
+|  └── render         |                |                  | (k, v, v)             | k!=NULL; key(k)              |
+|       │             | render 0       | a.k              |                       |                              |
+|       │             | render 1       | a.v              |                       |                              |
+|       │             | render 2       | radu.public.kv.v |                       |                              |
+|       └── join      |                |                  | (k, v, k[omitted], v) | k=k; k!=NULL; key(k)         |
+|            │        | type           | inner            |                       |                              |
+|            │        | equality       | (k) = (k)        |                       |                              |
+|            │        | mergeJoinOrder | +"(k=k)"         |                       |                              |
+|            ├── scan |                |                  | (k, v)                | k!=NULL; v!=NULL; key(k); +k |
+|            │        | table          | kv@primary       |                       |                              |
+|            │        | spans          | ALL              |                       |                              |
+|            │        | filter         | v > 3            |                       |                              |
+|            └── scan |                |                  | (k, v)                | k!=NULL; key(k); +k          |
+|                     | table          | kv@primary       |                       |                              |
+|                     | spans          | ALL              |                       |                              |
++---------------------+----------------+------------------+-----------------------+------------------------------+
+~~~
+
+By default, the `Level` and `Type` columns are hidden. To view, use `SELECT`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT "Level", "Type" FROM [EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC];
+~~~
+~~~
++-------+--------+
+| Level |  Type  |
++-------+--------+
+|     0 | sort   |
+|     0 |        |
+|     1 | render |
+|     1 |        |
+|     1 |        |
+|     1 |        |
+|     2 | join   |
+|     2 |        |
+|     2 |        |
+|     2 |        |
+|     3 | scan   |
+|     3 |        |
+|     3 |        |
+|     3 |        |
+|     3 | scan   |
+|     3 |        |
+|     3 |        |
++-------+--------+
 ~~~
 
 ### `TYPES` option

@@ -22,16 +22,21 @@ Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-sequence.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
 
 ## Tables in information_schema
 
-The virtual schema `information_schema` contains virtual tables, also called "system views", representing the database's objects, each of which is detailed below.
+The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
 
 These differ from regular [SQL views](views.html) in that they are
 not showing data created from the content of other tables. Instead,
 CockroachDB generates the data for virtual tables when they are accessed.
+
+{{site.data.alerts.callout_info}}
+A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution](sql-name-resolution.html) for more information.
+{{site.data.alerts.end}}
 
 ### administrable_role_authorizations
 
@@ -170,6 +175,25 @@ Column | Description
 `table_schema` | Name of the schema.
 `default_character_set_name` |  Always `NULL` (unsupported by CockroachDB).
 `sql_path` |  Always `NULL` (unsupported by CockroachDB).
+
+### sequences
+
+`sequences` identifies [sequences](create-sequence.html) defined in a database.
+
+Column | Description
+-------|-----------
+`sequence_catalog` | Name of the database that contains the sequence.
+`sequence_schema` | Name of the schema that contains the sequence.
+`sequence_name` | Name of the sequence.
+`data_type` | The data type of the sequence.
+`numeric_precision` | The (declared or implicit) precision of the sequence `data_type`.
+`numeric_precision_radix` | The base of the values in which the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
+`numeric_scale` | The (declared or implicit) scale of the sequence `data_type`. The scale indicates the number of significant digits to the right of the decimal point. It can be expressed in decimal (base 10) or binary (base 2) terms, as specified in the column `numeric_precision_radix`.
+`start_value` | The first value of the sequence.
+`minimum_value` | The minimum value of the sequence.
+`maximum_value` | The maximum value of the sequence.
+`increment` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
+`cycle_option` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 
 ### statistics
 

@@ -99,12 +99,13 @@ If you do not list column names, the statement will use the columns of the table
 ~~~
 
 ~~~
-+---------+---------+-------+----------------+
-|  Field  |  Type   | Null  |    Default     |
-+---------+---------+-------+----------------+
-| id      | INT     | false | unique_rowid() |
-| balance | DECIMAL | true  | NULL           |
-+---------+---------+-------+----------------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| id          | INT       |    true     | unique_rowid() |                       | {}      |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -163,12 +164,13 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ~~~
 
 ~~~
-+--------+---------+-------+---------+
-| Field  |  Type   | Null  | Default |
-+--------+---------+-------+---------+
-| number | INT     | false | NULL    |
-| amount | DECIMAL | true  | NULL    |
-+--------+---------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| number      | INT       |    true     | NULL           |                       | {}      |
+| amount      | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}

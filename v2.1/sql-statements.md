@@ -7,7 +7,7 @@ toc: true
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}
-In the [built-in SQL shell](use-the-built-in-sql-client.html#sql-shell-help), use `\h [statement]` to get inline help about a specific statement.
+In the [built-in SQL shell](use-the-built-in-sql-client.html#help), use `\h [statement]` to get inline help about a specific statement.
 {{site.data.alerts.end}}
 
 
@@ -22,7 +22,7 @@ Statement | Usage
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
-[`SHOW TRACE`](show-trace.html) | Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
+[`SHOW TRACE FOR SESSION`](show-trace-for-session.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
@@ -63,9 +63,7 @@ Statement | Usage
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE SEQUENCE`](show-create-sequence.html) | View the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
-[`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a copy of the specified table.
-[`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
+[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.

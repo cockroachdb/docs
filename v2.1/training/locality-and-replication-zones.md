@@ -241,7 +241,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
     ~~~
     +-----------+---------+----------+----------+--------------+
-    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    | start_key | end_key | range_id | replicas | lease_holder |
     +-----------+---------+----------+----------+--------------+
     | NULL      | NULL    |       32 | {1,6,7}  |            6 |
     +-----------+---------+----------+----------+--------------+
@@ -374,19 +374,19 @@ Now verify that the data for the table in the `intro` database is located on US-
 
     ~~~
     +-----------+---------+----------+----------+--------------+
-    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    | start_key | end_key | range_id | replicas | lease_holder |
     +-----------+---------+----------+----------+--------------+
     | NULL      | NULL    |       32 | {1,6,7}  |            7 |
     +-----------+---------+----------+----------+--------------+
     (1 row)
     +-----------+---------+----------+------------+--------------+
-    | Start Key | End Key | Range ID |  Replicas  | Lease Holder |
+    | start_key | end_key | range_id | replicas   | lease_holder |
     +-----------+---------+----------+------------+--------------+
     | NULL      | NULL    |       42 | {10,11,12} |           11 |
     +-----------+---------+----------+------------+--------------+
     (1 row)
     +-----------+---------+----------+------------+--------------+
-    | Start Key | End Key | Range ID |  Replicas  | Lease Holder |
+    | start_key | end_key | range_id | replicas   | lease_holder |
     +-----------+---------+----------+------------+--------------+
     | NULL      | NULL    |       43 | {10,11,12} |           12 |
     +-----------+---------+----------+------------+--------------+

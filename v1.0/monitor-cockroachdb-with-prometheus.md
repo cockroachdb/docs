@@ -44,7 +44,7 @@ Make sure you have already started a CockroachDB cluster, either [locally](start
 
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
     - `scrape_interval: 10s` defines the scrape interval.
-    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint f    scraping time series metrics.
+    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint for scraping time series metrics.
     - `scheme: 'http'` specifies that the cluster being scraped is insecure.
     - `targets: ['localhost:8080']` specifies the hostname and `http-port` of the Cockroach node to collect time series metrics on.
 

@@ -11,7 +11,9 @@ The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a dat
 
 ## Synopsis
 
+<div>
 {% include {{ page.version.version }}/sql/diagrams/rename_database.html %}
+</div>
 
 ## Required privileges
 
@@ -21,7 +23,7 @@ Only the `root` user can rename databases.
 
 Parameter | Description
 ----------|------------
-`name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name [must be unique](#rename-fails-new-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name [must be unique](#rename-fails-new-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). You cannot rename a database if it is set as the [current database](sql-name-resolution.html#current-database) or if [`sql_safe_updates = true`](set-vars.html).
 
 ## Examples
 
@@ -33,13 +35,16 @@ Parameter | Description
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| db1      |
-| db2      |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| db1           |
+| db2           |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -47,41 +52,25 @@ Parameter | Description
 > ALTER DATABASE db1 RENAME TO db3;
 ~~~
 
-~~~
-RENAME DATABASE
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
 
 ~~~
-+----------+
-| Database |
-+----------+
-| db2      |
-| db3      |
-| system   |
-+----------+
++---------------+
+| database_name |
++---------------+
+| db2           |
+| db3           |
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(5 rows)
 ~~~
 
 ### Rename fails (new name already in use)
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+----------+
-| Database |
-+----------+
-| db2      |
-| db3      |
-| system   |
-+----------+
-~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql

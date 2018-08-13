@@ -1,16 +1,19 @@
 require 'active_record'
-require 'pg'
 require 'activerecord-cockroachdb-adapter'
+require 'pg'
 
 # Connect to CockroachDB through ActiveRecord.
 # In Rails, this configuration would go in config/database.yml as usual.
 ActiveRecord::Base.establish_connection(
-  adapter:  'cockroachdb',
-  username: 'maxroach',
-  password: '',
-  database: 'bank',
-  host:     'localhost',
-  port:     26257,
+  adapter:     'cockroachdb',
+  username:    'maxroach',
+  database:    'bank',
+  host:        'localhost',
+  port:        26257,
+  sslmode:     'require',
+  sslrootcert: 'certs/ca.crt',
+  sslkey:      'certs/client.maxroach.key',
+  sslcert:     'certs/client.maxroach.crt'
 )
 
 
@@ -23,7 +26,7 @@ end
 
 # Define a migration for the accounts table.
 # In Rails, this would go in db/migrate/ as usual.
-class Schema < ActiveRecord::Migration
+class Schema < ActiveRecord::Migration[5.0]
   def change
     create_table :accounts, force: true do |t|
       t.integer :balance

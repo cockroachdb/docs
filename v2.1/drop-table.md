@@ -37,7 +37,7 @@ In this example, other objects do not depend on the table being dropped.
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | branches           |
@@ -62,7 +62,7 @@ DROP TABLE
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | user_accounts_view |
@@ -83,7 +83,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | user_accounts_view |
@@ -115,10 +115,10 @@ DROP TABLE
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-+-------+
++------------+
+| table_name |
++------------+
++------------+
 (0 rows)
 ~~~
 

@@ -24,6 +24,7 @@ Format | Description
 SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>`Y-M D`: Using a single value defines days only; using two values defines years and months. Values must be integers.<br><br>`H:M:S`: Using a single value defines seconds only; using two values defines hours and minutes. Values can be integers or floats.<br><br>Note that each side is optional.
 ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
 Traditional PostgreSQL | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`
+Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
 Golang | `INTERVAL '1h2m3s4ms5us6ns'`<br><br>Note that `ms` is milliseconds, `us` is microseconds, and `ns` is nanoseconds. Also, all fields support both integers and floats.
 
 CockroachDB also supports using uninterpreted
@@ -43,22 +44,19 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-~~~
-CREATE TABLE
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
 
 ~~~
-+-------+----------+-------+---------+
-| Field |   Type   | Null  | Default |
-+-------+----------+-------+---------+
-| a     | INT      | false | NULL    |
-| b     | INTERVAL | true  | NULL    |
-+-------+----------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | INT       |    false    | NULL           |                       | {"primary"} |
+| b           | INTERVAL  |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}

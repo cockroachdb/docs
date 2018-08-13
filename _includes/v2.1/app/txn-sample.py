@@ -3,8 +3,16 @@ import psycopg2
 import psycopg2.errorcodes
 
 # Connect to the cluster.
-conn = psycopg2.connect(database='bank', user='maxroach', host='localhost', port=26257)
-
+conn = psycopg2.connect(
+    database='bank',
+    user='maxroach',
+    sslmode='require',
+    sslrootcert='certs/ca.crt',
+    sslkey='certs/client.maxroach.key',
+    sslcert='certs/client.maxroach.crt',
+    port=26257,
+    host='localhost'
+)
 
 def onestmt(conn, sql):
     with conn.cursor() as cur:

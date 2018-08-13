@@ -78,12 +78,14 @@ $ cockroach sql --insecure --port=26257
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| system             |
-+--------------------+
-(1 row)
++---------------+
+| database_name |
++---------------+
+| defaultdb     |
+| postgres      |
+| system        |
++---------------+
+(3 rows)
 ~~~
 
 Exit the SQL shell:

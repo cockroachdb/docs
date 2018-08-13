@@ -13,7 +13,13 @@ class Account(Base):
 
 # Create an engine to communicate with the database. The "cockroachdb://" prefix
 # for the engine URL indicates that we are connecting to CockroachDB.
-engine = create_engine("cockroachdb://maxroach@localhost:26257/bank?sslmode=disable")
+engine = create_engine('cockroachdb://maxroach@localhost:26257/bank',
+                       connect_args = {
+                           'sslmode' : 'require',
+                           'sslrootcert': 'certs/ca.crt',
+                           'sslkey':'certs/client.maxroach.key',
+                           'sslcert':'certs/client.maxroach.crt'
+                       })
 Session = sessionmaker(bind=engine)
 
 # Automatically create the "accounts" table based on the Account class.

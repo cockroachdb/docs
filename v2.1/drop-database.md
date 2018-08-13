@@ -20,7 +20,7 @@ The user must have the `DROP` [privilege](privileges.html) on the database and o
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
-`name`  | The name of the database you want to drop.
+`name`  | The name of the database you want to drop. You cannot drop a database if it is set as the [current database](sql-name-resolution.html#current-database) or if [`sql_safe_updates = true`](set-vars.html).
 `CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT` | Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
 
@@ -36,12 +36,12 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 
@@ -71,12 +71,12 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 

@@ -22,9 +22,10 @@ Command | Usage
 [`cockroach zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
 [`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
-[`cockroach debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
+[`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory, single-node CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](view-version-details.html) | Output CockroachDB version details.
+[`cockroach debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 
 ## Environment variables
 

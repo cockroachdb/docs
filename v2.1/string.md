@@ -68,13 +68,14 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 ~~~
 
 ~~~
-+-------+-----------+-------+---------+
-| Field |  Type     | Null  | Default |
-+-------+-----------+-------+---------+
-| a     | STRING    | false | NULL    |
-| b     | STRING(4) | true  | NULL    |
-| c     | STRING    | true  | NULL    |
-+-------+-----------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| a           | STRING    |    false    | NULL           |                       | {"primary"} |
+| b           | STRING(4) |    true     | NULL           |                       | {}          |
+| c           | STRING    |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}

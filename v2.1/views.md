@@ -257,16 +257,16 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 (5 rows)
 ~~~
 
-`SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE VIEW`](show-create-view.html) statement:
+`SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`](show-create.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE VIEW bank.user_accounts;
+> SHOW CREATE bank.user_accounts;
 ~~~
 
 ~~~
 +--------------------+---------------------------------------------------------------------------+
-|        View        |                                CreateView                                 |
+| table_name         | create_statement                                                          |
 +--------------------+---------------------------------------------------------------------------+
 | bank.user_accounts | CREATE VIEW "bank.user_accounts" AS SELECT type, email FROM bank.accounts |
 +--------------------+---------------------------------------------------------------------------+
@@ -370,7 +370,7 @@ DROP VIEW
 - [Selection Queries](selection-queries.html)
 - [Simple `SELECT` Clauses](select-clause.html)
 - [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`GRANT`](grant.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)

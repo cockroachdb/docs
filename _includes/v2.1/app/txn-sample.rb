@@ -33,7 +33,16 @@ def transfer_funds(txn, from, to, amount)
 end
 
 # Connect to the "bank" database.
-conn = PG.connect(user: 'maxroach', dbname: 'bank', host: 'localhost', port: 26257)
+conn = PG.connect(
+  user: 'maxroach',
+  dbname: 'bank',
+  host: 'localhost',
+  port: 26257,
+  sslmode: 'require',
+  sslrootcert: 'certs/ca.crt',
+  sslkey:'certs/client.maxroach.key',
+  sslcert:'certs/client.maxroach.crt'
+)
 
 run_transaction(conn) do |txn|
   transfer_funds(txn, 1, 2, 100)

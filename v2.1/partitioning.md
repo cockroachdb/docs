@@ -240,7 +240,7 @@ You should see the following output:
 
 ~~~
 +-----------------+-----------------+----------+----------+--------------+
-|    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
+| start_key       | end_key         | range_id | replicas | lease_holder |
 +-----------------+-----------------+----------+----------+--------------+
 | NULL            | /"AU"           |      251 | {1,2,3}  |            1 |
 | /"AU"           | /"AU"/PrefixEnd |      257 | {1,2,3}  |            1 |
@@ -346,7 +346,7 @@ You should see the following output:
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /17393  |      244 | {1,2,3}  |            1 |
 | /17393    | NULL    |      242 | {1,2,3}  |            1 |
@@ -488,7 +488,7 @@ You should see the following output:
 
 ~~~
 +-----------------+-----------------+----------+----------+--------------+
-|    Start Key    |     End Key     | Range ID | Replicas | Lease Holder |
+| start_key       | end_key         | range_id | replicas | lease_holder |
 +-----------------+-----------------+----------+----------+--------------+
 | NULL            | /"AU"           |      260 | {1,2,3}  |            1 |
 | /"AU"           | /"AU"/17393     |      268 | {1,2,3}  |            1 |

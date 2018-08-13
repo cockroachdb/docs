@@ -6,8 +6,7 @@ toc: true
 
 CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).
 
-{{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
 ## Special syntax forms
 
@@ -22,18 +21,18 @@ functions:
 The following table lists the operators that look like built-in
 functions but have special evaluation rules:
 
- Operator | Description 
+ Operator | Description
 ----------|-------------
- `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions) 
- `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array) 
- `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors) 
- `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions) 
- `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions) 
- `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries) 
- `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions) 
- `IFNULL(...)` | Alias for `COALESCE` restricted to two operands 
- `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions) 
- `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor) 
+ `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression](scalar-expressions.html#explicitly-typed-expressions)
+ `ARRAY(...)` | [Conversion of Subquery Results to An Array](scalar-expressions.html#conversion-of-subquery-results-to-an-array)
+ `ARRAY[...]` | [Conversion of Scalar Expressions to An Array](scalar-expressions.html#array-constructors)
+ `CAST(...)` | [Type Cast](scalar-expressions.html#explicit-type-coercions)
+ `COALESCE(...)` | [First non-NULL expression with Short Circuit](scalar-expressions.html#coalesce-and-ifnull-expressions)
+ `EXISTS(...)` | [Existence Test on the Result of Subqueries](scalar-expressions.html#existence-test-on-the-result-of-subqueries)
+ `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions)
+ `IFNULL(...)` | Alias for `COALESCE` restricted to two operands
+ `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions)
+ `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor)
 
 ## Built-in functions
 
@@ -42,6 +41,10 @@ functions but have special evaluation rules:
 ## Aggregate functions
 
 {% include {{ page.version.version }}/sql/aggregates.md %}
+
+## Window functions
+
+{% include {{ page.version.version }}/sql/window_functions.md %}
 
 ## Operators
 
@@ -75,7 +78,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    | `[NOT] LIKE ANY`, `[NOT] LIKE SOME`, `[NOT] LIKE ALL` | [Multi-valued] `LIKE` comparison | binary |
 |    | `[NOT] ILIKE ANY`, `[NOT] ILIKE SOME`, `[NOT] ILIKE ALL` | [Multi-valued] `ILIKE` comparison | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
-|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary | 
+|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
 |  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
 |  | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
 |  | `[NOT] ILIKE` | Matches [or not] LIKE expression, case insensitive | binary |
