@@ -100,7 +100,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     ~~~ shell
     $ ./workload.LATEST fixtures load tpcc \
     --warehouses=10000 \
-    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
+    "postgres://root@<node1 address>:26257?sslmode=disable"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take about an hour and loads 1,000 "warehouses" of data.
@@ -125,7 +125,7 @@ $ ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[ ...space separated list]"
+"postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable"
 ~~~
 
 ### Step 5. Interpret the results
@@ -219,7 +219,7 @@ This configuration is intended for performance benchmarking only. For production
 
 For this benchmark, you will use partitioning, which is an enterprise feature. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-To add an enterprise license to your cluster once it is started, [use the built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+To add an enterprise license to your cluster once it is started, [use the built-in SQL client](use-the-built-in-sql-client.html) as follows:
 
 1. SSH to the 31st instance (the one not running a CockroachDB node) and launch the built-in SQL client:
 
@@ -261,7 +261,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     ~~~ shell
     $  ./workload.LATEST fixtures load tpcc \
     --warehouses=100000 \
-    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
+    "postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable [...space separated list]"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take at about an hour and loads 10,000 "warehouses" of data.
@@ -308,7 +308,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     --scatter \
     --warehouses=10000 \
     --duration=1s \
-    "postgres://<username>:<password>@<host>:<port>/<database>?<parameters>"
+    "postgres://root@<node31 address>:26257?sslmode=disable"
     ~~~
 
     This command runs the TPC-C workload against the cluster for 1 second, long enough to add the partitions.
@@ -332,7 +332,7 @@ $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgres://<username>:<password>@<host>:<port>/<database>?<parameters>[ ...space separated list]"
+"postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable [...space separated list]"
 ~~~
 
 ### Step 8. Interpret the results
