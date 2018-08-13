@@ -65,6 +65,10 @@ Parameter | Description
 
 For more information, see [`ADD COLUMN`](add-column.html).
 
+### Convert a computed column to a regular column
+
+<span class="version-tag">New in v2.1:</span> {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+
 ## See also
 
 - [Scalar Expressions](scalar-expressions.html)
