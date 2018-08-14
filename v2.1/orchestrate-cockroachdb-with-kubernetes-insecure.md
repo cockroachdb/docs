@@ -1,5 +1,5 @@
 ---
-title: Orchestrate CockroachDB with Kubernetes (Insecure)
+title: Orchestrate a Single-Region CockroachDB with Kubernetes (Insecure)
 summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 ---
@@ -9,14 +9,11 @@ toc: true
   <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
-This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+This page shows you how to use [Kubernetes](http://kubernetes.io/) to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single geographic region, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+
+To deploy across multiple geographic regions instead, see [Orchestrate a Multi-Region CockroachDB Cluster with Kubernetes](orchestrate-cockroachdb-with-kubernetes-multi-region.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
-{{site.data.alerts.end}}
-
 
 ## Before you begin
 
@@ -30,7 +27,12 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 [pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
+
+### Limitations
+
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
+
+## Step 1. Start Kubernetes
 
 {% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 

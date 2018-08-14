@@ -232,10 +232,16 @@
                 ]
               },
               {
-                "title": "Kubernetes Deployment",
+                "title": "Kubernetes Single-Region Deployment",
                 "urls": [
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Kubernetes Multi-Region Deployment",
+                "urls": [
+                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-region.html"
                 ]
               },
               {
