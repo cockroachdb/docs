@@ -164,19 +164,22 @@ Once specified for a given store, the `--enterprise-encryption` flag must always
 
 ### Checking encryption status
 
-Encryption status can be see on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local`.
+Encryption status can be see on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID).
 
-The report shows the currently-active store key as well as the currently-active data key. The `encryption_type` field
-reflects the algorithm currently in use.
+The report shows encryption status for all stores on the select node, including:
+
+* active store key information
+* active data key information
+* fraction of files/bytes encrypted using the active data key
+
+CockroachDB relies on RocksDB to write new files using the latest encryption key. This may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts.
+
+A more detailed list of encryption keys in use for each file is available using the `cockroach debug encryption-status` command.
 
 Information about keys is written to the logs, including:
 
 * active/old key information at startup
 * new key information after data key rotation
-
-The information includes the key ID, algorithm, source (filename) for store keys, and parent key ID for data keys.
-
-The actual key is never displayed or logged.
 
 ### Changing encryption algorithm or keys
 
