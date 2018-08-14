@@ -89,6 +89,10 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
 Restart the nodes using the same commands you used to start them initially, but this time use the `--certs-dir` flag to point to the node certificate, and leave out the `--insecure` flag.
 
+{{site.data.alerts.callout_info}}
+To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+{{site.data.alerts.end}}
+
 1. Start node 1:
 
     {% include copy-clipboard.html %}
@@ -99,10 +103,11 @@ Restart the nodes using the same commands you used to start them initially, but 
     --host=localhost \
     --port=26257 \
     --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -112,10 +117,11 @@ Restart the nodes using the same commands you used to start them initially, but 
     --host=localhost \
     --port=26258 \
     --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In another terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -125,7 +131,8 @@ Restart the nodes using the same commands you used to start them initially, but 
     --host=localhost \
     --port=26259 \
     --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 {{site.data.alerts.callout_info}}There's no need to run <code>cockroach init</code> again since the cluster was initialized earlier. However, the cluster will restart only after a majority of nodes are back online (2/3).{{site.data.alerts.end}}

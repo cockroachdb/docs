@@ -23,6 +23,10 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Start and initialize a cluster like you did in previous modules.
 
+{{site.data.alerts.callout_info}}
+To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+{{site.data.alerts.end}}
+
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
@@ -33,10 +37,11 @@ Start and initialize a cluster like you did in previous modules.
     --host=localhost \
     --port=26257 \
     --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In a new terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -46,10 +51,11 @@ Start and initialize a cluster like you did in previous modules.
     --host=localhost \
     --port=26258 \
     --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In a new terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -59,10 +65,11 @@ Start and initialize a cluster like you did in previous modules.
     --host=localhost \
     --port=26259 \
     --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-4. In a new terminal, perform a one-time initialization of the cluster:
+4. Perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -73,7 +80,7 @@ Start and initialize a cluster like you did in previous modules.
 
 The [`IMPORT`](../import.html) feature is one of the most efficient ways to get data into a cluster, so let's start with it.
 
-1. Create a database into which you'll import a new table:
+1. In a new terminal, create a database into which you'll import a new table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -95,12 +102,11 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
 
     ~~~
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
-    |       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   |
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
-    | 320453737551659009 | succeeded |                  1 | 187500 |        375000 |              0 | 36389148 |
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
-    (1 row)
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+    | 374228626965757953 | succeeded |                  1 |    0 |             0 |              0 |     0 |
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
     ~~~
 
 3. Check the schema of the imported `orders` table:
@@ -110,7 +116,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     $ ./cockroach sql \
     --insecure \
     --database="import_test" \
-    --execute="SHOW CREATE orders;"
+    --execute="SHOW CREATE TABLE orders;"
     ~~~
 
     ~~~
@@ -196,14 +202,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.0/training/resources/startrek.sql
+    $ curl -O {{site.url}}/docs/v2.1/training/resources/startrek.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.0/training/resources/startrek.sql
+    $ wget {{site.url}}/docs/v2.1/training/resources/startrek.sql
     ~~~
     </div>
 
@@ -226,7 +232,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     $ ./cockroach sql \
     --insecure \
     --database="startrek" \
-    --execute="SHOW CREATE episodes;"
+    --execute="SHOW CREATE TABLE episodes;"
     ~~~
 
     ~~~
@@ -306,14 +312,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.0/training/resources/pg_dump.sql
+    $ curl -O {{site.url}}/docs/v2.1/training/resources/pg_dump.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.0/training/resources/pg_dump.sql
+    $ wget {{site.url}}/docs/v2.1/training/resources/pg_dump.sql
     ~~~
     </div>
 
@@ -335,14 +341,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.0/training/resources/pg_dump_cleaned.sql
+    $ curl -O {{site.url}}/docs/v2.1/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.0/training/resources/pg_dump_cleaned.sql
+    $ wget {{site.url}}/docs/v2.1/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
