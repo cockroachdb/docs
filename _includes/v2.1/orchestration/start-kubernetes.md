@@ -1,5 +1,3 @@
-## Step 1. Start Kubernetes
-
 Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 <div class="filters filters-big clearfix">
