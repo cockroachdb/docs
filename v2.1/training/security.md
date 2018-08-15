@@ -163,6 +163,10 @@ To simplify the process of adding more nodes, you'll start them in the [backgrou
 
 Although we recommend always using TLS certificates to authenticate users, it's possible to authenticate a user with just a password.
 
+{{site.data.alerts.callout_info}}
+For multiple users to access the Admin UI, the `root` user must create users with passwords.
+{{site.data.alerts.end}}
+
 1. As the `root` user, create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
 
     {% include copy-clipboard.html %}

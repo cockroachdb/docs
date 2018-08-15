@@ -99,7 +99,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
     ~~~
 
-    The import will take a minute or two. Once it completes, you'll see a confirmation with details:
+    The import will take a minute or two. To check the status of the import, navigate to the Admin UI > [Jobs page](http://localhost:8080/#/jobs). Once it completes, you'll see a confirmation with details:
 
     ~~~
     +--------------------+-----------+--------------------+------+---------------+----------------+-------+
@@ -157,6 +157,10 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     +--------+--------------------------------------------------------------------------+
     (1 row)
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    You can also view the schema by navigating to the Admin UI > [Databases](http://localhost:8080/#/databases/tables) page and clicking on the table name.
+    {{site.data.alerts.end}}
 
 4. Read some data from the imported `orders` table:
 
@@ -259,6 +263,10 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     +----------+---------------------------------------------------------+
     (1 row)
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    You can also view the schema by navigating to the Admin UI > [Databases](http://localhost:8080/#/databases/tables) page and clicking on the table name.
+    {{site.data.alerts.end}}
 
 4. Read some data from the imported `episodes` table:
 
