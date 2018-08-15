@@ -4,43 +4,31 @@ summary: Learn how to back up and restore a CockroachDB database.
 toc: true
 ---
 
-CockroachDB offers the following methods to backup your cluster's data:
+Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: Core and Enterprise.
 
-License | Backup Type | Description
-------------|-----------------|-----------------
-Core | [`cockroach dump`](sql-dump.html) | A CLI command to dump/export your database's schema and table data.
-Enterprise | [`BACKUP`](backup.html) (*[enterprise license](https://www.cockroachlabs.com/pricing/) only*) | A SQL statement that backs up your cluster to cloud or network file storage.
-
-How you restore your cluster's data depends on how you backed up the data:
-
-License | Backup Type | Restore using...
-------------|-----------------|-----------------
-Core | [`cockroach dump`](sql-dump.html) | [Import data](import-data.html#import-from-generic-sql-dump)
-Enterprise | [`BACKUP`](backup.html) (*[enterprise license](https://www.cockroachlabs.com/pricing/) only*) | [`RESTORE`](restore.html)
-
-If you created a backup from another database and want to import it into CockroachDB, see [Import data](import-data.html).
-
-### Operational best practice
-
-Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.
+{{site.data.alerts.callout_info}}Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.{{site.data.alerts.end}}
 
 ## Perform Core backup and restore
 
-Run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file titled `backup.sql`:
+To perform a Core backup, run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file titled `backup.sql`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore the database, run the [`IMPORT`](import-data.html) command:
+To restore a database from a Core backup, run the [`IMPORT`](import-data.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --database=[database name] < backup.sql
 ~~~
 
+You can also use [Import data](import-data.html) if you created a backup from another database and want to import it into CockroachDB.
+
 ## Perform Enterprise backup and restore
+
+To perform an Enterprise backup, use [`BACKUP`](backup.html) (*[enterprise license](https://www.cockroachlabs.com/pricing/) only*), a SQL statement that backs up your cluster to cloud or network file storage. To restore from an Enterprise backup, use [`RESTORE`](restore.html).
 
 ### Perform manual full backups
 
@@ -111,7 +99,7 @@ In the sample script, configure the day of the week for which you want to create
     # day of the week and incremental backups when run on other days, and tracks
     # recently created backups in a file to pass as the base for incremental backups.
 
-    full_day="<day_of_the_week>"                        # Must match (including case) the output of `LC_ALL=C date +%A`.
+    full_day="<day_of_the_week>"                      # Must match (including case) the output of `LC_ALL=C date +%A`.
     what="DATABASE <database_name>"                   # The name of the database you want to backup.
     base="<storage_URL>/backups"                      # The URL where you want to store the backup.
     extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
@@ -167,7 +155,9 @@ In the sample script, configure the day of the week for which you want to create
     $ ./backup.sh
     ~~~
 
-{{site.data.alerts.callout_info}}If you miss an incremental backup, delete the `recent_backups.txt` file and run the script. It'll take a full backup for that day and incremental backups for subsequent days.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+If you miss an incremental backup, delete the `recent_backups.txt` file and run the script. It'll take a full backup for that day and incremental backups for subsequent days.
+{{site.data.alerts.end}}
 
 ## See also
 
