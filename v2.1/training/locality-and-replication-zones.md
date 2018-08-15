@@ -22,6 +22,10 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
+{{site.data.alerts.callout_info}}
+To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+{{site.data.alerts.end}}
+
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
@@ -33,10 +37,11 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --host=localhost \
     --port=26257 \
     --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In a new teriminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -47,10 +52,11 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --host=localhost \
     --port=26258 \
     --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In a new terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -61,7 +67,8 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
     --host=localhost \
     --port=26259 \
     --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 4. Use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
@@ -75,17 +82,13 @@ Start a cluster like you did previously, but this time use the [`--locality`](..
 
 By default, CockroachDB tries to balance data evenly across specified "localities". At this point, since all three of the initial nodes have the same locality, the data is distributed across the 3 nodes. This means that for each range, one replica is on each node.
 
-To check this, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the replica count is the same on all nodes.
+To check this, open the Web UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the replica count is the same on all nodes.
 
-<img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Web UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 3. Expand into 2 more US regions
 
 Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
-
-{{site.data.alerts.callout_info}}
-To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
-{{site.data.alerts.end}}
 
 1. In a new terminal, start node 4:
 
@@ -401,6 +404,10 @@ Now verify that the data for the table in the `intro` database is located on US-
     --------|-------
     1 - 9 | US
     10 - 12 | EU
+
+{{site.data.alerts.callout_info}}
+You can also use the Web UI's [Data Distribution matrix](http://localhost:8080/#/data-distribution) to view the distribution of data across nodes.
+{{site.data.alerts.end}}
 
 ## Step 9. Clean up
 
