@@ -53,7 +53,7 @@ In this scenario, you try to connect a user without providing a client certifica
     The connection attempt fails, and the following error is printed to `stderr`:
 
     ~~~
-    Error: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+    Error: pq: invalid password
     Failed running "sql"
     ~~~
 
@@ -84,14 +84,11 @@ To successfully connect the user, you must first either generate a client certif
     This time, the connection attempt succeeds:
 
     ~~~
-    +---------------+
-    | database_name |
-    +---------------+
-    | defaultdb     |
-    | postgres      |
-    | system        |
-    +---------------+
-    (3 rows)
+    +----------+
+    | Database |
+    +----------+
+    +----------+
+    (0 rows)
     ~~~
 
 ## Problem 2: Wrong host or port
@@ -119,7 +116,7 @@ Error: unable to connect or connection lost.
 Please check the address and credentials such as certificates (if attempting to
 communicate with a secure cluster).
 
-dial tcp 127.0.0.1:20000: getsockopt: connection refused
+dial tcp [::1]:20000: connect: connection refused
 Failed running "sql"
 ~~~
 
@@ -131,7 +128,7 @@ To successfully connect the user, try again using a correct `--port`:
 ~~~ shell
 $ ./cockroach sql \
 --certs-dir=certs \
---user=kirk \
+--user=spock \
 --port=26259 \
 --execute="SHOW DATABASES;"
 ~~~

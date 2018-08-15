@@ -80,10 +80,11 @@ In this scenario, you try to add a node to a secure cluster without providing th
     --host=localhost \
     --port=26257 \
     --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -93,10 +94,11 @@ In this scenario, you try to add a node to a secure cluster without providing th
     --host=localhost \
     --port=26258 \
     --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In another terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -106,10 +108,11 @@ In this scenario, you try to add a node to a secure cluster without providing th
     --host=localhost \
     --port=26259 \
     --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-4. In another terminal, perform a one-time initialization of the cluster:
+4. Perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -120,7 +123,9 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 In the same terminal, try to add another node, but leave out the `--certs-dir` flag:
 
-{{site.data.alerts.callout_info}}The <code>--logtostderr=WARNING</code> flag will make warnings and errors print to <code>stderr</code> so you do not have to manually look in the logs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr` so you do not have to manually look in the logs.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -263,13 +268,10 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     The startup process fails because the cluster notices that the node's cluster ID does not match the cluster ID of the nodes it is trying to join to:   
 
     ~~~
-    F180208 16:41:20.387821 136 storage/replica.go:5217  [n1,s1,r1/1:/{Min-System/}] store 1 belongs to cluster cfcd80ee-9005-4975-9ae9-9c36d9aaa57e, but attempted to join cluster 5007b180-9b08-4a08-a882-53915fb459a1 via gossip
-    goroutine 136 [running]:
-    github.com/cockroachdb/cockroach/pkg/util/log.getStacks(0x69fe700, 0x0, 0x0, 0x12)
-    	/go/src/github.com/cockroachdb/cockroach/pkg/util/log/clog.go:872 +0xa7
-    github.com/cockroachdb/cockroach/pkg/util/log.(*loggingT).outputLogEntry(0x69fe700, 0xc400000004, 0x6475169, 0x12, 0x1461, 0xc4208580b0, 0xaa)
-    ...
+    W180815 17:21:00.316845 237 gossip/client.go:123  [n1] failed to start gossip client to localhost:26258: initial connection heartbeat failed: rpc error: code = Unknown desc = client cluster ID "9a6ed934-50e8-472a-9d55-c6ecf9130984" doesn't match server cluster ID "ab6960bb-bb61-4e6f-9190-992f219102c6"
     ~~~
+
+4. Press **CTRL-C** to stop the new node.
 
 ### Step 2. Resolve the problem
 
