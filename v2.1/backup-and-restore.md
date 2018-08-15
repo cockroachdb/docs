@@ -1,54 +1,59 @@
 ---
-title: Backup and Restore Data
+title: Back up and Restore Data
 summary: Learn how to back up and restore a CockroachDB database.
 toc: true
+redirect_from:
+- back-up-data.html
+- restore-data.html
 ---
 
-Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: Core and Enterprise.
+Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to back up and restore your cluster's data: Core and Enterprise.
 
-{{site.data.alerts.callout_info}}Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.{{site.data.alerts.end}}
+Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.
 
 ## Perform Core backup and restore
 
-To perform a Core backup, run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file titled `backup.sql`:
+In case you don't have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file titled `backup.sql`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore a database from a Core backup, run the [`IMPORT`](import-data.html) command:
+To restore a database from a Core backup, [use the `cockroach sql` command to execute the statements in the `backup.sql` file](sql-dump.html#restore-a-table-from-a-backup-file):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --database=[database name] < backup.sql
 ~~~
 
-You can also use [Import data](import-data.html) if you created a backup from another database and want to import it into CockroachDB.
+{{site.data.alerts.callout_success}}
+If you created a backup from another database and want to import it into CockroachDB, see [Import data](import-data.html).
+{{site.data.alerts.end}}
 
 ## Perform Enterprise backup and restore
 
-To perform an Enterprise backup, use [`BACKUP`](backup.html) (*[enterprise license](https://www.cockroachlabs.com/pricing/) only*), a SQL statement that backs up your cluster to cloud or network file storage. To restore from an Enterprise backup, use [`RESTORE`](restore.html).
+If you have an Enterprise license, you can use the [`BACKUP`](backup.html) statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`](restore.html) statement to efficiently restore schema and data as necessary.
 
-### Perform manual full backups
+### Manual full backups
 
-For most use cases, you can take full backups nightly. Run the [`BACKUP`](backup.html) command every night to take full backups of your database:
+In most cases, it's recommended to use the [`BACKUP`](backup.html) command to take full nightly backups of each database in your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO '<full_backup_location>';
 ~~~
 
-You can then restore your database by running the [`RESTORE`](restore.html) command:
+If it's ever necessary, you can then use the [`RESTORE`](restore.html) command to restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE <database_name> FROM '<full_backup_location>';
 ~~~
 
-### Perform full and incremental backups manually
+### Manual full and incremental backups
 
-If the database increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking regular full backups and nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger databases.
+If a database increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g. weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger databases .
 
 Run the [`BACKUP`](backup.html) command to take a full backup of your database:
 
@@ -62,19 +67,19 @@ Then create nightly incremental backups based off of full backups you've already
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO 'incremental_backup_location'
-INCREMENTAL FROM '<full_backup_location>', '<previous_incremental_backup_location>';
+INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
 ~~~
 
-You can restore your database by running the [`RESTORE`](restore.html) command:
+If it's ever necessary, you can then use the [`RESTORE`](restore.html) command to restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE <database_name> FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
 ~~~
 
-### Automate full and incremental backups
+### Automated full and incremental backups
 
-You can automate your regular backups using scripts and your preferred method of automation, such as cron jobs.
+You can automate your backups using scripts and your preferred method of automation, such as cron jobs.
 
 For your reference, we have created this [sample backup script](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/backup.sh) that you can customize to automate your backups.
 
@@ -100,13 +105,13 @@ In the sample script, configure the day of the week for which you want to create
     # recently created backups in a file to pass as the base for incremental backups.
 
     full_day="<day_of_the_week>"                      # Must match (including case) the output of `LC_ALL=C date +%A`.
-    what="DATABASE <database_name>"                   # The name of the database you want to backup.
+    what="DATABASE <database_name>"                   # The name of the database you want to back up.
     base="<storage_URL>/backups"                      # The URL where you want to store the backup.
     extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
     recent=recent_backups.txt                         # File in which recent backups are tracked.
     backup_parameters=<additional backup parameters>  # e.g. "WITH revision_history"
 
-    # Customize with additional flags for certificates/hosts/etc. as needed to connect.
+    # Customize with additional flags for certificates/hosts/etc. as needed to connect to the SQL client.
     runsql() { cockroach sql --insecure -e "$1"; }
 
     destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"
@@ -129,12 +134,12 @@ In the sample script, configure the day of the week for which you want to create
     echo "backed up to ${destination}"
     ~~~
 
-2. In the sample backup script, customize the values for the following flags:
+2. In the sample backup script, customize the values for the following variables:
 
-    Flag | Description
+    Variable | Description
     -----|------------
     `day_of_the_week` | The day of the week on which you want to take a full backup.
-    `database_name` | The name of the database you want to backup (i.e., create backups of all tables and views in the database).
+    `database_name` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).
     `storage_URL` | The URL where you want to store the backup.<br/><br/>URL format: `[scheme]://[host]/[path]` <br/><br/>For information about the components of the URL, see [Backup File URLs](backup.html#backup-file-urls).
     `storage_parameters`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
     `additional_backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.

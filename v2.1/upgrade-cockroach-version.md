@@ -38,7 +38,7 @@ Before starting the upgrade, complete the following steps.
 
 3. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
-4. [Back up the cluster](backup.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
+4. [Back up the cluster](backup-and-restore.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
 ## Step 3. Decide how the upgrade will be finalized
 
