@@ -6,7 +6,7 @@ set -euo pipefail
 # day of the week and incremental backups when run on other days, and tracks
 # recently created backups in a file to pass as the base for incremental backups.
 
-full_day=<day_of_the_week>                        # Must match (including case) the output of `LC_ALL=C date +%A`.
+full_day="<day_of_the_week>"                        # Must match (including case) the output of `LC_ALL=C date +%A`.
 what="DATABASE <database_name>"                   # The name of the database you want to backup.
 base="<storage_URL>/backups"                      # The URL where you want to store the backup.
 extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
