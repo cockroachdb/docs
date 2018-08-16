@@ -25,30 +25,39 @@ In this scenario, you try to connect a user without providing a client certifica
 
 ### Step 1. Simulate the problem
 
-1. In a new terminal, as the `root` user, create a new user called `kirk`:
+1. In a new terminal, as the `root` user, create a new user called `uhura`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set kirk --certs-dir=certs
+    $ ./cockroach user set uhura --certs-dir=certs
     ~~~
 
-2. As the `kirk` user, try to connect to the cluster:
+2. As the `root` user, grant `uhura` the `SELECT` privilege on the `startrek` database
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./cockroach sql \
+    --certs-dir=certs \
+    --execute="GRANT SELECT ON DATABASE startrek TO uhura;"
+    ~~~
+
+3. As the `uhura` user, try to connect to the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
-    --user=kirk \
+    --user=uhura \
     --execute="SHOW DATABASES;"
     ~~~
 
-    Because `kirk` doesn't have a client certificate in the `certs` directory, the cluster asks for the user's password:
+    Because `uhura` doesn't have a client certificate in the `certs` directory, the cluster asks for the user's password:
 
     ~~~
     Enter password:
     ~~~
 
-3. Because `kirk` doesn't have a password, press **Enter**.
+4. Because `uhura` doesn't have a password, press **Enter**.
 
     The connection attempt fails, and the following error is printed to `stderr`:
 
@@ -61,23 +70,23 @@ In this scenario, you try to connect a user without providing a client certifica
 
 To successfully connect the user, you must first either generate a client certificate or create a password for the user. It's generally best to use certificates over passwords, so do that here.
 
-1. Generate a client certificate for the `kirk` user:
+1. Generate a client certificate for the `uhura` user:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach cert create-client \
-    kirk \
+    uhura \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-2. As the `kirk` user, try to connect to the cluster again:
+2. As the `uhura` user, try to connect to the cluster again:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
-    --user=kirk \
+    --user=uhura \
     --execute="SHOW DATABASES;"
     ~~~
 
@@ -87,23 +96,24 @@ To successfully connect the user, you must first either generate a client certif
     +----------+
     | Database |
     +----------+
+    | startrek |
     +----------+
-    (0 rows)
+    (1 rows)
     ~~~
 
 ## Problem 2: Wrong host or port
 
-In this scenario, you try to connect the `kirk` user again but specify a `--port` that is not in use by any of the existing nodes.
+In this scenario, you try to connect the `uhura` user again but specify a `--port` that is not in use by any of the existing nodes.
 
 ### Step 1. Simulate the problem
 
-Try to connect the `kirk` user:
+Try to connect the `uhura` user:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ ./cockroach sql \
 --certs-dir=certs \
---user=kirk \
+--user=uhura \
 --port=20000 \
 --execute="SHOW DATABASES;"
 ~~~
@@ -128,7 +138,7 @@ To successfully connect the user, try again using a correct `--port`:
 ~~~ shell
 $ ./cockroach sql \
 --certs-dir=certs \
---user=spock \
+--user=uhura \
 --port=26259 \
 --execute="SHOW DATABASES;"
 ~~~
@@ -136,14 +146,12 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-+---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
-(3 rows)
++----------+
+| Database |
++----------+
+| startrek |
++----------+
+(1 rows)
 ~~~
 
 ## Clean up

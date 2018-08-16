@@ -96,11 +96,11 @@ Before you can manually corrupt data, you need to import enough data so that the
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
 
     ~~~
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
-    |       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   |
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
-    | 320453737551659009 | succeeded |                  1 | 187500 |        375000 |              0 | 36389148 |
-    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+    | 374750372146053121 | succeeded |                  1 |    0 |             0 |              0 |     0 |
+    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
     (1 row)
     ~~~
 
@@ -114,9 +114,10 @@ Before you can manually corrupt data, you need to import enough data so that the
     ~~~
 
     ~~~
-    000003.log                000009.sst                IDENTITY                  MANIFEST-000007           cockroach.advertise-addr  local/
-    000006.sst                COCKROACHDB_VERSION       LOCK                      OPTIONS-000005            cockroach.http-addr       logs/
-    000008.sst                CURRENT                   MANIFEST-000001           auxiliary/                cockroach.listen-addr
+    000003.log			IDENTITY			OPTIONS-000005			cockroach.http-addr
+    000006.sst			LOCK				auxiliary			cockroach.listen-addr
+    COCKROACHDB_VERSION		MANIFEST-000001			cockroach-temp478417278		logs
+    CURRENT				MANIFEST-000007			cockroach.advertise-addr	temp-dirs-record.txt
     ~~~
 
 2. Open one of the `.sst` files and delete several lines.

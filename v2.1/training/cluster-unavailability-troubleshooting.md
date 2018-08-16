@@ -79,13 +79,13 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     All ranges have a majority of their replicas again, and so the query executes and succeeds:
 
     ~~~
-    +---------------+
-    | database_name |
-    +---------------+
-    | defaultdb     |
-    | postgres      |
-    | system        |
-    +---------------+
+    +-----------+
+    | Database  |
+    +-----------+
+    | defaultdb |
+    | postgres  |
+    | system    |
+    +-----------+
     (3 rows)
     ~~~
 
