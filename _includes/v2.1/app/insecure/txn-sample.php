@@ -52,7 +52,7 @@ function transferMoney($dbh, $from, $to, $amount) {
 }
 
 try {
-    $dbh = new PDO('pgsql:host=localhost;port=26257;dbname=bank;sslmode=require;sslrootcert=certs/ca.crt;sslkey=certs/client.maxroach.key;sslcert=certs/client.maxroach.crt',
+  $dbh = new PDO('pgsql:host=localhost;port=26257;dbname=bank;sslmode=disable',
     'maxroach', null, array(
       PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_EMULATE_PREPARES => true,
