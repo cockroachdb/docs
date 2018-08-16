@@ -17,7 +17,7 @@ redirect_from: /training/network-partition-troubleshooting.html
 
 ## Before you begin
 
-Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have Docker Compose on your local machine, so you may just want to observe this one.
+Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have [Docker Compose](https://docs.docker.com/compose/install/) on your local machine, so you may just want to observe this one.
 
 ## Step 1. Create a cluster in Docker across 3 simulated datacenters
 
