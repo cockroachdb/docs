@@ -1,6 +1,8 @@
 <section class="footer">
-	{% unless page.drift == true %}
+	{% if page.back_to_top == true %}
 		{% include back-to-top.html %}
+	{% endif %}
+	{% unless page.drift == true %}
 		{% include help-widget.html %}
   {% endunless %}
 	<div class="container">
