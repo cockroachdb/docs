@@ -1,10 +1,8 @@
 ---
 title: SQL Feature Support in CockroachDB v2.1
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
+toc: true
 ---
-
-
-## Overview
 
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
 
