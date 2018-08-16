@@ -233,7 +233,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     (7 rows)
     ~~~
 
-2. As the `root` user, revoke the `SELECT` privilege on the `startrek.episodes` table from `spock`::
+2. As the `root` user, revoke the `SELECT` privilege on the `startrek.episodes` table from `spock`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
