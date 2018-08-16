@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB with Kubernetes (Insecure)
 summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
+drift: true
 ---
 
 <div class="filters filters-big clearfix">

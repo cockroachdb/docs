@@ -4,6 +4,7 @@ summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluste
 toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 redirect_from: manual-deployment-insecure.html
+drift: true
 ---
 
 <div class="filters filters-big clearfix">

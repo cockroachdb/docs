@@ -2,6 +2,7 @@
 title: Performance Benchmarking with TPC-C
 summary: Learn how to benchmark CockroachDB against TPC-C.
 toc: true
+drift: true
 ---
 
 <span class="version-tag">New in v2.0:</span>This page walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on CockroachDB. It measures tpmC (new order transactions/minute) on two TPC-C datasets:
