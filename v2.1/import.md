@@ -79,7 +79,7 @@ All nodes are used during tabular data conversion into key-value data, which mea
 
 ## Viewing and controlling import jobs
 
-Whenever CockroachDB starts executing an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 

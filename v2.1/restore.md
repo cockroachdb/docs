@@ -79,7 +79,7 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 ## Viewing and controlling restore jobs
 
-Whenever CockroachDB starts executing a restore, it register the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the restore has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
@@ -131,8 +131,6 @@ You can include the following options as key-value pairs in the `kv_option_list`
 - **Example**: `WITH skip_missing_foreign_keys`
 
 #### `skip_missing_sequences`
-
-
 
 - **Description**: If you want to restore a table that depends on a sequence but do not want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
 - **Key**: `skip_missing_sequences`
