@@ -2,6 +2,7 @@
 title: SQL Grammar
 summary: The full SQL grammar for CockroachDB.
 toc: false
+back_to_top: true
 ---
 
 <style>

@@ -108,7 +108,8 @@ Field | Description | Default
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 `block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
-`drift` | Set this to `true` if a Drift survey is active on the page. This excludes back-to-top and help buttons from the page, which would otherwise conflict visually with the Drift interface.
+`back_to_top` | If `true`, adds a back-to-top button to the page. This is only helpful in cases where the page is very long and there is no page toc, e.g., the Full SQL Grammar page.
+`drift` | Set this to `true` if a Drift survey is active on the page. This excludes the help button from the page, which would otherwise conflict visually with the Drift interface.
 
 #### Page TOC
 
