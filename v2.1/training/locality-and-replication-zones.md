@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
 {{site.data.alerts.callout_info}}
-To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+To simplify the process of running multiple nodes on your local computer, you'll start themin the [background](../start-a-node.html#general) instead of in separate terminals.
 {{site.data.alerts.end}}
 
 1. In a new terminal, start node 1:

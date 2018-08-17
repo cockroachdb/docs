@@ -225,13 +225,14 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
-    +-----------+
-    | Database  |
-    +-----------+
-    | defaultdb |
-    | postgres  |
-    | system    |
-    +-----------+
+    +---------------+
+    | database_name |
+    +---------------+
+    | defaultdb     |
+    | postgres      |
+    | system        |
+    +---------------+
+    (3 rows)
     ~~~
 
     You just queried the node listening on `26257`, but every other node is a SQL gateway to the cluster as well. We'll learn more about CockroachDB SQL and the built-in SQL client in a later module.
@@ -249,8 +250,8 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     <img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    Note that the **Replicas** count is **22** on all three nodes. This indicates:
-    - There are 22 initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
+    Note that the **Replicas** count is the same on all three nodes. This indicates:
+    - There are this many initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
     - Each range has been replicated 3 times (according to the CockroachDB default).
     - For each range, each replica is stored on different nodes.
 

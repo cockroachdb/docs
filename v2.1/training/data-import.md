@@ -24,7 +24,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 Start and initialize a cluster like you did in previous modules.
 
 {{site.data.alerts.callout_info}}
-To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
 {{site.data.alerts.end}}
 
 1. In a new terminal, start node 1:
@@ -116,7 +116,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     $ ./cockroach sql \
     --insecure \
     --database="import_test" \
-    --execute="SHOW CREATE TABLE orders;"
+    --execute="SHOW CREATE orders;"
     ~~~
 
     ~~~
@@ -236,7 +236,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     $ ./cockroach sql \
     --insecure \
     --database="startrek" \
-    --execute="SHOW CREATE TABLE episodes;"
+    --execute="SHOW CREATE episodes;"
     ~~~
 
     ~~~

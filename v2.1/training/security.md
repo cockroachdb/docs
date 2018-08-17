@@ -89,10 +89,6 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
 
 Restart the nodes using the same commands you used to start them initially, but this time use the `--certs-dir` flag to point to the node certificate, and leave out the `--insecure` flag.
 
-{{site.data.alerts.callout_info}}
-To simplify the process of adding more nodes, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
-{{site.data.alerts.end}}
-
 1. Start node 1:
 
     {% include copy-clipboard.html %}
