@@ -139,12 +139,21 @@ $ ./cockroach start \
 The startup process will fail, and you'll see the following printed to `stderr`:
 
 ~~~
-W180208 15:41:15.531967 1 cli/start.go:697  Using the default setting for --cache (128 MiB).
+W180817 16:54:49.514313 1 cli/start.go:853  Using the default setting for --cache (128 MiB).
   A significantly larger value is usually needed for good performance.
-  If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
-E180208 15:41:15.642980 1 cli/error.go:68  failed to start server: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+  If you have a dedicated server a reasonable setting is --cache=.25 (2.0 GiB).
+W180817 16:54:49.514693 1 cli/start.go:866  Using the default setting for --max-sql-memory (128 MiB).
+  A significantly larger value is usually needed in production.
+  If you have a dedicated server a reasonable setting is --max-sql-memory=.25 (2.0 GiB).
+E180817 16:54:49.621930 1 cli/error.go:230  cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+problem with CA certificate: not found
 *
-* ERROR: failed to start server: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+* ERROR: cannot load certificates.
+* Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+*
+* problem with CA certificate: not found
 *
 Failed running "start"
 ~~~
@@ -186,17 +195,14 @@ $ ./cockroach start \
 --logtostderr=WARNING
 ~~~
 
-The startup process will hang, and you'll see the following printed to `stderr`:
+The process will never complete, and you'll see a continuous stream of warnings like this:
 
 ~~~
-W180208 16:13:57.687021 1 cli/start.go:697  Using the default setting for --cache (128 MiB).
-  A significantly larger value is usually needed for good performance.
-  If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
-W180208 16:13:57.809502 20 gossip/gossip.go:1241  [n?] no incoming or outgoing connections
-W180208 16:13:57.812632 13 gossip/client.go:123  [n?] failed to start gossip client to localhost:20000: rpc error: code = Unavailable desc = grpc: the connection is unavailable
+W180817 17:01:56.506968 886 vendor/google.golang.org/grpc/clientconn.go:942  Failed to dial localhost:20000: grpc: the connection is closing; please retry.
+W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293  grpc: addrConn.createTransport failed to connect to {localhost:20000 0  <nil>}. Err :connection error: desc = "transport: Error while dialing dial tcp [::1]:20000: connect: connection refused". Reconnecting...
 ~~~
 
-The last warning tells you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
+These warnings tell you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
 
 ### Step 2. Resolve the problem
 
