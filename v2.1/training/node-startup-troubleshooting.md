@@ -21,8 +21,6 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 ### Step 1. Generate security certificates
 
-{{site.data.alerts.callout_success}}If you have these resources still in place from the <a href="security.html">Security</a> module, you can skip this step.{{site.data.alerts.end}}
-
 1. Create two directories:
 
     {% include copy-clipboard.html %}
