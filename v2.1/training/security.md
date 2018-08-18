@@ -213,6 +213,23 @@ For multiple users to access the Admin UI, the `root` user must create users wit
     (2 rows)
     ~~~
 
+## Clean up
+
+In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
+
+1. Stop all CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3 my-safe-directory certs
+    ~~~
 ## What's next?
 
 [Production Deployment](production-deployment.html)
