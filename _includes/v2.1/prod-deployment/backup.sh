@@ -13,7 +13,7 @@ extra="<storage_parameters>"                      # Any additional parameters th
 recent=recent_backups.txt                         # File in which recent backups are tracked.
 backup_parameters=<additional backup parameters>  # e.g. "WITH revision_history"
 
-# Customize with additional flags for certificates/hosts/etc. as needed to connect to the SQL client.
+# Customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, `--port`, and additional flags as needed to connect to the SQL client.
 runsql() { cockroach sql --insecure -e "$1"; }
 
 destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"

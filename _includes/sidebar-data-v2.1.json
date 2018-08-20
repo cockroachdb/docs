@@ -376,7 +376,7 @@
             ]
           },
           {
-            "title": "Backup and Restore Data",
+            "title": "Back up and Restore Data",
             "urls": [
               "/${VERSION}/backup-and-restore.html"
             ]
