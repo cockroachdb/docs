@@ -14,75 +14,6 @@ Use an interactive SQL shell to try out these statements. If you have a cluster 
 CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
 {{site.data.alerts.end}}
 
-## Create a Database
-
-CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE bank;
-~~~
-
-Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS bank;
-~~~
-
-When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP DATABASE bank;
-~~~
-
-## Show databases
-
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+---------------+
-| database_name |
-+---------------+
-| bank          |
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
-(3 rows)
-~~~
-
-## Set the default database
-
-To set the default database, use the [`SET`](set-vars.html#examples) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET DATABASE = bank;
-~~~
-
-When working with the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASE;
-~~~
-
-~~~
-+----------+
-| database |
-+----------+
-| bank     |
-+----------+
-(1 row)
-~~~
-
 ## Create a table
 
 To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
@@ -141,34 +72,12 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| accounts   |
-| users      |
-+------------+
-(2 rows)
-~~~
-
-To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM animals;
-~~~
-
-~~~
-+------------+
-| table_name |
-+------------+
-| aardvarks  |
-| elephants  |
-| frogs      |
-| moles      |
-| pandas     |
-| turtles    |
-+------------+
-(6 rows)
++----------+
+|  Table   |
++----------+
+| accounts |
++----------+
+(1 row)
 ~~~
 
 ## Insert rows into a table
