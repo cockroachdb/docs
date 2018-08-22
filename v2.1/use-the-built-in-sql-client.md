@@ -716,4 +716,3 @@ Time: 2.426534ms
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Import Data](import-data.html)
